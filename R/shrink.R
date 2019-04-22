@@ -51,6 +51,7 @@ shrink_cols <- function(x) {
 ##' @import S4Vectors
 ##' @import IRanges
 ##' @import BiocParallel
+##' @importFrom methods as
 ##' @aliases grow
 ##' @export
 ##' @examples
