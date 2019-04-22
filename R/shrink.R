@@ -74,22 +74,23 @@ shrink_cols <- function(x) {
 shrink <- function(x, k, count = FALSE) {
     l <- split(x, k)
     res <- do.call(rbind, bplapply(l, shrink_cols))
-    ## these conversions should be done at the end, once the
-    ## different shrunk DataFrames have been cbinded.
-    ## if (is.logical(x[1]))
-    ##     res <- as(res, "LogicalList")
-    ## else if (is.integer(x[1]))
-    ##     res <- as(res, "IntegerList")
-    ## else if (is.double(x[1]))
-    ##     res <- as(res, "NumericList")
-    ## else if (is.character(x[1]))
-    ##     res <- as(res, "CharacterList")
-    ## else if (inherits(x[1], "Rle"))
-    ##     res <- as(res, "RleList")
-    ## else if (inherits(x[1], "IRanges"))
-    ##     res <- as(res, "IRangesList")
-    ## else if (is.factor(x[1]))
-    ##     res <- as(res, "FactorList")
+    for (i in seq_along(res)) {
+        .x <- x[1, i]
+        if (is.logical(.x))
+            res[[i]] <- as(res[[i]], "LogicalList")
+        else if (is.integer(.x))
+            res[[i]] <- as(res[[i]], "IntegerList")
+        else if (is.double(.x))
+            res[[i]] <- as(res[[i]], "NumericList")
+        else if (is.character(.x))
+            res[[i]] <- as(res[[i]], "CharacterList")
+        else if (is.factor(.x))
+            res[[i]] <- as(res[[i]], "FactorList")        
+        else if (inherits(.x, "Rle"))
+            res[[i]] <- as(res[[i]], "RleList")
+        else if (inherits(.x, "IRanges"))
+            res[[i]] <- as(res[[i]], "IRangesList")
+    }
     if (count) 
         res[[".n"]] <- lengths(l)
     res
