@@ -2,5 +2,10 @@
 
 export(expand_DataFrame)
 export(reduce_DataFrame)
+exportClasses(Features)
 import(IRanges)
 import(S4Vectors)
+importFrom(Biobase,featureNames)
+importFrom(Biobase,sampleNames)
+importFrom(SummarizedExperiment,assays)
+importFrom(SummarizedExperiment,colData)

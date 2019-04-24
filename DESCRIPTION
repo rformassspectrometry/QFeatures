@@ -12,4 +12,8 @@ Imports: IRanges
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
+Collate:
+   Features-functions.R
+   Features-class.R
+   reduce.R
 RoxygenNote: 6.1.1

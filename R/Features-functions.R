@@ -1,4 +1,4 @@
-.main_assay <- function(object) 
+.main_assay <- function(object)
     which.max(sapply(object@assays, nrow))
 
 .show_empty_Features <- function(object)
@@ -78,4 +78,3 @@
     .valid_Features_fData(object)
     .valid_Features_rownames(object)
 }
-
