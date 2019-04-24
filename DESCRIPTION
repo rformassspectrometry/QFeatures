@@ -2,13 +2,13 @@ Package: Features
 Title: Quantitative features for mass spectrometry data
 Version: 0.0.1
 Authors@R: person("Laurent", "Gatto",
-                  email = "laurent.gatto@uclouvain.be",
-                  comment = c(ORCID = "0000-0002-1520-2268"),
-                  role = c("aut", "cre"))
+		  email = "laurent.gatto@uclouvain.be",
+		  comment = c(ORCID = "0000-0002-1520-2268"),
+		  role = c("aut", "cre"))
 Description: Infrastrucutre to manage and process quantitative
    features for high-throughput mass spectrometry assays.
 Depends: R (>= 3.5.3), S4Vectors, BiocParallel
-Imports: IRanges, methods
+Imports: IRanges
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
