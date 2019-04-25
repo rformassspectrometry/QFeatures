@@ -67,6 +67,15 @@ readFeatures <- function(table, ecol, fnames, ...)  {
 }
 
 
+##' @export
+##' @rdname Features-class
+##' @param assays A `SimpleList` containing the object's assays (typically
+##'     matrices).
+##' @param featureData A `SimpleList` containing the object's feature metadata
+##'     as `DataFrame` instances.
+##' @param colData A `DataFrame` with column (sample annotations).
+##' @param metadata A `list()` with arbitrary object annotations.
+##' @return A new instance of class `Features`.
 Features <- function(assays = SimpleList(),
                      featureData = SimpleList(),
                      colData = DataFrame(),
@@ -75,8 +84,8 @@ Features <- function(assays = SimpleList(),
         nrows <- order(sapply(assays, nrow), decreasing = TRUE)
         idx <- 1
         for (i in nrows) {
-            attr(assays[[i]], "idx") <- cnt
-            cnt <- cnt + 1
+            attr(assays[[i]], "idx") <- idx
+            idx <- idx + 1
         }
     }
     new("Features",

@@ -8,36 +8,9 @@ get_features_idx <- function(object)
 main_assay <- function(object)
     which.max(sapply(object@assays, nrow))
 
-## -----------------------
-## Method implementations
-## -----------------------
-
-.featureVariables <- function(object, assay = NULL) {
-    stopifnot(inherits(object, "Features"))
-    if (isEmpty(object))
-        return(NA_character_)
-    if (is.null(assay))
-        return(unlist(unique(sapply(object@featureData, names))))
-    if (is.character(assay)) {
-        assay <- assay[1]
-        stopifnot(assay %in% names(object))
-    }
-    names(object@featureData[[assay]])
-}
-
 ## ----------------------------
 ## Internal validity functions
 ## ----------------------------
-
-.valid_Features_has_idx <- function(object) {
-    idx <- get_features_idx(object)
-    if (any(sapply(idx, is.null)) | length(idx) != length(object))
-        stop("Some assays are missing an internal index")
-    idx <- unlist(idx)
-    if (anyDuplicated(idx))
-        stop("Internal indices are duplicated")
-    NULL
-}
 
 .valid_Features_assay_dims <- function(object) {
     l1 <- length(object@assays)
@@ -88,6 +61,16 @@ main_assay <- function(object)
         stop("Names in assay and feature data don't match")
 }
 
+.valid_Features_has_idx <- function(object) {
+    idx <- get_features_idx(object)
+    if (any(sapply(idx, is.null)) | length(idx) != length(object))
+        stop("Some assays are missing an internal index")
+    idx <- unlist(idx)
+    if (anyDuplicated(idx))
+        stop("Internal indices are duplicated")
+    NULL
+}
+
 .valid_Features <- function(object) {
     if (isEmpty(object))
         return(NULL)
@@ -129,7 +112,7 @@ main_assay <- function(object)
     if (is.null(nms))
         nms <- character(length(object@assays))
     scat("assays(%d): %s\n", nms)
-    scat("Features(%d): %s\n", featureNames(object))
+    scat("Features(%d): %s\n", unlist(featureNames(object)))
     scat("Samples(%d): %s\n", sampleNames(object))
 
     ## colData()

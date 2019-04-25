@@ -27,22 +27,93 @@
 ##' from the PSM data, and the protein-level data is calculated based
 ##' on the peptide-level values.
 ##'
-##' `Features` objects can be created with the `Features` constructor
-##' or using the `[readFeatures()]` function to create an instance
-##' from tabular data. The constructor, that is used to create objects
-##' from their bare parts, that takes the following parameters:
-##'
-##' TODO
+##' The recommended way to create `Features` objects is the use the
+##' `[readFeatures()]` function, that creates an instance from tabular data. The
+##' `Features` constructor can be used to create objects from their bare parts.
+##' It iss the user's responsability to make sure that these match the class
+##' validity requirements.
 ##'
 ##' @details
 ##'
-##' More details come here ...
+##' A `Features` instance must comply with the following requirements:
+##'
+##' - Assays are matrix-like objects that all have the same number of
+##'   columns. They are passed to the constructor as an `SimpleList` object
+##'   names `assays`, and can be accessed with the `assays` accessor.
+##'
+##' - Each assay is documented by feature variable `DataFrame`. Both have the
+##'   same number of rows. These feature metadata `DataFrame`s are passed to the
+##'   constructor as an `SimpleList` object names `featureData` and can be
+##'   accessed with the `featureData` accessor. The number of rows and the row
+##'   names of each of these `DataFrame` instances must match the number of rows
+##'   and rows names of the corresponding the assay. These `DataFrame` instance
+##'   are mandatory but can have no columns.
+##'
+##' - The samples/columns of the assays are documented in a `DataFrame` named
+##'   `colData` and can be accessed with the `colData` accessor. The number of
+##'   rows and the row names of this `DataFrame` must match the number of
+##'   columns and column names of the assays. This `DataFrame` instance is
+##'   mandatory but can have no columns.
+##'
+##' - A `list` protiding the global metadata annotating the object as a whole,
+##'   named `metadata`. It can be accessed/replaced with the `metadata`
+##'   accessor/replacement method.
+##'
+##' @section Accessors and
+##'
+##' In the following section `x` and `object` are `Features` objects.
+##'
+##' - `length(x)`: returns the number of assays in `x`.
+##'
+##' - `names(x)`, `names(x) <- value`: gets or sets the assays optinal
+##'    names. `value` is a `character` of appropriate of length equal to
+##'    `length(x)`.
+##'
+##' - `dims(x)`: returns the dimensions of all assays.
+##'
+##' - `dim(x)`: returns the dimensions of the largest assay.
+##'
+##' - `isEmpty(x)`: returns `TRUE` for an object without any assays, `FALSE`
+##'   otherwise.
+##'
+##' - `metadata(x)`, `metadata(x) <- value`: gets and sets the object's global
+##'    metadata. `value` must be a `list`.
+##'
+##' - `colData(x)`, `colData(x) <- value`: gets or sets the columns/samples
+##'    metadata.`value` must be a `DataFrame` object. Row names of `value` match
+##'    the existing column names of the assays.
+##'
+##' - `assays(x)`: gets the assays of the object. The assays are returned as a
+##'   `SimpleList`.
+##'
+##' - `assay(x, i)`: a convenient alternative (to `assays(x)[[i]]`) to get the
+##'   `i`th (default first) assay element.
+##'
+##' - `featureData(object)`: gets the assays' feature metadata as an instance of
+##'   class `SimpleList`.
+##'
+##' - `featureData(object, i)`: a convenient alternative (to
+##'   `featureData(x)[[i]]`) to get the `i`th featureData element.
+##'
+##' - `featureNames(x)`: gets the list of feature names, where each element of
+##'   the list is a `character` of names for the corresponding assay.
+##'
+##' - `featureNames(object, i)`: a convenient alternative (to
+##'   `featureNames(x)[[i]]`) to get the `i`th featureData element.
+##'
+##' - `featureVariables(x)`: gets the list of feature variabesl, where each
+##'   element of the list is a `character` of names for the corresponding assay.
+##'
+##' - `featureVariables(object, i)`: a convenient alternative (to
+##'   `featureVariables(x)[[i]]`) to get the `i`th featureData element.
+##'
+##' - `sampleNames(object)`: gets the samples names.
 ##'
 ##' @rdname Features-class
 ##'
 ##' @import S4Vectors
-##' @importFrom SummarizedExperiment assays colData
-##' @importFrom Biobase featureNames sampleNames
+##' @importFrom SummarizedExperiment assays assay colData colData<-
+##' @importFrom Biobase sampleNames
 ##'
 ##' @md
 ##'
@@ -58,29 +129,28 @@
 ##' m2 <- matrix(1:16, ncol = 4)
 ##' colnames(m1) <- colnames(m2) <- paste0("S", 1:4)
 ##' rownames(m1) <- letters[1:10]
-##' rownames(m2) <- letters[1:4]
+##' rownames(m2) <- letters[23:26]
 ##'
 ##' df1 <- DataFrame(Fa = 1:10, Fb = letters[1:10],
 ##'                  row.names = letters[1:10])
-##' df2 <- DataFrame(row.names = letters[1:4])
+##' df2 <- DataFrame(row.names = letters[23:26])
 ##'
-##' x <- new("Features",
-##'          assays = SimpleList(assay1 = m1, assay2 = m2),
-##'          featureData = SimpleList(assay1 = df1, assay2 = df2),
-##'          colData = DataFrame(row.names = colnames(m1)),
-##'          metadata = list(paste("Generated on", Sys.Date())))
-##' x
+##' ft1 <- Features(assays = SimpleList(assay1 = m1, assay2 = m2),
+##'                 featureData = SimpleList(assay1 = df1, assay2 = df2),
+##'                 colData = DataFrame(row.names = colnames(m1)),
+##'                 metadata = list(paste("Generated on", Sys.Date())))
+##' ft1
 ##'
 ##' ## Creating a Features object from a data.frame
 ##' data(hlpsms)
-##' ft <- readFeatures(hlpsms, ecol = 1:10)
-##' ft
+##' ft2 <- readFeatures(hlpsms, ecol = 1:10)
+##' ft2
 ##'
 ##' ## The assay isn't named yet, so let's name it 'psms', to clarify that the
 ##' ## data are PSM-level quantitations.
-##' names(ft)
-##' names(ft) <- "psms"
-##' ft
+##' names(ft2)
+##' names(ft2) <- "psms"
+##' ft2
 NULL
 
 setClass("Features",
@@ -108,41 +178,145 @@ setMethod("show", "Features",
           })
 
 
-setMethod("names", "Features", function(x) names(x@assays))
-##' @exportMethod assays
-setMethod("assays", "Features", function(x, ...) x@assays)
-setMethod("dim", "Features", function(x) dim(x@assays[[main_assay(x)]]))
+##' @exportMethod length
 setMethod("length", "Features", function(x) length(x@assays))
-setMethod("isEmpty", "Features", function(x) length(x) == 0)
-##' exportMethod colData
-setMethod("colData", "Features", function(x) x@colData)
-setMethod("metadata", "Features", function(x, ...) x@metadata)
-##' @importFrom Biobase featureData
-setMethod("featureData", "Features", function(object) object@featureData)
-##' @exportMethod featureNames
-setMethod("featureNames", "Features",
-          function(object) rownames(object@featureData[[main_assay(object)]]))
-setGeneric("featureVariables", function(object) standardGeneric("featureVariables"))
-##' @exportMethod featureVariables
-setMethod("featureVariables", "Features",
-          function(object) .featureVariables(object))
 
-##' @exportMethod sampleNames
-setMethod("sampleNames", "Features",
-          function(object) rownames(object@colData))
-setReplaceMethod("names", "Features",
+##' @exportMethod names
+setMethod("names", "Features", function(x) names(x@assays))
+##' @exportMethod 'names<-'
+setReplaceMethod("names", c("Features", "character"),
     function(x, value) {
         names(x@assays) <- value
         names(x@featureData) <- value
         x
     })
 
-setReplaceMethod("metadata", "Features",
+##' @exportMethod dims
+setMethod("dims", "Features",
+          function(x) sapply(x@assays, dim))
+
+##' @exportMethod dim
+setMethod("dim", "Features",
+          function(x) dim(x@assays[[main_assay(x)]]))
+
+##' @exportMethod isEmpty
+setMethod("isEmpty", "Features", function(x) length(x) == 0)
+
+##' @exportMethod metadata
+setMethod("metadata", "Features", function(x, ...) x@metadata)
+
+##' @exportMethod metadata<-
+setReplaceMethod("metadata", c("Features", "list"),
     function(x, value) {
-        if (!is.list(value))
-            stop("replacement 'metadata' value must be a list")
         if (!length(value))
             names(value) <- NULL
         x@metadata <- value
         x
     })
+
+##' @exportMethod colData
+setMethod("colData", "Features", function(x) x@colData)
+
+##' @exportMethod colData<-
+setReplaceMethod("colData", c("Features", "DataFrame"),
+    function(x, value) {
+        x@colData <- value
+        if (validObject(x)) x
+    })
+
+##' @exportMethod assays
+setMethod("assays", "Features", function(x, ...) x@assays)
+
+##' @exportMethod assay
+setMethod("assay", c("Features", "numeric"),
+          function(x, i, ...) {
+              tryCatch({
+                  assays(x, ...)[[i]]
+              }, error=function(err) {
+                  stop("'assay(<", class(x), ">, i=\"numeric\", ...)' ",
+                       "invalid subscript 'i'\n", conditionMessage(err))
+              })
+          })
+
+setMethod("assay", c("Features", "character"),
+    function(x, i, ...) {
+        msg <- paste0("'assay(<", class(x), ">, i=\"character\", ...)' ",
+                      "invalid subscript 'i'")
+        res <- tryCatch({
+            assays(x, ...)[[i]]
+        }, error=function(err) {
+            stop(msg, "\n", conditionMessage(err))
+        })
+        if (is.null(res))
+            stop(msg, "\n'", i, "' not in names(assays(<", class(x), ">))")
+        res
+    })
+
+setMethod("assay", c("Features", "missing"),
+    function(x, i, ...) {
+        assays <- assays(x, ...)
+        if (0L == length(assays))
+            stop("'assay(<", class(x), ">, i=\"missing\", ...) ",
+                 "length(assays(<", class(x), ">)) is 0'")
+        assays[[1]]
+    })
+
+
+##' @exportMethod featureData
+setGeneric("featureData", function(x, i, ...) standardGeneric("featureData"))
+
+setMethod("featureData", "Features", function(x, ...) x@featureData)
+
+setMethod("featureData", c("Features", "numeric"),
+          function(x, i, ...) {
+              tryCatch({
+                  featureData(x, ...)[[i]]
+              }, error=function(err) {
+                  stop("'featureData(<", class(x), ">, i=\"numeric\", ...)' ",
+                       "invalid subscript 'i'\n", conditionMessage(err))
+              })
+          })
+
+setMethod("featureData", c("Features", "character"),
+    function(x, i, ...) {
+        msg <- paste0("'featureData(<", class(x), ">, i=\"character\", ...)' ",
+                      "invalid subscript 'i'")
+        res <- tryCatch({
+            featureData(x, ...)[[i]]
+        }, error=function(err) {
+            stop(msg, "\n", conditionMessage(err))
+        })
+        if (is.null(res))
+            stop(msg, "\n'", i, "' not in names(featureData(<", class(x), ">))")
+        res
+    })
+
+
+##' @exportMethod featureNames
+setGeneric("featureNames", function(x, i, ...) standardGeneric("featureNames"))
+
+setMethod("featureNames", "Features", function(x, ...) lapply(x@featureData, rownames))
+
+setMethod("featureNames", c("Features", "numeric"),
+          function(x, i, ...) rownames(featureData(x, ...)[[i]]))
+
+setMethod("featureNames", c("Features", "character"),
+          function(x, i, ...) rownames(featureData(x, ...)[[i]]))
+
+
+
+##' @exportMethod featureVariables
+setGeneric("featureVariables", function(x, i, ...) standardGeneric("featureVariables"))
+
+setMethod("featureVariables", "Features",
+          function(x, ...) lapply(x@featureData, colnames))
+
+setMethod("featureVariables", c("Features", "numeric"),
+          function(x, i, ...) colnames(featureData(x, ...)[[i]]))
+
+setMethod("featureVariables", c("Features", "character"),
+          function(x, i, ...) colnames(featureData(x, ...)[[i]]))
+
+##' @exportMethod sampleNames
+setMethod("sampleNames", "Features",
+          function(object) rownames(object@colData))
