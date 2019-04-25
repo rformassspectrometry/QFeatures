@@ -125,7 +125,7 @@ setMethod("featureNames", "Features",
 setGeneric("featureVariables", function(object) standardGeneric("featureVariables"))
 ##' @exportMethod featureVariables
 setMethod("featureVariables", "Features",
-          function(object) featureVariables(object))
+          function(object) .featureVariables(object))
 
 ##' @exportMethod sampleNames
 setMethod("sampleNames", "Features",

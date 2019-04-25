@@ -1,4 +1,18 @@
-featureVariables <- function(object, assay = NULL) {
+## ------------------
+## Private functions
+## ------------------
+
+get_features_idx <- function(object)
+    lapply(object@assays, attr, "idx")
+
+main_assay <- function(object)
+    which.max(sapply(object@assays, nrow))
+
+## -----------------------
+## Method implementations
+## -----------------------
+
+.featureVariables <- function(object, assay = NULL) {
     stopifnot(inherits(object, "Features"))
     if (isEmpty(object))
         return(NA_character_)
@@ -11,11 +25,9 @@ featureVariables <- function(object, assay = NULL) {
     names(object@featureData[[assay]])
 }
 
-get_features_idx <- function(object)
-    lapply(object@assays, attr, "idx")
-
-main_assay <- function(object)
-    which.max(sapply(object@assays, nrow))
+## ----------------------------
+## Internal validity functions
+## ----------------------------
 
 .valid_Features_has_idx <- function(object) {
     idx <- get_features_idx(object)
@@ -87,6 +99,10 @@ main_assay <- function(object)
     .valid_Features_has_idx(object)
 }
 
+
+## -------------------------------------------
+## Internal function related to show,Features
+## -------------------------------------------
 
 .show_empty_Features <- function(object)
     cat("Empty", class(object), "object\n")

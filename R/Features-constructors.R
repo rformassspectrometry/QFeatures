@@ -47,6 +47,7 @@ readFeatures <- function(table, ecol, fnames, ...)  {
                  paste(colnames(xx), paste = ", "))
     }
     assay <- as.matrix(xx[, ecol])
+    attr(assay, "idx") <- 1
     fdata <- DataFrame(xx[, -ecol, drop = FALSE])
     ans <- new("Features",
                assays = SimpleList(assay),
@@ -61,12 +62,26 @@ readFeatures <- function(table, ecol, fnames, ...)  {
                  paste(colnames(xx), paste = ", "))
         featureNames(ans) <- fdata[, fnames]
     }
-    attr(ans@assays[[1]], "idx") <- 1
     if (validObject(ans))
         return(ans)
 }
 
 
-Features <- function(...) {
-    new("Features")
+Features <- function(assays = SimpleList(),
+                     featureData = SimpleList(),
+                     colData = DataFrame(),
+                     metadata = list()) {
+    if (length(assays)) {
+        nrows <- order(sapply(assays, nrow), decreasing = TRUE)
+        idx <- 1
+        for (i in nrows) {
+            attr(assays[[i]], "idx") <- cnt
+            cnt <- cnt + 1
+        }
+    }
+    new("Features",
+        assays = assays,
+        featureData = featureData,
+        colData = colData,
+        metadata = metadata)
 }
