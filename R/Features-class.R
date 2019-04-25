@@ -2,7 +2,7 @@
 ##'
 ##' @aliases Features Features-class class:Features
 ##'
-##' @name Features 
+##' @name Features
 ##'
 ##' @description
 ##'
@@ -52,6 +52,8 @@
 ##'
 ##' @examples
 ##'
+##' ## Creating a Features object manually
+##'
 ##' m1 <- matrix(1:40, ncol = 4)
 ##' m2 <- matrix(1:16, ncol = 4)
 ##' colnames(m1) <- colnames(m2) <- paste0("S", 1:4)
@@ -68,6 +70,17 @@
 ##'          colData = DataFrame(row.names = colnames(m1)),
 ##'          metadata = list(paste("Generated on", Sys.Date())))
 ##' x
+##'
+##' ## Creating a Features object from a data.frame
+##' data(hlpsms)
+##' ft <- readFeatures(hlpsms, ecol = 1:10)
+##' ft
+##'
+##' ## The assay isn't named yet, so let's name it 'psms', to clarify that the
+##' ## data are PSM-level quantitations.
+##' names(ft)
+##' names(ft) <- "psms"
+##' ft
 NULL
 
 setClass("Features",
@@ -133,5 +146,3 @@ setReplaceMethod("metadata", "Features",
         x@metadata <- value
         x
     })
-
-

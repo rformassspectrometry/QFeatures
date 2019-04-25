@@ -1,7 +1,7 @@
 ##' Convert tabular data from a spreadsheet or a `data.frame` into a
 ##' `Features` object.
 ##'
-##' @title Features from tabular data 
+##' @title Features from tabular data
 ##' @param table File or object holding the quantitative data. Can be
 ##'     either a `character(1)` with the path to a text-based
 ##'     spreadsheet (comma-separated values by default, but see `...`)
@@ -15,12 +15,17 @@
 ##'     dislpay the column names as seen by the `read.csv` function.
 ##' @param fnames An optional `character(1)` or `numeric(1)`
 ##'     indicating the column to be used as feature names.
-##' @param ... Further arguments that can be passed on to `read.csv`. 
+##' @param ... Further arguments that can be passed on to `read.csv`.
 ##' @return An instance of class `Features`.
+##'
 ##' @author Laurent Gatto
+##'
 ##' @importFrom utils read.csv
+##'
+##' @seealso The [Features] class for an example on how to manipulate use
+##'     `readFeatures` and how to further manipulate the resulting data.
+##'
 ##' @export
-##' @examples
 readFeatures <- function(table, ecol, fnames, ...)  {
     if (is.data.frame(table)) xx <- table
     else {

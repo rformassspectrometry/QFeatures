@@ -32,6 +32,10 @@ An instance of class `Features`.
 Convert tabular data from a spreadsheet or a `data.frame` into a
 `Features` object.
 }
+\seealso{
+The [Features] class for an example on how to manipulate use
+    `readFeatures` and how to further manipulate the resulting data.
+}
 \author{
 Laurent Gatto
 }
