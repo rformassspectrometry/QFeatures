@@ -17,4 +17,5 @@ Collate:
    Features-class.R
    Features-constructors.R
    reduce.R
+   data.R
 RoxygenNote: 6.1.1
