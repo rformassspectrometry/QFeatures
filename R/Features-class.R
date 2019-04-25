@@ -28,7 +28,9 @@
 ##' on the peptide-level values.
 ##'
 ##' `Features` objects can be created with the `Features` constructor
-##' that takes the following parameters:
+##' or using the `[readFeatures()]` function to create an instance
+##' from tabular data. The constructor, that is used to create objects
+##' from their bare parts, that takes the following parameters:
 ##'
 ##' TODO
 ##'

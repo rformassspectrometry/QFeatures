@@ -15,5 +15,6 @@ LazyData: true
 Collate:
    Features-functions.R
    Features-class.R
+   Features-constructors.R
    reduce.R
 RoxygenNote: 6.1.1
