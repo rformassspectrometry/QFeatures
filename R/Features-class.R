@@ -178,13 +178,6 @@ setValidity("Features", .valid_Features)
 
 setMethod("show", "Features",
           function(object) {
-              selectSome <- S4Vectors:::selectSome
-              scat <- function(fmt, vals = character(), exdent = 2, ...) {
-                  vals <- ifelse(nzchar(vals), vals, "''")
-                  lbls <- paste(S4Vectors:::selectSome(vals), collapse = " ")
-                  txt <- sprintf(fmt, length(vals), lbls)
-                  cat(strwrap(txt, exdent = exdent, ...), sep="\n")
-              }
               if (isEmpty(object)) .show_empty_Features(object)
               else .show_Features(object)
           })
