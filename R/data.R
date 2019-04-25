@@ -12,7 +12,7 @@
 ##'
 ##' @source
 ##'
-##' The `pRolocdata` package: \ur{http://bioconductor.org/packages/pRolocdata/}
+##' The `pRolocdata` package: \url{http://bioconductor.org/packages/pRolocdata/}
 ##'
 ##' @references
 ##'
