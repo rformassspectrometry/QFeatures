@@ -95,6 +95,15 @@ Features(assays = SimpleList(), featureData = SimpleList(),
   colData = DataFrame(), metadata = list())
 }
 \arguments{
+\item{x}{An instance of class \code{Features}.}
+
+\item{value}{The replacement value.}
+
+\item{i}{A \code{character(1)} or \code{numeric(1)} defining which assay of feature
+data to access.}
+
+\item{object}{An instance of class \code{Features}.}
+
 \item{assays}{A `SimpleList` containing the object's assays (typically
 matrices).}
 
@@ -105,14 +114,9 @@ as `DataFrame` instances.}
 
 \item{metadata}{A `list()` with arbitrary object annotations.}
 
-\item{`x`:}{an instance of class \code{Features}.}
+\item{...:}{Additional arguments.}
 
-\item{`object`:}{an instance of class \code{Features}.}
-
-\item{`i`:}{a \code{character(1)} or \code{numeric(1)} defining which assay of feature
-data to access.}
-
-\item{`value`:}{the replacement value.}
+\item{withDimnames:}{Inherited from generic functions, but ignored here.}
 }
 \value{
 A new instance of class `Features`.
@@ -168,6 +172,43 @@ named \code{metadata}. It can be accessed/replaced with the \code{metadata}
 accessor/replacement method.
 }
 }
+\section{Accessors}{
+
+\itemize{
+\item \code{length(x)}: returns the number of assays in \code{x}.
+\item \code{names(x)}, \code{names(x) <- value}: gets or sets the assays optinal
+names. \code{value} is a \code{character} of appropriate of length equal to
+\code{length(x)}.
+\item \code{dims(x)}: returns the dimensions of all assays.
+\item \code{dim(x)}: returns the dimensions of the largest assay.
+\item \code{isEmpty(x)}: returns \code{TRUE} for an object without any assays, \code{FALSE}
+otherwise.
+\item \code{metadata(x)}, \code{metadata(x) <- value}: gets and sets the object's global
+metadata. \code{value} must be a \code{list}.
+\item \code{colData(x)}, \code{colData(x) <- value}: gets or sets the columns/samples
+metadata.\code{value} must be a \code{DataFrame} object. Row names of \code{value} match
+the existing column names of the assays.
+\item \code{assays(x)}: gets the assays of the object. The assays are returned as a
+\code{SimpleList}.
+\item \code{assay(x, i)}: a convenient alternative (to \code{assays(x)[[i]]}) to get the
+\code{i}th (default first) assay element.
+\item \code{featureData(object)}: gets the assays' feature metadata as an instance of
+class \code{SimpleList}.
+\item \code{featureData(object, i)}: a convenient alternative (to
+\code{featureData(x)[[i]]}) to get the \code{i}th featureData element.
+\item \code{featureNames(x)}: gets the list of feature names, where each element of
+the list is a \code{character} of names for the corresponding assay.
+\item \code{featureNames(object, i)}: a convenient alternative (to
+\code{featureNames(x)[[i]]}) to get the \code{i}th featureData element.
+\item \code{featureVariables(x)}: gets the list of feature variabesl, where each
+element of the list is a \code{character} of names for the corresponding assay.
+\item \code{featureVariables(object, i)}: a convenient alternative (to
+\code{featureVariables(x)[[i]]}) to get the \code{i}th featureData element.
+\item \code{sampleNames(object)}, \code{sampleNames(x) <- value}: gets and sets the
+samples names. \code{value} must be a \code{character} of appropriate length.
+}
+}
+
 \examples{
 
 ## Creating a Features object manually

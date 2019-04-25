@@ -27,14 +27,18 @@
 ##' It iss the user's responsability to make sure that these match the class
 ##' validity requirements.
 ##'
-##' @param `x`: an instance of class `Features`.
+##' @param x An instance of class `Features`.
 ##'
-##' @param `object`: an instance of class `Features`.
+##' @param object An instance of class `Features`.
 ##'
-##' @param `i`: a `character(1)` or `numeric(1)` defining which assay of feature
+##' @param i A `character(1)` or `numeric(1)` defining which assay of feature
 ##'     data to access.
 ##'
-##' @param `value`: the replacement value.
+##' @param value The replacement value.
+##'
+##' @param ...: Additional arguments.
+##'
+##' @param withDimnames: Inherited from generic functions, but ignored here.
 ##'
 ##' @details
 ##'
@@ -62,7 +66,7 @@
 ##'   named `metadata`. It can be accessed/replaced with the `metadata`
 ##'   accessor/replacement method.
 ##'
-##' @section Accessors
+##' @section Accessors:
 ##'
 ##' - `length(x)`: returns the number of assays in `x`.
 ##'
@@ -111,18 +115,18 @@
 ##' - `sampleNames(object)`, `sampleNames(x) <- value`: gets and sets the
 ##'    samples names. `value` must be a `character` of appropriate length.
 ##'
+##' @name Features
+##'
 ##' @rdname Features-class
+##'
+##' @aliases Features Features-class class:Features
+##'
+##' @md
 ##'
 ##' @import S4Vectors
 ##' @importFrom SummarizedExperiment assays assay colData colData<-
 ##' @importFrom Biobase sampleNames sampleNames<-
 ##' @importFrom BiocGenerics dims
-##'
-##' @aliases Features Features-class class:Features
-##'
-##' @name Features
-##'
-##' @md
 ##'
 ##' @exportClass Features
 ##'
@@ -159,6 +163,7 @@
 ##' names(ft2) <- "psms"
 ##' ft2
 NULL
+
 
 setClass("Features",
     representation(
