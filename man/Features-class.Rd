@@ -28,7 +28,9 @@ from the PSM data, and the protein-level data is calculated based
 on the peptide-level values.
 
 \code{Features} objects can be created with the \code{Features} constructor
-that takes the following parameters:
+or using the \code{[readFeatures()]} function to create an instance
+from tabular data. The constructor, that is used to create objects
+from their bare parts, that takes the following parameters:
 
 TODO
 }
