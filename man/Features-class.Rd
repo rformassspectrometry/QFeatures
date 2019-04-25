@@ -99,6 +99,10 @@ Features(assays = SimpleList(), featureData = SimpleList(),
 
 \item{value}{The replacement value.}
 
+\item{...}{Additional arguments.}
+
+\item{withDimnames}{Inherited from generic functions, but ignored here.}
+
 \item{i}{A \code{character(1)} or \code{numeric(1)} defining which assay of feature
 data to access.}
 
@@ -113,10 +117,6 @@ as `DataFrame` instances.}
 \item{colData}{A `DataFrame` with column (sample annotations).}
 
 \item{metadata}{A `list()` with arbitrary object annotations.}
-
-\item{...:}{Additional arguments.}
-
-\item{withDimnames:}{Inherited from generic functions, but ignored here.}
 }
 \value{
 A new instance of class `Features`.

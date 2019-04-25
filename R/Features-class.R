@@ -36,9 +36,9 @@
 ##'
 ##' @param value The replacement value.
 ##'
-##' @param ...: Additional arguments.
+##' @param ... Additional arguments.
 ##'
-##' @param withDimnames: Inherited from generic functions, but ignored here.
+##' @param withDimnames Inherited from generic functions, but ignored here.
 ##'
 ##' @details
 ##'
