@@ -116,5 +116,5 @@ main_assay <- function(object)
     scat("Samples(%d): %s\n", sampleNames(object))
 
     ## colData()
-    scat("Feature variables(%d): %s\n", featureVariables(object))
+    scat("Feature variables(%d): %s\n", unlist(featureVariables(object)))
 }
