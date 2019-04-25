@@ -111,7 +111,7 @@ setMethod("show", "Features",
 setMethod("names", "Features", function(x) names(x@assays))
 ##' @exportMethod assays
 setMethod("assays", "Features", function(x, ...) x@assays)
-setMethod("dim", "Features", function(x) dim(x@assays[[.main_assay(x)]]))
+setMethod("dim", "Features", function(x) dim(x@assays[[main_assay(x)]]))
 setMethod("length", "Features", function(x) length(x@assays))
 setMethod("isEmpty", "Features", function(x) length(x) == 0)
 ##' exportMethod colData
@@ -121,11 +121,11 @@ setMethod("metadata", "Features", function(x, ...) x@metadata)
 setMethod("featureData", "Features", function(object) object@featureData)
 ##' @exportMethod featureNames
 setMethod("featureNames", "Features",
-          function(object) rownames(object@featureData[[.main_assay(object)]]))
+          function(object) rownames(object@featureData[[main_assay(object)]]))
 setGeneric("featureVariables", function(object) standardGeneric("featureVariables"))
 ##' @exportMethod featureVariables
 setMethod("featureVariables", "Features",
-          function(object) .featureVariables(object))
+          function(object) featureVariables(object))
 
 ##' @exportMethod sampleNames
 setMethod("sampleNames", "Features",

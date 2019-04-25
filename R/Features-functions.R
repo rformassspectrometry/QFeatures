@@ -1,11 +1,37 @@
-.main_assay <- function(object)
+featureVariables <- function(object, assay = NULL) {
+    stopifnot(inherits(object, "Features"))
+    if (isEmpty(object))
+        return(NA_character_)
+    if (is.null(assay))
+        return(unlist(unique(sapply(object@featureData, names))))
+    if (is.character(assay)) {
+        assay <- assay[1]
+        stopifnot(assay %in% names(object))
+    }
+    names(object@featureData[[assay]])
+}
+
+get_features_idx <- function(object)
+    lapply(object@assays, attr, "idx")
+
+main_assay <- function(object)
     which.max(sapply(object@assays, nrow))
+
+.valid_Features_has_idx <- function(object) {
+    idx <- get_features_idx(object)
+    if (any(sapply(idx, is.null)) | length(idx) != length(object))
+        stop("Some assays are missing an internal index")
+    idx <- unlist(idx)
+    if (anyDuplicated(idx))
+        stop("Internal indices are duplicated")
+    NULL
+}
 
 .valid_Features_assay_dims <- function(object) {
     l1 <- length(object@assays)
     l2 <- length(object@featureData)
     if (!identical(l1, l2))
-        stop("Different number of assays and feature data")        
+        stop("Different number of assays and feature data")
     all_dims <- sapply(object@assays, function(m) dim(m)[1:2])
     if (any(is.na(all_dims)))
         return(wmsg("all assays must be matrix-like objects ",
@@ -37,7 +63,7 @@
 .valid_Features_rownames <- function(object) {
     ## checking row names
     rn1 <- lapply(object@assays, rownames)
-    rn2 <- lapply(object@featureData, rownames)        
+    rn2 <- lapply(object@featureData, rownames)
     if (!identical(rn1, rn2))
         stop("Feature names in assay and feature data don't match")
     NULL
@@ -58,6 +84,7 @@
     .valid_Features_featureData(object)
     .valid_Features_rownames(object)
     .valid_Features_names(object)
+    .valid_Features_has_idx(object)
 }
 
 
@@ -71,7 +98,7 @@
         txt <- sprintf(fmt, length(vals), lbls)
         cat(strwrap(txt, exdent=exdent, ...), sep = "\n")
     }
-    
+
     cat("class:", class(object), "\n")
     cat("dim:", dim(object), "\n")
 
@@ -91,18 +118,4 @@
 
     ## colData()
     scat("Feature variables(%d): %s\n", featureVariables(object))
-}
-
-
-.featureVariables <- function(object, assay = NULL) {
-    stopifnot(inherits(object, "Features"))
-    if (isEmpty(object))
-        return(NA_character_)
-    if (is.null(assay))
-        return(unlist(unique(sapply(object@featureData, names))))
-    if (is.character(assay)) {
-        assay <- assay[1]
-        stopifnot(assay %in% names(object))
-    }
-    names(object@featureData[[assay]])
 }

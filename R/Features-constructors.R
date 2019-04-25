@@ -61,6 +61,7 @@ readFeatures <- function(table, ecol, fnames, ...)  {
                  paste(colnames(xx), paste = ", "))
         featureNames(ans) <- fdata[, fnames]
     }
+    attr(ans@assays[[1]], "idx") <- 1
     if (validObject(ans))
         return(ans)
 }
