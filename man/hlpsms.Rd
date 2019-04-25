@@ -31,6 +31,6 @@ Naake T, Gatto L, Viner R, Martinez Arias A, Lilley KS. Nat Commun. 2016 Jan
 PMCID: PMC4729960.
 }
 \seealso{
-See [readFeatures()] to import this data as a [Features] object.
+See [Features] to import this data using the [readFeatures()] function.
 }
 \keyword{datasets}

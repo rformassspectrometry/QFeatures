@@ -24,5 +24,5 @@
 ##'
 ##' @seealso
 ##'
-##' See [readFeatures()] to import this data as a [Features] object.
+##' See [Features] to import this data using the [readFeatures()] function.
 "hlpsms"
