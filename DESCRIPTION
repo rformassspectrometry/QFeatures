@@ -7,8 +7,8 @@ Authors@R: person("Laurent", "Gatto",
 		  role = c("aut", "cre"))
 Description: Infrastrucutre to manage and process quantitative
    features for high-throughput mass spectrometry assays.
-Depends: R (>= 3.5.3), S4Vectors, BiocParallel
-Imports: IRanges, Biobase, SummarizedExperiment
+Depends: R (>= 3.5.3), S4Vectors
+Imports: IRanges, Biobase, SummarizedExperiment, BiocGenerics, methods
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true

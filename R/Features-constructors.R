@@ -25,6 +25,8 @@
 ##' @seealso The [Features] class for an example on how to manipulate use
 ##'     `readFeatures` and how to further manipulate the resulting data.
 ##'
+##' @importFrom methods new validObject
+##'
 ##' @export
 readFeatures <- function(table, ecol, fnames, ...)  {
     if (is.data.frame(table)) xx <- table
@@ -49,10 +51,7 @@ readFeatures <- function(table, ecol, fnames, ...)  {
     assay <- as.matrix(xx[, ecol])
     attr(assay, "idx") <- 1
     fdata <- DataFrame(xx[, -ecol, drop = FALSE])
-    ans <- new("Features",
-               assays = SimpleList(assay),
-               featureData = SimpleList(fdata),
-               colData = DataFrame(row.names = colnames(assay)))
+
     if (!missing(fnames)) {
         fnames <- fnames[1]
         if (is.numeric(fnames))
@@ -60,8 +59,14 @@ readFeatures <- function(table, ecol, fnames, ...)  {
         if (is.na(match(fnames, colnames(xx))))
             stop(fnames, " not found among\n",
                  paste(colnames(xx), paste = ", "))
-        featureNames(ans) <- fdata[, fnames]
+        rownames(fdata) <- rownames(assay) <- fdata[, fnames]
     }
+
+    ans <- new("Features",
+               assays = SimpleList(assay),
+               featureData = SimpleList(fdata),
+               colData = DataFrame(row.names = colnames(assay)))
+
     if (validObject(ans))
         return(ans)
 }

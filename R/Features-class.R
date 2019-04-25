@@ -1,10 +1,4 @@
-##' @title Quantitative MS Features
-##'
-##' @aliases Features Features-class class:Features
-##'
-##' @name Features
-##'
-##' @description
+##' Quantitative MS Features
 ##'
 ##' Conceptually, a `Features` object holds a set of `matrix` (or
 ##' `array`) elements containing quantitative data. The number of
@@ -28,10 +22,19 @@
 ##' on the peptide-level values.
 ##'
 ##' The recommended way to create `Features` objects is the use the
-##' `[readFeatures()]` function, that creates an instance from tabular data. The
+##' `readFeatures()` function, that creates an instance from tabular data. The
 ##' `Features` constructor can be used to create objects from their bare parts.
 ##' It iss the user's responsability to make sure that these match the class
 ##' validity requirements.
+##'
+##' @param `x`: an instance of class `Features`.
+##'
+##' @param `object`: an instance of class `Features`.
+##'
+##' @param `i`: a `character(1)` or `numeric(1)` defining which assay of feature
+##'     data to access.
+##'
+##' @param `value`: the replacement value.
 ##'
 ##' @details
 ##'
@@ -59,9 +62,7 @@
 ##'   named `metadata`. It can be accessed/replaced with the `metadata`
 ##'   accessor/replacement method.
 ##'
-##' @section Accessors and
-##'
-##' In the following section `x` and `object` are `Features` objects.
+##' @section Accessors
 ##'
 ##' - `length(x)`: returns the number of assays in `x`.
 ##'
@@ -107,13 +108,19 @@
 ##' - `featureVariables(object, i)`: a convenient alternative (to
 ##'   `featureVariables(x)[[i]]`) to get the `i`th featureData element.
 ##'
-##' - `sampleNames(object)`: gets the samples names.
+##' - `sampleNames(object)`, `sampleNames(x) <- value`: gets and sets the
+##'    samples names. `value` must be a `character` of appropriate length.
 ##'
 ##' @rdname Features-class
 ##'
 ##' @import S4Vectors
 ##' @importFrom SummarizedExperiment assays assay colData colData<-
-##' @importFrom Biobase sampleNames
+##' @importFrom Biobase sampleNames sampleNames<-
+##' @importFrom BiocGenerics dims
+##'
+##' @aliases Features Features-class class:Features
+##'
+##' @name Features
 ##'
 ##' @md
 ##'
@@ -179,11 +186,17 @@ setMethod("show", "Features",
 
 
 ##' @exportMethod length
+##' @rdname Features-class
 setMethod("length", "Features", function(x) length(x@assays))
 
+
+
 ##' @exportMethod names
+##' @rdname Features-class
 setMethod("names", "Features", function(x) names(x@assays))
+
 ##' @exportMethod 'names<-'
+##' @rdname Features-class
 setReplaceMethod("names", c("Features", "character"),
     function(x, value) {
         names(x@assays) <- value
@@ -192,20 +205,25 @@ setReplaceMethod("names", c("Features", "character"),
     })
 
 ##' @exportMethod dims
+##' @rdname Features-class
 setMethod("dims", "Features",
           function(x) sapply(x@assays, dim))
 
 ##' @exportMethod dim
+##' @rdname Features-class
 setMethod("dim", "Features",
           function(x) dim(x@assays[[main_assay(x)]]))
 
 ##' @exportMethod isEmpty
+##' @rdname Features-class
 setMethod("isEmpty", "Features", function(x) length(x) == 0)
 
 ##' @exportMethod metadata
+##' @rdname Features-class
 setMethod("metadata", "Features", function(x, ...) x@metadata)
 
 ##' @exportMethod metadata<-
+##' @rdname Features-class
 setReplaceMethod("metadata", c("Features", "list"),
     function(x, value) {
         if (!length(value))
@@ -215,9 +233,11 @@ setReplaceMethod("metadata", c("Features", "list"),
     })
 
 ##' @exportMethod colData
+##' @rdname Features-class
 setMethod("colData", "Features", function(x) x@colData)
 
 ##' @exportMethod colData<-
+##' @rdname Features-class
 setReplaceMethod("colData", c("Features", "DataFrame"),
     function(x, value) {
         x@colData <- value
@@ -225,9 +245,11 @@ setReplaceMethod("colData", c("Features", "DataFrame"),
     })
 
 ##' @exportMethod assays
+##' @rdname Features-class
 setMethod("assays", "Features", function(x, ...) x@assays)
 
 ##' @exportMethod assay
+##' @rdname Features-class
 setMethod("assay", c("Features", "numeric"),
           function(x, i, ...) {
               tryCatch({
@@ -237,7 +259,7 @@ setMethod("assay", c("Features", "numeric"),
                        "invalid subscript 'i'\n", conditionMessage(err))
               })
           })
-
+##' @rdname Features-class
 setMethod("assay", c("Features", "character"),
     function(x, i, ...) {
         msg <- paste0("'assay(<", class(x), ">, i=\"character\", ...)' ",
@@ -252,6 +274,7 @@ setMethod("assay", c("Features", "character"),
         res
     })
 
+##' @rdname Features-class
 setMethod("assay", c("Features", "missing"),
     function(x, i, ...) {
         assays <- assays(x, ...)
@@ -263,10 +286,13 @@ setMethod("assay", c("Features", "missing"),
 
 
 ##' @exportMethod featureData
+##' @rdname Features-class
 setGeneric("featureData", function(x, i, ...) standardGeneric("featureData"))
 
+##' @rdname Features-class
 setMethod("featureData", "Features", function(x, ...) x@featureData)
 
+##' @rdname Features-class
 setMethod("featureData", c("Features", "numeric"),
           function(x, i, ...) {
               tryCatch({
@@ -277,6 +303,7 @@ setMethod("featureData", c("Features", "numeric"),
               })
           })
 
+##' @rdname Features-class
 setMethod("featureData", c("Features", "character"),
     function(x, i, ...) {
         msg <- paste0("'featureData(<", class(x), ">, i=\"character\", ...)' ",
@@ -293,30 +320,54 @@ setMethod("featureData", c("Features", "character"),
 
 
 ##' @exportMethod featureNames
+##' @rdname Features-class
 setGeneric("featureNames", function(x, i, ...) standardGeneric("featureNames"))
 
+##' @rdname Features-class
 setMethod("featureNames", "Features", function(x, ...) lapply(x@featureData, rownames))
 
+##' @rdname Features-class
 setMethod("featureNames", c("Features", "numeric"),
           function(x, i, ...) rownames(featureData(x, ...)[[i]]))
 
+##' @rdname Features-class
 setMethod("featureNames", c("Features", "character"),
           function(x, i, ...) rownames(featureData(x, ...)[[i]]))
 
 
 
 ##' @exportMethod featureVariables
+##' @rdname Features-class
 setGeneric("featureVariables", function(x, i, ...) standardGeneric("featureVariables"))
 
+##' @rdname Features-class
 setMethod("featureVariables", "Features",
           function(x, ...) lapply(x@featureData, colnames))
 
+##' @rdname Features-class
 setMethod("featureVariables", c("Features", "numeric"),
           function(x, i, ...) colnames(featureData(x, ...)[[i]]))
 
+##' @rdname Features-class
 setMethod("featureVariables", c("Features", "character"),
           function(x, i, ...) colnames(featureData(x, ...)[[i]]))
 
 ##' @exportMethod sampleNames
+##' @rdname Features-class
 setMethod("sampleNames", "Features",
           function(object) rownames(object@colData))
+
+##' @exportMethod sampleNames<-
+##' @rdname Features-class
+setReplaceMethod("sampleNames",c("Features", "character"),
+                 function(object, value) {
+                     if (isEmpty(object))
+                         stop("No samples in empty object")
+                     if (length(value) != ncol(assay(object)))
+                         stop("Number of sample names doesn't match")
+                     rownames(object@colData) <- value
+                     for (i in seq_along(object@assays))
+                         colnames(object@assays[[i]]) <- value
+                     if (validObject(object))
+                         return(object)
+                 })
