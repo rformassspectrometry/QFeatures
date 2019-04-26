@@ -81,6 +81,8 @@ Features(featureList = FeatureList(), colData = DataFrame(),
 \item{j}{A \code{character(1)} or \code{numeric(1)} for subsetting
 (currently ignored in \code{Features}).}
 
+\item{drop}{Always \code{FALSE}.}
+
 \item{featureList}{A [FeaturesList] object containing the object's
 [FeatureSet] instances.}
 
