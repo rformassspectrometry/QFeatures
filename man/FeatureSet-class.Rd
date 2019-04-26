@@ -6,10 +6,12 @@
 \alias{FeatureSet-class}
 \alias{class:FeatureSet}
 \alias{sampleNames,FeatureSet-method}
+\alias{sampleNames<-,FeatureSet,character-method}
 \alias{dim,FeatureSet-method}
 \alias{ncol,FeatureSet-method}
 \alias{nrow,FeatureSet-method}
 \alias{assay,FeatureSet,ANY-method}
+\alias{featureVariables,FeatureSet,missing-method}
 \alias{featureData,FeatureSet,missing-method}
 \alias{[,FeatureSet,ANY,ANY,missing-method}
 \title{Simlple container for an assay and its featre metadata}
@@ -19,6 +21,8 @@ FeatureSet(assay = matrix(ncol = 0, nrow = 0),
 
 \S4method{sampleNames}{FeatureSet}(object)
 
+\S4method{sampleNames}{FeatureSet,character}(object) <- value
+
 \S4method{dim}{FeatureSet}(x)
 
 \S4method{ncol}{FeatureSet}(x)
@@ -27,7 +31,11 @@ FeatureSet(assay = matrix(ncol = 0, nrow = 0),
 
 \S4method{assay}{FeatureSet,ANY}(x, i, ...)
 
-\S4method{featureData}{FeatureSet,missing}(x)
+\S4method{featureVariables}{FeatureSet,missing}(x, i, ...)
+
+\S4method{featureData}{FeatureSet,missing}(x, i, ...)
+
+\S4method{featureData}{FeatureSet,missing}(x, i, ...)
 
 \S4method{[}{FeatureSet,ANY,ANY,missing}(x, i, j, ..., drop = FALSE)
 }
@@ -39,6 +47,8 @@ FeatureSet(assay = matrix(ncol = 0, nrow = 0),
 \item{id}{An `integer(1)`. For internal use.}
 
 \item{object}{A `FeatureSet` object.}
+
+\item{value}{An appropriate replacement value.}
 
 \item{x}{The object to subset.}
 
@@ -77,33 +87,12 @@ internal use only.}
 ## An empty FeatureSet
 FeatureSet()
 
-m <- matrix(1:32, ncol = 4)
-fd <- DataFrame(A = 1:8, B = letters[1:8])
-rownames(m) <- rownames(fd) <- paste0("f", 1:8)
-colnames(m) <- paste0("S", 1:4)
-
-## Example FeatureSets
-fs1 <- FeatureSet(assay = m,
-                  featureData = fd)
-fs1
-
-fs2 <- FeatureSet(assay = m[1:2, ],
-                  featureData = fd[1:2, 1, drop = FALSE])
-fs2
-
-fs1[1:2, 1:2]
-
-## Multiple FeatureSet instance can be combined in a FeatureList
-## if they have the sample sample Names (see ?FeatureList for
-## details).
-fl <- FeatureList(fs1 = fs1, fs2 = fs2)
-fl
-
-fl[[1]]
+## See ?Features for more examples
 }
 \seealso{
-\link{FeatureList} is the data structure to hold a list of
-FeatureSet instances.
+\link{Features} is the main data struture to manipulate and
+process quantitative data. \link{FeatureList} is the data structure
+to hold a list of \code{FeatureSet} instances.
 }
 \author{
 Laurent Gatto

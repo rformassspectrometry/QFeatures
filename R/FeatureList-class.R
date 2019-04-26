@@ -6,7 +6,8 @@
 ##' Objects of the class can be constructed with the `FeatureList()`
 ##' constructor. The `[[` and `[` operators work as expected.
 ##'
-##' See [FeatureSet] for an example.
+##' @seealso [Features] is the main data struture to manipulate and
+##'     process quantitative data.
 ##'
 ##' @md
 ##'
@@ -16,6 +17,13 @@
 ##' @exportClass FeatureList
 ##'
 ##' @author Laurent Gatto
+##'
+##' @examples
+##'
+##' ## An empty FeatureList
+##' FeatureList()
+##'
+##' ## See ?Features for more examples
 setClass("FeatureList",
          contains = "SimpleList",
          slots = c(version = "character"),
@@ -24,8 +32,6 @@ setClass("FeatureList",
              version = "0.1"))
 
 .valid_FeaturesList_samples <- function(object) {
-    if (isEmpty(object))
-        NULL
     ncols <- sapply(object, ncol)
     if (!all(ncols[1] == ncols))
         stop("Number of samples in feature sets must be equal")
@@ -39,21 +45,25 @@ setClass("FeatureList",
 ##' @importFrom methods slot
 .valid_FeaturesList_indices <- function(object) {
     ids <- sapply(object, slot, "id")
+    if (anyNA(ids)) 
+        stop("Indices musn't be NA")
     if (anyDuplicated(ids))
         stop("Duplicated indices")
     NULL
 }
 
 .valid_FeatureList <- function(object) {
-    if (!isEmpty(object))
+    if (!isEmpty(object)) {
         if (!all(sapply(object, inherits, "FeatureSet")))
-            stop("Not all elements are of class 'FeatureSet'")
-    .valid_FeaturesList_samples(object)
-    .valid_FeaturesList_indices(object)
+            stop("Not all elements are of class 'FeatureSet'")    
+        .valid_FeaturesList_samples(object)
+        .valid_FeaturesList_indices(object)
+    }
     NULL
 }
 
 setValidity("FeatureList", .valid_FeatureList)
+
 
 ##' @export
 ##' @param ... Individual `FeatureSet` instances or a list thereof.
@@ -63,13 +73,10 @@ FeatureList <- function(...) {
     args <- list(...)
     if (length(args) == 1L && extends(class(args[[1L]]), "list")) 
         args <- args[[1L]]
-    ids <- sapply(args, slot, "id")
-    ## TODO: deal with case where some NAs, some replicated ids, ...
-    if (all(is.na(ids))) {
-        ids <- seq_len(length(args))
-        ids <- ids[order(sapply(args, nrow), decreasing = TRUE)]
-        for (i in seq_len(length(args)))
-            args[[i]]@id <- ids[i]
-    }
+    ## Setting ids
+    ids <- seq_len(length(args))
+    ids <- ids[order(sapply(args, nrow), decreasing = TRUE)]
+    for (i in seq_len(length(args)))
+        args[[i]]@id <- ids[i]
     new("FeatureList", listData = args)
 }

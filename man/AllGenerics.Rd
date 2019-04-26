@@ -5,6 +5,7 @@
 \alias{featureData}
 \alias{featureNames}
 \alias{featureVariables}
+\alias{features}
 \title{Placeholder for generics functions documentation}
 \usage{
 featureData(x, i, ...)
@@ -12,6 +13,15 @@ featureData(x, i, ...)
 featureNames(x, i, ...)
 
 featureVariables(x, i, ...)
+
+features(x, i, ...)
+}
+\arguments{
+\item{x}{A parameter.}
+
+\item{i}{Another parameter.}
+
+\item{...}{Additional parameters.}
 }
 \description{
 Placeholder for generics functions documentation

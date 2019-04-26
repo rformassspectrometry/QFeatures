@@ -4,7 +4,7 @@
 \alias{readFeatures}
 \title{Features from tabular data}
 \usage{
-readFeatures(table, ecol, fnames, ...)
+readFeatures(table, ecol, fnames, ..., name = NULL)
 }
 \arguments{
 \item{table}{File or object holding the quantitative data. Can be
@@ -24,9 +24,12 @@ dislpay the column names as seen by the `read.csv` function.}
 indicating the column to be used as feature names.}
 
 \item{...}{Further arguments that can be passed on to `read.csv`.}
+
+\item{name}{An optional `character(1)` to name the [FeatureSet] in
+the resulting [Features] object.}
 }
 \value{
-An instance of class `Features`.
+An instance of class [Features].
 }
 \description{
 Convert tabular data from a spreadsheet or a `data.frame` into a

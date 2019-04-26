@@ -17,8 +17,9 @@
 ##' @slot version A `character(1)` providing the class version. For
 ##'     internal use only.
 ##'
-##' @seealso [FeatureList] is the data structure to hold a list of
-##'     FeatureSet instances.
+##' @seealso [Features] is the main data struture to manipulate and
+##'     process quantitative data. [FeatureList] is the data structure
+##'     to hold a list of `FeatureSet` instances.
 ##' 
 ##' @md
 ##' 
@@ -34,30 +35,7 @@
 ##' ## An empty FeatureSet
 ##' FeatureSet()
 ##'
-##' m <- matrix(1:32, ncol = 4)
-##' fd <- DataFrame(A = 1:8, B = letters[1:8])
-##' rownames(m) <- rownames(fd) <- paste0("f", 1:8)
-##' colnames(m) <- paste0("S", 1:4)
-##'
-##' ## Example FeatureSets
-##' fs1 <- FeatureSet(assay = m,
-##'                   featureData = fd)
-##' fs1
-##'
-##' fs2 <- FeatureSet(assay = m[1:2, ],
-##'                   featureData = fd[1:2, 1, drop = FALSE])
-##' fs2
-##'
-##' fs1[1:2, 1:2]
-##'
-##' ## Multiple FeatureSet instance can be combined in a FeatureList
-##' ## if they have the sample sample Names (see ?FeatureList for
-##' ## details).
-##' fl <- FeatureList(fs1 = fs1, fs2 = fs2)
-##' fl
-##'
-##' fl[[1]]
-
+##' ## See ?Features for more examples
 NULL
 
 setClass("FeatureSet",
@@ -98,6 +76,17 @@ setMethod("show", "FeatureSet",
 ##' @param object A `FeatureSet` object.
 setMethod("sampleNames", "FeatureSet", function(object) colnames(object@assay))
 
+##' @rdname FeatureSet-class
+##' @param value An appropriate replacement value.
+setReplaceMethod("sampleNames", c("FeatureSet", "character"),
+                 function(object, value) {
+                     if (!ncol(object))
+                         stop("No samples in empty object")
+                     colnames(object@assay) <- value
+                     object
+                 })
+
+
 ##' @exportMethod dim
 ##' @rdname FeatureSet-class
 setMethod("dim", "FeatureSet", function(x) dim(x@assay))
@@ -114,9 +103,18 @@ setMethod("nrow", "FeatureSet", function(x) nrow(x@assay))
 ##' @rdname FeatureSet-class
 setMethod("assay", "FeatureSet", function(x, i, ...) x@assay)
 
+##' @exportMethod featureVariables
+##' @rdname FeatureSet-class
+setMethod("featureVariables", c("FeatureSet", "missing"),
+          function(x, i, ...) colnames(x@featureData))
+
 ##' @exportMethod featureData
 ##' @rdname FeatureSet-class
-setMethod("featureData", c("FeatureSet", "missing"), function(x) x@featureData)
+setMethod("featureData", c("FeatureSet", "missing"), function(x, i, ...) x@featureData)
+
+##' @exportMethod featureData
+##' @rdname FeatureSet-class
+setMethod("featureData", c("FeatureSet", "missing"), function(x, i, ...) colnames(x@featureData))
 
 ##' @exportMethod [
 ##' @rdname FeatureSet-class

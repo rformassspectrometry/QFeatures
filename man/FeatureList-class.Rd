@@ -19,8 +19,16 @@ This data structure as for sole purpose to store a list of
 Objects of the class can be constructed with the \code{FeatureList()}
 constructor. The \code{[[} and \code{[} operators work as expected.
 }
-\details{
-See \link{FeatureSet} for an example.
+\examples{
+
+## An empty FeatureList
+FeatureList()
+
+## See ?Features for more examples
+}
+\seealso{
+\link{Features} is the main data struture to manipulate and
+process quantitative data.
 }
 \author{
 Laurent Gatto

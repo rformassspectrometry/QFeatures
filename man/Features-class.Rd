@@ -13,23 +13,17 @@
 \alias{isEmpty,Features-method}
 \alias{metadata,Features-method}
 \alias{metadata<-,Features,list-method}
-\alias{colData,Features-method}
-\alias{colData<-,Features,DataFrame-method}
-\alias{assays,Features-method}
-\alias{assay,Features,numeric-method}
-\alias{assay,Features,character-method}
-\alias{assay,Features,missing-method}
-\alias{featureData,Features,ANY-method}
-\alias{featureData,Features,numeric-method}
-\alias{featureData,Features,character-method}
-\alias{featureNames,Features,ANY-method}
-\alias{featureNames,Features,numeric-method}
-\alias{featureNames,Features,character-method}
-\alias{featureVariables,Features,ANY-method}
-\alias{featureVariables,Features,numeric-method}
-\alias{featureVariables,Features,character-method}
 \alias{sampleNames,Features-method}
 \alias{sampleNames<-,Features,character-method}
+\alias{colData,Features-method}
+\alias{colData<-,Features,DataFrame-method}
+\alias{featureVariables,Features,missing-method}
+\alias{featureVariables,Features,numeric-method}
+\alias{featureVariables,Features,character-method}
+\alias{features,Features,missing-method}
+\alias{features,Features,numeric-method}
+\alias{features,Features,character-method}
+\alias{[,Features,ANY,missing,ANY-method}
 \title{Quantitative MS Features}
 \usage{
 \S4method{length}{Features}(x)
@@ -48,42 +42,30 @@
 
 \S4method{metadata}{Features,list}(x) <- value
 
+\S4method{sampleNames}{Features}(object)
+
+\S4method{sampleNames}{Features,character}(object) <- value
+
 \S4method{colData}{Features}(x)
 
 \S4method{colData}{Features,DataFrame}(x) <- value
 
-\S4method{assays}{Features}(x, ..., withDimnames = TRUE)
-
-\S4method{assay}{Features,numeric}(x, i, ...)
-
-\S4method{assay}{Features,character}(x, i, ...)
-
-\S4method{assay}{Features,missing}(x, i, ...)
-
-\S4method{featureData}{Features,ANY}(x, i, ...)
-
-\S4method{featureData}{Features,numeric}(x, i, ...)
-
-\S4method{featureData}{Features,character}(x, i, ...)
-
-\S4method{featureNames}{Features,ANY}(x, i, ...)
-
-\S4method{featureNames}{Features,numeric}(x, i, ...)
-
-\S4method{featureNames}{Features,character}(x, i, ...)
-
-\S4method{featureVariables}{Features,ANY}(x, i, ...)
+\S4method{featureVariables}{Features,missing}(x, i, ...)
 
 \S4method{featureVariables}{Features,numeric}(x, i, ...)
 
 \S4method{featureVariables}{Features,character}(x, i, ...)
 
-\S4method{sampleNames}{Features}(object)
+\S4method{features}{Features,missing}(x, i, ...)
 
-\S4method{sampleNames}{Features,character}(object) <- value
+\S4method{features}{Features,numeric}(x, i, ...)
 
-Features(assays = SimpleList(), featureData = SimpleList(),
-  colData = DataFrame(), metadata = list())
+\S4method{features}{Features,character}(x, i, ...)
+
+\S4method{[}{Features,ANY,missing,ANY}(x, i, j, ..., drop = FALSE)
+
+Features(featureList = FeatureList(), colData = DataFrame(),
+  metadata = list())
 }
 \arguments{
 \item{x}{An instance of class \code{Features}.}
@@ -92,22 +74,21 @@ Features(assays = SimpleList(), featureData = SimpleList(),
 
 \item{...}{Additional arguments.}
 
-\item{withDimnames}{Inherited from generic functions, but ignored here.}
-
-\item{i}{A \code{character(1)} or \code{numeric(1)} defining which assay of feature
-data to access.}
-
 \item{object}{An instance of class \code{Features}.}
 
-\item{assays}{A `SimpleList` containing the object's assays (typically
-matrices).}
+\item{i}{A \code{character(1)} or \code{numeric(1)} for subsetting.}
 
-\item{featureData}{A `SimpleList` containing the object's feature metadata
-as `DataFrame` instances.}
+\item{j}{A \code{character(1)} or \code{numeric(1)} for subsetting
+(currently ignored in \code{Features}).}
+
+\item{featureList}{A [FeaturesList] object containing the object's
+[FeatureSet] instances.}
 
 \item{colData}{A `DataFrame` with column (sample annotations).}
 
 \item{metadata}{A `list()` with arbitrary object annotations.}
+
+\item{withDimnames}{Inherited from generic functions, but ignored here.}
 }
 \value{
 A new instance of class `Features`.
@@ -120,93 +101,84 @@ number of rows (features) can vary. Each one of these matrices has
 a set of feature annotation (encoded as \code{DataFrame} objects), that
 have the same number of rows as the assay matrix their are
 associated to, and an arbitrary number of columns (feature
-variables). In addition, a \code{Features} object also uses a single
-\code{DataFrame} to annotate the samples (columns) represented in all
-the matrices. The largest assay matrix (the one with the highest
-number of features) is considered the main assay, from which the
-other ones are derived by aggregating/combining several rows into
-a single one.
+variables). Such a matrix and feature annotation pair is called a
+\link{FeatureSet} and all these \link{FeatureSet} instances are available as
+a single \link{FeatureList} object. In addition, a \code{Features} object
+also uses a single \code{DataFrame} to annotate the samples (columns)
+represented in all the matrices.
 }
 \details{
-A typical use case for such \code{Features} object if to represent
+A typical use case for such \code{Features} object is to represent
 quantitative proteomics or metabolomics data, where different
 assays represent quantitation data at the PSM (the main assay),
 peptide and protein level, and where peptide values are computed
 from the PSM data, and the protein-level data is calculated based
 on the peptide-level values.
 
+The largest \link{FeatureSet} (the one with the highest number of
+features) is considered the main assay, from which the other ones
+are derived by aggregating/combining several rows into a single
+one.
+
 The recommended way to create \code{Features} objects is the use the
-\code{readFeatures()} function, that creates an instance from tabular data. The
-\code{Features} constructor can be used to create objects from their bare parts.
-It iss the user's responsability to make sure that these match the class
-validity requirements.
+\code{readFeatures()} function, that creates an instance from tabular
+data. The \code{Features} constructor can be used to create objects
+from their bare parts.  It is the user's responsability to make
+sure that these match the class validity requirements.
 
 A \code{Features} instance must comply with the following requirements:
 \itemize{
-\item Assays are matrix-like objects that all have the same number of
-columns. They are passed to the constructor as an \code{SimpleList} object
-names \code{assays}, and can be accessed with the \code{assays} accessor.
-\item Each assay is documented by feature variable \code{DataFrame}. Both have the
-same number of rows. These feature metadata \code{DataFrame}s are passed to the
-constructor as an \code{SimpleList} object names \code{featureData} and can be
-accessed with the \code{featureData} accessor. The number of rows and the row
-names of each of these \code{DataFrame} instances must match the number of rows
-and rows names of the corresponding the assay. These \code{DataFrame} instance
-are mandatory but can have no columns.
-\item The samples/columns of the assays are documented in a \code{DataFrame} named
-\code{colData} and can be accessed with the \code{colData} accessor. The number of
-rows and the row names of this \code{DataFrame} must match the number of
-columns and column names of the assays. This \code{DataFrame} instance is
-mandatory but can have no columns.
-\item A \code{list} protiding the global metadata annotating the object as a whole,
-named \code{metadata}. It can be accessed/replaced with the \code{metadata}
-accessor/replacement method.
+\item The features are stored as a \link{FeatureList}, where each
+\link{FeatureSet} has the same number of columns.
+\item The number of rows and the names of \code{colData} match the number
+and names of the samples (columns) in the \link{FeatureList}
+elements.
+\item General metadata about the object itself is provided in the
+\code{metadata} list.
 }
 }
 \section{Accessors}{
 
+
+The following accessors are available.
 \itemize{
-\item \code{length(x)}: returns the number of assays in \code{x}.
-\item \code{names(x)}, \code{names(x) <- value}: gets or sets the assays optinal
-names. \code{value} is a \code{character} of appropriate of length equal to
-\code{length(x)}.
-\item \code{dims(x)}: returns the dimensions of all assays.
+\item \code{length(x)}: returns the number of \link{FeatureSet} instances in
+\code{x}'s \link{FeatureList}.
+\item \code{names(x)}, \code{names(x) <- value}: gets or sets the assays
+optional names of the \link{FeatureSet} instances. \code{value} is a
+\code{character} of length equal to \code{length(x)}.
+\item \code{dims(x)}: returns the dimensions of all \link{FeatureSet}'s assays.
 \item \code{dim(x)}: returns the dimensions of the largest assay.
-\item \code{isEmpty(x)}: returns \code{TRUE} for an object without any assays, \code{FALSE}
-otherwise.
+\item \code{isEmpty(x)}: returns \code{TRUE} for an object without any
+\link{FeatureSet}s, \code{FALSE} otherwise.
 \item \code{metadata(x)}, \code{metadata(x) <- value}: gets and sets the object's global
 metadata. \code{value} must be a \code{list}.
+\item \code{sampleNames(object)}, \code{sampleNames(x) <- value}: gets and sets the
+samples names. \code{value} must be a \code{character} of appropriate length.
 \item \code{colData(x)}, \code{colData(x) <- value}: gets or sets the columns/samples
 metadata.\code{value} must be a \code{DataFrame} object. Row names of \code{value} match
 the existing column names of the assays.
-\item \code{assays(x)}: gets the assays of the object. The assays are returned as a
-\code{SimpleList}.
-\item \code{assay(x, i)}: a convenient alternative (to \code{assays(x)[[i]]}) to get the
-\code{i}th (default first) assay element.
-\item \code{featureData(object)}: gets the assays' feature metadata as an instance of
-class \code{SimpleList}.
-\item \code{featureData(object, i)}: a convenient alternative (to
-\code{featureData(x)[[i]]}) to get the \code{i}th featureData element.
-\item \code{featureNames(x)}: gets the list of feature names, where each element of
-the list is a \code{character} of names for the corresponding assay.
-\item \code{featureNames(object, i)}: a convenient alternative (to
-\code{featureNames(x)[[i]]}) to get the \code{i}th featureData element.
-\item \code{featureVariables(x)}: gets the list of feature variabesl, where each
-element of the list is a \code{character} of names for the corresponding assay.
+\item \code{featureVariables(x)}: gets the list of feature variabels, where
+each element of the list is a \code{character} of names for the
+corresponding \link{FeatureSet}.
 \item \code{featureVariables(object, i)}: a convenient alternative (to
-\code{featureVariables(x)[[i]]}) to get the \code{i}th featureData element.
-\item \code{sampleNames(object)}, \code{sampleNames(x) <- value}: gets and sets the
-samples names. \code{value} must be a \code{character} of appropriate length.
+\code{featureVariables(x)[[i]]}) to get the \code{i}th featureData
+element.
 }
 }
 
 \examples{
 
+## An empty Features object
+
+Features()
+
 ## Creating a Features object manually
 
 m1 <- matrix(1:40, ncol = 4)
 m2 <- matrix(1:16, ncol = 4)
-colnames(m1) <- colnames(m2) <- paste0("S", 1:4)
+sample_names <- paste0("S", 1:4)
+colnames(m1) <- colnames(m2) <- sample_names
 rownames(m1) <- letters[1:10]
 rownames(m2) <- letters[23:26]
 
@@ -214,22 +186,28 @@ df1 <- DataFrame(Fa = 1:10, Fb = letters[1:10],
                  row.names = letters[1:10])
 df2 <- DataFrame(row.names = letters[23:26])
 
-ft1 <- Features(assays = SimpleList(assay1 = m1, assay2 = m2),
-                featureData = SimpleList(assay1 = df1, assay2 = df2),
-                colData = DataFrame(row.names = colnames(m1)),
-                metadata = list(paste("Generated on", Sys.Date())))
-ft1
+fs1 <- FeatureSet(m1, df1)
+fs1 
+
+fs2 <- FeatureSet(m2, df2)
+fs2
+
+fl <- FeatureList(fs1, fs2)
+names(fl) <- paste0("Fs", 1:2)
+fl
+
+fts1 <- Features(featureList = fl,
+                 colData = DataFrame(Var = rnorm(4),
+                                     row.names = sample_names))
+fts1
 
 ## Creating a Features object from a data.frame
 data(hlpsms)
-ft2 <- readFeatures(hlpsms, ecol = 1:10)
-ft2
+fts2 <- readFeatures(hlpsms, ecol = 1:10, name = "psms")
+fts2
 
-## The assay isn't named yet, so let's name it 'psms', to clarify that the
-## data are PSM-level quantitations.
-names(ft2)
-names(ft2) <- "psms"
-ft2
+features(fts2)
+features(fts2)[[1]]
 }
 \author{
 Laurent Gatto
