@@ -54,8 +54,6 @@
 ##'
 ##' @param value The replacement value.
 ##'
-##' @param withDimnames Inherited from generic functions, but ignored here.
-##'
 ##' @param drop Always `FALSE`.
 ##'
 ##' @param ... Additional arguments.

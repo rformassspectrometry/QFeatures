@@ -89,8 +89,6 @@ Features(featureList = FeatureList(), colData = DataFrame(),
 \item{colData}{A `DataFrame` with column (sample annotations).}
 
 \item{metadata}{A `list()` with arbitrary object annotations.}
-
-\item{withDimnames}{Inherited from generic functions, but ignored here.}
 }
 \value{
 A new instance of class `Features`.
