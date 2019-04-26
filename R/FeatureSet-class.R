@@ -17,11 +17,15 @@
 ##' @slot version A `character(1)` providing the class version. For
 ##'     internal use only.
 ##'
+##' @seealso [FeatureList] is the data structure to hold a list of
+##'     FeatureSet instances.
+##' 
 ##' @md
 ##' 
 ##' @name FeatureSet
 ##' @rdname FeatureSet-class
-##' @aliases FeatureSet FeatureSet-call class:FeatureSet
+##' @aliases FeatureSet FeatureSet-class class:FeatureSet
+##' @exportClass FeatureSet
 ##'
 ##' @author Laurent Gatto
 ##'
@@ -43,6 +47,17 @@
 ##' fs2 <- FeatureSet(assay = m[1:2, ],
 ##'                   featureData = fd[1:2, 1, drop = FALSE])
 ##' fs2
+##'
+##' fs1[1:2, 1:2]
+##'
+##' ## Multiple FeatureSet instance can be combined in a FeatureList
+##' ## if they have the sample sample Names (see ?FeatureList for
+##' ## details).
+##' fl <- FeatureList(fs1 = fs1, fs2 = fs2)
+##' fl
+##'
+##' fl[[1]]
+
 NULL
 
 setClass("FeatureSet",
@@ -51,6 +66,23 @@ setClass("FeatureSet",
                    id = "integer",
                    version = "character"),
          prototype = prototype(version = "0.1"))
+
+##' @param assay A `matrix` containing the quantitation data.
+##'
+##' @param featureData A `DataFrame` with feature annotations.
+##'
+##' @param id An `integer(1)`. For internal use. 
+##' 
+##' @export
+##' @rdname FeatureSet-class
+FeatureSet <- function(assay = matrix(ncol = 0, nrow = 0),
+                       featureData = DataFrame(),
+                       id = NA_integer_) {
+    new("FeatureSet",
+        assay = assay,
+        featureData = featureData,
+        id = id[1])
+}
 
 setMethod("show", "FeatureSet",
           function(object) {
@@ -61,6 +93,10 @@ setMethod("show", "FeatureSet",
               scat("Feature variables(%d): %s\n", colnames(object@featureData))
           })
 
+##' @exportMethod sampleNames
+##' @rdname FeatureSet-class
+##' @param object A `FeatureSet` object.
+setMethod("sampleNames", "FeatureSet", function(object) colnames(object@assay))
 
 ##' @exportMethod dim
 ##' @rdname FeatureSet-class
@@ -80,7 +116,23 @@ setMethod("assay", "FeatureSet", function(x, i, ...) x@assay)
 
 ##' @exportMethod featureData
 ##' @rdname FeatureSet-class
-setMethod("featureData", "FeatureSet", function(object) object@featureData)
+setMethod("featureData", c("FeatureSet", "missing"), function(x) x@featureData)
+
+##' @exportMethod [
+##' @rdname FeatureSet-class
+##' @param x The object to subset.
+##' @param i Subsetting vector for the object's row.
+##' @param j Subsetting vector for the object's columns.
+##' @param ... Additional paramaeters (ignored).
+##' @param drop Always set to `FALSE`.
+setMethod("[", c("FeatureSet", "ANY", "ANY", "missing"),
+          function(x, i, j, ..., drop = FALSE) {
+              assay2 <- x@assay[i, j, drop = FALSE]
+              fd2 <- x@featureData[i, , drop = FALSE]
+              FeatureSet(assay = assay2,
+                         featureData = fd2,
+                         id = x@id)                         
+})
 
 .valid_FeatureSet_rows <- function(object) {
     rn1 <- rownames(object@assay)
@@ -99,23 +151,4 @@ setMethod("featureData", "FeatureSet", function(object) object@featureData)
     .valid_FeatureSet_rows(object)
 }
 
-setValitidy("FeatureSet", .valid_FeatureSet)
-
-
-##' @param assay
-##'
-##' @param featureData
-##'
-##' @param id An `integer(1)`. For internal use. 
-##' 
-##' @export
-##' @rdname FeatureSet-class
-FeatureSet <- function(assay = matrix(ncol = 0, nrow = 0),
-                       featureData = DataFrame(),
-                       id = NA_integer_) {
-    new("FeatureSet",
-        assay = assay,
-        featureData = featureData,
-        id = id[1])
-}
-                       
+setValidity("FeatureSet", .valid_FeatureSet)

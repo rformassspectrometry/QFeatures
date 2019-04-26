@@ -13,9 +13,13 @@ License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
 Collate:
-   Features-functions.R
-   Features-class.R
-   Features-constructors.R
-   reduce.R
-   data.R
+    'AllGenerics.R'
+    'FeatureList-class.R'
+    'FeatureSet-class.R'
+    'Features-class.R'
+    'Features-constructors.R'
+    'Features-functions.R'
+    'data.R'
+    'reduce.R'
+    'utils.R'
 RoxygenNote: 6.1.1

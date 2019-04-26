@@ -19,15 +19,12 @@
 \alias{assay,Features,numeric-method}
 \alias{assay,Features,character-method}
 \alias{assay,Features,missing-method}
-\alias{featureData}
 \alias{featureData,Features,ANY-method}
 \alias{featureData,Features,numeric-method}
 \alias{featureData,Features,character-method}
-\alias{featureNames}
 \alias{featureNames,Features,ANY-method}
 \alias{featureNames,Features,numeric-method}
 \alias{featureNames,Features,character-method}
-\alias{featureVariables}
 \alias{featureVariables,Features,ANY-method}
 \alias{featureVariables,Features,numeric-method}
 \alias{featureVariables,Features,character-method}
@@ -63,23 +60,17 @@
 
 \S4method{assay}{Features,missing}(x, i, ...)
 
-featureData(x, i, ...)
-
 \S4method{featureData}{Features,ANY}(x, i, ...)
 
 \S4method{featureData}{Features,numeric}(x, i, ...)
 
 \S4method{featureData}{Features,character}(x, i, ...)
 
-featureNames(x, i, ...)
-
 \S4method{featureNames}{Features,ANY}(x, i, ...)
 
 \S4method{featureNames}{Features,numeric}(x, i, ...)
 
 \S4method{featureNames}{Features,character}(x, i, ...)
-
-featureVariables(x, i, ...)
 
 \S4method{featureVariables}{Features,ANY}(x, i, ...)
 

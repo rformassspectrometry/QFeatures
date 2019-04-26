@@ -82,6 +82,7 @@ main_assay <- function(object)
     .valid_Features_has_idx(object)
 }
 
+setValidity("Features", .valid_Features)
 
 ## -------------------------------------------
 ## Internal function related to show,Features

@@ -174,8 +174,6 @@ setClass("Features",
         version = "character"),
     prototype = prototype(version = "0.1"))
 
-setValidity("Features", .valid_Features)
-
 setMethod("show", "Features",
           function(object) {
               if (isEmpty(object)) .show_empty_Features(object)
@@ -285,9 +283,6 @@ setMethod("assay", c("Features", "missing"),
 
 ##' @exportMethod featureData
 ##' @rdname Features-class
-setGeneric("featureData", function(x, i, ...) standardGeneric("featureData"))
-
-##' @rdname Features-class
 setMethod("featureData", "Features", function(x, ...) x@featureData)
 
 ##' @rdname Features-class
@@ -319,9 +314,6 @@ setMethod("featureData", c("Features", "character"),
 
 ##' @exportMethod featureNames
 ##' @rdname Features-class
-setGeneric("featureNames", function(x, i, ...) standardGeneric("featureNames"))
-
-##' @rdname Features-class
 setMethod("featureNames", "Features", function(x, ...) lapply(x@featureData, rownames))
 
 ##' @rdname Features-class
@@ -332,12 +324,7 @@ setMethod("featureNames", c("Features", "numeric"),
 setMethod("featureNames", c("Features", "character"),
           function(x, i, ...) rownames(featureData(x, ...)[[i]]))
 
-
-
 ##' @exportMethod featureVariables
-##' @rdname Features-class
-setGeneric("featureVariables", function(x, i, ...) standardGeneric("featureVariables"))
-
 ##' @rdname Features-class
 setMethod("featureVariables", "Features",
           function(x, ...) lapply(x@featureData, colnames))
