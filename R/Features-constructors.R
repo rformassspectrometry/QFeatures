@@ -57,7 +57,6 @@ readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
                  paste(colnames(xx), paste = ", "))
     }
     assay <- as.matrix(xx[, ecol])
-    attr(assay, "idx") <- 1
     fdata <- DataFrame(xx[, -ecol, drop = FALSE])
 
     if (!missing(fnames)) {

@@ -13,6 +13,7 @@
 \alias{assay,FeatureSet,ANY-method}
 \alias{featureVariables,FeatureSet,missing-method}
 \alias{featureData,FeatureSet,missing-method}
+\alias{featureNames,FeatureSet,missing-method}
 \alias{[,FeatureSet,ANY,ANY,missing-method}
 \title{Simlple container for an assay and its featre metadata}
 \usage{
@@ -36,6 +37,8 @@ FeatureSet(assay = matrix(ncol = 0, nrow = 0),
 \S4method{featureData}{FeatureSet,missing}(x, i, ...)
 
 \S4method{featureData}{FeatureSet,missing}(x, i, ...)
+
+\S4method{featureNames}{FeatureSet,missing}(x, i, ...)
 
 \S4method{[}{FeatureSet,ANY,ANY,missing}(x, i, j, ..., drop = FALSE)
 }

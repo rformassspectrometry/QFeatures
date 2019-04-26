@@ -116,6 +116,12 @@ setMethod("featureData", c("FeatureSet", "missing"), function(x, i, ...) x@featu
 ##' @rdname FeatureSet-class
 setMethod("featureData", c("FeatureSet", "missing"), function(x, i, ...) colnames(x@featureData))
 
+##' @exportMethod featureNames
+##' @rdname FeatureSet-class
+setMethod("featureNames", c("FeatureSet", "missing"),
+          function(x, i, ...) rownames(x@featureData))
+
+
 ##' @exportMethod [
 ##' @rdname FeatureSet-class
 ##' @param x The object to subset.
