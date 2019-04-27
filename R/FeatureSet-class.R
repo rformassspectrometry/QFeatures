@@ -11,8 +11,12 @@
 ##'
 ##' @slot featureData A `DataFrame` to hold the features annotations.
 ##'
-##' @slot id An `integer(1)` holding the set's identifier or
-##'     index. For internal use at the [Features]-level only.
+##' @slot id An `integer(1)` holding the set's identifier. For
+##'     internal use at the [Features]-level only.
+##'
+##' @slot from An `integer(1)` refering to the identifier from which
+##'     the current object originates. For internal use at the
+##'     [Features]-level only.
 ##'
 ##' @slot version A `character(1)` providing the class version. For
 ##'     internal use only.
@@ -40,8 +44,12 @@ setClass("FeatureSet",
          slots = c(assay = "matrix",
                    featureData = "DataFrame",
                    id = "integer",
+                   from = "integer",
                    version = "character"),
-         prototype = prototype(version = "0.1"))
+         prototype = prototype(
+             id = NA_integer_,
+             from = NA_integer_,
+             version = "0.1"))
 
 ##' @param assay A `matrix` containing the quantitation data.
 ##'
@@ -52,12 +60,10 @@ setClass("FeatureSet",
 ##' @export
 ##' @rdname FeatureSet-class
 FeatureSet <- function(assay = matrix(ncol = 0, nrow = 0),
-                       featureData = DataFrame(),
-                       id = NA_integer_) {
+                       featureData = DataFrame()) {
     new("FeatureSet",
         assay = assay,
-        featureData = featureData,
-        id = id[1])
+        featureData = featureData)
 }
 
 setMethod("show", "FeatureSet",
