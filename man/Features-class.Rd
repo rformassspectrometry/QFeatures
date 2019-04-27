@@ -147,13 +147,17 @@ element.
 }
 
 \examples{
-
+## ------------------------
 ## An empty Features object
+## ------------------------
 
 Features()
 
+## -----------------------------------
 ## Creating a Features object manually
+## -----------------------------------
 
+## two assays (matrices) with matching column names
 m1 <- matrix(1:40, ncol = 4)
 m2 <- matrix(1:16, ncol = 4)
 sample_names <- paste0("S", 1:4)
@@ -161,22 +165,35 @@ colnames(m1) <- colnames(m2) <- sample_names
 rownames(m1) <- letters[1:10]
 rownames(m2) <- letters[23:26]
 
+## two corresponding feature metadata with appropriate row names
 df1 <- DataFrame(Fa = 1:10, Fb = letters[1:10],
-                 row.names = letters[1:10])
-df2 <- DataFrame(row.names = letters[23:26])
+                 row.names = rownames(m1))
+df2 <- DataFrame(row.names = rownames(m2))
 
+## two FeatureSets, that combine the respecitve assays and feature
+## metadata
 fs1 <- FeatureSet(m1, df1)
 fs1 
 
 fs2 <- FeatureSet(m2, df2)
 fs2
 
+## Sample annotation (colData)
+cd <- DataFrame(Var1 = rnorm(4),
+                Var2 = LETTERS[1:4],
+                row.names = sample_names)
+
+## Putting the FeatureSets and their common sample annoation
+## together into a Features object
 fts1 <- Features(fs1, fs2,
-                 colData = DataFrame(Var = rnorm(4),
-                                     row.names = sample_names))
+                 colData = cd)
 fts1
 
-## Creating a Features object from a data.frame
+## -------------------------------------------------
+## Creating a Features object from a data.frame (see
+## ?readFeatures) for details
+## -------------------------------------------------
+
 data(hlpsms)
 fts2 <- readFeatures(hlpsms, ecol = 1:10, name = "psms")
 fts2
@@ -184,6 +201,10 @@ fts2
 features(fts2)
 fts2[[1]]
 fts2[["psms"]]
+}
+\seealso{
+The \link{FeatureSet} class and the \code{\link[=readFeatures]{readFeatures()}}
+constructor.
 }
 \author{
 Laurent Gatto
