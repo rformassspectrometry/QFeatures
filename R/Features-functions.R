@@ -3,19 +3,48 @@
 ## ------------------
 
 main_assay <- function(object)
-    which.max(sapply(object@featureList, nrow))
+    which.max(sapply(object, nrow))
 
 ## ----------------------------
 ## Internal validity functions
 ## ----------------------------
 
+.valid_Features_listData <- function(object) {
+    ncols <- sapply(object, ncol)
+    if (!all(ncols[1] == ncols))
+        stop("Number of samples in feature sets must be equal")
+    snms1 <- sampleNames(object[[1]])
+    snms <- sapply(object, function(x) all(sampleNames(x) == snms1))
+    if (!all(snms))
+        stop("FeatureSets have different sample names")
+    NULL
+}
+
+##' @importFrom methods slot
+.valid_Features_indices <- function(object) {
+    ids <- sapply(object, slot, "id")
+    if (anyNA(ids)) 
+        stop("Indices musn't be NA")
+    if (anyDuplicated(ids))
+        stop("Duplicated indices")
+    NULL
+}
+
+.valid_Features_elementType <- function(object) {
+    if (!isEmpty(object)) {
+        if (!all(sapply(object, inherits, "FeatureSet")))
+            stop("Not all elements are of class 'FeatureSet'")
+    }
+    NULL
+}
+
 .valid_Features_colData <- function(object) {
-    if (isEmpty(object@featureList)) {
+    if (isEmpty(object)) {
         if (nrow(object@colData) != 0)
             stop("Samples in colData but none in features")
     } else {
         n1 <- nrow(object@colData)
-        n2 <- ncol(object@featureList[[1]])
+        n2 <- ncol(object[[1]])
         if (n1 != n2)
             stop("Number of samples in features and colData dont' match")
     }
@@ -23,7 +52,10 @@ main_assay <- function(object)
 }
 
 .valid_Features <- function(object) {
-    .valid_Features_colData(object)    
+    .valid_Features_elementType(object)
+    .valid_Features_listData(object)
+    .valid_Features_indices(object)
+    .valid_Features_colData(object)
 }
 
 setValidity("Features", .valid_Features)

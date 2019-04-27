@@ -79,7 +79,7 @@ columns).}
 \item{\code{featureData}}{A \code{DataFrame} to hold the features annotations.}
 
 \item{\code{id}}{An \code{integer(1)} holding the set's identifier or
-index. For internal use at the \link{FeatureList}-level only.}
+index. For internal use at the \link{Features}-level only.}
 
 \item{\code{version}}{A \code{character(1)} providing the class version. For
 internal use only.}
@@ -94,8 +94,7 @@ FeatureSet()
 }
 \seealso{
 \link{Features} is the main data struture to manipulate and
-process quantitative data. \link{FeatureList} is the data structure
-to hold a list of \code{FeatureSet} instances.
+process quantitative data.
 }
 \author{
 Laurent Gatto

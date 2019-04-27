@@ -68,29 +68,45 @@ readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
                  paste(colnames(xx), paste = ", "))
         rownames(fdata) <- rownames(assay) <- fdata[, fnames]
     }
-    fl <- FeatureList(FeatureSet(assay = assay,
-                                 featureData = fdata,
-                                 id = 1L))
+    fl <- FeatureSet(assay = assay,
+                     featureData = fdata,
+                     id = 1L)
+    cd <- DataFrame(row.names = colnames(assay))    
+    ans <- Features(listData = fl,
+                    colData = cd)    
     if (!is.null(name))
-        names(fl) <- name
-    cd <- DataFrame(row.names = colnames(assay))
-    Features(featureList = fl,
-             colData = cd)
+        names(ans) <- name[1]
+    ans
 }
 
 
 ##' @export
+##' @importFrom methods extends
 ##' @rdname Features-class
-##' @param featureList A [FeaturesList] object containing the object's
-##'     [FeatureSet] instances.
+##' @param ... One or multiple [FeatureSet] instances passed to the
+##'     `Features` constructor.
 ##' @param colData A `DataFrame` with column (sample annotations).
 ##' @param metadata A `list()` with arbitrary object annotations.
 ##' @return A new instance of class `Features`.
-Features <- function(featureList = FeatureList(),
-                     colData = DataFrame(),
+Features <- function(...,
+                     colData = NULL,
                      metadata = list()) {
+    if (missing(...))
+        return(new("Features"))
+    args <- list(...)
+    if (length(args) == 1L && extends(class(args[[1L]]), "list")) 
+        args <- args[[1L]]
+    ## Setting ids
+    ids <- seq_len(length(args))
+    ids <- ids[order(sapply(args, nrow), decreasing = TRUE)]
+    for (i in seq_len(length(args)))
+        args[[i]]@id <- ids[i]
+
+    if (is.null(colData))
+        colData <- DataFrame(row.names = sampleNames(args[[1]]))
+    
     new("Features",
-        featureList = featureList,
+        listData = args,
         colData = colData,
         metadata = metadata)
 }

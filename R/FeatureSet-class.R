@@ -12,15 +12,13 @@
 ##' @slot featureData A `DataFrame` to hold the features annotations.
 ##'
 ##' @slot id An `integer(1)` holding the set's identifier or
-##'     index. For internal use at the [FeatureList]-level only.
+##'     index. For internal use at the [Features]-level only.
 ##'
 ##' @slot version A `character(1)` providing the class version. For
 ##'     internal use only.
 ##'
 ##' @seealso [Features] is the main data struture to manipulate and
-##'     process quantitative data. [FeatureList] is the data structure
-##'     to hold a list of `FeatureSet` instances.
-##' 
+##'     process quantitative data. 
 ##' @md
 ##' 
 ##' @name FeatureSet
@@ -138,7 +136,7 @@ setMethod("[", c("FeatureSet", "ANY", "ANY", "missing"),
                          id = x@id)                         
 })
 
-.valid_FeatureSet_rows <- function(object) {
+.valid_FeatureSet <- function(object) {
     rn1 <- rownames(object@assay)
     rn2 <- rownames(object@featureData)
     if (!identical(rn1, rn2))
@@ -149,10 +147,6 @@ setMethod("[", c("FeatureSet", "ANY", "ANY", "missing"),
     if (!identical(n1, n2))
         stop("Different number of features in assay and featureData")
     NULL
-}
-
-.valid_FeatureSet <- function(object) {
-    .valid_FeatureSet_rows(object)
 }
 
 setValidity("FeatureSet", .valid_FeatureSet)

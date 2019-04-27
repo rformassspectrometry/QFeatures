@@ -5,14 +5,8 @@
 \alias{Features}
 \alias{Features-class}
 \alias{class:Features}
-\alias{length,Features-method}
-\alias{names,Features-method}
-\alias{names<-,Features,character-method}
 \alias{dims,Features-method}
 \alias{dim,Features-method}
-\alias{isEmpty,Features-method}
-\alias{metadata,Features-method}
-\alias{metadata<-,Features,list-method}
 \alias{sampleNames,Features-method}
 \alias{sampleNames<-,Features,character-method}
 \alias{colData,Features-method}
@@ -21,26 +15,11 @@
 \alias{featureVariables,Features,numeric-method}
 \alias{featureVariables,Features,character-method}
 \alias{features,Features,missing-method}
-\alias{features,Features,numeric-method}
-\alias{features,Features,character-method}
-\alias{[,Features,ANY,missing,ANY-method}
 \title{Quantitative MS Features}
 \usage{
-\S4method{length}{Features}(x)
-
-\S4method{names}{Features}(x)
-
-\S4method{names}{Features,character}(x) <- value
-
 \S4method{dims}{Features}(x)
 
 \S4method{dim}{Features}(x)
-
-\S4method{isEmpty}{Features}(x)
-
-\S4method{metadata}{Features}(x, ...)
-
-\S4method{metadata}{Features,list}(x) <- value
 
 \S4method{sampleNames}{Features}(object)
 
@@ -58,33 +37,19 @@
 
 \S4method{features}{Features,missing}(x, i, ...)
 
-\S4method{features}{Features,numeric}(x, i, ...)
-
-\S4method{features}{Features,character}(x, i, ...)
-
-\S4method{[}{Features,ANY,missing,ANY}(x, i, j, ..., drop = FALSE)
-
-Features(featureList = FeatureList(), colData = DataFrame(),
-  metadata = list())
+Features(..., colData = NULL, metadata = list())
 }
 \arguments{
 \item{x}{An instance of class \code{Features}.}
 
-\item{value}{The replacement value.}
-
-\item{...}{Additional arguments.}
-
 \item{object}{An instance of class \code{Features}.}
+
+\item{value}{The replacement value.}
 
 \item{i}{A \code{character(1)} or \code{numeric(1)} for subsetting.}
 
-\item{j}{A \code{character(1)} or \code{numeric(1)} for subsetting
-(currently ignored in \code{Features}).}
-
-\item{drop}{Always \code{FALSE}.}
-
-\item{featureList}{A [FeaturesList] object containing the object's
-[FeatureSet] instances.}
+\item{...}{One or multiple [FeatureSet] instances passed to the
+`Features` constructor.}
 
 \item{colData}{A `DataFrame` with column (sample annotations).}
 
@@ -98,18 +63,17 @@ Conceptually, a \code{Features} object holds a set of \code{matrix} (or
 \code{array}) elements containing quantitative data. The number of
 columns (samples) are always the same across the matrices, but the
 number of rows (features) can vary. Each one of these matrices has
-a set of feature annotation (encoded as \code{DataFrame} objects), that
+a set of feature annotations (encoded as \code{DataFrame} objects), that
 have the same number of rows as the assay matrix their are
 associated to, and an arbitrary number of columns (feature
 variables). Such a matrix and feature annotation pair is called a
-\link{FeatureSet} and all these \link{FeatureSet} instances are available as
-a single \link{FeatureList} object. In addition, a \code{Features} object
-also uses a single \code{DataFrame} to annotate the samples (columns)
-represented in all the matrices.
+\link{FeatureSet}. In addition, a \code{Features} object also uses a single
+\code{DataFrame} to annotate the samples (columns) represented in all
+the matrices.
 }
 \details{
 A typical use case for such \code{Features} object is to represent
-quantitative proteomics or metabolomics data, where different
+quantitative proteomics (or metabolomics) data, where different
 assays represent quantitation data at the PSM (the main assay),
 peptide and protein level, and where peptide values are computed
 from the PSM data, and the protein-level data is calculated based
@@ -128,22 +92,24 @@ sure that these match the class validity requirements.
 
 A \code{Features} instance must comply with the following requirements:
 \itemize{
-\item The features are stored as a \link{FeatureList}, where each
+\item The features are stored as \link{FeatureSet} instances, and each
 \link{FeatureSet} has the same number of columns.
 \item The number of rows and the names of \code{colData} match the number
-and names of the samples (columns) in the \link{FeatureList}
-elements.
+and names of the samples (columns) in the \link{FeatureSet}s.
 \item General metadata about the object itself is provided in the
-\code{metadata} list.
+\code{metadata} list, which can be empty.
 }
+
+In the usage section, the respective arguments correspond to:
 }
 \section{Accessors}{
 
 
-The following accessors are available.
+The following accessors, inheritied from \link{SimpleList} are
+available:
 \itemize{
 \item \code{length(x)}: returns the number of \link{FeatureSet} instances in
-\code{x}'s \link{FeatureList}.
+\code{x}'s \link{FeatureSet}s.
 \item \code{names(x)}, \code{names(x) <- value}: gets or sets the assays
 optional names of the \link{FeatureSet} instances. \code{value} is a
 \code{character} of length equal to \code{length(x)}.
@@ -151,14 +117,27 @@ optional names of the \link{FeatureSet} instances. \code{value} is a
 \item \code{dim(x)}: returns the dimensions of the largest assay.
 \item \code{isEmpty(x)}: returns \code{TRUE} for an object without any
 \link{FeatureSet}s, \code{FALSE} otherwise.
-\item \code{metadata(x)}, \code{metadata(x) <- value}: gets and sets the object's global
-metadata. \code{value} must be a \code{list}.
-\item \code{sampleNames(object)}, \code{sampleNames(x) <- value}: gets and sets the
-samples names. \code{value} must be a \code{character} of appropriate length.
-\item \code{colData(x)}, \code{colData(x) <- value}: gets or sets the columns/samples
-metadata.\code{value} must be a \code{DataFrame} object. Row names of \code{value} match
-the existing column names of the assays.
-\item \code{featureVariables(x)}: gets the list of feature variabels, where
+\item \code{metadata(x)}, \code{metadata(x) <- value}: gets and sets the
+object's global metadata. \code{value} must be a \code{list}.
+\item \code{x[[i]]}, \code{x[[i]] <- value}: gets and sets a single \link{FeatureSet}
+element, where \code{i} is either a \code{numeric(1)} or a
+\code{character(1)}. \code{value} must be of class \code{FeatureSet}.
+\item \code{x[i]}, \code{x[i] <- value}: gets the list of \link{FeatureSet} instances
+defined the \code{numeric} or \code{character} \code{i}. Can also be used to
+replace the the subset of \link{FeatureSet} elements with a new
+\link{Features} \code{values} of matching samples.
+}
+
+The following accessors are also available.
+\itemize{
+\item \code{sampleNames(object)}, \code{sampleNames(x) <- value}: gets and sets
+the samples names. \code{value} must be a \code{character} of appropriate
+length.
+\item \code{colData(x)}, \code{colData(x) <- value}: gets or sets the
+columns/samples metadata.\code{value} must be a \code{DataFrame}
+object. Row names of \code{value} match the existing column names of
+the assays.
+\item \code{featureVariables(x)}: gets the list of feature variables, where
 each element of the list is a \code{character} of names for the
 corresponding \link{FeatureSet}.
 \item \code{featureVariables(object, i)}: a convenient alternative (to
@@ -192,11 +171,7 @@ fs1
 fs2 <- FeatureSet(m2, df2)
 fs2
 
-fl <- FeatureList(fs1, fs2)
-names(fl) <- paste0("Fs", 1:2)
-fl
-
-fts1 <- Features(featureList = fl,
+fts1 <- Features(fs1, fs2,
                  colData = DataFrame(Var = rnorm(4),
                                      row.names = sample_names))
 fts1
@@ -207,7 +182,8 @@ fts2 <- readFeatures(hlpsms, ecol = 1:10, name = "psms")
 fts2
 
 features(fts2)
-features(fts2)[[1]]
+fts2[[1]]
+fts2[["psms"]]
 }
 \author{
 Laurent Gatto

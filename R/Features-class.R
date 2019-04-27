@@ -4,17 +4,16 @@
 ##' `array`) elements containing quantitative data. The number of
 ##' columns (samples) are always the same across the matrices, but the
 ##' number of rows (features) can vary. Each one of these matrices has
-##' a set of feature annotation (encoded as `DataFrame` objects), that
+##' a set of feature annotations (encoded as `DataFrame` objects), that
 ##' have the same number of rows as the assay matrix their are
 ##' associated to, and an arbitrary number of columns (feature
 ##' variables). Such a matrix and feature annotation pair is called a
-##' [FeatureSet] and all these [FeatureSet] instances are available as
-##' a single [FeatureList] object. In addition, a `Features` object
-##' also uses a single `DataFrame` to annotate the samples (columns)
-##' represented in all the matrices.
+##' [FeatureSet]. In addition, a `Features` object also uses a single
+##' `DataFrame` to annotate the samples (columns) represented in all
+##' the matrices.
 ##'
 ##' A typical use case for such `Features` object is to represent
-##' quantitative proteomics or metabolomics data, where different
+##' quantitative proteomics (or metabolomics) data, where different
 ##' assays represent quantitation data at the PSM (the main assay),
 ##' peptide and protein level, and where peptide values are computed
 ##' from the PSM data, and the protein-level data is calculated based
@@ -33,37 +32,32 @@
 ##'
 ##' A `Features` instance must comply with the following requirements:
 ##'
-##' - The features are stored as a [FeatureList], where each
+##' - The features are stored as [FeatureSet] instances, and each
 ##'   [FeatureSet] has the same number of columns.
 ##'
 ##' - The number of rows and the names of `colData` match the number
-##'   and names of the samples (columns) in the [FeatureList]
-##'   elements.
+##'   and names of the samples (columns) in the [FeatureSet]s.
 ##'
 ##' - General metadata about the object itself is provided in the
-##'   `metadata` list.
+##'   `metadata` list, which can be empty.
 ##'
+##' In the usage section, the respective arguments correspond to:
+##' 
 ##' @param x An instance of class `Features`.
 ##'
 ##' @param object An instance of class `Features`.
 ##'
 ##' @param i A `character(1)` or `numeric(1)` for subsetting.
 ##'
-##' @param j A `character(1)` or `numeric(1)` for subsetting
-##'     (currently ignored in `Features`).
-##'
 ##' @param value The replacement value.
-##'
-##' @param drop Always `FALSE`.
-##'
-##' @param ... Additional arguments.
 ##'
 ##' @section Accessors:
 ##'
-##' The following accessors are available.
+##' The following accessors, inheritied from [SimpleList] are
+##' available:
 ##'
 ##' - `length(x)`: returns the number of [FeatureSet] instances in
-##'    `x`'s [FeatureList].
+##'    `x`'s [FeatureSet]s. 
 ##'
 ##' - `names(x)`, `names(x) <- value`: gets or sets the assays
 ##'    optional names of the [FeatureSet] instances. `value` is a
@@ -76,17 +70,30 @@
 ##' - `isEmpty(x)`: returns `TRUE` for an object without any
 ##'   [FeatureSet]s, `FALSE` otherwise.
 ##'
-##' - `metadata(x)`, `metadata(x) <- value`: gets and sets the object's global
-##'    metadata. `value` must be a `list`.
+##' - `metadata(x)`, `metadata(x) <- value`: gets and sets the
+##'    object's global metadata. `value` must be a `list`.
 ##'
-##' - `sampleNames(object)`, `sampleNames(x) <- value`: gets and sets the
-##'    samples names. `value` must be a `character` of appropriate length.
+##' - `x[[i]]`, `x[[i]] <- value`: gets and sets a single [FeatureSet]
+##'   element, where `i` is either a `numeric(1)` or a
+##'   `character(1)`. `value` must be of class `FeatureSet`.
+##'
+##' - `x[i]`, `x[i] <- value`: gets the list of [FeatureSet] instances
+##'   defined the `numeric` or `character` `i`. Can also be used to
+##'   replace the the subset of [FeatureSet] elements with a new
+##'   [Features] `values` of matching samples.
+##'
+##' The following accessors are also available.
+##'
+##' - `sampleNames(object)`, `sampleNames(x) <- value`: gets and sets
+##'    the samples names. `value` must be a `character` of appropriate
+##'    length.
 ##' 
-##' - `colData(x)`, `colData(x) <- value`: gets or sets the columns/samples
-##'    metadata.`value` must be a `DataFrame` object. Row names of `value` match
-##'    the existing column names of the assays.
+##' - `colData(x)`, `colData(x) <- value`: gets or sets the
+##'    columns/samples metadata.`value` must be a `DataFrame`
+##'    object. Row names of `value` match the existing column names of
+##'    the assays.
 ##'
-##' - `featureVariables(x)`: gets the list of feature variabels, where
+##' - `featureVariables(x)`: gets the list of feature variables, where
 ##'   each element of the list is a `character` of names for the
 ##'   corresponding [FeatureSet].
 ##'
@@ -136,11 +143,7 @@
 ##' fs2 <- FeatureSet(m2, df2)
 ##' fs2
 ##'
-##' fl <- FeatureList(fs1, fs2)
-##' names(fl) <- paste0("Fs", 1:2)
-##' fl
-##'
-##' fts1 <- Features(featureList = fl,
+##' fts1 <- Features(fs1, fs2,
 ##'                  colData = DataFrame(Var = rnorm(4),
 ##'                                      row.names = sample_names))
 ##' fts1
@@ -151,16 +154,18 @@
 ##' fts2
 ##'
 ##' features(fts2)
-##' features(fts2)[[1]]
+##' fts2[[1]]
+##' fts2[["psms"]]
 NULL
 
 setClass("Features",
-         slots = c(featureList = "FeatureList",
-                   colData = "DataFrame",
-                   metadata = "list",
-                   version = "character"),
-         prototype = prototype(version = "0.1"))
-
+         contains = "SimpleList",
+         slots = c(
+             colData = "DataFrame",             
+             version = "character"),
+         prototype = prototype(
+             elementType = "FeatureSet",
+             version = "0.1"))
 
 setMethod("show", "Features",
           function(object) {
@@ -171,55 +176,22 @@ setMethod("show", "Features",
               scat("metadata(%d): %s\n", expt)
               nms <- names(object)
               if (is.null(nms))
-                  nms <- character(length(object@featureList))
+                  nms <- character(length(object))
               scat("FeatureSets(%d): %s\n", nms)
               scat("Samples(%d): %s\n", sampleNames(object))
               scat("colData(%d): %s\n", names(colData(object)))
           })
 
-##' @exportMethod length
-##' @rdname Features-class
-setMethod("length", "Features", function(x) length(x@featureList))
-
-##' @exportMethod names
-##' @rdname Features-class
-setMethod("names", "Features", function(x) names(x@featureList))
-
-##' @exportMethod 'names<-'
-##' @rdname Features-class
-setReplaceMethod("names", c("Features", "character"),
-    function(x, value) {
-        names(x@featureList) <- value
-        x
-    })
 
 ##' @exportMethod dims
 ##' @rdname Features-class
 setMethod("dims", "Features",
-          function(x) sapply(x@featureList, dim))
+          function(x) sapply(x, dim))
 
 ##' @exportMethod dim
 ##' @rdname Features-class
 setMethod("dim", "Features",
-          function(x) dim(x@featureList[[main_assay(x)]]))
-
-##' @exportMethod isEmpty
-##' @rdname Features-class
-setMethod("isEmpty", "Features", function(x) isEmpty(x@featureList))
-
-##' @exportMethod metadata
-##' @rdname Features-class
-setMethod("metadata", "Features", function(x, ...) x@metadata)
-
-##' @exportMethod metadata<-
-##' @rdname Features-class
-setReplaceMethod("metadata", c("Features", "list"),
-    function(x, value) {
-        if (!length(value))
-            names(value) <- NULL
-        x@metadata <- value
-        x
-    })
+          function(x) dim(x[[main_assay(x)]]))
 
 ##' @exportMethod sampleNames
 ##' @rdname Features-class
@@ -232,11 +204,11 @@ setReplaceMethod("sampleNames", c("Features", "character"),
                  function(object, value) {
                      if (isEmpty(object))
                          stop("No samples in empty object")
-                     if (length(value) != ncol(object@featureList[[1]]))
+                     if (length(value) != ncol(object[[1]]))
                          stop("Number of sample names doesn't match")
                      rownames(object@colData) <- value
-                     for (i in seq_along(object@featureList))
-                         sampleNames(object@featureList[[i]]) <- value
+                     for (i in seq_along(object))
+                         sampleNames(object[[i]]) <- value
                      if (validObject(object))
                          return(object)
                  })
@@ -256,7 +228,7 @@ setReplaceMethod("colData", c("Features", "DataFrame"),
 ##' @exportMethod featureVariables
 ##' @rdname Features-class
 setMethod("featureVariables", c("Features", "missing"),
-          function(x, ...) lapply(x@featureList, featureVariables))
+          function(x, ...) lapply(x, featureVariables))
 
 ##' @rdname Features-class
 setMethod("featureVariables", c("Features", "numeric"),
@@ -273,52 +245,8 @@ setMethod("featureVariables", c("Features", "character"),
 ##' @exportMethod features
 ##' @rdname Features-class
 setMethod("features", c("Features", "missing"),
-          function(x, i, ...) x@featureList)
+          function(x, i, ...) x@listData)
 
-##' @exportMethod features
-##' @rdname Features-class
-setMethod("features", c("Features", "numeric"),
-          function(x, i, ...) {
-              tryCatch({
-                  features(x, ...)[[i]]
-              }, error = function(err) {
-                  stop("'features(<", class(x), ">, i=\"numeric\", ...)' ",
-                       "invalid subscript 'i'\n", conditionMessage(err))
-              })
-          })
-
-##' @exportMethod features
-##' @rdname Features-class
-setMethod("features", c("Features", "character"),
-    function(x, i, ...) {
-        msg <- paste0("'features(<", class(x), ">, i=\"character\", ...)' ",
-                      "invalid subscript 'i'")
-        res <- tryCatch({
-            features(x, ...)[[i]]
-        }, error = function(err) {
-            stop(msg, "\n", conditionMessage(err))
-        })
-        if (is.null(res))
-            stop(msg, "\n'", i, "' not in names(features(<", class(x), ">))")
-        res
-    })
-
-##' @exportMethod [
-##' @rdname Features-class
-setMethod("[", c("Features", "ANY", "missing"),
-          function(x, i, j, ..., drop = FALSE) {
-              if (missing(i))
-                  return(x)
-              if (!length(i))
-                  return(Features())
-              if (is.character(i) && (!i %in% names(x)))
-                  stop(paste0("<", class(x), ">[i,] index out of bounds: %s"))
-              if (is.numeric(i) && (i > nrow(colData(x))))
-                  stop(paste0("<", class(x), ">[i,] index out of bounds: %s"))
-              x@featureList <- x@featureList[i]
-              if (validObject(x))
-                  x
-          })
 
 ## ---------------------------------------------------------------
 ## - check from here ----------------------------------------------
