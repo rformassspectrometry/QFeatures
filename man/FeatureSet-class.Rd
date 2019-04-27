@@ -18,7 +18,7 @@
 \title{Simlple container for an assay and its featre metadata}
 \usage{
 FeatureSet(assay = matrix(ncol = 0, nrow = 0),
-  featureData = DataFrame(), id = NA_integer_)
+  featureData = DataFrame())
 
 \S4method{sampleNames}{FeatureSet}(object)
 
@@ -47,19 +47,17 @@ FeatureSet(assay = matrix(ncol = 0, nrow = 0),
 
 \item{featureData}{A `DataFrame` with feature annotations.}
 
-\item{id}{An `integer(1)`. For internal use.}
-
 \item{object}{A `FeatureSet` object.}
 
 \item{value}{An appropriate replacement value.}
 
-\item{x}{The object to subset.}
+\item{x}{The `FeatureSet` to subset.}
 
-\item{i}{Subsetting vector for the object's row.}
+\item{i}{Subsetting vector for the assay and featureData's rows.}
 
 \item{...}{Additional paramaeters (ignored).}
 
-\item{j}{Subsetting vector for the object's columns.}
+\item{j}{Subsetting vector for the assay's columns.}
 
 \item{drop}{Always set to `FALSE`.}
 }
@@ -78,8 +76,12 @@ columns).}
 
 \item{\code{featureData}}{A \code{DataFrame} to hold the features annotations.}
 
-\item{\code{id}}{An \code{integer(1)} holding the set's identifier or
-index. For internal use at the \link{Features}-level only.}
+\item{\code{id}}{An \code{integer(1)} holding the set's identifier. For
+internal use at the \link{Features}-level only.}
+
+\item{\code{from}}{An \code{integer(1)} refering to the identifier from which
+the current object originates. For internal use at the
+\link{Features}-level only.}
 
 \item{\code{version}}{A \code{character(1)} providing the class version. For
 internal use only.}

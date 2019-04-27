@@ -55,8 +55,6 @@ setClass("FeatureSet",
 ##'
 ##' @param featureData A `DataFrame` with feature annotations.
 ##'
-##' @param id An `integer(1)`. For internal use. 
-##' 
 ##' @export
 ##' @rdname FeatureSet-class
 FeatureSet <- function(assay = matrix(ncol = 0, nrow = 0),
@@ -128,9 +126,9 @@ setMethod("featureNames", c("FeatureSet", "missing"),
 
 ##' @exportMethod [
 ##' @rdname FeatureSet-class
-##' @param x The object to subset.
-##' @param i Subsetting vector for the object's row.
-##' @param j Subsetting vector for the object's columns.
+##' @param x The `FeatureSet` to subset.
+##' @param i Subsetting vector for the assay and featureData's rows.
+##' @param j Subsetting vector for the assay's columns.
 ##' @param ... Additional paramaeters (ignored).
 ##' @param drop Always set to `FALSE`.
 setMethod("[", c("FeatureSet", "ANY", "ANY", "missing"),
@@ -139,8 +137,9 @@ setMethod("[", c("FeatureSet", "ANY", "ANY", "missing"),
               fd2 <- x@featureData[i, , drop = FALSE]
               FeatureSet(assay = assay2,
                          featureData = fd2,
-                         id = x@id)                         
-})
+                         id = x@id,
+                         from = from@id)
+          })
 
 .valid_FeatureSet <- function(object) {
     rn1 <- rownames(object@assay)
