@@ -135,10 +135,11 @@ setMethod("[", c("FeatureSet", "ANY", "ANY", "missing"),
           function(x, i, j, ..., drop = FALSE) {
               assay2 <- x@assay[i, j, drop = FALSE]
               fd2 <- x@featureData[i, , drop = FALSE]
-              FeatureSet(assay = assay2,
-                         featureData = fd2,
-                         id = x@id,
-                         from = from@id)
+              new("FeatureSet",
+                  assay = assay2,
+                  featureData = fd2,
+                  id = x@id,
+                  from = from@id)
           })
 
 .valid_FeatureSet <- function(object) {

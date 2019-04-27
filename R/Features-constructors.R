@@ -69,11 +69,11 @@ readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
         rownames(fdata) <- rownames(assay) <- fdata[, fnames]
     }
     fl <- FeatureSet(assay = assay,
-                     featureData = fdata,
-                     id = 1L)
+                     featureData = fdata)
     cd <- DataFrame(row.names = colnames(assay))    
     ans <- Features(listData = fl,
-                    colData = cd)    
+                    colData = cd)
+    ans <- set_featureSet_ids(ans)
     if (!is.null(name))
         names(ans) <- name[1]
     ans
