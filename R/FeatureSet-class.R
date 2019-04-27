@@ -112,11 +112,8 @@ setMethod("featureVariables", c("FeatureSet", "missing"),
 
 ##' @exportMethod featureData
 ##' @rdname FeatureSet-class
-setMethod("featureData", c("FeatureSet", "missing"), function(x, i, ...) x@featureData)
-
-##' @exportMethod featureData
-##' @rdname FeatureSet-class
-setMethod("featureData", c("FeatureSet", "missing"), function(x, i, ...) colnames(x@featureData))
+setMethod("featureData", c("FeatureSet", "missing"),
+          function(x, i, ...) x@featureData)
 
 ##' @exportMethod featureNames
 ##' @rdname FeatureSet-class

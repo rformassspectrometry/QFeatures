@@ -36,8 +36,6 @@ FeatureSet(assay = matrix(ncol = 0, nrow = 0),
 
 \S4method{featureData}{FeatureSet,missing}(x, i, ...)
 
-\S4method{featureData}{FeatureSet,missing}(x, i, ...)
-
 \S4method{featureNames}{FeatureSet,missing}(x, i, ...)
 
 \S4method{[}{FeatureSet,ANY,ANY,missing}(x, i, j, ..., drop = FALSE)

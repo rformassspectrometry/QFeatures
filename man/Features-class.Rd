@@ -15,6 +15,16 @@
 \alias{featureVariables,Features,numeric-method}
 \alias{featureVariables,Features,character-method}
 \alias{features,Features,missing-method}
+\alias{assays,Features-method}
+\alias{assay,Features,numeric-method}
+\alias{assay,Features,character-method}
+\alias{assay,Features,missing-method}
+\alias{featureData,Features,missing-method}
+\alias{featureData,Features,numeric-method}
+\alias{featureData,Features,character-method}
+\alias{featureNames,Features,missing-method}
+\alias{featureNames,Features,numeric-method}
+\alias{featureNames,Features,character-method}
 \title{Quantitative MS Features}
 \usage{
 \S4method{dims}{Features}(x)
@@ -37,6 +47,26 @@
 
 \S4method{features}{Features,missing}(x, i, ...)
 
+\S4method{assays}{Features}(x, ..., withDimnames = TRUE)
+
+\S4method{assay}{Features,numeric}(x, i, ...)
+
+\S4method{assay}{Features,character}(x, i, ...)
+
+\S4method{assay}{Features,missing}(x, i, ...)
+
+\S4method{featureData}{Features,missing}(x, i, ...)
+
+\S4method{featureData}{Features,numeric}(x, i, ...)
+
+\S4method{featureData}{Features,character}(x, i, ...)
+
+\S4method{featureNames}{Features,missing}(x, i, ...)
+
+\S4method{featureNames}{Features,numeric}(x, i, ...)
+
+\S4method{featureNames}{Features,character}(x, i, ...)
+
 Features(..., colData = NULL, metadata = list())
 }
 \arguments{
@@ -50,6 +80,8 @@ Features(..., colData = NULL, metadata = list())
 
 \item{...}{One or multiple [FeatureSet] instances passed to the
 `Features` constructor.}
+
+\item{withDimnames}{Always `TRUE`.}
 
 \item{colData}{A `DataFrame` with column (sample annotations).}
 
@@ -143,6 +175,17 @@ corresponding \link{FeatureSet}.
 \item \code{featureVariables(object, i)}: a convenient alternative (to
 \code{featureVariables(x)[[i]]}) to get the \code{i}th featureData
 element.
+\item \code{assays(x)}: gets a list of assays.
+\item \code{assay(x, i)}(x, i): A convenient alternative (to
+\code{assays(x)[[i]]}) to get the \code{i}th (default is the largest)
+assay element.
+\item \code{featureData(x)}: gets all assays' feature metadata as a \code{list}.
+\item \code{featureData(x, i)}: a convenient alternative (to
+\code{featureData(x)[[i]]}) to get the \code{i}th featureData element.
+\item \code{featureNames(x)}: gets the list of feature names, where each element of
+the list is a \code{character} of names for the corresponding assay.
+\item \code{featureNames(object, i)}: a convenient alternative (to
+\code{featureNames(x)[[i]]}) to get the \code{i}th featureData element.
 }
 }
 

@@ -101,6 +101,24 @@
 ##'   `featureVariables(x)[[i]]`) to get the `i`th featureData
 ##'   element.
 ##'
+##' - `assays(x)`: gets a list of assays.
+##'
+##' - `assay(x, i)`(x, i): A convenient alternative (to
+##'   `assays(x)[[i]]`) to get the `i`th (default is the largest)
+##'   assay element.
+##'
+##' - `featureData(x)`: gets all assays' feature metadata as a `list`.
+##' 
+##' - `featureData(x, i)`: a convenient alternative (to
+##'   `featureData(x)[[i]]`) to get the `i`th featureData element.
+##' 
+##' - `featureNames(x)`: gets the list of feature names, where each element of
+##'    the list is a `character` of names for the corresponding assay.
+##'
+##' - `featureNames(object, i)`: a convenient alternative (to
+##'   `featureNames(x)[[i]]`) to get the `i`th featureData element.
+##' 
+##'
 ##' @seealso The [FeatureSet] class and the [readFeatures()]
 ##'     constructor.
 ##'
@@ -268,109 +286,92 @@ setMethod("features", c("Features", "missing"),
           function(x, i, ...) x@listData)
 
 
-## ---------------------------------------------------------------
-## - check from here ----------------------------------------------
-## ---------------------------------------------------------------
+##' @exportMethod assays
+##' @rdname Features-class
+##' @param withDimnames Always `TRUE`.
+setMethod("assays", "Features", function(x, ..., withDimnames = TRUE) lapply(x, assay))
 
-## ##' @exportMethod assays
-## ##' @rdname Features-class
-## setMethod("assays", "Features", function(x, ...) x@assays)
+##' @exportMethod assay
+##' @rdname Features-class
+setMethod("assay", c("Features", "numeric"),
+          function(x, i, ...) {
+              tryCatch({
+                  assays(x, ...)[[i]]
+              }, error=function(err) {
+                  stop("'assay(<", class(x), ">, i=\"numeric\", ...)' ",
+                       "invalid subscript 'i'\n", conditionMessage(err))
+              })
+          })
 
-## ##' @exportMethod assay
-## ##' @rdname Features-class
-## setMethod("assay", c("Features", "numeric"),
-##           function(x, i, ...) {
-##               tryCatch({
-##                   assays(x, ...)[[i]]
-##               }, error=function(err) {
-##                   stop("'assay(<", class(x), ">, i=\"numeric\", ...)' ",
-##                        "invalid subscript 'i'\n", conditionMessage(err))
-##               })
-##           })
-## ##' @rdname Features-class
-## setMethod("assay", c("Features", "character"),
-##     function(x, i, ...) {
-##         msg <- paste0("'assay(<", class(x), ">, i=\"character\", ...)' ",
-##                       "invalid subscript 'i'")
-##         res <- tryCatch({
-##             assays(x, ...)[[i]]
-##         }, error=function(err) {
-##             stop(msg, "\n", conditionMessage(err))
-##         })
-##         if (is.null(res))
-##             stop(msg, "\n'", i, "' not in names(assays(<", class(x), ">))")
-##         res
-##     })
+##' @rdname Features-class
+setMethod("assay", c("Features", "character"),
+    function(x, i, ...) {
+        msg <- paste0("'assay(<", class(x), ">, i=\"character\", ...)' ",
+                      "invalid subscript 'i'")
+        res <- tryCatch({
+            assays(x, ...)[[i]]
+        }, error=function(err) {
+            stop(msg, "\n", conditionMessage(err))
+        })
+        if (is.null(res))
+            stop(msg, "\n'", i, "' not in names(<", class(x), ">)")
+        res
+    })
 
-## ##' @rdname Features-class
-## setMethod("assay", c("Features", "missing"),
-##     function(x, i, ...) {
-##         assays <- assays(x, ...)
-##         if (0L == length(assays))
-##             stop("'assay(<", class(x), ">, i=\"missing\", ...) ",
-##                  "length(assays(<", class(x), ">)) is 0'")
-##         assays[[1]]
-##     })
+##' @rdname Features-class
+setMethod("assay", c("Features", "missing"),
+    function(x, i, ...) {
+        assays <- assays(x, ...)
+        if (0L == length(assays))
+            stop("'assay(<", class(x), ">, i=\"missing\", ...) ",
+                 "length(assays(<", class(x), ">)) is 0'")
+        assays[[main_assay(x)]]
+    })
 
 
-## ##' @exportMethod featureData
-## ##' @rdname Features-class
-## setMethod("featureData", "Features", function(x, ...) x@featureData)
 
-## ##' @rdname Features-class
-## setMethod("featureData", c("Features", "numeric"),
-##           function(x, i, ...) {
-##               tryCatch({
-##                   featureData(x, ...)[[i]]
-##               }, error=function(err) {
-##                   stop("'featureData(<", class(x), ">, i=\"numeric\", ...)' ",
-##                        "invalid subscript 'i'\n", conditionMessage(err))
-##               })
-##           })
+##' @exportMethod featureData
+##' @rdname Features-class
+setMethod("featureData", c("Features", "missing"),
+          function(x, i, ...) lapply(x, featureData))
 
-## ##' @rdname Features-class
-## setMethod("featureData", c("Features", "character"),
-##     function(x, i, ...) {
-##         msg <- paste0("'featureData(<", class(x), ">, i=\"character\", ...)' ",
-##                       "invalid subscript 'i'")
-##         res <- tryCatch({
-##             featureData(x, ...)[[i]]
-##         }, error=function(err) {
-##             stop(msg, "\n", conditionMessage(err))
-##         })
-##         if (is.null(res))
-##             stop(msg, "\n'", i, "' not in names(featureData(<", class(x), ">))")
-##         res
-##     })
+##' @rdname Features-class
+setMethod("featureData", c("Features", "numeric"),
+          function(x, i, ...) {
+              tryCatch({
+                  featureData(x, ...)[[i]]
+              }, error=function(err) {
+                  stop("'featureData(<", class(x), ">, i=\"numeric\", ...)' ",
+                       "invalid subscript 'i'\n", conditionMessage(err))
+              })
+          })
 
-
-## ##' @exportMethod featureNames
-## ##' @rdname Features-class
-## setMethod("featureNames", "Features", function(x, ...) lapply(x@featureData, rownames))
-
-## ##' @rdname Features-class
-## setMethod("featureNames", c("Features", "numeric"),
-##           function(x, i, ...) rownames(featureData(x, ...)[[i]]))
-
-## ##' @rdname Features-class
-## setMethod("featureNames", c("Features", "character"),
-##           function(x, i, ...) rownames(featureData(x, ...)[[i]]))
+##' @rdname Features-class
+setMethod("featureData", c("Features", "character"),
+    function(x, i, ...) {
+        msg <- paste0("'featureData(<", class(x), ">, i=\"character\", ...)' ",
+                      "invalid subscript 'i'")
+        res <- tryCatch({
+            featureData(x, ...)[[i]]
+        }, error=function(err) {
+            stop(msg, "\n", conditionMessage(err))
+        })
+        if (is.null(res))
+            stop(msg, "\n'", i, "' not in names(<", class(x), ">)")
+        res
+    })
 
 
-## - `assays(x)`: gets the assays of the object. The assays are returned as a
-##   `SimpleList`.
-##
-##- `assay(x, i)`: a convenient alternative (to `assays(x)[[i]]`) to get the
-##   `i`th (default first) assay element.
-##
-##- `featureData(object)`: gets the assays' feature metadata as an instance of
-##   class `SimpleList`.
-##
-##- `featureData(object, i)`: a convenient alternative (to
-##   `featureData(x)[[i]]`) to get the `i`th featureData element.
-##
-##- `featureNames(x)`: gets the list of feature names, where each element of
-##   the list is a `character` of names for the corresponding assay.
-##
-##- `featureNames(object, i)`: a convenient alternative (to
-##   `featureNames(x)[[i]]`) to get the `i`th featureData element.
+##' @exportMethod featureNames
+##' @rdname Features-class
+setMethod("featureNames", c("Features", "missing"),
+          function(x, ...) lapply(x, featureNames))
+
+##' @rdname Features-class
+setMethod("featureNames", c("Features", "numeric"),
+          function(x, i, ...) rownames(featureData(x, i)))
+
+##' @rdname Features-class
+setMethod("featureNames", c("Features", "character"),
+          function(x, i, ...) rownames(featureData(x, i)))
+
