@@ -6,6 +6,7 @@
 \alias{featureNames}
 \alias{featureVariables}
 \alias{features}
+\alias{tidyFeatureData}
 \title{Placeholder for generics functions documentation}
 \usage{
 featureData(x, i, ...)
@@ -15,6 +16,8 @@ featureNames(x, i, ...)
 featureVariables(x, i, ...)
 
 features(x, i, ...)
+
+tidyFeatureData(object, i, ...)
 }
 \arguments{
 \item{x}{A parameter.}

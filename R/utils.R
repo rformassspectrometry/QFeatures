@@ -1,9 +1,64 @@
-## Taken from SummarizedExperiment to reproduce the
-## SummarizedExperiment,show method - need to request to put it out of
-## the method's body for re-use.
-scat <- function(fmt, vals = character(), exdent = 2, ...) {
-    vals <- ifelse(nzchar(vals), vals, "''")
-    lbls <- paste(S4Vectors:::selectSome(vals), collapse = " ")
-    txt <- sprintf(fmt, length(vals), lbls)
-    cat(strwrap(txt, exdent=exdent, ...), sep = "\n")
+tidy_DataFrame_columns <- function(object) {
+    for (nm in names(object)) {
+        x <- object[[nm]]
+        if (inherits(x, "List")) {
+            cat("Variable:", nm, "\n")
+            names(x) <- NULL
+            print(x)
+            cat("Do you want to:\n")
+            cat("  Leave as is      (l)\n")
+            cat("  Drop             (d)\n")
+            cat("  Summarise (mean) (s)\n")
+            k <- scan(n = 1L, what = character())
+            k <- match.arg(k, c("l", "d", "s"))
+            object[[nm]] <- switch(k,
+                                   l = object[[nm]],
+                                   d = NULL,
+                                   s = sapply(x, mean))
+        }
+    }
+    invisible(object)
 }
+
+
+##' @rdname tidyFeatureData
+##' @exportMethod
+setMethod("tidyFeatureData", c("FeatureSet", "missing"),
+          function(object, i, ...) {
+              df <- featureData(object)
+              df <- tidy_DataFrame_columns(df)
+              object@featureData <- df
+              if (validObject(object))
+                  object
+          })
+
+
+
+##' Manually review feature variables
+##'
+##' This function offers a user to either keep, drop or summarise a
+##' feature variable to amend a [FeatureSet]'s or a [Features]'
+##' `featureData` slot. This is necessary when proceeding with
+##' multiple calls to `combineFeatures` to avoid overly intricated
+##' 'lists of lists' variables.
+##'
+##' @param object An instance of class [FeatureSet] or [Features].
+##' 
+##' @param i
+##'
+##' @return An updated instance of the same class as `object.
+##'
+##' @md
+##' @exportMethod
+##' @rdname tidyFeatureData
+##' @aliases tidyFeatureData tidyFeatureData,Features tidyFeatureData,FeatureSet
+setMethod("tidyFeatureData", c("Features", "character"),
+          function(object, i, ...) {
+              x <- object[[i]]
+              x <- tidyFeatureData(x)
+              object@listData[[i]] <- x
+              if (validObject(object))
+                  object
+          })
+
+

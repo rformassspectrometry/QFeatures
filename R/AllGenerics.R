@@ -23,3 +23,9 @@ setGeneric("featureVariables", function(x, i, ...) standardGeneric("featureVaria
 ##' @exportMethod features
 ##' @rdname AllGenerics
 setGeneric("features", function(x, i, ...) standardGeneric("features"))
+
+
+##' @exportMethod tidyFeatureData
+##' @rdname AllGenerics
+setGeneric("tidyFeatureData",
+           function(object, i, ...) standardGeneric("tidyFeatureData"))
