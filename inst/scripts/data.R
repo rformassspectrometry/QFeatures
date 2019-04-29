@@ -14,4 +14,8 @@ names(hlpsms) <- gsub("\\.", "", names(hlpsms))
 names(hlpsms) <- gsub("XProteins", "NbProteins", names(hlpsms))
 names(hlpsms) <- gsub("XMissedCleavages", "NbMissedCleavages", names(hlpsms))
 
+for (i in seq_along(hlpsms))
+    if (is(hlpsms[[i]], "factor"))
+        hlpsms[[i]] <- as.character(hlpsms[[i]])
+
 save(hlpsms, file = "../../data/hlpsms.rda", compress = "xz", compression_level = 9)
