@@ -15,10 +15,12 @@ LazyData: true
 Collate:
     'AllGenerics.R'
     'FeatureSet-class.R'
+    'FeatureSet-links.R'
     'Features-class.R'
     'Features-constructors.R'
     'Features-functions.R'
     'data.R'
     'reduce.R'
+    'combineFeatures.R'
     'utils.R'
 RoxygenNote: 6.1.1

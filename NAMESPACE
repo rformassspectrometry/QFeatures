@@ -2,6 +2,7 @@
 
 export(FeatureSet)
 export(Features)
+export(combineFeatures)
 export(expand_DataFrame)
 export(readFeatures)
 export(reduce_DataFrame)

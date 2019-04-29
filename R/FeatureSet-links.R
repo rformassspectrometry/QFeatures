@@ -37,5 +37,6 @@ set_featureSet_ids <- function(object) {
 ##' Returns the next identifier.
 ##'
 ##' @return The next `id` in the [Features], as an `integer(1)`.
+##' @rdname FeatureSet-links
 get_next_featureSet_id <- function(object) 
     as.integer(max(get_featureSet_ids(object)) + 1)
