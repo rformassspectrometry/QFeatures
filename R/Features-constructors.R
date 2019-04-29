@@ -47,8 +47,7 @@ readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
             if (missing(fnames)) fnames <- args$rownames
             args$rownames <- NULL
         }
-        if ("stringsAsFactors" %in% names(args) & stringsAsFactors) 
-            message("It is not recommended to set strings as factors.")
+        args$stringsAsFactors <- FALSE
         xx <- do.call(read.csv, args)
     }
     if (is.character(ecol)) {
