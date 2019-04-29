@@ -26,16 +26,13 @@ combineFeatures <- function(object,
         message(paste(strwrap(msg), collapse = "\n"))
     }
 
-    browser()
     .assay <- combine_assay(.assay, groupBy, fun, ...)
-    
     .featureData <- reduce_DataFrame(.featureData, .featureData[[fcol]],
-                                     simplify = FALSE, count = TRUE)
-
+                                     simplify = TRUE, count = TRUE)
     
     new_fs <- new("FeatureSet",
                   assay = .assay,
-                  featureData = .featureData,
+                  featureData = .featureData[rownames(.assay), ],
                   id = get_next_featureSet_id(object),
                   from = slot(object[[i]], "id"))
     .features <- features(object)
@@ -48,9 +45,8 @@ combineFeatures <- function(object,
 }
 
 
-combine_assay <- function(assay, groupBy, fun, ...) {
-    groupBy <- factor(groupBy)
+combine_assay <- function(assay, groupBy, fun, ...) 
     do.call(rbind,
             by(assay, groupBy,
                function(.x) apply(.x, 2, fun, ...)))
-}
+

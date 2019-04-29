@@ -6,7 +6,8 @@
 ##' @param table File or object holding the quantitative data. Can be
 ##'     either a `character(1)` with the path to a text-based
 ##'     spreadsheet (comma-separated values by default, but see `...`)
-##'     or an object that can be coerced to a `data.frame`.
+##'     or an object that can be coerced to a `data.frame`. It is
+##'     advised not to encode characters as factors.
 ##' 
 ##' @param ecol A `numeric` indicating the indices of the columns to
 ##'     be used as expression values. Can also be a `character`
@@ -19,11 +20,12 @@
 ##' @param fnames An optional `character(1)` or `numeric(1)`
 ##'     indicating the column to be used as feature names.
 ##' 
-##' @param ... Further arguments that can be passed on to `read.csv`.
+##' @param ... Further arguments that can be passed on to `read.csv`
+##'     except `stringsAsFactors`, which is always `FALSE`.
 ##'
 ##' @param name An optional `character(1)` to name the [FeatureSet] in
 ##'     the resulting [Features] object.
-##' 
+##'
 ##' @return An instance of class [Features].
 ##'
 ##' @author Laurent Gatto
@@ -45,6 +47,8 @@ readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
             if (missing(fnames)) fnames <- args$rownames
             args$rownames <- NULL
         }
+        if ("stringsAsFactors" %in% names(args) & stringsAsFactors) 
+            message("It is not recommended to set strings as factors.")
         xx <- do.call(read.csv, args)
     }
     if (is.character(ecol)) {

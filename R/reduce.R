@@ -11,17 +11,15 @@ invariant_cols <- function(x) {
 ## Takes a columns of a CompressedSplitDataFrameList object, iterates
 ## through its elements and returns FALSE as soon as it finds on
 ## non-invariant element.
-invariant_col2 <- function(x) {
-    res <- TRUE
-    for (i in seq_along(x)) 
-        if (length(unique(x[[i]])) != 1) return(FALSE)
-    res
-}
+invariant_col2 <- function(x)
+    all(lengths(lapply(x, unique)) == 1)    
+
 
 invariant_cols2 <- function(x) {
     res <- rep(NA, length(x[[1]]))
-    for (i in seq_along(res))
+    for (i in seq_along(res)) {
         res[i] <- invariant_col2(x[, i])
+    }
     which(res)
 }
 
@@ -82,7 +80,7 @@ reduce_DataFrame <- function(x, k, count = FALSE, simplify = TRUE) {
     if (simplify) {
         ## replace invariant cols
         for (i in invars)
-            res[[i]] <- SimpleList(as.list(sapply(res[[i]], "[[", 1)))
+            res[[i]] <- sapply(res[[i]], "[[", 1)
     }
     if (count)
         res[[".n"]] <- lens
