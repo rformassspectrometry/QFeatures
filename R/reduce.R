@@ -1,12 +1,15 @@
-invariant_col <- function(x)
-    length(unique(x)) == 1
+setMethod("showAsCell", "character",
+          function(object) {
+              n <- 10
+              sapply(object,
+                     function(x) {
+                         if (nchar(x) > n)
+                             paste0(paste(strsplit(x, "")[[1]][1:n], collapse = ""),
+                                    "...")
+                         else x
+                     })})
 
-invariant_cols <- function(x) {
-    res <- rep(NA, length(x))
-    for (i in seq_along(x))
-        res[i] <- invariant_col(x[[i]])
-    res
-}
+
 
 ## Takes a columns of a CompressedSplitDataFrameList object, iterates
 ## through its elements and returns FALSE as soon as it finds on
