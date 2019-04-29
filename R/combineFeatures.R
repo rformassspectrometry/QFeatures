@@ -1,3 +1,4 @@
+##' @export
 combineFeatures <- function(object,
                             i,
                             fcol,
@@ -25,9 +26,11 @@ combineFeatures <- function(object,
         message(paste(strwrap(msg), collapse = "\n"))
     }
 
+    browser()
     .assay <- combine_assay(.assay, groupBy, fun, ...)
     
-    .featureData <- reduce_DataFrame(.featureData, .featureData[[fcol]], simplify = FALSE)
+    .featureData <- reduce_DataFrame(.featureData, .featureData[[fcol]],
+                                     simplify = FALSE, count = TRUE)
 
     
     new_fs <- new("FeatureSet",

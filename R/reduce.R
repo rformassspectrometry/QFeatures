@@ -8,6 +8,22 @@ invariant_cols <- function(x) {
     res
 }
 
+## Takes a columns of a CompressedSplitDataFrameList object, iterates
+## through its elements and returns FALSE as soon as it finds on
+## non-invariant element.
+invariant_col2 <- function(x) {
+    res <- TRUE
+    for (i in seq_along(x)) 
+        if (length(unique(x[[i]])) != 1) return(FALSE)
+    res
+}
+
+invariant_cols2 <- function(x) {
+    res <- rep(NA, length(x[[1]]))
+    for (i in seq_along(res))
+        res[i] <- invariant_col2(x[, i])
+    which(res)
+}
 
 ##' A long dataframe can be *reduced* by mergeing certain rows into a single one.
 ##' These new variables are constructed as a `SimpleList` containing all the
@@ -60,16 +76,13 @@ invariant_cols <- function(x) {
 reduce_DataFrame <- function(x, k, count = FALSE, simplify = TRUE) {
     res <- split(x, k)
     lens <- lengths(res)
-    if (simplify) {
-        ## which ones are invariable
-        invars <- sapply(res, invariant_cols)
-        invars <- which(rowSums(invars) == length(res))
-    }
+    if (simplify) 
+        invars <- invariant_cols2(res)
     res <- DataFrame(res)
     if (simplify) {
         ## replace invariant cols
         for (i in invars)
-            res[[i]] <- IntegerList(as.list(sapply(res[[i]], "[[", 1)))
+            res[[i]] <- SimpleList(as.list(sapply(res[[i]], "[[", 1)))
     }
     if (count)
         res[[".n"]] <- lens
