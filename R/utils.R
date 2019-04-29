@@ -22,7 +22,7 @@ tidy_DataFrame_columns <- function(object) {
 
 
 ##' @rdname tidyFeatureData
-##' @exportMethod
+##' @exportMethod tidyFeatureData
 setMethod("tidyFeatureData", c("FeatureSet", "missing"),
           function(object, i, ...) {
               df <- featureData(object)
@@ -44,15 +44,31 @@ setMethod("tidyFeatureData", c("FeatureSet", "missing"),
 ##'
 ##' @param object An instance of class [FeatureSet] or [Features].
 ##' 
-##' @param i
+##' @param i For [Features] objects only, defines which `featureData`
+##'     to review.
+##'
+##' @param ... Ignored.
 ##'
 ##' @return An updated instance of the same class as `object.
 ##'
 ##' @md
-##' @exportMethod
+##' @exportMethod tidyFeatureData
 ##' @rdname tidyFeatureData
-##' @aliases tidyFeatureData tidyFeatureData,Features tidyFeatureData,FeatureSet
+##' 
+##' @aliases tidyFeatureData 
+##' 
 setMethod("tidyFeatureData", c("Features", "character"),
+          function(object, i, ...) {
+              x <- object[[i]]
+              x <- tidyFeatureData(x)
+              object@listData[[i]] <- x
+              if (validObject(object))
+                  object
+          })
+
+##' @exportMethod tidyFeatureData
+##' @rdname tidyFeatureData
+setMethod("tidyFeatureData", c("Features", "numeric"),
           function(object, i, ...) {
               x <- object[[i]]
               x <- tidyFeatureData(x)

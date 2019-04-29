@@ -5,18 +5,22 @@
 \alias{tidyFeatureData,FeatureSet,missing-method}
 \alias{tidyFeatureData,Features,character-method}
 \alias{tidyFeatureData}
-\alias{tidyFeatureData,Features}
-\alias{tidyFeatureData,FeatureSet}
+\alias{tidyFeatureData,Features,numeric-method}
 \title{Manually review feature variables}
 \usage{
 \S4method{tidyFeatureData}{FeatureSet,missing}(object, i, ...)
 
 \S4method{tidyFeatureData}{Features,character}(object, i, ...)
+
+\S4method{tidyFeatureData}{Features,numeric}(object, i, ...)
 }
 \arguments{
 \item{object}{An instance of class \link{FeatureSet} or \link{Features}.}
 
-\item{i}{}
+\item{i}{For \link{Features} objects only, defines which \code{featureData}
+to review.}
+
+\item{...}{Ignored.}
 }
 \value{
 An updated instance of the same class as `object.

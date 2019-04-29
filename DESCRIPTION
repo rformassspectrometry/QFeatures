@@ -23,4 +23,5 @@ Collate:
     'reduce.R'
     'combineFeatures.R'
     'utils.R'
+    'private-utils.R'
 RoxygenNote: 6.1.1
