@@ -2,18 +2,8 @@ combineFeatures <- function(object,
                             i,
                             fcol,
                             name = NULL,
-                            method = c("mean",
-                                       "median",
-                                       "weighted.mean",
-                                       "sum",
-                                       "medpolish",
-                                       "robust",
-                                       "iPQF",
-                                       "NTR"),
-                            redundancy.handler = c("unique", "multiple"),
-                            cv = FALSE,
-                            cv.norm = "sum",
-                            ... ## further arguments to method
+                            fun = median,
+                            ... 
                             ) {
     stopifnot(inherits(object, "Features"))
     if (isEmpty(object))
@@ -22,8 +12,6 @@ combineFeatures <- function(object,
         i <- main_assay(object)
     .assay <- assay(object, i)
     .featureData <- featureData(object, i)
-    if (is.character(method))
-        method <- match.arg(method)
     if (missing(fcol))
         stop("Require either 'groupBy' or 'fcol'.")
     stopifnot(fcol %in% names(.featureData))
@@ -37,8 +25,11 @@ combineFeatures <- function(object,
         message(paste(strwrap(msg), collapse = "\n"))
     }
 
-    ## .assay <- combine_features_assay(.assay, groupBy, ...)
-    ## .featureData <- combine_features_featureData(.featureData, groupBy, ...)
+    .assay <- combine_assay(.assay, groupBy, fun, ...)
+    
+    .featureData <- reduce_DataFrame(.featureData, .featureData[[fcol]], simplify = FALSE)
+
+    
     new_fs <- new("FeatureSet",
                   assay = .assay,
                   featureData = .featureData,
@@ -51,4 +42,12 @@ combineFeatures <- function(object,
     object@listData <- .features
     if (validObject(object))
         object
+}
+
+
+combine_assay <- function(assay, groupBy, fun, ...) {
+    groupBy <- factor(groupBy)
+    do.call(rbind,
+            by(assay, groupBy,
+               function(.x) apply(.x, 2, fun, ...)))
 }
