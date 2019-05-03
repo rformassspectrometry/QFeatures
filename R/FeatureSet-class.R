@@ -11,12 +11,9 @@
 ##'
 ##' @slot featureData A `DataFrame` to hold the features annotations.
 ##'
-##' @slot id An `integer(1)` holding the set's identifier. For
-##'     internal use at the [Features]-level only.
-##'
-##' @slot from An `integer(1)` refering to the identifier from which
-##'     the current object originates. For internal use at the
-##'     [Features]-level only.
+##' @slot links A object of class `FeatureSetLinks` holding the
+##'     information tracing back to the object's parent
+##'     `FeatureSet`. For internal use at the [Features]-level only.
 ##'
 ##' @slot version A `character(1)` providing the class version. For
 ##'     internal use only.
@@ -43,12 +40,9 @@ NULL
 setClass("FeatureSet",
          slots = c(assay = "matrix",
                    featureData = "DataFrame",
-                   id = "integer",
-                   from = "integer",
+                   links = "FeatureSetLink",
                    version = "character"),
          prototype = prototype(
-             id = NA_integer_,
-             from = NA_integer_,
              version = "0.1"))
 
 ##' @param assay A `matrix` containing the quantitation data.
@@ -61,7 +55,8 @@ FeatureSet <- function(assay = matrix(ncol = 0, nrow = 0),
                        featureData = DataFrame()) {
     new("FeatureSet",
         assay = assay,
-        featureData = featureData)
+        featureData = featureData,
+        links = new("FeatureSetLink"))
 }
 
 setMethod("show", "FeatureSet",
@@ -135,8 +130,7 @@ setMethod("[", c("FeatureSet", "ANY", "ANY", "missing"),
               new("FeatureSet",
                   assay = assay2,
                   featureData = fd2,
-                  id = x@id,
-                  from = from@id)
+                  links = x@links)
           })
 
 .valid_FeatureSet <- function(object) {

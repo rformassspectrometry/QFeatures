@@ -32,9 +32,10 @@ combineFeatures <- function(object,
     
     new_fs <- new("FeatureSet",
                   assay = .assay,
-                  featureData = .featureData[rownames(.assay), ],
-                  id = get_next_featureSet_id(object),
-                  from = slot(object[[i]], "id"))
+                  featureData = .featureData[rownames(.assay), ])
+    new_fs@links@id <- get_next_featureSet_id(object)
+    new_fs@links@from <- object[[i]]@links@id
+    new_fs@links@fcol <- fcol
     .features <- features(object)
     .features <- append(.features, new_fs)
     if (!is.null(name))

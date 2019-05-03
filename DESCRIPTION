@@ -14,8 +14,8 @@ Encoding: UTF-8
 LazyData: true
 Collate:
     'AllGenerics.R'
-    'FeatureSet-class.R'
     'FeatureSet-links.R'
+    'FeatureSet-class.R'
     'Features-class.R'
     'Features-constructors.R'
     'Features-functions.R'

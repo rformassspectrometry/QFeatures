@@ -103,7 +103,7 @@ Features <- function(...,
     ids <- seq_len(length(args))
     ids <- ids[order(sapply(args, nrow), decreasing = TRUE)]
     for (i in seq_len(length(args)))
-        args[[i]]@id <- ids[i]
+        args[[i]]@links@id <- ids[i]
 
     if (is.null(colData))
         colData <- DataFrame(row.names = sampleNames(args[[1]]))

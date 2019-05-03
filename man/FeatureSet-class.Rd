@@ -74,12 +74,9 @@ columns).}
 
 \item{\code{featureData}}{A \code{DataFrame} to hold the features annotations.}
 
-\item{\code{id}}{An \code{integer(1)} holding the set's identifier. For
-internal use at the \link{Features}-level only.}
-
-\item{\code{from}}{An \code{integer(1)} refering to the identifier from which
-the current object originates. For internal use at the
-\link{Features}-level only.}
+\item{\code{links}}{A object of class \code{FeatureSetLinks} holding the
+information tracing back to the object's parent
+\code{FeatureSet}. For internal use at the \link{Features}-level only.}
 
 \item{\code{version}}{A \code{character(1)} providing the class version. For
 internal use only.}

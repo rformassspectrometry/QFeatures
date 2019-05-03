@@ -22,7 +22,7 @@ main_assay <- function(object)
 
 ##' @importFrom methods slot
 .valid_Features_indices <- function(object) {
-    ids <- sapply(object, slot, "id")
+    ids <- get_featureSet_ids(object)
     if (anyNA(ids)) 
         stop("Indices musn't be NA")
     if (anyDuplicated(ids))
