@@ -8,38 +8,38 @@ readFeatures(table, ecol, fnames, ..., name = NULL)
 }
 \arguments{
 \item{table}{File or object holding the quantitative data. Can be
-either a `character(1)` with the path to a text-based
-spreadsheet (comma-separated values by default, but see `...`)
-or an object that can be coerced to a `data.frame`. It is
+either a \code{character(1)} with the path to a text-based
+spreadsheet (comma-separated values by default, but see \code{...})
+or an object that can be coerced to a \code{data.frame}. It is
 advised not to encode characters as factors.}
 
-\item{ecol}{A `numeric` indicating the indices of the columns to
-be used as expression values. Can also be a `character`
+\item{ecol}{A \code{numeric} indicating the indices of the columns to
+be used as expression values. Can also be a \code{character}
 indicating the names of the columns. Caution must be taken if
-the column names are composed of special characters like `(`
-or `-` that will be converted to a `.` by the `read.csv`
-function. If `ecol` does not match, the error message will
-dislpay the column names as seen by the `read.csv` function.}
+the column names are composed of special characters like \code{(}
+or \code{-} that will be converted to a \code{.} by the \code{read.csv}
+function. If \code{ecol} does not match, the error message will
+dislpay the column names as seen by the \code{read.csv} function.}
 
-\item{fnames}{An optional `character(1)` or `numeric(1)`
+\item{fnames}{An optional \code{character(1)} or \code{numeric(1)}
 indicating the column to be used as feature names.}
 
-\item{...}{Further arguments that can be passed on to `read.csv`
-except `stringsAsFactors`, which is always `FALSE`.}
+\item{...}{Further arguments that can be passed on to \code{read.csv}
+except \code{stringsAsFactors}, which is always \code{FALSE}.}
 
-\item{name}{An optional `character(1)` to name the [FeatureSet] in
-the resulting [Features] object.}
+\item{name}{An optional \code{character(1)} to name the \link{FeatureSet} in
+the resulting \link{Features} object.}
 }
 \value{
-An instance of class [Features].
+An instance of class \link{Features}.
 }
 \description{
-Convert tabular data from a spreadsheet or a `data.frame` into a
-`Features` object.
+Convert tabular data from a spreadsheet or a \code{data.frame} into a
+\code{Features} object.
 }
 \seealso{
-The [Features] class for an example on how to manipulate use
-    `readFeatures` and how to further manipulate the resulting data.
+The \link{Features} class for an example on how to manipulate use
+\code{readFeatures} and how to further manipulate the resulting data.
 }
 \author{
 Laurent Gatto

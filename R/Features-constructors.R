@@ -37,6 +37,7 @@
 ##'
 ##' @importFrom methods new validObject
 ##'
+##' @md
 ##' @export
 readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
     if (is.data.frame(table)) xx <- table
