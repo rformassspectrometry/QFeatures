@@ -35,6 +35,7 @@ jobs:
       r_check_args: --no-build-vignettes --no-vignettes --no-manual --no-tests
       name: "Check"      
     - stage: "Deploy"
+      r_check_args: --no-build-vignettes --no-vignettes --no-tests    
       install: skip
       name: "pkgdown (on master)"
       before_deploy:
