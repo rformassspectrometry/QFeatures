@@ -1,6 +1,6 @@
 # full script at https://github.com/travis-ci/travis-build/blob/master/lib/travis/build/script/r.rb
 language: r
-r: bioc
+r: bioc-release
 cache:
   packages: true
   directories:
