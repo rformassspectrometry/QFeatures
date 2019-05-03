@@ -32,8 +32,8 @@
 
 <meta property="og:title" content="Features from tabular data — readFeatures" />
 
-<meta property="og:description" content="Convert tabular data from a spreadsheet or a `data.frame` into a
-`Features` object." />
+<meta property="og:description" content="Convert tabular data from a spreadsheet or a data.frame into a
+Features object." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -102,8 +102,8 @@
 
     <div class="ref-description">
     
-    <p>Convert tabular data from a spreadsheet or a `data.frame` into a
-`Features` object.</p>
+    <p>Convert tabular data from a spreadsheet or a <code>data.frame</code> into a
+<code>Features</code> object.</p>
     
     </div>
 
@@ -115,46 +115,46 @@
     <tr>
       <th>table</th>
       <td><p>File or object holding the quantitative data. Can be
-either a `character(1)` with the path to a text-based
-spreadsheet (comma-separated values by default, but see `...`)
-or an object that can be coerced to a `data.frame`. It is
+either a <code><a href='https://www.rdocumentation.org/packages/base/topics/character'>character(1)</a></code> with the path to a text-based
+spreadsheet (comma-separated values by default, but see <code>...</code>)
+or an object that can be coerced to a <code>data.frame</code>. It is
 advised not to encode characters as factors.</p></td>
     </tr>
     <tr>
       <th>ecol</th>
-      <td><p>A `numeric` indicating the indices of the columns to
-be used as expression values. Can also be a `character`
+      <td><p>A <code>numeric</code> indicating the indices of the columns to
+be used as expression values. Can also be a <code>character</code>
 indicating the names of the columns. Caution must be taken if
-the column names are composed of special characters like `(`
-or `-` that will be converted to a `.` by the `read.csv`
-function. If `ecol` does not match, the error message will
-dislpay the column names as seen by the `read.csv` function.</p></td>
+the column names are composed of special characters like <code>(</code>
+or <code>-</code> that will be converted to a <code>.</code> by the <code>read.csv</code>
+function. If <code>ecol</code> does not match, the error message will
+dislpay the column names as seen by the <code>read.csv</code> function.</p></td>
     </tr>
     <tr>
       <th>fnames</th>
-      <td><p>An optional `character(1)` or `numeric(1)`
+      <td><p>An optional <code><a href='https://www.rdocumentation.org/packages/base/topics/character'>character(1)</a></code> or <code><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>numeric(1)</a></code>
 indicating the column to be used as feature names.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Further arguments that can be passed on to `read.csv`
-except `stringsAsFactors`, which is always `FALSE`.</p></td>
+      <td><p>Further arguments that can be passed on to <code>read.csv</code>
+except <code>stringsAsFactors</code>, which is always <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>name</th>
-      <td><p>An optional `character(1)` to name the [FeatureSet] in
-the resulting [Features] object.</p></td>
+      <td><p>An optional <code><a href='https://www.rdocumentation.org/packages/base/topics/character'>character(1)</a></code> to name the <a href='FeatureSet-class.html'>FeatureSet</a> in
+the resulting <a href='Features-class.html'>Features</a> object.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An instance of class [Features].</p>
+    <p>An instance of class <a href='Features-class.html'>Features</a>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>The [Features] class for an example on how to manipulate use
-    `readFeatures` and how to further manipulate the resulting data.</p></div>
+    <div class='dont-index'><p>The <a href='Features-class.html'>Features</a> class for an example on how to manipulate use
+<code>readFeatures</code> and how to further manipulate the resulting data.</p></div>
     
 
   </div>
