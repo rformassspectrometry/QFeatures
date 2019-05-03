@@ -1,4 +1,3 @@
-##' @export
 combineFeatures <- function(object,
                             i,
                             fcol,
