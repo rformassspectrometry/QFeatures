@@ -22,9 +22,7 @@ jobs:
   include:
     - stage: "Build"
       r_packages:
-        - covr
         - pkgdown
-        - testthat
         - knitr
         - roxygen2
       before_install:
@@ -34,25 +32,11 @@ jobs:
       script: true
       name: "Build dependencies and cache"
     - stage: "Check"
-      r_build_args: --no-build-vignettes --no-manual
       r_check_args: --as-cran --no-build-vignettes --no-vignettes --no-manual --no-tests
-      before_script: rm -rf vignettes
-      install: skip
-      name: "examples"
-    - r_build_args: --no-build-vignettes --no-manual
-      r_check_args: --as-cran --no-build-vignettes --no-vignettes --no-manual --no-codoc --no-examples
-      install: skip
-      before_script: rm -rf vignettes
-      name: "tests"
-    - r_build_args:
-      r_check_args: --as-cran --no-build-vignettes --no-codoc --no-examples --no-tests
-      install: skip
-      name: "vignettes"
+      name: "Check"      
     - stage: "Deploy"
       install: skip
-      script:
-        - Rscript -e 'covr::codecov()'
-      name: "codecov and pkgdown (on master)"
+      name: "pkgdown (on master)"
       before_deploy:
         - R CMD INSTALL .
         - Rscript -e 'pkgdown::build_site()'
