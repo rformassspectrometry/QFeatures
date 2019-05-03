@@ -32,7 +32,7 @@ jobs:
       script: true
       name: "Build dependencies and cache"
     - stage: "Check"
-      r_check_args: --as-cran --no-build-vignettes --no-vignettes --no-manual --no-tests
+      r_check_args: --no-build-vignettes --no-vignettes --no-manual --no-tests
       name: "Check"      
     - stage: "Deploy"
       install: skip
