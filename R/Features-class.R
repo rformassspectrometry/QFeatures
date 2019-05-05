@@ -1,4 +1,6 @@
-##' Quantitative MS Features
+##' @title Quantitative MS Features
+##'
+##' @description
 ##' 
 ##' Conceptually, a `Features` object holds a set of *assays*, each
 ##' composed of a `matrix` (or `array`) containing quantitative data
@@ -32,17 +34,37 @@
 ##' from their bare parts.  It is the user's responsability to make
 ##' sure that these match the class validity requirements.
 ##'
+##' @section Constructors:
 ##'
+##' - `Features(..., assayLinks)` allows the manual construction of
+##'   objects. It is the user's responsability to make sure these
+##'   comply. The arguments in `...` are those documented in
+##'   [MultiAssayExperiment::MultiAssayExperiment()]. For details
+##'   about `assayLinks`, see [AssayLinks]. An example is shown below.
+##'
+##' - The [readFeatures()] function constructs a `Features` object
+##'   from text-based spreadsheet or a `data.frame` used to generate
+##'   an assay. See the function manual page for details and an
+##'   example below.
+##' 
 ##' @section Accessors:
 ##'
-##' See [MultiAssayExperiment()].
+##' The `Features` class extends the
+##' [MultiAssayExperiment::MultiAssayExperiment] class and inherits
+##' all its accessors and replacement methods.
 ##'
-##' @section Working with Features:
+##' @section Adding assays:
 ##'
-##' - `addAssay(object, x, name, assayLinks)`: Adds a new assay `x` to
-##'   the `Features` instance `object`. 
+##' - The [combineFeatures()] function creates a new assay by
+##'   combining features of an existing assay.
 ##'
-##' @seealso The [readFeatures()] constructor.
+##' - `addAssay(object, x, name, assayLinks)`: Adds a new assay (or
+##'   list of assays) `x` to the `Features` instance `object`. `name`
+##'   is a `character(1)` naming the single assay (default is
+##'   `"newAssay"), and is ignored if `x` is a list of
+##'   assays. `assayLinks` is an optional [AssayLinks].
+##'
+##' @seealso The [readFeatures()] constructor and the [combineFeatures()] function.
 ##'
 ##' @import MultiAssayExperiment
 ##'

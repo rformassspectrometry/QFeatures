@@ -14,9 +14,6 @@ Features(..., assayLinks = NULL)
 
 \item{assayLinks}{An optional [AssayLinks].}
 }
-\value{
-A new instance of class `Features`.
-}
 \description{
 Conceptually, a \code{Features} object holds a set of \emph{assays}, each
 composed of a \code{matrix} (or \code{array}) containing quantitative data
@@ -27,8 +24,7 @@ typically defined as \code{MSnSet} or \code{SummarizedExperiment}
 objects. In addition, a \code{Features} object also uses a single
 \code{DataFrame} to annotate the samples (columns) represented in all
 the matrices.
-}
-\details{
+
 The \code{Features} class extends the
 \link[MultiAssayExperiment:MatchedAssayExperiment]{MultiAssayExperiment::MatchedAssayExperiment} and inherits all
 the functionality of the
@@ -51,17 +47,38 @@ data. The \code{Features} constructor can be used to create objects
 from their bare parts.  It is the user's responsability to make
 sure that these match the class validity requirements.
 }
+\section{Constructors}{
+
+\itemize{
+\item \code{Features(..., assayLinks)} allows the manual construction of
+objects. It is the user's responsability to make sure these
+comply. The arguments in \code{...} are those documented in
+\code{\link[MultiAssayExperiment:MultiAssayExperiment]{MultiAssayExperiment::MultiAssayExperiment()}}. For details
+about \code{assayLinks}, see \link{AssayLinks}. An example is shown below.
+\item The \code{\link[=readFeatures]{readFeatures()}} function constructs a \code{Features} object
+from text-based spreadsheet or a \code{data.frame} used to generate
+an assay. See the function manual page for details and an
+example below.
+}
+}
+
 \section{Accessors}{
 
 
-See \code{\link[=MultiAssayExperiment]{MultiAssayExperiment()}}.
+The \code{Features} class extends the
+\link[MultiAssayExperiment:MultiAssayExperiment]{MultiAssayExperiment::MultiAssayExperiment} class and inherits
+all its accessors and replacement methods.
 }
 
-\section{Working with Features}{
+\section{Adding assays}{
 
 \itemize{
-\item \code{addAssay(object, x, name, assayLinks)}: Adds a new assay \code{x} to
-the \code{Features} instance \code{object}.
+\item The \code{\link[=combineFeatures]{combineFeatures()}} function creates a new assay by
+combining features of an existing assay.
+\item \code{addAssay(object, x, name, assayLinks)}: Adds a new assay (or
+list of assays) \code{x} to the \code{Features} instance \code{object}. \code{name}
+is a \code{character(1)} naming the single assay (default is
+\code{"newAssay"), and is ignored if }x\code{is a list of assays.}assayLinks` is an optional \link{AssayLinks}.
 }
 }
 
@@ -117,7 +134,7 @@ fts2[[1]]
 fts2[["psms"]]
 }
 \seealso{
-The \code{\link[=readFeatures]{readFeatures()}} constructor.
+The \code{\link[=readFeatures]{readFeatures()}} constructor and the \code{\link[=combineFeatures]{combineFeatures()}} function.
 }
 \author{
 Laurent Gatto

@@ -98,7 +98,6 @@ readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
 ##' @rdname Features-class
 ##' @param ... See [MultiAssayExperiment].
 ##' @param assayLinks An optional [AssayLinks].
-##' @return A new instance of class `Features`.
 Features <- function(..., assayLinks = NULL) {
     ans <- MatchedAssayExperiment(...)
     if (isEmpty(ans)) assayLinks <- EmptyAssayLinks()
@@ -124,8 +123,6 @@ Features <- function(..., assayLinks = NULL) {
 ##'     `"newAssay"). Ignored if `x` is a list of assays.
 ##' @param assayLinks An optional [AssayLinks].
 ##'
-##' @return An updated [Features] instance.
-##' 
 ##' @md
 ##' 
 ##' @rdname Features

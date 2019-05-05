@@ -1,3 +1,32 @@
+##' This function combines the quantitative features of an assay,
+##' applying a summarisation function (`fun`) to sets of features as
+##' defined by the `fcol` feature variable. The new assay's features
+##' will be named based on the unique `fcol` values.
+##'
+##' @title Combine an assay's quantitative features
+##' 
+##' @param object An instance of class [Features].
+##' 
+##' @param i The index or name of the assay which features will be
+##'     combined the create the new assay.
+##' 
+##' @param fcol The feature variable of assay `i` defining how to
+##'     summerise the features.
+##' 
+##' @param name A `character(1)` naming the new assay. Default is
+##'     `newAssay`. Note that the function will fail if there's
+##'     already an assay with `name`.
+##' 
+##' @param fun A function used for quantitative feature
+##'     aggregation. Default is `median`.
+##' 
+##' @param ... Additional parameters passed the `fun`.
+##' 
+##' @return A `Features` object with an additional assay.
+##' 
+##' @md
+##'
+##' @export
 combineFeatures <- function(object,
                             i,
                             fcol,
@@ -7,12 +36,14 @@ combineFeatures <- function(object,
                             ) {
     if (isEmpty(object))
         return(object)
+    if (name %in% names(object))
+        stop("There's already an assay named '", name, "'.")
     if (missing(i))
         i <- main_assay(object)
     .assay <- assay(object, i)
     .rowdata <- rowData(object[[i]])
     if (missing(fcol))
-        stop("Require either 'groupBy' or 'fcol'.")
+        stop("fcol require.")
     stopifnot(fcol %in% names(.rowdata))
     groupBy <- .rowdata[[fcol]]
 
