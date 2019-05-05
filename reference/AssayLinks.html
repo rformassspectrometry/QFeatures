@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Links between Assays — AssayLinks-class • Features</title>
+<title>Links between Assays — AssayLinks • Features</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,12 @@
 
 
 
-<meta property="og:title" content="Links between Assays — AssayLinks-class" />
+<meta property="og:title" content="Links between Assays — AssayLinks" />
 
-<meta property="og:description" content="This class handles the links different assays within a Features
-object. It isn't meant to be used directly by users." />
+<meta property="og:description" content="Links between assays within a Features object are handled by the
+links slot. It is composed of a DataFrame with three columns,
+documented below. AssayLinks can be created with the
+AssayLinks() and EmptyAssayLinks() functions." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -102,33 +104,44 @@ object. It isn't meant to be used directly by users." />
 
     <div class="ref-description">
     
-    <p>This class handles the links different assays within a Features
-object. It isn't meant to be used directly by users.</p>
+    <p>Links between assays within a <a href='Features-class.html'>Features</a> object are handled by the
+<code>links</code> slot. It is composed of a <code>DataFrame</code> with three columns,
+documented below. <code>AssayLinks</code> can be created with the
+<code>AssayLinks()</code> and <code>EmptyAssayLinks()</code> functions.</p>
     
     </div>
 
-        
-    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
+    <pre class="usage"><span class='fu'>EmptyAssayLinks</span>()
 
+<span class='fu'>AssayLinks</span>(<span class='no'>name</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fcol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
-    <dl class='dl-horizontal'>
-<dt><code>id</code></dt><dd><p>An <code><a href='https://www.rdocumentation.org/packages/base/topics/integer'>integer(1)</a></code> holding the set's identifier. For
-internal use at the <a href='Features-class.html'>Features</a>-level only.</p></dd>
-    <dt><code>from</code></dt><dd><p>An <code><a href='https://www.rdocumentation.org/packages/base/topics/integer'>integer(1)</a></code> refering to the identifier from which
-the current object originates. For internal use at the
-<a href='Features-class.html'>Features</a>-level only.</p></dd>
-    <dt><code>fcol</code></dt><dd><p>A <code><a href='https://www.rdocumentation.org/packages/base/topics/character'>character(1)</a></code> storing the feature variables that was
-used to group the object's parent features.</p></dd>
-</dl>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>name</th>
+      <td><p>The name of the assay(s).</p></td>
+    </tr>
+    <tr>
+      <th>from</th>
+      <td><p>The name of the parent assay, or <code>NA_character_</code>, if
+not applicable.</p></td>
+    </tr>
+    <tr>
+      <th>fcol</th>
+      <td><p>The feature variable of the parent assay used to
+generate the current assay (used in
+<code>combineFeatures</code>). <code>NA_character_</code>, if not applicable.</p></td>
+    </tr>
+    </table>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#slots">Slots</a></li>
-          </ul>
+      <li><a href="#arguments">Arguments</a></li>
+                </ul>
 
   </div>
 </div>

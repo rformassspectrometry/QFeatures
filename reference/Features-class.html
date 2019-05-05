@@ -32,16 +32,12 @@
 
 <meta property="og:title" content="Quantitative MS Features — Features" />
 
-<meta property="og:description" content="Conceptually, a Features object holds a set of assays. These
-are composed of a matrix (or array) containing quantitative
-data and row annotations (meta-data).  The number and the names
+<meta property="og:description" content="Conceptually, a Features object holds a set of assays, each
+composed of a matrix (or array) containing quantitative data
+and row annotations (meta-data).  The number and the names
 (nature) of columns (samples) are always the same across the
-matrices, but the number of rows (features) can vary. Each one of
-these matrices has a set of feature annotations (encoded as
-DataFrame objects), that have the same number of rows as the
-assay matrix their are associated to, and an arbitrary number of
-columns (feature variables). Such matrix and feature annotation
-pairs are typically defined as MSnSet or SummarizedExperiment
+assays, but the number of rows (features) can vary. The assays are
+typically defined as MSnSet or SummarizedExperiment
 objects. In addition, a Features object also uses a single
 DataFrame to annotate the samples (columns) represented in all
 the matrices." />
@@ -113,23 +109,19 @@ the matrices." />
 
     <div class="ref-description">
     
-    <p>Conceptually, a <code>Features</code> object holds a set of <em>assays</em>. These
-are composed of a <code>matrix</code> (or <code>array</code>) containing quantitative
-data and row annotations (meta-data).  The number and the names
+    <p>Conceptually, a <code>Features</code> object holds a set of <em>assays</em>, each
+composed of a <code>matrix</code> (or <code>array</code>) containing quantitative data
+and row annotations (meta-data).  The number and the names
 (nature) of columns (samples) are always the same across the
-matrices, but the number of rows (features) can vary. Each one of
-these matrices has a set of feature annotations (encoded as
-<code>DataFrame</code> objects), that have the same number of rows as the
-assay matrix their are associated to, and an arbitrary number of
-columns (feature variables). Such matrix and feature annotation
-pairs are typically defined as <code>MSnSet</code> or <code>SummarizedExperiment</code>
+assays, but the number of rows (features) can vary. The assays are
+typically defined as <code>MSnSet</code> or <code>SummarizedExperiment</code>
 objects. In addition, a <code>Features</code> object also uses a single
 <code>DataFrame</code> to annotate the samples (columns) represented in all
 the matrices.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>Features</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>Features</span>(<span class='no'>...</span>, <span class='kw'>assayLinks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -137,6 +129,10 @@ the matrices.</p>
     <tr>
       <th>...</th>
       <td><p>See [MultiAssayExperiment].</p></td>
+    </tr>
+    <tr>
+      <th>assayLinks</th>
+      <td><p>An optional [AssayLinks].</p></td>
     </tr>
     </table>
     
@@ -146,7 +142,11 @@ the matrices.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>A typical use case for such <code>Features</code> object is to represent
+    <p>The <code>Features</code> class extends the
+<a href='https://www.rdocumentation.org/packages/MultiAssayExperiment/topics/MatchedAssayExperiment-class'>MultiAssayExperiment::MatchedAssayExperiment</a> and inherits all
+the functionality of the
+<a href='https://www.rdocumentation.org/packages/MultiAssayExperiment/topics/MultiAssayExperiment'>MultiAssayExperiment::MultiAssayExperiment</a> class.</p>
+<p>A typical use case for such <code>Features</code> object is to represent
 quantitative proteomics (or metabolomics) data, where different
 assays represent quantitation data at the PSM (the main assay),
 peptide and protein level, and where peptide values are computed
@@ -164,7 +164,15 @@ sure that these match the class validity requirements.</p>
     <h2 class="hasAnchor" id="accessors"><a class="anchor" href="#accessors"></a>Accessors</h2>
 
     
-    <p>See MultiAssayExperiment.</p>
+    <p>See <code>MultiAssayExperiment()</code>.</p>
+    
+    <h2 class="hasAnchor" id="working-with-features"><a class="anchor" href="#working-with-features"></a>Working with Features</h2>
+
+    
+    <ul>
+<li><p><code>addAssay(object, x, name, assayLinks)</code>: Adds a new assay <code>x</code> to
+the <code>Features</code> instance <code>object</code>.</p></li>
+</ul>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -219,6 +227,9 @@ sure that these match the class validity requirements.</p>
 <span class='no'>fts1</span></div><div class='output co'>#&gt; A instance of class Features containing
 #&gt;  [1] assay1: SummarizedExperiment with 10 rows and 4 columns 
 #&gt;  [2] assay2: SummarizedExperiment with 4 rows and 4 columns </div><div class='input'>
+<span class='co'>## Add an assay</span>
+<span class='no'>fts1</span> <span class='kw'>&lt;-</span> <span class='fu'>addAssay</span>(<span class='no'>fts1</span>, <span class='no'>se1</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, ], <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"se3"</span>)
+
 <span class='co'>## -------------------------------------------------</span>
 <span class='co'>## Creating a Features object from a data.frame (see</span>
 <span class='co'>## ?readFeatures) for details</span>
@@ -254,6 +265,8 @@ sure that these match the class validity requirements.</p>
       <li><a href="#details">Details</a></li>
 
       <li><a href="#accessors">Accessors</a></li>
+
+      <li><a href="#working-with-features">Working with Features</a></li>
 
       <li><a href="#see-also">See also</a></li>
       
