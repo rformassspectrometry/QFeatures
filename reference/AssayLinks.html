@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Links between FeatureSets — FeatureSetLink-class • Features</title>
+<title>Links between Assays — AssayLinks-class • Features</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Links between FeatureSets — FeatureSetLink-class" />
+<meta property="og:title" content="Links between Assays — AssayLinks-class" />
 
-<meta property="og:description" content="This class handles the slots to link different FeatureSets within
-a Features object. It isn't meant to be used directly by users." />
+<meta property="og:description" content="This class handles the links different assays within a Features
+object. It isn't meant to be used directly by users." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -95,40 +95,19 @@ a Features object. It isn't meant to be used directly by users." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Links between FeatureSets</h1>
+    <h1>Links between Assays</h1>
     
-    <div class="hidden name"><code>FeatureSet-links.Rd</code></div>
+    <div class="hidden name"><code>AssayLinks.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This class handles the slots to link different FeatureSets within
-a Features object. It isn't meant to be used directly by users.</p>
+    <p>This class handles the links different assays within a Features
+object. It isn't meant to be used directly by users.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_featureSet_ids</span>(<span class='no'>object</span>)
-
-<span class='fu'>set_featureSet_ids</span>(<span class='no'>object</span>)
-
-<span class='fu'>get_next_featureSet_id</span>(<span class='no'>object</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>object</th>
-      <td><p>A Features object.</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>The <a href='FeatureSet-class.html'>FeatureSet</a>s <code>id</code> slots.</p>
-<p>A Features object with FeatureSet element ids set to
-<code>1:length(object)</code>.</p>
-<p>The next `id` in the [Features], as an `integer(1)`.</p>
-    
+        
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
     
@@ -147,10 +126,7 @@ used to group the object's parent features.</p></dd>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
-
       <li><a href="#slots">Slots</a></li>
           </ul>
 

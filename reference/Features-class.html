@@ -32,15 +32,17 @@
 
 <meta property="og:title" content="Quantitative MS Features — Features" />
 
-<meta property="og:description" content="Conceptually, a Features object holds a set of matrix (or
-array) elements containing quantitative data. The number of
-columns (samples) are always the same across the matrices, but the
-number of rows (features) can vary. Each one of these matrices has
-a set of feature annotations (encoded as DataFrame objects), that
-have the same number of rows as the assay matrix their are
-associated to, and an arbitrary number of columns (feature
-variables). Such a matrix and feature annotation pair is called a
-FeatureSet. In addition, a Features object also uses a single
+<meta property="og:description" content="Conceptually, a Features object holds a set of assays. These
+are composed of a matrix (or array) containing quantitative
+data and row annotations (meta-data).  The number and the names
+(nature) of columns (samples) are always the same across the
+matrices, but the number of rows (features) can vary. Each one of
+these matrices has a set of feature annotations (encoded as
+DataFrame objects), that have the same number of rows as the
+assay matrix their are associated to, and an arbitrary number of
+columns (feature variables). Such matrix and feature annotation
+pairs are typically defined as MSnSet or SummarizedExperiment
+objects. In addition, a Features object also uses a single
 DataFrame to annotate the samples (columns) represented in all
 the matrices." />
 <meta name="twitter:card" content="summary" />
@@ -111,117 +113,30 @@ the matrices." />
 
     <div class="ref-description">
     
-    <p>Conceptually, a <code>Features</code> object holds a set of <code>matrix</code> (or
-<code>array</code>) elements containing quantitative data. The number of
-columns (samples) are always the same across the matrices, but the
-number of rows (features) can vary. Each one of these matrices has
-a set of feature annotations (encoded as <code>DataFrame</code> objects), that
-have the same number of rows as the assay matrix their are
-associated to, and an arbitrary number of columns (feature
-variables). Such a matrix and feature annotation pair is called a
-<a href='FeatureSet-class.html'>FeatureSet</a>. In addition, a <code>Features</code> object also uses a single
+    <p>Conceptually, a <code>Features</code> object holds a set of <em>assays</em>. These
+are composed of a <code>matrix</code> (or <code>array</code>) containing quantitative
+data and row annotations (meta-data).  The number and the names
+(nature) of columns (samples) are always the same across the
+matrices, but the number of rows (features) can vary. Each one of
+these matrices has a set of feature annotations (encoded as
+<code>DataFrame</code> objects), that have the same number of rows as the
+assay matrix their are associated to, and an arbitrary number of
+columns (feature variables). Such matrix and feature annotation
+pairs are typically defined as <code>MSnSet</code> or <code>SummarizedExperiment</code>
+objects. In addition, a <code>Features</code> object also uses a single
 <code>DataFrame</code> to annotate the samples (columns) represented in all
 the matrices.</p>
     
     </div>
 
-    <pre class="usage"><span class='co'># S4 method for Features</span>
-<span class='fu'>dims</span>(<span class='no'>x</span>)
-
-<span class='co'># S4 method for Features</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/dim'>dim</a></span>(<span class='no'>x</span>)
-
-<span class='co'># S4 method for Features</span>
-<span class='fu'>sampleNames</span>(<span class='no'>object</span>)
-
-<span class='co'># S4 method for Features,character</span>
-<span class='fu'>sampleNames</span>(<span class='no'>object</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span>
-
-<span class='co'># S4 method for Features</span>
-<span class='fu'>colData</span>(<span class='no'>x</span>)
-
-<span class='co'># S4 method for Features,DataFrame</span>
-<span class='fu'>colData</span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span>
-
-<span class='co'># S4 method for Features,missing</span>
-<span class='fu'><a href='AllGenerics.html'>featureVariables</a></span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for Features,numeric</span>
-<span class='fu'><a href='AllGenerics.html'>featureVariables</a></span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for Features,character</span>
-<span class='fu'><a href='AllGenerics.html'>featureVariables</a></span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for Features,missing</span>
-<span class='fu'><a href='AllGenerics.html'>features</a></span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for Features</span>
-<span class='fu'>assays</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>withDimnames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='co'># S4 method for Features,numeric</span>
-<span class='fu'>assay</span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for Features,character</span>
-<span class='fu'>assay</span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for Features,missing</span>
-<span class='fu'>assay</span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for Features,missing</span>
-<span class='fu'><a href='AllGenerics.html'>featureData</a></span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for Features,numeric</span>
-<span class='fu'><a href='AllGenerics.html'>featureData</a></span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for Features,character</span>
-<span class='fu'><a href='AllGenerics.html'>featureData</a></span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for Features,missing</span>
-<span class='fu'><a href='AllGenerics.html'>featureNames</a></span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for Features,numeric</span>
-<span class='fu'><a href='AllGenerics.html'>featureNames</a></span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for Features,character</span>
-<span class='fu'><a href='AllGenerics.html'>featureNames</a></span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='no'>...</span>)
-
-<span class='fu'>Features</span>(<span class='no'>...</span>, <span class='kw'>colData</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>metadata</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>())</pre>
+    <pre class="usage"><span class='fu'>Features</span>(<span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>An instance of class <code>Features</code>.</p></td>
-    </tr>
-    <tr>
-      <th>object</th>
-      <td><p>An instance of class <code>Features</code>.</p></td>
-    </tr>
-    <tr>
-      <th>value</th>
-      <td><p>The replacement value.</p></td>
-    </tr>
-    <tr>
-      <th>i</th>
-      <td><p>A <code><a href='https://www.rdocumentation.org/packages/base/topics/character'>character(1)</a></code> or <code><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>numeric(1)</a></code> for subsetting.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
-      <td><p>One or multiple [FeatureSet] instances passed to the
-`Features` constructor.</p></td>
-    </tr>
-    <tr>
-      <th>withDimnames</th>
-      <td><p>Always `TRUE`.</p></td>
-    </tr>
-    <tr>
-      <th>colData</th>
-      <td><p>A `DataFrame` with column (sample annotations).</p></td>
-    </tr>
-    <tr>
-      <th>metadata</th>
-      <td><p>A `list()` with arbitrary object annotations.</p></td>
+      <td><p>See [MultiAssayExperiment].</p></td>
     </tr>
     </table>
     
@@ -237,80 +152,23 @@ assays represent quantitation data at the PSM (the main assay),
 peptide and protein level, and where peptide values are computed
 from the PSM data, and the protein-level data is calculated based
 on the peptide-level values.</p>
-<p>The largest <a href='FeatureSet-class.html'>FeatureSet</a> (the one with the highest number of
-features) is considered the main assay, from which the other ones
-are derived by aggregating/combining several rows into a single
-one.</p>
+<p>The largest assay (the one with the highest number of features) is
+considered the main assay, from which the other ones are derived
+by aggregating/combining several rows into a single one.</p>
 <p>The recommended way to create <code>Features</code> objects is the use the
 <code><a href='readFeatures.html'>readFeatures()</a></code> function, that creates an instance from tabular
 data. The <code>Features</code> constructor can be used to create objects
 from their bare parts.  It is the user's responsability to make
 sure that these match the class validity requirements.</p>
-<p>A <code>Features</code> instance must comply with the following requirements:</p><ul>
-<li><p>The features are stored as <a href='FeatureSet-class.html'>FeatureSet</a> instances, and each
-<a href='FeatureSet-class.html'>FeatureSet</a> has the same number of columns.</p></li>
-<li><p>The number of rows and the names of <code>colData</code> match the number
-and names of the samples (columns) in the <a href='FeatureSet-class.html'>FeatureSet</a>s.</p></li>
-<li><p>General metadata about the object itself is provided in the
-<code>metadata</code> list, which can be empty.</p></li>
-</ul>
-    <p>In the usage section, the respective arguments correspond to:</p>
     
     <h2 class="hasAnchor" id="accessors"><a class="anchor" href="#accessors"></a>Accessors</h2>
 
     
-    <p>The following accessors, inheritied from SimpleList are
-available:</p><ul>
-<li><p><code><a href='https://www.rdocumentation.org/packages/base/topics/length'>length(x)</a></code>: returns the number of <a href='FeatureSet-class.html'>FeatureSet</a> instances in
-<code>x</code>'s <a href='FeatureSet-class.html'>FeatureSet</a>s.</p></li>
-<li><p><code><a href='https://www.rdocumentation.org/packages/base/topics/names'>names(x)</a></code>, <code>names(x) &lt;- value</code>: gets or sets the assays
-optional names of the <a href='FeatureSet-class.html'>FeatureSet</a> instances. <code>value</code> is a
-<code>character</code> of length equal to <code><a href='https://www.rdocumentation.org/packages/base/topics/length'>length(x)</a></code>.</p></li>
-<li><p><code>dims(x)</code>: returns the dimensions of all <a href='FeatureSet-class.html'>FeatureSet</a>'s assays.</p></li>
-<li><p><code><a href='https://www.rdocumentation.org/packages/base/topics/dim'>dim(x)</a></code>: returns the dimensions of the largest assay.</p></li>
-<li><p><code>isEmpty(x)</code>: returns <code>TRUE</code> for an object without any
-<a href='FeatureSet-class.html'>FeatureSet</a>s, <code>FALSE</code> otherwise.</p></li>
-<li><p><code>metadata(x)</code>, <code>metadata(x) &lt;- value</code>: gets and sets the
-object's global metadata. <code>value</code> must be a <code>list</code>.</p></li>
-<li><p><code>x[[i]]</code>, <code>x[[i]] &lt;- value</code>: gets and sets a single <a href='FeatureSet-class.html'>FeatureSet</a>
-element, where <code>i</code> is either a <code><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>numeric(1)</a></code> or a
-<code><a href='https://www.rdocumentation.org/packages/base/topics/character'>character(1)</a></code>. <code>value</code> must be of class <code>FeatureSet</code>.</p></li>
-<li><p><code>x[i]</code>, <code>x[i] &lt;- value</code>: gets the list of <a href='FeatureSet-class.html'>FeatureSet</a> instances
-defined the <code>numeric</code> or <code>character</code> <code>i</code>. Can also be used to
-replace the the subset of <a href='FeatureSet-class.html'>FeatureSet</a> elements with a new
-Features <code>values</code> of matching samples.</p></li>
-</ul>
-    <p>The following accessors are also available.</p><ul>
-<li><p><code>sampleNames(object)</code>, <code>sampleNames(x) &lt;- value</code>: gets and sets
-the samples names. <code>value</code> must be a <code>character</code> of appropriate
-length.</p></li>
-<li><p><code>colData(x)</code>, <code>colData(x) &lt;- value</code>: gets or sets the
-columns/samples metadata.<code>value</code> must be a <code>DataFrame</code>
-object. Row names of <code>value</code> match the existing column names of
-the assays.</p></li>
-<li><p><code><a href='AllGenerics.html'>featureVariables(x)</a></code>: gets the list of feature variables, where
-each element of the list is a <code>character</code> of names for the
-corresponding <a href='FeatureSet-class.html'>FeatureSet</a>.</p></li>
-<li><p><code><a href='AllGenerics.html'>featureVariables(object, i)</a></code>: a convenient alternative (to
-<code>featureVariables(x)[[i]]</code>) to get the <code>i</code>th featureData
-element.</p></li>
-<li><p><code>assays(x)</code>: gets a list of assays.</p></li>
-<li><p><code>assay(x, i)</code>(x, i): A convenient alternative (to
-<code>assays(x)[[i]]</code>) to get the <code>i</code>th (default is the largest)
-assay element.</p></li>
-<li><p><code><a href='AllGenerics.html'>featureData(x)</a></code>: gets all assays' feature metadata as a <code>list</code>.</p></li>
-<li><p><code><a href='AllGenerics.html'>featureData(x, i)</a></code>: a convenient alternative (to
-<code>featureData(x)[[i]]</code>) to get the <code>i</code>th featureData element.</p></li>
-<li><p><code><a href='AllGenerics.html'>featureNames(x)</a></code>: gets the list of feature names, where each element of
-the list is a <code>character</code> of names for the corresponding assay.</p></li>
-<li><p><code><a href='AllGenerics.html'>featureNames(object, i)</a></code>: a convenient alternative (to
-<code>featureNames(x)[[i]]</code>) to get the <code>i</code>th featureData element.</p></li>
-</ul>
+    <p>See MultiAssayExperiment.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>The <a href='FeatureSet-class.html'>FeatureSet</a> class and the <code><a href='readFeatures.html'>readFeatures()</a></code>
-constructor.</p></div>
+    <div class='dont-index'><p>The <code><a href='readFeatures.html'>readFeatures()</a></code> constructor.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -318,11 +176,7 @@ constructor.</p></div>
 <span class='co'>## An empty Features object</span>
 <span class='co'>## ------------------------</span>
 
-<span class='fu'>Features</span>()</div><div class='output co'>#&gt; class: Features 
-#&gt; metadata(0):
-#&gt; FeatureSets(0):
-#&gt; Samples(0):
-#&gt; colData(0):</div><div class='input'>
+<span class='fu'>Features</span>()</div><div class='output co'>#&gt; A empty instance of class Features </div><div class='input'>
 <span class='co'>## -----------------------------------</span>
 <span class='co'>## Creating a Features object manually</span>
 <span class='co'>## -----------------------------------</span>
@@ -333,41 +187,38 @@ constructor.</p></div>
 <span class='no'>sample_names</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='st'>"S"</span>, <span class='fl'>1</span>:<span class='fl'>4</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>m1</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>m2</span>) <span class='kw'>&lt;-</span> <span class='no'>sample_names</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>m1</span>) <span class='kw'>&lt;-</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>10</span>]
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>m2</span>) <span class='kw'>&lt;-</span> <span class='no'>letters</span>[<span class='fl'>23</span>:<span class='fl'>26</span>]
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>m2</span>) <span class='kw'>&lt;-</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>4</span>]
 
 <span class='co'>## two corresponding feature metadata with appropriate row names</span>
 <span class='no'>df1</span> <span class='kw'>&lt;-</span> <span class='fu'>DataFrame</span>(<span class='kw'>Fa</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>Fb</span> <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>10</span>],
                  <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>m1</span>))
 <span class='no'>df2</span> <span class='kw'>&lt;-</span> <span class='fu'>DataFrame</span>(<span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>m2</span>))
 
-<span class='co'>## two FeatureSets, that combine the respecitve assays and feature</span>
-<span class='co'>## metadata</span>
-<span class='no'>fs1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='FeatureSet-class.html'>FeatureSet</a></span>(<span class='no'>m1</span>, <span class='no'>df1</span>)
-<span class='no'>fs1</span></div><div class='output co'>#&gt; class: FeatureSet 
+(<span class='no'>se1</span> <span class='kw'>&lt;-</span> <span class='fu'>SummarizedExperiment</span>(<span class='no'>m1</span>, <span class='no'>df1</span>))</div><div class='output co'>#&gt; class: SummarizedExperiment 
 #&gt; dim: 10 4 
-#&gt; Features(10): a b ... i j
-#&gt; Samples(4): S1 S2 S3 S4
-#&gt; Feature variables(2): Fa Fb</div><div class='input'>
-<span class='no'>fs2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='FeatureSet-class.html'>FeatureSet</a></span>(<span class='no'>m2</span>, <span class='no'>df2</span>)
-<span class='no'>fs2</span></div><div class='output co'>#&gt; class: FeatureSet 
+#&gt; metadata(0):
+#&gt; assays(1): ''
+#&gt; rownames(10): a b ... i j
+#&gt; rowData names(2): Fa Fb
+#&gt; colnames(4): S1 S2 S3 S4
+#&gt; colData names(0):</div><div class='input'>(<span class='no'>se2</span> <span class='kw'>&lt;-</span> <span class='fu'>SummarizedExperiment</span>(<span class='no'>m2</span>, <span class='no'>df2</span>))</div><div class='output co'>#&gt; class: SummarizedExperiment 
 #&gt; dim: 4 4 
-#&gt; Features(4): w x y z
-#&gt; Samples(4): S1 S2 S3 S4
-#&gt; Feature variables(0):</div><div class='input'>
+#&gt; metadata(0):
+#&gt; assays(1): ''
+#&gt; rownames(4): a b c d
+#&gt; rowData names(0):
+#&gt; colnames(4): S1 S2 S3 S4
+#&gt; colData names(0):</div><div class='input'>
 <span class='co'>## Sample annotation (colData)</span>
 <span class='no'>cd</span> <span class='kw'>&lt;-</span> <span class='fu'>DataFrame</span>(<span class='kw'>Var1</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>4</span>),
                 <span class='kw'>Var2</span> <span class='kw'>=</span> <span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>4</span>],
                 <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='no'>sample_names</span>)
 
-<span class='co'>## Putting the FeatureSets and their common sample annoation</span>
-<span class='co'>## together into a Features object</span>
-<span class='no'>fts1</span> <span class='kw'>&lt;-</span> <span class='fu'>Features</span>(<span class='no'>fs1</span>, <span class='no'>fs2</span>,
-                 <span class='kw'>colData</span> <span class='kw'>=</span> <span class='no'>cd</span>)
-<span class='no'>fts1</span></div><div class='output co'>#&gt; class: Features 
-#&gt; metadata(0):
-#&gt; FeatureSets(2): '' ''
-#&gt; Samples(4): S1 S2 S3 S4
-#&gt; colData(2): Var1 Var2</div><div class='input'>
+<span class='no'>el</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>assay1</span> <span class='kw'>=</span> <span class='no'>se1</span>, <span class='kw'>assay2</span> <span class='kw'>=</span> <span class='no'>se2</span>)
+<span class='no'>fts1</span> <span class='kw'>&lt;-</span> <span class='fu'>Features</span>(<span class='no'>el</span>, <span class='kw'>colData</span> <span class='kw'>=</span> <span class='no'>cd</span>)
+<span class='no'>fts1</span></div><div class='output co'>#&gt; A instance of class Features containing
+#&gt;  [1] assay1: SummarizedExperiment with 10 rows and 4 columns 
+#&gt;  [2] assay2: SummarizedExperiment with 4 rows and 4 columns </div><div class='input'>
 <span class='co'>## -------------------------------------------------</span>
 <span class='co'>## Creating a Features object from a data.frame (see</span>
 <span class='co'>## ?readFeatures) for details</span>
@@ -375,26 +226,23 @@ constructor.</p></div>
 
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>hlpsms</span>)
 <span class='no'>fts2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='readFeatures.html'>readFeatures</a></span>(<span class='no'>hlpsms</span>, <span class='kw'>ecol</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"psms"</span>)
-<span class='no'>fts2</span></div><div class='output co'>#&gt; class: Features 
+<span class='no'>fts2</span></div><div class='output co'>#&gt; A instance of class Features containing
+#&gt;  [1] psms: SummarizedExperiment with 32776 rows and 10 columns </div><div class='input'>
+<span class='no'>fts2</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; class: SummarizedExperiment 
+#&gt; dim: 32776 10 
 #&gt; metadata(0):
-#&gt; FeatureSets(1): psms
-#&gt; Samples(10): X126 X127C ... X130N X131
-#&gt; colData(0):</div><div class='input'>
-<span class='fu'><a href='AllGenerics.html'>features</a></span>(<span class='no'>fts2</span>)</div><div class='output co'>#&gt; $psms
-#&gt; class: FeatureSet 
+#&gt; assays(1): ''
+#&gt; rownames(32776): 136 141 ... 115747 115775
+#&gt; rowData names(18): Sequence ProteinDescriptions ... RTmin markers
+#&gt; colnames(10): X126 X127C ... X130N X131
+#&gt; colData names(0):</div><div class='input'><span class='no'>fts2</span><span class='kw'>[[</span><span class='st'>"psms"</span>]]</div><div class='output co'>#&gt; class: SummarizedExperiment 
 #&gt; dim: 32776 10 
-#&gt; Features(32776): 136 141 ... 115747 115775
-#&gt; Samples(10): X126 X127C ... X130N X131
-#&gt; Feature variables(18): Sequence ProteinDescriptions ... RTmin markers
-#&gt; </div><div class='input'><span class='no'>fts2</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; class: FeatureSet 
-#&gt; dim: 32776 10 
-#&gt; Features(32776): 136 141 ... 115747 115775
-#&gt; Samples(10): X126 X127C ... X130N X131
-#&gt; Feature variables(18): Sequence ProteinDescriptions ... RTmin markers</div><div class='input'><span class='no'>fts2</span><span class='kw'>[[</span><span class='st'>"psms"</span>]]</div><div class='output co'>#&gt; class: FeatureSet 
-#&gt; dim: 32776 10 
-#&gt; Features(32776): 136 141 ... 115747 115775
-#&gt; Samples(10): X126 X127C ... X130N X131
-#&gt; Feature variables(18): Sequence ProteinDescriptions ... RTmin markers</div></pre>
+#&gt; metadata(0):
+#&gt; assays(1): ''
+#&gt; rownames(32776): 136 141 ... 115747 115775
+#&gt; rowData names(18): Sequence ProteinDescriptions ... RTmin markers
+#&gt; colnames(10): X126 X127C ... X130N X131
+#&gt; colData names(0):</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
