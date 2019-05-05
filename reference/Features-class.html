@@ -40,7 +40,25 @@ assays, but the number of rows (features) can vary. The assays are
 typically defined as MSnSet or SummarizedExperiment
 objects. In addition, a Features object also uses a single
 DataFrame to annotate the samples (columns) represented in all
-the matrices." />
+the matrices.
+The Features class extends the
+MultiAssayExperiment::MatchedAssayExperiment and inherits all
+the functionality of the
+MultiAssayExperiment::MultiAssayExperiment class.
+A typical use case for such Features object is to represent
+quantitative proteomics (or metabolomics) data, where different
+assays represent quantitation data at the PSM (the main assay),
+peptide and protein level, and where peptide values are computed
+from the PSM data, and the protein-level data is calculated based
+on the peptide-level values.
+The largest assay (the one with the highest number of features) is
+considered the main assay, from which the other ones are derived
+by aggregating/combining several rows into a single one.
+The recommended way to create Features objects is the use the
+readFeatures() function, that creates an instance from tabular
+data. The Features constructor can be used to create objects
+from their bare parts.  It is the user's responsability to make
+sure that these match the class validity requirements." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -118,31 +136,7 @@ typically defined as <code>MSnSet</code> or <code>SummarizedExperiment</code>
 objects. In addition, a <code>Features</code> object also uses a single
 <code>DataFrame</code> to annotate the samples (columns) represented in all
 the matrices.</p>
-    
-    </div>
-
-    <pre class="usage"><span class='fu'>Features</span>(<span class='no'>...</span>, <span class='kw'>assayLinks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>...</th>
-      <td><p>See [MultiAssayExperiment].</p></td>
-    </tr>
-    <tr>
-      <th>assayLinks</th>
-      <td><p>An optional [AssayLinks].</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A new instance of class `Features`.</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>The <code>Features</code> class extends the
+<p>The <code>Features</code> class extends the
 <a href='https://www.rdocumentation.org/packages/MultiAssayExperiment/topics/MatchedAssayExperiment-class'>MultiAssayExperiment::MatchedAssayExperiment</a> and inherits all
 the functionality of the
 <a href='https://www.rdocumentation.org/packages/MultiAssayExperiment/topics/MultiAssayExperiment'>MultiAssayExperiment::MultiAssayExperiment</a> class.</p>
@@ -161,22 +155,60 @@ data. The <code>Features</code> constructor can be used to create objects
 from their bare parts.  It is the user's responsability to make
 sure that these match the class validity requirements.</p>
     
-    <h2 class="hasAnchor" id="accessors"><a class="anchor" href="#accessors"></a>Accessors</h2>
+    </div>
 
+    <pre class="usage"><span class='fu'>Features</span>(<span class='no'>...</span>, <span class='kw'>assayLinks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
-    <p>See <code>MultiAssayExperiment()</code>.</p>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>...</th>
+      <td><p>See [MultiAssayExperiment].</p></td>
+    </tr>
+    <tr>
+      <th>assayLinks</th>
+      <td><p>An optional [AssayLinks].</p></td>
+    </tr>
+    </table>
     
-    <h2 class="hasAnchor" id="working-with-features"><a class="anchor" href="#working-with-features"></a>Working with Features</h2>
+    <h2 class="hasAnchor" id="constructors"><a class="anchor" href="#constructors"></a>Constructors</h2>
 
     
     <ul>
-<li><p><code>addAssay(object, x, name, assayLinks)</code>: Adds a new assay <code>x</code> to
-the <code>Features</code> instance <code>object</code>.</p></li>
+<li><p><code>Features(..., assayLinks)</code> allows the manual construction of
+objects. It is the user's responsability to make sure these
+comply. The arguments in <code>...</code> are those documented in
+<code><a href='https://www.rdocumentation.org/packages/MultiAssayExperiment/topics/MultiAssayExperiment'>MultiAssayExperiment::MultiAssayExperiment()</a></code>. For details
+about <code>assayLinks</code>, see <a href='AssayLinks.html'>AssayLinks</a>. An example is shown below.</p></li>
+<li><p>The <code><a href='readFeatures.html'>readFeatures()</a></code> function constructs a <code>Features</code> object
+from text-based spreadsheet or a <code>data.frame</code> used to generate
+an assay. See the function manual page for details and an
+example below.</p></li>
+</ul>
+    
+    <h2 class="hasAnchor" id="accessors"><a class="anchor" href="#accessors"></a>Accessors</h2>
+
+    
+    <p>The <code>Features</code> class extends the
+<a href='https://www.rdocumentation.org/packages/MultiAssayExperiment/topics/MultiAssayExperiment'>MultiAssayExperiment::MultiAssayExperiment</a> class and inherits
+all its accessors and replacement methods.</p>
+    
+    <h2 class="hasAnchor" id="adding-assays"><a class="anchor" href="#adding-assays"></a>Adding assays</h2>
+
+    
+    <ul>
+<li><p>The <code><a href='combineFeatures.html'>combineFeatures()</a></code> function creates a new assay by
+combining features of an existing assay.</p></li>
+<li><p><code>addAssay(object, x, name, assayLinks)</code>: Adds a new assay (or
+list of assays) <code>x</code> to the <code>Features</code> instance <code>object</code>. <code>name</code>
+is a <code><a href='https://www.rdocumentation.org/packages/base/topics/character'>character(1)</a></code> naming the single assay (default is
+<code>"newAssay"), and is ignored if </code>x<code>is a list of assays.</code>assayLinks` is an optional <a href='AssayLinks.html'>AssayLinks</a>.</p></li>
 </ul>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>The <code><a href='readFeatures.html'>readFeatures()</a></code> constructor.</p></div>
+    <div class='dont-index'><p>The <code><a href='readFeatures.html'>readFeatures()</a></code> constructor and the <code><a href='combineFeatures.html'>combineFeatures()</a></code> function.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -260,13 +292,11 @@ the <code>Features</code> instance <code>object</code>.</p></li>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
+      <li><a href="#constructors">Constructors</a></li>
 
       <li><a href="#accessors">Accessors</a></li>
 
-      <li><a href="#working-with-features">Working with Features</a></li>
+      <li><a href="#adding-assays">Adding assays</a></li>
 
       <li><a href="#see-also">See also</a></li>
       
