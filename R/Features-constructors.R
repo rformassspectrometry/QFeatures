@@ -23,14 +23,15 @@
 ##' @param ... Further arguments that can be passed on to `read.csv`
 ##'     except `stringsAsFactors`, which is always `FALSE`.
 ##'
-##' @param name An optional `character(1)` to name the [FeatureSet] in
-##'     the resulting [Features] object.
+##' @param name An `character(1)` to name assay. If not set,
+##'     `features` is used.
 ##'
 ##' @return An instance of class [Features].
 ##'
 ##' @author Laurent Gatto
 ##'
 ##' @importFrom utils read.csv
+##' @import SummarizedExperiment
 ##'
 ##' @seealso The [Features] class for an example on how to manipulate use
 ##'     `readFeatures` and how to further manipulate the resulting data.
@@ -72,45 +73,35 @@ readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
                  paste(colnames(xx), paste = ", "))
         rownames(fdata) <- rownames(assay) <- fdata[, fnames]
     }
-    fl <- FeatureSet(assay = assay,
-                     featureData = fdata)
-    cd <- DataFrame(row.names = colnames(assay))    
-    ans <- Features(listData = fl,
-                    colData = cd)
-    ans <- set_featureSet_ids(ans)
-    if (!is.null(name))
-        names(ans) <- name[1]
+    se <- SummarizedExperiment(assay,
+                               rowData = fdata)    
+    cd <- DataFrame(row.names = colnames(assay))
+    if (is.null(name))
+        name <- "features"
+    el <- structure(list(se), .Names = name[1])
+    ans <- Features(el, colData = cd)
+    ## TODO: links
+    ## ans <- set_featureSet_ids(ans)
     ans
 }
+
 
 
 ##' @export
 ##' @importFrom methods extends
 ##' @rdname Features-class
-##' @param ... One or multiple [FeatureSet] instances passed to the
-##'     `Features` constructor.
-##' @param colData A `DataFrame` with column (sample annotations).
-##' @param metadata A `list()` with arbitrary object annotations.
+##' @param ... See [MultiAssayExperiment].
 ##' @return A new instance of class `Features`.
-Features <- function(...,
-                     colData = NULL,
-                     metadata = list()) {
-    if (missing(...))
-        return(new("Features"))
-    args <- list(...)
-    if (length(args) == 1L && extends(class(args[[1L]]), "list")) 
-        args <- args[[1L]]
-    ## Setting ids
-    ids <- seq_len(length(args))
-    ids <- ids[order(sapply(args, nrow), decreasing = TRUE)]
-    for (i in seq_len(length(args)))
-        args[[i]]@links@id <- ids[i]
-
-    if (is.null(colData))
-        colData <- DataFrame(row.names = sampleNames(args[[1]]))
-    
+Features <- function(...) {
+    ans <- MatchedAssayExperiment(...)
+    ## TODO: setting ids
+    ## ids <- seq_len(length(args))
+    ## ids <- ids[order(sapply(args, nrow), decreasing = TRUE)]
+    ## for (i in seq_len(length(args)))
+    ##     args[[i]]@links@id <- ids[i]
     new("Features",
-        listData = args,
-        colData = colData,
-        metadata = metadata)
+        ExperimentList = ans@ExperimentList,
+        colData = ans@colData,
+        sampleMap = ans@sampleMap,
+        metadata = ans@metadata)
 }

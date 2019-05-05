@@ -27,8 +27,8 @@ indicating the column to be used as feature names.}
 \item{...}{Further arguments that can be passed on to \code{read.csv}
 except \code{stringsAsFactors}, which is always \code{FALSE}.}
 
-\item{name}{An optional \code{character(1)} to name the \link{FeatureSet} in
-the resulting \link{Features} object.}
+\item{name}{An \code{character(1)} to name assay. If not set,
+\code{features} is used.}
 }
 \value{
 An instance of class \link{Features}.
