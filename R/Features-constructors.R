@@ -79,10 +79,16 @@ readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
     if (is.null(name))
         name <- "features"
     el <- structure(list(se), .Names = name[1])
-    ans <- Features(el, colData = cd)
-    ## TODO: links
-    ## ans <- set_featureSet_ids(ans)
-    ans
+    ldf <- AssayLinks(name = name[1],
+                      from = NA_character_,
+                      fcol = NA_character_)
+    ans <- MatchedAssayExperiment(el, colData = cd)
+    new("Features",
+        ExperimentList = ans@ExperimentList,
+        colData = ans@colData,
+        sampleMap = ans@sampleMap,
+        metadata = ans@metadata,
+        links = ldf)
 }
 
 
@@ -91,17 +97,57 @@ readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
 ##' @importFrom methods extends
 ##' @rdname Features-class
 ##' @param ... See [MultiAssayExperiment].
+##' @param assayLinks An optional [AssayLinks].
 ##' @return A new instance of class `Features`.
-Features <- function(...) {
+Features <- function(..., assayLinks = NULL) {
     ans <- MatchedAssayExperiment(...)
-    ## TODO: setting ids
-    ## ids <- seq_len(length(args))
-    ## ids <- ids[order(sapply(args, nrow), decreasing = TRUE)]
-    ## for (i in seq_len(length(args)))
-    ##     args[[i]]@links@id <- ids[i]
+    if (isEmpty(ans)) assayLinks <- EmptyAssayLinks()
+    else {
+        if (is.null(assayLinks))
+            assayLinks <- AssayLinks(name = names(ans),
+                                     from = rep(NA_character_, length(ans)),
+                                     fcol = rep(NA_character_, length(ans)))
+    }
     new("Features",
         ExperimentList = ans@ExperimentList,
         colData = ans@colData,
         sampleMap = ans@sampleMap,
-        metadata = ans@metadata)
+        metadata = ans@metadata,
+        links = assayLinks)
+}
+
+
+
+##' @param object An instance of class [Features].
+##' @param x A single assay or a *named* list of assays.
+##' @param name A `character(1)` naming the single assay (default is
+##'     `"newAssay"). Ignored if `x` is a list of assays.
+##' @param assayLinks An optional [AssayLinks].
+##'
+##' @return An updated [Features] instance.
+##' 
+##' @md
+##' 
+##' @rdname Features
+##' 
+##' @export 
+addAssay <- function(object,
+                     x,
+                     name = "newAssay",
+                     assayLinks = NULL) {
+    stopifnot(inherits(object, "Features"))
+    el0 <- object@ExperimentList@listData
+    if (is.list(x)) el1 <- x
+    else el1 <- structure(list(x), .Names = name[1])
+    el <- ExperimentList(c(el0, el1))
+    if (is.null(assayLinks)) 
+        assayLinks <- AssayLinks(name = name)
+    smap <- MultiAssayExperiment:::.sampleMapFromData(colData(object), el)
+    new("Features",
+        ExperimentList = el,
+        colData = colData(object),
+        sampleMap = smap,
+        metadata = metadata(object),
+        links = addAssayLinks(object@links,
+                              assayLinks))
 }

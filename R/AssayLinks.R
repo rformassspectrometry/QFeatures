@@ -1,70 +1,59 @@
-## ----------------------
-## id and from management
-## ----------------------
-
 ##' Links between Assays
 ##'
+##' Links between assays within a [Features] object are handled by the
+##' `links` slot. It is composed of a `DataFrame` with three columns,
+##' documented below. `AssayLinks` can be created with the
+##' `AssayLinks()` and `EmptyAssayLinks()` functions.
 ##'
-##' This class handles the links different assays within a Features
-##' object. It isn't meant to be used directly by users.
+##' @param name The name of the assay(s).
 ##'
-##' @slot id An `integer(1)` holding the set's identifier. For
-##'     internal use at the [Features]-level only.
+##' @param from The name of the parent assay, or `NA_character_`, if
+##'     not applicable.
 ##'
-##' @slot from An `integer(1)` refering to the identifier from which
-##'     the current object originates. For internal use at the
-##'     [Features]-level only.
-##'
-##' @slot fcol A `character(1)` storing the feature variables that was
-##'     used to group the object's parent features.
+##' @param fcol The feature variable of the parent assay used to
+##'     generate the current assay (used in
+##'     `combineFeatures`). `NA_character_`, if not applicable.
 ##'
 ##' @rdname AssayLinks
-##' @exportClass AssayLinks
+##'
+##' @name AssayLinks
+##' 
 ##' @md
-setClass("AssayLinks",
-         slots = c(id = "integer",
-                   from = "integer",
-                   fcol = "character"),
-         prototype = prototype(
-             id = NA_integer_,
-             from = NA_integer_,
-             fcol = NA_character_))
+NULL
+
+##' @rdname AssayLinks
+##' @export
+EmptyAssayLinks <- function()
+    DataFrame(row.names = c("name", "from", "fcol"))
 
 
-## ##' Returns the [FeatureSet]s `id` slots.
-## ##'
-## ##' @param object A Features object.
-## ##' @return The [FeatureSet]s `id` slots.
-## ##' @md
-## ##' @rdname FeatureSet-links
-## get_featureSet_ids <- function(object) 
-##     sapply(object, function(x) x@links@id)
+##' @rdname AssayLinks
+##' @export
+AssayLinks <- function(name, from = NULL, fcol = NULL) {
+    if (is.null(from))
+        from <- rep(NA_character_, length(name))
+    if (is.null(fcol))
+        fcol <- rep(NA_character_, length(name))
+    DataFrame(name = name,
+              from = from,
+              fcol = fcol,
+              row.names = name)
+}
 
-## ##' This function sets the [FeatureSet]'s `id` slot to
-## ##' `1:length(object)`. The [FeatureSet] with the larges number of
-## ##' features gets `id` 1, next one 2, ... and the smallest one get
-## ##' `length(object)`.
-## ##' 
-## ##' @return A Features object with FeatureSet element ids set to
-## ##'     `1:length(object)`.
-## ##' @md
-## ##' @rdname FeatureSet-links
-## set_featureSet_ids <- function(object) {
-##     if (isEmpty(object))
-##         return(object)
-##     ln <- length(object)
-##     new_ids <- seq_len(ln)
-##     o <- order(dims(object)[1, ], decreasing = TRUE)
-##     new_ids <- new_ids[o]
-##     for (i in seq_len(ln))
-##         object@listData[[i]]@links@id <- new_ids[i]
-##     if (validObject(object))
-##         object
-## }
+get_assay_link <- function(x, i) {
+    j <- x@links$name == i
+    if (sum(j) == 1) x@links[i, ]
+    else stop("Assay not found.")
+}
 
-## ##' Returns the next identifier.
-## ##'
-## ##' @return The next `id` in the [Features], as an `integer(1)`.
-## ##' @rdname FeatureSet-links
-## get_next_featureSet_id <- function(object) 
-##     as.integer(max(get_featureSet_ids(object)) + 1)
+get_parent_assay_link <- function(x, i) {
+    i2 <- get_assay_link(x, i)$from
+    get_assay_link(x, i2)
+}
+
+addAssayLinks <- function(al1, al2) {
+    ans <- rbind(al1, al2)
+    if (anyDuplicated(ans$name))
+        stop("Found duplicated link names.")
+    ans    
+}

@@ -4,32 +4,36 @@
 \alias{Features}
 \alias{Features-class}
 \alias{class:Features}
+\alias{addAssay}
 \title{Quantitative MS Features}
 \usage{
-Features(...)
+Features(..., assayLinks = NULL)
 }
 \arguments{
 \item{...}{See [MultiAssayExperiment].}
+
+\item{assayLinks}{An optional [AssayLinks].}
 }
 \value{
 A new instance of class `Features`.
 }
 \description{
-Conceptually, a \code{Features} object holds a set of \emph{assays}. These
-are composed of a \code{matrix} (or \code{array}) containing quantitative
-data and row annotations (meta-data).  The number and the names
+Conceptually, a \code{Features} object holds a set of \emph{assays}, each
+composed of a \code{matrix} (or \code{array}) containing quantitative data
+and row annotations (meta-data).  The number and the names
 (nature) of columns (samples) are always the same across the
-matrices, but the number of rows (features) can vary. Each one of
-these matrices has a set of feature annotations (encoded as
-\code{DataFrame} objects), that have the same number of rows as the
-assay matrix their are associated to, and an arbitrary number of
-columns (feature variables). Such matrix and feature annotation
-pairs are typically defined as \code{MSnSet} or \code{SummarizedExperiment}
+assays, but the number of rows (features) can vary. The assays are
+typically defined as \code{MSnSet} or \code{SummarizedExperiment}
 objects. In addition, a \code{Features} object also uses a single
 \code{DataFrame} to annotate the samples (columns) represented in all
 the matrices.
 }
 \details{
+The \code{Features} class extends the
+\link[MultiAssayExperiment:MatchedAssayExperiment]{MultiAssayExperiment::MatchedAssayExperiment} and inherits all
+the functionality of the
+\link[MultiAssayExperiment:MultiAssayExperiment]{MultiAssayExperiment::MultiAssayExperiment} class.
+
 A typical use case for such \code{Features} object is to represent
 quantitative proteomics (or metabolomics) data, where different
 assays represent quantitation data at the PSM (the main assay),
@@ -50,7 +54,15 @@ sure that these match the class validity requirements.
 \section{Accessors}{
 
 
-See \link{MultiAssayExperiment}.
+See \code{\link[=MultiAssayExperiment]{MultiAssayExperiment()}}.
+}
+
+\section{Working with Features}{
+
+\itemize{
+\item \code{addAssay(object, x, name, assayLinks)}: Adds a new assay \code{x} to
+the \code{Features} instance \code{object}.
+}
 }
 
 \examples{
@@ -88,6 +100,9 @@ cd <- DataFrame(Var1 = rnorm(4),
 el <- list(assay1 = se1, assay2 = se2)
 fts1 <- Features(el, colData = cd)
 fts1
+
+## Add an assay
+fts1 <- addAssay(fts1, se1[1:2, ], name = "se3")
 
 ## -------------------------------------------------
 ## Creating a Features object from a data.frame (see

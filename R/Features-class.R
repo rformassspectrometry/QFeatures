@@ -1,18 +1,19 @@
 ##' Quantitative MS Features
-##'
-##' Conceptually, a `Features` object holds a set of *assays*. These
-##' are composed of a `matrix` (or `array`) containing quantitative
-##' data and row annotations (meta-data).  The number and the names
+##' 
+##' Conceptually, a `Features` object holds a set of *assays*, each
+##' composed of a `matrix` (or `array`) containing quantitative data
+##' and row annotations (meta-data).  The number and the names
 ##' (nature) of columns (samples) are always the same across the
-##' matrices, but the number of rows (features) can vary. Each one of
-##' these matrices has a set of feature annotations (encoded as
-##' `DataFrame` objects), that have the same number of rows as the
-##' assay matrix their are associated to, and an arbitrary number of
-##' columns (feature variables). Such matrix and feature annotation
-##' pairs are typically defined as `MSnSet` or `SummarizedExperiment`
+##' assays, but the number of rows (features) can vary. The assays are
+##' typically defined as `MSnSet` or `SummarizedExperiment`
 ##' objects. In addition, a `Features` object also uses a single
 ##' `DataFrame` to annotate the samples (columns) represented in all
 ##' the matrices.
+##'
+##' The `Features` class extends the
+##' [MultiAssayExperiment::MatchedAssayExperiment] and inherits all
+##' the functionality of the
+##' [MultiAssayExperiment::MultiAssayExperiment] class.
 ##'
 ##' A typical use case for such `Features` object is to represent
 ##' quantitative proteomics (or metabolomics) data, where different
@@ -31,9 +32,15 @@
 ##' from their bare parts.  It is the user's responsability to make
 ##' sure that these match the class validity requirements.
 ##'
+##'
 ##' @section Accessors:
 ##'
-##' See [MultiAssayExperiment].
+##' See [MultiAssayExperiment()].
+##'
+##' @section Working with Features:
+##'
+##' - `addAssay(object, x, name, assayLinks)`: Adds a new assay `x` to
+##'   the `Features` instance `object`. 
 ##'
 ##' @seealso The [readFeatures()] constructor.
 ##'
@@ -43,7 +50,7 @@
 ##'
 ##' @rdname Features-class
 ##'
-##' @aliases Features Features-class class:Features
+##' @aliases Features Features-class class:Features addAssay
 ##'
 ##' @md
 ##'
@@ -87,6 +94,9 @@
 ##' fts1 <- Features(el, colData = cd)
 ##' fts1
 ##'
+##' ## Add an assay
+##' fts1 <- addAssay(fts1, se1[1:2, ], name = "se3")
+##'
 ##' ## -------------------------------------------------
 ##' ## Creating a Features object from a data.frame (see
 ##' ## ?readFeatures) for details
@@ -103,9 +113,10 @@ NULL
 setClass("Features",
          contains = "MatchedAssayExperiment",
          slots = c(version = "character",
-                   links = "list"),
+                   links = "DataFrame"),
          prototype = prototype(
-             version = "0.1"))
+             version = "0.1",
+             links = EmptyAssayLinks()))
 
 
 setMethod("show", "Features",

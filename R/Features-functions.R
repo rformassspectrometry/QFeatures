@@ -3,7 +3,7 @@
 ## ------------------
 
 main_assay <- function(object)
-    which.max(sapply(object, nrow))
+    which.max(sapply(experiments(object), nrow))
 
 ## ----------------------------
 ## Internal validity functions
@@ -11,11 +11,8 @@ main_assay <- function(object)
 
 ##' @importFrom methods slot
 .valid_Features_indices <- function(object) {
-    ## ids <- get_featureSet_ids(object)
-    ## if (anyNA(ids)) 
-    ##     stop("Indices musn't be NA")
-    ## if (anyDuplicated(ids))
-    ##     stop("Duplicated indices")
+    if (!isEmpty(object) && !identical(names(object), object@links[["name"]]))
+        stop("Assay links names are wrong.")    
     NULL
 }
 

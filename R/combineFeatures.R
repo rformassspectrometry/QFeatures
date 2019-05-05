@@ -1,7 +1,7 @@
 combineFeatures <- function(object,
                             i,
                             fcol,
-                            name = NULL,
+                            name = "newAssay",
                             fun = median,
                             ... 
                             ) {
@@ -30,9 +30,11 @@ combineFeatures <- function(object,
     
     se <- SummarizedExperiment(.assay,
                                rowData = .featureData[rownames(.assay), ])
-    el <- structure(list(se), .Names = name[1])
-    object <- c(object, el)
-    ## TODO: links
+    assayLinks <- AssayLinks(name = name,
+                             from = ifelse(is.character(i), i, names(object)[i]),
+                             fcol = fcol)
+    object <- addAssay(object, se, name = name, assayLinks = assayLinks)
+
     if (validObject(object))
         object
 }
