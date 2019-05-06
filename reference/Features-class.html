@@ -264,7 +264,7 @@ is a <code><a href='https://www.rdocumentation.org/packages/base/topics/characte
 
 <span class='co'>## -------------------------------------------------</span>
 <span class='co'>## Creating a Features object from a data.frame (see</span>
-<span class='co'>## ?readFeatures) for details</span>
+<span class='co'>## ?readFeatures for details)</span>
 <span class='co'>## -------------------------------------------------</span>
 
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>hlpsms</span>)
@@ -285,7 +285,16 @@ is a <code><a href='https://www.rdocumentation.org/packages/base/topics/characte
 #&gt; rownames(32776): 136 141 ... 115747 115775
 #&gt; rowData names(18): Sequence ProteinDescriptions ... RTmin markers
 #&gt; colnames(10): X126 X127C ... X130N X131
-#&gt; colData names(0):</div></pre>
+#&gt; colData names(0):</div><div class='input'>
+<span class='co'>## --------------------------------------------------</span>
+<span class='co'>## Add an peptides assay, computed from the psms (see</span>
+<span class='co'>## ?combineFeatures for details)</span>
+<span class='co'>## --------------------------------------------------</span>
+
+<span class='no'>fts2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='combineFeatures.html'>combineFeatures</a></span>(<span class='no'>fts2</span>, <span class='st'>"psms"</span>, <span class='st'>"Sequence"</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"peptides"</span>)
+<span class='no'>fts2</span></div><div class='output co'>#&gt; A instance of class Features containing
+#&gt;  [1] psms: SummarizedExperiment with 32776 rows and 10 columns 
+#&gt;  [2] peptides: SummarizedExperiment with 26796 rows and 10 columns </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

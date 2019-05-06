@@ -32,10 +32,9 @@
 
 <meta property="og:title" content="Links between Assays — AssayLinks" />
 
-<meta property="og:description" content="Links between assays within a Features object are handled by the
-links slot. It is composed of a DataFrame with three columns,
-documented below. AssayLinks can be created with the
-AssayLinks() and EmptyAssayLinks() functions." />
+<meta property="og:description" content="Links between assays within a Features object are handled by an
+AssayLinks object. It is composed by a list of AssayLink
+instances." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -104,44 +103,85 @@ AssayLinks() and EmptyAssayLinks() functions." />
 
     <div class="ref-description">
     
-    <p>Links between assays within a <a href='Features-class.html'>Features</a> object are handled by the
-<code>links</code> slot. It is composed of a <code>DataFrame</code> with three columns,
-documented below. <code>AssayLinks</code> can be created with the
-<code>AssayLinks()</code> and <code>EmptyAssayLinks()</code> functions.</p>
+    <p>Links between assays within a <a href='Features-class.html'>Features</a> object are handled by an
+<code>AssayLinks</code> object. It is composed by a list of <code>AssayLink</code>
+instances.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>EmptyAssayLinks</span>()
+    <pre class="usage"><span class='fu'>AssayLink</span>(<span class='no'>name</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>, <span class='kw'>fcol</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>,
+  <span class='kw'>hits</span> <span class='kw'>=</span> <span class='fu'>Hits</span>())
 
-<span class='fu'>AssayLinks</span>(<span class='no'>name</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fcol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='co'># S4 method for AssayLink</span>
+<span class='fu'>show</span>(<span class='no'>object</span>)
+
+<span class='fu'>AssayLinks</span>(<span class='no'>...</span>, <span class='kw'>names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>name</th>
-      <td><p>The name of the assay(s).</p></td>
+      <td><p>A mandatory name of the assay(s).</p></td>
     </tr>
     <tr>
       <th>from</th>
-      <td><p>The name of the parent assay, or <code>NA_character_</code>, if
+      <td><p>The name of the parent assay, or `NA_character_`, if
 not applicable.</p></td>
     </tr>
     <tr>
       <th>fcol</th>
       <td><p>The feature variable of the parent assay used to
 generate the current assay (used in
-<code>combineFeatures</code>). <code>NA_character_</code>, if not applicable.</p></td>
+`combineFeatures`). `NA_character_`, if not applicable.</p></td>
+    </tr>
+    <tr>
+      <th>hits</th>
+      <td><p>An object of class [S4Vectors::Hits] matching the
+features of two assays.</p></td>
+    </tr>
+    <tr>
+      <th>object</th>
+      <td><p>An `AssayLink` object to show.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>A set of `AssayLink` objects or a list thereof.</p></td>
+    </tr>
+    <tr>
+      <th>names</th>
+      <td><p>A `character()` of `AssayLink` names. If provided,
+`...` are ignored, and `names` is used to create an
+`AssayLinks` object with `AssayLink` instances with names
+`names`.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
+    <p>The constructor are respectively <code>AssayLinks(..., .Names = NULL)</code>
+and <code>AssayLink(name, from = NULL, fcol = NULL, hits = NULL)</code>. See
+examples below.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='no'>al1</span> <span class='kw'>&lt;-</span> <span class='fu'>AssayLink</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"assay1"</span>)
+<span class='no'>al1</span></div><div class='output co'>#&gt; AssayLink for assay &lt;assay1&gt;</div><div class='input'>
+<span class='fu'>AssayLinks</span>(<span class='no'>al1</span>)</div><div class='output co'>#&gt; AssayLinks of length 1
+#&gt; names(1): assay1</div><div class='input'>
+<span class='fu'>AssayLinks</span>(<span class='kw'>names</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Assay1"</span>, <span class='st'>"Assay2"</span>))</div><div class='output co'>#&gt; AssayLinks of length 2
+#&gt; names(2): Assay1 Assay2</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#details">Details</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
