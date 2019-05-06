@@ -21,24 +21,24 @@ AssayLinks(..., names = NULL)
 \arguments{
 \item{name}{A mandatory name of the assay(s).}
 
-\item{from}{The name of the parent assay, or `NA_character_`, if
+\item{from}{The name of the parent assay, or \code{NA_character_}, if
 not applicable.}
 
 \item{fcol}{The feature variable of the parent assay used to
 generate the current assay (used in
-`combineFeatures`). `NA_character_`, if not applicable.}
+\code{combineFeatures}). \code{NA_character_}, if not applicable.}
 
-\item{hits}{An object of class [S4Vectors::Hits] matching the
+\item{hits}{An object of class \link[S4Vectors:Hits]{S4Vectors::Hits} matching the
 features of two assays.}
 
 \item{object}{An `AssayLink` object to show.}
 
-\item{...}{A set of `AssayLink` objects or a list thereof.}
+\item{...}{A set of \code{AssayLink} objects or a list thereof.}
 
-\item{names}{A `character()` of `AssayLink` names. If provided,
-`...` are ignored, and `names` is used to create an
-`AssayLinks` object with `AssayLink` instances with names
-`names`.}
+\item{names}{A \code{character()} of \code{AssayLink} names. If provided,
+\code{...} are ignored, and \code{names} is used to create an
+\code{AssayLinks} object with \code{AssayLink} instances with names
+\code{names}.}
 }
 \description{
 Links between assays within a \link{Features} object are handled by an

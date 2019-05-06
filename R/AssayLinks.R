@@ -46,6 +46,9 @@ setClass("AssayLink",
 ##'     features of two assays.
 ##'
 ##' @rdname AssayLinks
+##'
+##' @md
+##' 
 ##' @export
 AssayLink <- function(name, from = NA_character_,
                       fcol = NA_character_,
@@ -68,12 +71,18 @@ setClass("AssayLinks",
              elementType = "AssayLink"))
 
 ##' @param ... A set of `AssayLink` objects or a list thereof.
+##' 
 ##' @param names A `character()` of `AssayLink` names. If provided,
 ##'     `...` are ignored, and `names` is used to create an
 ##'     `AssayLinks` object with `AssayLink` instances with names
 ##'     `names`.
+##' 
 ##' @rdname AssayLinks
+##' 
 ##' @importFrom methods extends
+##'
+##' @md
+##' 
 ##' @export
 AssayLinks <- function(..., names = NULL) {
     if (!is.null(names))
