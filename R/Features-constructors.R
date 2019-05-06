@@ -79,16 +79,14 @@ readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
     if (is.null(name))
         name <- "features"
     el <- structure(list(se), .Names = name[1])
-    ldf <- AssayLinks(name = name[1],
-                      from = NA_character_,
-                      fcol = NA_character_)
+    al <- AssayLinks(AssayLink(name = name[1]))
     ans <- MatchedAssayExperiment(el, colData = cd)
     new("Features",
         ExperimentList = ans@ExperimentList,
         colData = ans@colData,
         sampleMap = ans@sampleMap,
         metadata = ans@metadata,
-        links = ldf)
+        assayLinks = al)
 }
 
 
@@ -100,19 +98,17 @@ readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
 ##' @param assayLinks An optional [AssayLinks].
 Features <- function(..., assayLinks = NULL) {
     ans <- MatchedAssayExperiment(...)
-    if (isEmpty(ans)) assayLinks <- EmptyAssayLinks()
+    if (isEmpty(ans)) assayLinks <- AssayLinks()
     else {
         if (is.null(assayLinks))
-            assayLinks <- AssayLinks(name = names(ans),
-                                     from = rep(NA_character_, length(ans)),
-                                     fcol = rep(NA_character_, length(ans)))
+            assayLinks <- AssayLinks(names = names(ans))
     }
     new("Features",
         ExperimentList = ans@ExperimentList,
         colData = ans@colData,
         sampleMap = ans@sampleMap,
         metadata = ans@metadata,
-        links = assayLinks)
+        assayLinks = assayLinks)
 }
 
 
@@ -131,20 +127,20 @@ Features <- function(..., assayLinks = NULL) {
 addAssay <- function(object,
                      x,
                      name = "newAssay",
-                     assayLinks = NULL) {
+                     assayLinks = AssayLinks(names = name)) {
     stopifnot(inherits(object, "Features"))
     el0 <- object@ExperimentList@listData
     if (is.list(x)) el1 <- x
     else el1 <- structure(list(x), .Names = name[1])
     el <- ExperimentList(c(el0, el1))
-    if (is.null(assayLinks)) 
-        assayLinks <- AssayLinks(name = name)
     smap <- MultiAssayExperiment:::.sampleMapFromData(colData(object), el)
+    if (inherits(assayLinks, "AssayLink"))
+        assayLinks <- AssayLinks(assayLinks)
     new("Features",
         ExperimentList = el,
         colData = colData(object),
         sampleMap = smap,
         metadata = metadata(object),
-        links = addAssayLinks(object@links,
-                              assayLinks))
+        assayLinks = append(object@assayLinks,
+                            assayLinks))
 }

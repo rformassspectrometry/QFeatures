@@ -72,7 +72,7 @@
 ##'
 ##' @rdname Features-class
 ##'
-##' @aliases Features Features-class class:Features addAssay
+##' @aliases Features Features-class class:Features addAssay show,Features-method
 ##'
 ##' @md
 ##'
@@ -121,7 +121,7 @@
 ##'
 ##' ## -------------------------------------------------
 ##' ## Creating a Features object from a data.frame (see
-##' ## ?readFeatures) for details
+##' ## ?readFeatures for details)
 ##' ## -------------------------------------------------
 ##' 
 ##' data(hlpsms)
@@ -130,17 +130,28 @@
 ##'
 ##' fts2[[1]]
 ##' fts2[["psms"]]
+##'
+##' ## --------------------------------------------------
+##' ## Add an peptides assay, computed from the psms (see
+##' ## ?combineFeatures for details)
+##' ## --------------------------------------------------
+##' 
+##' fts2 <- combineFeatures(fts2, "psms", "Sequence", name = "peptides")
+##' fts2
 NULL
 
 setClass("Features",
          contains = "MatchedAssayExperiment",
          slots = c(version = "character",
-                   links = "DataFrame"),
+                   assayLinks = "AssayLinks"),
          prototype = prototype(
-             version = "0.1",
-             links = EmptyAssayLinks()))
+             version = "0.1"))
 
 
+##' @rdname Features
+##' @param object An instance of class `Features`.
+##' @exportMethod show
+##' @export
 setMethod("show", "Features",
           function(object) {
               if (isEmpty(object)) {

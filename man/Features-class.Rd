@@ -5,6 +5,7 @@
 \alias{Features-class}
 \alias{class:Features}
 \alias{addAssay}
+\alias{show,Features-method}
 \title{Quantitative MS Features}
 \usage{
 Features(..., assayLinks = NULL)
@@ -123,7 +124,7 @@ fts1 <- addAssay(fts1, se1[1:2, ], name = "se3")
 
 ## -------------------------------------------------
 ## Creating a Features object from a data.frame (see
-## ?readFeatures) for details
+## ?readFeatures for details)
 ## -------------------------------------------------
 
 data(hlpsms)
@@ -132,6 +133,14 @@ fts2
 
 fts2[[1]]
 fts2[["psms"]]
+
+## --------------------------------------------------
+## Add an peptides assay, computed from the psms (see
+## ?combineFeatures for details)
+## --------------------------------------------------
+
+fts2 <- combineFeatures(fts2, "psms", "Sequence", name = "peptides")
+fts2
 }
 \seealso{
 The \code{\link[=readFeatures]{readFeatures()}} constructor and the \code{\link[=combineFeatures]{combineFeatures()}} function.

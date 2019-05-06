@@ -23,7 +23,7 @@
 ##' @param ... Additional parameters passed the `fun`.
 ##' 
 ##' @return A `Features` object with an additional assay.
-##' 
+##'
 ##' @md
 ##'
 ##' @export
@@ -61,9 +61,12 @@ combineFeatures <- function(object,
     
     se <- SummarizedExperiment(.assay,
                                rowData = .featureData[rownames(.assay), ])
-    assayLinks <- AssayLinks(name = name,
-                             from = ifelse(is.character(i), i, names(object)[i]),
-                             fcol = fcol)
+    hits <- findMatches(rownames(.assay), groupBy)
+    elementMetadata(hits)$names <- .rowdata[[fcol]]
+    assayLinks <- AssayLink(name = name,
+                            from = ifelse(is.character(i), i, names(object)[i]),
+                            fcol = fcol,
+                            hits = hits)
     object <- addAssay(object, se, name = name, assayLinks = assayLinks)
 
     if (validObject(object))

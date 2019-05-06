@@ -11,7 +11,7 @@ main_assay <- function(object)
 
 ##' @importFrom methods slot
 .valid_Features_indices <- function(object) {
-    if (!isEmpty(object) && !identical(names(object), object@links[["name"]]))
+    if (!isEmpty(object) && !identical(names(object), names(object@assayLinks)))
         stop("Assay links names are wrong.")    
     NULL
 }
