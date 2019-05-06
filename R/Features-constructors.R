@@ -92,10 +92,9 @@ readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
 
 
 ##' @export
-##' @importFrom methods extends
 ##' @rdname Features-class
-##' @param ... See [MultiAssayExperiment].
-##' @param assayLinks An optional [AssayLinks].
+##' @param ... See [MultiAssayExperiment::MultiAssayExperiment].
+##' @param assayLinks An optional [AssayLinks] object.
 Features <- function(..., assayLinks = NULL) {
     ans <- MatchedAssayExperiment(...)
     if (isEmpty(ans)) assayLinks <- AssayLinks()

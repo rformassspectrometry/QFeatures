@@ -62,7 +62,7 @@ combineFeatures <- function(object,
     se <- SummarizedExperiment(.assay,
                                rowData = .featureData[rownames(.assay), ])
     hits <- findMatches(rownames(.assay), groupBy)
-    elementMetadata(hits)$names <- .rowdata[[fcol]]
+    elementMetadata(hits)$names <- .rowdata[[fcol]][hits@to]
     assayLinks <- AssayLink(name = name,
                             from = ifelse(is.character(i), i, names(object)[i]),
                             fcol = fcol,

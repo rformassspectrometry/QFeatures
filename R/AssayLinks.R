@@ -73,6 +73,7 @@ setClass("AssayLinks",
 ##'     `AssayLinks` object with `AssayLink` instances with names
 ##'     `names`.
 ##' @rdname AssayLinks
+##' @importFrom methods extends
 ##' @export
 AssayLinks <- function(..., names = NULL) {
     if (!is.null(names))
@@ -86,7 +87,7 @@ AssayLinks <- function(..., names = NULL) {
 
 
 assayLink <- function(object, i)
-    object@AssayLinks[[i]]
+    object@assayLinks[[i]]
 
 parentAssayLink <- function(x, i) {
     i2 <- assayLink(x, i)@from

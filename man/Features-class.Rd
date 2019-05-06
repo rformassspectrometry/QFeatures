@@ -11,9 +11,9 @@
 Features(..., assayLinks = NULL)
 }
 \arguments{
-\item{...}{See [MultiAssayExperiment].}
+\item{...}{See [MultiAssayExperiment::MultiAssayExperiment].}
 
-\item{assayLinks}{An optional [AssayLinks].}
+\item{assayLinks}{An optional [AssayLinks] object.}
 }
 \description{
 Conceptually, a \code{Features} object holds a set of \emph{assays}, each
