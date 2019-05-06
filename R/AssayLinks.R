@@ -4,10 +4,6 @@
 ##' `AssayLinks` object. It is composed by a list of `AssayLink`
 ##' instances.
 ##'
-##' The constructor are respectively `AssayLinks(..., .Names = NULL)`
-##' and `AssayLink(name, from = NULL, fcol = NULL, hits = NULL)`. See
-##' examples below.
-##'
 ##' @rdname AssayLinks 
 ##'
 ##' @name AssayLinks

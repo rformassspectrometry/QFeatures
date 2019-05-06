@@ -45,11 +45,6 @@ Links between assays within a \link{Features} object are handled by an
 \code{AssayLinks} object. It is composed by a list of \code{AssayLink}
 instances.
 }
-\details{
-The constructor are respectively \code{AssayLinks(..., .Names = NULL)}
-and \code{AssayLink(name, from = NULL, fcol = NULL, hits = NULL)}. See
-examples below.
-}
 \examples{
 
 al1 <- AssayLink(name = "assay1")
