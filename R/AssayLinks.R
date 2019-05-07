@@ -4,6 +4,19 @@
 ##' `AssayLinks` object. It is composed by a list of `AssayLink`
 ##' instances.
 ##'
+##' @section Constructors:
+##'
+##' Object can be created with the `AssayLink()` and `AssayLinks()` constructors.
+##'
+##' @section Methods and functions:
+##'
+##' - `assayLink(x, i)` accesses the AssayLink at position `i` or with
+##'    name `i` in the [Features] object `x`.
+##'
+##' - `parentAssayLinks(x, i, recursive = FALSE)` accesses the
+##'   parent(s) `AssayLinks` or assay with index or name `i`.
+##' 
+##'
 ##' @rdname AssayLinks 
 ##'
 ##' @name AssayLinks
@@ -19,7 +32,8 @@
 ##' 
 ##' AssayLinks(al1)
 ##'
-##' AssayLinks(names = c("Assay1", "Assay2"))
+##' al2 <- AssayLinks(names = c("Assay1", "Assay2"))
+##' al2
 NULL
 
 ##' @exportClass AssayLink
@@ -28,6 +42,25 @@ setClass("AssayLink",
                    from = "character",
                    fcol = "character",
                    hits = "Hits"))
+
+##' @exportClass AssayLinks
+setClass("AssayLinks",
+         contains = "SimpleList",
+         prototype = prototype(
+             elementType = "AssayLink"))
+
+##' @rdname AssayLinks
+##' @param object An `AssayLink` object to show.
+##' @export
+setMethod("show", "AssayLink",
+          function(object) {
+              cat("AssayLink for assay <", object@name, ">\n", sep = "")
+              cat("[from:", object@from, "|fcol:", object@fcol, "|hits:", length(object@hits),"]\n", sep = "")
+          })
+
+## --------------
+## Constructors 
+## --------------
 
 ##' @param name A mandatory name of the assay(s).
 ##'
@@ -54,17 +87,6 @@ AssayLink <- function(name, from = NA_character_,
         hits = hits)
 }
 
-##' @rdname AssayLinks
-##' @param object An `AssayLink` object to show.
-##' @export
-setMethod("show", "AssayLink",
-          function(object) cat("AssayLink for assay <", object@name, ">\n", sep = ""))
-
-##' @exportClass AssayLinks
-setClass("AssayLinks",
-         contains = "SimpleList",
-         prototype = prototype(
-             elementType = "AssayLink"))
 
 ##' @param ... A set of `AssayLink` objects or a list thereof.
 ##' 
@@ -91,12 +113,41 @@ AssayLinks <- function(..., names = NULL) {
 }
 
 
-assayLink <- function(object, i)
+## -------------------------
+## Functions for navigation
+## -------------------------
+
+
+##' @export
+##' @rdname AssayLinks
+##' @return `assayLink` returns an instance of class `AssayLink`.
+assayLink <- function(x, i)
     object@assayLinks[[i]]
 
-parentAssayLink <- function(x, i) {
+
+##' @param x An instance of class [Features].
+##' 
+##' @param i The index or name of the assay whose `AssayLink` or
+##'     parent's are to be returned.
+##' 
+##' @param recursive If `TRUE`, returns all parents. Default is
+##'     `FALSE`.
+##' 
+##' @return `parentAssayLink` returns an instance of class
+##'     `AssayLinks` or `NULL`, if no parent available. 
+##' 
+##' @export
+##' @md
+##' @rdname AssayLinks
+parentAssayLinks <- function(x, i, recursive = FALSE) {
     i2 <- assayLink(x, i)@from
-    assayLink(x, i2)
+    if (is.na(i2))
+        return(NULL)
+    par0 <- par <- assayLink(x, i2)
+    if (!recursive) par0 <- NULL
+    while (!is.null(par0)) {
+        par0 <- assayLink(x, par0@from)
+        par <- append(par, par0)
+    }
+    return(AssayLinks(par))
 }
-
-

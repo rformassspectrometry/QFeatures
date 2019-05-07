@@ -20,6 +20,7 @@ Collate:
     'Features-functions.R'
     'data.R'
     'reduce.R'
+    'subsetBy-methods.R'
     'combineFeatures.R'
     'utils.R'
 RoxygenNote: 6.1.1

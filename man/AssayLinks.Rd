@@ -9,16 +9,24 @@
 \alias{class:AssayLinks}
 \alias{class:AssayLink}
 \alias{show,AssayLink-method}
+\alias{assayLink}
+\alias{parentAssayLinks}
 \title{Links between Assays}
 \usage{
+\S4method{show}{AssayLink}(object)
+
 AssayLink(name, from = NA_character_, fcol = NA_character_,
   hits = Hits())
 
-\S4method{show}{AssayLink}(object)
-
 AssayLinks(..., names = NULL)
+
+assayLink(x, i)
+
+parentAssayLinks(x, i, recursive = FALSE)
 }
 \arguments{
+\item{object}{An `AssayLink` object to show.}
+
 \item{name}{A mandatory name of the assay(s).}
 
 \item{from}{The name of the parent assay, or \code{NA_character_}, if
@@ -31,20 +39,48 @@ generate the current assay (used in
 \item{hits}{An object of class \link[S4Vectors:Hits]{S4Vectors::Hits} matching the
 features of two assays.}
 
-\item{object}{An `AssayLink` object to show.}
-
 \item{...}{A set of \code{AssayLink} objects or a list thereof.}
 
 \item{names}{A \code{character()} of \code{AssayLink} names. If provided,
 \code{...} are ignored, and \code{names} is used to create an
 \code{AssayLinks} object with \code{AssayLink} instances with names
 \code{names}.}
+
+\item{x}{An instance of class \link{Features}.}
+
+\item{i}{The index or name of the assay whose \code{AssayLink} or
+parent's are to be returned.}
+
+\item{recursive}{If \code{TRUE}, returns all parents. Default is
+\code{FALSE}.}
+}
+\value{
+`assayLink` returns an instance of class `AssayLink`.
+
+\code{parentAssayLink} returns an instance of class
+\code{AssayLinks} or \code{NULL}, if no parent available.
 }
 \description{
 Links between assays within a \link{Features} object are handled by an
 \code{AssayLinks} object. It is composed by a list of \code{AssayLink}
 instances.
 }
+\section{Constructors}{
+
+
+Object can be created with the \code{AssayLink()} and \code{AssayLinks()} constructors.
+}
+
+\section{Methods and functions}{
+
+\itemize{
+\item \code{assayLink(x, i)} accesses the AssayLink at position \code{i} or with
+name \code{i} in the \link{Features} object \code{x}.
+\item \code{parentAssayLinks(x, i, recursive = FALSE)} accesses the
+parent(s) \code{AssayLinks} or assay with index or name \code{i}.
+}
+}
+
 \examples{
 
 al1 <- AssayLink(name = "assay1")
@@ -52,5 +88,6 @@ al1
 
 AssayLinks(al1)
 
-AssayLinks(names = c("Assay1", "Assay2"))
+al2 <- AssayLinks(names = c("Assay1", "Assay2"))
+al2
 }

@@ -131,13 +131,15 @@
 ##' fts2[[1]]
 ##' fts2[["psms"]]
 ##'
-##' ## --------------------------------------------------
-##' ## Add an peptides assay, computed from the psms (see
+##' ## ----------------------------------------------------
+##' ## Add new assays, computed from the existing ones (see
 ##' ## ?combineFeatures for details)
-##' ## --------------------------------------------------
+##' ## ----------------------------------------------------
 ##' 
 ##' fts2 <- combineFeatures(fts2, "psms", "Sequence", name = "peptides")
 ##' fts2
+##' fts2 <- combineFeatures(fts2, "peptides", "ProteinGroupAccessions", name = "protein")
+##' 
 NULL
 
 setClass("Features",

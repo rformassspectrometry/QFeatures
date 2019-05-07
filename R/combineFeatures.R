@@ -56,8 +56,9 @@ combineFeatures <- function(object,
     }
 
     .assay <- combine_assay(.assay, groupBy, fun, ...)
-    .featureData <- Features::reduce_DataFrame(.rowdata, .rowdata[[fcol]],
-                                     simplify = TRUE, count = TRUE)
+    .featureData <- Features::reduceDataFrame(.rowdata, .rowdata[[fcol]],
+                                              simplify = TRUE, drop = TRUE,
+                                              count = TRUE)
     
     se <- SummarizedExperiment(.assay,
                                rowData = .featureData[rownames(.assay), ])
