@@ -139,7 +139,7 @@
 ##' fts2 <- combineFeatures(fts2, "psms", "Sequence", name = "peptides")
 ##' fts2
 ##' fts2 <- combineFeatures(fts2, "peptides", "ProteinGroupAccessions", name = "protein")
-##' 
+##' fts2
 NULL
 
 setClass("Features",

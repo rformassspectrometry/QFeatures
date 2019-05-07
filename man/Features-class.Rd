@@ -142,7 +142,7 @@ fts2[["psms"]]
 fts2 <- combineFeatures(fts2, "psms", "Sequence", name = "peptides")
 fts2
 fts2 <- combineFeatures(fts2, "peptides", "ProteinGroupAccessions", name = "protein")
-
+fts2
 }
 \seealso{
 The \code{\link[=readFeatures]{readFeatures()}} constructor and the \code{\link[=combineFeatures]{combineFeatures()}} function.
