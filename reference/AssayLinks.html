@@ -109,17 +109,25 @@ instances.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>AssayLink</span>(<span class='no'>name</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>, <span class='kw'>fcol</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>,
-  <span class='kw'>hits</span> <span class='kw'>=</span> <span class='fu'>Hits</span>())
-
-<span class='co'># S4 method for AssayLink</span>
+    <pre class="usage"><span class='co'># S4 method for AssayLink</span>
 <span class='fu'>show</span>(<span class='no'>object</span>)
 
-<span class='fu'>AssayLinks</span>(<span class='no'>...</span>, <span class='kw'>names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>AssayLink</span>(<span class='no'>name</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>, <span class='kw'>fcol</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>,
+  <span class='kw'>hits</span> <span class='kw'>=</span> <span class='fu'>Hits</span>())
+
+<span class='fu'>AssayLinks</span>(<span class='no'>...</span>, <span class='kw'>names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>assayLink</span>(<span class='no'>x</span>, <span class='no'>i</span>)
+
+<span class='fu'>parentAssayLinks</span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>An `AssayLink` object to show.</p></td>
+    </tr>
     <tr>
       <th>name</th>
       <td><p>A mandatory name of the assay(s).</p></td>
@@ -141,10 +149,6 @@ generate the current assay (used in
 features of two assays.</p></td>
     </tr>
     <tr>
-      <th>object</th>
-      <td><p>An `AssayLink` object to show.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
       <td><p>A set of <code>AssayLink</code> objects or a list thereof.</p></td>
     </tr>
@@ -155,23 +159,66 @@ features of two assays.</p></td>
 <code>AssayLinks</code> object with <code>AssayLink</code> instances with names
 <code>names</code>.</p></td>
     </tr>
+    <tr>
+      <th>x</th>
+      <td><p>An instance of class <a href='Features-class.html'>Features</a>.</p></td>
+    </tr>
+    <tr>
+      <th>i</th>
+      <td><p>The index or name of the assay whose <code>AssayLink</code> or
+parent's are to be returned.</p></td>
+    </tr>
+    <tr>
+      <th>recursive</th>
+      <td><p>If <code>TRUE</code>, returns all parents. Default is
+<code>FALSE</code>.</p></td>
+    </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>`assayLink` returns an instance of class `AssayLink`.</p>
+<p><code>parentAssayLink</code> returns an instance of class
+<code>AssayLinks</code> or <code>NULL</code>, if no parent available.</p>
+    
+    <h2 class="hasAnchor" id="constructors"><a class="anchor" href="#constructors"></a>Constructors</h2>
+
+    
+    <p>Object can be created with the <code>AssayLink()</code> and <code>AssayLinks()</code> constructors.</p>
+    
+    <h2 class="hasAnchor" id="methods-and-functions"><a class="anchor" href="#methods-and-functions"></a>Methods and functions</h2>
+
+    
+    <ul>
+<li><p><code>assayLink(x, i)</code> accesses the AssayLink at position <code>i</code> or with
+name <code>i</code> in the <a href='Features-class.html'>Features</a> object <code>x</code>.</p></li>
+<li><p><code>parentAssayLinks(x, i, recursive = FALSE)</code> accesses the
+parent(s) <code>AssayLinks</code> or assay with index or name <code>i</code>.</p></li>
+</ul>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='no'>al1</span> <span class='kw'>&lt;-</span> <span class='fu'>AssayLink</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"assay1"</span>)
-<span class='no'>al1</span></div><div class='output co'>#&gt; AssayLink for assay &lt;assay1&gt;</div><div class='input'>
+<span class='no'>al1</span></div><div class='output co'>#&gt; AssayLink for assay &lt;assay1&gt;
+#&gt; [from:NA|fcol:NA|hits:0]</div><div class='input'>
 <span class='fu'>AssayLinks</span>(<span class='no'>al1</span>)</div><div class='output co'>#&gt; AssayLinks of length 1
 #&gt; names(1): assay1</div><div class='input'>
-<span class='fu'>AssayLinks</span>(<span class='kw'>names</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Assay1"</span>, <span class='st'>"Assay2"</span>))</div><div class='output co'>#&gt; AssayLinks of length 2
+<span class='no'>al2</span> <span class='kw'>&lt;-</span> <span class='fu'>AssayLinks</span>(<span class='kw'>names</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Assay1"</span>, <span class='st'>"Assay2"</span>))
+<span class='no'>al2</span></div><div class='output co'>#&gt; AssayLinks of length 2
 #&gt; names(2): Assay1 Assay2</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#constructors">Constructors</a></li>
+
+      <li><a href="#methods-and-functions">Methods and functions</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
