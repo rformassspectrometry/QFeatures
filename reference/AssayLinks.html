@@ -119,7 +119,7 @@ instances.</p>
 
 <span class='fu'>assayLink</span>(<span class='no'>x</span>, <span class='no'>i</span>)
 
-<span class='fu'>parentAssayLinks</span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='fu'>assayLinks</span>(<span class='no'>x</span>, <span class='no'>i</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -165,21 +165,15 @@ features of two assays.</p></td>
     </tr>
     <tr>
       <th>i</th>
-      <td><p>The index or name of the assay whose <code>AssayLink</code> or
-parent's are to be returned.</p></td>
-    </tr>
-    <tr>
-      <th>recursive</th>
-      <td><p>If <code>TRUE</code>, returns all parents. Default is
-<code>FALSE</code>.</p></td>
+      <td><p>The index or name of the assay whose <code>AssayLink</code> and
+parents <code>AssayLink</code> instances are to be returned.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>`assayLink` returns an instance of class `AssayLink`.</p>
-<p><code>parentAssayLink</code> returns an instance of class
-<code>AssayLinks</code> or <code>NULL</code>, if no parent available.</p>
+<p><code>assayLinks</code> returns an instance of class <code>AssayLinks</code>.</p>
     
     <h2 class="hasAnchor" id="constructors"><a class="anchor" href="#constructors"></a>Constructors</h2>
 
