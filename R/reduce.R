@@ -1,13 +1,12 @@
 setMethod("showAsCell", "character",
-          function(object) {
+          function (object) {
               n <- 10
-              sapply(object,
-                     function(x) {
-                         if (nchar(x) > n)
-                             paste0(paste(strsplit(x, "")[[1]][1:n], collapse = ""),
-                                    "...")
-                         else x
-                     })})
+              sapply(object, function(x) {
+                  if (!is.na(x) & nchar(x) & nchar(x) > n)
+                      paste0(substr(x, 1, n), "...")
+                  else x
+              }, USE.NAMES = FALSE)
+          })
 
 
 
@@ -26,35 +25,39 @@ invariant_cols2 <- function(x) {
     which(res)
 }
 
-##' A long dataframe can be *reduced* by mergeing certain rows into a single one.
-##' These new variables are constructed as a `SimpleList` containing all the
-##' original values. Invariant columns, i.e columns that have the same value
-##' along all the rows that need to be merged, can be shrunk into a new
-##' variables containing that invariant value (rather than in list columns). The
-##' grouping of rows, i.e. the rows that need to be shrunk together as one, is
+##' A long dataframe can be *reduced* by mergeing certain rows into a
+##' single one.  These new variables are constructed as a `SimpleList`
+##' containing all the original values. Invariant columns, i.e columns
+##' that have the same value along all the rows that need to be
+##' merged, can be shrunk into a new variables containing that
+##' invariant value (rather than in list columns). The grouping of
+##' rows, i.e. the rows that need to be shrunk together as one, is
 ##' defined by a vector.
 ##'
-##' The opposite operation is *expand*. But note that for a `DataFrame` to be
-##' expanded back, it must not to be simplified.
+##' The opposite operation is *expand*. But note that for a
+##' `DataFrame` to be expanded back, it must not to be simplified.
 ##'
 ##' @title Reduces and expands a `DataFrame`
 ##' @param x The `DataFrame` to be reduced or expanded.
-##' @param k A ‘vector’ of length `nrow(x)` defining the grouping based on which
-##'     the `DataFrame` will be shrunk.
-##' @param count `logical(1)` specifying of an additional column (called by
-##'     default `.n`) with the tally of rows shrunk into on new row should be
-##'     added. Note that if already existing, `.n` will be silently overwritten.
-##' @param simplify `logical(1)` defining if invariant columns should be
-##'     converted to simple lists.
+##' @param k A ‘vector’ of length `nrow(x)` defining the grouping
+##'     based on which the `DataFrame` will be shrunk.
+##' @param count `logical(1)` specifying of an additional column
+##'     (called by default `.n`) with the tally of rows shrunk into on
+##'     new row should be added. Note that if already existing, `.n`
+##'     will be silently overwritten.
+##' @param simplify A `logical(1)` defining if invariant columns
+##'     should be converted to simple lists. Default is `TRUE`.
+##' @param drop A `logical(1)` specifying whether the non-invariant
+##'     columns should be dropped altogether. Default is `FALSE`.
 ##' @return An expanded (reduced) `DataFrame`.
 ##' @author Laurent Gatto
 ##' @import S4Vectors
 ##' @import IRanges
-##' @export reduce_DataFrame
+##' @export reduceDataFrame
 ##' @examples
 ##' library("IRanges")
 ##'
-##' k <- sample(10000, 1e5, replace = TRUE)
+##' k <- sample(100, 1e3, replace = TRUE)
 ##' df <- DataFrame(k = k,
 ##'                 x = round(rnorm(length(k)), 2),
 ##'                 y = seq_len(length(k)),
@@ -65,19 +68,22 @@ invariant_cols2 <- function(x) {
 ##' df
 ##'
 ##' ## Shinks the DataFrame
-##' df2 <- reduce_DataFrame(df, df$k)
+##' df2 <- reduceDataFrame(df, df$k)
 ##' df2
 ##'
 ##' ## With a tally of the number of members in each group
-##' reduce_DataFrame(df, df$k, count = TRUE)
+##' reduceDataFrame(df, df$k, count = TRUE)
 ##'
 ##' ## Much faster, but more crowded result
-##' df3 <- reduce_DataFrame(df, df$k, simplify = FALSE)
+##' df3 <- reduceDataFrame(df, df$k, simplify = FALSE)
 ##' df3
-reduce_DataFrame <- function(x, k, count = FALSE, simplify = TRUE) {
+##'
+##' ## Drop all non-invariant columns
+##' reduceDataFrame(df, df$k, drop = TRUE)
+reduceDataFrame <- function(x, k, count = FALSE, simplify = TRUE, drop = FALSE) {
     res <- split(x, k)
     lens <- lengths(res)
-    if (simplify) 
+    if (simplify | drop) 
         invars <- invariant_cols2(res)
     res <- DataFrame(res)
     if (simplify) {
@@ -85,6 +91,8 @@ reduce_DataFrame <- function(x, k, count = FALSE, simplify = TRUE) {
         for (i in invars)
             res[[i]] <- sapply(res[[i]], "[[", 1)
     }
+    if (drop) 
+        res <- res[, invars]
     if (count)
         res[[".n"]] <- lens
     res
@@ -92,8 +100,8 @@ reduce_DataFrame <- function(x, k, count = FALSE, simplify = TRUE) {
 
 
 ##' @export
-##' @rdname reduce_DataFrame
-expand_DataFrame <- function(x, k = NULL) {
+##' @rdname reduceDataFrame
+expandDataFrame <- function(x, k = NULL) {
     if (is.null(k))
         return(expand(x, recursive = FALSE))
     else
