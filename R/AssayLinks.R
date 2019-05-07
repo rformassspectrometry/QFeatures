@@ -122,32 +122,28 @@ AssayLinks <- function(..., names = NULL) {
 ##' @rdname AssayLinks
 ##' @return `assayLink` returns an instance of class `AssayLink`.
 assayLink <- function(x, i)
-    object@assayLinks[[i]]
+    x@assayLinks[[i]]
 
 
 ##' @param x An instance of class [Features].
 ##' 
-##' @param i The index or name of the assay whose `AssayLink` or
-##'     parent's are to be returned.
+##' @param i The index or name of the assay whose `AssayLink` and
+##'     parents `AssayLink` instances are to be returned.
 ##' 
-##' @param recursive If `TRUE`, returns all parents. Default is
-##'     `FALSE`.
-##' 
-##' @return `parentAssayLink` returns an instance of class
-##'     `AssayLinks` or `NULL`, if no parent available. 
+##' @return `assayLinks` returns an instance of class `AssayLinks`.
 ##' 
 ##' @export
 ##' @md
 ##' @rdname AssayLinks
-parentAssayLinks <- function(x, i, recursive = FALSE) {
-    i2 <- assayLink(x, i)@from
-    if (is.na(i2))
-        return(NULL)
-    par0 <- par <- assayLink(x, i2)
-    if (!recursive) par0 <- NULL
-    while (!is.null(par0)) {
-        par0 <- assayLink(x, par0@from)
-        par <- append(par, par0)
+assayLinks <- function(x, i) {
+    this <- assayLink(x, i)
+    if (is.na(this@from))
+        return(AssayLinks(this))
+    ans <- list()
+    while (!is.na(this@from)) {
+        ans <- append(ans, this)
+        this <- assayLink(x, this@from)
     }
-    return(AssayLinks(par))
+    ans <- append(ans, this)
+    return(AssayLinks(ans))
 }

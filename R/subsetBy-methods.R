@@ -30,5 +30,3 @@ find_assay_with_feature_name <- function(x, i) {
     rnms <- rownames(x)
     which(sapply(rnms, function(x) i %in% x))
 }
-
-

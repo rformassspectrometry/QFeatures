@@ -10,7 +10,7 @@
 \alias{class:AssayLink}
 \alias{show,AssayLink-method}
 \alias{assayLink}
-\alias{parentAssayLinks}
+\alias{assayLinks}
 \title{Links between Assays}
 \usage{
 \S4method{show}{AssayLink}(object)
@@ -22,7 +22,7 @@ AssayLinks(..., names = NULL)
 
 assayLink(x, i)
 
-parentAssayLinks(x, i, recursive = FALSE)
+assayLinks(x, i)
 }
 \arguments{
 \item{object}{An `AssayLink` object to show.}
@@ -48,17 +48,13 @@ features of two assays.}
 
 \item{x}{An instance of class \link{Features}.}
 
-\item{i}{The index or name of the assay whose \code{AssayLink} or
-parent's are to be returned.}
-
-\item{recursive}{If \code{TRUE}, returns all parents. Default is
-\code{FALSE}.}
+\item{i}{The index or name of the assay whose \code{AssayLink} and
+parents \code{AssayLink} instances are to be returned.}
 }
 \value{
 `assayLink` returns an instance of class `AssayLink`.
 
-\code{parentAssayLink} returns an instance of class
-\code{AssayLinks} or \code{NULL}, if no parent available.
+\code{assayLinks} returns an instance of class \code{AssayLinks}.
 }
 \description{
 Links between assays within a \link{Features} object are handled by an
