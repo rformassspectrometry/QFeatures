@@ -7,6 +7,7 @@
 \alias{addAssay}
 \alias{show,Features-method}
 \alias{[,Features,ANY,ANY,ANY-method}
+\alias{dims,Features}
 \title{Quantitative MS Features}
 \usage{
 Features(..., assayLinks = NULL)
@@ -142,7 +143,7 @@ fts2[["psms"]]
 
 fts2 <- combineFeatures(fts2, "psms", "Sequence", name = "peptides")
 fts2
-fts2 <- combineFeatures(fts2, "peptides", "ProteinGroupAccessions", name = "protein")
+fts2 <- combineFeatures(fts2, "peptides", "ProteinGroupAccessions", name = "proteins")
 fts2
 }
 \seealso{
