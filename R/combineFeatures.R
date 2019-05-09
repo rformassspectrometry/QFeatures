@@ -55,15 +55,17 @@ combineFeatures <- function(object,
         message(paste(strwrap(msg), collapse = "\n"))
     }
 
-    .assay <- combine_assay(.assay, groupBy, fun, ...)
-    .featureData <- Features::reduceDataFrame(.rowdata, .rowdata[[fcol]],
-                                              simplify = TRUE, drop = TRUE,
-                                              count = TRUE)
+    .combined_assay <- combine_assay(.assay, groupBy, fun, ...)
+    .combined_rowdata <- Features::reduceDataFrame(.rowdata, .rowdata[[fcol]],
+                                                   simplify = TRUE, drop = TRUE,
+                                                   count = TRUE)
+    se <- SummarizedExperiment(.combined_assay,
+                               rowData = .combined_rowdata[rownames(.combined_assay), ])
+    hits <- findMatches(rownames(.combined_assay), groupBy)
+    elementMetadata(hits)$names_to <- .rowdata[[fcol]][hits@to]
+    elementMetadata(hits)$names_from <- rownames(.assay)
+
     
-    se <- SummarizedExperiment(.assay,
-                               rowData = .featureData[rownames(.assay), ])
-    hits <- findMatches(rownames(.assay), groupBy)
-    elementMetadata(hits)$names <- .rowdata[[fcol]][hits@to]
     assayLinks <- AssayLink(name = name,
                             from = ifelse(is.character(i), i, names(object)[i]),
                             fcol = fcol,
