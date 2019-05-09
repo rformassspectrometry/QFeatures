@@ -1,15 +1,3 @@
-setMethod("showAsCell", "character",
-          function (object) {
-              n <- 10
-              sapply(object, function(x) {
-                  if (!is.na(x) & nchar(x) & nchar(x) > n) 
-                      paste0(paste(strsplit(x, "")[[1]][1:n], collapse = ""), 
-                             "...")
-                  else x
-              })
-          })
-
-
 tidy_DataFrame_columns <- function(object) {
     for (nm in names(object)) {
         x <- object[[nm]]
