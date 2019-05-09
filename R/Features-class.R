@@ -177,3 +177,14 @@ setMethod("show", "Features",
           })
 
 
+
+##' @rdname Features
+##' @aliases [,Features,ANY,ANY,ANY-method
+##' @export
+setMethod("[", c("Features", "ANY", "ANY", "ANY"),
+          function(x, i, j, ..., drop = TRUE) {
+              ans <- callNextMethod(x, i, j, ..., drop)
+              ans@assayLinks <- ans@assayLinks[names(ans)]
+              if (validObject(ans))
+                  return(ans)
+          })
