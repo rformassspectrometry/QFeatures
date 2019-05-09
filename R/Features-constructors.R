@@ -119,7 +119,7 @@ Features <- function(..., assayLinks = NULL) {
 ##' @param assayLinks An optional [AssayLinks].
 ##'
 ##' @md
-##' 
+##'
 ##' @rdname Features
 ##' 
 ##' @export 

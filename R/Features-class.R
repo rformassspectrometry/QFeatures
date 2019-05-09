@@ -72,7 +72,7 @@
 ##'
 ##' @rdname Features-class
 ##'
-##' @aliases Features Features-class class:Features addAssay show,Features-method
+##' @aliases Features Features-class class:Features addAssay show,Features-method [,Features,ANY,ANY,ANY-method
 ##'
 ##' @md
 ##'
@@ -153,7 +153,6 @@ setClass("Features",
 ##' @rdname Features
 ##' @param object An instance of class `Features`.
 ##' @exportMethod show
-##' @export
 setMethod("show", "Features",
           function(object) {
               if (isEmpty(object)) {
@@ -179,8 +178,8 @@ setMethod("show", "Features",
 
 
 ##' @rdname Features
-##' @aliases [,Features,ANY,ANY,ANY-method
-##' @export
+##' @importFrom methods callNextMethod
+##' @exportMethod [
 setMethod("[", c("Features", "ANY", "ANY", "ANY"),
           function(x, i, j, ..., drop = TRUE) {
               ans <- callNextMethod(x, i, j, ..., drop)
