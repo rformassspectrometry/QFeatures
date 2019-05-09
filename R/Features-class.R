@@ -72,7 +72,7 @@
 ##'
 ##' @rdname Features-class
 ##'
-##' @aliases Features Features-class class:Features addAssay show,Features-method [,Features,ANY,ANY,ANY-method
+##' @aliases Features Features-class class:Features addAssay show,Features-method [,Features,ANY,ANY,ANY-method dims,Features
 ##'
 ##' @md
 ##'
@@ -138,7 +138,7 @@
 ##' 
 ##' fts2 <- combineFeatures(fts2, "psms", "Sequence", name = "peptides")
 ##' fts2
-##' fts2 <- combineFeatures(fts2, "peptides", "ProteinGroupAccessions", name = "protein")
+##' fts2 <- combineFeatures(fts2, "peptides", "ProteinGroupAccessions", name = "proteins")
 ##' fts2
 NULL
 
@@ -187,3 +187,10 @@ setMethod("[", c("Features", "ANY", "ANY", "ANY"),
               if (validObject(ans))
                   return(ans)
           })
+
+
+##' @rdname Features
+##' @exportMethod dims
+setMethod("dims", "Features",
+          function(x) sapply(experiments(fts2), dim))
+
