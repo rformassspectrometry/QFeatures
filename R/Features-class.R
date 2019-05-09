@@ -190,7 +190,8 @@ setMethod("[", c("Features", "ANY", "ANY", "ANY"),
 
 
 ##' @rdname Features
+##' @importFrom BiocGenerics dims
 ##' @exportMethod dims
 setMethod("dims", "Features",
-          function(x) sapply(experiments(fts2), dim))
+          function(x) sapply(experiments(x), dim))
 
