@@ -58,6 +58,7 @@ find_assays_from <- function(x, i)
 ##' @return An new instance of class [Features] containing relevant
 ##'     assays and features.
 ##' @rdname Features-subsetBy
+##' @aliases subsetByFeatures
 ##' @author Laurent Gatto
 ##' @export
 subsetByFeature <- function(x, i) {
