@@ -7,7 +7,7 @@
 \alias{addAssay}
 \alias{show,Features-method}
 \alias{[,Features,ANY,ANY,ANY-method}
-\alias{dims,Features}
+\alias{dims,Features-method}
 \title{Quantitative MS Features}
 \usage{
 Features(..., assayLinks = NULL)

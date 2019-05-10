@@ -72,7 +72,7 @@
 ##'
 ##' @rdname Features-class
 ##'
-##' @aliases Features Features-class class:Features addAssay show,Features-method [,Features,ANY,ANY,ANY-method dims,Features
+##' @aliases Features Features-class class:Features addAssay show,Features-method [,Features,ANY,ANY,ANY-method dims,Features-method
 ##'
 ##' @md
 ##'
