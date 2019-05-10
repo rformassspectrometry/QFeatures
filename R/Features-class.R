@@ -23,8 +23,7 @@
 ##' from the PSM data, and the protein-level data is calculated based
 ##' on the peptide-level values. The largest assay (the one with the
 ##' highest number of features, PSMs in the example above) is
-##' considered the main assay, from which the other ones are derived
-##' by aggregating/combining several rows into a single one.
+##' considered the main assay.
 ##'
 ##' The recommended way to create `Features` objects is the use the
 ##' `readFeatures()` function, that creates an instance from tabular
@@ -61,6 +60,13 @@
 ##'   is a `character(1)` naming the single assay (default is
 ##'   `"newAssay"), and is ignored if `x` is a list of
 ##'   assays. `assayLinks` is an optional [AssayLinks].
+##'
+##' @section Subsetting assays:
+##'
+##' - The [subsetByFeatures()] function can be used to subset a
+##'   `Features` object using one or multiple feature names that will
+##'   be matched across different assays, taking the aggregation
+##'   relation between assays.
 ##'
 ##' @seealso The [readFeatures()] constructor and the [combineFeatures()] function.
 ##'

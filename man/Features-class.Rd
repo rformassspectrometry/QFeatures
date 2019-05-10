@@ -13,7 +13,7 @@
 Features(..., assayLinks = NULL)
 }
 \arguments{
-\item{...}{See [MultiAssayExperiment::MultiAssayExperiment].}
+\item{...}{See `MultiAssayExperiment` for details.}
 
 \item{assayLinks}{An optional [AssayLinks] object.}
 }
@@ -39,8 +39,7 @@ peptide and protein level, and where peptide values are computed
 from the PSM data, and the protein-level data is calculated based
 on the peptide-level values. The largest assay (the one with the
 highest number of features, PSMs in the example above) is
-considered the main assay, from which the other ones are derived
-by aggregating/combining several rows into a single one.
+considered the main assay.
 
 The recommended way to create \code{Features} objects is the use the
 \code{readFeatures()} function, that creates an instance from tabular
@@ -80,6 +79,16 @@ combining features of an existing assay.
 list of assays) \code{x} to the \code{Features} instance \code{object}. \code{name}
 is a \code{character(1)} naming the single assay (default is
 \code{"newAssay"), and is ignored if }x\code{is a list of assays.}assayLinks` is an optional \link{AssayLinks}.
+}
+}
+
+\section{Subsetting assays}{
+
+\itemize{
+\item The \code{\link[=subsetByFeatures]{subsetByFeatures()}} function can be used to subset a
+\code{Features} object using one or multiple feature names that will
+be matched across different assays, taking the aggregation
+relation between assays.
 }
 }
 

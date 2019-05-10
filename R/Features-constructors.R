@@ -93,7 +93,7 @@ readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
 
 ##' @export
 ##' @rdname Features-class
-##' @param ... See [MultiAssayExperiment::MultiAssayExperiment].
+##' @param ... See `MultiAssayExperiment` for details.
 ##' @param assayLinks An optional [AssayLinks] object.
 Features <- function(..., assayLinks = NULL) {
     ans <- MatchedAssayExperiment(...)
