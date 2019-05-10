@@ -2,7 +2,6 @@
 % Please edit documentation in R/subsetBy-methods.R
 \name{subsetByFeature}
 \alias{subsetByFeature}
-\alias{subsetByFeatures}
 \title{Subset by feature name}
 \usage{
 subsetByFeature(x, i)

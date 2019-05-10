@@ -58,7 +58,7 @@ find_assays_from <- function(x, i)
 ##' @return An new instance of class [Features] containing relevant
 ##'     assays and features.
 ##' @rdname Features-subsetBy
-##' @aliases subsetByFeatures
+##' @aliases subsetByFeature
 ##' @author Laurent Gatto
 ##' @export
 subsetByFeature <- function(x, i) {
@@ -69,43 +69,40 @@ subsetByFeature <- function(x, i) {
     if (!length(leaf_assay_name)) 
         stop("Feature not found")
 
-    if (length(leaf_assay_name) > 1) 
-        stop("Feature identified in multiple assays.")
-
-    all_assays_names <- find_assays_from(x, leaf_assay_name)[, 1]
+    all_assays_names <- find_assays_from(x, leaf_assay_name)
+    all_assays_names <- unique(as.vector(all_assays_names))
 
     ans <- x[, , all_assays_names]
-    
-    ## subset features in leaf_assay (number 1)
-    leaf_assay <- x[[leaf_assay_name]]
-    leaf_assay <- leaf_assay[i, ]
-    ans[[leaf_assay_name]] <- leaf_assay
-    leaf_hits <- x@assayLinks[[leaf_assay_name]]@hits
-    k <- which(elementMetadata(leaf_hits)$names_to %in% i)
-    ans@assayLinks[[leaf_assay_name]]@hits <- leaf_hits[k, ]
-    
-    ## subset parent assays, iterating over from leaf assay's parents:
-    ## number 2:length(ans)
-    for (j in 2:length(ans)) {
-        assay_j_name <- all_assays_names[j]
-        parent_assay_name <- all_assays_names[j-1]
-        parent_hits <- x@assayLinks[[parent_assay_name]]@hits
-        assay_j <- ans[[j]]
 
-        ## subset assay_j
-        k <- which(elementMetadata(parent_hits)$names_to %in% i)        
-        assay_j <- assay_j[subjectHits(parent_hits)[k], ]        
-        ans[[assay_j_name]] <- assay_j
+    ## Let's first collect the feature names for all assays    
+    featurename_list <- vector("list", length = length(all_assays_names))
+    names(featurename_list) <- all_assays_names
 
-        ## subset hits_j
-        hits_j <- ans@assayLinks[[j]]@hits
-        k <- which(elementMetadata(hits_j)$names_to %in% rownames(assay_j))
-        ans@assayLinks[[j]]@hits <- hits_j[k, ]
+    for (k in leaf_assay_name) 
+        featurename_list[[k]] <- i
 
-        i <- rownames(assay_j)
+    for (k in setdiff(all_assays_names, leaf_assay_name)) {
+        assay_k <- x[[k]]
+        ## which assay(s) created assay_k
+        assay_k_parent_name <- names(which(sapply(x@assayLinks, slot, "from") == k))
+
+        for (k2 in assay_k_parent_name) {
+            assayLink_k2 <- x@assayLinks[[k2]]@hits
+            j <- which(elementMetadata(assayLink_k2)$names_to %in% i)
+            featurename_list[[k]] <- union(featurename_list[[k]],
+                                           elementMetadata(assayLink_k2)$names_from[j])
+        }
+        i <- featurename_list[[k]]
     }
 
-    if (validObject(ans))
-        return(ans)    
+    expts <- experiments(x)[featurename_list]
+    alnks <- x@assayLinks[all_assays_names]
+    alnks <- alnks[featurename_list]
+
+    Features(experiments = expts,
+             colData = colData(x),
+             sampleMap = sampleMap(x),
+             metadata = metadata(x),
+             assayLinks = alnks)
 }
 
