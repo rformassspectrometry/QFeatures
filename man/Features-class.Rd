@@ -20,13 +20,12 @@ Features(..., assayLinks = NULL)
 \description{
 Conceptually, a \code{Features} object holds a set of \emph{assays}, each
 composed of a \code{matrix} (or \code{array}) containing quantitative data
-and row annotations (meta-data).  The number and the names
-(nature) of columns (samples) are always the same across the
-assays, but the number of rows (features) can vary. The assays are
-typically defined as \code{MSnSet} or \code{SummarizedExperiment}
-objects. In addition, a \code{Features} object also uses a single
-\code{DataFrame} to annotate the samples (columns) represented in all
-the matrices.
+and row annotations (meta-data).  The number and the names of the
+columns (samples) must always be the same across the assays, but
+the number and the names of the rows (features) can vary. The
+assays are typically defined as \code{SummarizedExperiment} objects. In
+addition, a \code{Features} object also uses a single \code{DataFrame} to
+annotate the samples (columns) represented in all the matrices.
 
 The \code{Features} class extends the
 \link[MultiAssayExperiment:MatchedAssayExperiment]{MultiAssayExperiment::MatchedAssayExperiment} and inherits all
@@ -38,9 +37,8 @@ quantitative proteomics (or metabolomics) data, where different
 assays represent quantitation data at the PSM (the main assay),
 peptide and protein level, and where peptide values are computed
 from the PSM data, and the protein-level data is calculated based
-on the peptide-level values.
-
-The largest assay (the one with the highest number of features) is
+on the peptide-level values. The largest assay (the one with the
+highest number of features, PSMs in the example above) is
 considered the main assay, from which the other ones are derived
 by aggregating/combining several rows into a single one.
 
@@ -145,6 +143,41 @@ fts2 <- combineFeatures(fts2, "psms", "Sequence", name = "peptides")
 fts2
 fts2 <- combineFeatures(fts2, "peptides", "ProteinGroupAccessions", name = "proteins")
 fts2
+
+## ----------------------------------------------------------------
+## Extract a subset of features that relate to Isoform Stat3B of
+## Signal transducer and activator of transcription 3 (STAT3) with
+## accession number P42227-2
+## ----------------------------------------------------------------
+
+stat3 <- subsetByFeature(fts2, "P42227-2")
+## we get one protein, 8 peptides and 9 PSMs
+stat3
+stat3_df <- as_tibble(longFormat(stat3))
+ggplot(data = stat3_df,
+       aes(x = colname,
+           y = value,
+           group = rowname)) +
+    geom_line() +
+    facet_grid(~ assay)
+
+## --------------------------------------------------------------
+## Extract Signal transducer and activator of transcription 1
+## (STAT1) and 3 (STAT3) (accession numbers P42227-2 and P42225)
+## --------------------------------------------------------------
+
+stat <- subsetByFeature(fts2, c("P42227-2", "P42225"))
+## STAT1 has only one peptide/PSM
+stat
+stat_df <- as_tibble(longFormat(stat))
+stat_df$stat3 <- ifelse(stat_df$rowname \%in\% stat3_df$rowname,
+                        "STAT3", "STAT1")
+ggplot(data = stat_df,
+       aes(x = colname,
+           y = value,
+           group = rowname)) +
+    geom_line() +
+    facet_grid(stat3 ~ assay)
 }
 \seealso{
 The \code{\link[=readFeatures]{readFeatures()}} constructor and the \code{\link[=combineFeatures]{combineFeatures()}} function.
