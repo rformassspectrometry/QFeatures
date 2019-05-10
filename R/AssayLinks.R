@@ -147,3 +147,23 @@ assayLinks <- function(x, i) {
     ans <- append(ans, this)
     return(AssayLinks(ans))
 }
+
+
+setMethod("[", c("AssayLink", "character"),
+          function(x, i, ..., drop = TRUE) {
+              k <- which(elementMetadata(x@hits)$names_to %in% i)
+              x@hits <-  x@hits[k, ]
+              x
+          })
+
+
+setMethod("[", c("AssayLinks", "list"),
+          function(x, i, ..., drop = TRUE) {
+              stopifnot(identical(names(x), names(i)))
+              for (j in names(x)) {
+                  alnk <- x[[j]]
+                  fnms <- i[[j]]
+                  x[[j]] <- alnk[fnms]
+              }
+              x
+          })
