@@ -51,8 +51,7 @@ peptide and protein level, and where peptide values are computed
 from the PSM data, and the protein-level data is calculated based
 on the peptide-level values. The largest assay (the one with the
 highest number of features, PSMs in the example above) is
-considered the main assay, from which the other ones are derived
-by aggregating/combining several rows into a single one.
+considered the main assay.
 The recommended way to create Features objects is the use the
 readFeatures() function, that creates an instance from tabular
 data. The Features constructor can be used to create objects
@@ -145,8 +144,7 @@ peptide and protein level, and where peptide values are computed
 from the PSM data, and the protein-level data is calculated based
 on the peptide-level values. The largest assay (the one with the
 highest number of features, PSMs in the example above) is
-considered the main assay, from which the other ones are derived
-by aggregating/combining several rows into a single one.</p>
+considered the main assay.</p>
 <p>The recommended way to create <code>Features</code> objects is the use the
 <code><a href='readFeatures.html'>readFeatures()</a></code> function, that creates an instance from tabular
 data. The <code>Features</code> constructor can be used to create objects
@@ -162,7 +160,7 @@ sure that these match the class validity requirements.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
-      <td><p>See [MultiAssayExperiment::MultiAssayExperiment].</p></td>
+      <td><p>See `MultiAssayExperiment` for details.</p></td>
     </tr>
     <tr>
       <th>assayLinks</th>
@@ -202,6 +200,16 @@ combining features of an existing assay.</p></li>
 list of assays) <code>x</code> to the <code>Features</code> instance <code>object</code>. <code>name</code>
 is a <code><a href='https://www.rdocumentation.org/packages/base/topics/character'>character(1)</a></code> naming the single assay (default is
 <code>"newAssay"), and is ignored if </code>x<code>is a list of assays.</code>assayLinks` is an optional <a href='AssayLinks.html'>AssayLinks</a>.</p></li>
+</ul>
+    
+    <h2 class="hasAnchor" id="subsetting-assays"><a class="anchor" href="#subsetting-assays"></a>Subsetting assays</h2>
+
+    
+    <ul>
+<li><p>The <code><a href='Features-subsetBy.html'>subsetByFeatures()</a></code> function can be used to subset a
+<code>Features</code> object using one or multiple feature names that will
+be matched across different assays, taking the aggregation
+relation between assays.</p></li>
 </ul>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -350,6 +358,8 @@ is a <code><a href='https://www.rdocumentation.org/packages/base/topics/characte
       <li><a href="#accessors">Accessors</a></li>
 
       <li><a href="#adding-assays">Adding assays</a></li>
+
+      <li><a href="#subsetting-assays">Subsetting assays</a></li>
 
       <li><a href="#see-also">See also</a></li>
       
