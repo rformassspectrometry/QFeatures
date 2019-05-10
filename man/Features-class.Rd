@@ -153,7 +153,9 @@ fts2
 stat3 <- subsetByFeature(fts2, "P42227-2")
 ## we get one protein, 8 peptides and 9 PSMs
 stat3
-stat3_df <- as_tibble(longFormat(stat3))
+stat3_df <- data.frame(longFormat(stat3))
+
+library("ggplot2")
 ggplot(data = stat3_df,
        aes(x = colname,
            y = value,
@@ -169,7 +171,7 @@ ggplot(data = stat3_df,
 stat <- subsetByFeature(fts2, c("P42227-2", "P42225"))
 ## STAT1 has only one peptide/PSM
 stat
-stat_df <- as_tibble(longFormat(stat))
+stat_df <- data.frame(longFormat(stat))
 stat_df$stat3 <- ifelse(stat_df$rowname \%in\% stat3_df$rowname,
                         "STAT3", "STAT1")
 ggplot(data = stat_df,
