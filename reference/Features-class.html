@@ -311,7 +311,7 @@ relation between assays.</p></li>
 <span class='co'>## accession number P42227-2</span>
 <span class='co'>## ----------------------------------------------------------------</span>
 
-<span class='no'>stat3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='Features-subsetBy.html'>subsetByFeature</a></span>(<span class='no'>fts2</span>, <span class='st'>"P42227-2"</span>)
+<span class='no'>stat3</span> <span class='kw'>&lt;-</span> <span class='no'>fts2</span>[<span class='st'>"P42227-2"</span>, , ]
 <span class='co'>## we get one protein, 8 peptides and 9 PSMs</span>
 <span class='no'>stat3</span></div><div class='output co'>#&gt; A instance of class Features containing
 #&gt;  [1] proteins: SummarizedExperiment with 1 rows and 10 columns 
@@ -333,7 +333,7 @@ relation between assays.</p></li>
 <span class='co'>## (STAT1) and 3 (STAT3) (accession numbers P42227-2 and P42225)</span>
 <span class='co'>## --------------------------------------------------------------</span>
 
-<span class='no'>stat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='Features-subsetBy.html'>subsetByFeature</a></span>(<span class='no'>fts2</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"P42227-2"</span>, <span class='st'>"P42225"</span>))
+<span class='no'>stat</span> <span class='kw'>&lt;-</span> <span class='no'>fts2</span>[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"P42227-2"</span>, <span class='st'>"P42225"</span>), , ]
 <span class='co'>## STAT1 has only one peptide/PSM</span>
 <span class='no'>stat</span></div><div class='output co'>#&gt; A instance of class Features containing
 #&gt;  [1] proteins: SummarizedExperiment with 2 rows and 10 columns 
