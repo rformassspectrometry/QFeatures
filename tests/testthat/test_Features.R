@@ -1,5 +1,35 @@
 data(feat1)
 
+test_that("empty Features", {
+    feat0 <- Features()
+    expect_true(validObject(feat0))
+    expect_true(isEmpty(feat0))
+})
+
+
+test_that("Manual Features", {
+    ## code from inst/scripts/test_data.R
+    ## used to generate feat1
+    psms <- matrix(1:20, ncol = 2)
+    colnames(psms) <- paste0("S", 1:2)
+    rowdata <- DataFrame(Sequence = c("SYGFNAAR", "SYGFNAAR", "SYGFNAAR", "ELGNDAYK",
+                                      "ELGNDAYK", "ELGNDAYK", "IAEESNFPFIK",
+                                      "IAEESNFPFIK", "IAEESNFPFIK", "IAEESNFPFIK"),
+                         Protein = c("ProtA", "ProtA", "ProtA", "ProtA", "ProtA",
+                                     "ProtA", "ProtB", "ProtB", "ProtB", "ProtB"),
+                         Var = 1:10)
+    rownames(rowdata) <- rownames(psms) <- paste0("PSM", 1:10)
+    coldata <- DataFrame(Group = 1:2)
+    rownames(coldata) <- colnames(psms)
+    psms <- SummarizedExperiment(psms, rowData = rowdata)
+    feat2 <- Features(list(psms = psms), colData = coldata)
+    expect_true(validObject(feat2))
+    ## load data
+    ## data(feat1)
+    ## expect_equivalent(feat1, feat2)
+})
+
+
 test_that("combineFeatures(fun = sum)", {
     feat1 <- combineFeatures(feat1, "psms", fcol = "Sequence", name = "peptides", fun = sum)
     expect_identical(names(feat1), c("psms", "peptides"))
