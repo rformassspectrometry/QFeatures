@@ -1,12 +1,12 @@
 # full script at https://github.com/travis-ci/travis-build/blob/master/lib/travis/build/script/r.rb
 language: r
-r: bioc-release
+r: bioc-devel
 cache:
   packages: true
   directories:
     - ~/.AnnotationHub
 sudo: required
-# warnings_are_errors: true
+warnings_are_errors: true
 dist: trusty
 
 # unfortunately apt packages are not cached
@@ -22,7 +22,7 @@ jobs:
   include:
     - stage: "Build"
       r_packages:
-	- covr
+        - covr
         - pkgdown
         - testthat
         - knitr
@@ -44,14 +44,14 @@ jobs:
       install: skip
       before_script: rm -rf vignettes
       name: "tests"
-    # - r_build_args:
-    #   r_check_args: --as-cran --no-build-vignettes --no-codoc --no-examples --no-tests
-    #   install: skip
-    #   name: "vignettes"
+    - r_build_args:
+      r_check_args: --as-cran --no-build-vignettes --no-codoc --no-examples --no-tests
+      install: skip
+      name: "vignettes"
     - stage: "Deploy"
       install: skip
       script:
-        - Rscript -e 'covr::codecov()'      
+        - Rscript -e 'covr::codecov()'
       name: "codecov and pkgdown (on master)"
       before_deploy:
         - R CMD INSTALL .
@@ -72,6 +72,6 @@ after_failure: sleep 10
 
 notifications:
   email:
-    recipients: laurent.gatto@uclouvain.be
+    recipients: laurent.gatto@gmail.com
     on_failure: change
     on_success: change
