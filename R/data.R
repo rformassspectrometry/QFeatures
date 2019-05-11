@@ -1,4 +1,4 @@
-##' PSM-level expression data
+##' hyperLOPIT PSM-level expression data
 ##'
 ##' A `data.frame` with PSM-level quantitation data by Christoforou *et al.*
 ##' (2016). This is the first replicate of a spatial proteomics dataset from a
@@ -26,3 +26,10 @@
 ##'
 ##' See [Features] to import this data using the [readFeatures()] function.
 "hlpsms"
+
+
+##' Test PSM-level expression data
+##'
+##' A small test `Features` object for testing and demonstration.
+##'
+"feat1"
