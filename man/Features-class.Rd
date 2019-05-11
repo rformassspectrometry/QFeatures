@@ -160,7 +160,7 @@ fts2
 ## accession number P42227-2
 ## ----------------------------------------------------------------
 
-stat3 <- subsetByFeature(fts2, "P42227-2")
+stat3 <- fts2["P42227-2", , ]
 ## we get one protein, 8 peptides and 9 PSMs
 stat3
 stat3_df <- data.frame(longFormat(stat3))
@@ -178,7 +178,7 @@ ggplot(data = stat3_df,
 ## (STAT1) and 3 (STAT3) (accession numbers P42227-2 and P42225)
 ## --------------------------------------------------------------
 
-stat <- subsetByFeature(fts2, c("P42227-2", "P42225"))
+stat <- fts2[c("P42227-2", "P42225"), , ]
 ## STAT1 has only one peptide/PSM
 stat
 stat_df <- data.frame(longFormat(stat))
