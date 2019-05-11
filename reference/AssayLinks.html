@@ -109,17 +109,23 @@ instances.</p>
     
     </div>
 
-    <pre class="usage"><span class='co'># S4 method for AssayLink</span>
-<span class='fu'>show</span>(<span class='no'>object</span>)
+    <pre class="usage"># S4 method for AssayLink
+show(object)
 
-<span class='fu'>AssayLink</span>(<span class='no'>name</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>, <span class='kw'>fcol</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>,
-  <span class='kw'>hits</span> <span class='kw'>=</span> <span class='fu'>Hits</span>())
+AssayLink(name, from = NA_character_, fcol = NA_character_,
+  hits = Hits())
 
-<span class='fu'>AssayLinks</span>(<span class='no'>...</span>, <span class='kw'>names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+AssayLinks(..., names = NULL)
 
-<span class='fu'>assayLink</span>(<span class='no'>x</span>, <span class='no'>i</span>)
+assayLink(x, i)
 
-<span class='fu'>assayLinks</span>(<span class='no'>x</span>, <span class='no'>i</span>)</pre>
+assayLinks(x, i)
+
+# S4 method for AssayLink,character,ANY,ANY
+[(x, i, j, ..., drop = TRUE)
+
+# S4 method for AssayLinks,list,ANY,ANY
+[(x, i, j, ..., drop = TRUE)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,7 +172,16 @@ features of two assays.</p></td>
     <tr>
       <th>i</th>
       <td><p>The index or name of the assay whose <code>AssayLink</code> and
-parents <code>AssayLink</code> instances are to be returned.</p></td>
+parents <code>AssayLink</code> instances are to be returned. For <code>[</code>, the
+feature names to filter on.</p></td>
+    </tr>
+    <tr>
+      <th>j</th>
+      <td><p>ignored.</p></td>
+    </tr>
+    <tr>
+      <th>drop</th>
+      <td><p>ignored.</p></td>
     </tr>
     </table>
     
