@@ -76,7 +76,7 @@
 ##'
 ##' @rdname Features-class
 ##'
-##' @aliases Features Features-class class:Features addAssay show,Features-method [,Features,ANY,ANY,ANY-method dims,Features-method 
+##' @aliases Features Features-class class:Features addAssay dims,Features-method show,Features-method [,Features,ANY,ANY,ANY-method [,Features,character,ANY,ANY-method
 ##'
 ##' @md
 ##'
@@ -151,7 +151,7 @@
 ##' ## accession number P42227-2
 ##' ## ----------------------------------------------------------------
 ##'
-##' stat3 <- subsetByFeature(fts2, "P42227-2")
+##' stat3 <- fts2["P42227-2", , ]
 ##' ## we get one protein, 8 peptides and 9 PSMs
 ##' stat3
 ##' stat3_df <- data.frame(longFormat(stat3))
@@ -169,7 +169,7 @@
 ##' ## (STAT1) and 3 (STAT3) (accession numbers P42227-2 and P42225)
 ##' ## --------------------------------------------------------------
 ##'
-##' stat <- subsetByFeature(fts2, c("P42227-2", "P42225"))
+##' stat <- fts2[c("P42227-2", "P42225"), , ]
 ##' ## STAT1 has only one peptide/PSM
 ##' stat
 ##' stat_df <- data.frame(longFormat(stat))
@@ -235,4 +235,13 @@ setMethod("[", c("Features", "ANY", "ANY", "ANY"),
 ##' @exportMethod dims
 setMethod("dims", "Features",
           function(x) sapply(experiments(x), dim))
+
+
+##' @rdname Features
+setMethod("[", c("Features", "character", "ANY", "ANY"),
+          function(x, i, j, k, ..., drop = TRUE) {
+              if (missing(j)) j <- TRUE
+              if (missing(k)) k <- TRUE
+              subsetByFeature(x, i)[, j, k]
+          })
 
