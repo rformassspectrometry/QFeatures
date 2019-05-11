@@ -85,7 +85,7 @@ is a \code{character(1)} naming the single assay (default is
 \section{Subsetting assays}{
 
 \itemize{
-\item The \code{\link[=subsetByFeatures]{subsetByFeatures()}} function can be used to subset a
+\item The \code{\link[=subsetByFeature]{subsetByFeature()}} function can be used to subset a
 \code{Features} object using one or multiple feature names that will
 be matched across different assays, taking the aggregation
 relation between assays.

@@ -21,7 +21,7 @@
 ##'
 ##' @name AssayLinks
 ##'
-##' @aliases AssayLinks AssayLink AssayLink-class AssayLinks-class class:AssayLinks class:AssayLink show,AssayLink-method
+##' @aliases AssayLinks AssayLink AssayLink-class AssayLinks-class class:AssayLinks class:AssayLink show,AssayLink-method [,AssayLink,character-method [,AssayLinks,character-method
 ##' 
 ##' @md
 ##'
@@ -128,7 +128,8 @@ assayLink <- function(x, i)
 ##' @param x An instance of class [Features].
 ##' 
 ##' @param i The index or name of the assay whose `AssayLink` and
-##'     parents `AssayLink` instances are to be returned.
+##'     parents `AssayLink` instances are to be returned. For `[`, the
+##'     feature names to filter on.
 ##' 
 ##' @return `assayLinks` returns an instance of class `AssayLinks`.
 ##' 
@@ -149,16 +150,19 @@ assayLinks <- function(x, i) {
 }
 
 
+##' @param j ignored.
+##' @param drop ignored.
+##' @rdname AssayLinks
 setMethod("[", c("AssayLink", "character"),
-          function(x, i, ..., drop = TRUE) {
+          function(x, i, j, ..., drop = TRUE) {
               k <- which(elementMetadata(x@hits)$names_to %in% i)
               x@hits <-  x@hits[k, ]
               x
           })
 
-
+##' @rdname AssayLinks
 setMethod("[", c("AssayLinks", "list"),
-          function(x, i, ..., drop = TRUE) {
+          function(x, i, j, ..., drop = TRUE) {
               stopifnot(identical(names(x), names(i)))
               for (j in names(x)) {
                   alnk <- x[[j]]

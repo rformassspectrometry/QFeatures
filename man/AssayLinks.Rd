@@ -9,8 +9,12 @@
 \alias{class:AssayLinks}
 \alias{class:AssayLink}
 \alias{show,AssayLink-method}
+\alias{[,AssayLink,character-method}
+\alias{[,AssayLinks,character-method}
 \alias{assayLink}
 \alias{assayLinks}
+\alias{[,AssayLink,character,ANY,ANY-method}
+\alias{[,AssayLinks,list,ANY,ANY-method}
 \title{Links between Assays}
 \usage{
 \S4method{show}{AssayLink}(object)
@@ -23,6 +27,10 @@ AssayLinks(..., names = NULL)
 assayLink(x, i)
 
 assayLinks(x, i)
+
+\S4method{[}{AssayLink,character,ANY,ANY}(x, i, j, ..., drop = TRUE)
+
+\S4method{[}{AssayLinks,list,ANY,ANY}(x, i, j, ..., drop = TRUE)
 }
 \arguments{
 \item{object}{An `AssayLink` object to show.}
@@ -49,7 +57,12 @@ features of two assays.}
 \item{x}{An instance of class \link{Features}.}
 
 \item{i}{The index or name of the assay whose \code{AssayLink} and
-parents \code{AssayLink} instances are to be returned.}
+parents \code{AssayLink} instances are to be returned. For \code{[}, the
+feature names to filter on.}
+
+\item{j}{ignored.}
+
+\item{drop}{ignored.}
 }
 \value{
 `assayLink` returns an instance of class `AssayLink`.

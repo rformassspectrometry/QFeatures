@@ -63,7 +63,7 @@
 ##'
 ##' @section Subsetting assays:
 ##'
-##' - The [subsetByFeatures()] function can be used to subset a
+##' - The [subsetByFeature()] function can be used to subset a
 ##'   `Features` object using one or multiple feature names that will
 ##'   be matched across different assays, taking the aggregation
 ##'   relation between assays.
