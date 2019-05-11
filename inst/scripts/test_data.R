@@ -15,6 +15,6 @@ rownames(coldata) <- colnames(psms)
 
 psms <- SummarizedExperiment(psms, rowData = rowdata)
 
-feat1 <- Features(list(psmsm = psms), colData = coldata)
+feat1 <- Features(list(psms = psms), colData = coldata)
 
 save(feat1, file = "../../data/feat1.rda", compress = "xz", compression_level = 9)
