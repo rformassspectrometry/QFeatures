@@ -4,6 +4,7 @@ test_that("empty Features", {
     feat0 <- Features()
     expect_true(validObject(feat0))
     expect_true(isEmpty(feat0))
+    expect_null(show(feat0))
 })
 
 
@@ -24,7 +25,12 @@ test_that("Manual Features", {
     psms <- SummarizedExperiment(psms, rowData = rowdata)
     feat2 <- Features(list(psms = psms), colData = coldata)
     expect_true(validObject(feat2))
-    ## load data
+    ## subsetting
+    expect_null(show(feat2))
+    expect_equal(psms, feat2[[1]])
+    expect_equal(psms, feat2[["psms"]])
+    expect_equal(feat2, feat2[1:10, 1:2, 1])
+    ## compare to serialised data
     ## data(feat1)
     ## expect_equivalent(feat1, feat2)
 })
@@ -74,8 +80,14 @@ test_that("combineFeatures(fun = sum)", {
 })
 
 test_that("combineFeatures(fun = median)", {
+    data(feat1)
     feat1 <- combineFeatures(feat1, "psms", fcol = "Sequence", name = "peptides", fun = median)
     expect_identical(names(feat1), c("psms", "peptides"))
+
+    expect_equal(dims(feat1),
+                 matrix(c(10, 2, 3, 2), ncol = 2,
+                        dimnames = list(NULL,
+                                        c("psms", "peptides"))))
 
     ## checking quantiation data
     assay1 <- matrix(c(median(1:3), median(4:6), median(7:10),
