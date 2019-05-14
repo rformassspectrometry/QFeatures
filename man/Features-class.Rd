@@ -190,6 +190,13 @@ ggplot(data = stat_df,
            group = rowname)) +
     geom_line() +
     facet_grid(stat3 ~ assay)
+
+## --------------------------------------------------------------
+## Interactively explore the data
+## --------------------------------------------------------------
+
+if (interactive())
+    display(stat3)
 }
 \seealso{
 The \code{\link[=readFeatures]{readFeatures()}} constructor and the \code{\link[=combineFeatures]{combineFeatures()}} function.

@@ -8,8 +8,9 @@ Authors@R: person("Laurent", "Gatto",
 Description: Infrastrucutre to manage and process quantitative
    features for high-throughput mass spectrometry assays.
 Depends: R (>= 3.5.3), MultiAssayExperiment
-Imports: methods, S4Vectors, IRanges, SummarizedExperiment, BiocGenerics
-Suggests: ggplot2, testthat
+Imports: methods, S4Vectors, IRanges, SummarizedExperiment,
+   BiocGenerics, ProtGenerics (>= 1.17.2)
+Suggests: ggplot2, testthat, DT, shiny, shinydashboard
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
@@ -24,4 +25,5 @@ Collate:
     'subsetBy-methods.R'
     'combineFeatures.R'
     'utils.R'
+    'display.R'
 RoxygenNote: 6.1.1

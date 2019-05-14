@@ -70,7 +70,7 @@
 ##'
 ##' @seealso The [readFeatures()] constructor and the [combineFeatures()] function.
 ##'
-##' @import MultiAssayExperiment
+##' @import MultiAssayExperiment ProtGenerics
 ##'
 ##' @name Features
 ##'
@@ -181,6 +181,13 @@
 ##'            group = rowname)) +
 ##'     geom_line() +
 ##'     facet_grid(stat3 ~ assay)
+##'
+##' ## --------------------------------------------------------------
+##' ## Interactively explore the data
+##' ## --------------------------------------------------------------
+##'
+##' if (interactive())
+##'     display(stat3)
 NULL
 
 setClass("Features",
