@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • Features</title>
+<title>Interactive MultiAssayExperiment Explorer — display • Features</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,17 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Interactive MultiAssayExperiment Explorer — display" />
+
+<meta property="og:description" content="A shiny app to browser and explore the assays in an
+MultiAssayExperiment object. Each assay can be selected from the
+dropdown meny in the side panel, and the quantitative data and row
+metadata are displayed in the respective Assay and Row data
+tabs. The Heatmap tab displays a heatmap of the assay. The
+selection of rows in the Row data table is used to subset the
+features displayed in the Assay table and the heatmap to those
+currectly selected. See Features for an example." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -47,7 +57,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -89,96 +99,65 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Interactive MultiAssayExperiment Explorer</h1>
+    
+    <div class="hidden name"><code>display.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>A shiny app to browser and explore the assays in an
+<code>MultiAssayExperiment</code> object. Each assay can be selected from the
+dropdown meny in the side panel, and the quantitative data and row
+metadata are displayed in the respective <em>Assay</em> and <em>Row data</em>
+tabs. The <em>Heatmap</em> tab displays a heatmap of the assay. The
+selection of rows in the <em>Row data</em> table is used to subset the
+features displayed in the <em>Assay</em> table and the heatmap to those
+currectly selected. See <a href='Features-class.html'>Features</a> for an example.</p>
+    
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
-
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="AllGenerics.html">AllGenerics</a></code> </p>
-        </td>
-        <td><p>Placeholder for generics functions documentation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="AssayLinks.html">show(<i>&lt;AssayLink&gt;</i>)</a></code> <code><a href="AssayLinks.html">AssayLink()</a></code> <code><a href="AssayLinks.html">AssayLinks()</a></code> <code><a href="AssayLinks.html">assayLink()</a></code> <code><a href="AssayLinks.html">assayLinks()</a></code> <code><a href="AssayLinks.html">`[`(<i>&lt;AssayLink&gt;</i>,<i>&lt;character&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="AssayLinks.html">`[`(<i>&lt;AssayLinks&gt;</i>,<i>&lt;list&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Links between Assays</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="Features-class.html">Features()</a></code> </p>
-        </td>
-        <td><p>Quantitative MS Features</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="Features-subsetBy.html">subsetByFeature()</a></code> </p>
-        </td>
-        <td><p>Subset by feature name</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="combineFeatures.html">combineFeatures()</a></code> </p>
-        </td>
-        <td><p>Combine an assay's quantitative features</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="display.html">display()</a></code> </p>
-        </td>
-        <td><p>Interactive MultiAssayExperiment Explorer</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="feat1.html">feat1</a></code> </p>
-        </td>
-        <td><p>Test PSM-level expression data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="hlpsms.html">hlpsms</a></code> </p>
-        </td>
-        <td><p>hyperLOPIT PSM-level expression data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="readFeatures.html">readFeatures()</a></code> </p>
-        </td>
-        <td><p>Features from tabular data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="reduceDataFrame.html">reduceDataFrame()</a></code> <code><a href="reduceDataFrame.html">expandDataFrame()</a></code> </p>
-        </td>
-        <td><p>Reduces and expands a `DataFrame`</p></td>
-      </tr>
-    </tbody>
+    <pre class="usage"><span class='fu'>display</span>(<span class='no'>object</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='no'>...</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>An instance inheriting from <code>MultiAssayExperiment</code>.</p></td>
+    </tr>
+    <tr>
+      <th>n</th>
+      <td><p>A <code><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>numeric(1)</a></code> indicating the maximum number of features
+(rows) to consider before disabling row clustering and
+displaying feature names for speed purposes. Default is 100.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional parameters (other than <code>Rowv</code> and <code>labRow</code>,
+which are set internally based on the value of <code>n</code>) passed to
+heatmap.</p></td>
+    </tr>
     </table>
-  </div>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>Used for its side effect.</p>
+    
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
-    </ul>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
+
+    <h2>Author</h2>
+    <p>Laurent Gatto</p>
   </div>
 </div>
 
