@@ -62,8 +62,11 @@ setGeneric("subsetByFeature", function(x, y, ...) standardGeneric("subsetByFeatu
 ##' @return An new instance of class [Features] containing relevant
 ##'     assays and features.
 ##' @rdname Features-subsetBy
-##' @aliases subsetByFeature
+##' 
+##' @aliases subsetByFeature subsetByFeature,Features,character-method
+##' 
 ##' @author Laurent Gatto
+##' 
 ##' @exportMethod subsetByFeature
 setMethod("subsetByFeature", c("Features", "character"),
           function(x, y, ...) .subsetByFeature(x, y))
