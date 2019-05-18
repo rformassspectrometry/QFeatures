@@ -209,7 +209,7 @@ is a <code><a href='https://www.rdocumentation.org/packages/base/topics/characte
 <li><p>The <code><a href='Features-subsetBy.html'>subsetByFeature()</a></code> function can be used to subset a
 <code>Features</code> object using one or multiple feature names that will
 be matched across different assays, taking the aggregation
-relation between assays.</p></li>
+relation between assays. See example below.</p></li>
 </ul>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -347,6 +347,20 @@ relation between assays.</p></li>
            <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>rowname</span>)) +
     <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>() +
     <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_grid'>facet_grid</a></span>(<span class='no'>stat3</span> ~ <span class='no'>assay</span>)</div><div class='img'><img src='Features-class-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>## --------------------------------------------------------------</span>
+<span class='co'>## Subsetting by features using pipes (same example as above)</span>
+<span class='co'>## --------------------------------------------------------------</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>magrittr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘magrittr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:testthat’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    equals, is_less_than, not</span></div><div class='input'><span class='no'>fts2</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='Features-subsetBy.html'>subsetByFeature</a></span>(<span class='st'>"P42227-2"</span>)</div><div class='output co'>#&gt; A instance of class Features containing
+#&gt;  [1] proteins: SummarizedExperiment with 1 rows and 10 columns 
+#&gt;  [2] peptides: SummarizedExperiment with 8 rows and 10 columns 
+#&gt;  [3] psms: SummarizedExperiment with 9 rows and 10 columns </div><div class='input'>
+<span class='no'>fts2</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='Features-subsetBy.html'>subsetByFeature</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"P42227-2"</span>, <span class='st'>"P42225"</span>))</div><div class='output co'>#&gt; A instance of class Features containing
+#&gt;  [1] proteins: SummarizedExperiment with 2 rows and 10 columns 
+#&gt;  [2] peptides: SummarizedExperiment with 9 rows and 10 columns 
+#&gt;  [3] psms: SummarizedExperiment with 10 rows and 10 columns </div><div class='input'>
 <span class='co'>## --------------------------------------------------------------</span>
 <span class='co'>## Interactively explore the data</span>
 <span class='co'>## --------------------------------------------------------------</span>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Subset by feature name — subsetByFeature • Features</title>
+<title>Subset by feature name — subsetByFeature,Features,character-method • Features</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,7 @@
 
 
 
-<meta property="og:title" content="Subset by feature name — subsetByFeature" />
+<meta property="og:title" content="Subset by feature name — subsetByFeature,Features,character-method" />
 
 <meta property="og:description" content="This function will find the assays and features that match
 directly (by name) or indirectly (through aggregation) the feature
@@ -109,7 +109,8 @@ name.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>subsetByFeature</span>(<span class='no'>x</span>, <span class='no'>i</span>)</pre>
+    <pre class="usage"><span class='co'># S4 method for Features,character</span>
+<span class='fu'>subsetByFeature</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -119,8 +120,12 @@ name.</p>
       <td><p>An instance of class [Features].</p></td>
     </tr>
     <tr>
-      <th>i</th>
-      <td><p>Feature names present in one assay in `x`.</p></td>
+      <th>y</th>
+      <td><p>A `character` of feature names present in an assay in `x`.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional parameters. Ignored.</p></td>
     </tr>
     </table>
     
