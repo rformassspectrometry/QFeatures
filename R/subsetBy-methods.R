@@ -40,6 +40,9 @@ find_assays_from <- function(x, i)
     sapply(i, function(ii) names(assayLinks(x, ii)))
 
 
+
+setGeneric("subsetByFeature", function(x, y, ...) standardGeneric("subsetByFeature"))
+
 ##' This function will find the assays and features that match
 ##' directly (by name) or indirectly (through aggregation) the feature
 ##' name.
@@ -54,16 +57,19 @@ find_assays_from <- function(x, i)
 ##'
 ##' @title Subset by feature name
 ##' @param x An instance of class [Features].
-##' @param i Feature names present in one assay in `x`.
+##' @param y A `character` of feature names present in an assay in `x`.
+##' @param ... Additional parameters. Ignored.
 ##' @return An new instance of class [Features] containing relevant
 ##'     assays and features.
 ##' @rdname Features-subsetBy
 ##' @aliases subsetByFeature
 ##' @author Laurent Gatto
-##' @export
-subsetByFeature <- function(x, i) {
-    stopifnot(inherits(x, "Features"))
-    stopifnot(is.character(i))
+##' @exportMethod subsetByFeatures
+setMethod("subsetByFeatures", c("Features", "character"),
+          function(x, y, ...) .subsetByFeature(x, y))
+
+
+.subsetByFeature <- function(x, i) {
     leaf_assay_name  <- find_assay_with_feature_name(x, i)
 
     if (!length(leaf_assay_name)) 

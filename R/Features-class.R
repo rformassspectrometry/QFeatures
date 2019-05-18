@@ -66,7 +66,7 @@
 ##' - The [subsetByFeature()] function can be used to subset a
 ##'   `Features` object using one or multiple feature names that will
 ##'   be matched across different assays, taking the aggregation
-##'   relation between assays.
+##'   relation between assays. See example below.
 ##'
 ##' @seealso The [readFeatures()] constructor and the [combineFeatures()] function.
 ##'
@@ -182,6 +182,14 @@
 ##'     geom_line() +
 ##'     facet_grid(stat3 ~ assay)
 ##'
+##' ## --------------------------------------------------------------
+##' ## Subsetting by features using pipes (same example as above)
+##' ## --------------------------------------------------------------
+##' library(magrittr)
+##' fts2 %>% subsetByFeature("P42227-2")
+##'
+##' fts2 %>% subsetByFeature(c("P42227-2", "P42225"))
+##' 
 ##' ## --------------------------------------------------------------
 ##' ## Interactively explore the data
 ##' ## --------------------------------------------------------------
