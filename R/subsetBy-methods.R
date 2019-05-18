@@ -65,7 +65,7 @@ setGeneric("subsetByFeature", function(x, y, ...) standardGeneric("subsetByFeatu
 ##' @aliases subsetByFeature
 ##' @author Laurent Gatto
 ##' @exportMethod subsetByFeatures
-setMethod("subsetByFeatures", c("Features", "character"),
+setMethod("subsetByFeature", c("Features", "character"),
           function(x, y, ...) .subsetByFeature(x, y))
 
 
