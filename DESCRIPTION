@@ -20,6 +20,7 @@ Collate:
     'Features-class.R'
     'Features-constructors.R'
     'Features-functions.R'
+    'Features-filter.R'
     'data.R'
     'reduce.R'
     'subsetBy-methods.R'
