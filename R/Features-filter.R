@@ -6,30 +6,30 @@
 ## features in the other (combined) assays.
 
 
-setClass("CharacterVariableFilter",
-         contains = "CharacterFilter")
+## setClass("CharacterVariableFilter",
+##          contains = "CharacterFilter")
 
-setClass("NumericVariableFilter",
-         contains = "DoubleFilter")
+## setClass("NumericVariableFilter",
+##          contains = "DoubleFilter")
 
 
 
-VariableFilter <- function(field,
-                           value,
-                           condition = "==") {
-    if (is.numeric(value))
-        new("NumericVariableFilter",
-            field = as.character(field),
-            value = value,
-            condition = condition)                
-    else if (is.character(value))
-        new("CharacterVariableFilter",
-            field = as.character(field),
-            value = value,
-            condition = condition)
-    else
-        stop("Value type undefined.")
-}
+## VariableFilter <- function(field,
+##                            value,
+##                            condition = "==") {
+##     if (is.numeric(value))
+##         new("NumericVariableFilter",
+##             field = as.character(field),
+##             value = value,
+##             condition = condition)                
+##     else if (is.character(value))
+##         new("CharacterVariableFilter",
+##             field = as.character(field),
+##             value = value,
+##             condition = condition)
+##     else
+##         stop("Value type undefined.")
+## }
 
 
 
