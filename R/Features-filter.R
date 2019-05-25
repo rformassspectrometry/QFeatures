@@ -6,32 +6,60 @@
 ## features in the other (combined) assays.
 
 
-## setClass("CharacterVariableFilter",
-##          contains = "CharacterFilter")
 
-## setClass("NumericVariableFilter",
-##          contains = "DoubleFilter")
-
-
-
-## VariableFilter <- function(field,
-##                            value,
-##                            condition = "==") {
-##     if (is.numeric(value))
-##         new("NumericVariableFilter",
-##             field = as.character(field),
-##             value = value,
-##             condition = condition)                
-##     else if (is.character(value))
-##         new("CharacterVariableFilter",
-##             field = as.character(field),
-##             value = value,
-##             condition = condition)
-##     else
-##         stop("Value type undefined.")
-## }
+##' @import AnnotationFilter
+##' @exportClass CharacterVariableFilter
+##' @rdname filterFeature
+setClass("CharacterVariableFilter", contains = "CharacterFilter")
+##' @exportClass NumericVariableFilter
+##' @rdname filterFeature
+setClass("NumericVariableFilter", contains = "DoubleFilter")
 
 
+##' @export VariableFilter
+##' @rdname filterFeature
+VariableFilter <- function(field,
+                           value,
+                           condition = "==") {
+    if (is.numeric(value))
+        new("NumericVariableFilter",
+            field = as.character(field),
+            value = value,
+            condition = condition)                
+    else if (is.character(value))
+        new("CharacterVariableFilter",
+            field = as.character(field),
+            value = value,
+            condition = condition)
+    else
+        stop("Value type undefined.")
+}
+
+##' @rdname filterFeature
+setGeneric("filterFeature", function(object, filter, ...) standardGeneric("filterFeature"))
+
+setMethod("filterFeature",
+          c("Features", "AnnotationFilter")
+          function(object, filter, ...) {
+              filterFeatureWithAnnotationFilter(...)
+          })
+
+
+setMethod("filterFeature",
+          c("Features", "formula")
+          function(object, filter, ...) {
+              filterFeatureWithFormula(...)
+          })
+
+
+filterFeatureWithAnnotationFilter <- function(object, filter, ...) {
+    message("filterFeatureWithAnnotationFilter")
+}
+
+
+filterFeatureWithFormula <- function(object, filter, ...) {
+    message("filterFeatureWithFormula")
+}
 
 ## ## Example
 ##
