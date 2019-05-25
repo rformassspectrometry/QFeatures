@@ -41,7 +41,7 @@ setGeneric("filterFeature", function(object, filter, ...) standardGeneric("filte
 setMethod("filterFeature",
           c("Features", "AnnotationFilter")
           function(object, filter, ...) {
-              filterFeatureWithAnnotationFilter(...)
+              filterFeatureWithAnnotationFilter(object, filter, ...)
           })
 
 
@@ -53,7 +53,17 @@ setMethod("filterFeature",
 
 
 filterFeatureWithAnnotationFilter <- function(object, filter, ...) {
-    message("filterFeatureWithAnnotationFilter")
+    sel <- lapply(experiments(object),
+                  function(exp) {
+                      x <- rowData(exp)
+                      if (field(filter) %in% names(x))
+                          res <- do.call(condition(filter),
+                                         list(x[, field(filter)],
+                                              value(filter)))
+                      else
+                          res <- rep(FALSE, nrow(x))               
+                  })
+    object[sel, , ]
 }
 
 
