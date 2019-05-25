@@ -67,8 +67,14 @@ filterFeatureWithAnnotationFilter <- function(object, filter, ...) {
 }
 
 
+##' @importFrom lazyeval::f_eval
 filterFeatureWithFormula <- function(object, filter, ...) {
-    message("filterFeatureWithFormula")
+    sel <- lapply(experiments(object),
+                  function(exp) {
+                      x <- rowData(exp)
+                      lazyeval::f_eval(e, data = as.list(x))
+                  })
+    object[sel, , ]
 }
 
 ## ## Example
