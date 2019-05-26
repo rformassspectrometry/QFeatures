@@ -78,11 +78,11 @@ filterFeaturesWithAnnotationFilter <- function(object, filter, ...) {
                   function(exp) {
                       x <- rowData(exp)
                       if (field(filter) %in% names(x))
-                          res <- do.call(condition(filter),
-                                         list(x[, field(filter)],
-                                              value(filter)))
+                          do.call(condition(filter),
+                                  list(x[, field(filter)],
+                                       value(filter)))
                       else
-                          res <- rep(FALSE, nrow(x))               
+                          rep(FALSE, nrow(x))               
                   })
     object[sel, , ]
 }
@@ -93,8 +93,8 @@ filterFeaturesWithFormula <- function(object, filter, ...) {
     sel <- lapply(experiments(object),
                   function(exp) {
                       x <- rowData(exp)
-                      browser()
-                      lazyeval::f_eval(filter, data = as.list(x))
+                      tryCatch(lazyeval::f_eval(filter, data = as.list(x)),
+                               error = function(e) rep(FALSE, nrow(x)))
                   })
     object[sel, , ]
 }
