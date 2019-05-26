@@ -1,23 +1,45 @@
-## Desired interface
-##
-## A function similar to dplyr::filter that will filter rows/features
-## based on values in any of the assays rowData. The relevant
-## feature(s) are then passed to subsetByFeatue to get the relevant
-## features in the other (combined) assays.
-
+##' @title Filter featuress based on their rowData
+##'
+##' @description
+##'
+##' The `filterFeatures` methods ...
+##'
+##' @rdname filterFeatures
+##'
+##' @author Laurent Gatto
+##'
+##' @aliases filterFeatures filterFeatures,Features,forumla-method filterFeatures,Features,AnnotationFilter-method
+##'
+##' @md
+##'
+##' @examples
+##' 
+##' filterFeatures(fts2, ~ markers == "Mitochondrion")
+##'
+##' filterFeatures(fts2, ~startsWith(markers, "Mito"))
+##' 
+##' filterFeatures(fts2, VariableFilter("markers", "Mitochondrion"))
+##'
+##' filterFeatures(fts2, VariableFilter("markers", "unknown", condition = "!="))
+##'
+##' filterFeatures(fts2, ~ markers != "unknown")
+##'
+##' filterFeatures(fts2, VariableFilter("qValue", 0.001, "<="))
+##'
+##' filterFeatures(fts2, ~ qValue <= 0.001)
 
 
 ##' @import AnnotationFilter
 ##' @exportClass CharacterVariableFilter
-##' @rdname filterFeature
+##' @rdname filterFeatures
 setClass("CharacterVariableFilter", contains = "CharacterFilter")
 ##' @exportClass NumericVariableFilter
-##' @rdname filterFeature
+##' @rdname filterFeatures
 setClass("NumericVariableFilter", contains = "DoubleFilter")
 
 
 ##' @export VariableFilter
-##' @rdname filterFeature
+##' @rdname filterFeatures
 VariableFilter <- function(field,
                            value,
                            condition = "==") {
@@ -35,24 +57,23 @@ VariableFilter <- function(field,
         stop("Value type undefined.")
 }
 
-##' @rdname filterFeature
-setGeneric("filterFeature", function(object, filter, ...) standardGeneric("filterFeature"))
+##' @rdname filterFeatures
+setGeneric("filterFeatures", function(object, filter, ...) standardGeneric("filterFeatures"))
 
-setMethod("filterFeature",
-          c("Features", "AnnotationFilter")
-          function(object, filter, ...) {
-              filterFeatureWithAnnotationFilter(object, filter, ...)
-          })
-
-
-setMethod("filterFeature",
-          c("Features", "formula")
-          function(object, filter, ...) {
-              filterFeatureWithFormula(...)
-          })
+##' @exportMethod filterFeatures
+setMethod("filterFeatures",
+          c("Features", "AnnotationFilter"),
+          function(object, filter, ...) 
+              filterFeaturesWithAnnotationFilter(object, filter, ...))
 
 
-filterFeatureWithAnnotationFilter <- function(object, filter, ...) {
+setMethod("filterFeatures",
+          c("Features", "formula"),
+          function(object, filter, ...)
+              filterFeaturesWithFormula(object, filter, ...))
+
+##' @importFrom BiocGenerics do.call
+filterFeaturesWithAnnotationFilter <- function(object, filter, ...) {
     sel <- lapply(experiments(object),
                   function(exp) {
                       x <- rowData(exp)
@@ -68,41 +89,12 @@ filterFeatureWithAnnotationFilter <- function(object, filter, ...) {
 
 
 ##' @importFrom lazyeval::f_eval
-filterFeatureWithFormula <- function(object, filter, ...) {
+filterFeaturesWithFormula <- function(object, filter, ...) {
     sel <- lapply(experiments(object),
                   function(exp) {
                       x <- rowData(exp)
-                      lazyeval::f_eval(e, data = as.list(x))
+                      browser()
+                      lazyeval::f_eval(filter, data = as.list(x))
                   })
     object[sel, , ]
 }
-
-## ## Example
-##
-## gene <- data.frame(foo = 1:10,
-##                    symbol = c(letters[1:9], "b"),
-##                    seq_name = paste0("chr", c(1, 4, 4, 8, 1, 2, 5, 3, "X", 4)),
-##                    bar = paste0(c("a", "b"), 1:10),
-##                    stringsAsFactors = FALSE)
-##
-## gene
-##
-## doMatch <- function(x, filter) {
-##    do.call(condition(filter), list(x[, field(filter)], value(filter)))
-## }
-##
-## doExtract <- function(x, filter) {
-##     x[doMatch(x, filter), ]
-## }
-##
-## f1 <- VariableFilter("foo", 5, ">")
-## f2 <- VariableFilter("bar", "a", "startsWith")
-## doExtract(gene, f1)
-## doExtract(gene, f2)
-## ## Also considering
-## e <- (~startsWith(markers, "Mito"))
-## e <- (~ markers != 'unknown')
-## sel <- lapply(experiments(fts2), function(x) lazyeval::f_eval(e, data = as.list(rowData(x))))
-## fts2[sel, , ]
-
-
