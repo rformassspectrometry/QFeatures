@@ -18,6 +18,9 @@
 ##' `NumericVariableFilters` objects), which can be created with the
 ##' `VariableFilter` constructor.
 ##'
+##' @seealso The [Features] man page for subsetting and the `Features`
+##'     vignette provides an extended example.
+##'
 ##' @rdname filterFeatures
 ##'
 ##' @author Laurent Gatto

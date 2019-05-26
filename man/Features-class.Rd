@@ -59,7 +59,7 @@ about \code{assayLinks}, see \link{AssayLinks}. An example is shown below.
 \item The \code{\link[=readFeatures]{readFeatures()}} function constructs a \code{Features} object
 from text-based spreadsheet or a \code{data.frame} used to generate
 an assay. See the function manual page for details and an
-example below.
+example.
 }
 }
 
@@ -132,82 +132,16 @@ fts1
 ## Add an assay
 fts1 <- addAssay(fts1, se1[1:2, ], name = "se3")
 
-## -------------------------------------------------
-## Creating a Features object from a data.frame (see
-## ?readFeatures for details)
-## -------------------------------------------------
-
-data(hlpsms)
-fts2 <- readFeatures(hlpsms, ecol = 1:10, name = "psms")
-fts2
-
-fts2[[1]]
-fts2[["psms"]]
-
-## ----------------------------------------------------
-## Add new assays, computed from the existing ones (see
-## ?combineFeatures for details)
-## ----------------------------------------------------
-
-fts2 <- combineFeatures(fts2, "psms", "Sequence", name = "peptides")
-fts2
-fts2 <- combineFeatures(fts2, "peptides", "ProteinGroupAccessions", name = "proteins")
-fts2
-
-## ----------------------------------------------------------------
-## Extract a subset of features that relate to Isoform Stat3B of
-## Signal transducer and activator of transcription 3 (STAT3) with
-## accession number P42227-2
-## ----------------------------------------------------------------
-
-stat3 <- fts2["P42227-2", , ]
-## we get one protein, 8 peptides and 9 PSMs
-stat3
-stat3_df <- data.frame(longFormat(stat3))
-
-library("ggplot2")
-ggplot(data = stat3_df,
-       aes(x = colname,
-           y = value,
-           group = rowname)) +
-    geom_line() +
-    facet_grid(~ assay)
-
-## --------------------------------------------------------------
-## Extract Signal transducer and activator of transcription 1
-## (STAT1) and 3 (STAT3) (accession numbers P42227-2 and P42225)
-## --------------------------------------------------------------
-
-stat <- fts2[c("P42227-2", "P42225"), , ]
-## STAT1 has only one peptide/PSM
-stat
-stat_df <- data.frame(longFormat(stat))
-stat_df$stat3 <- ifelse(stat_df$rowname \%in\% stat3_df$rowname,
-                        "STAT3", "STAT1")
-ggplot(data = stat_df,
-       aes(x = colname,
-           y = value,
-           group = rowname)) +
-    geom_line() +
-    facet_grid(stat3 ~ assay)
-
-## --------------------------------------------------------------
-## Subsetting by features using pipes (same example as above)
-## --------------------------------------------------------------
-library(magrittr)
-fts2 \%>\% subsetByFeature("P42227-2")
-
-fts2 \%>\% subsetByFeature(c("P42227-2", "P42225"))
-
-## --------------------------------------------------------------
-## Interactively explore the data
-## --------------------------------------------------------------
-
-if (interactive())
-    display(stat3)
+## -----------------------------------
+## See ?combineFeatures to create a
+## Features object from a data.frame
+## or spreadsheet.
+## -----------------------------------
 }
 \seealso{
-The \code{\link[=readFeatures]{readFeatures()}} constructor and the \code{\link[=combineFeatures]{combineFeatures()}} function.
+The \code{\link[=readFeatures]{readFeatures()}} constructor and the
+\code{\link[=combineFeatures]{combineFeatures()}} function. The \code{Features} vignette provides
+an extended example.
 }
 \author{
 Laurent Gatto

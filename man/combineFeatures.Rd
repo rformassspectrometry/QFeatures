@@ -33,3 +33,15 @@ applying a summarisation function (\code{fun}) to sets of features as
 defined by the \code{fcol} feature variable. The new assay's features
 will be named based on the unique \code{fcol} values.
 }
+\examples{
+
+## Create a Features from a PSM-level data.frame
+example(readFeatures)
+
+## Combine the PSMs into peptide data
+fts2 <- combineFeatures(fts2, "psms", "Sequence", name = "peptides")
+fts2
+}
+\seealso{
+The \code{Features} vignette provides an extended example.
+}

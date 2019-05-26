@@ -26,7 +26,18 @@
 ##'
 ##' @md
 ##'
+##' @seealso The `Features` vignette provides an extended example.
+##'
 ##' @export
+##'
+##' @examples
+##'
+##' ## Create a Features from a PSM-level data.frame
+##' example(readFeatures)
+##'
+##' ## Combine the PSMs into peptide data
+##' fts2 <- combineFeatures(fts2, "psms", "Sequence", name = "peptides")
+##' fts2
 combineFeatures <- function(object,
                             i,
                             fcol,

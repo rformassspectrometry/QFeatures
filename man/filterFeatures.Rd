@@ -130,6 +130,10 @@ filterFeatures(fts2, VariableFilter("foo", "bar"))
 
 filterFeatures(fts2, ~ foo == "bar")
 }
+\seealso{
+The \link{Features} man page for subsetting and the \code{Features}
+vignette provides an extended example.
+}
 \author{
 Laurent Gatto
 }

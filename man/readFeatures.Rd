@@ -37,6 +37,15 @@ An instance of class \link{Features}.
 Convert tabular data from a spreadsheet or a \code{data.frame} into a
 \code{Features} object.
 }
+\examples{
+
+## Load a data.frame with PSM-level data
+data(hlpsms)
+
+## Create the Features object 
+fts2 <- readFeatures(hlpsms, ecol = 1:10, name = "psms")
+fts2
+}
 \seealso{
 The \link{Features} class for an example on how to manipulate use
 \code{readFeatures} and how to further manipulate the resulting data.

@@ -40,6 +40,15 @@
 ##'
 ##' @md
 ##' @export
+##'
+##' @examples
+##'
+##' ## Load a data.frame with PSM-level data
+##' data(hlpsms)
+##'
+##' ## Create the Features object 
+##' fts2 <- readFeatures(hlpsms, ecol = 1:10, name = "psms")
+##' fts2
 readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
     if (is.data.frame(table)) xx <- table
     else {
