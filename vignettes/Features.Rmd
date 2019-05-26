@@ -1,0 +1,113 @@
+---
+title: "Quantitative features for mass spectrometry data"
+author:
+- name: Laurent Gatto
+package: Features
+abstract: >
+ This vignette describes the functionality implemented in the Features
+ package. Features provides infrastructure to manage and process
+ quantitative features for high-throughput mass spectrometry assays,
+ including proteomics and metabolomics.
+output:
+  BiocStyle::html_document:
+    toc_float: true
+vignette: >
+  %\VignetteIndexEntry{Quantitative features for mass spectrometry data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %%\VignetteKeywords{Mass Spectrometry, MS, MSMS, Proteomics, Metabolomics, Infrastructure, Quantitative }
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r style, echo = FALSE, results = 'asis'}
+BiocStyle::markdown()
+```
+
+# Introduction
+
+The `Features` package provides infrastructure (that is classes and
+the methods to process and manipulate them) to manage and analyse
+quantitative features from mass spectrometry experiments. It is based
+on the `MultiAssayExperiment` class that stores a set of
+assays. Assays in a `Features` object have a specific relation, that
+is depicted in figure \@ref(fig:featuresplot): assays in a `Features`
+object are the result of the aggregation of quantitative features of
+other assays. In the case of a quantitative proteomics experiment,
+these different assays would be PSMs, that are aggregated into
+peptides, that are themselves aggregated into proteins. 
+
+```{r featuresplot, fig.wide = TRUE, fig.cap = "Conceptual representation of a `Features` object and the relation between different assays.", echo = FALSE}
+par(mar = c(0, 0, 0, 0))
+plot(NA, xlim = c(0, 12), ylim = c(0, 20),
+     xaxt = "n", yaxt = "n",
+     xlab = "", ylab = "", bty = "n")
+
+for (i in 0:7) 
+    rect(0, i, 3, i+1, col = "lightgrey", border = "white")
+
+
+for (i in 8:12) 
+    rect(0, i, 3, i+1, col = "steelblue", border = "white")
+
+for (i in 13:18) 
+    rect(0, i, 3, i+1, col = "orange", border = "white")
+
+for (i in 19) 
+    rect(0, i, 3, i+1, col = "darkgrey", border = "white")
+
+
+for (i in 5:7) 
+    rect(5, i, 8, i+1, col = "lightgrey", border = "white")
+
+for (i in 8:10) 
+    rect(5, i, 8, i+1, col = "steelblue", border = "white")
+
+for (i in 11:13) 
+    rect(5, i, 8, i+1, col = "orange", border = "white")
+
+for (i in 14) 
+    rect(5, i, 8, i+1, col = "darkgrey", border = "white")
+
+rect(9, 8, 12, 8+1, col = "lightgrey", border = "white")
+rect(9, 9, 12, 9+1, col = "steelblue", border = "white")
+rect(9, 10, 12, 10+1, col = "orange", border = "white")
+rect(9, 11, 12, 11+1, col = "darkgrey", border = "white")
+
+segments(3, 8, 5, 8, lty = "dashed")
+segments(3, 6, 5, 7, lty = "dashed")
+segments(3, 4, 5, 6, lty = "dashed")
+segments(3, 0, 5, 5, lty = "dashed")
+
+segments(3, 10, 5, 9, lty = "dashed")
+segments(3, 11, 5, 10, lty = "dashed")
+segments(3, 13, 5, 11, lty = "dashed")
+
+segments(3, 14, 5, 12, lty = "dashed")
+segments(3, 16, 5, 13, lty = "dashed")
+segments(3, 19, 5, 14, lty = "dashed")
+
+segments(3, 20, 5, 15, lty = "dashed")
+
+
+segments(8, 5, 9, 8, lty = "dashed")
+segments(8, 8, 9, 9, lty = "dashed")
+segments(8, 11, 9, 10, lty = "dashed")
+segments(8, 14, 9, 11, lty = "dashed")
+segments(8, 15, 9, 12, lty = "dashed")
+```
+
+In the following sections, we are going to demonstrate how to create a
+single-assay `Features` objects starting from a spreadsheet, how to
+compute the next assays (peptides and proteins), and how these can be
+manipulated and explored.
+
+# Features
+
+# Subsetting and filtering
+
+# Session information {-}
+
+```{r sessioninfo, echo=FALSE}
+sessionInfo()
+```
+
+
