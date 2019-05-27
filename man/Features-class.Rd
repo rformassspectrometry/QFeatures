@@ -128,6 +128,8 @@ cd <- DataFrame(Var1 = rnorm(4),
 el <- list(assay1 = se1, assay2 = se2)
 fts1 <- Features(el, colData = cd)
 fts1
+fts1[[1]]
+fts1[["assay1"]]
 
 ## Add an assay
 fts1 <- addAssay(fts1, se1[1:2, ], name = "se3")
