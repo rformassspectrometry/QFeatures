@@ -11,6 +11,7 @@ abstract: >
 output:
   BiocStyle::html_document:
     toc_float: true
+bibliography: Features.bib
 vignette: >
   %\VignetteIndexEntry{Quantitative features for mass spectrometry data}
   %\VignetteEngine{knitr::rmarkdown}
@@ -100,20 +101,40 @@ single-assay `Features` objects starting from a spreadsheet, how to
 compute the next assays (peptides and proteins), and how these can be
 manipulated and explored.
 
-# Features objects
+# Creating Features object
+
+```{r loaddfr, echo = FALSE}
+data(hlpsms)
+```
+
+While `Features` objects can be created manually (see `?Features` for
+details), most users will probably possess quantitative data in a
+spreadsheet or a dataframe. In such cases, the easiest is to use the
+`readFeatures` function to extract the quantitative data and metadata
+columns. Below, we load the `hlpsms` dataframe that contains data for 
+`r ncol(hlpsms)` PSMs from the TMT-10plex *hyper*LOPIT spatial proteomics experiment
+from [@Christoforou:2016]. The `ecol` argument specifies that columns
+1 to 10 contain quantitation data, and that the assay should be named
+`psms` in the returned `Features` object, to reflect the nature of the
+data.
+
+
+```{r readFeatures}
+data(hlpsms)
+hl <- readFeatures(hlpsms, ecol = 1:10, name = "psms")
+hl
+```
+
+Below, we see that we can extract an assay using its index or its
+name, and further access its quantitative data and metadata using the
+`assay` and `rowData` functions[^se]. 
 
 ```{r}
-## -------------------------------------------------
-## Creating a Features object from a data.frame (see
-## ?readFeatures for details)
-## -------------------------------------------------
-
-data(hlpsms)
-fts2 <- readFeatures(hlpsms, ecol = 1:10, name = "psms")
-fts2
-fts2[[1]]
-fts2[["psms"]]
+hl[[1]]
+hl[["psms"]]
 ```
+
+[^se]: 
 
 # Subsetting 
 
@@ -124,16 +145,16 @@ fts2[["psms"]]
 ## ?combineFeatures for details)
 ## ----------------------------------------------------
 
-fts2 <- combineFeatures(fts2, "psms", "Sequence", name = "peptides")
-fts2
-fts2 <- combineFeatures(fts2, "peptides", "ProteinGroupAccessions", name = "proteins")
-fts2
+hl <- combineFeatures(hl, "psms", "Sequence", name = "peptides")
+hl
+hl <- combineFeatures(hl, "peptides", "ProteinGroupAccessions", name = "proteins")
+hl
 ## ----------------------------------------------------------------
 ## Extract a subset of features that relate to Isoform Stat3B of
 ## Signal transducer and activator of transcription 3 (STAT3) with
 ## accession number P42227-2
 ## ----------------------------------------------------------------
-stat3 <- fts2["P42227-2", , ]
+stat3 <- hl["P42227-2", , ]
 ## we get one protein, 8 peptides and 9 PSMs
 stat3
 stat3_df <- data.frame(longFormat(stat3))
@@ -148,7 +169,7 @@ ggplot(data = stat3_df,
 ## Extract Signal transducer and activator of transcription 1
 ## (STAT1) and 3 (STAT3) (accession numbers P42227-2 and P42225)
 ## --------------------------------------------------------------
-stat <- fts2[c("P42227-2", "P42225"), , ]
+stat <- hl[c("P42227-2", "P42225"), , ]
 ## STAT1 has only one peptide/PSM
 stat
 stat_df <- data.frame(longFormat(stat))
@@ -164,14 +185,14 @@ ggplot(data = stat_df,
 ## Subsetting by features using pipes (same example as above)
 ## --------------------------------------------------------------
 library(magrittr)
-fts2 %>% subsetByFeature("P42227-2")
-fts2 %>% subsetByFeature(c("P42227-2", "P42225"))
+hl %>% subsetByFeature("P42227-2")
+hl %>% subsetByFeature(c("P42227-2", "P42225"))
 
 ## --------------------------------------------------------------
 ## Interactively explore the data
 ## --------------------------------------------------------------
-if (interactive())
-    display(stat3)
+## if (interactive())
+##     display(stat3)
 ```
 
 # Filtering
@@ -185,3 +206,4 @@ sessionInfo()
 ```
 
 
+# References {-}
