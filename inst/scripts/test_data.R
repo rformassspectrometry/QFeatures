@@ -1,5 +1,6 @@
 library("Features")
 
+set.seet(1)
 psms <- matrix(1:20, ncol = 2)
 colnames(psms) <- paste0("S", 1:2)
 rowdata <- DataFrame(Sequence = c("SYGFNAAR", "SYGFNAAR", "SYGFNAAR", "ELGNDAYK",
@@ -7,7 +8,9 @@ rowdata <- DataFrame(Sequence = c("SYGFNAAR", "SYGFNAAR", "SYGFNAAR", "ELGNDAYK"
                                   "IAEESNFPFIK", "IAEESNFPFIK", "IAEESNFPFIK"),
                      Protein = c("ProtA", "ProtA", "ProtA", "ProtA", "ProtA",
                                  "ProtA", "ProtB", "ProtB", "ProtB", "ProtB"),
-                     Var = 1:10)
+                     Var = 1:10,
+                     location = c(rep("Mitochondrion", 6), rep("unknown", 4)),
+                     pval = round(runif(10, max = 0.1, min = 0), 3))
 rownames(rowdata) <- rownames(psms) <- paste0("PSM", 1:10)
 coldata <- DataFrame(Group = 1:2)
 rownames(coldata) <- colnames(psms)
