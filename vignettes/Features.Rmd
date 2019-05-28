@@ -101,6 +101,10 @@ single-assay `Features` objects starting from a spreadsheet, how to
 compute the next assays (peptides and proteins), and how these can be
 manipulated and explored.
 
+```{r}
+library("Features")
+```
+
 # Creating Features object
 
 ```{r loaddfr, echo = FALSE}
@@ -143,19 +147,28 @@ For further details on how to manipulate such objects, refer to the
 *MultiAssayExperiment* and *SummerizedExperiment* package.
 
 
-On
+As illustrated in figure \@ref(fig:featuresplot), an central
+characteristic of `Features` objects is the aggregative relation
+between their assays. This can be obtained with the `combineFeatures`
+function that will combine (or aggregate) quantitative features from
+one assay into a new one. In the next code chunk, we combine PSM-level
+data into peptide by grouping all PSMs that were matched the same
+peptide sequence. The default aggregation function is median, and can
+be set as an additional argument. The new assay is named *peptides*.
 
 ```{r}
-## ----------------------------------------------------
-## Add new assays, computed from the existing ones (see
-## ?combineFeatures for details)
-## ----------------------------------------------------
-
 hl <- combineFeatures(hl, "psms", "Sequence", name = "peptides")
 hl
+```
+Below, we repeat the aggregation operation by grouping peptides into
+proteins as defined by the *ProteinGroupAccessions* variable.
+
+```{r}
 hl <- combineFeatures(hl, "peptides", "ProteinGroupAccessions", name = "proteins")
 hl
 ```
+
+TODO: also describe the `colData` slot.
 
 # Subsetting 
 
