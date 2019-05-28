@@ -1,12 +1,6 @@
 # full script at https://github.com/travis-ci/travis-build/blob/master/lib/travis/build/script/r.rb
 language: r
 r: bioc-devel
-bioc_required: true
-bioc_use_devel: true
-cache:
-  packages: true
-  directories:
-    - ~/.AnnotationHub
 sudo: required
 warnings_are_errors: true
 dist: trusty
