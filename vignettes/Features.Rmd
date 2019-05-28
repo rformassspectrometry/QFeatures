@@ -168,7 +168,18 @@ hl <- combineFeatures(hl, "peptides", "ProteinGroupAccessions", name = "proteins
 hl
 ```
 
-TODO: also describe the `colData` slot.
+The sample assayed in a `Features` object can be documented in the
+`colData` slot. The `hl` data doens't currently possess any sample
+metadata. These can be addedd as a new `DataFrame` with matching names
+(i.e. the `DataFrame` rownames must be identical assay's colnames) or
+can be added one variable at at time, as shown below.
+
+```{r}
+colData(hl)
+hl$tag <- c("126", "127N", "127C", "128N", "128C", "129N", "129C",
+            "130N", "130C", "131")
+colData(hl)
+```
 
 # Subsetting 
 
