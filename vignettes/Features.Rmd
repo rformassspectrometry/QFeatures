@@ -159,6 +159,7 @@ be set as an additional argument. The new assay is named *peptides*.
 ```{r}
 hl <- combineFeatures(hl, "psms", "Sequence", name = "peptides")
 hl
+hl[["peptides"]]
 ```
 Below, we repeat the aggregation operation by grouping peptides into
 proteins as defined by the *ProteinGroupAccessions* variable.
@@ -166,6 +167,7 @@ proteins as defined by the *ProteinGroupAccessions* variable.
 ```{r}
 hl <- combineFeatures(hl, "peptides", "ProteinGroupAccessions", name = "proteins")
 hl
+hl[["proteins"]]
 ```
 
 The sample assayed in a `Features` object can be documented in the
@@ -184,17 +186,28 @@ colData(hl)
 # Subsetting 
 
 
-One particularity of 
+One particularity of the `Features` infrastructure is that the
+features of the constitutive assays are linked through an aggregative
+relation. This relation is recorded when creating new assays with
+`combineFeatures` and is exploited when subsetting `Feature` by their
+feature names.
 
-```{r}
-## ----------------------------------------------------------------
-## Extract a subset of features that relate to Isoform Stat3B of
-## Signal transducer and activator of transcription 3 (STAT3) with
-## accession number P42227-2
-## ----------------------------------------------------------------
+In the example below, we are interested in the Stat3B isoform of the
+Signal transducer and activator of transcription 3 (STAT3) with
+accession number P42227-2. This accession number corresponds to a
+feature name in the *proteins* assay. But this protein row was
+computed from 8 peptide rows in the *peptides* assay, themselves
+resulting from the aggregation of 8 rows in the *psms* assay.
+
+```{r stat3}
 stat3 <- hl["P42227-2", , ]
-## we get one protein, 8 peptides and 9 PSMs
 stat3
+```
+
+We can easily visualise this new *Features* object using `ggplot2`
+once converted into a `data.frame`.
+
+```{r plotstat3}
 stat3_df <- data.frame(longFormat(stat3))
 library("ggplot2")
 ggplot(data = stat3_df,
@@ -203,13 +216,22 @@ ggplot(data = stat3_df,
            group = rowname)) +
     geom_line() +
     facet_grid(~ assay)
-## --------------------------------------------------------------
-## Extract Signal transducer and activator of transcription 1
-## (STAT1) and 3 (STAT3) (accession numbers P42227-2 and P42225)
-## --------------------------------------------------------------
+```
+
+Below we repeat the same operation for the Signal transducer and
+activator of transcription 1 (STAT1) and 3 (STAT3) accession numbers,
+namely P42227-2 and P42225. We obtain a new `Features` instance
+containing 2 proteins, 9 peptides and 10 PSMS. From this, we can
+readily conclude that STAT1 was identified by a single PSM/peptide.
+
+```{r stat}
 stat <- hl[c("P42227-2", "P42225"), , ]
-## STAT1 has only one peptide/PSM
 stat
+```
+
+Below, we visualise the expression profiles for the two proteins.
+
+```{r plotstat}
 stat_df <- data.frame(longFormat(stat))
 stat_df$stat3 <- ifelse(stat_df$rowname %in% stat3_df$rowname,
                         "STAT3", "STAT1")
@@ -219,18 +241,23 @@ ggplot(data = stat_df,
            group = rowname)) +
     geom_line() +
     facet_grid(stat3 ~ assay)
+```
+
+
+```{r subsetByFeature}
 ## --------------------------------------------------------------
 ## Subsetting by features using pipes (same example as above)
 ## --------------------------------------------------------------
 library(magrittr)
 hl %>% subsetByFeature("P42227-2")
 hl %>% subsetByFeature(c("P42227-2", "P42225"))
+```
 
+```{r disply, eval = FALSE}
 ## --------------------------------------------------------------
 ## Interactively explore the data
 ## --------------------------------------------------------------
-## if (interactive())
-##     display(stat3)
+ display(stat3)
 ```
 
 # Filtering
