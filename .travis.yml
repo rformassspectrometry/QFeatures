@@ -31,9 +31,7 @@ jobs:
         - mkdir -p ~/.R
         - echo -e 'MAKEFLAGS = -j2' > ~/.R/Makevars
         - echo 'options(Ncpus = 2)' > ~/.Rprofile
-      script: 
-        - R -e 'install.packages("BiocManager")'
-        - R -e 'BiocManager::install(version = "devel")'
+      script: true
       name: "Build dependencies and cache"
     - stage: "Check"
       r_build_args: --no-build-vignettes --no-manual
