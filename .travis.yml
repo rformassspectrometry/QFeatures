@@ -1,6 +1,10 @@
 # full script at https://github.com/travis-ci/travis-build/blob/master/lib/travis/build/script/r.rb
 language: r
 r: bioc-devel
+cache:
+  packages: true
+  directories:
+    - ~/.AnnotationHub
 sudo: required
 warnings_are_errors: true
 dist: trusty
@@ -27,7 +31,9 @@ jobs:
         - mkdir -p ~/.R
         - echo -e 'MAKEFLAGS = -j2' > ~/.R/Makevars
         - echo 'options(Ncpus = 2)' > ~/.Rprofile
-      script: true
+      script: 
+        - R -e 'install.packages("BiocManager")'
+        - R -e 'BiocManager::install(version = "devel")'
       name: "Build dependencies and cache"
     - stage: "Check"
       r_build_args: --no-build-vignettes --no-manual
