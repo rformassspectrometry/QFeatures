@@ -126,18 +126,24 @@ hl
 ```
 
 Below, we see that we can extract an assay using its index or its
-name, and further access its quantitative data and metadata using the
-`assay` and `rowData` functions[^se]. 
+name. The individual assays are stored as *SummerizedExperiment*
+object and further access its quantitative data and metadata using
+the `assay` and `rowData` functions
+
+
 
 ```{r}
 hl[[1]]
 hl[["psms"]]
+head(assay(hl[["psms"]]))
+head(rowData(hl[["psms"]]))
 ```
 
-[^se]: 
+For further details on how to manipulate such objects, refer to the
+*MultiAssayExperiment* and *SummerizedExperiment* package.
 
-# Subsetting 
 
+On
 
 ```{r}
 ## ----------------------------------------------------
@@ -149,6 +155,14 @@ hl <- combineFeatures(hl, "psms", "Sequence", name = "peptides")
 hl
 hl <- combineFeatures(hl, "peptides", "ProteinGroupAccessions", name = "proteins")
 hl
+```
+
+# Subsetting 
+
+
+One particularity of 
+
+```{r}
 ## ----------------------------------------------------------------
 ## Extract a subset of features that relate to Isoform Stat3B of
 ## Signal transducer and activator of transcription 3 (STAT3) with
