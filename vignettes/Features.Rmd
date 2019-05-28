@@ -36,7 +36,7 @@ other assays. In the case of a quantitative proteomics experiment,
 these different assays would be PSMs, that are aggregated into
 peptides, that are themselves aggregated into proteins. 
 
-```{r featuresplot, fig.wide = TRUE, fig.cap = "Conceptual representation of a `Features` object and the relation between different assays.", echo = FALSE}
+```{r featuresplot, fig.cap = "Conceptual representation of a `Features` object and the relation between different assays.", echo = FALSE}
 par(mar = c(0, 0, 0, 0))
 plot(NA, xlim = c(0, 12), ylim = c(0, 20),
      xaxt = "n", yaxt = "n",
@@ -101,7 +101,7 @@ single-assay `Features` objects starting from a spreadsheet, how to
 compute the next assays (peptides and proteins), and how these can be
 manipulated and explored.
 
-```{r}
+```{r loadpkg}
 library("Features")
 ```
 
@@ -136,7 +136,7 @@ the `assay` and `rowData` functions
 
 
 
-```{r}
+```{r subsetassay}
 hl[[1]]
 hl[["psms"]]
 head(assay(hl[["psms"]]))
@@ -156,7 +156,7 @@ data into peptide by grouping all PSMs that were matched the same
 peptide sequence. The default aggregation function is median, and can
 be set as an additional argument. The new assay is named *peptides*.
 
-```{r}
+```{r combineFeatures1}
 hl <- combineFeatures(hl, "psms", "Sequence", name = "peptides")
 hl
 hl[["peptides"]]
@@ -164,7 +164,7 @@ hl[["peptides"]]
 Below, we repeat the aggregation operation by grouping peptides into
 proteins as defined by the *ProteinGroupAccessions* variable.
 
-```{r}
+```{r combineFeatures2}
 hl <- combineFeatures(hl, "peptides", "ProteinGroupAccessions", name = "proteins")
 hl
 hl[["proteins"]]
@@ -243,22 +243,51 @@ ggplot(data = stat_df,
     facet_grid(stat3 ~ assay)
 ```
 
+The subsetting by feature names is also available as a call to the
+`subsetByFeature` function, for use with the pipe operator.
 
 ```{r subsetByFeature}
-## --------------------------------------------------------------
-## Subsetting by features using pipes (same example as above)
-## --------------------------------------------------------------
 library(magrittr)
-hl %>% subsetByFeature("P42227-2")
-hl %>% subsetByFeature(c("P42227-2", "P42225"))
+hl %>%
+    subsetByFeature("P42227-2")
+
+hl %>%
+    subsetByFeature(c("P42227-2", "P42225"))
 ```
 
-```{r disply, eval = FALSE}
-## --------------------------------------------------------------
-## Interactively explore the data
-## --------------------------------------------------------------
- display(stat3)
+and possibly
+
+```{r subsetpipe, eval = FALSE}
+hl %>%
+    subsetByFeature("P42227-2") %>%
+    longFormat() %>%
+    as.data.frame %>%
+    ggplot(aes(x = colname,
+               y = value,
+               group = rowname)) +
+    geom_line() +
+    facet_grid(~ assay)    
 ```
+
+Finally, a simply `shiny` app allows to explore and visualise the
+respective assays of a `Features` object. A dropdown meny in the side
+bar allows the user to select an assay of interest, which can then be visualised as a heatmap (figure 
+
+```{r display, eval = FALSE}
+display(stat)
+```
+
+```{r heatmapdisplay, results='markup', fig.cap="`Features` interactive interface. Heatmap of the peptide assay data.", echo=FALSE, out.width='100%', fig.align='center', fig.wide = TRUE}
+knitr::include_graphics("./figs/display_hmap.png")
+```
+
+```{r assaydisplay, results='markup', fig.cap="`Features` interactive interface. Quantitative peptide assay data.", echo=FALSE, out.width='100%', fig.align='center', fig.wide = TRUE}
+knitr::include_graphics("./figs/display_assay.png")
+```
+```{r rowdatadisplay, results='markup', fig.cap="`Features` interactive interface. Peptide assay row data", echo=FALSE, out.width='100%', fig.align='center', fig.wide = TRUE}
+knitr::include_graphics("./figs/display_rowdata.png")
+```
+
 
 # Filtering
 
