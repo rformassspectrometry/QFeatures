@@ -28,15 +28,16 @@ BiocStyle::markdown()
 The `Features` package provides infrastructure (that is classes and
 the methods to process and manipulate them) to manage and analyse
 quantitative features from mass spectrometry experiments. It is based
-on the `MultiAssayExperiment` class that stores a set of
-assays. Assays in a `Features` object have a specific relation, that
-is depicted in figure \@ref(fig:featuresplot): assays in a `Features`
-object are the result of the aggregation of quantitative features of
-other assays. In the case of a quantitative proteomics experiment,
-these different assays would be PSMs, that are aggregated into
-peptides, that are themselves aggregated into proteins. 
+on the `MultiAssayExperiment` class from the `r BiocStyle::Biocpkg("MultiAssayExperiment")`  
+[@Ramos:2017].  that stores a set of assays. Assays in a `Features`
+object have a specific relation, that is depicted in figure
+\@ref(fig:featuresplot): assays in a `Features` object are the result
+of the aggregation of quantitative features of other assays. In the
+case of a quantitative proteomics experiment, these different assays
+would be PSMs, that are aggregated into peptides, that are themselves
+aggregated into proteins.
 
-```{r featuresplot, fig.cap = "Conceptual representation of a `Features` object and the relation between different assays.", echo = FALSE}
+```{r featuresplot, fig.cap = "Conceptual representation of a `Features` object and the aggregative relation between different assays.", echo = FALSE}
 par(mar = c(0, 0, 0, 0))
 plot(NA, xlim = c(0, 12), ylim = c(0, 20),
      xaxt = "n", yaxt = "n",
@@ -105,7 +106,7 @@ manipulated and explored.
 library("Features")
 ```
 
-# Creating Features object
+# Creating `Features` object
 
 ```{r loaddfr, echo = FALSE}
 data(hlpsms)
@@ -144,8 +145,8 @@ head(rowData(hl[["psms"]]))
 ```
 
 For further details on how to manipulate such objects, refer to the
-*MultiAssayExperiment* and *SummerizedExperiment* package.
-
+`r BiocStyle::Biocpkg("MultiAssayExperiment")` [@Ramos:2017] and 
+`r BiocStyle::Biocpkg("SummerizedExperiment")` [@SE] packages.
 
 As illustrated in figure \@ref(fig:featuresplot), an central
 characteristic of `Features` objects is the aggregative relation
@@ -255,7 +256,7 @@ hl %>%
     subsetByFeature(c("P42227-2", "P42225"))
 ```
 
-and possibly
+and possibly 
 
 ```{r subsetpipe, eval = FALSE}
 hl %>%
@@ -269,28 +270,78 @@ hl %>%
     facet_grid(~ assay)    
 ```
 
+to reproduce the line plot.
+
 Finally, a simply `shiny` app allows to explore and visualise the
-respective assays of a `Features` object. A dropdown meny in the side
-bar allows the user to select an assay of interest, which can then be visualised as a heatmap (figure 
+respective assays of a `Features` object. 
 
 ```{r display, eval = FALSE}
 display(stat)
 ```
 
-```{r heatmapdisplay, results='markup', fig.cap="`Features` interactive interface. Heatmap of the peptide assay data.", echo=FALSE, out.width='100%', fig.align='center', fig.wide = TRUE}
+A dropdown menu in the side bar allows the user to select an assay of
+interest, which can then be visualised as a heatmap (figure
+\@ref(fig:heatmapdisplay)), as a quantitative table (figure
+\@ref(fig:assaydisplay)) or a row data table (figure
+\@ref(fig:rowdatadisplay)).
+
+```{r heatmapdisplay, results='markup', fig.cap="`Features` interactive interface: heatmap of the peptide assay data.", echo=FALSE, out.width='100%', fig.align='center', fig.wide = TRUE}
 knitr::include_graphics("./figs/display_hmap.png")
 ```
 
-```{r assaydisplay, results='markup', fig.cap="`Features` interactive interface. Quantitative peptide assay data.", echo=FALSE, out.width='100%', fig.align='center', fig.wide = TRUE}
+```{r assaydisplay, results='markup', fig.cap="`Features` interactive interface: quantitative peptide assay data.", echo=FALSE, out.width='100%', fig.align='center', fig.wide = TRUE}
 knitr::include_graphics("./figs/display_assay.png")
 ```
-```{r rowdatadisplay, results='markup', fig.cap="`Features` interactive interface. Peptide assay row data", echo=FALSE, out.width='100%', fig.align='center', fig.wide = TRUE}
+```{r rowdatadisplay, results='markup', fig.cap="`Features` interactive interface: peptide assay row data", echo=FALSE, out.width='100%', fig.align='center', fig.wide = TRUE}
 knitr::include_graphics("./figs/display_rowdata.png")
 ```
 
-
 # Filtering
 
+Features is assays can also be filtered based on variables in their
+respective row data slots using the `filterFeatures` function. The
+filters can be defined using the formula interface or using
+`AnnotationFilter` objects from the `r BiocStyle::Biocpkg("AnnotationFilter")` 
+package [@AnnotationFilter]. In addition to the pre-defined filters (such as
+`SymbolFilter`, `ProteinIdFilter`, ... that filter on gene symbol,
+protein identifier, ...), this package allows users to define
+arbitrary character or numeric filters using the `VariableFilter`.
+
+```{r varfilter}
+mito_filter <- VariableFilter(field = "markers",
+                              value = "Mitochondrion",
+                              condition = "==")
+mito_filter
+
+qval_filter <- VariableFilter(field = "qValue",
+                              value = 0.001,
+                              condition = "<=")
+qval_filter
+```
+
+These filter can then readily be applied to all assays' row data
+slots. The `mito_filter` will return all PSMs, peptides and proteins
+that were annotated as localising to the mitochondrion.
+
+```{r mito_filter}
+filterFeatures(hl, mito_filter)
+``` 
+
+The `qval_filter`, on the other hand, will only return a subset of
+PSMs, because the `qValue` variable is only present in the `psms`
+assays. The q-values are only relevant to PSMs and that variable was
+dropped from the other assays.
+
+```{r qval_filter}
+filterFeatures(hl, qval_filter)
+```
+
+The same filters can be created using the forumla interface:
+
+```{r formula_filter}
+filterFeatures(hl, ~ markers == "Mitochondrion")
+filterFeatures(hl, ~ qValue <= 0.001)
+```
 
 
 # Session information {-}
