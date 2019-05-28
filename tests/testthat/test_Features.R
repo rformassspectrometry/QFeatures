@@ -37,6 +37,7 @@ test_that("Manual Features", {
 
 
 test_that("combineFeatures(fun = sum)", {
+    data(feat1)
     feat1 <- combineFeatures(feat1, "psms", fcol = "Sequence", name = "peptides", fun = sum)
     expect_identical(names(feat1), c("psms", "peptides"))
 
@@ -53,12 +54,16 @@ test_that("combineFeatures(fun = sum)", {
     Sequence <- rownames(assay1)
     Protein <- c("ProtA", "ProtB", "ProtA")
     .n <- c(3, 4, 3)
-    names(.n) <- names(Protein) <- names(Sequence) <- Sequence
+    location <- c("Mitochondrion", "unknown", "Mitochondrion")
+    names(.n) <- names(Protein) <- names(Sequence) <-
+        names(location) <- Sequence
 
     coldat1 <- DataFrame(Sequence = Sequence,
                          Protein = Protein,
-                         .n = .n,                         
+                         location = location,
+                         .n = .n,
                          row.names = rownames(assay1))
+    
     expect_equal(coldat1, rowData(feat1[["peptides"]]))
 
 
@@ -76,7 +81,7 @@ test_that("combineFeatures(fun = sum)", {
                   nRnode = 10L,
                   names_from = paste0("PSM", c(4:10, 1:3)),
                   sort.by.query = TRUE)
-    expect_identical(alink@hits, hits1)    
+    expect_identical(alink@hits, hits1)
 })
 
 test_that("combineFeatures(fun = median)", {
@@ -102,11 +107,15 @@ test_that("combineFeatures(fun = median)", {
     Sequence <- rownames(assay1)
     Protein <- c("ProtA", "ProtB", "ProtA")
     .n <- c(3, 4, 3)
-    names(.n) <- names(Protein) <- names(Sequence) <- Sequence
+    location <- c("Mitochondrion", "unknown", "Mitochondrion")
+    names(.n) <- names(Protein) <- names(Sequence) <-
+        names(location) <- Sequence
+    
 
     coldat1 <- DataFrame(Sequence = Sequence,
                          Protein = Protein,
-                         .n = .n,                         
+                         location = location,
+                         .n = .n,               
                          row.names = rownames(assay1))
     expect_equal(coldat1, rowData(feat1[["peptides"]]))
 

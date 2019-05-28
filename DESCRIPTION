@@ -11,10 +11,12 @@ Depends: R (>= 3.5.3), MultiAssayExperiment
 Imports: methods, S4Vectors, IRanges, SummarizedExperiment,
    BiocGenerics, ProtGenerics (>= 1.17.2), AnnotationFilter,
    lazyeval
-Suggests: ggplot2, magrittr, DT, shiny, shinydashboard, testthat
+Suggests: ggplot2, magrittr, DT, shiny, shinydashboard, testthat,
+   knitr, BiocStyle, rmarkdown
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
+VignetteBuilder: knitr
 Collate:
     'AllGenerics.R'
     'AssayLinks.R'
