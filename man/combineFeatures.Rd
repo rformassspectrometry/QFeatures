@@ -35,12 +35,16 @@ will be named based on the unique \code{fcol} values.
 }
 \examples{
 
-## Create a Features from a PSM-level data.frame
-example(readFeatures)
+## An example Features with PSM-level data
+data(feat1)
 
-## Combine the PSMs into peptide data
-fts2 <- combineFeatures(fts2, "psms", "Sequence", name = "peptides")
-fts2
+## Combine PSMs into peptides
+feat1 <- combineFeatures(feat1, "psms", "Sequence", name = "peptides")
+feat1
+
+## Combine peptides into proteins
+feat1 <- combineFeatures(feat1, "peptides", "Protein", name = "proteins")
+feat1
 }
 \seealso{
 The \code{Features} vignette provides an extended example.
