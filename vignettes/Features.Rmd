@@ -23,6 +23,11 @@ vignette: >
 BiocStyle::markdown()
 ```
 
+```{r env, message = FALSE, warning = FALSE, echo = FALSE}
+library("Features")
+```
+
+
 # Introduction
 
 The `Features` package provides infrastructure (that is classes and
