@@ -4,31 +4,33 @@
 ##' will be named based on the unique `fcol` values.
 ##'
 ##' @title Combine an assay's quantitative features
-##' 
+##'
 ##' @param object An instance of class [Features].
-##' 
+##'
 ##' @param i The index or name of the assay which features will be
 ##'     combined the create the new assay.
-##' 
+##'
 ##' @param fcol The feature variable of assay `i` defining how to
 ##'     summerise the features.
-##' 
+##'
 ##' @param name A `character(1)` naming the new assay. Default is
 ##'     `newAssay`. Note that the function will fail if there's
 ##'     already an assay with `name`.
-##' 
+##'
 ##' @param fun A function used for quantitative feature
 ##'     aggregation. Default is `median`.
-##' 
+##'
 ##' @param ... Additional parameters passed the `fun`.
-##' 
+##'
 ##' @return A `Features` object with an additional assay.
 ##'
 ##' @md
 ##'
 ##' @seealso The `Features` vignette provides an extended example.
 ##'
-##' @export
+##' @aliases combineFeatures combineFeatures,Features-method
+##'
+##' @name combineFeatures
 ##'
 ##' @examples
 ##'
@@ -42,13 +44,16 @@
 ##' ## Combine peptides into proteins
 ##' feat1 <- combineFeatures(feat1, "peptides", "Protein", name = "proteins")
 ##' feat1
-combineFeatures <- function(object,
-                            i,
-                            fcol,
-                            name = "newAssay",
-                            fun = median,
-                            ... 
-                            ) {
+NULL
+
+##' @exportMethod combineFeatures
+##' @rdname combineFeatures
+setMethod("combineFeatures", "Features",
+          function(object, i, fcol, name = "newAssay", fun = median, ...)
+              .combineFeatures(object, i, fcol, name, fun, ...))
+
+
+.combineFeatures <- function(object, i, fcol, name, fun, ...) {
     if (isEmpty(object))
         return(object)
     if (name %in% names(object))
@@ -80,7 +85,7 @@ combineFeatures <- function(object,
     elementMetadata(hits)$names_to <- .rowdata[[fcol]][hits@to]
     elementMetadata(hits)$names_from <- rownames(.assay)[hits@to]
 
-    
+
     assayLinks <- AssayLink(name = name,
                             from = ifelse(is.character(i), i, names(object)[i]),
                             fcol = fcol,
@@ -92,7 +97,7 @@ combineFeatures <- function(object,
 }
 
 
-combine_assay <- function(assay, groupBy, fun, ...) 
+combine_assay <- function(assay, groupBy, fun, ...)
     do.call(rbind,
             by(assay, groupBy,
                function(.x) apply(.x, 2, fun, ...)))
