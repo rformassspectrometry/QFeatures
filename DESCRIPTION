@@ -17,6 +17,8 @@ License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
+BugReports: https://github.com/RforMassSpectrometry/Features/issues
+URL: https://github.com/RforMassSpectrometry/Features
 Collate:
     'AllGenerics.R'
     'AssayLinks.R'
