@@ -32,9 +32,9 @@ along the density gradient.
 \item Modifications: post-translational modifications identified in the peptide.
 \item qValue: the PSM identification q-value.
 \item PEP: the PSM posterior error probability.
-\item IonScore: the Mascot ion identication score.
+\item IonScore: the Mascot ion identification score.
 \item NbMissedCleavages: the number of missed cleavages in the peptide.
-\item IsolationInterference: the calculated pecursor ion isolation interference.
+\item IsolationInterference: the calculated precursor ion isolation interference.
 \item IonInjectTimems: the ions injection time in milli-seconds.
 \item Intensity: the precursor ion intensity.
 \item Charge: the peptide charge.
