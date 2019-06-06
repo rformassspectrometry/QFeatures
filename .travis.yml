@@ -1,6 +1,7 @@
 # full script at https://github.com/travis-ci/travis-build/blob/master/lib/travis/build/script/r.rb
 language: r
-r: bioc-devel
+r: bioc-release
+r_github_packages: lgatto/ProtGenerics
 cache:
   packages: true
   directories:
@@ -31,8 +32,6 @@ jobs:
         - mkdir -p ~/.R
         - echo -e 'MAKEFLAGS = -j2' > ~/.R/Makevars
         - echo 'options(Ncpus = 2)' > ~/.Rprofile
-        # see https://travis-ci.community/t/error-bioconductor-version-not-changed/3491/6
-        - Rscript -e 'if (!requireNamespace("BiocManager", quietly=TRUE))  install.packages("BiocManager"); if (TRUE) BiocManager::install(version = "devel", ask = FALSE); cat(append = TRUE, file = "~/.Rprofile.site", "options(repos = BiocManager::repositories())'
       script: true
       name: "Build dependencies and cache"
     - stage: "Check"
