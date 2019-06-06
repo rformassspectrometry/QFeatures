@@ -6,13 +6,13 @@
 \title{hyperLOPIT PSM-level expression data}
 \format{An object of class \code{data.frame} with 32776 rows and 28 columns.}
 \source{
-The `pRolocdata` package: \url{http://bioconductor.org/packages/pRolocdata/}
+The \code{pRolocdata} package: \url{http://bioconductor.org/packages/pRolocdata/}
 }
 \usage{
 hlpsms
 }
 \description{
-A `data.frame` with PSM-level quantitation data by Christoforou *et al.*
+A \code{data.frame} with PSM-level quantitation data by Christoforou \emph{et al.}
 (2016). This is the first replicate of a spatial proteomics dataset from a
 hyperLOPIT experimental design on Mouse E14TG2a embryonic stem
 cells. Normalised intensities for proteins for TMT 10-plex labelled
@@ -20,17 +20,43 @@ fractions are available for 3 replicates acquired in MS3 mode using an
 Orbitrap Fusion mass-spectrometer.
 }
 \details{
-For further details, install the `pRolocdata` package and see
-`?hyperLOPIT2015`.
+The variable names are
+\itemize{
+\item X126, X127C, X127N, X128C, X128N, X129C, X129N, X130C, X130N and
+X131: the 10 TMT tags used to quantify the peptides
+along the density gradient.
+\item Sequence: the peptide sequence.
+\item ProteinDescriptions: the description of the protein this peptide was associated to.
+\item NbProteins: the number of proteins in the protein group.
+\item ProteinGroupAccessions: the main protein accession number in the protein group.
+\item Modifications: post-translational modifications identified in the peptide.
+\item qValue: the PSM identification q-value.
+\item PEP: the PSM posterior error probability.
+\item IonScore: the Mascot ion identication score.
+\item NbMissedCleavages: the number of missed cleavages in the peptide.
+\item IsolationInterference: the calculated pecursor ion isolation interference.
+\item IonInjectTimems: the ions injection time in milli-seconds.
+\item Intensity: the precursor ion intensity.
+\item Charge: the peptide charge.
+\item mzDa: the peptide mass to charge ratio, in Daltons.
+\item MHDa: the peptide mass, in Daltons.
+\item DeltaMassPPM: the difference in measure and calculated mass, in parts per millions.
+\item RTmin: the peptide retention time, in minutes.
+\item markers: localisation for well known sub-cellular
+markers. Features of unknown location are encode as \code{"unknown"}.
+}
+
+For further details, install the \code{pRolocdata} package and see
+\code{?hyperLOPIT2015}.
 }
 \references{
-*A draft map of the mouse pluripotent stem cell spatial proteome*
+\emph{A draft map of the mouse pluripotent stem cell spatial proteome}
 Christoforou A, Mulvey CM, Breckels LM, Geladaki A, Hurrell T, Hayward PC,
 Naake T, Gatto L, Viner R, Martinez Arias A, Lilley KS. Nat Commun. 2016 Jan
 12;7:8992. doi: 10.1038/ncomms9992. PubMed PMID: 26754106; PubMed Central
 PMCID: PMC4729960.
 }
 \seealso{
-See [Features] to import this data using the [readFeatures()] function.
+See \link{Features} to import this data using the \code{\link[=readFeatures]{readFeatures()}} function.
 }
 \keyword{datasets}
