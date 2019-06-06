@@ -64,7 +64,7 @@ Features object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -77,12 +77,20 @@ Features object." />
   </a>
 </li>
 <li>
+  <a href="../articles/Features.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/RforMassSpectrometry/Features">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -96,7 +104,7 @@ Features object." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Features from tabular data</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/Features/blob/master/R/Features-constructors.R'><code>R/Features-constructors.R</code></a></small>
     <div class="hidden name"><code>readFeatures.Rd</code></div>
     </div>
 
@@ -157,6 +165,15 @@ except <code>stringsAsFactors</code>, which is always <code>FALSE</code>.</p></t
 <code>readFeatures</code> and how to further manipulate the resulting data.</p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='co'>## Load a data.frame with PSM-level data</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>hlpsms</span>)
+
+<span class='co'>## Create the Features object </span>
+<span class='no'>fts2</span> <span class='kw'>&lt;-</span> <span class='fu'>readFeatures</span>(<span class='no'>hlpsms</span>, <span class='kw'>ecol</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"psms"</span>)
+<span class='no'>fts2</span></div><div class='output co'>#&gt; A instance of class Features containing
+#&gt;  [1] psms: SummarizedExperiment with 32776 rows and 10 columns </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -166,7 +183,9 @@ except <code>stringsAsFactors</code>, which is always <code>FALSE</code>.</p></t
       <li><a href="#value">Value</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
     <h2>Author</h2>
     <p>Laurent Gatto</p>

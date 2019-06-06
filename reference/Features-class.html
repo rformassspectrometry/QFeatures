@@ -87,7 +87,7 @@ sure that these match the class validity requirements." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -100,12 +100,20 @@ sure that these match the class validity requirements." />
   </a>
 </li>
 <li>
+  <a href="../articles/Features.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/RforMassSpectrometry/Features">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -119,7 +127,7 @@ sure that these match the class validity requirements." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Quantitative MS Features</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/Features/blob/master/R/Features-class.R'><code>R/Features-class.R</code></a>, <a href='https://github.com/RforMassSpectrometry/Features/blob/master/R/Features-constructors.R'><code>R/Features-constructors.R</code></a></small>
     <div class="hidden name"><code>Features-class.Rd</code></div>
     </div>
 
@@ -180,7 +188,7 @@ about <code>assayLinks</code>, see <a href='AssayLinks.html'>AssayLinks</a>. An 
 <li><p>The <code><a href='readFeatures.html'>readFeatures()</a></code> function constructs a <code>Features</code> object
 from text-based spreadsheet or a <code>data.frame</code> used to generate
 an assay. See the function manual page for details and an
-example below.</p></li>
+example.</p></li>
 </ul>
     
     <h2 class="hasAnchor" id="accessors"><a class="anchor" href="#accessors"></a>Accessors</h2>
@@ -214,7 +222,9 @@ relation between assays. See example below.</p></li>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>The <code><a href='readFeatures.html'>readFeatures()</a></code> constructor and the <code><a href='combineFeatures.html'>combineFeatures()</a></code> function.</p></div>
+    <div class='dont-index'><p>The <code><a href='readFeatures.html'>readFeatures()</a></code> constructor and the
+<code><a href='combineFeatures.html'>combineFeatures()</a></code> function. The <code>Features</code> vignette provides
+an extended example.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -264,109 +274,29 @@ relation between assays. See example below.</p></li>
 <span class='no'>fts1</span> <span class='kw'>&lt;-</span> <span class='fu'>Features</span>(<span class='no'>el</span>, <span class='kw'>colData</span> <span class='kw'>=</span> <span class='no'>cd</span>)
 <span class='no'>fts1</span></div><div class='output co'>#&gt; A instance of class Features containing
 #&gt;  [1] assay1: SummarizedExperiment with 10 rows and 4 columns 
-#&gt;  [2] assay2: SummarizedExperiment with 4 rows and 4 columns </div><div class='input'>
+#&gt;  [2] assay2: SummarizedExperiment with 4 rows and 4 columns </div><div class='input'><span class='no'>fts1</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; class: SummarizedExperiment 
+#&gt; dim: 10 4 
+#&gt; metadata(0):
+#&gt; assays(1): ''
+#&gt; rownames(10): a b ... i j
+#&gt; rowData names(2): Fa Fb
+#&gt; colnames(4): S1 S2 S3 S4
+#&gt; colData names(0):</div><div class='input'><span class='no'>fts1</span><span class='kw'>[[</span><span class='st'>"assay1"</span>]]</div><div class='output co'>#&gt; class: SummarizedExperiment 
+#&gt; dim: 10 4 
+#&gt; metadata(0):
+#&gt; assays(1): ''
+#&gt; rownames(10): a b ... i j
+#&gt; rowData names(2): Fa Fb
+#&gt; colnames(4): S1 S2 S3 S4
+#&gt; colData names(0):</div><div class='input'>
 <span class='co'>## Add an assay</span>
 <span class='no'>fts1</span> <span class='kw'>&lt;-</span> <span class='fu'>addAssay</span>(<span class='no'>fts1</span>, <span class='no'>se1</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, ], <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"se3"</span>)
 
-<span class='co'>## -------------------------------------------------</span>
-<span class='co'>## Creating a Features object from a data.frame (see</span>
-<span class='co'>## ?readFeatures for details)</span>
-<span class='co'>## -------------------------------------------------</span>
-
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>hlpsms</span>)
-<span class='no'>fts2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='readFeatures.html'>readFeatures</a></span>(<span class='no'>hlpsms</span>, <span class='kw'>ecol</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"psms"</span>)
-<span class='no'>fts2</span></div><div class='output co'>#&gt; A instance of class Features containing
-#&gt;  [1] psms: SummarizedExperiment with 32776 rows and 10 columns </div><div class='input'>
-<span class='no'>fts2</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; class: SummarizedExperiment 
-#&gt; dim: 32776 10 
-#&gt; metadata(0):
-#&gt; assays(1): ''
-#&gt; rownames(32776): 136 141 ... 115747 115775
-#&gt; rowData names(18): Sequence ProteinDescriptions ... RTmin markers
-#&gt; colnames(10): X126 X127C ... X130N X131
-#&gt; colData names(0):</div><div class='input'><span class='no'>fts2</span><span class='kw'>[[</span><span class='st'>"psms"</span>]]</div><div class='output co'>#&gt; class: SummarizedExperiment 
-#&gt; dim: 32776 10 
-#&gt; metadata(0):
-#&gt; assays(1): ''
-#&gt; rownames(32776): 136 141 ... 115747 115775
-#&gt; rowData names(18): Sequence ProteinDescriptions ... RTmin markers
-#&gt; colnames(10): X126 X127C ... X130N X131
-#&gt; colData names(0):</div><div class='input'>
-<span class='co'>## ----------------------------------------------------</span>
-<span class='co'>## Add new assays, computed from the existing ones (see</span>
-<span class='co'>## ?combineFeatures for details)</span>
-<span class='co'>## ----------------------------------------------------</span>
-
-<span class='no'>fts2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='combineFeatures.html'>combineFeatures</a></span>(<span class='no'>fts2</span>, <span class='st'>"psms"</span>, <span class='st'>"Sequence"</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"peptides"</span>)
-<span class='no'>fts2</span></div><div class='output co'>#&gt; A instance of class Features containing
-#&gt;  [1] psms: SummarizedExperiment with 32776 rows and 10 columns 
-#&gt;  [2] peptides: SummarizedExperiment with 26796 rows and 10 columns </div><div class='input'><span class='no'>fts2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='combineFeatures.html'>combineFeatures</a></span>(<span class='no'>fts2</span>, <span class='st'>"peptides"</span>, <span class='st'>"ProteinGroupAccessions"</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"proteins"</span>)
-<span class='no'>fts2</span></div><div class='output co'>#&gt; A instance of class Features containing
-#&gt;  [1] psms: SummarizedExperiment with 32776 rows and 10 columns 
-#&gt;  [2] peptides: SummarizedExperiment with 26796 rows and 10 columns 
-#&gt;  [3] proteins: SummarizedExperiment with 4276 rows and 10 columns </div><div class='input'>
-<span class='co'>## ----------------------------------------------------------------</span>
-<span class='co'>## Extract a subset of features that relate to Isoform Stat3B of</span>
-<span class='co'>## Signal transducer and activator of transcription 3 (STAT3) with</span>
-<span class='co'>## accession number P42227-2</span>
-<span class='co'>## ----------------------------------------------------------------</span>
-
-<span class='no'>stat3</span> <span class='kw'>&lt;-</span> <span class='no'>fts2</span>[<span class='st'>"P42227-2"</span>, , ]
-<span class='co'>## we get one protein, 8 peptides and 9 PSMs</span>
-<span class='no'>stat3</span></div><div class='output co'>#&gt; A instance of class Features containing
-#&gt;  [1] proteins: SummarizedExperiment with 1 rows and 10 columns 
-#&gt;  [2] peptides: SummarizedExperiment with 8 rows and 10 columns 
-#&gt;  [3] psms: SummarizedExperiment with 9 rows and 10 columns </div><div class='input'><span class='no'>stat3_df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='fu'>longFormat</span>(<span class='no'>stat3</span>))
-
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='st'>"ggplot2"</span>)</div><div class='output co'>#&gt; <span class='message'>Registered S3 methods overwritten by 'ggplot2':</span>
-#&gt; <span class='message'>  method         from </span>
-#&gt; <span class='message'>  [.quosures     rlang</span>
-#&gt; <span class='message'>  c.quosures     rlang</span>
-#&gt; <span class='message'>  print.quosures rlang</span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>stat3_df</span>,
-       <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>colname</span>,
-           <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>value</span>,
-           <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>rowname</span>)) +
-    <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>() +
-    <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_grid'>facet_grid</a></span>(~ <span class='no'>assay</span>)</div><div class='img'><img src='Features-class-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'>## --------------------------------------------------------------</span>
-<span class='co'>## Extract Signal transducer and activator of transcription 1</span>
-<span class='co'>## (STAT1) and 3 (STAT3) (accession numbers P42227-2 and P42225)</span>
-<span class='co'>## --------------------------------------------------------------</span>
-
-<span class='no'>stat</span> <span class='kw'>&lt;-</span> <span class='no'>fts2</span>[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"P42227-2"</span>, <span class='st'>"P42225"</span>), , ]
-<span class='co'>## STAT1 has only one peptide/PSM</span>
-<span class='no'>stat</span></div><div class='output co'>#&gt; A instance of class Features containing
-#&gt;  [1] proteins: SummarizedExperiment with 2 rows and 10 columns 
-#&gt;  [2] peptides: SummarizedExperiment with 9 rows and 10 columns 
-#&gt;  [3] psms: SummarizedExperiment with 10 rows and 10 columns </div><div class='input'><span class='no'>stat_df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='fu'>longFormat</span>(<span class='no'>stat</span>))
-<span class='no'>stat_df</span>$<span class='no'>stat3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ifelse'>ifelse</a></span>(<span class='no'>stat_df</span>$<span class='no'>rowname</span> <span class='kw'>%in%</span> <span class='no'>stat3_df</span>$<span class='no'>rowname</span>,
-                        <span class='st'>"STAT3"</span>, <span class='st'>"STAT1"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>stat_df</span>,
-       <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>colname</span>,
-           <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>value</span>,
-           <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>rowname</span>)) +
-    <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>() +
-    <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/facet_grid'>facet_grid</a></span>(<span class='no'>stat3</span> ~ <span class='no'>assay</span>)</div><div class='img'><img src='Features-class-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'>## --------------------------------------------------------------</span>
-<span class='co'>## Subsetting by features using pipes (same example as above)</span>
-<span class='co'>## --------------------------------------------------------------</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>magrittr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘magrittr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:testthat’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    equals, is_less_than, not</span></div><div class='input'><span class='no'>fts2</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='Features-subsetBy.html'>subsetByFeature</a></span>(<span class='st'>"P42227-2"</span>)</div><div class='output co'>#&gt; A instance of class Features containing
-#&gt;  [1] proteins: SummarizedExperiment with 1 rows and 10 columns 
-#&gt;  [2] peptides: SummarizedExperiment with 8 rows and 10 columns 
-#&gt;  [3] psms: SummarizedExperiment with 9 rows and 10 columns </div><div class='input'>
-<span class='no'>fts2</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='Features-subsetBy.html'>subsetByFeature</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"P42227-2"</span>, <span class='st'>"P42225"</span>))</div><div class='output co'>#&gt; A instance of class Features containing
-#&gt;  [1] proteins: SummarizedExperiment with 2 rows and 10 columns 
-#&gt;  [2] peptides: SummarizedExperiment with 9 rows and 10 columns 
-#&gt;  [3] psms: SummarizedExperiment with 10 rows and 10 columns </div><div class='input'>
-<span class='co'>## --------------------------------------------------------------</span>
-<span class='co'>## Interactively explore the data</span>
-<span class='co'>## --------------------------------------------------------------</span>
-
-<span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/interactive'>interactive</a></span>())
-    <span class='fu'><a href='display.html'>display</a></span>(<span class='no'>stat3</span>)</div></pre>
+<span class='co'>## -----------------------------------</span>
+<span class='co'>## See ?combineFeatures to create a</span>
+<span class='co'>## Features object from a data.frame</span>
+<span class='co'>## or spreadsheet.</span>
+<span class='co'>## -----------------------------------</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
