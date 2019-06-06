@@ -33,7 +33,7 @@ library("Features")
 The `Features` package provides infrastructure (that is classes and
 the methods to process and manipulate them) to manage and analyse
 quantitative features from mass spectrometry experiments. It is based
-on the `MultiAssayExperiment` class from the `r BiocStyle::Biocpkg("MultiAssayExperiment")`  
+on the `MultiAssayExperiment` class from the `r BiocStyle::Biocpkg("MultiAssayExperiment")`
 [@Ramos:2017].  that stores a set of assays. Assays in a `Features`
 object have a specific relation, that is depicted in figure
 \@ref(fig:featuresplot): assays in a `Features` object are the result
@@ -48,30 +48,30 @@ plot(NA, xlim = c(0, 12), ylim = c(0, 20),
      xaxt = "n", yaxt = "n",
      xlab = "", ylab = "", bty = "n")
 
-for (i in 0:7) 
+for (i in 0:7)
     rect(0, i, 3, i+1, col = "lightgrey", border = "white")
 
 
-for (i in 8:12) 
+for (i in 8:12)
     rect(0, i, 3, i+1, col = "steelblue", border = "white")
 
-for (i in 13:18) 
+for (i in 13:18)
     rect(0, i, 3, i+1, col = "orange", border = "white")
 
-for (i in 19) 
+for (i in 19)
     rect(0, i, 3, i+1, col = "darkgrey", border = "white")
 
 
-for (i in 5:7) 
+for (i in 5:7)
     rect(5, i, 8, i+1, col = "lightgrey", border = "white")
 
-for (i in 8:10) 
+for (i in 8:10)
     rect(5, i, 8, i+1, col = "steelblue", border = "white")
 
-for (i in 11:13) 
+for (i in 11:13)
     rect(5, i, 8, i+1, col = "orange", border = "white")
 
-for (i in 14) 
+for (i in 14)
     rect(5, i, 8, i+1, col = "darkgrey", border = "white")
 
 rect(9, 8, 12, 8+1, col = "lightgrey", border = "white")
@@ -121,7 +121,7 @@ While `Features` objects can be created manually (see `?Features` for
 details), most users will probably possess quantitative data in a
 spreadsheet or a dataframe. In such cases, the easiest is to use the
 `readFeatures` function to extract the quantitative data and metadata
-columns. Below, we load the `hlpsms` dataframe that contains data for 
+columns. Below, we load the `hlpsms` dataframe that contains data for
 `r ncol(hlpsms)` PSMs from the TMT-10plex *hyper*LOPIT spatial proteomics experiment
 from [@Christoforou:2016]. The `ecol` argument specifies that columns
 1 to 10 contain quantitation data, and that the assay should be named
@@ -150,7 +150,7 @@ head(rowData(hl[["psms"]]))
 ```
 
 For further details on how to manipulate such objects, refer to the
-`r BiocStyle::Biocpkg("MultiAssayExperiment")` [@Ramos:2017] and 
+`r BiocStyle::Biocpkg("MultiAssayExperiment")` [@Ramos:2017] and
 `r BiocStyle::Biocpkg("SummerizedExperiment")` [@SE] packages.
 
 As illustrated in figure \@ref(fig:featuresplot), an central
@@ -189,7 +189,7 @@ hl$tag <- c("126", "127N", "127C", "128N", "128C", "129N", "129C",
 colData(hl)
 ```
 
-# Subsetting 
+# Subsetting
 
 
 One particularity of the `Features` infrastructure is that the
@@ -261,7 +261,7 @@ hl %>%
     subsetByFeature(c("P42227-2", "P42225"))
 ```
 
-and possibly 
+and possibly
 
 ```{r subsetpipe, eval = FALSE}
 hl %>%
@@ -272,23 +272,17 @@ hl %>%
                y = value,
                group = rowname)) +
     geom_line() +
-    facet_grid(~ assay)    
+    facet_grid(~ assay)
 ```
 
 to reproduce the line plot.
 
 Finally, a simply `shiny` app allows to explore and visualise the
-respective assays of a `Features` object. 
+respective assays of a `Features` object.
 
 ```{r display, eval = FALSE}
 display(stat)
 ```
-
-A dropdown menu in the side bar allows the user to select an assay of
-interest, which can then be visualised as a heatmap (figure
-\@ref(fig:heatmapdisplay)), as a quantitative table (figure
-\@ref(fig:assaydisplay)) or a row data table (figure
-\@ref(fig:rowdatadisplay)).
 
 ```{r heatmapdisplay, results='markup', fig.cap="`Features` interactive interface: heatmap of the peptide assay data.", echo=FALSE, out.width='100%', fig.align='center', fig.wide = TRUE}
 knitr::include_graphics("./figs/display_hmap.png")
@@ -301,12 +295,18 @@ knitr::include_graphics("./figs/display_assay.png")
 knitr::include_graphics("./figs/display_rowdata.png")
 ```
 
+A dropdown menu in the side bar allows the user to select an assay of
+interest, which can then be visualised as a heatmap (figure
+\@ref(fig:heatmapdisplay)), as a quantitative table (figure
+\@ref(fig:assaydisplay)) or a row data table (figure
+\@ref(fig:rowdatadisplay)).
+
 # Filtering
 
 Features is assays can also be filtered based on variables in their
 respective row data slots using the `filterFeatures` function. The
 filters can be defined using the formula interface or using
-`AnnotationFilter` objects from the `r BiocStyle::Biocpkg("AnnotationFilter")` 
+`AnnotationFilter` objects from the `r BiocStyle::Biocpkg("AnnotationFilter")`
 package [@AnnotationFilter]. In addition to the pre-defined filters (such as
 `SymbolFilter`, `ProteinIdFilter`, ... that filter on gene symbol,
 protein identifier, ...), this package allows users to define
@@ -330,7 +330,7 @@ that were annotated as localising to the mitochondrion.
 
 ```{r mito_filter}
 filterFeatures(hl, mito_filter)
-``` 
+```
 
 The `qval_filter`, on the other hand, will only return a subset of
 PSMs, because the `qValue` variable is only present in the `psms`
