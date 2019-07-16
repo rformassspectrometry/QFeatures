@@ -3,7 +3,4 @@ pkgdown: 1.3.0
 pkgdown_sha: ~
 articles:
   Features: Features.html
-urls:
-  reference: https://features.rformassspectrometry.org/reference
-  article: https://features.rformassspectrometry.org/articles
 
