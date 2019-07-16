@@ -249,64 +249,59 @@ Conceptual representation of a <code>Features</code> object and the aggregative 
 ##  [3] psms: SummarizedExperiment with 9 rows and 10 columns</code></pre>
 <p>We can easily visualise this new <em>Features</em> object using <code>ggplot2</code> once converted into a <code>data.frame</code>.</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">stat3_df &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="kw">longFormat</span>(stat3))</a>
-<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"ggplot2"</span>)</a></code></pre></div>
-<pre><code>## Registered S3 methods overwritten by 'ggplot2':
-##   method         from 
-##   [.quosures     rlang
-##   c.quosures     rlang
-##   print.quosures rlang</code></pre>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> stat3_df,</a>
-<a class="sourceLine" id="cb28-2" data-line-number="2">       <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> colname,</a>
-<a class="sourceLine" id="cb28-3" data-line-number="3">           <span class="dt">y =</span> value,</a>
-<a class="sourceLine" id="cb28-4" data-line-number="4">           <span class="dt">group =</span> rowname)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb28-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb28-6" data-line-number="6"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/facet_grid">facet_grid</a></span>(<span class="op">~</span><span class="st"> </span>assay)</a></code></pre></div>
+<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"ggplot2"</span>)</a>
+<a class="sourceLine" id="cb26-3" data-line-number="3"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> stat3_df,</a>
+<a class="sourceLine" id="cb26-4" data-line-number="4">       <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> colname,</a>
+<a class="sourceLine" id="cb26-5" data-line-number="5">           <span class="dt">y =</span> value,</a>
+<a class="sourceLine" id="cb26-6" data-line-number="6">           <span class="dt">group =</span> rowname)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb26-7" data-line-number="7"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb26-8" data-line-number="8"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span>(<span class="op">~</span><span class="st"> </span>assay)</a></code></pre></div>
 <p><img src="Features_files/figure-html/plotstat3-1.png" width="700"></p>
 <p>Below we repeat the same operation for the Signal transducer and activator of transcription 1 (STAT1) and 3 (STAT3) accession numbers, namely P42227-2 and P42225. We obtain a new <code>Features</code> instance containing 2 proteins, 9 peptides and 10 PSMS. From this, we can readily conclude that STAT1 was identified by a single PSM/peptide.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1">stat &lt;-<span class="st"> </span>hl[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"P42227-2"</span>, <span class="st">"P42225"</span>), , ]</a>
-<a class="sourceLine" id="cb29-2" data-line-number="2">stat</a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">stat &lt;-<span class="st"> </span>hl[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"P42227-2"</span>, <span class="st">"P42225"</span>), , ]</a>
+<a class="sourceLine" id="cb27-2" data-line-number="2">stat</a></code></pre></div>
 <pre><code>## A instance of class Features containing
 ##  [1] proteins: SummarizedExperiment with 2 rows and 10 columns 
 ##  [2] peptides: SummarizedExperiment with 9 rows and 10 columns 
 ##  [3] psms: SummarizedExperiment with 10 rows and 10 columns</code></pre>
 <p>Below, we visualise the expression profiles for the two proteins.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">stat_df &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="kw">longFormat</span>(stat))</a>
-<a class="sourceLine" id="cb31-2" data-line-number="2">stat_df<span class="op">$</span>stat3 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(stat_df<span class="op">$</span>rowname <span class="op">%in%</span><span class="st"> </span>stat3_df<span class="op">$</span>rowname,</a>
-<a class="sourceLine" id="cb31-3" data-line-number="3">                        <span class="st">"STAT3"</span>, <span class="st">"STAT1"</span>)</a>
-<a class="sourceLine" id="cb31-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> stat_df,</a>
-<a class="sourceLine" id="cb31-5" data-line-number="5">       <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> colname,</a>
-<a class="sourceLine" id="cb31-6" data-line-number="6">           <span class="dt">y =</span> value,</a>
-<a class="sourceLine" id="cb31-7" data-line-number="7">           <span class="dt">group =</span> rowname)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb31-8" data-line-number="8"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb31-9" data-line-number="9"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/facet_grid">facet_grid</a></span>(stat3 <span class="op">~</span><span class="st"> </span>assay)</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1">stat_df &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="kw">longFormat</span>(stat))</a>
+<a class="sourceLine" id="cb29-2" data-line-number="2">stat_df<span class="op">$</span>stat3 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(stat_df<span class="op">$</span>rowname <span class="op">%in%</span><span class="st"> </span>stat3_df<span class="op">$</span>rowname,</a>
+<a class="sourceLine" id="cb29-3" data-line-number="3">                        <span class="st">"STAT3"</span>, <span class="st">"STAT1"</span>)</a>
+<a class="sourceLine" id="cb29-4" data-line-number="4"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> stat_df,</a>
+<a class="sourceLine" id="cb29-5" data-line-number="5">       <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> colname,</a>
+<a class="sourceLine" id="cb29-6" data-line-number="6">           <span class="dt">y =</span> value,</a>
+<a class="sourceLine" id="cb29-7" data-line-number="7">           <span class="dt">group =</span> rowname)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb29-8" data-line-number="8"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb29-9" data-line-number="9"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span>(stat3 <span class="op">~</span><span class="st"> </span>assay)</a></code></pre></div>
 <p><img src="Features_files/figure-html/plotstat-1.png" width="700"></p>
 <p>The subsetting by feature names is also available as a call to the <code>subsetByFeature</code> function, for use with the pipe operator.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(magrittr)</a>
-<a class="sourceLine" id="cb32-2" data-line-number="2">hl <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb32-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../reference/Features-subsetBy.html">subsetByFeature</a></span>(<span class="st">"P42227-2"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(magrittr)</a>
+<a class="sourceLine" id="cb30-2" data-line-number="2">hl <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../reference/Features-subsetBy.html">subsetByFeature</a></span>(<span class="st">"P42227-2"</span>)</a></code></pre></div>
 <pre><code>## A instance of class Features containing
 ##  [1] proteins: SummarizedExperiment with 1 rows and 10 columns 
 ##  [2] peptides: SummarizedExperiment with 8 rows and 10 columns 
 ##  [3] psms: SummarizedExperiment with 9 rows and 10 columns</code></pre>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">hl <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="../reference/Features-subsetBy.html">subsetByFeature</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"P42227-2"</span>, <span class="st">"P42225"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">hl <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb32-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="../reference/Features-subsetBy.html">subsetByFeature</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"P42227-2"</span>, <span class="st">"P42225"</span>))</a></code></pre></div>
 <pre><code>## A instance of class Features containing
 ##  [1] proteins: SummarizedExperiment with 2 rows and 10 columns 
 ##  [2] peptides: SummarizedExperiment with 9 rows and 10 columns 
 ##  [3] psms: SummarizedExperiment with 10 rows and 10 columns</code></pre>
 <p>and possibly</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">hl <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="../reference/Features-subsetBy.html">subsetByFeature</a></span>(<span class="st">"P42227-2"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb36-3" data-line-number="3"><span class="st">    </span><span class="kw">longFormat</span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb36-4" data-line-number="4"><span class="st">    </span>as.data.frame <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb36-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> colname,</a>
-<a class="sourceLine" id="cb36-6" data-line-number="6">               <span class="dt">y =</span> value,</a>
-<a class="sourceLine" id="cb36-7" data-line-number="7">               <span class="dt">group =</span> rowname)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb36-8" data-line-number="8"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb36-9" data-line-number="9"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/facet_grid">facet_grid</a></span>(<span class="op">~</span><span class="st"> </span>assay)</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">hl <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="../reference/Features-subsetBy.html">subsetByFeature</a></span>(<span class="st">"P42227-2"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="st">    </span><span class="kw">longFormat</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb34-4" data-line-number="4"><span class="st">    </span>as.data.frame <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb34-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> colname,</a>
+<a class="sourceLine" id="cb34-6" data-line-number="6">               <span class="dt">y =</span> value,</a>
+<a class="sourceLine" id="cb34-7" data-line-number="7">               <span class="dt">group =</span> rowname)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb34-8" data-line-number="8"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb34-9" data-line-number="9"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span>(<span class="op">~</span><span class="st"> </span>assay)</a></code></pre></div>
 <p>to reproduce the line plot.</p>
 <p>Finally, a simply <code>shiny</code> app allows to explore and visualise the respective assays of a <code>Features</code> object.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw"><a href="../reference/display.html">display</a></span>(stat)</a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="kw"><a href="../reference/display.html">display</a></span>(stat)</a></code></pre></div>
 <div class="figure" style="text-align: center">
 <img src="figs/display_hmap.png" alt="`Features` interactive interface: heatmap of the peptide assay data." width="100%"><p class="caption">
 <code>Features</code> interactive interface: heatmap of the peptide assay data.
@@ -328,39 +323,39 @@ Conceptual representation of a <code>Features</code> object and the aggregative 
 <h1 class="hasAnchor">
 <a href="#filtering" class="anchor"></a>Filtering</h1>
 <p>Features is assays can also be filtered based on variables in their respective row data slots using the <code>filterFeatures</code> function. The filters can be defined using the formula interface or using <code>AnnotationFilter</code> objects from the <em><a href="https://bioconductor.org/packages/3.9/AnnotationFilter">AnnotationFilter</a></em> package <span class="citation">(Morgan and Rainer 2019)</span>. In addition to the pre-defined filters (such as <code>SymbolFilter</code>, <code>ProteinIdFilter</code>, … that filter on gene symbol, protein identifier, …), this package allows users to define arbitrary character or numeric filters using the <code>VariableFilter</code>.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">mito_filter &lt;-<span class="st"> </span><span class="kw"><a href="../reference/filterFeatures.html">VariableFilter</a></span>(<span class="dt">field =</span> <span class="st">"markers"</span>,</a>
-<a class="sourceLine" id="cb38-2" data-line-number="2">                              <span class="dt">value =</span> <span class="st">"Mitochondrion"</span>,</a>
-<a class="sourceLine" id="cb38-3" data-line-number="3">                              <span class="dt">condition =</span> <span class="st">"=="</span>)</a>
-<a class="sourceLine" id="cb38-4" data-line-number="4">mito_filter</a></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">mito_filter &lt;-<span class="st"> </span><span class="kw"><a href="../reference/filterFeatures.html">VariableFilter</a></span>(<span class="dt">field =</span> <span class="st">"markers"</span>,</a>
+<a class="sourceLine" id="cb36-2" data-line-number="2">                              <span class="dt">value =</span> <span class="st">"Mitochondrion"</span>,</a>
+<a class="sourceLine" id="cb36-3" data-line-number="3">                              <span class="dt">condition =</span> <span class="st">"=="</span>)</a>
+<a class="sourceLine" id="cb36-4" data-line-number="4">mito_filter</a></code></pre></div>
 <pre><code>## class: CharacterVariableFilter 
 ## condition: == 
 ## value: Mitochondrion</code></pre>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">qval_filter &lt;-<span class="st"> </span><span class="kw"><a href="../reference/filterFeatures.html">VariableFilter</a></span>(<span class="dt">field =</span> <span class="st">"qValue"</span>,</a>
-<a class="sourceLine" id="cb40-2" data-line-number="2">                              <span class="dt">value =</span> <span class="fl">0.001</span>,</a>
-<a class="sourceLine" id="cb40-3" data-line-number="3">                              <span class="dt">condition =</span> <span class="st">"&lt;="</span>)</a>
-<a class="sourceLine" id="cb40-4" data-line-number="4">qval_filter</a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">qval_filter &lt;-<span class="st"> </span><span class="kw"><a href="../reference/filterFeatures.html">VariableFilter</a></span>(<span class="dt">field =</span> <span class="st">"qValue"</span>,</a>
+<a class="sourceLine" id="cb38-2" data-line-number="2">                              <span class="dt">value =</span> <span class="fl">0.001</span>,</a>
+<a class="sourceLine" id="cb38-3" data-line-number="3">                              <span class="dt">condition =</span> <span class="st">"&lt;="</span>)</a>
+<a class="sourceLine" id="cb38-4" data-line-number="4">qval_filter</a></code></pre></div>
 <pre><code>## class: NumericVariableFilter 
 ## condition: &lt;= 
 ## value: 0.001</code></pre>
 <p>These filter can then readily be applied to all assays’ row data slots. The <code>mito_filter</code> will return all PSMs, peptides and proteins that were annotated as localising to the mitochondrion.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw"><a href="../reference/filterFeatures.html">filterFeatures</a></span>(hl, mito_filter)</a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw"><a href="../reference/filterFeatures.html">filterFeatures</a></span>(hl, mito_filter)</a></code></pre></div>
 <pre><code>## A instance of class Features containing
 ##  [1] psms: SummarizedExperiment with 2019 rows and 10 columns 
 ##  [2] peptides: SummarizedExperiment with 1770 rows and 10 columns 
 ##  [3] proteins: SummarizedExperiment with 360 rows and 10 columns</code></pre>
 <p>The <code>qval_filter</code>, on the other hand, will only return a subset of PSMs, because the <code>qValue</code> variable is only present in the <code>psms</code> assays. The q-values are only relevant to PSMs and that variable was dropped from the other assays.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="kw"><a href="../reference/filterFeatures.html">filterFeatures</a></span>(hl, qval_filter)</a></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw"><a href="../reference/filterFeatures.html">filterFeatures</a></span>(hl, qval_filter)</a></code></pre></div>
 <pre><code>## harmonizing input:
 ##   removing 20 sampleMap rows not in names(experiments)</code></pre>
 <pre><code>## A instance of class Features containing
 ##  [1] psms: SummarizedExperiment with 26768 rows and 10 columns</code></pre>
 <p>The same filters can be created using the forumla interface:</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw"><a href="../reference/filterFeatures.html">filterFeatures</a></span>(hl, <span class="op">~</span><span class="st"> </span>markers <span class="op">==</span><span class="st"> "Mitochondrion"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw"><a href="../reference/filterFeatures.html">filterFeatures</a></span>(hl, <span class="op">~</span><span class="st"> </span>markers <span class="op">==</span><span class="st"> "Mitochondrion"</span>)</a></code></pre></div>
 <pre><code>## A instance of class Features containing
 ##  [1] psms: SummarizedExperiment with 2019 rows and 10 columns 
 ##  [2] peptides: SummarizedExperiment with 1770 rows and 10 columns 
 ##  [3] proteins: SummarizedExperiment with 360 rows and 10 columns</code></pre>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw"><a href="../reference/filterFeatures.html">filterFeatures</a></span>(hl, <span class="op">~</span><span class="st"> </span>qValue <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.001</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw"><a href="../reference/filterFeatures.html">filterFeatures</a></span>(hl, <span class="op">~</span><span class="st"> </span>qValue <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.001</span>)</a></code></pre></div>
 <pre><code>## harmonizing input:
 ##   removing 20 sampleMap rows not in names(experiments)</code></pre>
 <pre><code>## A instance of class Features containing
@@ -390,34 +385,34 @@ Conceptual representation of a <code>Features</code> object and the aggregative 
 ## [8] methods   base     
 ## 
 ## other attached packages:
-##  [1] magrittr_1.5                ggplot2_3.1.1              
-##  [3] Features_0.1.0              MultiAssayExperiment_1.10.4
-##  [5] SummarizedExperiment_1.14.0 DelayedArray_0.10.0        
-##  [7] BiocParallel_1.18.0         matrixStats_0.54.0         
-##  [9] Biobase_2.44.0              GenomicRanges_1.36.0       
-## [11] GenomeInfoDb_1.20.0         IRanges_2.18.1             
-## [13] S4Vectors_0.22.0            BiocGenerics_0.30.0        
-## [15] BiocStyle_2.12.0           
+##  [1] magrittr_1.5                ggplot2_3.2.0              
+##  [3] Features_0.1.0              MultiAssayExperiment_1.11.4
+##  [5] SummarizedExperiment_1.15.5 DelayedArray_0.11.4        
+##  [7] BiocParallel_1.19.0         matrixStats_0.54.0         
+##  [9] Biobase_2.45.0              GenomicRanges_1.37.14      
+## [11] GenomeInfoDb_1.21.1         IRanges_2.19.10            
+## [13] S4Vectors_0.23.17           BiocGenerics_0.31.5        
+## [15] BiocStyle_2.13.2           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] tidyselect_0.2.5       xfun_0.7               reshape2_1.4.3        
+##  [1] tidyselect_0.2.5       xfun_0.8               reshape2_1.4.3        
 ##  [4] purrr_0.3.2            lattice_0.20-38        colorspace_1.4-1      
-##  [7] htmltools_0.3.6        yaml_2.2.0             rlang_0.3.4           
-## [10] pillar_1.4.1           pkgdown_1.3.0          withr_2.1.2           
-## [13] glue_1.3.1             GenomeInfoDbData_1.2.1 plyr_1.8.4            
-## [16] stringr_1.4.0          zlibbioc_1.30.0        ProtGenerics_1.17.2   
+##  [7] htmltools_0.3.6        yaml_2.2.0             rlang_0.4.0           
+## [10] pillar_1.4.2           pkgdown_1.3.0          withr_2.1.2           
+## [13] glue_1.3.1             plyr_1.8.4             GenomeInfoDbData_1.2.1
+## [16] stringr_1.4.0          zlibbioc_1.31.0        ProtGenerics_1.17.2   
 ## [19] munsell_0.5.0          commonmark_1.7         gtable_0.3.0          
 ## [22] memoise_1.1.0          evaluate_0.14          labeling_0.3          
 ## [25] knitr_1.23             highr_0.8              Rcpp_1.0.1            
 ## [28] backports_1.1.4        scales_1.0.0           BiocManager_1.30.4    
-## [31] desc_1.2.0             XVector_0.24.0         fs_1.3.1              
-## [34] digest_0.6.19          stringi_1.4.3          dplyr_0.8.1           
-## [37] bookdown_0.11          rprojroot_1.3-2        grid_3.6.0            
-## [40] tools_3.6.0            bitops_1.0-6           tibble_2.1.3          
-## [43] RCurl_1.95-4.12        lazyeval_0.2.2         pkgconfig_2.0.2       
+## [31] desc_1.2.0             XVector_0.25.0         fs_1.3.1              
+## [34] digest_0.6.20          stringi_1.4.3          dplyr_0.8.3           
+## [37] bookdown_0.12          rprojroot_1.3-2        grid_3.6.0            
+## [40] tools_3.6.0            bitops_1.0-6           RCurl_1.95-4.12       
+## [43] lazyeval_0.2.2         tibble_2.1.3           pkgconfig_2.0.2       
 ## [46] crayon_1.3.4           MASS_7.3-51.4          Matrix_1.2-17         
-## [49] xml2_1.2.0             assertthat_0.2.1       rmarkdown_1.13        
-## [52] roxygen2_6.1.1         AnnotationFilter_1.8.0 R6_2.4.0              
+## [49] xml2_1.2.0             assertthat_0.2.1       rmarkdown_1.14        
+## [52] roxygen2_6.1.1         AnnotationFilter_1.9.0 R6_2.4.0              
 ## [55] compiler_3.6.0</code></pre>
 </div>
 <div id="references" class="section level1 unnumbered">
