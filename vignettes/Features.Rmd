@@ -215,12 +215,15 @@ once converted into a `data.frame`.
 
 ```{r plotstat3}
 stat3_df <- data.frame(longFormat(stat3))
+stat3_df$assay <- factor(stat3_df$assay,
+                        levels = c("psms", "peptides", "proteins"))
+
 library("ggplot2")
 ggplot(data = stat3_df,
        aes(x = colname,
            y = value,
            group = rowname)) +
-    geom_line() +
+    geom_line() + geom_point() + 
     facet_grid(~ assay)
 ```
 
@@ -241,11 +244,14 @@ Below, we visualise the expression profiles for the two proteins.
 stat_df <- data.frame(longFormat(stat))
 stat_df$stat3 <- ifelse(stat_df$rowname %in% stat3_df$rowname,
                         "STAT3", "STAT1")
+stat_df$assay <- factor(stat_df$assay,
+                        levels = c("psms", "peptides", "proteins"))
+
 ggplot(data = stat_df,
        aes(x = colname,
            y = value,
            group = rowname)) +
-    geom_line() +
+    geom_line() + geom_point() + 
     facet_grid(stat3 ~ assay)
 ```
 
