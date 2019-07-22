@@ -1,7 +1,6 @@
 # full script at https://github.com/travis-ci/travis-build/blob/master/lib/travis/build/script/r.rb
 language: r
-r: bioc-release
-r_github_packages: lgatto/ProtGenerics
+r: bioc-devel
 cache:
   packages: true
   directories:
