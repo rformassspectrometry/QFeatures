@@ -1,7 +1,7 @@
+##' @title Features from tabular data
+##' 
 ##' Convert tabular data from a spreadsheet or a `data.frame` into a
 ##' `Features` object.
-##'
-##' @title Features from tabular data
 ##' 
 ##' @param table File or object holding the quantitative data. Can be
 ##'     either a `character(1)` with the path to a text-based

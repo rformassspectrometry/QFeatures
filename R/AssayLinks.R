@@ -1,4 +1,4 @@
-##' Links between Assays
+##' @title Links between Assays
 ##'
 ##' Links between assays within a [Features] object are handled by an
 ##' `AssayLinks` object. It is composed by a list of `AssayLink`
@@ -69,7 +69,7 @@ setMethod("show", "AssayLink",
 ##'
 ##' @param fcol The feature variable of the parent assay used to
 ##'     generate the current assay (used in
-##'     `combineFeatures`). `NA_character_`, if not applicable.
+##'     `aggregateFeatures`). `NA_character_`, if not applicable.
 ##'
 ##' @param hits An object of class [S4Vectors::Hits] matching the
 ##'     features of two assays.

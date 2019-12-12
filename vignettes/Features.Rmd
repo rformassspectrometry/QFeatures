@@ -155,23 +155,23 @@ For further details on how to manipulate such objects, refer to the
 
 As illustrated in figure \@ref(fig:featuresplot), an central
 characteristic of `Features` objects is the aggregative relation
-between their assays. This can be obtained with the `combineFeatures`
-function that will combine (or aggregate) quantitative features from
-one assay into a new one. In the next code chunk, we combine PSM-level
+between their assays. This can be obtained with the `aggregateFeatures`
+function that will aggregate quantitative features from
+one assay into a new one. In the next code chunk, we aggregate PSM-level
 data into peptide by grouping all PSMs that were matched the same
 peptide sequence. The default aggregation function is median, and can
 be set as an additional argument. The new assay is named *peptides*.
 
-```{r combineFeatures1}
-hl <- combineFeatures(hl, "psms", "Sequence", name = "peptides")
+```{r aggregateFeatures1}
+hl <- aggregateFeatures(hl, "psms", "Sequence", name = "peptides")
 hl
 hl[["peptides"]]
 ```
 Below, we repeat the aggregation operation by grouping peptides into
 proteins as defined by the *ProteinGroupAccessions* variable.
 
-```{r combineFeatures2}
-hl <- combineFeatures(hl, "peptides", "ProteinGroupAccessions", name = "proteins")
+```{r aggregateFeatures2}
+hl <- aggregateFeatures(hl, "peptides", "ProteinGroupAccessions", name = "proteins")
 hl
 hl[["proteins"]]
 ```
@@ -195,7 +195,7 @@ colData(hl)
 One particularity of the `Features` infrastructure is that the
 features of the constitutive assays are linked through an aggregative
 relation. This relation is recorded when creating new assays with
-`combineFeatures` and is exploited when subsetting `Feature` by their
+`aggregateFeatures` and is exploited when subsetting `Feature` by their
 feature names.
 
 In the example below, we are interested in the Stat3B isoform of the

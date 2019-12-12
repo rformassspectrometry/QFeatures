@@ -74,12 +74,12 @@ all its accessors and replacement methods.
 \section{Adding assays}{
 
 \itemize{
-\item The \code{\link[=combineFeatures]{combineFeatures()}} function creates a new assay by
-combining features of an existing assay.
+\item The \code{\link[=aggregateFeatures]{aggregateFeatures()}} function creates a new assay by
+aggregating features of an existing assay.
 \item \code{addAssay(object, x, name, assayLinks)}: Adds a new assay (or
 list of assays) \code{x} to the \code{Features} instance \code{object}. \code{name}
 is a \code{character(1)} naming the single assay (default is
-\code{"newAssay"), and is ignored if }x\code{is a list of assays.}assayLinks` is an optional \link{AssayLinks}.
+\verb{"newAssay"), and is ignored if }x\verb{is a list of assays.}assayLinks` is an optional \link{AssayLinks}.
 }
 }
 
@@ -135,14 +135,14 @@ fts1[["assay1"]]
 fts1 <- addAssay(fts1, se1[1:2, ], name = "se3")
 
 ## -----------------------------------
-## See ?combineFeatures to create a
+## See ?aggregateFeatures to create a
 ## Features object from a data.frame
 ## or spreadsheet.
 ## -----------------------------------
 }
 \seealso{
 The \code{\link[=readFeatures]{readFeatures()}} constructor and the
-\code{\link[=combineFeatures]{combineFeatures()}} function. The \code{Features} vignette provides
+\code{\link[=aggregateFeatures]{aggregateFeatures()}} function. The \code{Features} vignette provides
 an extended example.
 }
 \author{

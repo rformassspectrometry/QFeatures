@@ -52,8 +52,8 @@
 ##'
 ##' @section Adding assays:
 ##'
-##' - The [combineFeatures()] function creates a new assay by
-##'   combining features of an existing assay.
+##' - The [aggregateFeatures()] function creates a new assay by
+##'   aggregating features of an existing assay.
 ##'
 ##' - `addAssay(object, x, name, assayLinks)`: Adds a new assay (or
 ##'   list of assays) `x` to the `Features` instance `object`. `name`
@@ -69,7 +69,7 @@
 ##'   relation between assays. See example below.
 ##'
 ##' @seealso The [readFeatures()] constructor and the
-##'     [combineFeatures()] function. The `Features` vignette provides
+##'     [aggregateFeatures()] function. The `Features` vignette provides
 ##'     an extended example.
 ##'
 ##' @import MultiAssayExperiment ProtGenerics
@@ -128,7 +128,7 @@
 ##' fts1 <- addAssay(fts1, se1[1:2, ], name = "se3")
 ##'
 ##' ## -----------------------------------
-##' ## See ?combineFeatures to create a
+##' ## See ?aggregateFeatures to create a
 ##' ## Features object from a data.frame
 ##' ## or spreadsheet.
 ##' ## -----------------------------------

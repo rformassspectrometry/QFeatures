@@ -1,3 +1,5 @@
+##' @title Interactive MultiAssayExperiment Explorer
+##' 
 ##' A shiny app to browser and explore the assays in an
 ##' `MultiAssayExperiment` object. Each assay can be selected from the
 ##' dropdown meny in the side panel, and the quantitative data and row
@@ -6,9 +8,6 @@
 ##' selection of rows in the *Row data* table is used to subset the
 ##' features displayed in the *Assay* table and the heatmap to those
 ##' currectly selected. See [Features] for an example.
-##'
-##'
-##' @title Interactive MultiAssayExperiment Explorer
 ##' 
 ##' @param object An instance inheriting from `MultiAssayExperiment`.
 ##' 

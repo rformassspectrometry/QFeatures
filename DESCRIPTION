@@ -29,7 +29,7 @@ Collate:
     'data.R'
     'reduce.R'
     'subsetBy-methods.R'
-    'combineFeatures.R'
+    'aggregateFeatures.R'
     'utils.R'
     'display.R'
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2

@@ -1,4 +1,4 @@
-##' hyperLOPIT PSM-level expression data
+##' @title hyperLOPIT PSM-level expression data
 ##'
 ##' A `data.frame` with PSM-level quantitation data by Christoforou *et al.*
 ##' (2016). This is the first replicate of a spatial proteomics dataset from a

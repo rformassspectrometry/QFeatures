@@ -43,6 +43,8 @@ find_assays_from <- function(x, i)
 
 setGeneric("subsetByFeature", function(x, y, ...) standardGeneric("subsetByFeature"))
 
+##' @title Subset by feature name
+##' 
 ##' This function will find the assays and features that match
 ##' directly (by name) or indirectly (through aggregation) the feature
 ##' name.
@@ -51,11 +53,10 @@ setGeneric("subsetByFeature", function(x, y, ...) standardGeneric("subsetByFeatu
 ##' contains the feature(s) `i` and filter the rows matching these
 ##' feature names exactly. It will then find, in the other assays, the
 ##' features that produces `i` through aggregation with the
-##' `combineFeatures` function.
+##' `aggregateFeatures` function.
 ##'
 ##' See [Features] for an example.
 ##'
-##' @title Subset by feature name
 ##' @param x An instance of class [Features].
 ##' @param y A `character` of feature names present in an assay in `x`.
 ##' @param ... Additional parameters. Ignored.
