@@ -25,6 +25,8 @@ invariant_cols2 <- function(x) {
     which(res)
 }
 
+##' @title Reduces and expands a `DataFrame`
+##' 
 ##' A long dataframe can be *reduced* by mergeing certain rows into a
 ##' single one.  These new variables are constructed as a `SimpleList`
 ##' containing all the original values. Invariant columns, i.e columns
@@ -37,7 +39,6 @@ invariant_cols2 <- function(x) {
 ##' The opposite operation is *expand*. But note that for a
 ##' `DataFrame` to be expanded back, it must not to be simplified.
 ##'
-##' @title Reduces and expands a `DataFrame`
 ##' @param x The `DataFrame` to be reduced or expanded.
 ##' @param k A ‘vector’ of length `nrow(x)` defining the grouping
 ##'     based on which the `DataFrame` will be shrunk.

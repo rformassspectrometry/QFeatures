@@ -1,14 +1,17 @@
-##' This function combines the quantitative features of an assay,
+##' @title Aggregate an assay's quantitative features
+##'
+##' @description
+##' 
+##' This function aggregates the quantitative features of an assay,
 ##' applying a summarisation function (`fun`) to sets of features as
 ##' defined by the `fcol` feature variable. The new assay's features
 ##' will be named based on the unique `fcol` values.
 ##'
-##' @title Combine an assay's quantitative features
 ##'
 ##' @param object An instance of class [Features].
 ##'
 ##' @param i The index or name of the assay which features will be
-##'     combined the create the new assay.
+##'     aggregated the create the new assay.
 ##'
 ##' @param fcol The feature variable of assay `i` defining how to
 ##'     summerise the features.
@@ -28,32 +31,32 @@
 ##'
 ##' @seealso The `Features` vignette provides an extended example.
 ##'
-##' @aliases combineFeatures combineFeatures,Features-method
+##' @aliases aggregateFeatures aggregateFeatures,Features-method
 ##'
-##' @name combineFeatures
+##' @name aggregateFeatures
 ##'
 ##' @examples
 ##'
 ##' ## An example Features with PSM-level data
 ##' data(feat1)
 ##'
-##' ## Combine PSMs into peptides
-##' feat1 <- combineFeatures(feat1, "psms", "Sequence", name = "peptides")
+##' ## Aggregate PSMs into peptides
+##' feat1 <- aggregateFeatures(feat1, "psms", "Sequence", name = "peptides")
 ##' feat1
 ##'
-##' ## Combine peptides into proteins
-##' feat1 <- combineFeatures(feat1, "peptides", "Protein", name = "proteins")
+##' ## Aggregate peptides into proteins
+##' feat1 <- aggregateFeatures(feat1, "peptides", "Protein", name = "proteins")
 ##' feat1
 NULL
 
-##' @exportMethod combineFeatures
-##' @rdname combineFeatures
-setMethod("combineFeatures", "Features",
+##' @exportMethod aggregateFeatures
+##' @rdname aggregateFeatures
+setMethod("aggregateFeatures", "Features",
           function(object, i, fcol, name = "newAssay", fun = median, ...)
-              .combineFeatures(object, i, fcol, name, fun, ...))
+              .aggregateFeatures(object, i, fcol, name, fun, ...))
 
 
-.combineFeatures <- function(object, i, fcol, name, fun, ...) {
+.aggregateFeatures <- function(object, i, fcol, name, fun, ...) {
     if (isEmpty(object))
         return(object)
     if (name %in% names(object))
@@ -70,18 +73,18 @@ setMethod("combineFeatures", "Features",
     if (anyNA(.assay)) {
         msg <- paste("Your data contains missing values.",
                      "Please read the relevant section in the",
-                     "combineFeatures manual page for details the",
+                     "aggregateFeatures manual page for details the",
                      "effects of missing values on data aggregation.")
         message(paste(strwrap(msg), collapse = "\n"))
     }
 
-    .combined_assay <- combine_assay(.assay, groupBy, fun, ...)
-    .combined_rowdata <- Features::reduceDataFrame(.rowdata, .rowdata[[fcol]],
+    .aggregated_assay <- aggregate_assay(.assay, groupBy, fun, ...)
+    .aggregated_rowdata <- Features::reduceDataFrame(.rowdata, .rowdata[[fcol]],
                                                    simplify = TRUE, drop = TRUE,
                                                    count = TRUE)
-    se <- SummarizedExperiment(.combined_assay,
-                               rowData = .combined_rowdata[rownames(.combined_assay), ])
-    hits <- findMatches(rownames(.combined_assay), groupBy)
+    se <- SummarizedExperiment(.aggregated_assay,
+                               rowData = .aggregated_rowdata[rownames(.aggregated_assay), ])
+    hits <- findMatches(rownames(.aggregated_assay), groupBy)
     elementMetadata(hits)$names_to <- .rowdata[[fcol]][hits@to]
     elementMetadata(hits)$names_from <- rownames(.assay)[hits@to]
 
@@ -97,7 +100,7 @@ setMethod("combineFeatures", "Features",
 }
 
 
-combine_assay <- function(assay, groupBy, fun, ...)
+aggregate_assay <- function(assay, groupBy, fun, ...)
     do.call(rbind,
             by(assay, groupBy,
                function(.x) apply(.x, 2, fun, ...)))

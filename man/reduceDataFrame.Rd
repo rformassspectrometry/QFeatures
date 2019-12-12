@@ -3,7 +3,19 @@
 \name{reduceDataFrame}
 \alias{reduceDataFrame}
 \alias{expandDataFrame}
-\title{Reduces and expands a `DataFrame`}
+\title{Reduces and expands a `DataFrame`
+
+A long dataframe can be *reduced* by mergeing certain rows into a
+single one.  These new variables are constructed as a `SimpleList`
+containing all the original values. Invariant columns, i.e columns
+that have the same value along all the rows that need to be
+merged, can be shrunk into a new variables containing that
+invariant value (rather than in list columns). The grouping of
+rows, i.e. the rows that need to be shrunk together as one, is
+defined by a vector.
+
+The opposite operation is *expand*. But note that for a
+`DataFrame` to be expanded back, it must not to be simplified.}
 \usage{
 reduceDataFrame(x, k, count = FALSE, simplify = TRUE, drop = FALSE)
 
@@ -30,6 +42,8 @@ columns should be dropped altogether. Default is `FALSE`.}
 An expanded (reduced) `DataFrame`.
 }
 \description{
+Reduces and expands a `DataFrame`
+
 A long dataframe can be *reduced* by mergeing certain rows into a
 single one.  These new variables are constructed as a `SimpleList`
 containing all the original values. Invariant columns, i.e columns
@@ -38,8 +52,7 @@ merged, can be shrunk into a new variables containing that
 invariant value (rather than in list columns). The grouping of
 rows, i.e. the rows that need to be shrunk together as one, is
 defined by a vector.
-}
-\details{
+
 The opposite operation is *expand*. But note that for a
 `DataFrame` to be expanded back, it must not to be simplified.
 }

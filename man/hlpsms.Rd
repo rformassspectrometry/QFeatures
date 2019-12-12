@@ -3,7 +3,43 @@
 \docType{data}
 \name{hlpsms}
 \alias{hlpsms}
-\title{hyperLOPIT PSM-level expression data}
+\title{hyperLOPIT PSM-level expression data
+
+A \code{data.frame} with PSM-level quantitation data by Christoforou \emph{et al.}
+(2016). This is the first replicate of a spatial proteomics dataset from a
+hyperLOPIT experimental design on Mouse E14TG2a embryonic stem
+cells. Normalised intensities for proteins for TMT 10-plex labelled
+fractions are available for 3 replicates acquired in MS3 mode using an
+Orbitrap Fusion mass-spectrometer.
+
+The variable names are
+\itemize{
+\item X126, X127C, X127N, X128C, X128N, X129C, X129N, X130C, X130N and
+X131: the 10 TMT tags used to quantify the peptides
+along the density gradient.
+\item Sequence: the peptide sequence.
+\item ProteinDescriptions: the description of the protein this peptide was associated to.
+\item NbProteins: the number of proteins in the protein group.
+\item ProteinGroupAccessions: the main protein accession number in the protein group.
+\item Modifications: post-translational modifications identified in the peptide.
+\item qValue: the PSM identification q-value.
+\item PEP: the PSM posterior error probability.
+\item IonScore: the Mascot ion identification score.
+\item NbMissedCleavages: the number of missed cleavages in the peptide.
+\item IsolationInterference: the calculated precursor ion isolation interference.
+\item IonInjectTimems: the ions injection time in milli-seconds.
+\item Intensity: the precursor ion intensity.
+\item Charge: the peptide charge.
+\item mzDa: the peptide mass to charge ratio, in Daltons.
+\item MHDa: the peptide mass, in Daltons.
+\item DeltaMassPPM: the difference in measure and calculated mass, in parts per millions.
+\item RTmin: the peptide retention time, in minutes.
+\item markers: localisation for well known sub-cellular
+markers. Features of unknown location are encode as \code{"unknown"}.
+}
+
+For further details, install the \code{pRolocdata} package and see
+\code{?hyperLOPIT2015}.}
 \format{An object of class \code{data.frame} with 32776 rows and 28 columns.}
 \source{
 The \code{pRolocdata} package: \url{http://bioconductor.org/packages/pRolocdata/}
@@ -12,14 +48,15 @@ The \code{pRolocdata} package: \url{http://bioconductor.org/packages/pRolocdata/
 hlpsms
 }
 \description{
+hyperLOPIT PSM-level expression data
+
 A \code{data.frame} with PSM-level quantitation data by Christoforou \emph{et al.}
 (2016). This is the first replicate of a spatial proteomics dataset from a
 hyperLOPIT experimental design on Mouse E14TG2a embryonic stem
 cells. Normalised intensities for proteins for TMT 10-plex labelled
 fractions are available for 3 replicates acquired in MS3 mode using an
 Orbitrap Fusion mass-spectrometer.
-}
-\details{
+
 The variable names are
 \itemize{
 \item X126, X127C, X127N, X128C, X128N, X129C, X129N, X130C, X130N and

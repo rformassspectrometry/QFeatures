@@ -36,9 +36,9 @@ test_that("Manual Features", {
 })
 
 
-test_that("combineFeatures(fun = sum)", {
+test_that("aggregateFeatures(fun = sum)", {
     data(feat1)
-    feat1 <- combineFeatures(feat1, "psms", fcol = "Sequence", name = "peptides", fun = sum)
+    feat1 <- aggregateFeatures(feat1, "psms", fcol = "Sequence", name = "peptides", fun = sum)
     expect_identical(names(feat1), c("psms", "peptides"))
 
     ## checking quantiation data
@@ -84,9 +84,9 @@ test_that("combineFeatures(fun = sum)", {
     expect_identical(alink@hits, hits1)
 })
 
-test_that("combineFeatures(fun = median)", {
+test_that("aggregateFeatures(fun = median)", {
     data(feat1)
-    feat1 <- combineFeatures(feat1, "psms", fcol = "Sequence", name = "peptides", fun = median)
+    feat1 <- aggregateFeatures(feat1, "psms", fcol = "Sequence", name = "peptides", fun = median)
     expect_identical(names(feat1), c("psms", "peptides"))
 
     expect_equal(dims(feat1),

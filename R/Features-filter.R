@@ -46,7 +46,7 @@
 ##'                value = 0.05,
 ##'                condition = "<=")
 ##'
-##' example(combineFeatures)
+##' example(aggregateFeatures)
 ##' 
 ##' ## ----------------------------------------------------------------
 ##' ## Filter all features that are associated to the Mitochondrion in
