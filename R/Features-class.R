@@ -218,25 +218,23 @@ setMethod("[", c("Features", "character", "ANY", "ANY"),
 ##'
 ##' @export
 selectRowData <- function(object, rowvars) {
-    stopifnot(inherits(x, "Features"))
+    stopifnot(inherits(object, "Features"))
     rowvars <- as.character(rowvars)
-    allvars <- unique(unlist(rowDataNames(x)))
+    allvars <- unique(unlist(rowDataNames(object)))
     missingvars <- setdiff(rowvars, allvars)
     if (length(missingvars))
         message(length(missingvars), " missing/mis-typed rowvars.")
-    for (i in seq_len(length(x))) {
-        rd <- rowData(x[[i]])
-        rowData(x[[i]]) <- rd[, colnames(rd) %in% rowvars]
+    for (i in seq_len(length(object))) {
+        rd <- rowData(object[[i]])
+        rowData(object[[i]]) <- rd[, colnames(rd) %in% rowvars]
     }
-    x
+    object
 }
 
 
 ##' @rdname Features
 ##'
 ##' @export
-##'
-##' @importFrom Biobase fData
 rowDataNames <- function(object) {
     stopifnot(inherits(object, "MultiAssayExperiment"))
     CharacterList(lapply(experiments(object),
@@ -244,7 +242,7 @@ rowDataNames <- function(object) {
                              if (inherits(x, "SummarizedExperiment"))
                                  colnames(rowData(x))
                              else if (inherits(x, "eSet"))
-                                 colnames(fData(x))
+                                 colnames(Biobase::fData(x))
                              else NA_character_
                          }))
 }
