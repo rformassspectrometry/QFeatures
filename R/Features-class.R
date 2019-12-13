@@ -1,7 +1,7 @@
 ##' @title Quantitative MS Features
 ##'
 ##' @description
-##' 
+##'
 ##' Conceptually, a `Features` object holds a set of *assays*, each
 ##' composed of a `matrix` (or `array`) containing quantitative data
 ##' and row annotations (meta-data).  The number and the names of the
@@ -43,7 +43,7 @@
 ##'   from text-based spreadsheet or a `data.frame` used to generate
 ##'   an assay. See the function manual page for details and an
 ##'   example.
-##' 
+##'
 ##' @section Accessors:
 ##'
 ##' The `Features` class extends the
@@ -69,7 +69,7 @@
 ##' - The [subsetByFeature()] function can be used to subset a
 ##'   `Features` object using one or multiple feature names that will
 ##'   be matched across different assays, taking the aggregation
-##'   relation between assays. 
+##'   relation between assays.
 ##'
 ##' - The `selectRowData(object, rowvars)` function can be used to
 ##'   select a limited number of `rowData` columns of interest named
@@ -97,7 +97,7 @@
 ##' ## ------------------------
 ##' ## An empty Features object
 ##' ## ------------------------
-##' 
+##'
 ##' Features()
 ##'
 ##' ## -----------------------------------
@@ -136,7 +136,7 @@
 ##'
 ##' ## Keep only the Fa variable
 ##' selectRowData(fts1, rowvars = "Fa")
-##' 
+##'
 ##' ## -----------------------------------
 ##' ## See ?readFeatures to create a
 ##' ## Features object from a data.frame
@@ -174,7 +174,7 @@ setMethod("show", "Features",
                   dim(obj)[2]
               }, FUN.VALUE = integer(1L))
               cat(sprintf("\n [%i] %s: %s with %s rows and %s columns",
-                          seq(o_len), o_names, elem_cl, featdim, sampdim), "\n")              
+                          seq(o_len), o_names, elem_cl, featdim, sampdim), "\n")
           })
 
 
@@ -207,7 +207,7 @@ setMethod("[", c("Features", "character", "ANY", "ANY"),
           })
 
 ##' @rdname Features
-##' 
+##'
 ##' @param object An instance of class `Features`.
 ##' @param rowvars A `character()` with the names of the `rowData`
 ##'     variables (columns) to retain in any assay. All other
@@ -224,7 +224,7 @@ selectRowData <- function(object, rowvars) {
         message(length(missingvars), " missing/mis-typed rowvars.")
     for (i in seq_len(length(x))) {
         rd <- rowData(x[[i]])
-        rowData(x[[i]]) <- rd[, colnames(rd) %in% rowvars]        
+        rowData(x[[i]]) <- rd[, colnames(rd) %in% rowvars]
     }
     x
 }
@@ -235,12 +235,12 @@ selectRowData <- function(object, rowvars) {
 ##' @export
 rowDataNames <- function(object) {
     stopifnot(inherits(object, "MultiAssayExperiment"))
-    CharacterList(lapply(experiments(x),
-                         function(xx) {
-                             if (inherits(xx, "SummarizedExperiment"))
-                                 colnames(rowData(xx))
-                             else if (inherits(xx, "eSet"))
-                                 colnames(fData(xx))
+    CharacterList(lapply(experiments(object),
+                         function(x) {
+                             if (inherits(x, "SummarizedExperiment"))
+                                 colnames(rowData(x))
+                             else if (inherits(x, "eSet"))
+                                 colnames(fData(x))
                              else NA_character_
                          }))
 }
