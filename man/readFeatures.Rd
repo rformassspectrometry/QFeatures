@@ -2,10 +2,7 @@
 % Please edit documentation in R/Features-constructors.R
 \name{readFeatures}
 \alias{readFeatures}
-\title{Features from tabular data
-
-Convert tabular data from a spreadsheet or a \code{data.frame} into a
-\code{Features} object.}
+\title{Features from tabular data}
 \usage{
 readFeatures(table, ecol, fnames, ..., name = NULL)
 }
@@ -37,8 +34,6 @@ except \code{stringsAsFactors}, which is always \code{FALSE}.}
 An instance of class \link{Features}.
 }
 \description{
-Features from tabular data
-
 Convert tabular data from a spreadsheet or a \code{data.frame} into a
 \code{Features} object.
 }

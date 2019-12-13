@@ -1,5 +1,7 @@
 ##' @title Links between Assays
 ##'
+##' @description
+##'
 ##' Links between assays within a [Features] object are handled by an
 ##' `AssayLinks` object. It is composed by a list of `AssayLink`
 ##' instances.

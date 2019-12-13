@@ -26,6 +26,8 @@ invariant_cols2 <- function(x) {
 }
 
 ##' @title Reduces and expands a `DataFrame`
+##'
+##' @description
 ##' 
 ##' A long dataframe can be *reduced* by mergeing certain rows into a
 ##' single one.  These new variables are constructed as a `SimpleList`

@@ -128,7 +128,7 @@
 ##' fts1 <- addAssay(fts1, se1[1:2, ], name = "se3")
 ##'
 ##' ## -----------------------------------
-##' ## See ?aggregateFeatures to create a
+##' ## See ?readFeatures to create a
 ##' ## Features object from a data.frame
 ##' ## or spreadsheet.
 ##' ## -----------------------------------
