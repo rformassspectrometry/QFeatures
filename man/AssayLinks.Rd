@@ -14,11 +14,7 @@
 \alias{assayLinks}
 \alias{[,AssayLink,character,ANY,ANY-method}
 \alias{[,AssayLinks,list,ANY,ANY-method}
-\title{Links between Assays
-
-Links between assays within a \link{Features} object are handled by an
-\code{AssayLinks} object. It is composed by a list of \code{AssayLink}
-instances.}
+\title{Links between Assays}
 \usage{
 \S4method{show}{AssayLink}(object)
 
@@ -72,8 +68,6 @@ feature names to filter on.}
 \code{assayLinks} returns an instance of class \code{AssayLinks}.
 }
 \description{
-Links between Assays
-
 Links between assays within a \link{Features} object are handled by an
 \code{AssayLinks} object. It is composed by a list of \code{AssayLink}
 instances.

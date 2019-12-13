@@ -1,4 +1,6 @@
 ##' @title Features from tabular data
+##'
+##' @description
 ##' 
 ##' Convert tabular data from a spreadsheet or a `data.frame` into a
 ##' `Features` object.

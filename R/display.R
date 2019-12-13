@@ -1,4 +1,6 @@
 ##' @title Interactive MultiAssayExperiment Explorer
+##'
+##' @description
 ##' 
 ##' A shiny app to browser and explore the assays in an
 ##' `MultiAssayExperiment` object. Each assay can be selected from the

@@ -44,6 +44,8 @@ find_assays_from <- function(x, i)
 setGeneric("subsetByFeature", function(x, y, ...) standardGeneric("subsetByFeature"))
 
 ##' @title Subset by feature name
+##'
+##' @description
 ##' 
 ##' This function will find the assays and features that match
 ##' directly (by name) or indirectly (through aggregation) the feature

@@ -3,19 +3,7 @@
 \name{subsetByFeature,Features,character-method}
 \alias{subsetByFeature,Features,character-method}
 \alias{subsetByFeature}
-\title{Subset by feature name
-
-This function will find the assays and features that match
-directly (by name) or indirectly (through aggregation) the feature
-name.
-
-The `subsetByFeature` function will first identify the assay that
-contains the feature(s) `i` and filter the rows matching these
-feature names exactly. It will then find, in the other assays, the
-features that produces `i` through aggregation with the
-`aggregateFeatures` function.
-
-See [Features] for an example.}
+\title{Subset by feature name}
 \usage{
 \S4method{subsetByFeature}{Features,character}(x, y, ...)
 }
@@ -31,8 +19,6 @@ An new instance of class [Features] containing relevant
     assays and features.
 }
 \description{
-Subset by feature name
-
 This function will find the assays and features that match
 directly (by name) or indirectly (through aggregation) the feature
 name.

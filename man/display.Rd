@@ -2,16 +2,7 @@
 % Please edit documentation in R/display.R
 \name{display}
 \alias{display}
-\title{Interactive MultiAssayExperiment Explorer
-
-A shiny app to browser and explore the assays in an
-\code{MultiAssayExperiment} object. Each assay can be selected from the
-dropdown meny in the side panel, and the quantitative data and row
-metadata are displayed in the respective \emph{Assay} and \emph{Row data}
-tabs. The \emph{Heatmap} tab displays a heatmap of the assay. The
-selection of rows in the \emph{Row data} table is used to subset the
-features displayed in the \emph{Assay} table and the heatmap to those
-currectly selected. See \link{Features} for an example.}
+\title{Interactive MultiAssayExperiment Explorer}
 \usage{
 display(object, n = 100, ...)
 }
@@ -30,8 +21,6 @@ heatmap.}
 Used for its side effect.
 }
 \description{
-Interactive MultiAssayExperiment Explorer
-
 A shiny app to browser and explore the assays in an
 \code{MultiAssayExperiment} object. Each assay can be selected from the
 dropdown meny in the side panel, and the quantitative data and row

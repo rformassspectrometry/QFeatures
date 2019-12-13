@@ -1,5 +1,7 @@
 ##' @title hyperLOPIT PSM-level expression data
 ##'
+##' @description
+##' 
 ##' A `data.frame` with PSM-level quantitation data by Christoforou *et al.*
 ##' (2016). This is the first replicate of a spatial proteomics dataset from a
 ##' hyperLOPIT experimental design on Mouse E14TG2a embryonic stem
