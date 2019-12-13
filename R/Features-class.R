@@ -50,6 +50,9 @@
 ##' [MultiAssayExperiment::MultiAssayExperiment] class and inherits
 ##' all its accessors and replacement methods.
 ##'
+##' The `rowDataNames` accessor returns a list with the `rowData`
+##' variable names.
+##'
 ##' @section Adding assays:
 ##'
 ##' - The [aggregateFeatures()] function creates a new assay by
@@ -66,7 +69,11 @@
 ##' - The [subsetByFeature()] function can be used to subset a
 ##'   `Features` object using one or multiple feature names that will
 ##'   be matched across different assays, taking the aggregation
-##'   relation between assays. See example below.
+##'   relation between assays. 
+##'
+##' - The `selectRowData(object, rowvars)` function can be used to
+##'   select a limited number of `rowData` columns of interest named
+##'   in `rowvars` in the `object` instance of class `Features`.
 ##'
 ##' @seealso The [readFeatures()] constructor and the
 ##'     [aggregateFeatures()] function. The `Features` vignette provides
@@ -127,6 +134,9 @@
 ##' ## Add an assay
 ##' fts1 <- addAssay(fts1, se1[1:2, ], name = "se3")
 ##'
+##' ## Keep only the Fa variable
+##' selectRowData(fts1, rowvars = "Fa")
+##' 
 ##' ## -----------------------------------
 ##' ## See ?readFeatures to create a
 ##' ## Features object from a data.frame
@@ -196,3 +206,41 @@ setMethod("[", c("Features", "character", "ANY", "ANY"),
               subsetByFeature(x, i)[, j, k]
           })
 
+##' @rdname Features
+##' 
+##' @param object An instance of class `Features`.
+##' @param rowvars A `character()` with the names of the `rowData`
+##'     variables (columns) to retain in any assay. All other
+##'     variables will be dropped. In case an element in `rowvars`
+##'     isn't found in any `rowData` variable, a message is printed.
+##'
+##' @export
+selectRowData <- function(object, rowvars) {
+    stopifnot(inherits(x, "Features"))
+    rowvars <- as.character(rowvars)
+    allvars <- unique(unlist(rowDataNames(x)))
+    missingvars <- setdiff(rowvars, allvars)
+    if (length(missingvars))
+        message(length(missingvars), " missing/mis-typed rowvars.")
+    for (i in seq_len(length(x))) {
+        rd <- rowData(x[[i]])
+        rowData(x[[i]]) <- rd[, colnames(rd) %in% rowvars]        
+    }
+    x
+}
+
+
+##' @rdname Features
+##'
+##' @export
+rowDataNames <- function(object) {
+    stopifnot(inherits(object, "MultiAssayExperiment"))
+    CharacterList(lapply(experiments(x),
+                         function(xx) {
+                             if (inherits(xx, "SummarizedExperiment"))
+                                 colnames(rowData(xx))
+                             else if (inherits(xx, "eSet"))
+                                 colnames(fData(xx))
+                             else NA_character_
+                         }))
+}
