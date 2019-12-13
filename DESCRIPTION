@@ -12,7 +12,7 @@ Imports: methods, S4Vectors, IRanges, SummarizedExperiment,
    BiocGenerics, ProtGenerics (>= 1.19.1), AnnotationFilter,
    lazyeval
 Suggests: ggplot2, magrittr, DT, shiny, shinydashboard, testthat,
-   knitr, BiocStyle, rmarkdown
+   knitr, BiocStyle, rmarkdown, msdata
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
