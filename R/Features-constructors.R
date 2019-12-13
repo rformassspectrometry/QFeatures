@@ -83,6 +83,8 @@ readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
             stop(fnames, " not found among\n",
                  paste(colnames(xx), paste = ", "))
         rownames(fdata) <- rownames(assay) <- fdata[, fnames]
+    } else {
+        rownames(fdata) <- rownames(assay) <- seq_len(nrow(assay))
     }
     se <- SummarizedExperiment(assay,
                                rowData = fdata)    
