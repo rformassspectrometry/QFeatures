@@ -42,7 +42,7 @@ Convert tabular data from a spreadsheet or a \code{data.frame} into a
 ## Load a data.frame with PSM-level data
 data(hlpsms)
 
-## Create the Features object 
+## Create the Features object
 fts2 <- readFeatures(hlpsms, ecol = 1:10, name = "psms")
 fts2
 }

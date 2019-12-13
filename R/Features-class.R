@@ -235,6 +235,8 @@ selectRowData <- function(object, rowvars) {
 ##' @rdname Features
 ##'
 ##' @export
+##'
+##' @importFrom Biobase fData
 rowDataNames <- function(object) {
     stopifnot(inherits(object, "MultiAssayExperiment"))
     CharacterList(lapply(experiments(object),
@@ -242,7 +244,7 @@ rowDataNames <- function(object) {
                              if (inherits(x, "SummarizedExperiment"))
                                  colnames(rowData(x))
                              else if (inherits(x, "eSet"))
-                                 colnames(Biobase::fData(x))
+                                 colnames(fData(x))
                              else NA_character_
                          }))
 }
