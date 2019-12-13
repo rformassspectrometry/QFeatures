@@ -9,6 +9,8 @@
 \alias{show,Features-method}
 \alias{[,Features,ANY,ANY,ANY-method}
 \alias{[,Features,character,ANY,ANY-method}
+\alias{rowDataNames}
+\alias{selectRowData}
 \title{Quantitative MS Features}
 \usage{
 Features(..., assayLinks = NULL)

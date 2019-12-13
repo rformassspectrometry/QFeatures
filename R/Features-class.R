@@ -87,6 +87,8 @@
 ##'
 ##' @aliases Features Features-class class:Features addAssay dims,Features-method show,Features-method [,Features,ANY,ANY,ANY-method [,Features,character,ANY,ANY-method
 ##'
+##' @aliases rowDataNames selectRowData
+##'
 ##' @md
 ##'
 ##' @exportClass Features
@@ -240,7 +242,7 @@ rowDataNames <- function(object) {
                              if (inherits(x, "SummarizedExperiment"))
                                  colnames(rowData(x))
                              else if (inherits(x, "eSet"))
-                                 colnames(fData(x))
+                                 colnames(Biobase::fData(x))
                              else NA_character_
                          }))
 }
