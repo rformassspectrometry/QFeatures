@@ -26,6 +26,9 @@ BiocStyle::markdown()
 
 ```{r env, message = FALSE, warning = FALSE, echo = FALSE}
 library("Features")
+library("ggplot2")
+library("dplyr")
+library("magrittr")
 ```
 
 
