@@ -11,6 +11,19 @@
     return(list(nNA = nNA, nNArows = nNA_rows, nNAcols = nNA_cols))
 }
 
+.row_for_filterNA <- function(x, pNA = 0L) {
+  if (!is.matrix(x)) 
+    stop(sQuote("x"), " must be a matrix.")
+  if (!is.numeric(pNA)) 
+    stop(sQuote("pNA"), " must be numeric.")
+  if (length(pNA) > 1) 
+    stop(sQuote("pNA"), " must be of length one.")
+  if (pNA > 1) pNA <- 1
+  if (pNA < 0) pNA <- 0    
+  k <- rowSums(is.na(x)) / ncol(x)
+  k <= pNA
+}
+
 
 ##' @title Managing missing data
 ##'
@@ -29,23 +42,36 @@
 ##'    features that weren't quantified should be assigned an
 ##'    intensity of 0. 
 ##'
-##' - `nNA(object)` return a list of missing value summaries. The
+##' - `nNA(object, i)` return a list of missing value summaries. The
 ##'   first element `nNA` gives the percentage of missing values; the
 ##'   second element `nNArows` provides a table of the number of
 ##'   missing values for the features (rows) of the assay(s); the
 ##'   third element `nNAcols` provides the number of missing values in
 ##'   each sample of the assay(s).
 ##'
+##' - `filterNA(object, pNA, i)` removes features (rows) that contain
+##'   `pNA` percentage or more missing values.
+##'
+##' See the *Processing* vignette for examples.
 ##' 
 ##' @param object An object of class `Features` or `SummarizedExperiment`.
 ##'
+##' @param pNA `numeric(1)` providing the maximim percentage of
+##'     missing values per feature (row) that is acceptable. Feature
+##'     with higher percentages are removed. If 0 (default), features
+##'     that contain any number of `NA` values are dropped.
+##'
 ##' @param i The index or name of the assay to be processed.
+##'
+##' @param ... Additional arguments. 
 ##'
 ##' @return An instance of the same class as `object`.
 ##'
 ##' @aliases zeroIsNA zeroIsNA,SummarizedExperiment,missing-method zeroIsNA,Features,missing-method zeroIsNA,Features,numeric-method zeroIsNA,Features,integer-method zeroIsNA,Features,character-method
 ##'
 ##' @aliases nNA nNA,SummarizedExperiment,missing-method nNA,Features,missing-method nNA,Features,numeric-method nNA,Features,integer-method nNA,Features,character-method
+##'
+##' @aliases filterNA filterNA,SummarizedExperiment-method filterNA,Features-method
 ##'
 ##' @name missing-data
 ##' 
@@ -54,15 +80,18 @@ NULL
 
 
 ##' @exportMethod zeroIsNA
+##' @rdname missing-data
 setMethod("zeroIsNA", c("SummarizedExperiment", "missing"),
           function(object, i) .zeroIsNA(object))
 
+##' @rdname missing-data
 setMethod("zeroIsNA", c("Features", "missing"),
           function(object, i) {
               for (i in seq_len(length(object)))
                   object[[i]] <- zeroIsNA(object[[i]])
               object
           })
+##' @rdname missing-data
 
 setMethod("zeroIsNA", c("Features", "integer"),
           function(object, i) {
@@ -70,9 +99,11 @@ setMethod("zeroIsNA", c("Features", "integer"),
               object
           })
 
+##' @rdname missing-data
 setMethod("zeroIsNA", c("Features", "numeric"),
           function(object, i) zeroIsNA(object, as.integer(i)))
 
+##' @rdname missing-data
 setMethod("zeroIsNA", c("Features", "character"),
           function(object, i) {
               object[[i]] <- zeroIsNA(object[[i]])
@@ -81,18 +112,23 @@ setMethod("zeroIsNA", c("Features", "character"),
 
 
 ##' @exportMethod nNA
+##' @rdname missing-data
 setMethod("nNA", c("SummarizedExperiment", "missing"),
           function(object, i) .nNA(object))
 
+##' @rdname missing-data
 setMethod("nNA", c("Features", "integer"),
           function(object, i) .nNA(object[[i]]))
 
+##' @rdname missing-data
 setMethod("nNA", c("Features", "numeric"),
           function(object, i) .nNA(object[[as.integer(i)]]))
 
+##' @rdname missing-data
 setMethod("nNA", c("Features", "character"),
           function(object, i) .nNA(object[[i]]))
 
+##' @rdname missing-data
 setMethod("nNA", c("Features", "missing"),          
           function(object, i) {
               if (length(object) == 1)
@@ -117,5 +153,26 @@ setMethod("nNA", c("Features", "missing"),
               ans
           })
 
+##' @exportMethod filterNA
+##' @rdname missing-data
+setMethod("filterNA", "SummarizedExperiment",
+          function(object, pNA = 0) {
+              k <- .row_for_filterNA(assay(object), pNA)
+              object[k, ]
+          })
+
+##' @rdname missing-data
+setMethod("filterNA", "Features",
+          function(object, pNA = 0, i) {
+              if (missing(i)) {
+                  for (i in seq_len(length(object)))
+                      object[[i]] <- filterNA(object[[i]], pNA)
+              } else {
+                  x <- object[[i]]
+                  k <- .row_for_filterNA(assay(x), pNA)
+                  object[[i]] <- x[k, ]
+              }
+              object
+          })
 
 

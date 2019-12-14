@@ -75,9 +75,13 @@
 ##'   select a limited number of `rowData` columns of interest named
 ##'   in `rowvars` in the `object` instance of class `Features`.
 ##'
-##' @seealso The [readFeatures()] constructor and the
-##'     [aggregateFeatures()] function. The `Features` vignette provides
-##'     an extended example.
+##' @seealso
+##'
+##' - The [readFeatures()] constructor and the [aggregateFeatures()]
+##'   function. The `Features` vignette provides an extended example.
+##'
+##' - The [missing-data] manual page to manage missing values in
+##'   `Features` objects.
 ##'
 ##' @import MultiAssayExperiment ProtGenerics
 ##'

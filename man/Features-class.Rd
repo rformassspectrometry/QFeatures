@@ -153,9 +153,12 @@ selectRowData(fts1, rowvars = "Fa")
 ## -----------------------------------
 }
 \seealso{
-The \code{\link[=readFeatures]{readFeatures()}} constructor and the
-\code{\link[=aggregateFeatures]{aggregateFeatures()}} function. The \code{Features} vignette provides
-an extended example.
+\itemize{
+\item The \code{\link[=readFeatures]{readFeatures()}} constructor and the \code{\link[=aggregateFeatures]{aggregateFeatures()}}
+function. The \code{Features} vignette provides an extended example.
+\item The \link{missing-data} manual page to manage missing values in
+\code{Features} objects.
+}
 }
 \author{
 Laurent Gatto
