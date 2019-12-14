@@ -155,15 +155,15 @@ For further details on how to manipulate such objects, refer to the
 
 As illustrated in figure \@ref(fig:featuresplot), an central
 characteristic of `Features` objects is the aggregative relation
-between their assays. This can be obtained with the `aggregateFeatures`
-function that will aggregate quantitative features from
-one assay into a new one. In the next code chunk, we aggregate PSM-level
-data into peptide by grouping all PSMs that were matched the same
-peptide sequence. The default aggregation function is median, and can
-be set as an additional argument. The new assay is named *peptides*.
+between their assays. This can be obtained with the
+`aggregateFeatures` function that will aggregate quantitative features
+from one assay into a new one. In the next code chunk, we aggregate
+PSM-level data into peptide by grouping all PSMs that were matched the
+same peptide sequence. Below, the aggregation function is set, as an
+example, to the mean. The new assay is named *peptides*.
 
 ```{r aggregateFeatures1}
-hl <- aggregateFeatures(hl, "psms", "Sequence", name = "peptides")
+hl <- aggregateFeatures(hl, "psms", "Sequence", name = "peptides", fun = colMeans)
 hl
 hl[["peptides"]]
 ```
@@ -171,7 +171,7 @@ Below, we repeat the aggregation operation by grouping peptides into
 proteins as defined by the *ProteinGroupAccessions* variable.
 
 ```{r aggregateFeatures2}
-hl <- aggregateFeatures(hl, "peptides", "ProteinGroupAccessions", name = "proteins")
+hl <- aggregateFeatures(hl, "peptides", "ProteinGroupAccessions", name = "proteins", fun = colMeans)
 hl
 hl[["proteins"]]
 ```
