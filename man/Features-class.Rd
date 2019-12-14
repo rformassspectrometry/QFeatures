@@ -9,14 +9,16 @@
 \alias{show,Features-method}
 \alias{[,Features,ANY,ANY,ANY-method}
 \alias{[,Features,character,ANY,ANY-method}
+\alias{rowDataNames}
+\alias{selectRowData}
 \title{Quantitative MS Features}
 \usage{
 Features(..., assayLinks = NULL)
 }
 \arguments{
-\item{...}{See `MultiAssayExperiment` for details.}
+\item{...}{See \code{MultiAssayExperiment} for details.}
 
-\item{assayLinks}{An optional [AssayLinks] object.}
+\item{assayLinks}{An optional \link{AssayLinks} object.}
 }
 \description{
 Conceptually, a \code{Features} object holds a set of \emph{assays}, each
@@ -69,6 +71,10 @@ example.
 The \code{Features} class extends the
 \link[MultiAssayExperiment:MultiAssayExperiment]{MultiAssayExperiment::MultiAssayExperiment} class and inherits
 all its accessors and replacement methods.
+\itemize{
+\item The \code{rowDataNames} accessor returns a list with the \code{rowData}
+variable names.
+}
 }
 
 \section{Adding assays}{
@@ -89,7 +95,10 @@ is a \code{character(1)} naming the single assay (default is
 \item The \code{\link[=subsetByFeature]{subsetByFeature()}} function can be used to subset a
 \code{Features} object using one or multiple feature names that will
 be matched across different assays, taking the aggregation
-relation between assays. See example below.
+relation between assays.
+\item The \code{selectRowData(object, rowvars)} function can be used to
+select a limited number of \code{rowData} columns of interest named
+in \code{rowvars} in the \code{object} instance of class \code{Features}.
 }
 }
 
@@ -134,6 +143,9 @@ fts1[["assay1"]]
 ## Add an assay
 fts1 <- addAssay(fts1, se1[1:2, ], name = "se3")
 
+## Keep only the Fa variable
+selectRowData(fts1, rowvars = "Fa")
+
 ## -----------------------------------
 ## See ?readFeatures to create a
 ## Features object from a data.frame
@@ -141,9 +153,12 @@ fts1 <- addAssay(fts1, se1[1:2, ], name = "se3")
 ## -----------------------------------
 }
 \seealso{
-The \code{\link[=readFeatures]{readFeatures()}} constructor and the
-\code{\link[=aggregateFeatures]{aggregateFeatures()}} function. The \code{Features} vignette provides
-an extended example.
+\itemize{
+\item The \code{\link[=readFeatures]{readFeatures()}} constructor and the \code{\link[=aggregateFeatures]{aggregateFeatures()}}
+function. The \code{Features} vignette provides an extended example.
+\item The \link{missing-data} manual page to manage missing values in
+\code{Features} objects.
+}
 }
 \author{
 Laurent Gatto

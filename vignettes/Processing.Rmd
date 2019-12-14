@@ -1,0 +1,152 @@
+---
+title: "Processing quantitative proteomics data with Features"
+author:
+- name: Laurent Gatto
+package: Features
+abstract: >
+  This vignette describes how to process quantitative mass
+  spectrometry data with Features: clearning up unneeded feature
+  variables, adding an experimental design, filtering out contaminants
+  and reverse hits, managing missing values, log-transforming,
+  normalising and aggregating data.
+output:
+  BiocStyle::html_document:
+    toc_float: true
+bibliography: Features.bib
+vignette: >
+  %\VignetteIndexEntry{Processing quantitative proteomics data with Features}
+  %\VignetteEngine{knitr::rmarkdown}
+  %%\VignetteKeywords{Mass Spectrometry, MS, MSMS, Proteomics, Metabolomics, Infrastructure, Quantitative}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r style, echo = FALSE, results = 'asis'}
+BiocStyle::markdown()
+```
+
+```{r env, message = FALSE, warning = FALSE, echo = FALSE}
+library("Features")
+```
+
+
+# Introduction
+
+## Reading data as `Features`
+
+We are going to use a subset of the CPTAC study 6 containing
+conditions A and B. The peptide-level data, as processed by MaxQuant
+is available in the `msdata` package:
+
+
+```{r msdata}
+basename(f <- msdata::quant(pattern = "cptac", full.names = TRUE))
+```
+
+From the names of the columns, we see that the quantitative coumns,
+starting with `"Intensity."` (note the space!) are at positions 56 to
+61.
+
+```{r cptac_cols}
+names(read.delim(f))
+(i <- grep("Intensity\\.", names(read.delim(f))))
+```
+
+We now read these data using the `readFeatures` function. The peptide
+level expression data will be imported into R as an instance of class
+`Features` namesd `cptac` with an assay named `peptides`. We also use
+the `fnames` argument to set the rownames of the `peptides` assay to
+the peptide sequences.
+
+```{r read_cptac}
+library("Features")
+cptac <- readFeatures(f, ecol = i, sep = "\t", name = "peptides", fnames = "Sequence")
+```
+
+## Encoding the experimental design
+
+Below we update the sample (column) annotations to encode the two
+groups, 6A and 6B, and the original sample numbers.
+
+```{r}
+cptac$group <- rep(c("6A", "6B"), each = 3)
+cptac$sample <- rep(7:9, 2)
+colData(cptac)
+```
+
+## Filtering out contaminants and reverse hits
+
+
+```{r}
+filterFeatures(cptac, ~ Reverse == "")
+```
+```{r}
+filterFeatures(cptac, ~ Potential.contaminant == "")
+```
+
+```{r}
+library("magrittr")
+cptac <- cptac %>%
+    filterFeatures(~ Reverse == "") %>%
+    filterFeatures(~ Potential.contaminant == "")
+```
+
+## Removinf up unneeded feature variables
+
+The spreadsheet that was read above contained numerous variables that
+are returned by MaxQuant, but not necessarily necessary in the frame
+of a downstream statistical analysis. 
+
+```{r}
+rowDataNames(cptac)
+```
+
+The only ones that we will be needing below are the peptides sequences
+and the protein identifiers. Below, we store these variables of
+interest and filter them using the `selectRowData` function.
+
+```{r}
+rowvars <- c("Sequence", "Proteins", "Leading.razor.protein")
+cptac <- selectRowData(cptac, rowvars)
+rowDataNames(cptac)
+```
+
+## Managing missing values
+
+Missing values can be very prominant in certain proteomics experiments
+and need to be dealt with carefully. The first step is to assess their
+presence accross samples and features. But before being able to do so,
+we need to replace 0 by `NA`, given that MaxQuant encodes missing data
+with a 0 using the `zeroIsNA` function.
+
+```{r}
+cptac <- zeroIsNA(cptac)
+nNA(cptac)
+```
+
+The output of the `nNA` function tells us that 
+
+- there are currently close to 50% is missing values in the data;
+- there are 4051 peptides with 0 missing values, 989 with a single
+  missing values, ... and 3014 peptides composed of only missing
+  values;
+- the range of missing values in the 6 samples is comparable and
+  ranges between 4651 and 5470.
+
+In this dataset, we have such a high number of peptides without any
+data because the 6 samples are a subset of a larger dataset, and these
+peptides happened to be absent in groups A and B.
+
+## TODO
+
+- log-transformation
+- normalisation
+- aggregation
+
+# Session information {-}
+
+```{r sessioninfo, echo=FALSE}
+sessionInfo()
+```
+
+
+# References {-}

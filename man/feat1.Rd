@@ -9,6 +9,6 @@
 feat1
 }
 \description{
-A small test `Features` object for testing and demonstration.
+A small test \code{Features} object for testing and demonstration.
 }
 \keyword{datasets}

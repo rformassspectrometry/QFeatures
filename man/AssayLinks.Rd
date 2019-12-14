@@ -31,7 +31,7 @@ assayLinks(x, i)
 \S4method{[}{AssayLinks,list,ANY,ANY}(x, i, j, ..., drop = TRUE)
 }
 \arguments{
-\item{object}{An `AssayLink` object to show.}
+\item{object}{An \code{AssayLink} object to show.}
 
 \item{name}{A mandatory name of the assay(s).}
 
@@ -63,7 +63,7 @@ feature names to filter on.}
 \item{drop}{ignored.}
 }
 \value{
-`assayLink` returns an instance of class `AssayLink`.
+\code{assayLink} returns an instance of class \code{AssayLink}.
 
 \code{assayLinks} returns an instance of class \code{AssayLinks}.
 }

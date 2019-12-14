@@ -1,16 +1,16 @@
 ##' @title Features from tabular data
 ##'
 ##' @description
-##' 
+##'
 ##' Convert tabular data from a spreadsheet or a `data.frame` into a
 ##' `Features` object.
-##' 
+##'
 ##' @param table File or object holding the quantitative data. Can be
 ##'     either a `character(1)` with the path to a text-based
 ##'     spreadsheet (comma-separated values by default, but see `...`)
 ##'     or an object that can be coerced to a `data.frame`. It is
 ##'     advised not to encode characters as factors.
-##' 
+##'
 ##' @param ecol A `numeric` indicating the indices of the columns to
 ##'     be used as expression values. Can also be a `character`
 ##'     indicating the names of the columns. Caution must be taken if
@@ -18,10 +18,10 @@
 ##'     or `-` that will be converted to a `.` by the `read.csv`
 ##'     function. If `ecol` does not match, the error message will
 ##'     dislpay the column names as seen by the `read.csv` function.
-##' 
+##'
 ##' @param fnames An optional `character(1)` or `numeric(1)`
 ##'     indicating the column to be used as feature names.
-##' 
+##'
 ##' @param ... Further arguments that can be passed on to `read.csv`
 ##'     except `stringsAsFactors`, which is always `FALSE`.
 ##'
@@ -48,7 +48,7 @@
 ##' ## Load a data.frame with PSM-level data
 ##' data(hlpsms)
 ##'
-##' ## Create the Features object 
+##' ## Create the Features object
 ##' fts2 <- readFeatures(hlpsms, ecol = 1:10, name = "psms")
 ##' fts2
 readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
@@ -87,7 +87,7 @@ readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
         rownames(fdata) <- rownames(assay) <- seq_len(nrow(assay))
     }
     se <- SummarizedExperiment(assay,
-                               rowData = fdata)    
+                               rowData = fdata)
     cd <- DataFrame(row.names = colnames(assay))
     if (is.null(name))
         name <- "features"
@@ -134,8 +134,8 @@ Features <- function(..., assayLinks = NULL) {
 ##' @md
 ##'
 ##' @rdname Features
-##' 
-##' @export 
+##'
+##' @export
 addAssay <- function(object,
                      x,
                      name = "newAssay",

@@ -14,18 +14,16 @@
 \usage{
 VariableFilter(field, value, condition = "==")
 
-filterFeatures(object, filter, ...)
-
 \S4method{filterFeatures}{Features,AnnotationFilter}(object, filter, ...)
 
 \S4method{filterFeatures}{Features,formula}(object, filter, ...)
 }
 \arguments{
-\item{field}{`character(1)` refering to the name of the variable
+\item{field}{\code{character(1)} refering to the name of the variable
 to apply the filter on.}
 
 \item{value}{‘character()’ or ‘integer()’ value for the
-`CharacterVariableFilter` and `NumericVariableFilter` filters
+\code{CharacterVariableFilter} and \code{NumericVariableFilter} filters
 respectively.}
 
 \item{condition}{‘character(1)’ defining the condition to be used in
@@ -35,9 +33,9 @@ the filter. For ‘NumericVariableFilter’, one of ‘"=="’,
 ‘"startsWith"’, ‘"endsWith"’ or ‘"contains"’. Default
 condition is ‘"=="’.}
 
-\item{object}{An instance of class [Features].}
+\item{object}{An instance of class \link{Features}.}
 
-\item{filter}{Either an instance of class [AnnotationFilter] or a
+\item{filter}{Either an instance of class \link{AnnotationFilter} or a
 formula.}
 
 \item{...}{Additional parameters. Currently ignored.}

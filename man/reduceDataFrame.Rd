@@ -3,35 +3,35 @@
 \name{reduceDataFrame}
 \alias{reduceDataFrame}
 \alias{expandDataFrame}
-\title{Reduces and expands a `DataFrame`}
+\title{Reduces and expands a \code{DataFrame}}
 \usage{
 reduceDataFrame(x, k, count = FALSE, simplify = TRUE, drop = FALSE)
 
 expandDataFrame(x, k = NULL)
 }
 \arguments{
-\item{x}{The `DataFrame` to be reduced or expanded.}
+\item{x}{The \code{DataFrame} to be reduced or expanded.}
 
-\item{k}{A ‘vector’ of length `nrow(x)` defining the grouping
-based on which the `DataFrame` will be shrunk.}
+\item{k}{A ‘vector’ of length \code{nrow(x)} defining the grouping
+based on which the \code{DataFrame} will be shrunk.}
 
-\item{count}{`logical(1)` specifying of an additional column
-(called by default `.n`) with the tally of rows shrunk into on
-new row should be added. Note that if already existing, `.n`
+\item{count}{\code{logical(1)} specifying of an additional column
+(called by default \code{.n}) with the tally of rows shrunk into on
+new row should be added. Note that if already existing, \code{.n}
 will be silently overwritten.}
 
-\item{simplify}{A `logical(1)` defining if invariant columns
-should be converted to simple lists. Default is `TRUE`.}
+\item{simplify}{A \code{logical(1)} defining if invariant columns
+should be converted to simple lists. Default is \code{TRUE}.}
 
-\item{drop}{A `logical(1)` specifying whether the non-invariant
-columns should be dropped altogether. Default is `FALSE`.}
+\item{drop}{A \code{logical(1)} specifying whether the non-invariant
+columns should be dropped altogether. Default is \code{FALSE}.}
 }
 \value{
-An expanded (reduced) `DataFrame`.
+An expanded (reduced) \code{DataFrame}.
 }
 \description{
-A long dataframe can be *reduced* by mergeing certain rows into a
-single one.  These new variables are constructed as a `SimpleList`
+A long dataframe can be \emph{reduced} by mergeing certain rows into a
+single one.  These new variables are constructed as a \code{SimpleList}
 containing all the original values. Invariant columns, i.e columns
 that have the same value along all the rows that need to be
 merged, can be shrunk into a new variables containing that
@@ -39,8 +39,8 @@ invariant value (rather than in list columns). The grouping of
 rows, i.e. the rows that need to be shrunk together as one, is
 defined by a vector.
 
-The opposite operation is *expand*. But note that for a
-`DataFrame` to be expanded back, it must not to be simplified.
+The opposite operation is \emph{expand}. But note that for a
+\code{DataFrame} to be expanded back, it must not to be simplified.
 }
 \examples{
 library("IRanges")
