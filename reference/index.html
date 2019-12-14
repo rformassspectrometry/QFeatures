@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -84,6 +84,18 @@
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/Processing.html">Processing quantitative proteomics data with Features</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -145,15 +157,21 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="Features-subsetBy.html">subsetByFeature(<i>&lt;Features&gt;</i>,<i>&lt;character&gt;</i>)</a></code> </p>
+          <p><code><a href="Features-processing.html">logTransform(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="Features-processing.html">logTransform(<i>&lt;Features&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Features processing</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Features-subsetBy.html">subsetByFeature</a></code> </p>
         </td>
         <td><p>Subset by feature name</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="combineFeatures.html">combineFeatures(<i>&lt;Features&gt;</i>)</a></code> </p>
+          <p><code><a href="aggregateFeatures.html">aggregateFeatures(<i>&lt;Features&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Combine an assay's quantitative features</p></td>
+        <td><p>Aggregate an assay's quantitative features</p></td>
       </tr><tr>
         
         <td>
@@ -169,7 +187,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="filterFeatures.html">VariableFilter()</a></code> <code><a href="filterFeatures.html">filterFeatures()</a></code> </p>
+          <p><code><a href="filterFeatures.html">VariableFilter()</a></code> <code><a href="filterFeatures.html">filterFeatures(<i>&lt;Features&gt;</i>,<i>&lt;AnnotationFilter&gt;</i>)</a></code> <code><a href="filterFeatures.html">filterFeatures(<i>&lt;Features&gt;</i>,<i>&lt;formula&gt;</i>)</a></code> </p>
         </td>
         <td><p>Filter featuress based on their rowData</p></td>
       </tr><tr>
@@ -181,6 +199,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="missing-data.html">zeroIsNA(<i>&lt;SummarizedExperiment&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="missing-data.html">zeroIsNA(<i>&lt;Features&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="missing-data.html">zeroIsNA(<i>&lt;Features&gt;</i>,<i>&lt;integer&gt;</i>)</a></code> <code><a href="missing-data.html">zeroIsNA(<i>&lt;Features&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="missing-data.html">zeroIsNA(<i>&lt;Features&gt;</i>,<i>&lt;character&gt;</i>)</a></code> <code><a href="missing-data.html">nNA(<i>&lt;SummarizedExperiment&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="missing-data.html">nNA(<i>&lt;Features&gt;</i>,<i>&lt;integer&gt;</i>)</a></code> <code><a href="missing-data.html">nNA(<i>&lt;Features&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="missing-data.html">nNA(<i>&lt;Features&gt;</i>,<i>&lt;character&gt;</i>)</a></code> <code><a href="missing-data.html">nNA(<i>&lt;Features&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="missing-data.html">filterNA(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="missing-data.html">filterNA(<i>&lt;Features&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Managing missing data</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="readFeatures.html">readFeatures()</a></code> </p>
         </td>
         <td><p>Features from tabular data</p></td>
@@ -189,7 +213,7 @@
         <td>
           <p><code><a href="reduceDataFrame.html">reduceDataFrame()</a></code> <code><a href="reduceDataFrame.html">expandDataFrame()</a></code> </p>
         </td>
-        <td><p>Reduces and expands a `DataFrame`</p></td>
+        <td><p>Reduces and expands a <code>DataFrame</code></p></td>
       </tr>
     </tbody>
     </table>

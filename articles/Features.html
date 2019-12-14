@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -48,6 +48,18 @@
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../articles/Processing.html">Processing quantitative proteomics data with Features</a>
+    </li>
+  </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -123,7 +135,7 @@ Conceptual representation of a <code>Features</code> object and the aggregative 
 ## dim: 32776 10 
 ## metadata(0):
 ## assays(1): ''
-## rownames(32776): 136 141 ... 115747 115775
+## rownames(32776): 1 2 ... 32775 32776
 ## rowData names(18): Sequence ProteinDescriptions ... RTmin markers
 ## colnames(10): X126 X127C ... X130N X131
 ## colData names(0):</code></pre>
@@ -132,62 +144,62 @@ Conceptual representation of a <code>Features</code> object and the aggregative 
 ## dim: 32776 10 
 ## metadata(0):
 ## assays(1): ''
-## rownames(32776): 136 141 ... 115747 115775
+## rownames(32776): 1 2 ... 32775 32776
 ## rowData names(18): Sequence ProteinDescriptions ... RTmin markers
 ## colnames(10): X126 X127C ... X130N X131
 ## colData names(0):</code></pre>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">assay</span>(hl[[<span class="st">"psms"</span>]]))</a></code></pre></div>
-<pre><code>##           X126       X127C      X127N       X128C       X128N      X129C
-## 136 0.01279427 0.024462641 0.01044012 0.083418628 0.018577277 0.23234391
-## 141 0.01524632 0.089010311 0.08151934 0.105754825 0.054639993 0.17449546
-## 169 0.13087550 0.023223985 0.01372910 0.010906291 0.010777982 0.10478594
-## 203 0.04637540 0.023187698 0.09812058 0.058579448 0.052233341 0.13229192
-## 238 0.07011643 0.004831193 0.00321367 0.006790748 0.004389403 0.10047172
-## 239 0.05415942 0.127071073 0.05786052 0.366408823 0.113253636 0.04071209
-##          X129N      X130C      X130N       X131
-## 136 0.29836233 0.02942682 0.16427840 0.12589560
-## 141 0.22516965 0.01533445 0.12293998 0.11588966
-## 169 0.02951114 0.38663872 0.16038664 0.12916471
-## 203 0.15377105 0.09665609 0.17134489 0.16743959
-## 238 0.04204136 0.33276803 0.22445809 0.21091935
-## 239 0.12275312 0.01020270 0.06057466 0.04700396</code></pre>
+<pre><code>##         X126       X127C      X127N       X128C       X128N      X129C
+## 1 0.01279427 0.024462641 0.01044012 0.083418628 0.018577277 0.23234391
+## 2 0.01524632 0.089010311 0.08151934 0.105754825 0.054639993 0.17449546
+## 3 0.13087550 0.023223985 0.01372910 0.010906291 0.010777982 0.10478594
+## 4 0.04637540 0.023187698 0.09812058 0.058579448 0.052233341 0.13229192
+## 5 0.07011643 0.004831193 0.00321367 0.006790748 0.004389403 0.10047172
+## 6 0.05415942 0.127071073 0.05786052 0.366408823 0.113253636 0.04071209
+##        X129N      X130C      X130N       X131
+## 1 0.29836233 0.02942682 0.16427840 0.12589560
+## 2 0.22516965 0.01533445 0.12293998 0.11588966
+## 3 0.02951114 0.38663872 0.16038664 0.12916471
+## 4 0.15377105 0.09665609 0.17134489 0.16743959
+## 5 0.04204136 0.33276803 0.22445809 0.21091935
+## 6 0.12275312 0.01020270 0.06057466 0.04700396</code></pre>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">rowData</span>(hl[[<span class="st">"psms"</span>]]))</a></code></pre></div>
 <pre><code>## DataFrame with 6 rows and 18 columns
-##        Sequence ProteinDescriptions NbProteins ProteinGroupAccessions
-##     &lt;character&gt;         &lt;character&gt;  &lt;integer&gt;            &lt;character&gt;
-## 136     aAAGEAk       Ribosome-b...          1                 Q99PL5
-## 141      VTEEAk       Heme oxyge...          1                 P14901
-## 169     aSGDPGk       Transcript...          2                 O89090
-## 203     sAAAEAk       Isoform 3 ...          3               O89032-3
-## 238     aANAEGk       Deoxynucle...          1                 Q8R2M2
-## 239     aAAEEAR       Coiled-coi...          1                 Q9JIG7
-##     Modifications    qValue       PEP  IonScore NbMissedCleavages
-##       &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt; &lt;integer&gt;         &lt;integer&gt;
-## 136 N-Term(Car...     0.001    0.0162        46                 0
-## 141 K6(TMT6ple...     0.002    0.0393        46                 0
-## 169 N-Term(Car...     0.008     0.117        18                 0
-## 203 N-Term(Car...     0.001    0.0194        28                 0
-## 238 N-Term(Car...     0.002    0.0387        28                 0
-## 239 N-Term(TMT...     0.002    0.0386        36                 0
-##     IsolationInterference IonInjectTimems Intensity    Charge      mzDa
-##                 &lt;integer&gt;       &lt;integer&gt; &lt;numeric&gt; &lt;integer&gt; &lt;numeric&gt;
-## 136                     0              70    192000         2 452.25845
-## 141                     0              70    416000         2 453.26114
-## 169                     0              70    351000         2 459.24905
-## 203                     0              70     62100         2 467.26346
-## 238                     0              70    246000         2 473.76093
-## 239                     0              70    172000         2 473.76184
-##          MHDa DeltaMassPPM     RTmin       markers
-##     &lt;numeric&gt;    &lt;numeric&gt; &lt;numeric&gt;   &lt;character&gt;
-## 136 903.50963        -0.14     10.45 Endoplasmi...
-## 141   905.515         0.93     15.96       unknown
-## 169 917.49083         1.98     11.42       unknown
-## 203 933.51964        -0.73     13.32       unknown
-## 238 946.51457        -1.05     10.25 Nucleus - ...
-## 239 946.51641         0.88     14.79       unknown</code></pre>
+##      Sequence ProteinDescriptions NbProteins ProteinGroupAccessions
+##   &lt;character&gt;         &lt;character&gt;  &lt;integer&gt;            &lt;character&gt;
+## 1     aAAGEAk       Ribosome-b...          1                 Q99PL5
+## 2      VTEEAk       Heme oxyge...          1                 P14901
+## 3     aSGDPGk       Transcript...          2                 O89090
+## 4     sAAAEAk       Isoform 3 ...          3               O89032-3
+## 5     aANAEGk       Deoxynucle...          1                 Q8R2M2
+## 6     aAAEEAR       Coiled-coi...          1                 Q9JIG7
+##   Modifications    qValue       PEP  IonScore NbMissedCleavages
+##     &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt; &lt;integer&gt;         &lt;integer&gt;
+## 1 N-Term(Car...     0.001    0.0162        46                 0
+## 2 K6(TMT6ple...     0.002    0.0393        46                 0
+## 3 N-Term(Car...     0.008     0.117        18                 0
+## 4 N-Term(Car...     0.001    0.0194        28                 0
+## 5 N-Term(Car...     0.002    0.0387        28                 0
+## 6 N-Term(TMT...     0.002    0.0386        36                 0
+##   IsolationInterference IonInjectTimems Intensity    Charge      mzDa      MHDa
+##               &lt;integer&gt;       &lt;integer&gt; &lt;numeric&gt; &lt;integer&gt; &lt;numeric&gt; &lt;numeric&gt;
+## 1                     0              70    192000         2 452.25845 903.50963
+## 2                     0              70    416000         2 453.26114   905.515
+## 3                     0              70    351000         2 459.24905 917.49083
+## 4                     0              70     62100         2 467.26346 933.51964
+## 5                     0              70    246000         2 473.76093 946.51457
+## 6                     0              70    172000         2 473.76184 946.51641
+##   DeltaMassPPM     RTmin       markers
+##      &lt;numeric&gt; &lt;numeric&gt;   &lt;character&gt;
+## 1        -0.14     10.45 Endoplasmi...
+## 2         0.93     15.96       unknown
+## 3         1.98     11.42       unknown
+## 4        -0.73     13.32       unknown
+## 5        -1.05     10.25 Nucleus - ...
+## 6         0.88     14.79       unknown</code></pre>
 <p>For further details on how to manipulate such objects, refer to the <em><a href="https://bioconductor.org/packages/3.11/MultiAssayExperiment">MultiAssayExperiment</a></em> <span class="citation">(Ramos et al. 2017)</span> and <em><a href="https://bioconductor.org/packages/3.11/SummerizedExperiment">SummerizedExperiment</a></em> <span class="citation">(Morgan et al. 2019)</span> packages.</p>
-<p>As illustrated in figure @ref(fig:featuresplot), an central characteristic of <code>Features</code> objects is the aggregative relation between their assays. This can be obtained with the <code>combineFeatures</code> function that will combine (or aggregate) quantitative features from one assay into a new one. In the next code chunk, we combine PSM-level data into peptide by grouping all PSMs that were matched the same peptide sequence. The default aggregation function is median, and can be set as an additional argument. The new assay is named <em>peptides</em>.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">hl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/combineFeatures.html">combineFeatures</a></span>(hl, <span class="st">"psms"</span>, <span class="st">"Sequence"</span>, <span class="dt">name =</span> <span class="st">"peptides"</span>)</a>
+<p>As illustrated in figure @ref(fig:featuresplot), an central characteristic of <code>Features</code> objects is the aggregative relation between their assays. This can be obtained with the <code>aggregateFeatures</code> function that will aggregate quantitative features from one assay into a new one. In the next code chunk, we aggregate PSM-level data into peptide by grouping all PSMs that were matched the same peptide sequence. The default aggregation function is median, and can be set as an additional argument. The new assay is named <em>peptides</em>.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">hl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/aggregateFeatures.html">aggregateFeatures</a></span>(hl, <span class="st">"psms"</span>, <span class="st">"Sequence"</span>, <span class="dt">name =</span> <span class="st">"peptides"</span>)</a>
 <a class="sourceLine" id="cb12-2" data-line-number="2">hl</a></code></pre></div>
 <pre><code>## A instance of class Features containing
 ##  [1] psms: SummarizedExperiment with 32776 rows and 10 columns 
@@ -203,7 +215,7 @@ Conceptual representation of a <code>Features</code> object and the aggregative 
 ## colnames(10): X126 X127C ... X130N X131
 ## colData names(0):</code></pre>
 <p>Below, we repeat the aggregation operation by grouping peptides into proteins as defined by the <em>ProteinGroupAccessions</em> variable.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">hl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/combineFeatures.html">combineFeatures</a></span>(hl, <span class="st">"peptides"</span>, <span class="st">"ProteinGroupAccessions"</span>, <span class="dt">name =</span> <span class="st">"proteins"</span>)</a>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">hl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/aggregateFeatures.html">aggregateFeatures</a></span>(hl, <span class="st">"peptides"</span>, <span class="st">"ProteinGroupAccessions"</span>, <span class="dt">name =</span> <span class="st">"proteins"</span>)</a>
 <a class="sourceLine" id="cb16-2" data-line-number="2">hl</a></code></pre></div>
 <pre><code>## A instance of class Features containing
 ##  [1] psms: SummarizedExperiment with 32776 rows and 10 columns 
@@ -241,7 +253,7 @@ Conceptual representation of a <code>Features</code> object and the aggregative 
 <div id="subsetting" class="section level1">
 <h1 class="hasAnchor">
 <a href="#subsetting" class="anchor"></a>Subsetting</h1>
-<p>One particularity of the <code>Features</code> infrastructure is that the features of the constitutive assays are linked through an aggregative relation. This relation is recorded when creating new assays with <code>combineFeatures</code> and is exploited when subsetting <code>Feature</code> by their feature names.</p>
+<p>One particularity of the <code>Features</code> infrastructure is that the features of the constitutive assays are linked through an aggregative relation. This relation is recorded when creating new assays with <code>aggregateFeatures</code> and is exploited when subsetting <code>Feature</code> by their feature names.</p>
 <p>In the example below, we are interested in the Stat3B isoform of the Signal transducer and activator of transcription 3 (STAT3) with accession number P42227-2. This accession number corresponds to a feature name in the <em>proteins</em> assay. But this protein row was computed from 8 peptide rows in the <em>peptides</em> assay, themselves resulting from the aggregation of 8 rows in the <em>psms</em> assay.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">stat3 &lt;-<span class="st"> </span>hl[<span class="st">"P42227-2"</span>, , ]</a>
 <a class="sourceLine" id="cb24-2" data-line-number="2">stat3</a></code></pre></div>
@@ -347,23 +359,39 @@ Conceptual representation of a <code>Features</code> object and the aggregative 
 ## value: 0.001</code></pre>
 <p>These filter can then readily be applied to all assays’ row data slots. The <code>mito_filter</code> will return all PSMs, peptides and proteins that were annotated as localising to the mitochondrion.</p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw"><a href="../reference/filterFeatures.html">filterFeatures</a></span>(hl, mito_filter)</a></code></pre></div>
+<pre><code>## Called from: filterFeaturesWithAnnotationFilter(object, filter, ...)
+## debug: sel &lt;- lapply(experiments(object), function(exp) {
+##     x &lt;- rowData(exp)
+##     if (field(filter) %in% names(x)) 
+##         do.call(condition(filter), list(x[, field(filter)], value(filter)))
+##     else rep(FALSE, nrow(x))
+## })
+## debug: object[sel, , ]</code></pre>
 <pre><code>## A instance of class Features containing
 ##  [1] psms: SummarizedExperiment with 2019 rows and 10 columns 
 ##  [2] peptides: SummarizedExperiment with 1770 rows and 10 columns 
 ##  [3] proteins: SummarizedExperiment with 360 rows and 10 columns</code></pre>
 <p>The <code>qval_filter</code>, on the other hand, will only return a subset of PSMs, because the <code>qValue</code> variable is only present in the <code>psms</code> assays. The q-values are only relevant to PSMs and that variable was dropped from the other assays.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw"><a href="../reference/filterFeatures.html">filterFeatures</a></span>(hl, qval_filter)</a></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw"><a href="../reference/filterFeatures.html">filterFeatures</a></span>(hl, qval_filter)</a></code></pre></div>
+<pre><code>## Called from: filterFeaturesWithAnnotationFilter(object, filter, ...)
+## debug: sel &lt;- lapply(experiments(object), function(exp) {
+##     x &lt;- rowData(exp)
+##     if (field(filter) %in% names(x)) 
+##         do.call(condition(filter), list(x[, field(filter)], value(filter)))
+##     else rep(FALSE, nrow(x))
+## })
+## debug: object[sel, , ]</code></pre>
 <pre><code>## harmonizing input:
 ##   removing 20 sampleMap rows not in names(experiments)</code></pre>
 <pre><code>## A instance of class Features containing
 ##  [1] psms: SummarizedExperiment with 26768 rows and 10 columns</code></pre>
 <p>The same filters can be created using the forumla interface:</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw"><a href="../reference/filterFeatures.html">filterFeatures</a></span>(hl, <span class="op">~</span><span class="st"> </span>markers <span class="op">==</span><span class="st"> "Mitochondrion"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw"><a href="../reference/filterFeatures.html">filterFeatures</a></span>(hl, <span class="op">~</span><span class="st"> </span>markers <span class="op">==</span><span class="st"> "Mitochondrion"</span>)</a></code></pre></div>
 <pre><code>## A instance of class Features containing
 ##  [1] psms: SummarizedExperiment with 2019 rows and 10 columns 
 ##  [2] peptides: SummarizedExperiment with 1770 rows and 10 columns 
 ##  [3] proteins: SummarizedExperiment with 360 rows and 10 columns</code></pre>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw"><a href="../reference/filterFeatures.html">filterFeatures</a></span>(hl, <span class="op">~</span><span class="st"> </span>qValue <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.001</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw"><a href="../reference/filterFeatures.html">filterFeatures</a></span>(hl, <span class="op">~</span><span class="st"> </span>qValue <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.001</span>)</a></code></pre></div>
 <pre><code>## harmonizing input:
 ##   removing 20 sampleMap rows not in names(experiments)</code></pre>
 <pre><code>## A instance of class Features containing
@@ -372,7 +400,7 @@ Conceptual representation of a <code>Features</code> object and the aggregative 
 <div id="session-information" class="section level1 unnumbered">
 <h1 class="hasAnchor">
 <a href="#session-information" class="anchor"></a>Session information</h1>
-<pre><code>## R Under development (unstable) (2019-12-12 r77563)
+<pre><code>## R Under development (unstable) (2019-12-13 r77566)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 14.04.5 LTS
 ## 
@@ -394,7 +422,7 @@ Conceptual representation of a <code>Features</code> object and the aggregative 
 ## 
 ## other attached packages:
 ##  [1] magrittr_1.5                ggplot2_3.2.1              
-##  [3] Features_0.1.0              MultiAssayExperiment_1.13.3
+##  [3] Features_0.1.2              MultiAssayExperiment_1.13.3
 ##  [5] SummarizedExperiment_1.17.0 DelayedArray_0.13.0        
 ##  [7] BiocParallel_1.21.0         matrixStats_0.55.0         
 ##  [9] Biobase_2.47.1              GenomicRanges_1.39.1       
@@ -408,8 +436,8 @@ Conceptual representation of a <code>Features</code> object and the aggregative 
 ##  [7] plyr_1.8.5              backports_1.1.5         evaluate_0.14          
 ## [10] highr_0.8               pillar_1.4.2            zlibbioc_1.33.0        
 ## [13] rlang_0.4.2             lazyeval_0.2.2          Matrix_1.2-18          
-## [16] rmarkdown_1.18          pkgdown_1.4.1           desc_1.2.0             
-## [19] labeling_0.3            stringr_1.4.0           ProtGenerics_1.19.0    
+## [16] rmarkdown_2.0           pkgdown_1.4.1           desc_1.2.0             
+## [19] labeling_0.3            stringr_1.4.0           ProtGenerics_1.19.2    
 ## [22] RCurl_1.95-4.12         munsell_0.5.0           compiler_4.0.0         
 ## [25] xfun_0.11               pkgconfig_2.0.3         htmltools_0.4.0        
 ## [28] tidyselect_0.2.5        tibble_2.1.3            GenomeInfoDbData_1.2.2 

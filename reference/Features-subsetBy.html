@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Subset by feature name — subsetByFeature,Features,character-method • Features</title>
+<title>Subset by feature name — subsetByFeature • Features</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,16 @@
 
 
 
-<meta property="og:title" content="Subset by feature name — subsetByFeature,Features,character-method" />
+<meta property="og:title" content="Subset by feature name — subsetByFeature" />
 <meta property="og:description" content="This function will find the assays and features that match
 directly (by name) or indirectly (through aggregation) the feature
-name." />
+name.
+The subsetByFeature function will first identify the assay that
+contains the feature(s) i and filter the rows matching these
+feature names exactly. It will then find, in the other assays, the
+features that produces i through aggregation with the
+aggregateFeatures function.
+See Features for an example." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -71,7 +77,7 @@ name." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -88,6 +94,18 @@ name." />
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/Processing.html">Processing quantitative proteomics data with Features</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -119,21 +137,25 @@ name." />
     <p>This function will find the assays and features that match
 directly (by name) or indirectly (through aggregation) the feature
 name.</p>
+<p>The <code>subsetByFeature</code> function will first identify the assay that
+contains the feature(s) <code>i</code> and filter the rows matching these
+feature names exactly. It will then find, in the other assays, the
+features that produces <code>i</code> through aggregation with the
+<code>aggregateFeatures</code> function.</p>
+<p>See <a href='Features-class.html'>Features</a> for an example.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S4 method for Features,character</span>
-<span class='fu'>subsetByFeature</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>An instance of class [Features].</p></td>
+      <td><p>An instance of class <a href='Features-class.html'>Features</a>.</p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>A `character` of feature names present in an assay in `x`.</p></td>
+      <td><p>A <code>character</code> of feature names present in an assay in <code>x</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -143,16 +165,8 @@ name.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An new instance of class [Features] containing relevant
-    assays and features.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>The `subsetByFeature` function will first identify the assay that
-contains the feature(s) `i` and filter the rows matching these
-feature names exactly. It will then find, in the other assays, the
-features that produces `i` through aggregation with the
-`combineFeatures` function.</p>
-<p>See [Features] for an example.</p>
+    <p>An new instance of class <a href='Features-class.html'>Features</a> containing relevant
+assays and features.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -160,11 +174,8 @@ features that produces `i` through aggregation with the
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
     </ul>
 
-    <h2>Author</h2>
-    <p>Laurent Gatto</p>
   </div>
 </div>
 

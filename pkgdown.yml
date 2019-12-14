@@ -3,4 +3,5 @@ pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
   Features: Features.html
+  Processing: Processing.html
 

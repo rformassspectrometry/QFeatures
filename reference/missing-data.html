@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Features from tabular data — readFeatures • Features</title>
+<title>Managing missing data — missing-data • Features</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,28 @@
 
 
 
-<meta property="og:title" content="Features from tabular data — readFeatures" />
-<meta property="og:description" content="Convert tabular data from a spreadsheet or a data.frame into a
-Features object." />
+<meta property="og:title" content="Managing missing data — missing-data" />
+<meta property="og:description" content="This manual page describes the handling of missing values in
+Features objects. In the following functions, if object is of
+class Features, and optional assay index or name i can be
+specified to define the assay (by name of index) on which to
+operate.
+The following functions are currently available:
+zeroIsNA(object, i) replaces all 0 in object by NA. This
+is often necessary when third-party software assume that
+features that weren't quantified should be assigned an
+intensity of 0.
+nNA(object, i) return a list of missing value summaries. The
+first element nNA gives the percentage of missing values; the
+second element nNArows provides a table of the number of
+missing values for the features (rows) of the assay(s); the
+third element nNAcols provides the number of missing values in
+each sample of the assay(s).
+filterNA(object, pNA, i) removes features (rows) that contain
+pNA percentage or more missing values.
+
+
+See the Processing vignette for examples." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,85 +140,107 @@ Features object." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Features from tabular data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/Features/blob/master/R/Features-constructors.R'><code>R/Features-constructors.R</code></a></small>
-    <div class="hidden name"><code>readFeatures.Rd</code></div>
+    <h1>Managing missing data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/Features/blob/master/R/missing-data.R'><code>R/missing-data.R</code></a></small>
+    <div class="hidden name"><code>missing-data.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Convert tabular data from a spreadsheet or a <code>data.frame</code> into a
-<code>Features</code> object.</p>
+    <p>This manual page describes the handling of missing values in
+<a href='Features-class.html'>Features</a> objects. In the following functions, if <code>object</code> is of
+class <code>Features</code>, and optional assay index or name <code>i</code> can be
+specified to define the assay (by name of index) on which to
+operate.</p>
+<p>The following functions are currently available:</p><ul>
+<li><p><code>zeroIsNA(object, i)</code> replaces all 0 in <code>object</code> by <code>NA</code>. This
+is often necessary when third-party software assume that
+features that weren't quantified should be assigned an
+intensity of 0.</p></li>
+<li><p><code>nNA(object, i)</code> return a list of missing value summaries. The
+first element <code>nNA</code> gives the percentage of missing values; the
+second element <code>nNArows</code> provides a table of the number of
+missing values for the features (rows) of the assay(s); the
+third element <code>nNAcols</code> provides the number of missing values in
+each sample of the assay(s).</p></li>
+<li><p><code>filterNA(object, pNA, i)</code> removes features (rows) that contain
+<code>pNA</code> percentage or more missing values.</p></li>
+</ul>
+
+<p>See the <em>Processing</em> vignette for examples.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>readFeatures</span>(<span class='no'>table</span>, <span class='no'>ecol</span>, <span class='no'>fnames</span>, <span class='no'>...</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='co'># S4 method for SummarizedExperiment,missing</span>
+<span class='fu'>zeroIsNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
+
+<span class='co'># S4 method for Features,missing</span>
+<span class='fu'>zeroIsNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
+
+<span class='co'># S4 method for Features,integer</span>
+<span class='fu'>zeroIsNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
+
+<span class='co'># S4 method for Features,numeric</span>
+<span class='fu'>zeroIsNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
+
+<span class='co'># S4 method for Features,character</span>
+<span class='fu'>zeroIsNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
+
+<span class='co'># S4 method for SummarizedExperiment,missing</span>
+<span class='fu'>nNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
+
+<span class='co'># S4 method for Features,integer</span>
+<span class='fu'>nNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
+
+<span class='co'># S4 method for Features,numeric</span>
+<span class='fu'>nNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
+
+<span class='co'># S4 method for Features,character</span>
+<span class='fu'>nNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
+
+<span class='co'># S4 method for Features,missing</span>
+<span class='fu'>nNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
+
+<span class='co'># S4 method for SummarizedExperiment</span>
+<span class='fu'>filterNA</span>(<span class='no'>object</span>, <span class='kw'>pNA</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+
+<span class='co'># S4 method for Features</span>
+<span class='fu'>filterNA</span>(<span class='no'>object</span>, <span class='kw'>pNA</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='no'>i</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>table</th>
-      <td><p>File or object holding the quantitative data. Can be
-either a <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> with the path to a text-based
-spreadsheet (comma-separated values by default, but see <code>...</code>)
-or an object that can be coerced to a <code>data.frame</code>. It is
-advised not to encode characters as factors.</p></td>
+      <th>object</th>
+      <td><p>An object of class <code>Features</code> or <code>SummarizedExperiment</code>.</p></td>
     </tr>
     <tr>
-      <th>ecol</th>
-      <td><p>A <code>numeric</code> indicating the indices of the columns to
-be used as expression values. Can also be a <code>character</code>
-indicating the names of the columns. Caution must be taken if
-the column names are composed of special characters like <code>(</code>
-or <code>-</code> that will be converted to a <code>.</code> by the <code>read.csv</code>
-function. If <code>ecol</code> does not match, the error message will
-dislpay the column names as seen by the <code>read.csv</code> function.</p></td>
+      <th>i</th>
+      <td><p>The index or name of the assay to be processed.</p></td>
     </tr>
     <tr>
-      <th>fnames</th>
-      <td><p>An optional <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> or <code><a href='https://rdrr.io/r/base/numeric.html'>numeric(1)</a></code>
-indicating the column to be used as feature names.</p></td>
+      <th>pNA</th>
+      <td><p><code><a href='https://rdrr.io/r/base/numeric.html'>numeric(1)</a></code> providing the maximim percentage of
+missing values per feature (row) that is acceptable. Feature
+with higher percentages are removed. If 0 (default), features
+that contain any number of <code>NA</code> values are dropped.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Further arguments that can be passed on to <code>read.csv</code>
-except <code>stringsAsFactors</code>, which is always <code>FALSE</code>.</p></td>
-    </tr>
-    <tr>
-      <th>name</th>
-      <td><p>An <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> to name assay. If not set,
-<code>features</code> is used.</p></td>
+      <td><p>Additional arguments.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An instance of class <a href='Features-class.html'>Features</a>.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <p>An instance of the same class as <code>object</code>.</p>
 
-    <div class='dont-index'><p>The <a href='Features-class.html'>Features</a> class for an example on how to manipulate use
-<code>readFeatures</code> and how to further manipulate the resulting data.</p></div>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'>## Load a data.frame with PSM-level data</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>hlpsms</span>)
-
-<span class='co'>## Create the Features object</span>
-<span class='no'>fts2</span> <span class='kw'>&lt;-</span> <span class='fu'>readFeatures</span>(<span class='no'>hlpsms</span>, <span class='kw'>ecol</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"psms"</span>)
-<span class='no'>fts2</span></div><div class='output co'>#&gt; A instance of class Features containing
-#&gt;  [1] psms: SummarizedExperiment with 32776 rows and 10 columns </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
-    <h2>Author</h2>
-    <p>Laurent Gatto</p>
   </div>
 </div>
 

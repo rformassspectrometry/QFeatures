@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Reduces and expands a `DataFrame` — reduceDataFrame • Features</title>
+<title>Reduces and expands a <code>DataFrame</code> — reduceDataFrame • Features</title>
 
 
 <!-- jquery -->
@@ -35,15 +35,17 @@
 
 
 
-<meta property="og:title" content="Reduces and expands a `DataFrame` — reduceDataFrame" />
-<meta property="og:description" content="A long dataframe can be *reduced* by mergeing certain rows into a
-single one.  These new variables are constructed as a `SimpleList`
+<meta property="og:title" content="Reduces and expands a <code>DataFrame</code> — reduceDataFrame" />
+<meta property="og:description" content="A long dataframe can be reduced by mergeing certain rows into a
+single one.  These new variables are constructed as a SimpleList
 containing all the original values. Invariant columns, i.e columns
 that have the same value along all the rows that need to be
 merged, can be shrunk into a new variables containing that
 invariant value (rather than in list columns). The grouping of
 rows, i.e. the rows that need to be shrunk together as one, is
-defined by a vector." />
+defined by a vector.
+The opposite operation is expand. But note that for a
+DataFrame to be expanded back, it must not to be simplified." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -76,7 +78,7 @@ defined by a vector." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -93,6 +95,18 @@ defined by a vector." />
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/Processing.html">Processing quantitative proteomics data with Features</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -115,20 +129,22 @@ defined by a vector." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Reduces and expands a `DataFrame`</h1>
+    <h1>Reduces and expands a <code>DataFrame</code></h1>
     <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/Features/blob/master/R/reduce.R'><code>R/reduce.R</code></a></small>
     <div class="hidden name"><code>reduceDataFrame.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A long dataframe can be *reduced* by mergeing certain rows into a
-single one.  These new variables are constructed as a `SimpleList`
+    <p>A long dataframe can be <em>reduced</em> by mergeing certain rows into a
+single one.  These new variables are constructed as a <code>SimpleList</code>
 containing all the original values. Invariant columns, i.e columns
 that have the same value along all the rows that need to be
 merged, can be shrunk into a new variables containing that
 invariant value (rather than in list columns). The grouping of
 rows, i.e. the rows that need to be shrunk together as one, is
 defined by a vector.</p>
+<p>The opposite operation is <em>expand</em>. But note that for a
+<code>DataFrame</code> to be expanded back, it must not to be simplified.</p>
     </div>
 
     <pre class="usage"><span class='fu'>reduceDataFrame</span>(<span class='no'>x</span>, <span class='no'>k</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
@@ -140,39 +156,35 @@ defined by a vector.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>The `DataFrame` to be reduced or expanded.</p></td>
+      <td><p>The <code>DataFrame</code> to be reduced or expanded.</p></td>
     </tr>
     <tr>
       <th>k</th>
-      <td><p>A ‘vector’ of length `nrow(x)` defining the grouping
-based on which the `DataFrame` will be shrunk.</p></td>
+      <td><p>A ‘vector’ of length <code><a href='https://rdrr.io/r/base/nrow.html'>nrow(x)</a></code> defining the grouping
+based on which the <code>DataFrame</code> will be shrunk.</p></td>
     </tr>
     <tr>
       <th>count</th>
-      <td><p>`logical(1)` specifying of an additional column
-(called by default `.n`) with the tally of rows shrunk into on
-new row should be added. Note that if already existing, `.n`
+      <td><p><code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code> specifying of an additional column
+(called by default <code>.n</code>) with the tally of rows shrunk into on
+new row should be added. Note that if already existing, <code>.n</code>
 will be silently overwritten.</p></td>
     </tr>
     <tr>
       <th>simplify</th>
-      <td><p>A `logical(1)` defining if invariant columns
-should be converted to simple lists. Default is `TRUE`.</p></td>
+      <td><p>A <code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code> defining if invariant columns
+should be converted to simple lists. Default is <code>TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>drop</th>
-      <td><p>A `logical(1)` specifying whether the non-invariant
-columns should be dropped altogether. Default is `FALSE`.</p></td>
+      <td><p>A <code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code> specifying whether the non-invariant
+columns should be dropped altogether. Default is <code>FALSE</code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An expanded (reduced) `DataFrame`.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>The opposite operation is *expand*. But note that for a
-`DataFrame` to be expanded back, it must not to be simplified.</p>
+    <p>An expanded (reduced) <code>DataFrame</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"IRanges"</span>)
@@ -306,7 +318,6 @@ columns should be dropped altogether. Default is `FALSE`.</p></td>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
