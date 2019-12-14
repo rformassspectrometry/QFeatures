@@ -22,6 +22,7 @@ Imports:
    MsCoreUtils
 Suggests:
    ggplot2,
+   dplyr,
    limma,
    magrittr,
    DT,
