@@ -63,8 +63,6 @@
 ##'
 ##' @param i The index or name of the assay to be processed.
 ##'
-##' @param ... Additional arguments. 
-##'
 ##' @return An instance of the same class as `object`.
 ##'
 ##' @aliases zeroIsNA zeroIsNA,SummarizedExperiment,missing-method zeroIsNA,Features,missing-method zeroIsNA,Features,numeric-method zeroIsNA,Features,integer-method zeroIsNA,Features,character-method
