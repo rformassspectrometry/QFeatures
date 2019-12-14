@@ -5,11 +5,36 @@
 \alias{logTransform}
 \alias{logTransform,SummarizedExperiment-method}
 \alias{logTransform,Features-method}
+\alias{scaleTransform}
+\alias{scaleTransform,SummarizedExperiment-method}
+\alias{scaleTransform,Features-method}
+\alias{normalize}
+\alias{normalize,SummarizedExperiment-method}
+\alias{normalize,Features-method}
 \title{Features processing}
 \usage{
-\S4method{logTransform}{SummarizedExperiment}(object, base = 2)
+\S4method{logTransform}{SummarizedExperiment}(object, base = 2, pc = 0)
 
-\S4method{logTransform}{Features}(object, base = 2, i)
+\S4method{logTransform}{Features}(object, base = 2, i, pc = 0)
+
+\S4method{normalize}{SummarizedExperiment}(
+  object,
+  method = c("sum", "max", "center.mean", "center.median", "diff.median", "quantiles",
+    "quantiles.robust", "vsn"),
+  ...
+)
+
+\S4method{normalize}{Features}(
+  object,
+  method = c("sum", "max", "center.mean", "center.median", "diff.median", "quantiles",
+    "quantiles.robust", "vsn"),
+  ...,
+  i
+)
+
+\S4method{scaleTransform}{SummarizedExperiment}(object, center = TRUE, scale = TRUE)
+
+\S4method{scaleTransform}{Features}(object, center = TRUE, scale = TRUE, i)
 }
 \arguments{
 \item{object}{An object of class \code{Features} or \code{SummarizedExperiment}.}
@@ -17,7 +42,24 @@
 \item{base}{\code{numeric(1)} providing the base with respect to which
 logarithms are computed. Defaults is 2.}
 
+\item{pc}{\code{numeric(1)} with a pseudocount to add to the
+quantitative data. Useful when (true) 0 are present in the
+data. Default is 0 (no effect).}
+
 \item{i}{The index or name of the assay to be processed.}
+
+\item{method}{\code{character(1)} defining the normalisation method to
+apply. See Details.}
+
+\item{...}{Additional parameters passed to inner functions.}
+
+\item{center}{\code{logical(1)} (default is \code{TRUE}) value or
+numeric-alike vector of length equal to the number of columns
+of \code{object}. See \code{\link[base:scale]{base::scale()}} for details.}
+
+\item{scale}{\code{logical(1)} (default is \code{TRUE}) or a numeric-alike
+vector of length equal to the number of columns of
+\code{object}. See \code{\link[base:scale]{base::scale()}} for details.}
 }
 \description{
 This manual page describes common quantitative proteomics data
@@ -28,6 +70,32 @@ index) on which to operate.
 
 The following functions are currently available:
 \itemize{
-\item \code{logTransform(object, base = 2, i)}
+\item \code{logTransform(object, base = 2, i, pc = 0)} log-transforms (with
+an optional pseudocount offset) the assay(s).
+\item \code{normalize(object, method, i)} normalises the assay(s) according
+to \code{method} (see Details).
+\item \code{scaleTransform(object, center = TRUE, scale = TRUE, i)} applies
+\code{\link[base:scale]{base::scale()}} to \code{SummarizedExperiments} and \code{Features} objects.
 }
+
+See the \emph{Processing} vignette for examples.
+}
+\details{
+The \code{method} parameter in \code{normalize} can be one of \code{"sum"},
+\code{"max"}, \code{"quantiles"}, \code{"center.mean"}, \code{"center.median"},
+\code{"center.median"}, \verb{"quantiles.robust}" or \code{"vsn"}.  For \code{"sum"}
+and \code{"max"}, each feature's intensity is divided by the maximum or
+the sum of the feature respectively. These two methods are applied
+along the features (rows).
+
+\code{"center.mean"} and \code{"center.median"} translate the respective
+sample (column) intensities according to the column mean or
+median. \code{"diff.median"} translates all samples (columns) so that
+they all match the grand median. Using \code{"quantiles"} or
+\code{"quantiles.robust"} applies (robust) quantile normalisation, as
+implemented in \code{\link[preprocessCore:normalize.quantiles]{preprocessCore::normalize.quantiles()}} and
+\code{\link[preprocessCore:normalize.quantiles.robust]{preprocessCore::normalize.quantiles.robust()}}. \code{"vsn"} uses the
+\code{\link[vsn:vsn2]{vsn::vsn2()}} function.  Note that the latteralso glog-transforms
+the intensities.  See respective manuals for more details and
+function arguments.
 }

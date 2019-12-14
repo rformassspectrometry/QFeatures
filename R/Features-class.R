@@ -46,9 +46,9 @@
 ##'
 ##' @section Accessors:
 ##'
-##' The `Features` class extends the
-##' [MultiAssayExperiment::MultiAssayExperiment] class and inherits
-##' all its accessors and replacement methods.
+##' - The `Features` class extends the
+##'   [MultiAssayExperiment::MultiAssayExperiment] class and inherits
+##'   all its accessors and replacement methods.
 ##'
 ##' - The `rowDataNames` accessor returns a list with the `rowData`
 ##'   variable names.
@@ -64,7 +64,10 @@
 ##'   `"newAssay"), and is ignored if `x` is a list of
 ##'   assays. `assayLinks` is an optional [AssayLinks].
 ##'
-##' @section Subsetting assays:
+##' @section Subsetting:
+##'
+##' - Features object can be subset using the `x[i, j, k, drop =
+##'   TRUE]` paradigm. See the argument descriptions for details.
 ##'
 ##' - The [subsetByFeature()] function can be used to subset a
 ##'   `Features` object using one or multiple feature names that will
@@ -75,13 +78,32 @@
 ##'   select a limited number of `rowData` columns of interest named
 ##'   in `rowvars` in the `object` instance of class `Features`.
 ##'
+##' @param i `character()`, `integer()`, `logical()` or `GRanges()`
+##'     object for subsetting by rows.
+##' 
+##' @param j `character()`, `logical()`, or `numeric()` vector for
+##'     subsetting by `colData` rows. 
+##' 
+##' @param k `character()`, `logical()`, or `numeric()` vector for
+##'     subsetting by assays
+##' 
+##' @param drop logical (default `TRUE`) whether to drop empty assay
+##'     elements in the `ExperimentList`.
+##' 
 ##' @seealso
 ##'
 ##' - The [readFeatures()] constructor and the [aggregateFeatures()]
-##'   function. The `Features` vignette provides an extended example.
+##'   function. The *Features* vignette provides an extended example.
+##'
+##' - The [Features-filtering] manual page demonstrates how to filter
+##'   features based on their rowData.
 ##'
 ##' - The [missing-data] manual page to manage missing values in
 ##'   `Features` objects.
+##' 
+##' - The [Features-processing] manual page and *Processing* vignette
+##'   describe common quantitative data processing methods using in
+##'   quantitative proteomics.
 ##'
 ##' @import MultiAssayExperiment ProtGenerics
 ##'
@@ -156,7 +178,7 @@ setClass("Features",
              version = "0.1"))
 
 
-##' @rdname Features
+##' @rdname Features-class
 ##' @param object An instance of class `Features`.
 ##' @exportMethod show
 setMethod("show", "Features",
@@ -183,7 +205,7 @@ setMethod("show", "Features",
 
 
 
-##' @rdname Features
+##' @rdname Features-class
 ##' @importFrom methods callNextMethod
 ##' @exportMethod [
 setMethod("[", c("Features", "ANY", "ANY", "ANY"),
@@ -195,14 +217,14 @@ setMethod("[", c("Features", "ANY", "ANY", "ANY"),
           })
 
 
-##' @rdname Features
+##' @rdname Features-class
 ##' @importFrom BiocGenerics dims
 ##' @exportMethod dims
 setMethod("dims", "Features",
           function(x) sapply(experiments(x), dim))
 
 
-##' @rdname Features
+##' @rdname Features-class
 setMethod("[", c("Features", "character", "ANY", "ANY"),
           function(x, i, j, k, ..., drop = TRUE) {
               if (missing(j)) j <- TRUE
@@ -210,7 +232,7 @@ setMethod("[", c("Features", "character", "ANY", "ANY"),
               subsetByFeature(x, i)[, j, k]
           })
 
-##' @rdname Features
+##' @rdname Features-class
 ##'
 ##' @param object An instance of class `Features`.
 ##' @param rowvars A `character()` with the names of the `rowData`
@@ -234,7 +256,7 @@ selectRowData <- function(object, rowvars) {
 }
 
 
-##' @rdname Features
+##' @rdname Features-class
 ##'
 ##' @importFrom Biobase fData
 ##'

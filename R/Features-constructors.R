@@ -133,7 +133,7 @@ Features <- function(..., assayLinks = NULL) {
 ##'
 ##' @md
 ##'
-##' @rdname Features
+##' @rdname Features-class
 ##'
 ##' @export
 addAssay <- function(object,

@@ -1,4 +1,4 @@
-##' @title Filter featuress based on their rowData
+##' @title Filter features based on their rowData
 ##'
 ##' @description
 ##'
@@ -21,15 +21,13 @@
 ##' @seealso The [Features] man page for subsetting and the `Features`
 ##'     vignette provides an extended example.
 ##'
-##' @rdname filterFeatures
-##'
 ##' @author Laurent Gatto
 ##'
-##' @name filterFeatures
+##' @name Features-filtering
+##' 
+##' @rdname Features-filtering
 ##'
 ##' @aliases filterFeatures filterFeatures,Features,formula-method filterFeatures,Features,AnnotationFilter-method CharacterVariableFilter NumericVariableFilter VariableFilter
-##'
-##' @md
 ##'
 ##' @examples
 ##'
@@ -102,13 +100,12 @@ NULL
 
 ##' @import AnnotationFilter
 ##' @exportClass CharacterVariableFilter
-##' @rdname filterFeatures
+##' @rdname Features-filtering
 setClass("CharacterVariableFilter", contains = "CharacterFilter")
+
 ##' @exportClass NumericVariableFilter
-##' @rdname filterFeatures
+##' @rdname Features-filtering
 setClass("NumericVariableFilter", contains = "DoubleFilter")
-
-
 
 
 ##' @param field `character(1)` refering to the name of the variable
@@ -126,7 +123,7 @@ setClass("NumericVariableFilter", contains = "DoubleFilter")
 ##'     condition is ‘"=="’.
 ##' 
 ##' @export VariableFilter
-##' @rdname filterFeatures
+##' @rdname Features-filtering
 VariableFilter <- function(field,
                            value,
                            condition = "==") {
@@ -154,13 +151,13 @@ VariableFilter <- function(field,
 ##'
 ##' @exportMethod filterFeatures
 ##'
-##' @rdname filterFeatures
+##' @rdname Features-filtering
 setMethod("filterFeatures",
           c("Features", "AnnotationFilter"),
           function(object, filter, ...) 
               filterFeaturesWithAnnotationFilter(object, filter, ...))
 
-##' @rdname filterFeatures
+##' @rdname Features-filtering
 setMethod("filterFeatures",
           c("Features", "formula"),
           function(object, filter, ...)

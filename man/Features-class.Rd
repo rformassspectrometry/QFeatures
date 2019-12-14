@@ -13,12 +13,50 @@
 \alias{selectRowData}
 \title{Quantitative MS Features}
 \usage{
+\S4method{show}{Features}(object)
+
+\S4method{[}{Features,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
+
+\S4method{dims}{Features}(x)
+
+\S4method{[}{Features,character,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
+
+selectRowData(object, rowvars)
+
+rowDataNames(object)
+
 Features(..., assayLinks = NULL)
+
+addAssay(object, x, name = "newAssay", assayLinks = AssayLinks(names = name))
 }
 \arguments{
+\item{object}{An instance of class \link{Features}.}
+
+\item{x}{A single assay or a \emph{named} list of assays.}
+
+\item{i}{\code{character()}, \code{integer()}, \code{logical()} or \code{GRanges()}
+object for subsetting by rows.}
+
+\item{j}{\code{character()}, \code{logical()}, or \code{numeric()} vector for
+subsetting by \code{colData} rows.}
+
 \item{...}{See \code{MultiAssayExperiment} for details.}
 
-\item{assayLinks}{An optional \link{AssayLinks} object.}
+\item{drop}{logical (default \code{TRUE}) whether to drop empty assay
+elements in the \code{ExperimentList}.}
+
+\item{k}{\code{character()}, \code{logical()}, or \code{numeric()} vector for
+subsetting by assays}
+
+\item{rowvars}{A \code{character()} with the names of the \code{rowData}
+variables (columns) to retain in any assay. All other
+variables will be dropped. In case an element in \code{rowvars}
+isn't found in any \code{rowData} variable, a message is printed.}
+
+\item{assayLinks}{An optional \link{AssayLinks}.}
+
+\item{name}{A \code{character(1)} naming the single assay (default is
+\verb{"newAssay"). Ignored if }x` is a list of assays.}
 }
 \description{
 Conceptually, a \code{Features} object holds a set of \emph{assays}, each
@@ -67,11 +105,10 @@ example.
 
 \section{Accessors}{
 
-
-The \code{Features} class extends the
+\itemize{
+\item The \code{Features} class extends the
 \link[MultiAssayExperiment:MultiAssayExperiment]{MultiAssayExperiment::MultiAssayExperiment} class and inherits
 all its accessors and replacement methods.
-\itemize{
 \item The \code{rowDataNames} accessor returns a list with the \code{rowData}
 variable names.
 }
@@ -89,9 +126,10 @@ is a \code{character(1)} naming the single assay (default is
 }
 }
 
-\section{Subsetting assays}{
+\section{Subsetting}{
 
 \itemize{
+\item Features object can be subset using the \code{x[i, j, k, drop = TRUE]} paradigm. See the argument descriptions for details.
 \item The \code{\link[=subsetByFeature]{subsetByFeature()}} function can be used to subset a
 \code{Features} object using one or multiple feature names that will
 be matched across different assays, taking the aggregation
@@ -155,9 +193,14 @@ selectRowData(fts1, rowvars = "Fa")
 \seealso{
 \itemize{
 \item The \code{\link[=readFeatures]{readFeatures()}} constructor and the \code{\link[=aggregateFeatures]{aggregateFeatures()}}
-function. The \code{Features} vignette provides an extended example.
+function. The \emph{Features} vignette provides an extended example.
+\item The \link{Features-filtering} manual page demonstrates how to filter
+features based on their rowData.
 \item The \link{missing-data} manual page to manage missing values in
 \code{Features} objects.
+\item The \link{Features-processing} manual page and \emph{Processing} vignette
+describe common quantitative data processing methods using in
+quantitative proteomics.
 }
 }
 \author{
