@@ -183,6 +183,7 @@ Assays in `Features` objects can be normalised with the `normalize`
 cptac <- addAssay(cptac,
                   normalize(cptac[["peptides_log"]], method = "quantiles"),
                   name = "peptides_norm")
+cptac
 ```
 
 ```{r, fig.cap = "Distribution of log2 peptide intensities before (left) and after (right) quantiles normalisation."}
@@ -191,9 +192,23 @@ limma::plotDensities(assay(cptac[["peptides_log"]]))
 limma::plotDensities(assay(cptac[["peptides_norm"]]))
 ```
 
+## Feature aggregation
+
+At this stage, it is possible to directly use the peptide-level
+intensities to perform a statistical analysis, or aggregate the
+peptide-level data into protein intensities, and perform the
+differential expression analysis at the protein level.
+
+To aggregate feature data, we can use the `aggregateFeature` function
+that takes the following inputs:
+
+```{r}
+
+```
+
+
 ## TODO
 
-- aggregation
 - visualisation
 - imputation
 

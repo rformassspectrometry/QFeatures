@@ -17,6 +17,10 @@
 
 \S4method{logTransform}{Features}(object, base = 2, i, pc = 0)
 
+\S4method{scaleTransform}{SummarizedExperiment}(object, center = TRUE, scale = TRUE)
+
+\S4method{scaleTransform}{Features}(object, center = TRUE, scale = TRUE, i)
+
 \S4method{normalize}{SummarizedExperiment}(
   object,
   method = c("sum", "max", "center.mean", "center.median", "diff.median", "quantiles",
@@ -31,10 +35,6 @@
   ...,
   i
 )
-
-\S4method{scaleTransform}{SummarizedExperiment}(object, center = TRUE, scale = TRUE)
-
-\S4method{scaleTransform}{Features}(object, center = TRUE, scale = TRUE, i)
 }
 \arguments{
 \item{object}{An object of class \code{Features} or \code{SummarizedExperiment}.}
@@ -48,11 +48,6 @@ data. Default is 0 (no effect).}
 
 \item{i}{The index or name of the assay to be processed.}
 
-\item{method}{\code{character(1)} defining the normalisation method to
-apply. See Details.}
-
-\item{...}{Additional parameters passed to inner functions.}
-
 \item{center}{\code{logical(1)} (default is \code{TRUE}) value or
 numeric-alike vector of length equal to the number of columns
 of \code{object}. See \code{\link[base:scale]{base::scale()}} for details.}
@@ -60,6 +55,11 @@ of \code{object}. See \code{\link[base:scale]{base::scale()}} for details.}
 \item{scale}{\code{logical(1)} (default is \code{TRUE}) or a numeric-alike
 vector of length equal to the number of columns of
 \code{object}. See \code{\link[base:scale]{base::scale()}} for details.}
+
+\item{method}{\code{character(1)} defining the normalisation method to
+apply. See Details.}
+
+\item{...}{Additional parameters passed to inner functions.}
 }
 \description{
 This manual page describes common quantitative proteomics data

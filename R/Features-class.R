@@ -101,9 +101,9 @@
 ##' - The [missing-data] manual page to manage missing values in
 ##'   `Features` objects.
 ##' 
-##' - The [Features-processing] manual page and *Processing* vignette
-##'   describe common quantitative data processing methods using in
-##'   quantitative proteomics.
+##' - The [Features-processing] and [aggregateFeatures()] manual pages
+##'   and *Processing* vignette describe common quantitative data
+##'   processing methods using in quantitative proteomics.
 ##'
 ##' @import MultiAssayExperiment ProtGenerics
 ##'

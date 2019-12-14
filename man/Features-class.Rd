@@ -198,9 +198,9 @@ function. The \emph{Features} vignette provides an extended example.
 features based on their rowData.
 \item The \link{missing-data} manual page to manage missing values in
 \code{Features} objects.
-\item The \link{Features-processing} manual page and \emph{Processing} vignette
-describe common quantitative data processing methods using in
-quantitative proteomics.
+\item The \link{Features-processing} and \code{\link[=aggregateFeatures]{aggregateFeatures()}} manual pages
+and \emph{Processing} vignette describe common quantitative data
+processing methods using in quantitative proteomics.
 }
 }
 \author{

@@ -1,6 +1,6 @@
 Package: Features
 Title: Quantitative features for mass spectrometry data
-Version: 0.1.3
+Version: 0.2.0
 Authors@R: person("Laurent", "Gatto",
 		  email = "laurent.gatto@uclouvain.be",
 		  comment = c(ORCID = "0000-0002-1520-2268"),
@@ -18,7 +18,8 @@ Imports:
    ProtGenerics (>= 1.19.2),
    AnnotationFilter,
    lazyeval,
-   Biobase
+   Biobase,
+   MsCoreUtils
 Suggests:
    ggplot2,
    limma,
@@ -32,7 +33,8 @@ Suggests:
    rmarkdown,
    msdata,
    vsn,
-   preprocessCore
+   preprocessCore,
+   matrixStats
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
@@ -48,10 +50,10 @@ Collate:
     'Features-processing.R'
     'Features-filter.R'
     'Features-missing-data.R'
+    'Features-aggregation.R'
+    'subsetBy-methods.R'
     'data.R'
     'reduce.R'
-    'subsetBy-methods.R'
-    'aggregateFeatures.R'
     'utils.R'
     'display.R'
 Roxygen: list(markdown=TRUE)
