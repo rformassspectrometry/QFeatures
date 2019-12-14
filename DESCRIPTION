@@ -30,7 +30,7 @@ Suggests:
    BiocStyle,
    rmarkdown,
    msdata,
-   vsn2,
+   vsn,
    preprocessCore
 License: Artistic-2.0
 Encoding: UTF-8
