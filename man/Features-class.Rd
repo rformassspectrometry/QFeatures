@@ -155,9 +155,14 @@ selectRowData(fts1, rowvars = "Fa")
 \seealso{
 \itemize{
 \item The \code{\link[=readFeatures]{readFeatures()}} constructor and the \code{\link[=aggregateFeatures]{aggregateFeatures()}}
-function. The \code{Features} vignette provides an extended example.
+function. The \emph{Features} vignette provides an extended example.
+\item The \link{Features-filtering} manual page demonstrates how to filter
+features based on their rowData.
 \item The \link{missing-data} manual page to manage missing values in
 \code{Features} objects.
+\item The \link{Features-processing} manual page and \emph{Processing} vignette
+describe common quantitative data processing methods using in
+quantitative proteomics.
 }
 }
 \author{

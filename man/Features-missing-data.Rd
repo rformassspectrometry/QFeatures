@@ -18,40 +18,15 @@
 \alias{filterNA,SummarizedExperiment-method}
 \alias{filterNA,Features-method}
 \title{Managing missing data}
-\usage{
-\S4method{zeroIsNA}{SummarizedExperiment,missing}(object, i)
-
-\S4method{zeroIsNA}{Features,missing}(object, i)
-
-\S4method{zeroIsNA}{Features,integer}(object, i)
-
-\S4method{zeroIsNA}{Features,numeric}(object, i)
-
-\S4method{zeroIsNA}{Features,character}(object, i)
-
-\S4method{nNA}{SummarizedExperiment,missing}(object, i)
-
-\S4method{nNA}{Features,integer}(object, i)
-
-\S4method{nNA}{Features,numeric}(object, i)
-
-\S4method{nNA}{Features,character}(object, i)
-
-\S4method{nNA}{Features,missing}(object, i)
-
-\S4method{filterNA}{SummarizedExperiment}(object, pNA = 0)
-
-\S4method{filterNA}{Features}(object, pNA = 0, i)
-}
 \arguments{
 \item{object}{An object of class \code{Features} or \code{SummarizedExperiment}.}
-
-\item{i}{The index or name of the assay to be processed.}
 
 \item{pNA}{\code{numeric(1)} providing the maximim percentage of
 missing values per feature (row) that is acceptable. Feature
 with higher percentages are removed. If 0 (default), features
 that contain any number of \code{NA} values are dropped.}
+
+\item{i}{The index or name of the assay to be processed.}
 
 \item{...}{Additional arguments.}
 }

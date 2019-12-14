@@ -78,10 +78,17 @@
 ##' @seealso
 ##'
 ##' - The [readFeatures()] constructor and the [aggregateFeatures()]
-##'   function. The `Features` vignette provides an extended example.
+##'   function. The *Features* vignette provides an extended example.
+##'
+##' - The [Features-filtering] manual page demonstrates how to filter
+##'   features based on their rowData.
 ##'
 ##' - The [missing-data] manual page to manage missing values in
 ##'   `Features` objects.
+##' 
+##' - The [Features-processing] manual page and *Processing* vignette
+##'   describe common quantitative data processing methods using in
+##'   quantitative proteomics.
 ##'
 ##' @import MultiAssayExperiment ProtGenerics
 ##'

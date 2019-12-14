@@ -75,7 +75,7 @@
 ##'
 ##' @name missing-data
 ##' 
-##' @rdname missing-data
+##' @rdname Features-missing-data
 NULL
 
 

@@ -1,4 +1,4 @@
-##' @title Filter featuress based on their rowData
+##' @title Filter features based on their rowData
 ##'
 ##' @description
 ##'
@@ -25,11 +25,11 @@
 ##'
 ##' @author Laurent Gatto
 ##'
-##' @name filterFeatures
+##' @name Features-filtering
+##' 
+##' @rdname Features-filtering
 ##'
 ##' @aliases filterFeatures filterFeatures,Features,formula-method filterFeatures,Features,AnnotationFilter-method CharacterVariableFilter NumericVariableFilter VariableFilter
-##'
-##' @md
 ##'
 ##' @examples
 ##'
