@@ -21,8 +21,8 @@ logarithms are computed. Defaults is 2.}
 }
 \description{
 This manual page describes common quantitative proteomics data
-processing methods using \link{Feature} objects. In the following
-functions, if \code{object} is of class \code{Feature}, and optional assay
+processing methods using \link{Features} objects. In the following
+functions, if \code{object} is of class \code{Features}, and optional assay
 index or name \code{i} can be specified to define the assay (by name of
 index) on which to operate.
 
