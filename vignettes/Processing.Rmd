@@ -205,7 +205,7 @@ To aggregate feature data, we can use the `aggregateFeatures` function
 that takes the following inputs:
 
 - the name of the `Features` instance that contains the peptide
-  quantiation data - `"cptac"` in our example;
+  quantitation data - `"cptac"` in our example;
 - **`i`**: the name or index of the assay that contains the
   (normalised) peptide quantitation data - `"peptides_norm"` in our
   case;
@@ -243,7 +243,7 @@ peptides.
 table(rowData(cptac[["proteins"]])$.n)
 ```
 
-Let's choose `P02787ups|TRFE_HUMAN_UPS` and visualise its expresson
+Let's choose `P02787ups|TRFE_HUMAN_UPS` and visualise its expression
 pattern in the 2 groups at the protein and peptide level.
 
 ```{r, message = TRUE}
@@ -260,8 +260,8 @@ longFormat(cptac["P02787ups|TRFE_HUMAN_UPS", ]) %>%
 
 ## TODO
 
-- Improve on data visualisation
-- Section on imputation
+- Improve on data visualisation.
+- Section on imputation.
 
 # Session information {-}
 
