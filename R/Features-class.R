@@ -163,7 +163,7 @@ setClass("Features",
              version = "0.1"))
 
 
-##' @rdname Features
+##' @rdname Features-class
 ##' @param object An instance of class `Features`.
 ##' @exportMethod show
 setMethod("show", "Features",
@@ -190,7 +190,7 @@ setMethod("show", "Features",
 
 
 
-##' @rdname Features
+##' @rdname Features-class
 ##' @importFrom methods callNextMethod
 ##' @exportMethod [
 setMethod("[", c("Features", "ANY", "ANY", "ANY"),
@@ -202,14 +202,14 @@ setMethod("[", c("Features", "ANY", "ANY", "ANY"),
           })
 
 
-##' @rdname Features
+##' @rdname Features-class
 ##' @importFrom BiocGenerics dims
 ##' @exportMethod dims
 setMethod("dims", "Features",
           function(x) sapply(experiments(x), dim))
 
 
-##' @rdname Features
+##' @rdname Features-class
 setMethod("[", c("Features", "character", "ANY", "ANY"),
           function(x, i, j, k, ..., drop = TRUE) {
               if (missing(j)) j <- TRUE
@@ -217,7 +217,7 @@ setMethod("[", c("Features", "character", "ANY", "ANY"),
               subsetByFeature(x, i)[, j, k]
           })
 
-##' @rdname Features
+##' @rdname Features-class
 ##'
 ##' @param object An instance of class `Features`.
 ##' @param rowvars A `character()` with the names of the `rowData`
@@ -241,7 +241,7 @@ selectRowData <- function(object, rowvars) {
 }
 
 
-##' @rdname Features
+##' @rdname Features-class
 ##'
 ##' @importFrom Biobase fData
 ##'

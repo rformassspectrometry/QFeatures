@@ -9,6 +9,7 @@
 \alias{scaleTransform,SummarizedExperiment-method}
 \alias{scaleTransform,Features-method}
 \alias{normalize,SummarizedExperiment-method}
+\alias{normalize,Features-method}
 \title{Features processing}
 \usage{
 \S4method{logTransform}{SummarizedExperiment}(object, base = 2, pc = 0)
@@ -20,6 +21,13 @@
   method = c("sum", "max", "center.mean", "center.median", "diff.median", "quantiles",
     "quantiles.robust", "vsn"),
   ...
+)
+
+\S4method{normalize}{Features}(
+  object,
+  method = c("sum", "max", "center.mean", "center.median", "diff.median", "quantiles",
+    "quantiles.robust", "vsn"),
+  i
 )
 
 \S4method{scaleTransform}{SummarizedExperiment}(object, center = TRUE, scale = TRUE)
@@ -51,6 +59,9 @@ The following functions are currently available:
 \item \code{normalize(object, method, i)} (or \code{normalise}) normalises the
 assay(s) according to \code{method} (see Details).
 }
+
+-\code{scaleTransform(object, center = TRUE, scale = TRUE, i)} applies
+\code{\link[base:scale]{base::scale()}} to \code{SummarizedExperiments} and \code{Features} objects.
 }
 \details{
 The \code{method} parameter in \code{normalise} (\code{normalize}) can be one of
@@ -71,7 +82,4 @@ implemented in \code{\link[preprocessCore:normalize.quantiles]{preprocessCore::n
 \code{\link[vsn:vsn2]{vsn::vsn2()}} function.  Note that the latteralso glog-transforms
 the intensities.  See respective manuals for more details and
 function arguments.
-
-A \code{scaleTransform} method, mimicking \code{\link[base:scale]{base::scale()}}, also exists
-for \code{SummarizedExperiments} and \code{Features} objects.
 }

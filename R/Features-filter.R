@@ -100,10 +100,10 @@ NULL
 
 ##' @import AnnotationFilter
 ##' @exportClass CharacterVariableFilter
-##' @rdname filterFeatures
+##' @rdname Features-filter
 setClass("CharacterVariableFilter", contains = "CharacterFilter")
 ##' @exportClass NumericVariableFilter
-##' @rdname filterFeatures
+##' @rdname Features-filter
 setClass("NumericVariableFilter", contains = "DoubleFilter")
 
 
@@ -124,7 +124,7 @@ setClass("NumericVariableFilter", contains = "DoubleFilter")
 ##'     condition is ‘"=="’.
 ##' 
 ##' @export VariableFilter
-##' @rdname filterFeatures
+##' @rdname Features-filter
 VariableFilter <- function(field,
                            value,
                            condition = "==") {
@@ -152,13 +152,13 @@ VariableFilter <- function(field,
 ##'
 ##' @exportMethod filterFeatures
 ##'
-##' @rdname filterFeatures
+##' @rdname Features-filter
 setMethod("filterFeatures",
           c("Features", "AnnotationFilter"),
           function(object, filter, ...) 
               filterFeaturesWithAnnotationFilter(object, filter, ...))
 
-##' @rdname filterFeatures
+##' @rdname Features-filter
 setMethod("filterFeatures",
           c("Features", "formula"),
           function(object, filter, ...)

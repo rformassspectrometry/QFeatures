@@ -13,12 +13,38 @@
 \alias{selectRowData}
 \title{Quantitative MS Features}
 \usage{
+\S4method{show}{Features}(object)
+
+\S4method{[}{Features,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
+
+\S4method{dims}{Features}(x)
+
+\S4method{[}{Features,character,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
+
+selectRowData(object, rowvars)
+
+rowDataNames(object)
+
 Features(..., assayLinks = NULL)
+
+addAssay(object, x, name = "newAssay", assayLinks = AssayLinks(names = name))
 }
 \arguments{
+\item{object}{An instance of class \link{Features}.}
+
+\item{x}{A single assay or a \emph{named} list of assays.}
+
 \item{...}{See \code{MultiAssayExperiment} for details.}
 
-\item{assayLinks}{An optional \link{AssayLinks} object.}
+\item{rowvars}{A \code{character()} with the names of the \code{rowData}
+variables (columns) to retain in any assay. All other
+variables will be dropped. In case an element in \code{rowvars}
+isn't found in any \code{rowData} variable, a message is printed.}
+
+\item{assayLinks}{An optional \link{AssayLinks}.}
+
+\item{name}{A \code{character(1)} naming the single assay (default is
+\verb{"newAssay"). Ignored if }x` is a list of assays.}
 }
 \description{
 Conceptually, a \code{Features} object holds a set of \emph{assays}, each
