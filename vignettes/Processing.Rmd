@@ -134,13 +134,46 @@ The output of the `nNA` function tells us that
 
 In this dataset, we have such a high number of peptides without any
 data because the 6 samples are a subset of a larger dataset, and these
-peptides happened to be absent in groups A and B.
+peptides happened to be absent in groups A and B. Below, we use
+`filterNA` to remove these peptides. By setting `pNA` to 0.9, we allow
+petides that have up to 90% of missing values, inclusing in this case
+those that have only one value (i.e 5/6 percent of missing values).
+
+```{r}
+cptac <- filterNA(cptac, pNA = .9)
+```
+
+If we wanted to remove all peptides that have one or more missing
+values, we could simply use the default value of `pNA = 0`.
+
+## Data transformation
+
+When analysing continuous data using parametric methods (such as
+t-test or linear models), it is often necessary to log-transform the
+data. The figure below (left) show that how our data is mainly composed of
+small values with a long tail of larger ones, which is a typical
+pattern of quantitative omics data.
+
+Below, we use the `logTransform` function to log2-transform our
+data. This time, instead of overwriting the peptides assay, we are
+going to create a new one to contain the log2-transfromed data.
+
+```{r}
+cptac <- addAssay(cptac, logTransform(cptac[[1]]), name = "cptac_log")
+cptac
+```
+
+```{r, fig.cap = "Quantitative data in its original scale (left) and log2-transformed."}
+par(mfrow = c(1, 2))
+limma::plotDensities(assay(cptac[[1]]))
+limma::plotDensities(assay(cptac[[2]]))
+```
 
 ## TODO
 
-- log-transformation
 - normalisation
 - aggregation
+- visualisation
 
 # Session information {-}
 

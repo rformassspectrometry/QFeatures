@@ -20,6 +20,7 @@ Imports:
    Biobase
 Suggests:
    ggplot2,
+   limma,
    magrittr,
    DT,
    shiny,
@@ -41,6 +42,7 @@ Collate:
     'Features-class.R'
     'Features-constructors.R'
     'Features-functions.R'
+    'Features-processing.R'
     'Features-filter.R'
     'missing-data.R'
     'data.R'
