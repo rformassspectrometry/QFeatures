@@ -29,7 +29,9 @@ Suggests:
    knitr,
    BiocStyle,
    rmarkdown,
-   msdata
+   msdata,
+   vsn2,
+   preprocessCore
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
@@ -44,7 +46,7 @@ Collate:
     'Features-functions.R'
     'Features-processing.R'
     'Features-filter.R'
-    'missing-data.R'
+    'Features-missing-data.R'
     'data.R'
     'reduce.R'
     'subsetBy-methods.R'

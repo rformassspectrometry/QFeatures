@@ -14,3 +14,5 @@ setGeneric("zeroIsNA", function(object, i) standardGeneric("zeroIsNA"))
 setGeneric("nNA", function(object, i) standardGeneric("nNA"))
 
 setGeneric("logTransform", function(object, ...) standardGeneric("logTransform"))
+
+setGeneric("scaleTransform", function(object, ...) standardGeneric("scaleTransform"))

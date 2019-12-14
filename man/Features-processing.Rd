@@ -5,11 +5,26 @@
 \alias{logTransform}
 \alias{logTransform,SummarizedExperiment-method}
 \alias{logTransform,Features-method}
+\alias{scaleTransform}
+\alias{scaleTransform,SummarizedExperiment-method}
+\alias{scaleTransform,Features-method}
+\alias{normalize,SummarizedExperiment-method}
 \title{Features processing}
 \usage{
 \S4method{logTransform}{SummarizedExperiment}(object, base = 2, pc = 0)
 
 \S4method{logTransform}{Features}(object, base = 2, i, pc = 0)
+
+\S4method{normalize}{SummarizedExperiment}(
+  object,
+  method = c("sum", "max", "center.mean", "center.median", "diff.median", "quantiles",
+    "quantiles.robust", "vsn"),
+  ...
+)
+
+\S4method{scaleTransform}{SummarizedExperiment}(object, center = TRUE, scale = TRUE)
+
+\S4method{scaleTransform}{Features}(object, center = TRUE, scale = TRUE, i)
 }
 \arguments{
 \item{object}{An object of class \code{Features} or \code{SummarizedExperiment}.}
@@ -33,5 +48,30 @@ index) on which to operate.
 The following functions are currently available:
 \itemize{
 \item \code{logTransform(object, base = 2, i)}
+\item \code{normalize(object, method, i)} (or \code{normalise}) normalises the
+assay(s) according to \code{method} (see Details).
 }
+}
+\details{
+The \code{method} parameter in \code{normalise} (\code{normalize}) can be one of
+\code{"sum"}, \code{"max"}, \code{"quantiles"}, \code{"center.mean"},
+\code{"center.median"}, \code{"center.median"}, \verb{"quantiles.robust}" or
+\code{"vsn"}.  For \code{"sum"} and \code{"max"}, each feature's intensity is
+divided by the maximum or the sum of the feature
+respectively. These two methods are applied along the features
+(rows).
+
+\code{"center.mean"} and \code{"center.median"} translate the respective
+sample (column) intensities according to the column mean or
+median. \code{"diff.median"} translates all samples (columns) so that
+they all match the grand median. Using \code{"quantiles"} or
+\code{"quantiles.robust"} applies (robust) quantile normalisation, as
+implemented in \code{\link[preprocessCore:normalize.quantiles]{preprocessCore::normalize.quantiles()}} and
+\code{\link[preprocessCore:normalize.quantiles.robust]{preprocessCore::normalize.quantiles.robust()}}. \code{"vsn"} uses the
+\code{\link[vsn:vsn2]{vsn::vsn2()}} function.  Note that the latteralso glog-transforms
+the intensities.  See respective manuals for more details and
+function arguments.
+
+A \code{scaleTransform} method, mimicking \code{\link[base:scale]{base::scale()}}, also exists
+for \code{SummarizedExperiments} and \code{Features} objects.
 }
