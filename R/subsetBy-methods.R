@@ -40,9 +40,6 @@ find_assays_from <- function(x, i)
     sapply(i, function(ii) names(assayLinks(x, ii)))
 
 
-
-setGeneric("subsetByFeature", function(x, y, ...) standardGeneric("subsetByFeature"))
-
 ##' @title Subset by feature name
 ##'
 ##' @description
@@ -60,16 +57,22 @@ setGeneric("subsetByFeature", function(x, y, ...) standardGeneric("subsetByFeatu
 ##' See [Features] for an example.
 ##'
 ##' @param x An instance of class [Features].
+##' 
 ##' @param y A `character` of feature names present in an assay in `x`.
+##' 
 ##' @param ... Additional parameters. Ignored.
+##' 
 ##' @return An new instance of class [Features] containing relevant
 ##'     assays and features.
+##' 
+##' @aliases subsetByFeature,Features,character-method
+##' 
+##' @name subsetByFeature
+##'
 ##' @rdname Features-subsetBy
-##' 
-##' @aliases subsetByFeature subsetByFeature,Features,character-method
-##' 
-##' @author Laurent Gatto
-##' 
+NULL
+
+
 ##' @exportMethod subsetByFeature
 setMethod("subsetByFeature", c("Features", "character"),
           function(x, y, ...) .subsetByFeature(x, y))

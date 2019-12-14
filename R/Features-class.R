@@ -50,8 +50,8 @@
 ##' [MultiAssayExperiment::MultiAssayExperiment] class and inherits
 ##' all its accessors and replacement methods.
 ##'
-##' The `rowDataNames` accessor returns a list with the `rowData`
-##' variable names.
+##' - The `rowDataNames` accessor returns a list with the `rowData`
+##'   variable names.
 ##'
 ##' @section Adding assays:
 ##'
@@ -83,13 +83,11 @@
 ##'
 ##' @name Features
 ##'
-##' @rdname Features-class
-##'
 ##' @aliases Features Features-class class:Features addAssay dims,Features-method show,Features-method [,Features,ANY,ANY,ANY-method [,Features,character,ANY,ANY-method
 ##'
 ##' @aliases rowDataNames selectRowData
 ##'
-##' @md
+##' @rdname Features-class
 ##'
 ##' @exportClass Features
 ##'
@@ -233,6 +231,8 @@ selectRowData <- function(object, rowvars) {
 
 
 ##' @rdname Features
+##'
+##' @importFrom Biobase fData
 ##'
 ##' @export
 rowDataNames <- function(object) {

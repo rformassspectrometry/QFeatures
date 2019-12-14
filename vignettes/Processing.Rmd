@@ -110,9 +110,15 @@ cptac <- selectRowData(cptac, rowvars)
 rowDataNames(cptac)
 ```
 
+## Managing missing values
+
+Missing values can be very prominant in certain proteomics experiments
+and need to be dealt with carefully. The first step is to assess their
+presence accross samples and features. 
+
+
 ## TODO
 
-- managing missing values
 - log-transformation
 - normalisation
 - aggregation

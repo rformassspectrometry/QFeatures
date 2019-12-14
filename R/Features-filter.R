@@ -144,8 +144,6 @@ VariableFilter <- function(field,
         stop("Value type undefined.")
 }
 
-##' @rdname filterFeatures
-setGeneric("filterFeatures", function(object, filter, ...) standardGeneric("filterFeatures"))
 
 ##' @param object An instance of class [Features].
 ##'

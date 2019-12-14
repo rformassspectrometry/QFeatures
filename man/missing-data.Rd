@@ -3,15 +3,22 @@
 \name{zeroIsNA}
 \alias{zeroIsNA}
 \alias{missing-data}
+\alias{zeroIsNA,SummarizedExperiment,missing-method}
+\alias{zeroIsNA,Features,missing-method}
+\alias{zeroIsNA,Features,numeric-method}
+\alias{zeroIsNA,Features,integer-method}
+\alias{zeroIsNA,Features,character-method}
 \title{Managing missing data}
 \usage{
-zeroIsNA(object, ...)
+zeroIsNA(object, i)
 }
 \arguments{
 \item{object}{An object of class \code{Features} or \code{SummarizedExperiment}.}
+
+\item{i}{The index or name of the assay to be processed.}
 }
 \value{
-zeroIsNA zeroIsNA,SummarizedExperiment zeroIsNA,Features
+An instance of the same class as \code{object}.
 }
 \description{
 This manual page describes the handling of missing values in

@@ -16,9 +16,9 @@
 Features(..., assayLinks = NULL)
 }
 \arguments{
-\item{...}{See `MultiAssayExperiment` for details.}
+\item{...}{See \code{MultiAssayExperiment} for details.}
 
-\item{assayLinks}{An optional [AssayLinks] object.}
+\item{assayLinks}{An optional \link{AssayLinks} object.}
 }
 \description{
 Conceptually, a \code{Features} object holds a set of \emph{assays}, each
@@ -71,9 +71,10 @@ example.
 The \code{Features} class extends the
 \link[MultiAssayExperiment:MultiAssayExperiment]{MultiAssayExperiment::MultiAssayExperiment} class and inherits
 all its accessors and replacement methods.
-
-The \code{rowDataNames} accessor returns a list with the \code{rowData}
+\itemize{
+\item The \code{rowDataNames} accessor returns a list with the \code{rowData}
 variable names.
+}
 }
 
 \section{Adding assays}{

@@ -8,11 +8,27 @@ Authors@R: person("Laurent", "Gatto",
 Description: Infrastrucutre to manage and process quantitative
    features for high-throughput mass spectrometry assays.
 Depends: R (>= 3.5.3), MultiAssayExperiment
-Imports: methods, S4Vectors, IRanges, SummarizedExperiment,
-   BiocGenerics, ProtGenerics (>= 1.19.1), AnnotationFilter,
-   lazyeval
-Suggests: ggplot2, magrittr, DT, shiny, shinydashboard, testthat,
-   knitr, BiocStyle, rmarkdown, msdata
+Imports:
+   methods,
+   S4Vectors,
+   IRanges,
+   SummarizedExperiment,
+   BiocGenerics,
+   ProtGenerics (>= 1.19.1),
+   AnnotationFilter,
+   lazyeval,
+   Biobase
+Suggests:
+   ggplot2,
+   magrittr,
+   DT,
+   shiny,
+   shinydashboard,
+   testthat,
+   knitr,
+   BiocStyle,
+   rmarkdown,
+   msdata
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
@@ -26,10 +42,12 @@ Collate:
     'Features-constructors.R'
     'Features-functions.R'
     'Features-filter.R'
+    'missing-data.R'
     'data.R'
     'reduce.R'
     'subsetBy-methods.R'
     'aggregateFeatures.R'
     'utils.R'
     'display.R'
+Roxygen: list(markdown=TRUE)
 RoxygenNote: 7.0.2
