@@ -72,7 +72,7 @@ will be named based on the unique fcol values." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -124,8 +124,8 @@ will be named based on the unique fcol values." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Aggregate an assay's quantitative features</h1>
-    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/Features/blob/master/R/aggregateFeatures.R'><code>R/aggregateFeatures.R</code></a></small>
-    <div class="hidden name"><code>aggregateFeatures.Rd</code></div>
+    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/Features/blob/master/R/Features-aggregation.R'><code>R/Features-aggregation.R</code></a></small>
+    <div class="hidden name"><code>Features-aggregate.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -136,7 +136,14 @@ will be named based on the unique <code>fcol</code> values.</p>
     </div>
 
     <pre class="usage"><span class='co'># S4 method for Features</span>
-<span class='fu'>aggregateFeatures</span>(<span class='no'>object</span>, <span class='no'>i</span>, <span class='no'>fcol</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"newAssay"</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='no'>median</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>aggregateFeatures</span>(
+  <span class='no'>object</span>,
+  <span class='no'>i</span>,
+  <span class='no'>fcol</span>,
+  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"newAssay"</span>,
+  <span class='kw'>fun</span> <span class='kw'>=</span> <span class='kw pkg'>MsCoreUtils</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/MsCoreUtils/man/robustSummary.html'>robustSummary</a></span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,7 +171,7 @@ already an assay with <code>name</code>.</p></td>
     <tr>
       <th>fun</th>
       <td><p>A function used for quantitative feature
-aggregation. Default is <code>median</code>.</p></td>
+aggregation. See Details for examples.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -175,9 +182,25 @@ aggregation. Default is <code>median</code>.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A <code>Features</code> object with an additional assay.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Aggregation is performed by a function that takes a matrix as
+input and returns a vector of length equal to <code><a href='https://rdrr.io/r/base/nrow.html'>ncol(x)</a></code>. Examples
+thereof are</p><ul>
+<li><p><code><a href='https://rdrr.io/pkg/MsCoreUtils/man/medianPolish.html'>MsCoreUtils::medianPolish()</a></code> to fits an additive model (two way
+decomposition) using Tukey's median polish_ procedure using <code><a href='https://rdrr.io/r/stats/medpolish.html'>stats::medpolish()</a></code>;</p></li>
+<li><p><code><a href='https://rdrr.io/pkg/MsCoreUtils/man/robustSummary.html'>MsCoreUtils::robustSummary()</a></code> to calculate a robust aggregation
+using <code><a href='https://rdrr.io/pkg/MASS/man/rlm.html'>MASS::rlm()</a></code> (default);</p></li>
+<li><p><code><a href='https://rdrr.io/r/base/colSums.html'>base::colMeans()</a></code> to use the mean of each column;</p></li>
+<li><p><code><a href='https://rdrr.io/pkg/matrixStats/man/rowMedians.html'>matrixStats::colMedians()</a></code> to use the median of each column.</p></li>
+<li><p><code><a href='https://rdrr.io/r/base/colSums.html'>base::colSums()</a></code> to use the sum of each column;</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>The <code>Features</code> vignette provides an extended example.</p></div>
+    <div class='dont-index'><p>The <em>Features</em> vignette provides an extended example and
+the <em>Processing</em> vignette, for a complete quantitative
+proteomics data processing pipeline.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
@@ -201,6 +224,7 @@ aggregation. Default is <code>median</code>.</p></td>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
