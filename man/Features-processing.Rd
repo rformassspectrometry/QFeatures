@@ -11,9 +11,6 @@
 \alias{normalize}
 \alias{normalize,SummarizedExperiment-method}
 \alias{normalize,Features-method}
-\alias{normalise}
-\alias{normalise,SummarizedExperiment-method}
-\alias{normalise,Features-method}
 \title{Features processing}
 \usage{
 \S4method{logTransform}{SummarizedExperiment}(object, base = 2, pc = 0)
@@ -75,8 +72,8 @@ The following functions are currently available:
 \itemize{
 \item \code{logTransform(object, base = 2, i, pc = 0)} log-transforms (with
 an optional pseudocount offset) the assay(s).
-\item \code{normalize(object, method, i)} (or \code{normalise}) normalises the
-assay(s) according to \code{method} (see Details).
+\item \code{normalize(object, method, i)} normalises the assay(s) according
+to \code{method} (see Details).
 \item \code{scaleTransform(object, center = TRUE, scale = TRUE, i)} applies
 \code{\link[base:scale]{base::scale()}} to \code{SummarizedExperiments} and \code{Features} objects.
 }
@@ -84,13 +81,12 @@ assay(s) according to \code{method} (see Details).
 See the \emph{Processing} vignette for examples.
 }
 \details{
-The \code{method} parameter in \code{normalise} (\code{normalize}) can be one of
-\code{"sum"}, \code{"max"}, \code{"quantiles"}, \code{"center.mean"},
-\code{"center.median"}, \code{"center.median"}, \verb{"quantiles.robust}" or
-\code{"vsn"}.  For \code{"sum"} and \code{"max"}, each feature's intensity is
-divided by the maximum or the sum of the feature
-respectively. These two methods are applied along the features
-(rows).
+The \code{method} parameter in \code{normalize} can be one of \code{"sum"},
+\code{"max"}, \code{"quantiles"}, \code{"center.mean"}, \code{"center.median"},
+\code{"center.median"}, \verb{"quantiles.robust}" or \code{"vsn"}.  For \code{"sum"}
+and \code{"max"}, each feature's intensity is divided by the maximum or
+the sum of the feature respectively. These two methods are applied
+along the features (rows).
 
 \code{"center.mean"} and \code{"center.median"} translate the respective
 sample (column) intensities according to the column mean or

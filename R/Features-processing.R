@@ -1,5 +1,5 @@
 ##' @importFrom DelayedArray rowMaxs
-normalise_SE <- function(object, method, ...) {
+normalize_SE <- function(object, method, ...) {
     if (method == "vsn") {
         e <- Biobase::exprs(vsn::vsn2(assay(object), ...))
     } else if (method == "quantiles") {
@@ -48,8 +48,8 @@ normalise_SE <- function(object, method, ...) {
 ##' - `logTransform(object, base = 2, i, pc = 0)` log-transforms (with
 ##'   an optional pseudocount offset) the assay(s).
 ##'
-##' - `normalize(object, method, i)` (or `normalise`) normalises the
-##'   assay(s) according to `method` (see Details).
+##' - `normalize(object, method, i)` normalises the assay(s) according
+##'   to `method` (see Details).
 ##' 
 ##' - `scaleTransform(object, center = TRUE, scale = TRUE, i)` applies
 ##'   [base::scale()] to `SummarizedExperiments` and `Features` objects.
@@ -58,13 +58,12 @@ normalise_SE <- function(object, method, ...) {
 ##'
 ##' @details
 ##' 
-##' The `method` parameter in `normalise` (`normalize`) can be one of
-##' `"sum"`, `"max"`, `"quantiles"`, `"center.mean"`,
-##' `"center.median"`, `"center.median"`, `"quantiles.robust`" or
-##' `"vsn"`.  For `"sum"` and `"max"`, each feature's intensity is
-##' divided by the maximum or the sum of the feature
-##' respectively. These two methods are applied along the features
-##' (rows).
+##' The `method` parameter in `normalize` can be one of `"sum"`,
+##' `"max"`, `"quantiles"`, `"center.mean"`, `"center.median"`,
+##' `"center.median"`, `"quantiles.robust`" or `"vsn"`.  For `"sum"`
+##' and `"max"`, each feature's intensity is divided by the maximum or
+##' the sum of the feature respectively. These two methods are applied
+##' along the features (rows).
 ##'
 ##' `"center.mean"` and `"center.median"` translate the respective
 ##' sample (column) intensities according to the column mean or
@@ -107,8 +106,6 @@ normalise_SE <- function(object, method, ...) {
 ##' 
 ##' @aliases normalize normalize,SummarizedExperiment-method normalize,Features-method
 ##'
-##' @aliases normalise normalise,SummarizedExperiment-method normalise,Features-method
-##' 
 ##' @name Features-processing
 ##'
 ##' @rdname Features-processing
@@ -134,6 +131,7 @@ setMethod("logTransform",
               object
           })
 
+##' @importFrom BiocGenerics normalize
 ##' @exportMethod normalize
 ##' @rdname Features-processing
 setMethod("normalize", "SummarizedExperiment",
@@ -142,10 +140,9 @@ setMethod("normalize", "SummarizedExperiment",
                               "center.median", "diff.median",
                               "quantiles", "quantiles.robust", "vsn"),
                    ...)
-              normalise_SE(object, match.arg(method), ...))
+              normalize_SE(object, match.arg(method), ...))
 
-##' @exportMethod normalise
-normalise <- normalize
+## normalise <- normalize
 
 ##' @rdname Features-processing
 setMethod("normalize", "Features",

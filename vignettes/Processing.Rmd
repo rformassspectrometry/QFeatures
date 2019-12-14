@@ -141,6 +141,7 @@ those that have only one value (i.e 5/6 percent of missing values).
 
 ```{r}
 cptac <- filterNA(cptac, pNA = .9)
+cptac
 ```
 
 If we wanted to remove all peptides that have one or more missing
@@ -159,7 +160,9 @@ data. This time, instead of overwriting the peptides assay, we are
 going to create a new one to contain the log2-transformed data.
 
 ```{r}
-cptac <- addAssay(cptac, logTransform(cptac[[1]]), name = "cptac_log")
+cptac <- addAssay(cptac,
+                  logTransform(cptac[[1]]),
+                  name = "peptides_log")
 cptac
 ```
 
@@ -171,20 +174,21 @@ limma::plotDensities(assay(cptac[[2]]))
 
 ## Normalisation
 
-Assays in `Features` objects can be normalised with the `normalise`
-(or `normalize`) function. The type of normalisation is defined by the
-`method` argument; below, we use quantiles normalisation, store the
-normalised data into a new experiment, and visualise the resulting
-data.
+Assays in `Features` objects can be normalised with the `normalize`
+ function. The type of normalisation is defined by the `method`
+ argument; below, we use quantiles normalisation, store the normalised
+ data into a new experiment, and visualise the resulting data.
 
 ```{r}
-cptac <- addAssay(cptac, normalise(cptac[["cptac_log"]], method = "quantiles"), name = "cptac_norm")
+cptac <- addAssay(cptac,
+                  normalize(cptac[["peptides_log"]], method = "quantiles"),
+                  name = "peptides_norm")
 ```
 
 ```{r, fig.cap = "Distribution of log2 peptide intensities before (left) and after (right) quantiles normalisation."}
 par(mfrow = c(1, 2))
-limma::plotDensities(assay(cptac[["cptac_log"]]))
-limma::plotDensities(assay(cptac[["cptac_norm"]]))
+limma::plotDensities(assay(cptac[["peptides_log"]]))
+limma::plotDensities(assay(cptac[["peptides_norm"]]))
 ```
 
 ## TODO

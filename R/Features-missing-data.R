@@ -110,7 +110,6 @@ setMethod("zeroIsNA", c("Features", "character"),
               object
           })
 
-
 ##' @exportMethod nNA
 ##' @rdname Features-missing-data
 setMethod("nNA", c("SummarizedExperiment", "missing"),
