@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -151,13 +151,25 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="Features-class.html">Features()</a></code> </p>
+          <p><code><a href="Features-class.html">show(<i>&lt;Features&gt;</i>)</a></code> <code><a href="Features-class.html">`[`(<i>&lt;Features&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="Features-class.html">dims(<i>&lt;Features&gt;</i>)</a></code> <code><a href="Features-class.html">`[`(<i>&lt;Features&gt;</i>,<i>&lt;character&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="Features-class.html">selectRowData()</a></code> <code><a href="Features-class.html">rowDataNames()</a></code> <code><a href="Features-class.html">Features()</a></code> <code><a href="Features-class.html">addAssay()</a></code> </p>
         </td>
         <td><p>Quantitative MS Features</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="Features-processing.html">logTransform(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="Features-processing.html">logTransform(<i>&lt;Features&gt;</i>)</a></code> </p>
+          <p><code><a href="Features-filtering.html">VariableFilter()</a></code> <code><a href="Features-filtering.html">filterFeatures(<i>&lt;Features&gt;</i>,<i>&lt;AnnotationFilter&gt;</i>)</a></code> <code><a href="Features-filtering.html">filterFeatures(<i>&lt;Features&gt;</i>,<i>&lt;formula&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Filter features based on their rowData</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Features-missing-data.html">zeroIsNA(<i>&lt;SummarizedExperiment&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="Features-missing-data.html">zeroIsNA(<i>&lt;Features&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="Features-missing-data.html">zeroIsNA(<i>&lt;Features&gt;</i>,<i>&lt;integer&gt;</i>)</a></code> <code><a href="Features-missing-data.html">zeroIsNA(<i>&lt;Features&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Features-missing-data.html">zeroIsNA(<i>&lt;Features&gt;</i>,<i>&lt;character&gt;</i>)</a></code> <code><a href="Features-missing-data.html">nNA(<i>&lt;SummarizedExperiment&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="Features-missing-data.html">nNA(<i>&lt;Features&gt;</i>,<i>&lt;integer&gt;</i>)</a></code> <code><a href="Features-missing-data.html">nNA(<i>&lt;Features&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Features-missing-data.html">nNA(<i>&lt;Features&gt;</i>,<i>&lt;character&gt;</i>)</a></code> <code><a href="Features-missing-data.html">nNA(<i>&lt;Features&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="Features-missing-data.html">filterNA(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="Features-missing-data.html">filterNA(<i>&lt;Features&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Managing missing data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Features-processing.html">logTransform(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="Features-processing.html">logTransform(<i>&lt;Features&gt;</i>)</a></code> <code><a href="Features-processing.html">normalize(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="Features-processing.html">normalize(<i>&lt;Features&gt;</i>)</a></code> <code><a href="Features-processing.html">scaleTransform(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="Features-processing.html">scaleTransform(<i>&lt;Features&gt;</i>)</a></code> </p>
         </td>
         <td><p>Features processing</p></td>
       </tr><tr>
@@ -187,21 +199,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="filterFeatures.html">VariableFilter()</a></code> <code><a href="filterFeatures.html">filterFeatures(<i>&lt;Features&gt;</i>,<i>&lt;AnnotationFilter&gt;</i>)</a></code> <code><a href="filterFeatures.html">filterFeatures(<i>&lt;Features&gt;</i>,<i>&lt;formula&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Filter featuress based on their rowData</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="hlpsms.html">hlpsms</a></code> </p>
         </td>
         <td><p>hyperLOPIT PSM-level expression data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="missing-data.html">zeroIsNA(<i>&lt;SummarizedExperiment&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="missing-data.html">zeroIsNA(<i>&lt;Features&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="missing-data.html">zeroIsNA(<i>&lt;Features&gt;</i>,<i>&lt;integer&gt;</i>)</a></code> <code><a href="missing-data.html">zeroIsNA(<i>&lt;Features&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="missing-data.html">zeroIsNA(<i>&lt;Features&gt;</i>,<i>&lt;character&gt;</i>)</a></code> <code><a href="missing-data.html">nNA(<i>&lt;SummarizedExperiment&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="missing-data.html">nNA(<i>&lt;Features&gt;</i>,<i>&lt;integer&gt;</i>)</a></code> <code><a href="missing-data.html">nNA(<i>&lt;Features&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="missing-data.html">nNA(<i>&lt;Features&gt;</i>,<i>&lt;character&gt;</i>)</a></code> <code><a href="missing-data.html">nNA(<i>&lt;Features&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="missing-data.html">filterNA(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="missing-data.html">filterNA(<i>&lt;Features&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Managing missing data</p></td>
       </tr><tr>
         
         <td>

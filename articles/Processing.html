@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@
     
         <div class="abstract">
       <p class="abstract">Abstract</p>
-      This vignette describes how to process quantitative mass spectrometry data with Features: clearning up unneeded feature variables, adding an experimental design, filtering out contaminants and reverse hits, managing missing values, log-transforming, normalising and aggregating data.
+      This vignette describes how to process quantitative mass spectrometry data with Features: cleaning up unneeded feature variables, adding an experimental design, filtering out contaminants and reverse hits, managing missing values, log-transforming, normalising and aggregating data.
     </div>
     
 <script type="text/javascript">
@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <p>We are going to use a subset of the CPTAC study 6 containing conditions A and B. The peptide-level data, as processed by MaxQuant is available in the <code>msdata</code> package:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/basename.html">basename</a></span>(f &lt;-<span class="st"> </span>msdata<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/msdata/man/proteomics.html">quant</a></span>(<span class="dt">pattern =</span> <span class="st">"cptac"</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
 <pre><code>## [1] "cptac_a_b_peptides.txt"</code></pre>
-<p>From the names of the columns, we see that the quantitative coumns, starting with <code>"Intensity."</code> (note the space!) are at positions 56 to 61.</p>
+<p>From the names of the columns, we see that the quantitative columns, starting with <code>"Intensity."</code> (note the space!) are at positions 56 to 61.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="kw"><a href="https://rdrr.io/r/utils/read.table.html">read.delim</a></span>(f))</a></code></pre></div>
 <pre><code>##  [1] "Sequence"                 "N.term.cleavage.window"  
 ##  [3] "C.term.cleavage.window"   "Amino.acid.before"       
@@ -158,7 +158,7 @@ document.addEventListener("DOMContentLoaded", function() {
 ## [71] "MS.MS.Count"</code></pre>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">(i &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/grep.html">grep</a></span>(<span class="st">"Intensity</span><span class="ch">\\</span><span class="st">."</span>, <span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="kw"><a href="https://rdrr.io/r/utils/read.table.html">read.delim</a></span>(f))))</a></code></pre></div>
 <pre><code>## [1] 56 57 58 59 60 61</code></pre>
-<p>We now read these data using the <code>readFeatures</code> function. The peptide level expression data will be imported into R as an instance of class <code>Features</code> namesd <code>cptac</code> with an assay named <code>peptides</code>. We also use the <code>fnames</code> argument to set the rownames of the <code>peptides</code> assay to the peptide sequences.</p>
+<p>We now read these data using the <code>readFeatures</code> function. The peptide level expression data will be imported into R as an instance of class <code>Features</code> named <code>cptac</code> with an assay named <code>peptides</code>. We also use the <code>fnames</code> argument to set the row-names of the <code>peptides</code> assay to the peptide sequences.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"Features"</span>)</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2">cptac &lt;-<span class="st"> </span><span class="kw"><a href="../reference/readFeatures.html">readFeatures</a></span>(f, <span class="dt">ecol =</span> i, <span class="dt">sep =</span> <span class="st">"</span><span class="ch">\t</span><span class="st">"</span>, <span class="dt">name =</span> <span class="st">"peptides"</span>, <span class="dt">fnames =</span> <span class="st">"Sequence"</span>)</a></code></pre></div>
 </div>
@@ -182,20 +182,20 @@ document.addEventListener("DOMContentLoaded", function() {
 <div id="filtering-out-contaminants-and-reverse-hits" class="section level2">
 <h2 class="hasAnchor">
 <a href="#filtering-out-contaminants-and-reverse-hits" class="anchor"></a>Filtering out contaminants and reverse hits</h2>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="../reference/filterFeatures.html">filterFeatures</a></span>(cptac, <span class="op">~</span><span class="st"> </span>Reverse <span class="op">==</span><span class="st"> ""</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="../reference/Features-filtering.html">filterFeatures</a></span>(cptac, <span class="op">~</span><span class="st"> </span>Reverse <span class="op">==</span><span class="st"> ""</span>)</a></code></pre></div>
 <pre><code>## A instance of class Features containing
 ##  [1] peptides: SummarizedExperiment with 11436 rows and 6 columns</code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="../reference/filterFeatures.html">filterFeatures</a></span>(cptac, <span class="op">~</span><span class="st"> </span>Potential.contaminant <span class="op">==</span><span class="st"> ""</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="../reference/Features-filtering.html">filterFeatures</a></span>(cptac, <span class="op">~</span><span class="st"> </span>Potential.contaminant <span class="op">==</span><span class="st"> ""</span>)</a></code></pre></div>
 <pre><code>## A instance of class Features containing
 ##  [1] peptides: SummarizedExperiment with 11385 rows and 6 columns</code></pre>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"magrittr"</span>)</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2">cptac &lt;-<span class="st"> </span>cptac <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../reference/filterFeatures.html">filterFeatures</a></span>(<span class="op">~</span><span class="st"> </span>Reverse <span class="op">==</span><span class="st"> ""</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../reference/filterFeatures.html">filterFeatures</a></span>(<span class="op">~</span><span class="st"> </span>Potential.contaminant <span class="op">==</span><span class="st"> ""</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../reference/Features-filtering.html">filterFeatures</a></span>(<span class="op">~</span><span class="st"> </span>Reverse <span class="op">==</span><span class="st"> ""</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../reference/Features-filtering.html">filterFeatures</a></span>(<span class="op">~</span><span class="st"> </span>Potential.contaminant <span class="op">==</span><span class="st"> ""</span>)</a></code></pre></div>
 </div>
-<div id="removinf-up-unneeded-feature-variables" class="section level2">
+<div id="removing-up-unneeded-feature-variables" class="section level2">
 <h2 class="hasAnchor">
-<a href="#removinf-up-unneeded-feature-variables" class="anchor"></a>Removinf up unneeded feature variables</h2>
+<a href="#removing-up-unneeded-feature-variables" class="anchor"></a>Removing up unneeded feature variables</h2>
 <p>The spreadsheet that was read above contained numerous variables that are returned by MaxQuant, but not necessarily necessary in the frame of a downstream statistical analysis.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="../reference/Features-class.html">rowDataNames</a></span>(cptac)</a></code></pre></div>
 <pre><code>## CharacterList of length 1
@@ -210,9 +210,9 @@ document.addEventListener("DOMContentLoaded", function() {
 <div id="managing-missing-values" class="section level2">
 <h2 class="hasAnchor">
 <a href="#managing-missing-values" class="anchor"></a>Managing missing values</h2>
-<p>Missing values can be very prominant in certain proteomics experiments and need to be dealt with carefully. The first step is to assess their presence accross samples and features. But before being able to do so, we need to replace 0 by <code>NA</code>, given that MaxQuant encodes missing data with a 0 using the <code>zeroIsNA</code> function.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">cptac &lt;-<span class="st"> </span><span class="kw"><a href="../reference/missing-data.html">zeroIsNA</a></span>(cptac)</a>
-<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="kw"><a href="../reference/missing-data.html">nNA</a></span>(cptac)</a></code></pre></div>
+<p>Missing values can be very numerous in certain proteomics experiments and need to be dealt with carefully. The first step is to assess their presence across samples and features. But before being able to do so, we need to replace 0 by <code>NA</code>, given that MaxQuant encodes missing data with a 0 using the <code>zeroIsNA</code> function.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">cptac &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Features-missing-data.html">zeroIsNA</a></span>(cptac)</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="kw"><a href="../reference/Features-missing-data.html">nNA</a></span>(cptac)</a></code></pre></div>
 <pre><code>## $nNA
 ## [1] 0.4491943
 ## 
@@ -232,26 +232,47 @@ document.addEventListener("DOMContentLoaded", function() {
 <li>there are 4051 peptides with 0 missing values, 989 with a single missing values, … and 3014 peptides composed of only missing values;</li>
 <li>the range of missing values in the 6 samples is comparable and ranges between 4651 and 5470.</li>
 </ul>
-<p>In this dataset, we have such a high number of peptides without any data because the 6 samples are a subset of a larger dataset, and these peptides happened to be absent in groups A and B. Below, we use <code>filterNA</code> to remove these peptides. By setting <code>pNA</code> to 0.9, we allow petides that have up to 90% of missing values, inclusing in this case those that have only one value (i.e 5/6 percent of missing values).</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">cptac &lt;-<span class="st"> </span><span class="kw"><a href="../reference/missing-data.html">filterNA</a></span>(cptac, <span class="dt">pNA =</span> <span class="fl">.9</span>)</a></code></pre></div>
+<p>In this dataset, we have such a high number of peptides without any data because the 6 samples are a subset of a larger dataset, and these peptides happened to be absent in groups A and B. Below, we use <code>filterNA</code> to remove these peptides. By setting <code>pNA</code> to 0.9, we allow peptides that have up to 90% of missing values, including in this case those that have only one value (i.e 5/6 percent of missing values).</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">cptac &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Features-missing-data.html">filterNA</a></span>(cptac, <span class="dt">pNA =</span> <span class="fl">.9</span>)</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2">cptac</a></code></pre></div>
+<pre><code>## A instance of class Features containing
+##  [1] peptides: SummarizedExperiment with 8343 rows and 6 columns</code></pre>
 <p>If we wanted to remove all peptides that have one or more missing values, we could simply use the default value of <code>pNA = 0</code>.</p>
 </div>
 <div id="data-transformation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#data-transformation" class="anchor"></a>Data transformation</h2>
 <p>When analysing continuous data using parametric methods (such as t-test or linear models), it is often necessary to log-transform the data. The figure below (left) show that how our data is mainly composed of small values with a long tail of larger ones, which is a typical pattern of quantitative omics data.</p>
-<p>Below, we use the <code>logTransform</code> function to log2-transform our data. This time, instead of overwriting the peptides assay, we are going to create a new one to contain the log2-transfromed data.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">cptac &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Features-class.html">addAssay</a></span>(cptac, <span class="kw"><a href="../reference/Features-processing.html">logTransform</a></span>(cptac[[<span class="dv">1</span>]]), <span class="dt">name =</span> <span class="st">"cptac_log"</span>)</a>
-<a class="sourceLine" id="cb22-2" data-line-number="2">cptac</a></code></pre></div>
+<p>Below, we use the <code>logTransform</code> function to log2-transform our data. This time, instead of overwriting the peptides assay, we are going to create a new one to contain the log2-transformed data.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">cptac &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Features-class.html">addAssay</a></span>(cptac,</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">                  <span class="kw"><a href="../reference/Features-processing.html">logTransform</a></span>(cptac[[<span class="dv">1</span>]]),</a>
+<a class="sourceLine" id="cb23-3" data-line-number="3">                  <span class="dt">name =</span> <span class="st">"peptides_log"</span>)</a>
+<a class="sourceLine" id="cb23-4" data-line-number="4">cptac</a></code></pre></div>
 <pre><code>## A instance of class Features containing
 ##  [1] peptides: SummarizedExperiment with 8343 rows and 6 columns 
-##  [2] cptac_log: SummarizedExperiment with 8343 rows and 6 columns</code></pre>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb24-2" data-line-number="2">limma<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html">plotDensities</a></span>(<span class="kw">assay</span>(cptac[[<span class="dv">1</span>]]))</a>
-<a class="sourceLine" id="cb24-3" data-line-number="3">limma<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html">plotDensities</a></span>(<span class="kw">assay</span>(cptac[[<span class="dv">2</span>]]))</a></code></pre></div>
+##  [2] peptides_log: SummarizedExperiment with 8343 rows and 6 columns</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb25-2" data-line-number="2">limma<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html">plotDensities</a></span>(<span class="kw">assay</span>(cptac[[<span class="dv">1</span>]]))</a>
+<a class="sourceLine" id="cb25-3" data-line-number="3">limma<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html">plotDensities</a></span>(<span class="kw">assay</span>(cptac[[<span class="dv">2</span>]]))</a></code></pre></div>
 <div class="figure">
-<img src="Processing_files/figure-html/unnamed-chunk-10-1.png" alt="Quantitative data in its original scale (left) and log2-transformed." width="700"><p class="caption">
-Quantitative data in its original scale (left) and log2-transformed.
+<img src="Processing_files/figure-html/unnamed-chunk-10-1.png" alt="Quantitative data in its original scale (left) and log2-transformed (right)." width="700"><p class="caption">
+Quantitative data in its original scale (left) and log2-transformed (right).
+</p>
+</div>
+</div>
+<div id="normalisation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#normalisation" class="anchor"></a>Normalisation</h2>
+<p>Assays in <code>Features</code> objects can be normalised with the <code>normalize</code> function. The type of normalisation is defined by the <code>method</code> argument; below, we use quantiles normalisation, store the normalised data into a new experiment, and visualise the resulting data.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">cptac &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Features-class.html">addAssay</a></span>(cptac,</a>
+<a class="sourceLine" id="cb26-2" data-line-number="2">                  <span class="kw"><a href="../reference/Features-processing.html">normalize</a></span>(cptac[[<span class="st">"peptides_log"</span>]], <span class="dt">method =</span> <span class="st">"quantiles"</span>),</a>
+<a class="sourceLine" id="cb26-3" data-line-number="3">                  <span class="dt">name =</span> <span class="st">"peptides_norm"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb27-2" data-line-number="2">limma<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html">plotDensities</a></span>(<span class="kw">assay</span>(cptac[[<span class="st">"peptides_log"</span>]]))</a>
+<a class="sourceLine" id="cb27-3" data-line-number="3">limma<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html">plotDensities</a></span>(<span class="kw">assay</span>(cptac[[<span class="st">"peptides_norm"</span>]]))</a></code></pre></div>
+<div class="figure">
+<img src="Processing_files/figure-html/unnamed-chunk-12-1.png" alt="Distribution of log2 peptide intensities before (left) and after (right) quantiles normalisation." width="700"><p class="caption">
+Distribution of log2 peptide intensities before (left) and after (right) quantiles normalisation.
 </p>
 </div>
 </div>
@@ -259,9 +280,9 @@ Quantitative data in its original scale (left) and log2-transformed.
 <h2 class="hasAnchor">
 <a href="#todo" class="anchor"></a>TODO</h2>
 <ul>
-<li>normalisation</li>
 <li>aggregation</li>
 <li>visualisation</li>
+<li>imputation</li>
 </ul>
 </div>
 </div>
@@ -289,7 +310,7 @@ Quantitative data in its original scale (left) and log2-transformed.
 ## [8] methods   base     
 ## 
 ## other attached packages:
-##  [1] magrittr_1.5                Features_0.1.2             
+##  [1] magrittr_1.5                Features_0.1.3             
 ##  [3] MultiAssayExperiment_1.13.3 SummarizedExperiment_1.17.0
 ##  [5] DelayedArray_0.13.0         BiocParallel_1.21.0        
 ##  [7] matrixStats_0.55.0          Biobase_2.47.1             
@@ -301,16 +322,17 @@ Quantitative data in its original scale (left) and log2-transformed.
 ##  [1] Rcpp_1.0.3              msdata_0.27.0           highr_0.8              
 ##  [4] compiler_4.0.0          BiocManager_1.30.10     XVector_0.27.0         
 ##  [7] ProtGenerics_1.19.2     bitops_1.0-6            tools_4.0.0            
-## [10] zlibbioc_1.33.0         digest_0.6.23           lattice_0.20-38        
-## [13] evaluate_0.14           memoise_1.1.0           rlang_0.4.2            
-## [16] Matrix_1.2-18           yaml_2.2.0              pkgdown_1.4.1          
-## [19] xfun_0.11               GenomeInfoDbData_1.2.2  stringr_1.4.0          
-## [22] knitr_1.26              desc_1.2.0              fs_1.3.1               
-## [25] grid_4.0.0              rprojroot_1.3-2         R6_2.4.1               
-## [28] rmarkdown_2.0           bookdown_0.16           limma_3.43.0           
-## [31] AnnotationFilter_1.11.0 backports_1.1.5         htmltools_0.4.0        
-## [34] MASS_7.3-51.4           assertthat_0.2.1        stringi_1.4.3          
-## [37] lazyeval_0.2.2          RCurl_1.95-4.12         crayon_1.3.4</code></pre>
+## [10] zlibbioc_1.33.0         digest_0.6.23           preprocessCore_1.49.0  
+## [13] lattice_0.20-38         evaluate_0.14           memoise_1.1.0          
+## [16] rlang_0.4.2             Matrix_1.2-18           yaml_2.2.0             
+## [19] pkgdown_1.4.1           xfun_0.11               GenomeInfoDbData_1.2.2 
+## [22] stringr_1.4.0           knitr_1.26              desc_1.2.0             
+## [25] fs_1.3.1                grid_4.0.0              rprojroot_1.3-2        
+## [28] R6_2.4.1                rmarkdown_2.0           bookdown_0.16          
+## [31] limma_3.43.0            AnnotationFilter_1.11.0 backports_1.1.5        
+## [34] htmltools_0.4.0         MASS_7.3-51.4           assertthat_0.2.1       
+## [37] stringi_1.4.3           lazyeval_0.2.2          RCurl_1.95-4.12        
+## [40] crayon_1.3.4</code></pre>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="hasAnchor">
@@ -329,9 +351,10 @@ Quantitative data in its original scale (left) and log2-transformed.
 <li><a href="#reading-data-as-features">Reading data as <code>Features</code></a></li>
       <li><a href="#encoding-the-experimental-design">Encoding the experimental design</a></li>
       <li><a href="#filtering-out-contaminants-and-reverse-hits">Filtering out contaminants and reverse hits</a></li>
-      <li><a href="#removinf-up-unneeded-feature-variables">Removinf up unneeded feature variables</a></li>
+      <li><a href="#removing-up-unneeded-feature-variables">Removing up unneeded feature variables</a></li>
       <li><a href="#managing-missing-values">Managing missing values</a></li>
       <li><a href="#data-transformation">Data transformation</a></li>
+      <li><a href="#normalisation">Normalisation</a></li>
       <li><a href="#todo">TODO</a></li>
       </ul>
 </li>

@@ -42,9 +42,15 @@ functions, if object is of class Features, and optional assay
 index or name i can be specified to define the assay (by name of
 index) on which to operate.
 The following functions are currently available:
-logTransform(object, base = 2, i)
+logTransform(object, base = 2, i, pc = 0) log-transforms (with
+an optional pseudocount offset) the assay(s).
+normalize(object, method, i) normalises the assay(s) according
+to method (see Details).
+scaleTransform(object, center = TRUE, scale = TRUE, i) applies
+base::scale() to SummarizedExperiments and Features objects.
 
-" />
+
+See the Processing vignette for examples." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -77,7 +83,7 @@ logTransform(object, base = 2, i)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -140,16 +146,45 @@ functions, if <code>object</code> is of class <code>Features</code>, and optiona
 index or name <code>i</code> can be specified to define the assay (by name of
 index) on which to operate.</p>
 <p>The following functions are currently available:</p><ul>
-<li><p><code>logTransform(object, base = 2, i)</code></p></li>
+<li><p><code>logTransform(object, base = 2, i, pc = 0)</code> log-transforms (with
+an optional pseudocount offset) the assay(s).</p></li>
+<li><p><code>normalize(object, method, i)</code> normalises the assay(s) according
+to <code>method</code> (see Details).</p></li>
+<li><p><code>scaleTransform(object, center = TRUE, scale = TRUE, i)</code> applies
+<code><a href='https://rdrr.io/r/base/scale.html'>base::scale()</a></code> to <code>SummarizedExperiments</code> and <code>Features</code> objects.</p></li>
 </ul>
 
+<p>See the <em>Processing</em> vignette for examples.</p>
     </div>
 
     <pre class="usage"><span class='co'># S4 method for SummarizedExperiment</span>
-<span class='fu'>logTransform</span>(<span class='no'>object</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='fu'>logTransform</span>(<span class='no'>object</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>pc</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 
 <span class='co'># S4 method for Features</span>
-<span class='fu'>logTransform</span>(<span class='no'>object</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>i</span>)</pre>
+<span class='fu'>logTransform</span>(<span class='no'>object</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>i</span>, <span class='kw'>pc</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+
+<span class='co'># S4 method for SummarizedExperiment</span>
+<span class='fu'>normalize</span>(
+  <span class='no'>object</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sum"</span>, <span class='st'>"max"</span>, <span class='st'>"center.mean"</span>, <span class='st'>"center.median"</span>, <span class='st'>"diff.median"</span>, <span class='st'>"quantiles"</span>,
+    <span class='st'>"quantiles.robust"</span>, <span class='st'>"vsn"</span>),
+  <span class='no'>...</span>
+)
+
+<span class='co'># S4 method for Features</span>
+<span class='fu'>normalize</span>(
+  <span class='no'>object</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sum"</span>, <span class='st'>"max"</span>, <span class='st'>"center.mean"</span>, <span class='st'>"center.median"</span>, <span class='st'>"diff.median"</span>, <span class='st'>"quantiles"</span>,
+    <span class='st'>"quantiles.robust"</span>, <span class='st'>"vsn"</span>),
+  <span class='no'>...</span>,
+  <span class='no'>i</span>
+)
+
+<span class='co'># S4 method for SummarizedExperiment</span>
+<span class='fu'>scaleTransform</span>(<span class='no'>object</span>, <span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='co'># S4 method for Features</span>
+<span class='fu'>scaleTransform</span>(<span class='no'>object</span>, <span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>i</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,17 +199,63 @@ index) on which to operate.</p>
 logarithms are computed. Defaults is 2.</p></td>
     </tr>
     <tr>
+      <th>pc</th>
+      <td><p><code><a href='https://rdrr.io/r/base/numeric.html'>numeric(1)</a></code> with a pseudocount to add to the
+quantitative data. Useful when (true) 0 are present in the
+data. Default is 0 (no effect).</p></td>
+    </tr>
+    <tr>
       <th>i</th>
       <td><p>The index or name of the assay to be processed.</p></td>
     </tr>
+    <tr>
+      <th>method</th>
+      <td><p><code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> defining the normalisation method to
+apply. See Details.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional parameters passed to inner functions.</p></td>
+    </tr>
+    <tr>
+      <th>center</th>
+      <td><p><code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code> (default is <code>TRUE</code>) value or
+numeric-alike vector of length equal to the number of columns
+of <code>object</code>. See <code><a href='https://rdrr.io/r/base/scale.html'>base::scale()</a></code> for details.</p></td>
+    </tr>
+    <tr>
+      <th>scale</th>
+      <td><p><code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code> (default is <code>TRUE</code>) or a numeric-alike
+vector of length equal to the number of columns of
+<code>object</code>. See <code><a href='https://rdrr.io/r/base/scale.html'>base::scale()</a></code> for details.</p></td>
+    </tr>
     </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The <code>method</code> parameter in <code>normalize</code> can be one of <code>"sum"</code>,
+<code>"max"</code>, <code>"quantiles"</code>, <code>"center.mean"</code>, <code>"center.median"</code>,
+<code>"center.median"</code>, <code>"quantiles.robust</code>" or <code>"vsn"</code>.  For <code>"sum"</code>
+and <code>"max"</code>, each feature's intensity is divided by the maximum or
+the sum of the feature respectively. These two methods are applied
+along the features (rows).</p>
+<p><code>"center.mean"</code> and <code>"center.median"</code> translate the respective
+sample (column) intensities according to the column mean or
+median. <code>"diff.median"</code> translates all samples (columns) so that
+they all match the grand median. Using <code>"quantiles"</code> or
+<code>"quantiles.robust"</code> applies (robust) quantile normalisation, as
+implemented in <code><a href='https://rdrr.io/pkg/preprocessCore/man/normalize.quantiles.html'>preprocessCore::normalize.quantiles()</a></code> and
+<code><a href='https://rdrr.io/pkg/preprocessCore/man/normalize.quantiles.robust.html'>preprocessCore::normalize.quantiles.robust()</a></code>. <code>"vsn"</code> uses the
+<code><a href='https://rdrr.io/pkg/vsn/man/vsn2.html'>vsn::vsn2()</a></code> function.  Note that the latteralso glog-transforms
+the intensities.  See respective manuals for more details and
+function arguments.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#details">Details</a></li>
     </ul>
 
   </div>
