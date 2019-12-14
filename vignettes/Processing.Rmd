@@ -169,9 +169,26 @@ limma::plotDensities(assay(cptac[[1]]))
 limma::plotDensities(assay(cptac[[2]]))
 ```
 
+## Normalisation
+
+Assays in `Features` objects can be normalised with the `normalise`
+(or `normalize`) function. The type of normalisation is defined by the
+`method` argument; below, we use quantiles normaliasation, store the
+normalised data into a new experiment, and visualise the resulting
+data.
+
+```{r}
+cptac <- addAssay(cptac, normalise(cptac[["cptac_log"]], method = "quantiles"), name = "cptac_norm")
+```
+
+```{r, fig.cap = "Distribution of log2 peptide intensities before (left) and after (right) quantiles normalisation."}
+par(mfrow = c(1, 2))
+limma::plotDensities(assay(cptac[["cptac_log"]]))
+limma::plotDensities(assay(cptac[["cptac_norm"]]))
+```
+
 ## TODO
 
-- normalisation
 - aggregation
 - visualisation
 
