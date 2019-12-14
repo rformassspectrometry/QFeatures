@@ -34,7 +34,19 @@ addAssay(object, x, name = "newAssay", assayLinks = AssayLinks(names = name))
 
 \item{x}{A single assay or a \emph{named} list of assays.}
 
+\item{i}{\code{character()}, \code{integer()}, \code{logical()} or \code{GRanges()}
+object for subsetting by rows.}
+
+\item{j}{\code{character()}, \code{logical()}, or \code{numeric()} vector for
+subsetting by \code{colData} rows.}
+
 \item{...}{See \code{MultiAssayExperiment} for details.}
+
+\item{drop}{logical (default \code{TRUE}) whether to drop empty assay
+elements in the \code{ExperimentList}.}
+
+\item{k}{\code{character()}, \code{logical()}, or \code{numeric()} vector for
+subsetting by assays}
 
 \item{rowvars}{A \code{character()} with the names of the \code{rowData}
 variables (columns) to retain in any assay. All other
@@ -93,11 +105,10 @@ example.
 
 \section{Accessors}{
 
-
-The \code{Features} class extends the
+\itemize{
+\item The \code{Features} class extends the
 \link[MultiAssayExperiment:MultiAssayExperiment]{MultiAssayExperiment::MultiAssayExperiment} class and inherits
 all its accessors and replacement methods.
-\itemize{
 \item The \code{rowDataNames} accessor returns a list with the \code{rowData}
 variable names.
 }
@@ -115,9 +126,10 @@ is a \code{character(1)} naming the single assay (default is
 }
 }
 
-\section{Subsetting assays}{
+\section{Subsetting}{
 
 \itemize{
+\item Features object can be subset using the \code{x[i, j, k, drop = TRUE]} paradigm. See the argument descriptions for details.
 \item The \code{\link[=subsetByFeature]{subsetByFeature()}} function can be used to subset a
 \code{Features} object using one or multiple feature names that will
 be matched across different assays, taking the aggregation

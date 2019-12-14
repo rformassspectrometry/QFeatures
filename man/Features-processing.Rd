@@ -8,8 +8,12 @@
 \alias{scaleTransform}
 \alias{scaleTransform,SummarizedExperiment-method}
 \alias{scaleTransform,Features-method}
+\alias{normalize}
 \alias{normalize,SummarizedExperiment-method}
 \alias{normalize,Features-method}
+\alias{normalise}
+\alias{normalise,SummarizedExperiment-method}
+\alias{normalise,Features-method}
 \title{Features processing}
 \usage{
 \S4method{logTransform}{SummarizedExperiment}(object, base = 2, pc = 0)
@@ -27,6 +31,7 @@
   object,
   method = c("sum", "max", "center.mean", "center.median", "diff.median", "quantiles",
     "quantiles.robust", "vsn"),
+  ...,
   i
 )
 
@@ -45,6 +50,19 @@ quantitative data. Useful when (true) 0 are present in the
 data. Default is 0 (no effect).}
 
 \item{i}{The index or name of the assay to be processed.}
+
+\item{method}{\code{character(1)} defining the normalisation method to
+apply. See Details.}
+
+\item{...}{Additional parameters passed to inner functions.}
+
+\item{center}{\code{logical(1)} (default is \code{TRUE}) value or
+numeric-alike vector of length equal to the number of columns
+of \code{object}. See \code{\link[base:scale]{base::scale()}} for details.}
+
+\item{scale}{\code{logical(1)} (default is \code{TRUE}) or a numeric-alike
+vector of length equal to the number of columns of
+\code{object}. See \code{\link[base:scale]{base::scale()}} for details.}
 }
 \description{
 This manual page describes common quantitative proteomics data
@@ -55,13 +73,15 @@ index) on which to operate.
 
 The following functions are currently available:
 \itemize{
-\item \code{logTransform(object, base = 2, i)}
+\item \code{logTransform(object, base = 2, i, pc = 0)} log-transforms (with
+an optional pseudocount offset) the assay(s).
 \item \code{normalize(object, method, i)} (or \code{normalise}) normalises the
 assay(s) according to \code{method} (see Details).
+\item \code{scaleTransform(object, center = TRUE, scale = TRUE, i)} applies
+\code{\link[base:scale]{base::scale()}} to \code{SummarizedExperiments} and \code{Features} objects.
 }
 
--\code{scaleTransform(object, center = TRUE, scale = TRUE, i)} applies
-\code{\link[base:scale]{base::scale()}} to \code{SummarizedExperiments} and \code{Features} objects.
+See the \emph{Processing} vignette for examples.
 }
 \details{
 The \code{method} parameter in \code{normalise} (\code{normalize}) can be one of

@@ -5,7 +5,7 @@ author:
 package: Features
 abstract: >
   This vignette describes how to process quantitative mass
-  spectrometry data with Features: clearning up unneeded feature
+  spectrometry data with Features: cleaning up unneeded feature
   variables, adding an experimental design, filtering out contaminants
   and reverse hits, managing missing values, log-transforming,
   normalising and aggregating data.
@@ -42,7 +42,7 @@ is available in the `msdata` package:
 basename(f <- msdata::quant(pattern = "cptac", full.names = TRUE))
 ```
 
-From the names of the columns, we see that the quantitative coumns,
+From the names of the columns, we see that the quantitative columns,
 starting with `"Intensity."` (note the space!) are at positions 56 to
 61.
 
@@ -53,8 +53,8 @@ names(read.delim(f))
 
 We now read these data using the `readFeatures` function. The peptide
 level expression data will be imported into R as an instance of class
-`Features` namesd `cptac` with an assay named `peptides`. We also use
-the `fnames` argument to set the rownames of the `peptides` assay to
+`Features` named `cptac` with an assay named `peptides`. We also use
+the `fnames` argument to set the row-names of the `peptides` assay to
 the peptide sequences.
 
 ```{r read_cptac}
@@ -90,7 +90,7 @@ cptac <- cptac %>%
     filterFeatures(~ Potential.contaminant == "")
 ```
 
-## Removinf up unneeded feature variables
+## Removing up unneeded feature variables
 
 The spreadsheet that was read above contained numerous variables that
 are returned by MaxQuant, but not necessarily necessary in the frame
@@ -112,9 +112,9 @@ rowDataNames(cptac)
 
 ## Managing missing values
 
-Missing values can be very prominant in certain proteomics experiments
+Missing values can be very numerous in certain proteomics experiments
 and need to be dealt with carefully. The first step is to assess their
-presence accross samples and features. But before being able to do so,
+presence across samples and features. But before being able to do so,
 we need to replace 0 by `NA`, given that MaxQuant encodes missing data
 with a 0 using the `zeroIsNA` function.
 
@@ -136,7 +136,7 @@ In this dataset, we have such a high number of peptides without any
 data because the 6 samples are a subset of a larger dataset, and these
 peptides happened to be absent in groups A and B. Below, we use
 `filterNA` to remove these peptides. By setting `pNA` to 0.9, we allow
-petides that have up to 90% of missing values, inclusing in this case
+peptides that have up to 90% of missing values, including in this case
 those that have only one value (i.e 5/6 percent of missing values).
 
 ```{r}
@@ -156,7 +156,7 @@ pattern of quantitative omics data.
 
 Below, we use the `logTransform` function to log2-transform our
 data. This time, instead of overwriting the peptides assay, we are
-going to create a new one to contain the log2-transfromed data.
+going to create a new one to contain the log2-transformed data.
 
 ```{r}
 cptac <- addAssay(cptac, logTransform(cptac[[1]]), name = "cptac_log")
@@ -173,7 +173,7 @@ limma::plotDensities(assay(cptac[[2]]))
 
 Assays in `Features` objects can be normalised with the `normalise`
 (or `normalize`) function. The type of normalisation is defined by the
-`method` argument; below, we use quantiles normaliasation, store the
+`method` argument; below, we use quantiles normalisation, store the
 normalised data into a new experiment, and visualise the resulting
 data.
 
@@ -191,6 +191,7 @@ limma::plotDensities(assay(cptac[["cptac_norm"]]))
 
 - aggregation
 - visualisation
+- imputation
 
 # Session information {-}
 

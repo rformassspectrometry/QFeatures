@@ -1,3 +1,4 @@
+##' @importFrom DelayedArray rowMaxs
 normalise_SE <- function(object, method, ...) {
     if (method == "vsn") {
         e <- Biobase::exprs(vsn::vsn2(assay(object), ...))
@@ -21,7 +22,7 @@ normalise_SE <- function(object, method, ...) {
     } else {
         e <- assay(object)
         switch(method,
-               max = div <- DelayedArray::rowMaxs(e, na.rm = TRUE),
+               max = div <- rowMaxs(e, na.rm = TRUE),
                sum = div <- rowSums(e, na.rm = TRUE))
         e <- e/div
     }
@@ -44,13 +45,16 @@ normalise_SE <- function(object, method, ...) {
 ##'
 ##' The following functions are currently available:
 ##'
-##' - `logTransform(object, base = 2, i)`
+##' - `logTransform(object, base = 2, i, pc = 0)` log-transforms (with
+##'   an optional pseudocount offset) the assay(s).
 ##'
 ##' - `normalize(object, method, i)` (or `normalise`) normalises the
 ##'   assay(s) according to `method` (see Details).
 ##' 
-##' -`scaleTransform(object, center = TRUE, scale = TRUE, i)` applies
-##'  [base::scale()] to `SummarizedExperiments` and `Features` objects.
+##' - `scaleTransform(object, center = TRUE, scale = TRUE, i)` applies
+##'   [base::scale()] to `SummarizedExperiments` and `Features` objects.
+##'
+##' See the *Processing* vignette for examples.
 ##'
 ##' @details
 ##' 
@@ -82,11 +86,28 @@ normalise_SE <- function(object, method, ...) {
 ##'     quantitative data. Useful when (true) 0 are present in the
 ##'     data. Default is 0 (no effect).
 ##'
+##' @param center `logical(1)` (default is `TRUE`) value or
+##'     numeric-alike vector of length equal to the number of columns
+##'     of `object`. See [base::scale()] for details.
+##' 
+##' @param scale `logical(1)` (default is `TRUE`) or a numeric-alike
+##'     vector of length equal to the number of columns of
+##'     `object`. See [base::scale()] for details.
+##'
+##' @param method `character(1)` defining the normalisation method to
+##'     apply. See Details.
+##' 
 ##' @param i The index or name of the assay to be processed.
+##'
+##' @param ... Additional parameters passed to inner functions.
 ##'
 ##' @aliases logTransform logTransform,SummarizedExperiment-method logTransform,Features-method
 ##'
 ##' @aliases scaleTransform scaleTransform,SummarizedExperiment-method scaleTransform,Features-method
+##' 
+##' @aliases normalize normalize,SummarizedExperiment-method normalize,Features-method
+##'
+##' @aliases normalise normalise,SummarizedExperiment-method normalise,Features-method
 ##' 
 ##' @name Features-processing
 ##'
@@ -109,10 +130,11 @@ setMethod("logTransform",
               if (missing(i))
                   i  <-  seq_len(length(object))
               for (ii in i)
-                  object[[ii]] <- log(object[[ii]], base, pc)
+                  object[[ii]] <- logTransform(object[[ii]], base, pc)
               object
           })
 
+##' @exportMethod normalize
 ##' @rdname Features-processing
 setMethod("normalize", "SummarizedExperiment",
           function(object,
@@ -122,6 +144,7 @@ setMethod("normalize", "SummarizedExperiment",
                    ...)
               normalise_SE(object, match.arg(method), ...))
 
+##' @exportMethod normalise
 normalise <- normalize
 
 ##' @rdname Features-processing
@@ -130,7 +153,7 @@ setMethod("normalize", "Features",
                    method = c("sum", "max", "center.mean",
                               "center.median", "diff.median",
                               "quantiles", "quantiles.robust", "vsn"),
-                   i) {
+                   ..., i) {
               if (missing(i))
                   i  <-  seq_len(length(object))
               for (ii in i)
@@ -140,6 +163,7 @@ setMethod("normalize", "Features",
           })
 
 
+##' @exportMethod scaleTransform
 ##' @rdname Features-processing
 setMethod("scaleTransform", "SummarizedExperiment",
           function(object, center = TRUE, scale = TRUE) {

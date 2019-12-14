@@ -164,14 +164,10 @@ setMethod("filterNA", "SummarizedExperiment",
 ##' @rdname Features-missing-data
 setMethod("filterNA", "Features",
           function(object, pNA = 0, i) {
-              if (missing(i)) {
-                  for (i in seq_len(length(object)))
-                      object[[i]] <- filterNA(object[[i]], pNA)
-              } else {
-                  x <- object[[i]]
-                  k <- .row_for_filterNA(assay(x), pNA)
-                  object[[i]] <- x[k, ]
-              }
+              if (missing(i))
+                  i  <- seq_len(length(object))
+              for (ii in i)
+                      object[[ii]] <- filterNA(object[[ii]], pNA)
               object
           })
 

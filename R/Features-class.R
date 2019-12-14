@@ -46,9 +46,9 @@
 ##'
 ##' @section Accessors:
 ##'
-##' The `Features` class extends the
-##' [MultiAssayExperiment::MultiAssayExperiment] class and inherits
-##' all its accessors and replacement methods.
+##' - The `Features` class extends the
+##'   [MultiAssayExperiment::MultiAssayExperiment] class and inherits
+##'   all its accessors and replacement methods.
 ##'
 ##' - The `rowDataNames` accessor returns a list with the `rowData`
 ##'   variable names.
@@ -64,7 +64,10 @@
 ##'   `"newAssay"), and is ignored if `x` is a list of
 ##'   assays. `assayLinks` is an optional [AssayLinks].
 ##'
-##' @section Subsetting assays:
+##' @section Subsetting:
+##'
+##' - Features object can be subset using the `x[i, j, k, drop =
+##'   TRUE]` paradigm. See the argument descriptions for details.
 ##'
 ##' - The [subsetByFeature()] function can be used to subset a
 ##'   `Features` object using one or multiple feature names that will
@@ -75,6 +78,18 @@
 ##'   select a limited number of `rowData` columns of interest named
 ##'   in `rowvars` in the `object` instance of class `Features`.
 ##'
+##' @param i `character()`, `integer()`, `logical()` or `GRanges()`
+##'     object for subsetting by rows.
+##' 
+##' @param j `character()`, `logical()`, or `numeric()` vector for
+##'     subsetting by `colData` rows. 
+##' 
+##' @param k `character()`, `logical()`, or `numeric()` vector for
+##'     subsetting by assays
+##' 
+##' @param drop logical (default `TRUE`) whether to drop empty assay
+##'     elements in the `ExperimentList`.
+##' 
 ##' @seealso
 ##'
 ##' - The [readFeatures()] constructor and the [aggregateFeatures()]
