@@ -34,8 +34,9 @@ library("Features")
 ## Reading data as `Features`
 
 We are going to use a subset of the CPTAC study 6 containing
-conditions A and B. The peptide-level data, as processed by MaxQuant
-is available in the `msdata` package:
+conditions A and B [@Paulovich:2010]. The peptide-level data, as
+processed by MaxQuant [@Cox:2008] is available in the `msdata`
+package:
 
 
 ```{r msdata}
@@ -135,17 +136,18 @@ The output of the `nNA` function tells us that
 In this dataset, we have such a high number of peptides without any
 data because the 6 samples are a subset of a larger dataset, and these
 peptides happened to be absent in groups A and B. Below, we use
-`filterNA` to remove these peptides. By setting `pNA` to 0.9, we allow
-peptides that have up to 90% of missing values, including in this case
-those that have only one value (i.e 5/6 percent of missing values).
+`filterNA` to remove all the peptides that contain one or more missing
+values by using `pNA = 0` (which also is the default value).
+
 
 ```{r}
-cptac <- filterNA(cptac, pNA = .9)
+cptac <- filterNA(cptac, pNA = 0)
 cptac
 ```
 
-If we wanted to remove all peptides that have one or more missing
-values, we could simply use the default value of `pNA = 0`.
+I we wanted to keep peptides that have up to 90% of missing values,
+corresponsing in this case to those that have only one value (i.e 5/6
+percent of missing values), we could have set `pNA` to 0.9.
 
 ## Data transformation
 
@@ -195,22 +197,71 @@ limma::plotDensities(assay(cptac[["peptides_norm"]]))
 ## Feature aggregation
 
 At this stage, it is possible to directly use the peptide-level
-intensities to perform a statistical analysis, or aggregate the
-peptide-level data into protein intensities, and perform the
-differential expression analysis at the protein level.
+intensities to perform a statistical analysis [@Goeminne:2016], or
+aggregate the peptide-level data into protein intensities, and perform
+the differential expression analysis at the protein level.
 
-To aggregate feature data, we can use the `aggregateFeature` function
+To aggregate feature data, we can use the `aggregateFeatures` function
 that takes the following inputs:
 
-```{r}
+- the name of the `Features` instance that contains the peptide
+  quantiation data - `"cptac"` in our example;
+- **`i`**: the name or index of the assay that contains the
+  (normalised) peptide quantitation data - `"peptides_norm"` in our
+  case;
+- **`fcol`**: the feature variable (in the assay above) to be used to
+  define what peptides to aggregate - `"Proteins"` here, given that we
+  want to aggregate all peptides that belong to one protein (group);
+- **`name`**: the name of the new aggregates assay - `"proteins"` in this case; 
+- and finally **`fun`**, the function that will compute this
+  aggregation - we will be using the default value, namely
+  `robustSummary` [@Sticker:2019].
 
+
+```{r, warning = FALSE}
+cptac <- aggregateFeatures(cptac, i = "peptides_norm", fcol = "Proteins", name = "proteins")
+cptac
 ```
 
+We obtain a final 1125 quantified proteins in the new `proteins`
+assay. Below, we display the quantitation data for the first 6
+proteins and their respective variables. The latter shown that number
+of peptides that were using during the aggregation step (`.n` column).
+
+```{r}
+head(assay(cptac[["proteins"]]))
+rowData(cptac[["proteins"]])
+```
+
+We can get a quick overview of this `.n` variable by computing the
+table below, that shows us that we have 405 proteins that are based on
+a single peptides, 230 that are based on two, 119 that are based on
+three, ... and a single protein that is the results of aggregating 44
+peptides.
+
+```{r}
+table(rowData(cptac[["proteins"]])$.n)
+```
+
+Let's choose `P02787ups|TRFE_HUMAN_UPS` and visualise its expresson
+pattern in the 2 groups at the protein and peptide level.
+
+```{r, message = TRUE}
+library("ggplot2")
+library("dplyr")
+longFormat(cptac["P02787ups|TRFE_HUMAN_UPS", ]) %>%
+    as.data.frame() %>%
+    mutate(group = ifelse(grepl("A", colname), "A", "B")) %>%
+    mutate(sample = sub("Intensity\\.", "", colname)) %>%
+    ggplot(aes(x = sample, y = value, colour = group)) +
+    geom_point() +
+    facet_grid(~ assay)
+```
 
 ## TODO
 
-- visualisation
-- imputation
+- Improve on data visualisation
+- Section on imputation
 
 # Session information {-}
 
