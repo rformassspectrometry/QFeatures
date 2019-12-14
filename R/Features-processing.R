@@ -111,6 +111,11 @@ normalize_SE <- function(object, method, ...) {
 ##' @rdname Features-processing
 NULL
 
+## -------------------------------------------------------
+##   Transformations
+## -------------------------------------------------------
+
+
 ##' @exportMethod logTransform
 ##' @rdname Features-processing
 setMethod("logTransform",
@@ -130,6 +135,32 @@ setMethod("logTransform",
                   object[[ii]] <- logTransform(object[[ii]], base, pc)
               object
           })
+
+##' @exportMethod scaleTransform
+##' @rdname Features-processing
+setMethod("scaleTransform", "SummarizedExperiment",
+          function(object, center = TRUE, scale = TRUE) {
+              e <- scale(assay(object), center = center, scale = scale)
+              attr(e, "scaled:center") <- NULL
+              attr(e, "scaled:scale") <- NULL              
+              assay(object) <- e
+              object
+          })
+
+##' @rdname Features-processing
+setMethod("scaleTransform", "Features",
+          function(object, center = TRUE, scale = TRUE, i) {
+              if (missing(i))
+                  i  <-  seq_len(length(object))
+              for (ii in i)
+                  object[[ii]] <- scaleTransform(object[[ii]], center, scale)
+
+              object
+          })
+
+## -------------------------------------------------------
+##   Normalisation (normalize)
+## -------------------------------------------------------
 
 ##' @importFrom BiocGenerics normalize
 ##' @exportMethod normalize
@@ -160,24 +191,3 @@ setMethod("normalize", "Features",
           })
 
 
-##' @exportMethod scaleTransform
-##' @rdname Features-processing
-setMethod("scaleTransform", "SummarizedExperiment",
-          function(object, center = TRUE, scale = TRUE) {
-              e <- scale(assay(object), center = center, scale = scale)
-              attr(e, "scaled:center") <- NULL
-              attr(e, "scaled:scale") <- NULL              
-              assay(object) <- e
-              object
-          })
-
-##' @rdname Features-processing
-setMethod("scaleTransform", "Features",
-          function(object, center = TRUE, scale = TRUE, i) {
-              if (missing(i))
-                  i  <-  seq_len(length(object))
-              for (ii in i)
-                  object[[ii]] <- scaleTransform(object[[ii]], center, scale)
-
-              object
-          })

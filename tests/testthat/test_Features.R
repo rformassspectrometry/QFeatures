@@ -38,7 +38,8 @@ test_that("Manual Features", {
 
 test_that("aggregateFeatures(fun = sum)", {
     data(feat1)
-    feat1 <- aggregateFeatures(feat1, "psms", fcol = "Sequence", name = "peptides", fun = sum)
+    feat1 <- aggregateFeatures(feat1, "psms", fcol = "Sequence",
+                               name = "peptides", fun = colSums)
     expect_identical(names(feat1), c("psms", "peptides"))
 
     ## checking quantiation data
@@ -47,8 +48,8 @@ test_that("aggregateFeatures(fun = sum)", {
                      ncol = 2,
                      dimnames = list(c("SYGFNAAR", "ELGNDAYK", "IAEESNFPFIK"),
                                      c("S1", "S2")))
-    assay1 <- assay1[order(rownames(assay1)), ]
-    expect_identical(assay1, assay(feat1, "peptides"))
+    assay1 <- assay1[levels(factor(rowData(feat1[[1]])$Sequence)), ]
+    expect_equal(assay1, assay(feat1, "peptides"))
 
     ## checking rowData
     Sequence <- rownames(assay1)
@@ -86,7 +87,9 @@ test_that("aggregateFeatures(fun = sum)", {
 
 test_that("aggregateFeatures(fun = median)", {
     data(feat1)
-    feat1 <- aggregateFeatures(feat1, "psms", fcol = "Sequence", name = "peptides", fun = median)
+    feat1 <- aggregateFeatures(feat1, "psms", fcol = "Sequence",
+                               name = "peptides",
+                               fun = matrixStats::colMedians)
     expect_identical(names(feat1), c("psms", "peptides"))
 
     expect_equal(dims(feat1),
@@ -100,6 +103,7 @@ test_that("aggregateFeatures(fun = median)", {
                      ncol = 2,
                      dimnames = list(c("SYGFNAAR", "ELGNDAYK", "IAEESNFPFIK"),
                                      c("S1", "S2")))
+    
     assay1 <- assay1[order(rownames(assay1)), ]
     expect_identical(assay1, assay(feat1, "peptides"))
 

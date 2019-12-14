@@ -21,19 +21,41 @@
 ##'     already an assay with `name`.
 ##'
 ##' @param fun A function used for quantitative feature
-##'     aggregation. Default is `median`.
+##'     aggregation. See Details for examples.
 ##'
 ##' @param ... Additional parameters passed the `fun`.
 ##'
 ##' @return A `Features` object with an additional assay.
 ##'
-##' @md
+##' @details
 ##'
-##' @seealso The `Features` vignette provides an extended example.
+##' Aggregation is performed by a function that takes a matrix as
+##' input and returns a vector of length equal to `ncol(x)`. Examples
+##' thereof are
+##'
+##' - [MsCoreUtils::medianPolish()] to fits an additive model (two way
+##'   decomposition) using Tukey's median polish_ procedure using [stats::medpolish()];
+##'
+##' - [MsCoreUtils::robustSummary()] to calculate a robust aggregation
+##'   using [MASS::rlm()] (default);
+##'
+##' - [base::colMeans()] to use the mean of each column;
+##'
+##' - [matrixStats::colMedians()] to use the median of each column.
+##'
+##' - [base::colSums()] to use the sum of each column;
+##'
+##' @seealso The *Features* vignette provides an extended example and
+##'     the *Processing* vignette, for a complete quantitative
+##'     proteomics data processing pipeline.
 ##'
 ##' @aliases aggregateFeatures aggregateFeatures,Features-method
 ##'
 ##' @name aggregateFeatures
+##'
+##' @rdname Features-aggregate
+##'
+##' @importFrom MsCoreUtils aggregate_by_vector robustSummary
 ##'
 ##' @examples
 ##'
@@ -50,9 +72,10 @@
 NULL
 
 ##' @exportMethod aggregateFeatures
-##' @rdname aggregateFeatures
+##' @rdname Features-aggregate
 setMethod("aggregateFeatures", "Features",
-          function(object, i, fcol, name = "newAssay", fun = median, ...)
+          function(object, i, fcol, name = "newAssay",
+                   fun = MsCoreUtils::robustSummary, ...)
               .aggregateFeatures(object, i, fcol, name, fun, ...))
 
 
@@ -61,16 +84,17 @@ setMethod("aggregateFeatures", "Features",
         return(object)
     if (name %in% names(object))
         stop("There's already an assay named '", name, "'.")
+    if (missing(fcol))
+        stop("'fcol' is required.")    
     if (missing(i))
         i <- main_assay(object)
-    .assay <- assay(object, i)
-    .rowdata <- rowData(object[[i]])
-    if (missing(fcol))
-        stop("fcol require.")
-    stopifnot(fcol %in% names(.rowdata))
-    groupBy <- .rowdata[[fcol]]
+    assay_i <- assay(object, i)
+    rowdata_i <- rowData(object[[i]])
+    if (!fcol %in% names(rowdata_i))
+        stop("'fcol' not found in the assay's rowData.")
+    groupBy <- rowdata_i[[fcol]]
 
-    if (anyNA(.assay)) {
+    if (anyNA(assay_i)) {
         msg <- paste("Your data contains missing values.",
                      "Please read the relevant section in the",
                      "aggregateFeatures manual page for details the",
@@ -78,29 +102,24 @@ setMethod("aggregateFeatures", "Features",
         message(paste(strwrap(msg), collapse = "\n"))
     }
 
-    .aggregated_assay <- aggregate_assay(.assay, groupBy, fun, ...)
-    .aggregated_rowdata <- Features::reduceDataFrame(.rowdata, .rowdata[[fcol]],
+    aggregated_assay <- aggregate_by_vector(assay_i, groupBy, fun, ...)
+    aggregated_rowdata <- Features::reduceDataFrame(rowdata_i, rowdata_i[[fcol]],
                                                    simplify = TRUE, drop = TRUE,
                                                    count = TRUE)
-    se <- SummarizedExperiment(.aggregated_assay,
-                               rowData = .aggregated_rowdata[rownames(.aggregated_assay), ])
-    hits <- findMatches(rownames(.aggregated_assay), groupBy)
-    elementMetadata(hits)$names_to <- .rowdata[[fcol]][hits@to]
-    elementMetadata(hits)$names_from <- rownames(.assay)[hits@to]
 
+    se <- SummarizedExperiment(aggregated_assay,
+                               rowData = aggregated_rowdata[rownames(aggregated_assay), ])
+    hits <- findMatches(rownames(aggregated_assay), groupBy)
+    elementMetadata(hits)$names_to <- rowdata_i[[fcol]][hits@to]
+    elementMetadata(hits)$names_from <- rownames(assay_i)[hits@to]
 
     assayLinks <- AssayLink(name = name,
                             from = ifelse(is.character(i), i, names(object)[i]),
                             fcol = fcol,
                             hits = hits)
-    object <- addAssay(object, se, name = name, assayLinks = assayLinks)
+    addAssay(object,
+             se,
+             name = name,
+             assayLinks = assayLinks)
 
-    if (validObject(object))
-        object
 }
-
-
-aggregate_assay <- function(assay, groupBy, fun, ...)
-    do.call(rbind,
-            by(assay, groupBy,
-               function(.x) apply(.x, 2, fun, ...)))
