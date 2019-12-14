@@ -163,7 +163,7 @@ cptac <- addAssay(cptac, logTransform(cptac[[1]]), name = "cptac_log")
 cptac
 ```
 
-```{r, fig.cap = "Quantitative data in its original scale (left) and log2-transformed."}
+```{r, fig.cap = "Quantitative data in its original scale (left) and log2-transformed (right)."}
 par(mfrow = c(1, 2))
 limma::plotDensities(assay(cptac[[1]]))
 limma::plotDensities(assay(cptac[[2]]))

@@ -7,15 +7,19 @@
 \alias{logTransform,Features-method}
 \title{Features processing}
 \usage{
-\S4method{logTransform}{SummarizedExperiment}(object, base = 2)
+\S4method{logTransform}{SummarizedExperiment}(object, base = 2, pc = 0)
 
-\S4method{logTransform}{Features}(object, base = 2, i)
+\S4method{logTransform}{Features}(object, base = 2, i, pc = 0)
 }
 \arguments{
 \item{object}{An object of class \code{Features} or \code{SummarizedExperiment}.}
 
 \item{base}{\code{numeric(1)} providing the base with respect to which
 logarithms are computed. Defaults is 2.}
+
+\item{pc}{\code{numeric(1)} with a pseudocount to add to the
+quantitative data. Useful when (true) 0 are present in the
+data. Default is 0 (no effect).}
 
 \item{i}{The index or name of the assay to be processed.}
 }

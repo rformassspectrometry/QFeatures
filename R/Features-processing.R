@@ -17,6 +17,10 @@
 ##' @param base `numeric(1)` providing the base with respect to which
 ##'     logarithms are computed. Defaults is 2.
 ##'
+##' @param pc `numeric(1)` with a pseudocount to add to the
+##'     quantitative data. Useful when (true) 0 are present in the
+##'     data. Default is 0 (no effect).
+##'
 ##' @param i The index or name of the assay to be processed.
 ##'
 ##' @aliases logTransform logTransform,SummarizedExperiment-method logTransform,Features-method
@@ -30,20 +34,20 @@ NULL
 ##' @rdname Features-processing
 setMethod("logTransform",
           "SummarizedExperiment",
-          function(object, base = 2) {
-              assay(object) <-  log(assay(object), base)
+          function(object, base = 2, pc = 0) {
+              assay(object) <- log(assay(object) + pc, base)
               object
           })
 
 ##' @rdname Features-processing
 setMethod("logTransform",
           "Features",
-          function(object, base = 2, i) {
+          function(object, base = 2, i, pc = 0) {
               if (missing(i)) {
                   for (i in seq_len(length(object)))
-                      object[[i]] <- log(object[[i]], base)
+                      object[[i]] <- log(object[[i]], base, pc)
               } else {
-                  object[[i]]  <- log(object[[i]], base)
+                  object[[i]]  <- log(object[[i]], base, pc)
               }
               object
           })
