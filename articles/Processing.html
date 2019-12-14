@@ -363,46 +363,17 @@ Distribution of log2 peptide intensities before (left) and after (right) quantil
 ##   1   2   2   1   1   1   1   1   1</code></pre>
 <p>Let’s choose <code>P02787ups|TRFE_HUMAN_UPS</code> and visualise its expression pattern in the 2 groups at the protein and peptide level.</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"ggplot2"</span>)</a>
-<a class="sourceLine" id="cb37-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"dplyr"</span>)</a></code></pre></div>
-<pre><code>## 
-## Attaching package: 'dplyr'</code></pre>
-<pre><code>## The following object is masked from 'package:matrixStats':
-## 
-##     count</code></pre>
-<pre><code>## The following object is masked from 'package:Biobase':
-## 
-##     combine</code></pre>
-<pre><code>## The following objects are masked from 'package:GenomicRanges':
-## 
-##     intersect, setdiff, union</code></pre>
-<pre><code>## The following object is masked from 'package:GenomeInfoDb':
-## 
-##     intersect</code></pre>
-<pre><code>## The following objects are masked from 'package:IRanges':
-## 
-##     collapse, desc, intersect, setdiff, slice, union</code></pre>
-<pre><code>## The following objects are masked from 'package:S4Vectors':
-## 
-##     first, intersect, rename, setdiff, setequal, union</code></pre>
-<pre><code>## The following objects are masked from 'package:BiocGenerics':
-## 
-##     combine, intersect, setdiff, union</code></pre>
-<pre><code>## The following objects are masked from 'package:stats':
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="kw">longFormat</span>(cptac[<span class="st">"P02787ups|TRFE_HUMAN_UPS"</span>, ]) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb48-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb48-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">group =</span> <span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span>(<span class="st">"A"</span>, colname), <span class="st">"A"</span>, <span class="st">"B"</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb48-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">sample =</span> <span class="kw"><a href="https://rdrr.io/r/base/grep.html">sub</a></span>(<span class="st">"Intensity</span><span class="ch">\\</span><span class="st">."</span>, <span class="st">""</span>, colname)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb48-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> sample, <span class="dt">y =</span> value, <span class="dt">colour =</span> group)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb48-6" data-line-number="6"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb48-7" data-line-number="7"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span>(<span class="op">~</span><span class="st"> </span>assay)</a></code></pre></div>
+<a class="sourceLine" id="cb37-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"dplyr"</span>)</a>
+<a class="sourceLine" id="cb37-3" data-line-number="3"><span class="kw">longFormat</span>(cptac[<span class="st">"P02787ups|TRFE_HUMAN_UPS"</span>, ]) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb37-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb37-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">group =</span> <span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span>(<span class="st">"A"</span>, colname), <span class="st">"A"</span>, <span class="st">"B"</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb37-6" data-line-number="6"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">sample =</span> <span class="kw"><a href="https://rdrr.io/r/base/grep.html">sub</a></span>(<span class="st">"Intensity</span><span class="ch">\\</span><span class="st">."</span>, <span class="st">""</span>, colname)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb37-7" data-line-number="7"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> sample, <span class="dt">y =</span> value, <span class="dt">colour =</span> group)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb37-8" data-line-number="8"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb37-9" data-line-number="9"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span>(<span class="op">~</span><span class="st"> </span>assay)</a></code></pre></div>
 <pre><code>## harmonizing input:
-##   removing 12 sampleMap rows not in names(experiments)</code></pre>
-<pre><code>## harmonizing input:
+##   removing 12 sampleMap rows not in names(experiments)
+## harmonizing input:
 ##   removing 12 sampleMap rows not in names(experiments)</code></pre>
 <p><img src="Processing_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
 </div>
@@ -439,8 +410,8 @@ Distribution of log2 peptide intensities before (left) and after (right) quantil
 ## [8] methods   base     
 ## 
 ## other attached packages:
-##  [1] dplyr_0.8.3                 ggplot2_3.2.1              
-##  [3] magrittr_1.5                Features_0.2.0             
+##  [1] magrittr_1.5                dplyr_0.8.3                
+##  [3] ggplot2_3.2.1               Features_0.2.0             
 ##  [5] MultiAssayExperiment_1.13.3 SummarizedExperiment_1.17.0
 ##  [7] DelayedArray_0.13.0         BiocParallel_1.21.0        
 ##  [9] matrixStats_0.55.0          Biobase_2.47.1             
@@ -464,7 +435,7 @@ Distribution of log2 peptide intensities before (left) and after (right) quantil
 ## [37] bitops_1.0-6            grid_4.0.0              gtable_0.3.0           
 ## [40] lifecycle_0.1.0         AnnotationFilter_1.11.0 MsCoreUtils_0.0.4      
 ## [43] scales_1.1.0            stringi_1.4.3           farver_2.0.1           
-## [46] reshape2_1.4.3          XVector_0.27.0          fs_1.3.1               
+## [46] XVector_0.27.0          reshape2_1.4.3          fs_1.3.1               
 ## [49] limma_3.43.0            tools_4.0.0             glue_1.3.1             
 ## [52] purrr_0.3.3             yaml_2.2.0              colorspace_1.4-1       
 ## [55] BiocManager_1.30.10     memoise_1.1.0           knitr_1.26</code></pre>
