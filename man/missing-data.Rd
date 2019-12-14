@@ -2,15 +2,23 @@
 % Please edit documentation in R/AllGenerics.R, R/missing-data.R
 \name{zeroIsNA}
 \alias{zeroIsNA}
+\alias{nNA}
 \alias{missing-data}
 \alias{zeroIsNA,SummarizedExperiment,missing-method}
 \alias{zeroIsNA,Features,missing-method}
 \alias{zeroIsNA,Features,numeric-method}
 \alias{zeroIsNA,Features,integer-method}
 \alias{zeroIsNA,Features,character-method}
+\alias{nNA,SummarizedExperiment,missing-method}
+\alias{nNA,Features,missing-method}
+\alias{nNA,Features,numeric-method}
+\alias{nNA,Features,integer-method}
+\alias{nNA,Features,character-method}
 \title{Managing missing data}
 \usage{
 zeroIsNA(object, i)
+
+nNA(object, i)
 }
 \arguments{
 \item{object}{An object of class \code{Features} or \code{SummarizedExperiment}.}
@@ -22,11 +30,22 @@ An instance of the same class as \code{object}.
 }
 \description{
 This manual page describes the handling of missing values in
-\code{Features} objects. The current functions are available:
+\code{Features} objects. In the following functions, if \code{object} is of
+class \code{Feature}, and optional assay index of name \code{i} can be
+specified to define the assay (by name of index) on which to
+operate.
+
+The following functions are currently available:
 \itemize{
-\item \code{zeroIsNA(object)}: this function replaces all 0 in \code{object} by
-\code{NA}. This is often necessary when third-party software assume
-that features that weren't quantified should be assigned an
+\item \code{zeroIsNA(object, i)} replaces all 0 in \code{object} by \code{NA}. This
+is often necessary when third-party software assume that
+features that weren't quantified should be assigned an
 intensity of 0.
+\item \code{nNA(object)} return a list of missing value summaries. The
+first element \code{nNA} gives the percentage of missing values; the
+second element \code{nNArows} provides a table of the number of
+missing values for the features (rows) of the assay(s); the
+third element \code{nNAcols} provides the number of missing values in
+each sample of the assay(s).
 }
 }

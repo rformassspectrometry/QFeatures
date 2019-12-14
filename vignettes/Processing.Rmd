@@ -114,16 +114,33 @@ rowDataNames(cptac)
 
 Missing values can be very prominant in certain proteomics experiments
 and need to be dealt with carefully. The first step is to assess their
-presence accross samples and features. 
+presence accross samples and features. But before being able to do so,
+we need to replace 0 by `NA`, given that MaxQuant encodes missing data
+with a 0 using the `zeroIsNA` function.
 
+```{r}
+cptac <- zeroIsNA(cptac)
+nNA(cptac)
+```
+
+The output of the `nNA` function tells us that 
+
+- there are currently close to 50% is missing values in the data;
+- there are 4051 peptides with 0 missing values, 989 with a single
+  missing values, ... and 3014 peptides composed of only missing
+  values;
+- the range of missing values in the 6 samples is comparable and
+  ranges between 4651 and 5470.
+
+In this dataset, we have such a high number of peptides without any
+data because the 6 samples are a subset of a larger dataset, and these
+peptides happened to be absent in groups A and B.
 
 ## TODO
 
 - log-transformation
 - normalisation
 - aggregation
-
-
 
 # Session information {-}
 

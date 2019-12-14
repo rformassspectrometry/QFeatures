@@ -13,3 +13,6 @@ setGeneric("subsetByFeature", function(x, y, ...) standardGeneric("subsetByFeatu
 
 ##' @rdname missing-data
 setGeneric("zeroIsNA", function(object, i) standardGeneric("zeroIsNA"))
+
+##' @rdname missing-data
+setGeneric("nNA", function(object, i) standardGeneric("nNA"))
