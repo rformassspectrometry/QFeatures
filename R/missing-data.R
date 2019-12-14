@@ -30,8 +30,8 @@
 ##' @description
 ##' 
 ##' This manual page describes the handling of missing values in
-##' `Features` objects. In the following functions, if `object` is of
-##' class `Feature`, and optional assay index of name `i` can be
+##' [Features] objects. In the following functions, if `object` is of
+##' class `Features`, and optional assay index or name `i` can be
 ##' specified to define the assay (by name of index) on which to
 ##' operate.
 ##'
@@ -91,8 +91,8 @@ setMethod("zeroIsNA", c("Features", "missing"),
                   object[[i]] <- zeroIsNA(object[[i]])
               object
           })
-##' @rdname missing-data
 
+##' @rdname missing-data
 setMethod("zeroIsNA", c("Features", "integer"),
           function(object, i) {
               object[[i]] <- zeroIsNA(object[[i]])

@@ -60,8 +60,8 @@ An instance of the same class as \code{object}.
 }
 \description{
 This manual page describes the handling of missing values in
-\code{Features} objects. In the following functions, if \code{object} is of
-class \code{Feature}, and optional assay index of name \code{i} can be
+\link{Features} objects. In the following functions, if \code{object} is of
+class \code{Features}, and optional assay index or name \code{i} can be
 specified to define the assay (by name of index) on which to
 operate.
 
