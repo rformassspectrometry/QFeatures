@@ -99,3 +99,8 @@ test_that("filterNA,Features and filterNA,SummarizedExperiment", {
     expect_equivalent(se_na_filtered, ft_filtered[[1]])
     expect_equivalent(se_na_filtered, ft0[[2]])
 })
+
+test_that("aggregateFeatures with missing data", {
+    
+
+})
