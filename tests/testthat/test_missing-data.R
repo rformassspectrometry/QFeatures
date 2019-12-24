@@ -62,5 +62,24 @@ test_that("function: zeroIsNA and nNA", {
 
 test_that("zeroIsNA,Features", {
     ft <- zeroIsNA(ft0)
-    expect_equivalent(ft[["na"]], ft[["zero"]])    
+    expect_equivalent(ft[["na"]], ft[["zero"]])
+    ft <- zeroIsNA(ft0, 1)
+    expect_equivalent(ft[["na"]], ft[["zero"]])
+    ft <- zeroIsNA(ft0, "na")
+    expect_equivalent(ft[["na"]], ft[["zero"]])
+})
+
+test_that("nNA,Features", {
+    n_na <- nNA(ft0)
+    expect_identical(n_na[[1]], c(na = 3/(4*3), zero = 0))
+    expect_identical(n_na[[2]],
+                     matrix(c(1, 3, 0, 0, 4, 0, 0, 0),
+                            nrow = 2, byrow = TRUE,
+                            dimnames = list(c("na", "zero"),
+                                            0:3)))
+    expect_identical(n_na[[3]],
+                     matrix(c(2, 1, 0, 0, 0, 0),
+                            nrow = 2, byrow = TRUE,
+                            dimnames = list(c("na", "zero"),
+                                            LETTERS[1:3])))
 })
