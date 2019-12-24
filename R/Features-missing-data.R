@@ -139,7 +139,7 @@ setMethod("nNA", c("Features", "missing"),
               ans[[3]] <- t(sapply(res, "[[", 3))
               ans2 <- matrix(0,
                              ncol = 1 + nrow(colData(object)),
-                             nrow = ncol(colData(object)))
+                             nrow = length(object))
               rownames(ans2) <- names(object)
               colnames(ans2) <- 0:nrow(colData(object))
               for (i in seq_len(length(res))) {
