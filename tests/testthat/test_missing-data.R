@@ -82,4 +82,20 @@ test_that("nNA,Features", {
                             nrow = 2, byrow = TRUE,
                             dimnames = list(c("na", "zero"),
                                             LETTERS[1:3])))
+    expect_identical(nNA(ft0, 1L), nNA(se_na))
+    expect_identical(nNA(ft0, 1), nNA(se_na))
+    expect_identical(nNA(ft0, "na"), nNA(se_na))
+    expect_identical(nNA(ft0[, , 1]), nNA(ft0[[1]]))
+})
+
+
+test_that("filterNA,Features and filterNA,SummarizedExperiment", {
+    se_na_filtered <- filterNA(se_na)
+    ft_filtered <- filterNA(ft0)
+    expect_equivalent(se_na_filtered, ft_filtered[[1]])
+    expect_identical(assay(se_na_filtered), m[2, , drop = FALSE])
+    se_na_filtered <- filterNA(se_na, pNA = 0.9)
+    ft_filtered <- filterNA(ft0, pNA = 0.9)
+    expect_equivalent(se_na_filtered, ft_filtered[[1]])
+    expect_equivalent(se_na_filtered, ft0[[2]])
 })
