@@ -116,7 +116,7 @@ normalize_SE <- function(object, method, ...) {
 ##'
 ##' @examples
 ##'
-##' normalzeMethods()
+##' normalizeMethods()
 NULL
 
 ## -------------------------------------------------------

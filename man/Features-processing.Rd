@@ -92,5 +92,5 @@ function arguments.
 }
 \examples{
 
-normalzeMethods()
+normalizeMethods()
 }
