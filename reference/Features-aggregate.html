@@ -196,6 +196,29 @@ using <code><a href='https://rdrr.io/pkg/MASS/man/rlm.html'>MASS::rlm()</a></cod
 <li><p><code><a href='https://rdrr.io/r/base/colSums.html'>base::colSums()</a></code> to use the sum of each column;</p></li>
 </ul>
 
+<p>Missing values have different effect based on the aggregation
+method employed,</p><ul>
+<li><p>The aggregation functions should be able to deal with missing
+values by either ignoring them, and propagating them. This is
+often done with an <code>na.rm</code> argument, that can be passed with
+<code>...</code>. For example, <code>rowSums</code>, <code>rowMeans</code>, <code>rowMedians</code>,
+... will ignore <code>NA</code> values with <code>na.rm = TRUE</code>, as illustrated
+below.</p></li>
+<li><p>Missing values will result in an error when using <code>medpolish</code>,
+unless <code>na.rm = TRUE</code> is used. Note that this option relies on
+implicit assumptions and/or performes an implicit imputation:
+when summing, the values are implicitly imputed by 0, assuming
+that the <code>NA</code> represent a trully absent features; when
+averaging, the assumption is that the <code>NA</code> represented a
+genuinely missing value.</p></li>
+<li><p>When using robust summarisation, individual missing values are
+excluded prior to fitting the linear model by robust
+regression. To remove all values in the feature containing the
+missing values, use <code><a href='Features-missing-data.html'>filterNA()</a></code>.</p></li>
+</ul>
+
+<p>More generally, missing values often need dedicated handling such
+as filtering (see <code><a href='Features-missing-data.html'>filterNA()</a></code>) or imputation.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>The <em>Features</em> vignette provides an extended example and
@@ -217,7 +240,34 @@ proteomics data processing pipeline.</p></div>
 <span class='no'>feat1</span></div><div class='output co'>#&gt; A instance of class Features containing
 #&gt;  [1] psms: SummarizedExperiment with 10 rows and 2 columns 
 #&gt;  [2] peptides: SummarizedExperiment with 3 rows and 2 columns 
-#&gt;  [3] proteins: SummarizedExperiment with 2 rows and 2 columns </div></pre>
+#&gt;  [3] proteins: SummarizedExperiment with 2 rows and 2 columns </div><div class='input'>
+<span class='co'>## Aggregation with missing values</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>ft_na</span>)
+<span class='no'>ft_na</span></div><div class='output co'>#&gt; A instance of class Features containing
+#&gt;  [1] na: SummarizedExperiment with 4 rows and 3 columns </div><div class='input'>
+<span class='fu'>assay</span>(<span class='no'>ft_na</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt;    A  B  C
+#&gt; a NA  5  9
+#&gt; b  2  6 10
+#&gt; c  3 NA 11
+#&gt; d NA  8 12</div><div class='input'><span class='fu'>rowData</span>(<span class='no'>ft_na</span><span class='kw'>[[</span><span class='fl'>1</span>]])</div><div class='output co'>#&gt; DataFrame with 4 rows and 1 column
+#&gt;           X
+#&gt;   &lt;integer&gt;
+#&gt; a         1
+#&gt; b         2
+#&gt; c         1
+#&gt; d         2</div><div class='input'>
+<span class='co'>## By default, missing values are propagated</span>
+<span class='fu'>assay</span>(<span class='fu'>aggregateFeatures</span>(<span class='no'>ft_na</span>, <span class='fl'>1</span>, <span class='kw'>fcol</span> <span class='kw'>=</span> <span class='st'>"X"</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='no'>colSums</span>), <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>Your data contains missing values. Please read the relevant section in</span>
+#&gt; <span class='message'>the aggregateFeatures manual page for details the effects of missing</span>
+#&gt; <span class='message'>values on data aggregation.</span></div><div class='output co'>#&gt;    A  B  C
+#&gt; 1 NA NA 20
+#&gt; 2 NA 14 22</div><div class='input'>
+<span class='co'>## Ignored when setting na.rm = TRUE</span>
+<span class='fu'>assay</span>(<span class='fu'>aggregateFeatures</span>(<span class='no'>ft_na</span>, <span class='fl'>1</span>, <span class='kw'>fcol</span> <span class='kw'>=</span> <span class='st'>"X"</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='no'>colSums</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>Your data contains missing values. Please read the relevant section in</span>
+#&gt; <span class='message'>the aggregateFeatures manual page for details the effects of missing</span>
+#&gt; <span class='message'>values on data aggregation.</span></div><div class='output co'>#&gt;   A  B  C
+#&gt; 1 3  5 20
+#&gt; 2 2 14 22</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
