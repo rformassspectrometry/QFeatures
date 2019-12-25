@@ -165,7 +165,6 @@ setMethod("filterFeatures",
 
 ##' @importFrom BiocGenerics do.call
 filterFeaturesWithAnnotationFilter <- function(object, filter, ...) {
-    browser()
     sel <- lapply(experiments(object),
                   function(exp) {
                       x <- rowData(exp)
