@@ -56,7 +56,12 @@
 ##'   below.
 ##'
 ##' - Missing values will result in an error when using `medpolish`,
-##'   unless `na.rm = TRUE` is used.
+##'   unless `na.rm = TRUE` is used. Note that this option relies on
+##'   implicit assumptions and/or performes an implicit imputation:
+##'   when summing, the values are implicitly imputed by 0, assuming
+##'   that the `NA` represent a trully absent features; when
+##'   averaging, the assumption is that the `NA` represented a
+##'   genuinely missing value.
 ##'
 ##' - When using robust summarisation, individual missing values are
 ##'   excluded prior to fitting the linear model by robust
@@ -65,7 +70,6 @@
 ##'
 ##' More generally, missing values often need dedicated handling such
 ##' as filtering (see [filterNA()]) or imputation.
-##'
 ##'
 ##' @seealso The *Features* vignette provides an extended example and
 ##'     the *Processing* vignette, for a complete quantitative
@@ -92,6 +96,19 @@
 ##' ## Aggregate peptides into proteins
 ##' feat1 <- aggregateFeatures(feat1, "peptides", "Protein", name = "proteins")
 ##' feat1
+##'
+##' ## Aggregation with missing values
+##' data(ft_na)
+##' ft_na
+##'
+##' assay(ft_na, 1)
+##' rowData(ft_na[[1]])
+##'
+##' ## By default, missing values are propagated
+##' assay(aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums), 2)
+##'
+##' ## Ignored when setting na.rm = TRUE
+##' assay(aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums, na.rm = TRUE), 2)
 NULL
 
 ##' @exportMethod aggregateFeatures

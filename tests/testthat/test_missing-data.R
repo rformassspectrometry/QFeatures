@@ -99,5 +99,24 @@ test_that("filterNA,Features and filterNA,SummarizedExperiment", {
 })
 
 test_that("aggregateFeatures with missing data", {
-    expect_message(aggregateFeatures(ft0, "na", fcol = "X", name = "na_agg", fun = colSums))
+    expect_message(ft_na <- aggregateFeatures(ft_na, "na", fcol = "X", name = "agg_na",
+                                              fun = colSums))
+    expect_message(ft_na <- aggregateFeatures(ft_na, "na", fcol = "X", name = "agg_na_rm",
+                                              fun = colSums,
+                                              na.rm = TRUE))
+    agg1 <- matrix(c(NA, NA, 20,
+                     NA, 14, 22),
+                   ncol = 3, byrow = TRUE,
+                   dimnames = list(1:2, LETTERS[1:3]))
+    agg2 <- matrix(c(3, 5, 20,
+                     2, 14, 22),
+                   ncol = 3, byrow = TRUE,
+                   dimnames = list(1:2, LETTERS[1:3]))
+    expect_identical(assay(ft_na[[2]]), agg1)
+    expect_identical(assay(ft_na[[3]]), agg2)
+    expect_identical(rowData(ft_na[[2]]), rowData(ft_na[[3]]))
+    rd <- DataFrame(X = c(1L, 2L),
+                    .n = c(2L, 2L),
+                    row.names = 1:2)
+    expect_equivalent(rowData(ft_na[[2]]), rd)
 })
