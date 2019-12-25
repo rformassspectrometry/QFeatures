@@ -45,10 +45,33 @@
 ##'
 ##' - [base::colSums()] to use the sum of each column;
 ##'
+##' Missing values have different effect based on the aggregation
+##' method employed,
+##'
+##' - The aggregation functions should be able to deal with missing
+##'   values by either ignoring them, and propagating them. This is
+##'   often done with an `na.rm` argument, that can be passed with
+##'   `...`. For example, `rowSums`, `rowMeans`, `rowMedians`,
+##'   ... will ignore `NA` values with `na.rm = TRUE`, as illustrated
+##'   below.
+##'
+##' - Missing values will result in an error when using `medpolish`,
+##'   unless `na.rm = TRUE` is used.
+##'
+##' - When using robust summarisation, individual missing values are
+##'   excluded prior to fitting the linear model by robust
+##'   regression. To remove all values in the feature containing the
+##'   missing values, use [filterNA()].
+##'
+##' More generally, missing values often need dedicated handling such
+##' as filtering (see [filterNA()]) or imputation.
+##'
+##'
 ##' @seealso The *Features* vignette provides an extended example and
 ##'     the *Processing* vignette, for a complete quantitative
 ##'     proteomics data processing pipeline.
 ##'
+##' 
 ##' @aliases aggregateFeatures aggregateFeatures,Features-method
 ##'
 ##' @name aggregateFeatures
@@ -101,7 +124,6 @@ setMethod("aggregateFeatures", "Features",
                      "effects of missing values on data aggregation.")
         message(paste(strwrap(msg), collapse = "\n"))
     }
-
     aggregated_assay <- aggregate_by_vector(assay_i, groupBy, fun, ...)
     aggregated_rowdata <- Features::reduceDataFrame(rowdata_i, rowdata_i[[fcol]],
                                                    simplify = TRUE, drop = TRUE,
