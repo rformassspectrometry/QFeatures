@@ -15,7 +15,7 @@ Imports:
    SummarizedExperiment,
    DelayedArray,
    BiocGenerics,
-   ProtGenerics (>= 1.19.2),
+   ProtGenerics (>= 1.19.3),
    AnnotationFilter,
    lazyeval,
    Biobase,
