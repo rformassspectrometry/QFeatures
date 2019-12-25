@@ -3,12 +3,16 @@
 \docType{data}
 \name{feat1}
 \alias{feat1}
+\alias{ft_na}
 \title{Test PSM-level expression data}
 \format{An object of class \code{Features} of length 1.}
 \usage{
 feat1
 }
 \description{
-A small test \code{Features} object for testing and demonstration.
+\code{feat1} is a small test \code{Features} object for testing and
+demonstration. \code{ft_na} is a tiny test set that contains missing
+values used to demonstrate and test the impact of missing values
+on data processing.
 }
 \keyword{datasets}
