@@ -170,21 +170,10 @@ to <code>method</code> (see Details).</p></li>
 <span class='fu'>scaleTransform</span>(<span class='no'>object</span>, <span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>i</span>)
 
 <span class='co'># S4 method for SummarizedExperiment</span>
-<span class='fu'>normalize</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sum"</span>, <span class='st'>"max"</span>, <span class='st'>"center.mean"</span>, <span class='st'>"center.median"</span>, <span class='st'>"diff.median"</span>, <span class='st'>"quantiles"</span>,
-    <span class='st'>"quantiles.robust"</span>, <span class='st'>"vsn"</span>),
-  <span class='no'>...</span>
-)
+<span class='fu'>normalize</span>(<span class='no'>object</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>normalizeMethods</span>(), <span class='no'>...</span>)
 
 <span class='co'># S4 method for Features</span>
-<span class='fu'>normalize</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sum"</span>, <span class='st'>"max"</span>, <span class='st'>"center.mean"</span>, <span class='st'>"center.median"</span>, <span class='st'>"diff.median"</span>, <span class='st'>"quantiles"</span>,
-    <span class='st'>"quantiles.robust"</span>, <span class='st'>"vsn"</span>),
-  <span class='no'>...</span>,
-  <span class='no'>i</span>
-)</pre>
+<span class='fu'>normalize</span>(<span class='no'>object</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>normalizeMethods</span>(), <span class='no'>...</span>, <span class='no'>i</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -238,7 +227,8 @@ apply. See Details.</p></td>
 <code>"center.median"</code>, <code>"quantiles.robust</code>" or <code>"vsn"</code>.  For <code>"sum"</code>
 and <code>"max"</code>, each feature's intensity is divided by the maximum or
 the sum of the feature respectively. These two methods are applied
-along the features (rows).</p>
+along the features (rows). The <code>normaliseMethods()</code> function
+returns a vector of available normalisation methods.</p>
 <p><code>"center.mean"</code> and <code>"center.median"</code> translate the respective
 sample (column) intensities according to the column mean or
 median. <code>"diff.median"</code> translates all samples (columns) so that
@@ -250,12 +240,17 @@ implemented in <code><a href='https://rdrr.io/pkg/preprocessCore/man/normalize.q
 the intensities.  See respective manuals for more details and
 function arguments.</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='fu'>normalizeMethods</span>()</div><div class='output co'>#&gt; [1] "sum"              "max"              "center.mean"      "center.median"   
+#&gt; [5] "diff.median"      "quantiles"        "quantiles.robust" "vsn"             </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
