@@ -1,11 +1,9 @@
-m <- matrix(1:12, ncol = 3)
-colnames(m) <- LETTERS[1:3]
-rownames(m) <- letters[1:4]
-m[3, 2] <- m[4, 1] <- m[1, 1] <- 0
-se_zero <- SummarizedExperiment(assay = m)
-m[3, 2] <- m[4, 1] <- m[1, 1] <- NA
-se_na <- SummarizedExperiment(assay = m)
-
+data(ft_na)
+se_na <- ft_na[["na"]]
+m0 <- m <- assay(se_na)
+m0[3, 2] <- m0[4, 1] <- m0[1, 1] <- 0
+se_zero <- SummarizedExperiment(assay = m0)
+               
 ft0 <- Features(list(na = se_na, zero = se_zero),
                 colData = DataFrame(row.names = LETTERS[1:3]))
 
@@ -101,6 +99,5 @@ test_that("filterNA,Features and filterNA,SummarizedExperiment", {
 })
 
 test_that("aggregateFeatures with missing data", {
-    
-
+    expect_message(aggregateFeatures(ft0, "na", fcol = "X", name = "na_agg", fun = colSums))
 })
