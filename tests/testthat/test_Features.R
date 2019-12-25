@@ -42,3 +42,19 @@ test_that("addAssay", {
     expect_identical(names(feat1), c("psms", "psms2"))
     expect_identical(feat1[[1]], feat1[[2]])
 })
+
+test_that("rowDataNames", {
+    rdn <- rowDataNames(feat1)
+    expect_identical(length(feat1), length(rdn))
+    expect_identical(names(feat1), names(rdn))
+    for (i in seq_along(length(feat1)))
+        expect_identical(rdn[[i]], names(rowData(feat1[[i]])))    
+})
+
+test_that("selectRowData", {
+    x <- c("Sequence", "Protein")
+    ft <- selectRowData(feat1, x)
+    expect_identical(length(ft), length(feat1))
+    expect_identical(names(ft), names(feat1))
+    expect_identical(rowDataNames(ft)[[1]], x)
+})
