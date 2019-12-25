@@ -359,39 +359,23 @@ Conceptual representation of a <code>Features</code> object and the aggregative 
 ## value: 0.001</code></pre>
 <p>These filter can then readily be applied to all assays’ row data slots. The <code>mito_filter</code> will return all PSMs, peptides and proteins that were annotated as localising to the mitochondrion.</p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw"><a href="../reference/Features-filtering.html">filterFeatures</a></span>(hl, mito_filter)</a></code></pre></div>
-<pre><code>## Called from: filterFeaturesWithAnnotationFilter(object, filter, ...)
-## debug: sel &lt;- lapply(experiments(object), function(exp) {
-##     x &lt;- rowData(exp)
-##     if (field(filter) %in% names(x)) 
-##         do.call(condition(filter), list(x[, field(filter)], value(filter)))
-##     else rep(FALSE, nrow(x))
-## })
-## debug: object[sel, , ]</code></pre>
 <pre><code>## A instance of class Features containing
 ##  [1] psms: SummarizedExperiment with 2019 rows and 10 columns 
 ##  [2] peptides: SummarizedExperiment with 1770 rows and 10 columns 
 ##  [3] proteins: SummarizedExperiment with 360 rows and 10 columns</code></pre>
 <p>The <code>qval_filter</code>, on the other hand, will only return a subset of PSMs, because the <code>qValue</code> variable is only present in the <code>psms</code> assays. The q-values are only relevant to PSMs and that variable was dropped from the other assays.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw"><a href="../reference/Features-filtering.html">filterFeatures</a></span>(hl, qval_filter)</a></code></pre></div>
-<pre><code>## Called from: filterFeaturesWithAnnotationFilter(object, filter, ...)
-## debug: sel &lt;- lapply(experiments(object), function(exp) {
-##     x &lt;- rowData(exp)
-##     if (field(filter) %in% names(x)) 
-##         do.call(condition(filter), list(x[, field(filter)], value(filter)))
-##     else rep(FALSE, nrow(x))
-## })
-## debug: object[sel, , ]</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw"><a href="../reference/Features-filtering.html">filterFeatures</a></span>(hl, qval_filter)</a></code></pre></div>
 <pre><code>## harmonizing input:
 ##   removing 20 sampleMap rows not in names(experiments)</code></pre>
 <pre><code>## A instance of class Features containing
 ##  [1] psms: SummarizedExperiment with 26768 rows and 10 columns</code></pre>
 <p>The same filters can be created using the forumla interface:</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw"><a href="../reference/Features-filtering.html">filterFeatures</a></span>(hl, <span class="op">~</span><span class="st"> </span>markers <span class="op">==</span><span class="st"> "Mitochondrion"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw"><a href="../reference/Features-filtering.html">filterFeatures</a></span>(hl, <span class="op">~</span><span class="st"> </span>markers <span class="op">==</span><span class="st"> "Mitochondrion"</span>)</a></code></pre></div>
 <pre><code>## A instance of class Features containing
 ##  [1] psms: SummarizedExperiment with 2019 rows and 10 columns 
 ##  [2] peptides: SummarizedExperiment with 1770 rows and 10 columns 
 ##  [3] proteins: SummarizedExperiment with 360 rows and 10 columns</code></pre>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw"><a href="../reference/Features-filtering.html">filterFeatures</a></span>(hl, <span class="op">~</span><span class="st"> </span>qValue <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.001</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw"><a href="../reference/Features-filtering.html">filterFeatures</a></span>(hl, <span class="op">~</span><span class="st"> </span>qValue <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.001</span>)</a></code></pre></div>
 <pre><code>## harmonizing input:
 ##   removing 20 sampleMap rows not in names(experiments)</code></pre>
 <pre><code>## A instance of class Features containing
@@ -422,7 +406,7 @@ Conceptual representation of a <code>Features</code> object and the aggregative 
 ## 
 ## other attached packages:
 ##  [1] magrittr_1.5                ggplot2_3.2.1              
-##  [3] Features_0.2.1              MultiAssayExperiment_1.13.3
+##  [3] Features_0.2.1              MultiAssayExperiment_1.13.4
 ##  [5] SummarizedExperiment_1.17.1 DelayedArray_0.13.1        
 ##  [7] BiocParallel_1.21.2         matrixStats_0.55.0         
 ##  [9] Biobase_2.47.2              GenomicRanges_1.39.1       

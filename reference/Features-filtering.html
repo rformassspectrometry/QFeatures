@@ -291,14 +291,7 @@ vignette provides an extended example.</p></div>
 #&gt;  [2] peptides: SummarizedExperiment with 2 rows and 2 columns 
 #&gt;  [3] proteins: SummarizedExperiment with 1 rows and 2 columns </div><div class='input'>
 <span class='co'>## using a user-defined character filter</span>
-<span class='fu'>filterFeatures</span>(<span class='no'>feat1</span>, <span class='fu'>VariableFilter</span>(<span class='st'>"location"</span>, <span class='st'>"Mitochondrion"</span>))</div><div class='output co'>#&gt; Called from: filterFeaturesWithAnnotationFilter(object, filter, ...)
-#&gt; debug: sel &lt;- lapply(experiments(object), function(exp) {
-#&gt;     x &lt;- rowData(exp)
-#&gt;     if (field(filter) %in% names(x)) 
-#&gt;         do.call(condition(filter), list(x[, field(filter)], value(filter)))
-#&gt;     else rep(FALSE, nrow(x))
-#&gt; })
-#&gt; debug: object[sel, , ]</div><div class='output co'>#&gt; A instance of class Features containing
+<span class='fu'>filterFeatures</span>(<span class='no'>feat1</span>, <span class='fu'>VariableFilter</span>(<span class='st'>"location"</span>, <span class='st'>"Mitochondrion"</span>))</div><div class='output co'>#&gt; A instance of class Features containing
 #&gt;  [1] psms: SummarizedExperiment with 6 rows and 2 columns 
 #&gt;  [2] peptides: SummarizedExperiment with 2 rows and 2 columns 
 #&gt;  [3] proteins: SummarizedExperiment with 1 rows and 2 columns </div><div class='input'>
@@ -308,14 +301,7 @@ vignette provides an extended example.</p></div>
 <span class='co'>## ----------------------------------------------------------------</span>
 
 <span class='co'>## using a user-defined character filter</span>
-<span class='fu'>filterFeatures</span>(<span class='no'>feat1</span>, <span class='fu'>VariableFilter</span>(<span class='st'>"location"</span>, <span class='st'>"unknown"</span>, <span class='kw'>condition</span> <span class='kw'>=</span> <span class='st'>"!="</span>))</div><div class='output co'>#&gt; Called from: filterFeaturesWithAnnotationFilter(object, filter, ...)
-#&gt; debug: sel &lt;- lapply(experiments(object), function(exp) {
-#&gt;     x &lt;- rowData(exp)
-#&gt;     if (field(filter) %in% names(x)) 
-#&gt;         do.call(condition(filter), list(x[, field(filter)], value(filter)))
-#&gt;     else rep(FALSE, nrow(x))
-#&gt; })
-#&gt; debug: object[sel, , ]</div><div class='output co'>#&gt; A instance of class Features containing
+<span class='fu'>filterFeatures</span>(<span class='no'>feat1</span>, <span class='fu'>VariableFilter</span>(<span class='st'>"location"</span>, <span class='st'>"unknown"</span>, <span class='kw'>condition</span> <span class='kw'>=</span> <span class='st'>"!="</span>))</div><div class='output co'>#&gt; A instance of class Features containing
 #&gt;  [1] psms: SummarizedExperiment with 6 rows and 2 columns 
 #&gt;  [2] peptides: SummarizedExperiment with 2 rows and 2 columns 
 #&gt;  [3] proteins: SummarizedExperiment with 1 rows and 2 columns </div><div class='input'>
@@ -329,14 +315,7 @@ vignette provides an extended example.</p></div>
 <span class='co'>## ----------------------------------------------------------------</span>
 
 <span class='co'>## using a user-defined numeric filter</span>
-<span class='fu'>filterFeatures</span>(<span class='no'>feat1</span>, <span class='fu'>VariableFilter</span>(<span class='st'>"pval"</span>, <span class='fl'>0.03</span>, <span class='st'>"&lt;="</span>))</div><div class='output co'>#&gt; Called from: filterFeaturesWithAnnotationFilter(object, filter, ...)
-#&gt; debug: sel &lt;- lapply(experiments(object), function(exp) {
-#&gt;     x &lt;- rowData(exp)
-#&gt;     if (field(filter) %in% names(x)) 
-#&gt;         do.call(condition(filter), list(x[, field(filter)], value(filter)))
-#&gt;     else rep(FALSE, nrow(x))
-#&gt; })
-#&gt; debug: object[sel, , ]</div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
+<span class='fu'>filterFeatures</span>(<span class='no'>feat1</span>, <span class='fu'>VariableFilter</span>(<span class='st'>"pval"</span>, <span class='fl'>0.03</span>, <span class='st'>"&lt;="</span>))</div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
 #&gt; <span class='message'>  removing 4 sampleMap rows not in names(experiments)</span></div><div class='output co'>#&gt; A instance of class Features containing
 #&gt;  [1] psms: SummarizedExperiment with 5 rows and 2 columns </div><div class='input'>
 <span class='co'>## using the formula interface</span>
@@ -348,23 +327,9 @@ vignette provides an extended example.</p></div>
 <span class='co'>## or a missing feature variable, returning empty results</span>
 <span class='co'>## ----------------------------------------------------------------</span>
 
-<span class='fu'>filterFeatures</span>(<span class='no'>feat1</span>, <span class='fu'>VariableFilter</span>(<span class='st'>"location"</span>, <span class='st'>"not"</span>))</div><div class='output co'>#&gt; Called from: filterFeaturesWithAnnotationFilter(object, filter, ...)
-#&gt; debug: sel &lt;- lapply(experiments(object), function(exp) {
-#&gt;     x &lt;- rowData(exp)
-#&gt;     if (field(filter) %in% names(x)) 
-#&gt;         do.call(condition(filter), list(x[, field(filter)], value(filter)))
-#&gt;     else rep(FALSE, nrow(x))
-#&gt; })
-#&gt; debug: object[sel, , ]</div><div class='output co'>#&gt; A empty instance of class Features </div><div class='input'>
+<span class='fu'>filterFeatures</span>(<span class='no'>feat1</span>, <span class='fu'>VariableFilter</span>(<span class='st'>"location"</span>, <span class='st'>"not"</span>))</div><div class='output co'>#&gt; A empty instance of class Features </div><div class='input'>
 <span class='fu'>filterFeatures</span>(<span class='no'>feat1</span>, ~ <span class='no'>location</span> <span class='kw'>==</span> <span class='st'>"not"</span>)</div><div class='output co'>#&gt; A empty instance of class Features </div><div class='input'>
-<span class='fu'>filterFeatures</span>(<span class='no'>feat1</span>, <span class='fu'>VariableFilter</span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>))</div><div class='output co'>#&gt; Called from: filterFeaturesWithAnnotationFilter(object, filter, ...)
-#&gt; debug: sel &lt;- lapply(experiments(object), function(exp) {
-#&gt;     x &lt;- rowData(exp)
-#&gt;     if (field(filter) %in% names(x)) 
-#&gt;         do.call(condition(filter), list(x[, field(filter)], value(filter)))
-#&gt;     else rep(FALSE, nrow(x))
-#&gt; })
-#&gt; debug: object[sel, , ]</div><div class='output co'>#&gt; A empty instance of class Features </div><div class='input'>
+<span class='fu'>filterFeatures</span>(<span class='no'>feat1</span>, <span class='fu'>VariableFilter</span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>))</div><div class='output co'>#&gt; A empty instance of class Features </div><div class='input'>
 <span class='fu'>filterFeatures</span>(<span class='no'>feat1</span>, ~ <span class='no'>foo</span> <span class='kw'>==</span> <span class='st'>"bar"</span>)</div><div class='output co'>#&gt; A empty instance of class Features </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
