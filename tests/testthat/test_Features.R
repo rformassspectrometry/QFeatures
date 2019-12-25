@@ -43,6 +43,12 @@ test_that("addAssay", {
     expect_identical(feat1[[1]], feat1[[2]])
 })
 
+test_that("[,Features", {
+})
+
+
+
+
 test_that("rowDataNames", {
     rdn <- rowDataNames(feat1)
     expect_identical(length(feat1), length(rdn))
@@ -57,4 +63,10 @@ test_that("selectRowData", {
     expect_identical(length(ft), length(feat1))
     expect_identical(names(ft), names(feat1))
     expect_identical(rowDataNames(ft)[[1]], x)
+    expect_error(selectRowData(feat1))
+    expect_message(ft <- selectRowData(feat1,
+                                       c("Sequence", "Protein",
+                                         "Var", "location", "pval",
+                                         "var_not_found")))
+    expect_identical(feat1, ft)
 })
