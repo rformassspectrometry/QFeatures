@@ -11,6 +11,7 @@
 \alias{normalize}
 \alias{normalize,SummarizedExperiment-method}
 \alias{normalize,Features-method}
+\alias{normalizeMethods}
 \title{Features processing}
 \usage{
 \S4method{logTransform}{SummarizedExperiment}(object, base = 2, pc = 0)
@@ -21,20 +22,9 @@
 
 \S4method{scaleTransform}{Features}(object, center = TRUE, scale = TRUE, i)
 
-\S4method{normalize}{SummarizedExperiment}(
-  object,
-  method = c("sum", "max", "center.mean", "center.median", "diff.median", "quantiles",
-    "quantiles.robust", "vsn"),
-  ...
-)
+\S4method{normalize}{SummarizedExperiment}(object, method = normalizeMethods(), ...)
 
-\S4method{normalize}{Features}(
-  object,
-  method = c("sum", "max", "center.mean", "center.median", "diff.median", "quantiles",
-    "quantiles.robust", "vsn"),
-  ...,
-  i
-)
+\S4method{normalize}{Features}(object, method = normalizeMethods(), ..., i)
 }
 \arguments{
 \item{object}{An object of class \code{Features} or \code{SummarizedExperiment}.}
