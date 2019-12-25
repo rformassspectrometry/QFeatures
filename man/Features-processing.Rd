@@ -11,6 +11,7 @@
 \alias{normalize}
 \alias{normalize,SummarizedExperiment-method}
 \alias{normalize,Features-method}
+\alias{normalizeMethods}
 \title{Features processing}
 \usage{
 \S4method{logTransform}{SummarizedExperiment}(object, base = 2, pc = 0)
@@ -21,20 +22,9 @@
 
 \S4method{scaleTransform}{Features}(object, center = TRUE, scale = TRUE, i)
 
-\S4method{normalize}{SummarizedExperiment}(
-  object,
-  method = c("sum", "max", "center.mean", "center.median", "diff.median", "quantiles",
-    "quantiles.robust", "vsn"),
-  ...
-)
+\S4method{normalize}{SummarizedExperiment}(object, method = normalizeMethods(), ...)
 
-\S4method{normalize}{Features}(
-  object,
-  method = c("sum", "max", "center.mean", "center.median", "diff.median", "quantiles",
-    "quantiles.robust", "vsn"),
-  ...,
-  i
-)
+\S4method{normalize}{Features}(object, method = normalizeMethods(), ..., i)
 }
 \arguments{
 \item{object}{An object of class \code{Features} or \code{SummarizedExperiment}.}
@@ -86,7 +76,8 @@ The \code{method} parameter in \code{normalize} can be one of \code{"sum"},
 \code{"center.median"}, \verb{"quantiles.robust}" or \code{"vsn"}.  For \code{"sum"}
 and \code{"max"}, each feature's intensity is divided by the maximum or
 the sum of the feature respectively. These two methods are applied
-along the features (rows).
+along the features (rows). The \code{normaliseMethods()} function
+returns a vector of available normalisation methods.
 
 \code{"center.mean"} and \code{"center.median"} translate the respective
 sample (column) intensities according to the column mean or
@@ -98,4 +89,8 @@ implemented in \code{\link[preprocessCore:normalize.quantiles]{preprocessCore::n
 \code{\link[vsn:vsn2]{vsn::vsn2()}} function.  Note that the latteralso glog-transforms
 the intensities.  See respective manuals for more details and
 function arguments.
+}
+\examples{
+
+normalizeMethods()
 }

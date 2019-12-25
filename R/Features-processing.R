@@ -1,3 +1,4 @@
+
 ##' @importFrom DelayedArray rowMaxs
 normalize_SE <- function(object, method, ...) {
     if (method == "vsn") {
@@ -63,7 +64,8 @@ normalize_SE <- function(object, method, ...) {
 ##' `"center.median"`, `"quantiles.robust`" or `"vsn"`.  For `"sum"`
 ##' and `"max"`, each feature's intensity is divided by the maximum or
 ##' the sum of the feature respectively. These two methods are applied
-##' along the features (rows).
+##' along the features (rows). The `normaliseMethods()` function
+##' returns a vector of available normalisation methods.
 ##'
 ##' `"center.mean"` and `"center.median"` translate the respective
 ##' sample (column) intensities according to the column mean or
@@ -106,9 +108,15 @@ normalize_SE <- function(object, method, ...) {
 ##' 
 ##' @aliases normalize normalize,SummarizedExperiment-method normalize,Features-method
 ##'
+##' @aliases normalizeMethods
+##'
 ##' @name Features-processing
 ##'
 ##' @rdname Features-processing
+##'
+##' @examples
+##'
+##' normalizeMethods()
 NULL
 
 ## -------------------------------------------------------
@@ -162,14 +170,18 @@ setMethod("scaleTransform", "Features",
 ##   Normalisation (normalize)
 ## -------------------------------------------------------
 
+##' @export
+normalizeMethods <- function()
+    c("sum", "max", "center.mean",
+      "center.median", "diff.median",
+      "quantiles", "quantiles.robust", "vsn")
+
 ##' @importFrom BiocGenerics normalize
 ##' @exportMethod normalize
 ##' @rdname Features-processing
 setMethod("normalize", "SummarizedExperiment",
           function(object,
-                   method = c("sum", "max", "center.mean",
-                              "center.median", "diff.median",
-                              "quantiles", "quantiles.robust", "vsn"),
+                   method = normalizeMethods(),
                    ...)
               normalize_SE(object, match.arg(method), ...))
 
@@ -178,9 +190,7 @@ setMethod("normalize", "SummarizedExperiment",
 ##' @rdname Features-processing
 setMethod("normalize", "Features",
           function(object,
-                   method = c("sum", "max", "center.mean",
-                              "center.median", "diff.median",
-                              "quantiles", "quantiles.robust", "vsn"),
+                   method = normalizeMethods(),
                    ..., i) {
               if (missing(i))
                   i  <-  seq_len(length(object))

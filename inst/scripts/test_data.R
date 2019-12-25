@@ -1,7 +1,8 @@
 library("Features")
 
 set.seet(1)
-psms <- matrix(1:20, ncol = 2)
+## Creating psms as <double> rather than <integer>
+psms <- matrix(seq(1, 20, by = 1.0), ncol = 2)
 colnames(psms) <- paste0("S", 1:2)
 rowdata <- DataFrame(Sequence = c("SYGFNAAR", "SYGFNAAR", "SYGFNAAR", "ELGNDAYK",
                                   "ELGNDAYK", "ELGNDAYK", "IAEESNFPFIK",
