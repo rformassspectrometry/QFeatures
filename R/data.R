@@ -77,6 +77,11 @@
 
 ##' Test PSM-level expression data
 ##'
-##' A small test `Features` object for testing and demonstration.
+##' `feat1` is a small test `Features` object for testing and
+##' demonstration. `ft_na` is a tiny test set that contains missing
+##' values used to demonstrate and test the impact of missing values
+##' on data processing.
+##'
+##' @aliases ft_na
 ##'
 "feat1"
