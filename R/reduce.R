@@ -95,7 +95,7 @@ reduceDataFrame <- function(x, k, count = FALSE, simplify = TRUE, drop = FALSE) 
             res[[i]] <- sapply(res[[i]], "[[", 1)
     }
     if (drop) 
-        res <- res[, invars]
+        res <- res[, invars, drop = FALSE]
     if (count)
         res[[".n"]] <- lens
     res
