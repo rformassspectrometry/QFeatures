@@ -52,8 +52,6 @@
 missing values per feature (row) that is acceptable. Feature
 with higher percentages are removed. If 0 (default), features
 that contain any number of \code{NA} values are dropped.}
-
-\item{...}{Additional arguments.}
 }
 \value{
 An instance of the same class as \code{object}.

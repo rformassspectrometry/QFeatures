@@ -1,5 +1,12 @@
 data(feat1)
 
+test_that("aggregateFeatures: empty and errors", {
+    expect_identical(Features(), aggregateFeatures(Features()))
+    expect_error(aggregateFeatures(feat1, name = "psms"))
+    expect_error(aggregateFeatures(feat1))
+    expect_error(aggregateFeatures(feat1, fcol = "missing_fcol"))
+})
+
 test_that("aggregateFeatures(fun = sum)", {
     feat1 <- aggregateFeatures(feat1, "psms", fcol = "Sequence",
                                name = "peptides", fun = colSums)

@@ -1,11 +1,9 @@
-m <- matrix(1:12, ncol = 3)
-colnames(m) <- LETTERS[1:3]
-rownames(m) <- letters[1:4]
-m[3, 2] <- m[4, 1] <- m[1, 1] <- 0
-se_zero <- SummarizedExperiment(assay = m)
-m[3, 2] <- m[4, 1] <- m[1, 1] <- NA
-se_na <- SummarizedExperiment(assay = m)
-
+data(ft_na)
+se_na <- ft_na[["na"]]
+m0 <- m <- assay(se_na)
+m0[3, 2] <- m0[4, 1] <- m0[1, 1] <- 0
+se_zero <- SummarizedExperiment(assay = m0)
+               
 ft0 <- Features(list(na = se_na, zero = se_zero),
                 colData = DataFrame(row.names = LETTERS[1:3]))
 
@@ -98,4 +96,27 @@ test_that("filterNA,Features and filterNA,SummarizedExperiment", {
     ft_filtered <- filterNA(ft0, pNA = 0.9)
     expect_equivalent(se_na_filtered, ft_filtered[[1]])
     expect_equivalent(se_na_filtered, ft0[[2]])
+})
+
+test_that("aggregateFeatures with missing data", {
+    expect_message(ft_na <- aggregateFeatures(ft_na, "na", fcol = "X", name = "agg_na",
+                                              fun = colSums))
+    expect_message(ft_na <- aggregateFeatures(ft_na, "na", fcol = "X", name = "agg_na_rm",
+                                              fun = colSums,
+                                              na.rm = TRUE))
+    agg1 <- matrix(c(NA, NA, 20,
+                     NA, 14, 22),
+                   ncol = 3, byrow = TRUE,
+                   dimnames = list(1:2, LETTERS[1:3]))
+    agg2 <- matrix(c(3, 5, 20,
+                     2, 14, 22),
+                   ncol = 3, byrow = TRUE,
+                   dimnames = list(1:2, LETTERS[1:3]))
+    expect_identical(assay(ft_na[[2]]), agg1)
+    expect_identical(assay(ft_na[[3]]), agg2)
+    expect_identical(rowData(ft_na[[2]]), rowData(ft_na[[3]]))
+    rd <- DataFrame(X = c(1L, 2L),
+                    .n = c(2L, 2L),
+                    row.names = 1:2)
+    expect_equivalent(rowData(ft_na[[2]]), rd)
 })
