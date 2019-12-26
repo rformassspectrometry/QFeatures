@@ -257,7 +257,7 @@ longFormat(cptac["P02787ups|TRFE_HUMAN_UPS", ]) %>%
     mutate(group = ifelse(grepl("A", colname), "A", "B")) %>%
     mutate(sample = sub("Intensity\\.", "", colname)) %>%
     ggplot(aes(x = sample, y = value, colour = rowname, shape = group)) +
-    geom_point(size = 5, alpha = 0.5) +
+    geom_point() +
     facet_grid(~ assay)
 ```
 
