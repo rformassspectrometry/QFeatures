@@ -18,5 +18,11 @@ test_that("filterFeatures", {
     expect_true(isEmpty(filterFeatures(feat1, VariableFilter("location", "not"))))
     expect_true(isEmpty(filterFeatures(feat1, ~ location == "not")))
     expect_true(isEmpty(filterFeatures(feat1, VariableFilter("foo", "bar"))))
-    expect_true(isEmpty(filterFeatures(feat1, ~ foo == "bar")))     
+    expect_true(isEmpty(filterFeatures(feat1, ~ foo == "bar")))
+    filter1 <- filterFeatures(feat1, VariableFilter("pval", 0.03, "<="))
+    filter2 <- filterFeatures(feat1, ~ pval <= 0.03)
+    expect_equal(filter1, filter2)
+    expect_error(VariableFilter("pval", TRUE, "<="))
+    expect_error(VariableFilter("location", TRUE, "!="))
 })
+
