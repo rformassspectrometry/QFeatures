@@ -31,10 +31,7 @@ library("dplyr")
 library("magrittr")
 ```
 
-
-# Introduction
-
-## Reading data as `Features`
+# Reading data as `Features`
 
 We are going to use a subset of the CPTAC study 6 containing
 conditions A and B [@Paulovich:2010]. The peptide-level data, as
@@ -66,7 +63,7 @@ library("Features")
 cptac <- readFeatures(f, ecol = i, sep = "\t", name = "peptides", fnames = "Sequence")
 ```
 
-## Encoding the experimental design
+# Encoding the experimental design
 
 Below we update the sample (column) annotations to encode the two
 groups, 6A and 6B, and the original sample numbers.
@@ -77,7 +74,7 @@ cptac$sample <- rep(7:9, 2)
 colData(cptac)
 ```
 
-## Filtering out contaminants and reverse hits
+# Filtering out contaminants and reverse hits
 
 
 ```{r}
@@ -94,7 +91,7 @@ cptac <- cptac %>%
     filterFeatures(~ Potential.contaminant == "")
 ```
 
-## Removing up unneeded feature variables
+# Removing up unneeded feature variables
 
 The spreadsheet that was read above contained numerous variables that
 are returned by MaxQuant, but not necessarily necessary in the frame
@@ -114,7 +111,7 @@ cptac <- selectRowData(cptac, rowvars)
 rowDataNames(cptac)
 ```
 
-## Managing missing values
+# Managing missing values
 
 Missing values can be very numerous in certain proteomics experiments
 and need to be dealt with carefully. The first step is to assess their
@@ -152,7 +149,7 @@ I we wanted to keep peptides that have up to 90% of missing values,
 corresponsing in this case to those that have only one value (i.e 5/6
 percent of missing values), we could have set `pNA` to 0.9.
 
-## Data transformation
+# Data transformation
 
 When analysing continuous data using parametric methods (such as
 t-test or linear models), it is often necessary to log-transform the
@@ -177,7 +174,7 @@ limma::plotDensities(assay(cptac[[1]]))
 limma::plotDensities(assay(cptac[[2]]))
 ```
 
-## Normalisation
+# Normalisation
 
 Assays in `Features` objects can be normalised with the `normalize`
  function. The type of normalisation is defined by the `method`
@@ -197,7 +194,7 @@ limma::plotDensities(assay(cptac[["peptides_log"]]))
 limma::plotDensities(assay(cptac[["peptides_norm"]]))
 ```
 
-## Feature aggregation
+# Feature aggregation
 
 At this stage, it is possible to directly use the peptide-level
 intensities to perform a statistical analysis [@Goeminne:2016], or
@@ -249,19 +246,19 @@ table(rowData(cptac[["proteins"]])$.n)
 Let's choose `P02787ups|TRFE_HUMAN_UPS` and visualise its expression
 pattern in the 2 groups at the protein and peptide level.
 
-```{r, message = TRUE}
+```{r, message = TRUE, fig.cap = "Expression intensities for the protein *P02787ups|TRFE_HUMAN_UPS* (right, green) and its peptides (left) in groups A (circles) and B (triangles)."}
 library("ggplot2")
 library("dplyr")
 longFormat(cptac["P02787ups|TRFE_HUMAN_UPS", ]) %>%
     as.data.frame() %>%
     mutate(group = ifelse(grepl("A", colname), "A", "B")) %>%
     mutate(sample = sub("Intensity\\.", "", colname)) %>%
-    ggplot(aes(x = sample, y = value, colour = group)) +
+    ggplot(aes(x = sample, y = value, colour = rowname, shape = group)) +
     geom_point() +
     facet_grid(~ assay)
 ```
 
-## TODO
+# TODO
 
 - Improve on data visualisation.
 - Section on imputation.
