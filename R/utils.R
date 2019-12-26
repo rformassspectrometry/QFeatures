@@ -1,24 +1,24 @@
-tidy_DataFrame_columns <- function(object) {
-    for (nm in names(object)) {
-        x <- object[[nm]]
-        if (inherits(x, "List")) {
-            cat("Variable:", nm, "\n")
-            names(x) <- NULL
-            print(x)
-            cat("Do you want to:\n")
-            cat("  Leave as is      (l)\n")
-            cat("  Drop             (d)\n")
-            cat("  Summarise (mean) (s)\n")
-            k <- scan(n = 1L, what = character())
-            k <- match.arg(k, c("l", "d", "s"))
-            object[[nm]] <- switch(k,
-                                   l = object[[nm]],
-                                   d = NULL,
-                                   s = sapply(x, mean))
-        }
-    }
-    invisible(object)
-}
+## tidy_DataFrame_columns <- function(object) {
+##     for (nm in names(object)) {
+##         x <- object[[nm]]
+##         if (inherits(x, "List")) {
+##             cat("Variable:", nm, "\n")
+##             names(x) <- NULL
+##             print(x)
+##             cat("Do you want to:\n")
+##             cat("  Leave as is      (l)\n")
+##             cat("  Drop             (d)\n")
+##             cat("  Summarise (mean) (s)\n")
+##             k <- scan(n = 1L, what = character())
+##             k <- match.arg(k, c("l", "d", "s"))
+##             object[[nm]] <- switch(k,
+##                                    l = object[[nm]],
+##                                    d = NULL,
+##                                    s = sapply(x, mean))
+##         }
+##     }
+##     object
+## }
 
 
 ## TODO: a programmatic version tidyDataFrame, that takes a vector of
