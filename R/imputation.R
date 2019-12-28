@@ -48,15 +48,17 @@ impute_matrix <- function(object,
         res <- norm::imp.norm(s, th, x)  ## impute missing data under the MLE
     } else if (method == "bpca"){
         nSamples <- dim(object)[2]
-        .resultBPCA <- pca(object, method = "bpca",
-                           nPcs = (nSamples-1), verbose = FALSE, ...)
+        .resultBPCA <- pcaMethods::pca(object,
+                                       method = "bpca",
+                                       nPcs = (nSamples-1),
+                                       verbose = FALSE, ...)
         res <- completeObs(.resultBPCA)
     } else if (method == "QRILC") {
-        res <- imputeLCMD::impute.QRILC(exprs(object), ...)[[1]]
+        res <- imputeLCMD::impute.QRILC(object, ...)[[1]]
     } else if (method == "MinDet") {
-        res <- imputeLCMD::impute.MinDet(exprs(object), ...)
+        res <- imputeLCMD::impute.MinDet(object, ...)
     } else if (method == "MinProb") {
-        res <- imputeLCMD::impute.MinProb(exprs(object), ...)
+        res <- imputeLCMD::impute.MinProb(object, ...)
     } else if (method == "min") {
         val <- min(object, na.rm = TRUE)
         res[is.na(res)] <- val
