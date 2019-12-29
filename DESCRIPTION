@@ -36,7 +36,11 @@ Suggests:
    msdata,
    vsn,
    preprocessCore,
-   matrixStats
+   matrixStats,
+   imputeLCMD,
+   pcaMethods,
+   impute,
+   norm
 LinkingTo: Rcpp   
 Remotes:
    RforMassSpectrometry/MsCoreUtils

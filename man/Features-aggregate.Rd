@@ -78,7 +78,7 @@ missing values, use \code{\link[=filterNA]{filterNA()}}.
 }
 
 More generally, missing values often need dedicated handling such
-as filtering (see \code{\link[=filterNA]{filterNA()}}) or imputation.
+as filtering (see \code{\link[=filterNA]{filterNA()}}) or imputation (see \code{\link[=impute]{impute()}}).
 }
 \examples{
 
