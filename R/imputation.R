@@ -202,7 +202,8 @@ imputeMethods <- function()
 ##'     `method` above.
 ##' @param mnar Imputation method for values missing not at
 ##'     random. See `method` above.
-##' @param ...
+##' @param ... Additional parameters passed to the inner imputation
+##'     function. 
 ##'
 ##' @rdname impute
 impute_matrix <- function(object,

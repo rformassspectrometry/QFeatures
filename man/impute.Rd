@@ -32,7 +32,8 @@ is \code{mixed}.}
 \item{mnar}{Imputation method for values missing not at
 random. See \code{method} above.}
 
-\item{...}{}
+\item{...}{Additional parameters passed to the inner imputation
+function.}
 }
 \description{
 The \code{impute} method performs data imputation on \code{Features} and
