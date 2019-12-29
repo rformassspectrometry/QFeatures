@@ -4,6 +4,8 @@ imputeMethods <- function()
       "mixed", "nbavg", "none")
 
 
+##' @importFrom Rcpp sourceCpp
+##' @useDynLib Features
 impute_matrix <- function(object,
                           method,
                           randna,

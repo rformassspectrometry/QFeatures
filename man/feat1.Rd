@@ -4,6 +4,7 @@
 \name{feat1}
 \alias{feat1}
 \alias{ft_na}
+\alias{se_na2}
 \title{Test PSM-level expression data}
 \format{An object of class \code{Features} of length 1.}
 \usage{
@@ -13,6 +14,7 @@ feat1
 \code{feat1} is a small test \code{Features} object for testing and
 demonstration. \code{ft_na} is a tiny test set that contains missing
 values used to demonstrate and test the impact of missing values
-on data processing.
+on data processing. \code{se_na2} is an \code{SummarizedExperiment} with
+missing values of mixed origin.
 }
 \keyword{datasets}

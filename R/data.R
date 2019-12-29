@@ -80,8 +80,9 @@
 ##' `feat1` is a small test `Features` object for testing and
 ##' demonstration. `ft_na` is a tiny test set that contains missing
 ##' values used to demonstrate and test the impact of missing values
-##' on data processing.
+##' on data processing. `se_na2` is an `SummarizedExperiment` with
+##' missing values of mixed origin.
 ##'
-##' @aliases ft_na
+##' @aliases ft_na se_na2
 ##'
 "feat1"

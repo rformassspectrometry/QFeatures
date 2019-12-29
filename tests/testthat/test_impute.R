@@ -40,40 +40,40 @@ test_that("none method", {
     expect_identical(x, xx)
 })
 
-## test_that("nbavg methods", {
-##     x <- matrix(1:25, 5)
-##     ## default min value
-##     x[1, 2] <- 0.1
-##     ## imputes as min value (or use-defined k)
-##     x[1, 1] <- x[5, 5] <- NA
-##     x[2, 1:2] <- NA ## [2, 1] will be min
-##                     ## [2, 2] will be avg 6.05
-##     ## remaing NA
-##     x[3, 3:4] <- NA
-##     ## average imputation
-##     x[5, 2] <- NA ## will be 10
-##     x[4, 3] <- NA ## will be 14
-##     rownames(x) <- colnames(x) <-
-##             LETTERS[1:5]
+test_that("nbavg methods", {
+    x <- matrix(1:25, 5)
+    ## default min value
+    x[1, 2] <- 0.1
+    ## imputes as min value (or use-defined k)
+    x[1, 1] <- x[5, 5] <- NA
+    x[2, 1:2] <- NA ## [2, 1] will be min
+                    ## [2, 2] will be avg 6.05
+    ## remaing NA
+    x[3, 3:4] <- NA
+    ## average imputation
+    x[5, 2] <- NA ## will be 10
+    x[4, 3] <- NA ## will be 14
+    rownames(x) <- colnames(x) <-
+            LETTERS[1:5]
 
-##     xx <- impute_matrix(x, "nbavg")
-##     expect_true(exprs(xx[1, 2]) == 0.1)
-##     expect_true(exprs(xx[1, 1]) == 0.1)
-##     expect_true(exprs(xx[2, 1]) == 0.1)
-##     expect_true(exprs(xx[2, 2]) == 6.05)
-##     expect_true(all(is.na(exprs(xx[3, 3:4]))))
-##     expect_true(exprs(xx[5, 2]) == 10)
-##     expect_true(exprs(xx[4, 3]) == 14)
+    xx <- Features:::impute_matrix(x, "nbavg")
+    expect_true(xx[1, 2] == 0.1)
+    expect_true(xx[1, 1] == 0.1)
+    expect_true(xx[2, 1] == 0.1)
+    expect_true(xx[2, 2] == 6.05)
+    expect_true(all(is.na(xx[3, 3:4])))
+    expect_true(xx[5, 2] == 10)
+    expect_true(xx[4, 3] == 14)
 
-##     xx <- impute(x, "nbavg", k = 0)
-##     expect_true(exprs(xx[1, 2]) == 0.1)
-##     expect_true(exprs(xx[1, 1]) == 0)
-##     expect_true(exprs(xx[2, 1]) == 0)
-##     expect_true(exprs(xx[2, 2]) == 6)
-##     expect_true(all(is.na(exprs(xx[3, 3:4]))))
-##     expect_true(exprs(xx[5, 2]) == 10)
-##     expect_true(exprs(xx[4, 3]) == 14)
-## })
+    xx <- Features:::impute_matrix(x, "nbavg", k = 0)
+    expect_true(xx[1, 2] == 0.1)
+    expect_true(xx[1, 1] == 0)
+    expect_true(xx[2, 1] == 0)
+    expect_true(xx[2, 2] == 6)
+    expect_true(all(is.na(xx[3, 3:4])))
+    expect_true(xx[5, 2] == 10)
+    expect_true(xx[4, 3] == 14)
+})
 
 
 test_that("seed is not set by knn imputation method", {
