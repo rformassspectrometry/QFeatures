@@ -1,6 +1,6 @@
 Package: Features
 Title: Quantitative features for mass spectrometry data
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: person("Laurent", "Gatto",
 		  email = "laurent.gatto@uclouvain.be",
 		  comment = c(ORCID = "0000-0002-1520-2268"),
@@ -19,7 +19,8 @@ Imports:
    AnnotationFilter,
    lazyeval,
    Biobase,
-   MsCoreUtils
+   MsCoreUtils,
+   Rcpp   
 Suggests:
    ggplot2,
    dplyr,
@@ -35,7 +36,12 @@ Suggests:
    msdata,
    vsn,
    preprocessCore,
-   matrixStats
+   matrixStats,
+   imputeLCMD,
+   pcaMethods,
+   impute,
+   norm
+LinkingTo: Rcpp   
 Remotes:
    RforMassSpectrometry/MsCoreUtils
 License: Artistic-2.0
@@ -45,6 +51,7 @@ VignetteBuilder: knitr
 BugReports: https://github.com/RforMassSpectrometry/Features/issues
 URL: https://github.com/RforMassSpectrometry/Features
 Collate:
+    'RcppExports.R'
     'AllGenerics.R'
     'AssayLinks.R'
     'Features-class.R'
@@ -54,6 +61,7 @@ Collate:
     'Features-filter.R'
     'Features-missing-data.R'
     'Features-aggregation.R'
+    'imputation.R'
     'subsetBy-methods.R'
     'data.R'
     'reduce.R'

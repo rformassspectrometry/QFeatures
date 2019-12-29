@@ -69,7 +69,7 @@
 ##'   missing values, use [filterNA()].
 ##'
 ##' More generally, missing values often need dedicated handling such
-##' as filtering (see [filterNA()]) or imputation.
+##' as filtering (see [filterNA()]) or imputation (see [impute()]).
 ##'
 ##' @seealso The *Features* vignette provides an extended example and
 ##'     the *Processing* vignette, for a complete quantitative
