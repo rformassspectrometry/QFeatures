@@ -191,7 +191,7 @@ imputeMethods <- function()
 ##' assay(impute(x, "nbavg"))
 "impute"
 
-##' @param object Object with missing values to be imputed.
+##' @param object Object with missing values to be imputed. 
 ##' @param method `character(1)` defining the imputation method. See
 ##'     `imputeMethods()` for available ones.
 ##' @param randna `logical` of length equal to `nrow(object)` defining
@@ -295,5 +295,22 @@ setMethod("impute", "SummarizedExperiment",
           function(object, method, randna, mar, mnar, ...) {
               res <- impute_matrix(assay(object), method, randna, mar, mnar, ...)
               assay(object) <- res
+              object
+          })
+
+
+##' @param i Defines which element of the `Features` instance to
+##'     impute. If missing, all elements will be imputed.
+##' 
+##' @export
+##' @rdname impute
+setMethod("impute", "Features",
+          function(object, method, randna, mar, mnar, ..., i) {
+              if (missing(i))
+                  i  <-  seq_len(length(object))
+              for (ii in i) {
+                  res <- impute_matrix(assay(object[[ii]]), method, randna, mar, mnar, ...)
+                  assay(object[[ii]]) <- res
+              }
               object
           })
