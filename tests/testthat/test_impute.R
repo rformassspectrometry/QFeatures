@@ -83,3 +83,12 @@ test_that("seed is not set by knn imputation method", {
   })
   expect_gt(max(rand) - min(rand), 0)
 })
+
+
+test_that("impute,SummarizedExperiment", {
+    data(se_na2)
+    x <- assay(se_na2)
+    se_imp <- impute(se_na2, method = "knn")
+    x_imp <- impute_matrix(x, method = "knn")
+    expect_identical(x_imp, assay(se_imp))    
+})
