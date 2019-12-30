@@ -1,6 +1,6 @@
 Package: Features
 Title: Quantitative features for mass spectrometry data
-Version: 0.3.1
+Version: 0.3.2
 Authors@R: person("Laurent", "Gatto",
 		  email = "laurent.gatto@uclouvain.be",
 		  comment = c(ORCID = "0000-0002-1520-2268"),
@@ -23,6 +23,7 @@ Imports:
    Rcpp   
 Suggests:
    ggplot2,
+   gplots,
    dplyr,
    limma,
    magrittr,
