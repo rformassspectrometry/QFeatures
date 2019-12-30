@@ -6,6 +6,7 @@
 \alias{imputeMethods}
 \alias{impute,SummarizedExperiment-method}
 \alias{impute_matrix}
+\alias{impute,Features-method}
 \title{Quantitative proteomics data imputation}
 \format{An object of class \code{standardGeneric} of length 1.}
 \usage{
@@ -14,6 +15,8 @@ impute
 impute_matrix(object, method, randna, mar, mnar, ...)
 
 \S4method{impute}{SummarizedExperiment}(object, method, randna, mar, mnar, ...)
+
+\S4method{impute}{Features}(object, method, randna, mar, mnar, ..., i)
 }
 \arguments{
 \item{object}{Object with missing values to be imputed.}
@@ -34,6 +37,9 @@ random. See \code{method} above.}
 
 \item{...}{Additional parameters passed to the inner imputation
 function.}
+
+\item{i}{Defines which element of the \code{Features} instance to
+impute. If missing, all elements will be imputed.}
 }
 \description{
 The \code{impute} method performs data imputation on \code{Features} and
