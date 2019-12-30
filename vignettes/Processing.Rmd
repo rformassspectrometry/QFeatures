@@ -149,6 +149,65 @@ I we wanted to keep peptides that have up to 90% of missing values,
 corresponsing in this case to those that have only one value (i.e 5/6
 percent of missing values), we could have set `pNA` to 0.9.
 
+# Imputation
+
+The `impute` method can be used to perform missing value imputation
+using a variety of imputation methods. The method takes an instance of
+class `Features` (or a `SummarizedExperiment`) as input, an a
+character naming the desired method (see `?impute` for the complete
+list with details) and returns a new instance of class `Features` (or
+`SummarizedExperiment`) with imputed data.
+
+As described in more details in [@Lazar:2016], there are two types
+of mechanisms resulting in missing values in LC/MSMS experiments.
+
+* Missing values resulting from absence of detection of a feature,
+  despite ions being present at detectable concentrations.  For
+  example in the case of ion suppression or as a result from the
+  stochastic, data-dependent nature of the MS acquisition
+  method. These missing value are expected to be randomly distributed
+  in the data and are defined as *missing at random* (MAR) or *missing
+  completely at random* (MCAR).
+
+* Biologically relevant missing values, resulting from the *absence*
+  of the low abundance of ions (below the limit of detection of the
+  instrument). These missing values are not expected to be randomly
+  distributed in the data and are defined as *missing not at random*
+  (MNAR).
+
+
+MAR and MCAR values can be reasonably well tackled by many imputation
+methods. MNAR data, however, requires some knowledge about the
+underlying mechanism that generates the missing data, to be able to
+attempt data imputation. MNAR features should ideally be imputed with
+a *left-censor* (for example using a deterministic or
+probabilistic minimum value) method. Conversely, it is recommended to
+use *hot deck* methods (for example nearest neighbour, maximum
+likelihood, etc) when data are missing at random.
+
+```{r miximp, echo = FALSE, fig.cap = "Mixed imputation method. Black cells represent presence of quantitation values and light grey corresponds to missing data. The two groups of interest are depicted in green and blue along the heatmap columns. Two classes of proteins are annotated on the left: yellow are proteins with randomly occurring missing values (if any) while proteins in brown are candidates for non-random missing value imputation."}
+data(se_na2)
+x <- assay(impute(se_na2, "zero"))
+x[x != 0] <- 1
+suppressPackageStartupMessages(library("gplots"))
+heatmap.2(x, col = c("lightgray", "black"),
+          scale = "none", dendrogram = "none",
+          trace = "none", keysize = 0.5, key = FALSE,
+          RowSideColors = ifelse(rowData(se_na2)$randna, "orange", "brown"),
+          ColSideColors = rep(c("steelblue", "darkolivegreen"), each = 8))
+```
+
+It is anticipated that the identification of both classes of missing
+values will depend on various factors, such as feature intensities and
+experimental design. Below, we use perform mixed imputation, applying
+nearest neighbour imputation on the `r sum(fData(naset)$randna)`
+features that are assumed to contain randomly distributed missing
+values (if any) (yellow on figure \@ref(fig:miximp)) and a
+deterministic minimum value imputation on the
+`r sum(!fData(naset)$randna)` proteins that display a non-random pattern
+of missing values (brown on figure \@ref(fig:miximp)).
+
+
 # Data transformation
 
 When analysing continuous data using parametric methods (such as
@@ -261,7 +320,6 @@ longFormat(cptac["P02787ups|TRFE_HUMAN_UPS", ]) %>%
 # TODO
 
 - Improve on data visualisation.
-- Section on imputation.
 
 # Session information {-}
 
