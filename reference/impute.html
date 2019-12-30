@@ -146,7 +146,10 @@ values with 0.</p>
 <span class='fu'>impute_matrix</span>(<span class='no'>object</span>, <span class='no'>method</span>, <span class='no'>randna</span>, <span class='no'>mar</span>, <span class='no'>mnar</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for SummarizedExperiment</span>
-<span class='fu'>impute</span>(<span class='no'>object</span>, <span class='no'>method</span>, <span class='no'>randna</span>, <span class='no'>mar</span>, <span class='no'>mnar</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>impute</span>(<span class='no'>object</span>, <span class='no'>method</span>, <span class='no'>randna</span>, <span class='no'>mar</span>, <span class='no'>mnar</span>, <span class='no'>...</span>)
+
+<span class='co'># S4 method for Features</span>
+<span class='fu'>impute</span>(<span class='no'>object</span>, <span class='no'>method</span>, <span class='no'>randna</span>, <span class='no'>mar</span>, <span class='no'>mnar</span>, <span class='no'>...</span>, <span class='no'>i</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -181,6 +184,11 @@ random. See <code>method</code> above.</p></td>
       <th>...</th>
       <td><p>Additional parameters passed to the inner imputation
 function.</p></td>
+    </tr>
+    <tr>
+      <th>i</th>
+      <td><p>Defines which element of the <code>Features</code> instance to
+impute. If missing, all elements will be imputed.</p></td>
     </tr>
     </table>
 
