@@ -200,11 +200,11 @@ heatmap.2(x, col = c("lightgray", "black"),
 It is anticipated that the identification of both classes of missing
 values will depend on various factors, such as feature intensities and
 experimental design. Below, we use perform mixed imputation, applying
-nearest neighbour imputation on the `r sum(fData(se_na2)$randna)`
+nearest neighbour imputation on the `r sum(rowData(se_na2)$randna)`
 features that are assumed to contain randomly distributed missing
 values (if any) (yellow on figure \@ref(fig:miximp)) and a
 deterministic minimum value imputation on the
-`r sum(!fData(se_na2)$randna)` proteins that display a non-random pattern
+`r sum(!rowData(se_na2)$randna)` proteins that display a non-random pattern
 of missing values (brown on figure \@ref(fig:miximp)).
 
 
