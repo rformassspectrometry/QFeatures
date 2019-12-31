@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
       </span>
     </div>
 
@@ -236,6 +236,23 @@ document.addEventListener("DOMContentLoaded", function() {
 ##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns</code></pre>
 <p>I we wanted to keep peptides that have up to 90% of missing values, corresponsing in this case to those that have only one value (i.e 5/6 percent of missing values), we could have set <code>pNA</code> to 0.9.</p>
 </div>
+<div id="imputation" class="section level1">
+<h1 class="hasAnchor">
+<a href="#imputation" class="anchor"></a>Imputation</h1>
+<p>The <code>impute</code> method can be used to perform missing value imputation using a variety of imputation methods. The method takes an instance of class <code>Features</code> (or a <code>SummarizedExperiment</code>) as input, an a character naming the desired method (see <code><a href="../reference/impute.html">?impute</a></code> for the complete list with details) and returns a new instance of class <code>Features</code> (or <code>SummarizedExperiment</code>) with imputed data.</p>
+<p>As described in more details in <span class="citation">(Lazar et al. 2016)</span>, there are two types of mechanisms resulting in missing values in LC/MSMS experiments.</p>
+<ul>
+<li><p>Missing values resulting from absence of detection of a feature, despite ions being present at detectable concentrations. For example in the case of ion suppression or as a result from the stochastic, data-dependent nature of the MS acquisition method. These missing value are expected to be randomly distributed in the data and are defined as <em>missing at random</em> (MAR) or <em>missing completely at random</em> (MCAR).</p></li>
+<li><p>Biologically relevant missing values, resulting from the <em>absence</em> of the low abundance of ions (below the limit of detection of the instrument). These missing values are not expected to be randomly distributed in the data and are defined as <em>missing not at random</em> (MNAR).</p></li>
+</ul>
+<p>MAR and MCAR values can be reasonably well tackled by many imputation methods. MNAR data, however, requires some knowledge about the underlying mechanism that generates the missing data, to be able to attempt data imputation. MNAR features should ideally be imputed with a <em>left-censor</em> (for example using a deterministic or probabilistic minimum value) method. Conversely, it is recommended to use <em>hot deck</em> methods (for example nearest neighbour, maximum likelihood, etc) when data are missing at random.</p>
+<div class="figure">
+<img src="Processing_files/figure-html/miximp-1.png" alt="Mixed imputation method. Black cells represent presence of quantitation values and light grey corresponds to missing data. The two groups of interest are depicted in green and blue along the heatmap columns. Two classes of proteins are annotated on the left: yellow are proteins with randomly occurring missing values (if any) while proteins in brown are candidates for non-random missing value imputation." width="700"><p class="caption">
+Mixed imputation method. Black cells represent presence of quantitation values and light grey corresponds to missing data. The two groups of interest are depicted in green and blue along the heatmap columns. Two classes of proteins are annotated on the left: yellow are proteins with randomly occurring missing values (if any) while proteins in brown are candidates for non-random missing value imputation.
+</p>
+</div>
+<p>It is anticipated that the identification of both classes of missing values will depend on various factors, such as feature intensities and experimental design. Below, we use perform mixed imputation, applying nearest neighbour imputation on the 654 features that are assumed to contain randomly distributed missing values (if any) (yellow on figure @ref(fig:miximp)) and a deterministic minimum value imputation on the 35 proteins that display a non-random pattern of missing values (brown on figure @ref(fig:miximp)).</p>
+</div>
 <div id="data-transformation" class="section level1">
 <h1 class="hasAnchor">
 <a href="#data-transformation" class="anchor"></a>Data transformation</h1>
@@ -383,7 +400,6 @@ Expression intensities for the protein <em>P02787ups|TRFE_HUMAN_UPS</em> (right,
 <a href="#todo" class="anchor"></a>TODO</h1>
 <ul>
 <li>Improve on data visualisation.</li>
-<li>Section on imputation.</li>
 </ul>
 </div>
 <div id="session-information" class="section level1 unnumbered">
@@ -410,35 +426,38 @@ Expression intensities for the protein <em>P02787ups|TRFE_HUMAN_UPS</em> (right,
 ## [8] methods   base     
 ## 
 ## other attached packages:
-##  [1] magrittr_1.5                dplyr_0.8.3                
-##  [3] ggplot2_3.2.1               Features_0.3.1             
-##  [5] MultiAssayExperiment_1.13.4 SummarizedExperiment_1.17.1
-##  [7] DelayedArray_0.13.1         BiocParallel_1.21.2        
-##  [9] matrixStats_0.55.0          Biobase_2.47.2             
-## [11] GenomicRanges_1.39.1        GenomeInfoDb_1.23.1        
-## [13] IRanges_2.21.2              S4Vectors_0.25.8           
-## [15] BiocGenerics_0.33.0         BiocStyle_2.15.3           
+##  [1] gplots_3.0.1.1              magrittr_1.5               
+##  [3] dplyr_0.8.3                 ggplot2_3.2.1              
+##  [5] Features_0.3.2              MultiAssayExperiment_1.13.4
+##  [7] SummarizedExperiment_1.17.1 DelayedArray_0.13.1        
+##  [9] BiocParallel_1.21.2         matrixStats_0.55.0         
+## [11] Biobase_2.47.2              GenomicRanges_1.39.1       
+## [13] GenomeInfoDb_1.23.1         IRanges_2.21.2             
+## [15] S4Vectors_0.25.8            BiocGenerics_0.33.0        
+## [17] BiocStyle_2.15.3           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.3              msdata_0.27.0           lattice_0.20-38        
-##  [4] assertthat_0.2.1        rprojroot_1.3-2         digest_0.6.23          
-##  [7] plyr_1.8.5              R6_2.4.1                backports_1.1.5        
-## [10] evaluate_0.14           highr_0.8               pillar_1.4.3           
-## [13] zlibbioc_1.33.0         rlang_0.4.2             lazyeval_0.2.2         
-## [16] Matrix_1.2-18           preprocessCore_1.49.0   rmarkdown_2.0          
-## [19] pkgdown_1.4.1           labeling_0.3            desc_1.2.0             
-## [22] stringr_1.4.0           ProtGenerics_1.19.3     RCurl_1.95-4.12        
-## [25] munsell_0.5.0           compiler_4.0.0          xfun_0.11              
-## [28] pkgconfig_2.0.3         htmltools_0.4.0         tidyselect_0.2.5       
-## [31] tibble_2.1.3            GenomeInfoDbData_1.2.2  bookdown_0.16          
-## [34] crayon_1.3.4            withr_2.1.2             MASS_7.3-51.5          
-## [37] bitops_1.0-6            grid_4.0.0              gtable_0.3.0           
-## [40] lifecycle_0.1.0         AnnotationFilter_1.11.0 MsCoreUtils_0.0.4      
-## [43] scales_1.1.0            stringi_1.4.3           farver_2.0.1           
-## [46] XVector_0.27.0          reshape2_1.4.3          fs_1.3.1               
-## [49] limma_3.43.0            tools_4.0.0             glue_1.3.1             
-## [52] purrr_0.3.3             yaml_2.2.0              colorspace_1.4-1       
-## [55] BiocManager_1.30.10     memoise_1.1.0           knitr_1.26</code></pre>
+##  [1] gtools_3.8.1            assertthat_0.2.1        BiocManager_1.30.10    
+##  [4] highr_0.8               msdata_0.27.0           GenomeInfoDbData_1.2.2 
+##  [7] yaml_2.2.0              pillar_1.4.3            backports_1.1.5        
+## [10] lattice_0.20-38         glue_1.3.1              limma_3.43.0           
+## [13] digest_0.6.23           XVector_0.27.0          colorspace_1.4-1       
+## [16] htmltools_0.4.0         preprocessCore_1.49.0   Matrix_1.2-18          
+## [19] plyr_1.8.5              pkgconfig_2.0.3         bookdown_0.16          
+## [22] zlibbioc_1.33.0         purrr_0.3.3             scales_1.1.0           
+## [25] gdata_2.18.0            tibble_2.1.3            farver_2.0.1           
+## [28] AnnotationFilter_1.11.0 withr_2.1.2             lazyeval_0.2.2         
+## [31] crayon_1.3.4            memoise_1.1.0           evaluate_0.14          
+## [34] fs_1.3.1                MASS_7.3-51.5           tools_4.0.0            
+## [37] lifecycle_0.1.0         stringr_1.4.0           munsell_0.5.0          
+## [40] compiler_4.0.0          pkgdown_1.4.1           caTools_1.17.1.3       
+## [43] rlang_0.4.2             grid_4.0.0              RCurl_1.95-4.12        
+## [46] MsCoreUtils_0.0.4       bitops_1.0-6            labeling_0.3           
+## [49] rmarkdown_2.0           gtable_0.3.0            reshape2_1.4.3         
+## [52] R6_2.4.1                knitr_1.26              rprojroot_1.3-2        
+## [55] ProtGenerics_1.19.3     KernSmooth_2.23-16      desc_1.2.0             
+## [58] stringi_1.4.3           Rcpp_1.0.3              tidyselect_0.2.5       
+## [61] xfun_0.11</code></pre>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="hasAnchor">
@@ -449,6 +468,9 @@ Expression intensities for the protein <em>P02787ups|TRFE_HUMAN_UPS</em> (right,
 </div>
 <div id="ref-Goeminne:2016">
 <p>Goeminne, L J, K Gevaert, and L Clement. 2016. “Peptide-Level Robust Ridge Regression Improves Estimation, Sensitivity, and Specificity in Data-Dependent Quantitative Label-Free Shotgun Proteomics.” <em>Mol Cell Proteomics</em> 15 (2): 657–68. <a href="https://doi.org/10.1074/mcp.M115.055897" class="uri">https://doi.org/10.1074/mcp.M115.055897</a>.</p>
+</div>
+<div id="ref-Lazar:2016">
+<p>Lazar, C, L Gatto, M Ferro, C Bruley, and T Burger. 2016. “Accounting for the Multiple Natures of Missing Values in Label-Free Quantitative Proteomics Data Sets to Compare Imputation Strategies.” <em>J Proteome Res</em> 15 (4): 1116–25. <a href="https://doi.org/10.1021/acs.jproteome.5b00981" class="uri">https://doi.org/10.1021/acs.jproteome.5b00981</a>.</p>
 </div>
 <div id="ref-Paulovich:2010">
 <p>Paulovich, Amanda G, Dean Billheimer, Amy-Joan L Ham, Lorenzo Vega-Montoto, Paul A Rudnick, David L Tabb, Pei Wang, et al. 2010. “Interlaboratory Study Characterizing a Yeast Performance Standard for Benchmarking LC-MS Platform Performance.” <em>Mol. Cell. Proteomics</em> 9 (2): 242–54.</p>
@@ -471,6 +493,7 @@ Expression intensities for the protein <em>P02787ups|TRFE_HUMAN_UPS</em> (right,
       <li><a href="#filtering-out-contaminants-and-reverse-hits">Filtering out contaminants and reverse hits</a></li>
       <li><a href="#removing-up-unneeded-feature-variables">Removing up unneeded feature variables</a></li>
       <li><a href="#managing-missing-values">Managing missing values</a></li>
+      <li><a href="#imputation">Imputation</a></li>
       <li><a href="#data-transformation">Data transformation</a></li>
       <li><a href="#normalisation">Normalisation</a></li>
       <li><a href="#feature-aggregation">Feature aggregation</a></li>
