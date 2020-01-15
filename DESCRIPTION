@@ -20,7 +20,7 @@ Imports:
    lazyeval,
    Biobase,
    MsCoreUtils,
-   Rcpp   
+   Rcpp
 Suggests:
    ggplot2,
    gplots,
@@ -42,7 +42,8 @@ Suggests:
    pcaMethods,
    impute,
    norm
-LinkingTo: Rcpp   
+biocViews: Infrastructure, MassSpectrometry, Proteomics, Metabolomics
+LinkingTo: Rcpp
 Remotes:
    RforMassSpectrometry/MsCoreUtils
 License: Artistic-2.0
