@@ -64,7 +64,7 @@ normalize_SE <- function(object, method, ...) {
 ##' `"center.median"`, `"quantiles.robust`" or `"vsn"`.  For `"sum"`
 ##' and `"max"`, each feature's intensity is divided by the maximum or
 ##' the sum of the feature respectively. These two methods are applied
-##' along the features (rows). The `normaliseMethods()` function
+##' along the features (rows). The `normalizeMethods()` function
 ##' returns a vector of available normalisation methods.
 ##'
 ##' `"center.mean"` and `"center.median"` translate the respective
