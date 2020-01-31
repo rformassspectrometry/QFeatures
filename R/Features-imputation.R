@@ -15,7 +15,9 @@
 ##'
 ##' @rdname impute
 ##'
-##' @aliases impute impute,SummarizedExperiment-method impute,Features-method 
+##' @aliases impute impute,SummarizedExperiment-method impute,Features-method
+##'
+##' @importFrom MsCoreUtils impute_matrix
 ##'
 ##' @examples
 ##' MsCoreUtils::imputeMethods()
@@ -69,8 +71,7 @@
 ##' @rdname impute
 setMethod("impute", "SummarizedExperiment",
           function(object, method, ...) {
-              res <- MsCoreUtils::impute_matrix(assay(object),
-                                                method, ...)
+              res <- impute_matrix(assay(object), method, ...)
               assay(object) <- res
               object
           })
@@ -86,8 +87,7 @@ setMethod("impute", "Features",
               if (missing(i))
                   i  <-  seq_len(length(object))
               for (ii in i) {
-                  res <- MsCoreUtils::impute_matrix(assay(object[[ii]]),
-                                                    method, ...)
+                  res <- impute_matrix(assay(object[[ii]]), method, ...)
                   assay(object[[ii]]) <- res
               }
               object
