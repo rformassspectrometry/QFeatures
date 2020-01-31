@@ -76,7 +76,7 @@ The \code{method} parameter in \code{normalize} can be one of \code{"sum"},
 \code{"center.median"}, \verb{"quantiles.robust}" or \code{"vsn"}.  For \code{"sum"}
 and \code{"max"}, each feature's intensity is divided by the maximum or
 the sum of the feature respectively. These two methods are applied
-along the features (rows). The \code{normaliseMethods()} function
+along the features (rows). The \code{normalizeMethods()} function
 returns a vector of available normalisation methods.
 
 \code{"center.mean"} and \code{"center.median"} translate the respective
@@ -86,7 +86,7 @@ they all match the grand median. Using \code{"quantiles"} or
 \code{"quantiles.robust"} applies (robust) quantile normalisation, as
 implemented in \code{\link[preprocessCore:normalize.quantiles]{preprocessCore::normalize.quantiles()}} and
 \code{\link[preprocessCore:normalize.quantiles.robust]{preprocessCore::normalize.quantiles.robust()}}. \code{"vsn"} uses the
-\code{\link[vsn:vsn2]{vsn::vsn2()}} function.  Note that the latteralso glog-transforms
+\code{\link[vsn:vsn2]{vsn::vsn2()}} function.  Note that the latter also glog-transforms
 the intensities.  See respective manuals for more details and
 function arguments.
 }

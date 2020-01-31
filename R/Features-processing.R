@@ -74,7 +74,7 @@ normalize_SE <- function(object, method, ...) {
 ##' `"quantiles.robust"` applies (robust) quantile normalisation, as
 ##' implemented in [preprocessCore::normalize.quantiles()] and
 ##' [preprocessCore::normalize.quantiles.robust()]. `"vsn"` uses the
-##' [vsn::vsn2()] function.  Note that the latteralso glog-transforms
+##' [vsn::vsn2()] function.  Note that the latter also glog-transforms
 ##' the intensities.  See respective manuals for more details and
 ##' function arguments.
 ##'
