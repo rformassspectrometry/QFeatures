@@ -28,7 +28,7 @@ jobs:
         - pkgdown
         - testthat
         - knitr
-	- magick
+        - magick
         - roxygen2
       before_install:
         - mkdir -p ~/.R
