@@ -19,6 +19,7 @@ addons:
   apt:
     packages:
       - libgit2-dev # git2r
+      - libmagick++-dev
 
 jobs:
   include:
