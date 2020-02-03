@@ -3,6 +3,7 @@ language: r
 r: bioc-devel
 r_github_packages:
   - lgatto/ProtGenerics
+  - yihui/knitr
 cache:
   packages: true
   directories:
