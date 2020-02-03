@@ -64,7 +64,7 @@ normalize_SE <- function(object, method, ...) {
 ##' `"center.median"`, `"quantiles.robust`" or `"vsn"`.  For `"sum"`
 ##' and `"max"`, each feature's intensity is divided by the maximum or
 ##' the sum of the feature respectively. These two methods are applied
-##' along the features (rows). The `normaliseMethods()` function
+##' along the features (rows). The `normalizeMethods()` function
 ##' returns a vector of available normalisation methods.
 ##'
 ##' `"center.mean"` and `"center.median"` translate the respective
@@ -74,7 +74,7 @@ normalize_SE <- function(object, method, ...) {
 ##' `"quantiles.robust"` applies (robust) quantile normalisation, as
 ##' implemented in [preprocessCore::normalize.quantiles()] and
 ##' [preprocessCore::normalize.quantiles.robust()]. `"vsn"` uses the
-##' [vsn::vsn2()] function.  Note that the latteralso glog-transforms
+##' [vsn::vsn2()] function.  Note that the latter also glog-transforms
 ##' the intensities.  See respective manuals for more details and
 ##' function arguments.
 ##'

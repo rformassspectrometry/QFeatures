@@ -3,6 +3,7 @@ language: r
 r: bioc-devel
 r_github_packages:
   - lgatto/ProtGenerics
+  - yihui/knitr
 cache:
   packages: true
   directories:
@@ -19,6 +20,7 @@ addons:
   apt:
     packages:
       - libgit2-dev # git2r
+      - libmagick++-dev
 
 jobs:
   include:
@@ -28,6 +30,7 @@ jobs:
         - pkgdown
         - testthat
         - knitr
+        - magick
         - roxygen2
       before_install:
         - mkdir -p ~/.R

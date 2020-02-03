@@ -223,7 +223,7 @@ ggplot(data = stat3_df,
        aes(x = colname,
            y = value,
            group = rowname)) +
-    geom_line() + geom_point() + 
+    geom_line() + geom_point() +
     facet_grid(~ assay)
 ```
 
@@ -251,7 +251,7 @@ ggplot(data = stat_df,
        aes(x = colname,
            y = value,
            group = rowname)) +
-    geom_line() + geom_point() + 
+    geom_line() + geom_point() +
     facet_grid(stat3 ~ assay)
 ```
 
@@ -291,14 +291,14 @@ display(stat)
 ```
 
 ```{r heatmapdisplay, results='markup', fig.cap="`Features` interactive interface: heatmap of the peptide assay data.", echo=FALSE, out.width='100%', fig.align='center', fig.wide = TRUE}
-knitr::include_graphics("./figs/display_hmap.png")
+knitr::include_graphics("./figs/display_hmap.png", error = FALSE)
 ```
 
 ```{r assaydisplay, results='markup', fig.cap="`Features` interactive interface: quantitative peptide assay data.", echo=FALSE, out.width='100%', fig.align='center', fig.wide = TRUE}
-knitr::include_graphics("./figs/display_assay.png")
+knitr::include_graphics("./figs/display_assay.png", error = FALSE)
 ```
 ```{r rowdatadisplay, results='markup', fig.cap="`Features` interactive interface: peptide assay row data", echo=FALSE, out.width='100%', fig.align='center', fig.wide = TRUE}
-knitr::include_graphics("./figs/display_rowdata.png")
+knitr::include_graphics("./figs/display_rowdata.png", error = FALSE)
 ```
 
 A dropdown menu in the side bar allows the user to select an assay of
