@@ -83,7 +83,7 @@ See the Processing vignette for examples." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -227,7 +227,7 @@ apply. See Details.</p></td>
 <code>"center.median"</code>, <code>"quantiles.robust</code>" or <code>"vsn"</code>.  For <code>"sum"</code>
 and <code>"max"</code>, each feature's intensity is divided by the maximum or
 the sum of the feature respectively. These two methods are applied
-along the features (rows). The <code>normaliseMethods()</code> function
+along the features (rows). The <code>normalizeMethods()</code> function
 returns a vector of available normalisation methods.</p>
 <p><code>"center.mean"</code> and <code>"center.median"</code> translate the respective
 sample (column) intensities according to the column mean or
@@ -236,7 +236,7 @@ they all match the grand median. Using <code>"quantiles"</code> or
 <code>"quantiles.robust"</code> applies (robust) quantile normalisation, as
 implemented in <code><a href='https://rdrr.io/pkg/preprocessCore/man/normalize.quantiles.html'>preprocessCore::normalize.quantiles()</a></code> and
 <code><a href='https://rdrr.io/pkg/preprocessCore/man/normalize.quantiles.robust.html'>preprocessCore::normalize.quantiles.robust()</a></code>. <code>"vsn"</code> uses the
-<code><a href='https://rdrr.io/pkg/vsn/man/vsn2.html'>vsn::vsn2()</a></code> function.  Note that the latteralso glog-transforms
+<code><a href='https://rdrr.io/pkg/vsn/man/vsn2.html'>vsn::vsn2()</a></code> function.  Note that the latter also glog-transforms
 the intensities.  See respective manuals for more details and
 function arguments.</p>
 

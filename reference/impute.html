@@ -37,12 +37,13 @@
 
 <meta property="og:title" content="Quantitative proteomics data imputation — impute" />
 <meta property="og:description" content="The impute method performs data imputation on Features and
-SummarizedExperiment instance using a variety of methods (see
-below).
+SummarizedExperiment instance using a variety of methods.
 Users should proceed with care when imputing data and take
 precautions to assure that the imputation produce valid results,
 in particular with naive imputations such as replacing missing
-values with 0." />
+values with 0.
+See MsCoreUtils::impute_matrix() for details on
+the different imputation methods available and strategies." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -75,7 +76,7 @@ values with 0." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -127,186 +128,62 @@ values with 0." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Quantitative proteomics data imputation</h1>
-    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/Features/blob/master/R/imputation.R'><code>R/imputation.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/Features/blob/master/R/Features-imputation.R'><code>R/Features-imputation.R</code></a></small>
     <div class="hidden name"><code>impute.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>The <code>impute</code> method performs data imputation on <code>Features</code> and
-<code>SummarizedExperiment</code> instance using a variety of methods (see
-below).</p>
+<code>SummarizedExperiment</code> instance using a variety of methods.</p>
 <p>Users should proceed with care when imputing data and take
 precautions to assure that the imputation produce valid results,
 in particular with naive imputations such as replacing missing
 values with 0.</p>
+<p>See <code><a href='https://rdrr.io/pkg/MsCoreUtils/man/imputation.html'>MsCoreUtils::impute_matrix()</a></code> for details on
+the different imputation methods available and strategies.</p>
     </div>
 
     <pre class="usage"><span class='no'>impute</span>
 
-<span class='fu'>impute_matrix</span>(<span class='no'>object</span>, <span class='no'>method</span>, <span class='no'>randna</span>, <span class='no'>mar</span>, <span class='no'>mnar</span>, <span class='no'>...</span>)
-
 <span class='co'># S4 method for SummarizedExperiment</span>
-<span class='fu'>impute</span>(<span class='no'>object</span>, <span class='no'>method</span>, <span class='no'>randna</span>, <span class='no'>mar</span>, <span class='no'>mnar</span>, <span class='no'>...</span>)
+<span class='fu'>impute</span>(<span class='no'>object</span>, <span class='no'>method</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for Features</span>
-<span class='fu'>impute</span>(<span class='no'>object</span>, <span class='no'>method</span>, <span class='no'>randna</span>, <span class='no'>mar</span>, <span class='no'>mnar</span>, <span class='no'>...</span>, <span class='no'>i</span>)</pre>
+<span class='fu'>impute</span>(<span class='no'>object</span>, <span class='no'>method</span>, <span class='no'>...</span>, <span class='no'>i</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>Object with missing values to be imputed.</p></td>
+      <td><p>A <code>SummarizedExperiment</code> or <code>Features</code> object with
+missing values to be imputed.</p></td>
     </tr>
     <tr>
       <th>method</th>
       <td><p><code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> defining the imputation method. See
-<code>imputeMethods()</code> for available ones.</p></td>
-    </tr>
-    <tr>
-      <th>randna</th>
-      <td><p><code>logical</code> of length equal to <code><a href='https://rdrr.io/r/base/nrow.html'>nrow(object)</a></code> defining
-which rows are missing at random. The other ones are
-considered missing not at random. Only relevant when <code>methods</code>
-is <code>mixed</code>.</p></td>
-    </tr>
-    <tr>
-      <th>mar</th>
-      <td><p>Imputation method for values missing at random. See
-<code>method</code> above.</p></td>
-    </tr>
-    <tr>
-      <th>mnar</th>
-      <td><p>Imputation method for values missing not at
-random. See <code>method</code> above.</p></td>
+<code>imputeMethods()</code> for available ones. See
+<code><a href='https://rdrr.io/pkg/MsCoreUtils/man/imputation.html'>MsCoreUtils::impute_matrix()</a></code> for details.</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>Additional parameters passed to the inner imputation
-function.</p></td>
+function. See <code><a href='https://rdrr.io/pkg/MsCoreUtils/man/imputation.html'>MsCoreUtils::impute_matrix()</a></code> for details.</p></td>
     </tr>
     <tr>
       <th>i</th>
       <td><p>Defines which element of the <code>Features</code> instance to
-impute. If missing, all elements will be imputed.</p></td>
+impute. If missing, all assays will be imputed.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
     <p>An object of class <code>standardGeneric</code> of length 1.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>There are two types of mechanisms resulting in missing values in
-LC/MSMS experiments.</p><ul>
-<li><p>Missing values resulting from absence of detection of a feature,
-despite ions being present at detectable concentrations. For
-example in the case of ion suppression or as a result from the
-stochastic, data-dependent nature of the MS acquisition
-method. These missing value are expected to be randomly
-distributed in the data and are defined as missing at random
-(MAR) or missing completely at random (MCAR).</p></li>
-<li><p>Biologically relevant missing values resulting from the absence
-of the low abundance of ions (below the limit of detection of
-the instrument). These missing values are not expected to be
-randomly distributed in the data and are defined as missing not
-at random (MNAR).</p></li>
-</ul>
-
-<p>MNAR features should ideally be imputed with a left-censor method,
-such as <code>QRILC</code> below. Conversely, it is recommended to use host
-deck methods such nearest neighbours, Bayesian missing value
-imputation or maximum likelihood methods when values are missing
-at random.</p>
-<p>Currently, the following imputation methods are available.</p><ul>
-<li><p><em>MLE</em>: Maximum likelihood-based imputation method using the EM
-algorithm. Implemented in the <code><a href='https://rdrr.io/pkg/norm/man/imp.norm.html'>norm::imp.norm()</a></code>. function. See
-<code><a href='https://rdrr.io/pkg/norm/man/imp.norm.html'>norm::imp.norm()</a></code> for details and additional parameters. Note
-that here, <code>...</code> are passed to the [norm::em.norm()<code>function, rather to the actual imputation function</code>imp.norm`.</p></li>
-<li><p><em>bpca</em>: Bayesian missing value imputation are available, as
-implemented in the <code><a href='https://rdrr.io/pkg/pcaMethods/man/pca.html'>pcaMethods::pca()</a></code> function. See
-<code><a href='https://rdrr.io/pkg/pcaMethods/man/pca.html'>pcaMethods::pca()</a></code> for details and additional parameters.</p></li>
-<li><p><em>knn</em>: Nearest neighbour averaging, as implemented in the
-<code><a href='https://rdrr.io/pkg/impute/man/impute.knn.html'>impute::impute.knn</a></code> function. See <code><a href='https://rdrr.io/pkg/impute/man/impute.knn.html'>impute::impute.knn()</a></code>] for
-details and additional parameters.</p></li>
-<li><p><em>QRILC</em>: A missing data imputation method that performs the
-imputation of left-censored missing data using random draws from
-a truncated distribution with parameters estimated using
-quantile regression. Implemented in the
-<code><a href='https://rdrr.io/pkg/imputeLCMD/man/impute.QRILC.html'>imputeLCMD::impute.QRILC</a></code>
-function. <code><a href='https://rdrr.io/pkg/imputeLCMD/man/impute.QRILC.html'>imputeLCMD::impute.QRILC()</a></code> for details and
-additional parameters.</p></li>
-<li><p><em>MinDet</em>: Performs the imputation of left-censored missing data
-using a deterministic minimal value approach. Considering a
-expression data with <em>n</em> samples and <em>p</em> features, for each
-sample, the missing entries are replaced with a minimal value
-observed in that sample. The minimal value observed is estimated
-as being the q-th quantile (default <code>q = 0.01</code>) of the observed
-values in that sample. Implemented in the
-<code><a href='https://rdrr.io/pkg/imputeLCMD/man/impute.MinDet.html'>imputeLCMD::impute.MinDet</a></code> function. See
-<code><a href='https://rdrr.io/pkg/imputeLCMD/man/impute.MinDet.html'>imputeLCMD::impute.MinDet()</a></code> for details and additional
-parameters.</p></li>
-<li><p><em>MinProb</em>: Performs the imputation of left-censored missing data
-by random draws from a Gaussian distribution centred to a
-minimal value. Considering an expression data matrix with <em>n</em>
-samples and <em>p</em> features, for each sample, the mean value of the
-Gaussian distribution is set to a minimal observed value in that
-sample. The minimal value observed is estimated as being the
-q-th quantile (default <code>q = 0.01</code>) of the observed values in
-that sample. The standard deviation is estimated as the median
-of the feature standard deviations. Note that when estimating
-the standard deviation of the Gaussian distribution, only the
-peptides/proteins which present more than 50\<!-- % recorded values -->
-are considered. Implemented in the <code><a href='https://rdrr.io/pkg/imputeLCMD/man/impute.MinProb.html'>imputeLCMD::impute.MinProb</a></code>
-function. See <code><a href='https://rdrr.io/pkg/imputeLCMD/man/impute.MinProb.html'>imputeLCMD::impute.MinProb()</a></code> for details and
-additional parameters.</p></li>
-<li><p><em>min</em>: Replaces the missing values by the smallest non-missing
-value in the data.</p></li>
-<li><p><em>zero</em>: Replaces the missing values by 0. See also <code><a href='Features-missing-data.html'>zeroIsNA()</a></code>.</p></li>
-<li><p><em>mixed</em>: A mixed imputation applying two methods (to be defined
-by the user as <code>mar</code> for values missing at random and <code>mnar</code> for
-values missing not at random, see example) on two M<a href='https://rdrr.io/r/stats/zC.html'>C</a>AR/MNAR
-subsets of the data (as defined by the user by a <code>randna</code>
-logical, of length equal to nrow(object)).</p></li>
-<li><p><em>nbavg</em>: Average neighbour imputation for fractions collected
-along a fractionation/separation gradient, such as sub-cellular
-fractions. The method assumes that the fraction are ordered
-along the gradient and is invalid otherwise.</p>
-<p>Continuous sets <code>NA</code> value at the beginning and the end of the
-quantitation vectors are set to the lowest observed value in the
-data or to a user defined value passed as argument <code>k</code>. Them,
-when a missing value is flanked by two non-missing neighbouring
-values, it is imputed by the mean of its direct neighbours. A
-stretch of 2 or more missing values will not be imputed. See the
-example below.</p></li>
-<li><p><em>none</em>: No imputation is performed and the missing values are
-left untouched. Implemented in case one wants to only impute
-value missing at random or not at random with the <em>mixed</em>
-method.</p></li>
-</ul>
-
-<p>The <code>imputeMethods()</code> function returns a vector with valid
-imputation method arguments.</p>
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>Olga Troyanskaya, Michael Cantor, Gavin Sherlock, Pat Brown,
-Trevor Hastie, Robert Tibshirani, David Botstein and Russ B.
-Altman, Missing value estimation methods for DNA microarrays
-Bioinformatics (2001) 17 (6): 520-525.</p>
-<p>Oba et al., A Bayesian missing value estimation method for gene
-expression profile data, Bioinformatics (2003) 19 (16): 2088-2096.</p>
-<p>Cosmin Lazar (2015). imputeLCMD: A collection of methods for
-left-censored missing data imputation. R package version
-2.0. <a href='http://CRAN.R-project.org/package=imputeLCMD'>http://CRAN.R-project.org/package=imputeLCMD</a>.</p>
-<p>Lazar C, Gatto L, Ferro M, Bruley C, Burger T. Accounting for the
-Multiple Natures of Missing Values in Label-Free Quantitative
-Proteomics Data Sets to Compare Imputation Strategies. J Proteome
-Res. 2016 Apr 1;15(4):1116-25. doi:
-10.1021/acs.jproteome.5b00981. PubMed PMID:26906401.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>imputeMethods</span>()</div><div class='output co'>#&gt;  [1] "bpca"    "knn"     "QRILC"   "MLE"     "MinDet"  "MinProb" "min"    
-#&gt;  [8] "zero"    "mixed"   "nbavg"   "none"   </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='kw pkg'>MsCoreUtils</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/MsCoreUtils/man/imputation.html'>imputeMethods</a></span>()</div><div class='output co'>#&gt;  [1] "bpca"    "knn"     "QRILC"   "MLE"     "MinDet"  "MinProb" "min"    
+#&gt;  [8] "zero"    "mixed"   "nbavg"   "with"    "none"   </div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>se_na2</span>)
 <span class='co'>## table of missing values along the rows (proteins)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='fu'>rowData</span>(<span class='no'>se_na2</span>)$<span class='no'>nNA</span>)</div><div class='output co'>#&gt; 
@@ -384,8 +261,6 @@ Res. 2016 Apr 1;15(4):1116-25. doi:
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#format">Format</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#references">References</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
