@@ -6,7 +6,7 @@ main_assay <- function(object)
     which.max(sapply(experiments(object), nrow))
 
 number_assays_in_se <- function(object) {
-    
+    lengths(sapply(experiments(object), assays))    
 }
 
 ## ----------------------------
