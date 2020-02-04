@@ -22,9 +22,9 @@
 
 \S4method{scaleTransform}{Features}(object, center = TRUE, scale = TRUE, i)
 
-\S4method{normalize}{SummarizedExperiment}(object, method = normalizeMethods(), ...)
+\S4method{normalize}{SummarizedExperiment}(object, method, ...)
 
-\S4method{normalize}{Features}(object, method = normalizeMethods(), ..., i)
+\S4method{normalize}{Features}(object, method, ..., i)
 }
 \arguments{
 \item{object}{An object of class \code{Features} or \code{SummarizedExperiment}.}
@@ -72,25 +72,33 @@ See the \emph{Processing} vignette for examples.
 }
 \details{
 The \code{method} parameter in \code{normalize} can be one of \code{"sum"},
-\code{"max"}, \code{"quantiles"}, \code{"center.mean"}, \code{"center.median"},
-\code{"center.median"}, \verb{"quantiles.robust}" or \code{"vsn"}.  For \code{"sum"}
-and \code{"max"}, each feature's intensity is divided by the maximum or
-the sum of the feature respectively. These two methods are applied
-along the features (rows). The \code{normalizeMethods()} function
+\code{"max"}, \code{"center.mean"}, \code{"center.median"}, \code{"div.mean"},
+\code{"div.median"}, \code{"diff.meda"}, \verb{"quantiles}", \verb{"quantiles.robust}"
+or \code{"vsn"}. The \code{\link[MsCoreUtils:normalizeMethods]{MsCoreUtils::normalizeMethods()}} function
 returns a vector of available normalisation methods.
+\itemize{
+\item For \code{"sum"} and \code{"max"}, each feature's intensity is divided by the
+maximum or the sum of the feature respectively. These two methods are
+applied along the features (rows).
+\item \code{"center.mean"} and \code{"center.median"} center the respective sample
+(column) intensities by subtracting the respective column means or
+medians. \code{"div.mean"} and \code{"div.median"} divide by the column means or
+medians.
+\item \code{"diff.median"} centers all samples (columns) so that they all match the
+grand median by subtracting the respective columns medians differences to
+the grand median.
+\item Using \code{"quantiles"} or \code{"quantiles.robust"} applies (robust) quantile
+normalisation, as implemented in \code{\link[preprocessCore:normalize.quantiles]{preprocessCore::normalize.quantiles()}}
+and \code{\link[preprocessCore:normalize.quantiles.robust]{preprocessCore::normalize.quantiles.robust()}}. \code{"vsn"} uses the
+\code{\link[vsn:vsn2]{vsn::vsn2()}} function.  Note that the latter also glog-transforms the
+intensities.  See respective manuals for more details and function
+arguments.
+}
 
-\code{"center.mean"} and \code{"center.median"} translate the respective
-sample (column) intensities according to the column mean or
-median. \code{"diff.median"} translates all samples (columns) so that
-they all match the grand median. Using \code{"quantiles"} or
-\code{"quantiles.robust"} applies (robust) quantile normalisation, as
-implemented in \code{\link[preprocessCore:normalize.quantiles]{preprocessCore::normalize.quantiles()}} and
-\code{\link[preprocessCore:normalize.quantiles.robust]{preprocessCore::normalize.quantiles.robust()}}. \code{"vsn"} uses the
-\code{\link[vsn:vsn2]{vsn::vsn2()}} function.  Note that the latter also glog-transforms
-the intensities.  See respective manuals for more details and
-function arguments.
+For further details and examples about normalisation, see
+\code{\link[MsCoreUtils:normalize_matrix]{MsCoreUtils::normalize_matrix()}}.
 }
 \examples{
 
-normalizeMethods()
+MsCoreUtils::normalizeMethods()
 }
