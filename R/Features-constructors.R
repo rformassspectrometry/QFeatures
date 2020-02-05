@@ -3,19 +3,7 @@
 ##' @description
 ##'
 ##' Convert tabular data from a spreadsheet or a `data.frame` into a
-##' `Features` object (`readFeatures`) or a `SummarizedExperiment` 
-##' (`readSummarizedExperiment`).
-##'
-##' @usage
-##' readFeatures(table, 
-##'              ecol, 
-##'              fnames, 
-##'              ..., 
-##'              name = NULL)
-##' readSummarizedExperiment(table, 
-##'                          ecol, 
-##'                          fnames, 
-##'                          ...)
+##' `Features` object.
 ##'                          
 ##' @param table File or object holding the quantitative data. Can be
 ##'     either a `character(1)` with the path to a text-based
@@ -44,16 +32,17 @@
 ##'
 ##' @author Laurent Gatto
 ##'
+##' @describeIn readFeatures See description.
+##' 
 ##' @importFrom utils read.csv
+##' @importFrom methods new validObject
 ##' @import SummarizedExperiment
 ##'
 ##' @seealso The [Features] class for an example on how to use
 ##'     `readFeatures` and how to further manipulate the resulting data.
 ##'
-##' @importFrom methods new validObject
-##'
 ##' @md
-##' @aliases readFeatures
+##' @aliases readSummarizedExperiment
 ##' @export
 ##'
 ##' @examples
@@ -64,6 +53,24 @@
 ##' ## Create the Features object
 ##' fts2 <- readFeatures(hlpsms, ecol = 1:10, name = "psms")
 ##' fts2
+readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
+    se <- readSummarizedExperiment(table, ecol, fnames, ...)
+    cd <- DataFrame(row.names = colnames(se))
+    if (is.null(name))
+        name <- "features"
+    el <- structure(list(se), .Names = name[1])
+    al <- AssayLinks(AssayLink(name = name[1]))
+    ans <- MatchedAssayExperiment(el, colData = cd)
+    new("Features",
+        ExperimentList = ans@ExperimentList,
+        colData = ans@colData,
+        sampleMap = ans@sampleMap,
+        metadata = ans@metadata,
+        assayLinks = al)
+}
+##' @describeIn readFeatures Convert tabular data from a spreadsheet or a 
+##' `data.frame` into a `SummarizedExperiment` object.
+##' @export
 readSummarizedExperiment <- function(table, ecol, fnames, ...) {
     if (is.data.frame(table)) xx <- table
     else {
@@ -99,24 +106,7 @@ readSummarizedExperiment <- function(table, ecol, fnames, ...) {
     } else {
         rownames(fdata) <- rownames(assay) <- seq_len(nrow(assay))
     }
-    se <- SummarizedExperiment(assay,
-                               rowData = fdata)
-    return(se)
-}
-readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
-    se <- readSummarizedExperiment(table, ecol, fnames, ...)
-    cd <- DataFrame(row.names = colnames(se))
-    if (is.null(name))
-        name <- "features"
-    el <- structure(list(se), .Names = name[1])
-    al <- AssayLinks(AssayLink(name = name[1]))
-    ans <- MatchedAssayExperiment(el, colData = cd)
-    new("Features",
-        ExperimentList = ans@ExperimentList,
-        colData = ans@colData,
-        sampleMap = ans@sampleMap,
-        metadata = ans@metadata,
-        assayLinks = al)
+    SummarizedExperiment(assay, rowData = fdata)
 }
 
 
