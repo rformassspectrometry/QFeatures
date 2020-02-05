@@ -74,6 +74,10 @@
 ##' 
 ##' @param i The index or name of the assay to be processed.
 ##'
+##' @param name A `character(1)` naming the new assay name. Defaults
+##'     are `logAssay` for `logTransform`, `scaledAssay` for
+##'     `scaleTranform` and `normAssay` for `normalize`.
+##'
 ##' @param ... Additional parameters passed to inner functions.
 ##'
 ##' @aliases logTransform logTransform,SummarizedExperiment-method logTransform,Features-method
@@ -110,12 +114,14 @@ setMethod("logTransform",
 ##' @rdname Features-processing
 setMethod("logTransform",
           "Features",
-          function(object, base = 2, i, pc = 0) {
+          function(object, i, name = "logAssay", base = 2, pc = 0) {
               if (missing(i))
-                  i  <-  seq_len(length(object))
-              for (ii in i)
-                  object[[ii]] <- logTransform(object[[ii]], base, pc)
-              object
+                  stop("Provide index or name of assay to be processed")
+              if (length(i) != 1)
+                  stop("Only one assay to be processed at a time")              
+              addAssay(object,
+                       logTransform(object[[i]], base, pc),
+                       name)
           })
 
 ##' @exportMethod scaleTransform
@@ -131,13 +137,14 @@ setMethod("scaleTransform", "SummarizedExperiment",
 
 ##' @rdname Features-processing
 setMethod("scaleTransform", "Features",
-          function(object, center = TRUE, scale = TRUE, i) {
+          function(object, i, name = "scaledAssay", center = TRUE, scale = TRUE) {
               if (missing(i))
-                  i  <-  seq_len(length(object))
-              for (ii in i)
-                  object[[ii]] <- scaleTransform(object[[ii]], center, scale)
-
-              object
+                  stop("Provide index or name of assay to be processed")
+              if (length(i) != 1)
+                  stop("Only one assay to be processed at a time")
+              addAssay(object,
+                       scaleTransform(object[[i]], center, scale),
+                       name)
           })
 
 ## -------------------------------------------------------
@@ -162,13 +169,12 @@ setMethod("normalize", "SummarizedExperiment",
 
 ##' @rdname Features-processing
 setMethod("normalize", "Features",
-          function(object,
-                   method,
-                   ..., i) {
+          function(object, i, name = "normAssay", method, ...) {
               if (missing(i))
-                  i  <-  seq_len(length(object))
-              for (ii in i)
-                  object[[ii]] <- normalize(object[[ii]], method)
-
-              object
+                  stop("Provide index or name of assay to be processed")
+              if (length(i) != 1)
+                  stop("Only one assay to be processed at a time")
+              addAssay(object,
+                       normalize(object[[i]], method, ...),
+                       name)
           })

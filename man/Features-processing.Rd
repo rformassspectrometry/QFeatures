@@ -16,15 +16,15 @@
 \usage{
 \S4method{logTransform}{SummarizedExperiment}(object, base = 2, pc = 0)
 
-\S4method{logTransform}{Features}(object, base = 2, i, pc = 0)
+\S4method{logTransform}{Features}(object, i, name = "logAssay", base = 2, pc = 0)
 
 \S4method{scaleTransform}{SummarizedExperiment}(object, center = TRUE, scale = TRUE)
 
-\S4method{scaleTransform}{Features}(object, center = TRUE, scale = TRUE, i)
+\S4method{scaleTransform}{Features}(object, i, name = "scaledAssay", center = TRUE, scale = TRUE)
 
 \S4method{normalize}{SummarizedExperiment}(object, method, ...)
 
-\S4method{normalize}{Features}(object, method, ..., i)
+\S4method{normalize}{Features}(object, i, name = "normAssay", method, ...)
 }
 \arguments{
 \item{object}{An object of class \code{Features} or \code{SummarizedExperiment}.}
@@ -37,6 +37,10 @@ quantitative data. Useful when (true) 0 are present in the
 data. Default is 0 (no effect).}
 
 \item{i}{The index or name of the assay to be processed.}
+
+\item{name}{A \code{character(1)} naming the new assay name. Defaults
+are \code{logAssay} for \code{logTransform}, \code{scaledAssay} for
+\code{scaleTranform} and \code{normAssay} for \code{normalize}.}
 
 \item{center}{\code{logical(1)} (default is \code{TRUE}) value or
 numeric-alike vector of length equal to the number of columns
