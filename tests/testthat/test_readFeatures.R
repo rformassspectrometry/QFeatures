@@ -26,6 +26,28 @@ test_that("readFeatures", {
     ecol <- LETTERS[1:10]
     expect_error(readFeatures(x, ecol = ecol, name = "psms"))
     expect_error(readFeatures(f, ecol = ecol, name = "psms"))
-    expect_error(readFeatures(x, ecol = 1:10, name = "psms", fname = "not_present"))
-    expect_error(readFeatures(f, ecol = 1:10, name = "psms", fname = "not_present"))
+    expect_error(readFeatures(x, ecol = 1:10, name = "psms", 
+                              fname = "not_present"))
+    expect_error(readFeatures(f, ecol = 1:10, name = "psms", 
+                              fname = "not_present"))
 })
+
+test_that("readFeatures", {
+    ft1 <- readSummarizedExperiment(x, ecol = 1:10)
+    ft2 <- readSummarizedExperiment(f, ecol = 1:10)
+    expect_equal(ft1, ft2)
+    ft1 <- readSummarizedExperiment(x, ecol = 1:10, fname = "Sequence")
+    ft2 <- readSummarizedExperiment(f, ecol = 1:10, fname = "Sequence")
+    expect_equal(ft1, ft2)    
+    ft3 <- readSummarizedExperiment(f, ecol = 1:10, fname = 11)
+    expect_equal(ft1, ft3)
+    ecol <- LETTERS[1:10]
+    expect_error(readSummarizedExperiment(x, ecol = ecol, name = "psms"))
+    expect_error(readSummarizedExperiment(f, ecol = ecol, name = "psms"))
+    expect_error(readSummarizedExperiment(x, ecol = 1:10, name = "psms", 
+                                          fname = "not_present"))
+    expect_error(readSummarizedExperiment(f, ecol = 1:10, name = "psms", 
+                                          fname = "not_present"))
+    expect_true(inherits(ft1, "SummarizedExperiment"))
+})
+    
