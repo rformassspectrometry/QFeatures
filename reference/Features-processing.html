@@ -161,19 +161,19 @@ to <code>method</code> (see Details).</p></li>
 <span class='fu'>logTransform</span>(<span class='no'>object</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>pc</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 
 <span class='co'># S4 method for Features</span>
-<span class='fu'>logTransform</span>(<span class='no'>object</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>i</span>, <span class='kw'>pc</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+<span class='fu'>logTransform</span>(<span class='no'>object</span>, <span class='no'>i</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"logAssay"</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>pc</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 
 <span class='co'># S4 method for SummarizedExperiment</span>
 <span class='fu'>scaleTransform</span>(<span class='no'>object</span>, <span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># S4 method for Features</span>
-<span class='fu'>scaleTransform</span>(<span class='no'>object</span>, <span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>i</span>)
+<span class='fu'>scaleTransform</span>(<span class='no'>object</span>, <span class='no'>i</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"scaledAssay"</span>, <span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># S4 method for SummarizedExperiment</span>
-<span class='fu'>normalize</span>(<span class='no'>object</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>normalizeMethods</span>(), <span class='no'>...</span>)
+<span class='fu'>normalize</span>(<span class='no'>object</span>, <span class='no'>method</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for Features</span>
-<span class='fu'>normalize</span>(<span class='no'>object</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>normalizeMethods</span>(), <span class='no'>...</span>, <span class='no'>i</span>)</pre>
+<span class='fu'>normalize</span>(<span class='no'>object</span>, <span class='no'>i</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"normAssay"</span>, <span class='no'>method</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -196,6 +196,12 @@ data. Default is 0 (no effect).</p></td>
     <tr>
       <th>i</th>
       <td><p>The index or name of the assay to be processed.</p></td>
+    </tr>
+    <tr>
+      <th>name</th>
+      <td><p>A <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> naming the new assay name. Defaults
+are <code>logAssay</code> for <code>logTransform</code>, <code>scaledAssay</code> for
+<code>scaleTranform</code> and <code>normAssay</code> for <code>normalize</code>.</p></td>
     </tr>
     <tr>
       <th>center</th>
@@ -223,27 +229,36 @@ apply. See Details.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The <code>method</code> parameter in <code>normalize</code> can be one of <code>"sum"</code>,
-<code>"max"</code>, <code>"quantiles"</code>, <code>"center.mean"</code>, <code>"center.median"</code>,
-<code>"center.median"</code>, <code>"quantiles.robust</code>" or <code>"vsn"</code>.  For <code>"sum"</code>
-and <code>"max"</code>, each feature's intensity is divided by the maximum or
-the sum of the feature respectively. These two methods are applied
-along the features (rows). The <code>normalizeMethods()</code> function
-returns a vector of available normalisation methods.</p>
-<p><code>"center.mean"</code> and <code>"center.median"</code> translate the respective
-sample (column) intensities according to the column mean or
-median. <code>"diff.median"</code> translates all samples (columns) so that
-they all match the grand median. Using <code>"quantiles"</code> or
-<code>"quantiles.robust"</code> applies (robust) quantile normalisation, as
-implemented in <code><a href='https://rdrr.io/pkg/preprocessCore/man/normalize.quantiles.html'>preprocessCore::normalize.quantiles()</a></code> and
-<code><a href='https://rdrr.io/pkg/preprocessCore/man/normalize.quantiles.robust.html'>preprocessCore::normalize.quantiles.robust()</a></code>. <code>"vsn"</code> uses the
-<code><a href='https://rdrr.io/pkg/vsn/man/vsn2.html'>vsn::vsn2()</a></code> function.  Note that the latter also glog-transforms
-the intensities.  See respective manuals for more details and
-function arguments.</p>
+<code>"max"</code>, <code>"center.mean"</code>, <code>"center.median"</code>, <code>"div.mean"</code>,
+<code>"div.median"</code>, <code>"diff.meda"</code>, <code>"quantiles</code>", <code>"quantiles.robust</code>"
+or <code>"vsn"</code>. The <code><a href='https://rdrr.io/pkg/MsCoreUtils/man/normalize.html'>MsCoreUtils::normalizeMethods()</a></code> function
+returns a vector of available normalisation methods.</p><ul>
+<li><p>For <code>"sum"</code> and <code>"max"</code>, each feature's intensity is divided by the
+maximum or the sum of the feature respectively. These two methods are
+applied along the features (rows).</p></li>
+<li><p><code>"center.mean"</code> and <code>"center.median"</code> center the respective sample
+(column) intensities by subtracting the respective column means or
+medians. <code>"div.mean"</code> and <code>"div.median"</code> divide by the column means or
+medians.</p></li>
+<li><p><code>"diff.median"</code> centers all samples (columns) so that they all match the
+grand median by subtracting the respective columns medians differences to
+the grand median.</p></li>
+<li><p>Using <code>"quantiles"</code> or <code>"quantiles.robust"</code> applies (robust) quantile
+normalisation, as implemented in <code><a href='https://rdrr.io/pkg/preprocessCore/man/normalize.quantiles.html'>preprocessCore::normalize.quantiles()</a></code>
+and <code><a href='https://rdrr.io/pkg/preprocessCore/man/normalize.quantiles.robust.html'>preprocessCore::normalize.quantiles.robust()</a></code>. <code>"vsn"</code> uses the
+<code><a href='https://rdrr.io/pkg/vsn/man/vsn2.html'>vsn::vsn2()</a></code> function.  Note that the latter also glog-transforms the
+intensities.  See respective manuals for more details and function
+arguments.</p></li>
+</ul>
+
+<p>For further details and examples about normalisation, see
+<code><a href='https://rdrr.io/pkg/MsCoreUtils/man/normalize.html'>MsCoreUtils::normalize_matrix()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'>normalizeMethods</span>()</div><div class='output co'>#&gt; [1] "sum"              "max"              "center.mean"      "center.median"   
-#&gt; [5] "diff.median"      "quantiles"        "quantiles.robust" "vsn"             </div></pre>
+<span class='kw pkg'>MsCoreUtils</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/MsCoreUtils/man/normalize.html'>normalizeMethods</a></span>()</div><div class='output co'>#&gt;  [1] "sum"              "max"              "center.mean"      "center.median"   
+#&gt;  [5] "div.mean"         "div.median"       "diff.median"      "quantiles"       
+#&gt;  [9] "quantiles.robust" "vsn"             </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
