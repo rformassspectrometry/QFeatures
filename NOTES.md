@@ -34,8 +34,34 @@ would require additional developments:
 Despite the elegant of the two-level option, it seems that the
 additional development isn't warranted at this time.
 
-
 The [`updateAssay`
 function](https://github.com/rformassspectrometry/Features/issues/37)
 was originally intended for the two-level approach, i.e. to add an
 assay to an SE. This is not considered anymore (for now, at least).
+
+# How to add new assays
+
+1. Through aggregation with `aggregateFeatures`.
+
+2. Processing an SE. 
+
+This can/could be done explicitly with `addAssay`
+
+```
+addAssay(cptac, logTransform(cptac[["peptides"]]), name = "peptides_log")
+addAssay(cptac, logTransform(cptac[[1]]), name = "peptides_log")
+```
+
+or implicitly 
+
+```
+logTransform(cptac, "peptides", name = "peptides_log")
+logTransform(cptac, 1, name = "peptides_log")
+```
+
+3. Combining SEs (for example multiple TMT batches) (TODO)
+
+```
+combine(Features, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
+combine(Features, c(1, 2, 3), name = "peptides")
+```
