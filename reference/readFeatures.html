@@ -131,7 +131,9 @@ Features object." />
 <code>Features</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>readFeatures</span>(<span class='no'>table</span>, <span class='no'>ecol</span>, <span class='no'>fnames</span>, <span class='no'>...</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>readFeatures</span>(<span class='no'>table</span>, <span class='no'>ecol</span>, <span class='no'>fnames</span>, <span class='no'>...</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>readSummarizedExperiment</span>(<span class='no'>table</span>, <span class='no'>ecol</span>, <span class='no'>fnames</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,17 +168,26 @@ except <code>stringsAsFactors</code>, which is always <code>FALSE</code>.</p></t
     </tr>
     <tr>
       <th>name</th>
-      <td><p>An <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> to name assay. If not set,
-<code>features</code> is used.</p></td>
+      <td><p>An <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> to name assay in the <code>Features</code>
+object. If not set, <code>features</code> is used.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An instance of class <a href='Features-class.html'>Features</a>.</p>
+    <p>An instance of class <a href='Features-class.html'>Features</a> or SummarizedExperiment.</p>
+    <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
+
+    
+<ul>
+<li><p><code>readFeatures</code>: Convert tabular data from a spreadsheet or a
+<code>data.frame</code> into a <code>Features</code> object.</p></li>
+<li><p><code>readSummarizedExperiment</code>: Convert tabular data from a spreadsheet or a
+<code>data.frame</code> into a <code>SummarizedExperiment</code> object.</p></li>
+</ul>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>The <a href='Features-class.html'>Features</a> class for an example on how to manipulate use
+    <div class='dont-index'><p>The <a href='Features-class.html'>Features</a> class for an example on how to use
 <code>readFeatures</code> and how to further manipulate the resulting data.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -194,6 +205,7 @@ except <code>stringsAsFactors</code>, which is always <code>FALSE</code>.</p></t
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#functions">Functions</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
