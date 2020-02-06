@@ -2,9 +2,12 @@
 % Please edit documentation in R/Features-constructors.R
 \name{readFeatures}
 \alias{readFeatures}
+\alias{readSummarizedExperiment}
 \title{Features from tabular data}
 \usage{
 readFeatures(table, ecol, fnames, ..., name = NULL)
+
+readSummarizedExperiment(table, ecol, fnames, ...)
 }
 \arguments{
 \item{table}{File or object holding the quantitative data. Can be
@@ -27,27 +30,36 @@ indicating the column to be used as feature names.}
 \item{...}{Further arguments that can be passed on to \code{read.csv}
 except \code{stringsAsFactors}, which is always \code{FALSE}.}
 
-\item{name}{An \code{character(1)} to name assay. If not set,
-\code{features} is used.}
+\item{name}{An \code{character(1)} to name assay in the \code{Features}
+object. If not set, \code{features} is used.}
 }
 \value{
-An instance of class \link{Features}.
+An instance of class \link{Features} or \link{SummarizedExperiment}.
 }
 \description{
 Convert tabular data from a spreadsheet or a \code{data.frame} into a
 \code{Features} object.
 }
+\section{Functions}{
+\itemize{
+\item \code{readFeatures}: Convert tabular data from a spreadsheet or a
+\code{data.frame} into a \code{Features} object.
+
+\item \code{readSummarizedExperiment}: Convert tabular data from a spreadsheet or a
+\code{data.frame} into a \code{SummarizedExperiment} object.
+}}
+
 \examples{
 
 ## Load a data.frame with PSM-level data
-data(hlpsms)
+data(hlpsms) 
 
 ## Create the Features object
 fts2 <- readFeatures(hlpsms, ecol = 1:10, name = "psms")
 fts2
 }
 \seealso{
-The \link{Features} class for an example on how to manipulate use
+The \link{Features} class for an example on how to use
 \code{readFeatures} and how to further manipulate the resulting data.
 }
 \author{
