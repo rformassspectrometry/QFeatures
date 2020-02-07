@@ -80,16 +80,16 @@
 ##'
 ##' @param i `character()`, `integer()`, `logical()` or `GRanges()`
 ##'     object for subsetting by rows.
-##' 
+##'
 ##' @param j `character()`, `logical()`, or `numeric()` vector for
-##'     subsetting by `colData` rows. 
-##' 
+##'     subsetting by `colData` rows.
+##'
 ##' @param k `character()`, `logical()`, or `numeric()` vector for
 ##'     subsetting by assays
-##' 
+##'
 ##' @param drop logical (default `TRUE`) whether to drop empty assay
 ##'     elements in the `ExperimentList`.
-##' 
+##'
 ##' @seealso
 ##'
 ##' - The [readFeatures()] constructor and the [aggregateFeatures()]
@@ -100,7 +100,7 @@
 ##'
 ##' - The [missing-data] manual page to manage missing values in
 ##'   `Features` objects.
-##' 
+##'
 ##' - The [Features-processing] and [aggregateFeatures()] manual pages
 ##'   and *Processing* vignette describe common quantitative data
 ##'   processing methods using in quantitative proteomics.
@@ -272,3 +272,21 @@ rowDataNames <- function(object) {
                              else NA_character_
                          }))
 }
+
+
+#' @exportMethod names<-
+#' @rdname MultiAssayExperiment-methods
+setReplaceMethod("names", c("Features", "ANY"),
+                 function(x, value) {
+                     key_vals <- cbind(names(x), value)
+                     x <-  callNextMethod(x, value)
+                     names(x@assayLinks) <- value
+                     for (i in seq_len(length(x))) {
+                         al <- x@assayLinks[[i]]
+                         al@name  <- unname(key_vals[key_vals[, 1] == al@name, 2])
+                         if (!is.na(al@from))
+                             al@from <- unname(key_vals[key_vals[, 1] == al@from, 2])
+                         x@assayLinks[[i]] <- al
+                     }
+                     x
+})

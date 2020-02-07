@@ -36,18 +36,18 @@ find_assay_with_feature_name <- function(x, i) {
     names(ans)[ans]
 }
 
-find_assays_from <- function(x, i) 
+find_assays_from <- function(x, i)
     sapply(i, function(ii) names(assayLinks(x, ii)))
 
 
 ##' @title Subset by feature name
 ##'
 ##' @description
-##' 
+##'
 ##' This function will find the assays and features that match
 ##' directly (by name) or indirectly (through aggregation) the feature
 ##' name.
-##' 
+##'
 ##' The `subsetByFeature` function will first identify the assay that
 ##' contains the feature(s) `i` and filter the rows matching these
 ##' feature names exactly. It will then find, in the other assays, the
@@ -57,16 +57,16 @@ find_assays_from <- function(x, i)
 ##' See [Features] for an example.
 ##'
 ##' @param x An instance of class [Features].
-##' 
+##'
 ##' @param y A `character` of feature names present in an assay in `x`.
-##' 
+##'
 ##' @param ... Additional parameters. Ignored.
-##' 
+##'
 ##' @return An new instance of class [Features] containing relevant
 ##'     assays and features.
-##' 
+##'
 ##' @aliases subsetByFeature,Features,character-method
-##' 
+##'
 ##' @name subsetByFeature
 ##'
 ##' @rdname Features-subsetBy
@@ -79,9 +79,10 @@ setMethod("subsetByFeature", c("Features", "character"),
 
 
 .subsetByFeature <- function(x, i) {
+    browser()
     leaf_assay_name  <- find_assay_with_feature_name(x, i)
 
-    if (!length(leaf_assay_name)) 
+    if (!length(leaf_assay_name))
         stop("Feature not found")
 
     all_assays_names <- find_assays_from(x, leaf_assay_name)
@@ -89,11 +90,11 @@ setMethod("subsetByFeature", c("Features", "character"),
 
     ans <- x[, , all_assays_names]
 
-    ## Let's first collect the feature names for all assays    
+    ## Let's first collect the feature names for all assays
     featurename_list <- vector("list", length = length(all_assays_names))
     names(featurename_list) <- all_assays_names
 
-    for (k in leaf_assay_name) 
+    for (k in leaf_assay_name)
         featurename_list[[k]] <- i
 
     for (k in setdiff(all_assays_names, leaf_assay_name)) {
@@ -120,4 +121,3 @@ setMethod("subsetByFeature", c("Features", "character"),
              metadata = metadata(x),
              assayLinks = alnks)
 }
-

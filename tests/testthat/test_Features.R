@@ -54,7 +54,7 @@ test_that("rowDataNames", {
     expect_identical(length(feat1), length(rdn))
     expect_identical(names(feat1), names(rdn))
     for (i in seq_along(length(feat1)))
-        expect_identical(rdn[[i]], names(rowData(feat1[[i]])))    
+        expect_identical(rdn[[i]], names(rowData(feat1[[i]])))
 })
 
 test_that("selectRowData", {
@@ -69,4 +69,24 @@ test_that("selectRowData", {
                                          "Var", "location", "pval",
                                          "var_not_found")))
     expect_identical(feat1, ft)
+})
+
+
+
+test_that("renaming", {
+    data(feat1)
+    feat1 <- aggregateFeatures(feat1, "psms", fcol = "Sequence",
+                               name = "peptides", fun = colSums)
+    feat1 <- aggregateFeatures(feat1, "peptides", fcol = "Protein",
+                               name = "proteins", fun = colSums)
+    expect_true(validObject(feat1))
+    feat2 <- feat1
+    names(feat2) <- LETTERS[1:3]
+    expect_true(validObject(feat2))
+    feat2@assayLinks[[1]]@name <- "foo"
+    expect_error(validObject(feat2))
+    feat2 <- feat1
+    names(feat2) <- LETTERS[1:3]
+    feat2@assayLinks[[1]]@from <- "foo"
+    expect_error(validObject(feat2))
 })
