@@ -60,6 +60,10 @@
 ##'
 ##' ## using a user-defined character filter
 ##' filterFeatures(feat1, VariableFilter("location", "Mitochondrion"))
+##' 
+##' ## using a user-defined character filter with partial match
+##' filterFeatures(feat1, VariableFilter("location", "Mito", "startsWith"))
+##' filterFeatures(feat1, VariableFilter("location", "itochon", "contains"))
 ##'
 ##' ## ----------------------------------------------------------------
 ##' ## Filter all features that aren't marked as unknown (sub-cellular
@@ -67,7 +71,7 @@
 ##' ## ----------------------------------------------------------------
 ##'
 ##' ## using a user-defined character filter
-##' filterFeatures(feat1, VariableFilter("location", "unknown", condition = "!="))
+##' filterFeatures(feat1, VariableFilter("location", "unknown", condition = "!="))##' 
 ##'
 ##' ## using the forumula interface
 ##' filterFeatures(feat1, ~ location != "unknown")
@@ -81,6 +85,9 @@
 ##'
 ##' ## using the formula interface
 ##' filterFeatures(feat1, ~ pval <= 0.03)
+##' 
+##' ## you can also remove all p-values that are NA (if any)
+##' filterFeatures(feat1, ~ !pval %in% NA)
 ##'
 ##' ## ----------------------------------------------------------------
 ##' ## Negative control - filtering for an non-existing markers value
@@ -94,6 +101,8 @@
 ##' filterFeatures(feat1, VariableFilter("foo", "bar"))
 ##'
 ##' filterFeatures(feat1, ~ foo == "bar")
+##' 
+##' 
 NULL
 
 
@@ -111,35 +120,43 @@ setClass("NumericVariableFilter", contains = "DoubleFilter")
 ##' @param field `character(1)` refering to the name of the variable
 ##'     to apply the filter on.
 ##' 
-##' @param value ‘character()’ or ‘integer()’ value for the
+##' @param value `character()` or `integer()` value for the
 ##'     `CharacterVariableFilter` and `NumericVariableFilter` filters
 ##'     respectively.
 ##'
-##' @param condition ‘character(1)’ defining the condition to be used in
-##'     the filter. For ‘NumericVariableFilter’, one of ‘"=="’,
-##'     ‘"!="’, ‘">"’, ‘"<"’, ‘">="’ or ‘"<="’. For
-##'     ‘CharacterVariableFilter’, one of ‘"=="’, ‘"!="’,
-##'     ‘"startsWith"’, ‘"endsWith"’ or ‘"contains"’. Default
-##'     condition is ‘"=="’.
+##' @param condition `character(1)` defining the condition to be used in
+##'     the filter. For `NumericVariableFilter`, one of `"=="`,
+##'     `"!="`, `">"`, `"<"`, `">="` or `"<="`. For
+##'     `CharacterVariableFilter`, one of `"=="`, `"!="`,
+##'     `"startsWith"`, `"endsWith"` or `"contains"`. Default
+##'     condition is `"=="`.
+##'     
+##' @param not `logical(1)` indicating whether the filtering should be negated 
+##'     or not. `TRUE` indicates is negated (!). `FALSE` indicates not negated. 
+##'     Default `not` is `FALSE`, so no negation.
 ##' 
 ##' @export VariableFilter
 ##' @rdname Features-filtering
 VariableFilter <- function(field,
                            value,
-                           condition = "==") {
+                           condition = "==", 
+                           not = FALSE) {
     if (is.numeric(value))
         new("NumericVariableFilter",
             field = as.character(field),
             value = value,
-            condition = condition)                
+            condition = condition,
+            not = not)                
     else if (is.character(value))
         new("CharacterVariableFilter",
             field = as.character(field),
             value = value,
-            condition = condition)
+            condition = condition,
+            not = not)
     else
         stop("Value type undefined.")
 }
+
 
 
 ##' @param object An instance of class [Features].
@@ -175,6 +192,7 @@ filterFeaturesWithAnnotationFilter <- function(object, filter, ...) {
                       else
                           rep(FALSE, nrow(x))               
                   })
+    if (not(filter)) sel <- lapply(sel, "!")
     object[sel, , ]
 }
 
@@ -188,4 +206,14 @@ filterFeaturesWithFormula <- function(object, filter, ...) {
                                error = function(e) rep(FALSE, nrow(x)))
                   })
     object[sel, , ]
+}
+
+
+## Internal function called by `filterFeaturesWithAnnotationFilter` when 
+## `condition` is `"contains"`
+contains <- function(x, value){
+    ## Replace regex special character by regular character matching
+    value <- gsub('([[:punct:]])', '\\[\\1\\]', value)
+    ## Return whether elements in x contain value or not
+    grepl(pattern = value, x = x)
 }
