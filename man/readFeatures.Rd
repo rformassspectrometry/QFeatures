@@ -22,7 +22,7 @@ indicating the names of the columns. Caution must be taken if
 the column names are composed of special characters like \code{(}
 or \code{-} that will be converted to a \code{.} by the \code{read.csv}
 function. If \code{ecol} does not match, the error message will
-dislpay the column names as seen by the \code{read.csv} function.}
+display the column names as seen by the \code{read.csv} function.}
 
 \item{fnames}{An optional \code{character(1)} or \code{numeric(1)}
 indicating the column to be used as feature names.}
@@ -42,8 +42,7 @@ Convert tabular data from a spreadsheet or a \code{data.frame} into a
 }
 \section{Functions}{
 \itemize{
-\item \code{readFeatures}: Convert tabular data from a spreadsheet or a
-\code{data.frame} into a \code{Features} object.
+\item \code{readFeatures}: See description.
 
 \item \code{readSummarizedExperiment}: Convert tabular data from a spreadsheet or a
 \code{data.frame} into a \code{SummarizedExperiment} object.
