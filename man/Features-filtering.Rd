@@ -13,7 +13,7 @@
 \alias{NumericVariableFilter-class}
 \title{Filter features based on their rowData}
 \usage{
-VariableFilter(field, value, condition = "==")
+VariableFilter(field, value, condition = "==", not = FALSE)
 
 \S4method{filterFeatures}{Features,AnnotationFilter}(object, filter, ...)
 
@@ -23,16 +23,20 @@ VariableFilter(field, value, condition = "==")
 \item{field}{\code{character(1)} refering to the name of the variable
 to apply the filter on.}
 
-\item{value}{‘character()’ or ‘integer()’ value for the
+\item{value}{\code{character()} or \code{integer()} value for the
 \code{CharacterVariableFilter} and \code{NumericVariableFilter} filters
 respectively.}
 
-\item{condition}{‘character(1)’ defining the condition to be used in
-the filter. For ‘NumericVariableFilter’, one of ‘"=="’,
-‘"!="’, ‘">"’, ‘"<"’, ‘">="’ or ‘"<="’. For
-‘CharacterVariableFilter’, one of ‘"=="’, ‘"!="’,
-‘"startsWith"’, ‘"endsWith"’ or ‘"contains"’. Default
-condition is ‘"=="’.}
+\item{condition}{\code{character(1)} defining the condition to be used in
+the filter. For \code{NumericVariableFilter}, one of \code{"=="},
+\code{"!="}, \code{">"}, \code{"<"}, \code{">="} or \code{"<="}. For
+\code{CharacterVariableFilter}, one of \code{"=="}, \code{"!="},
+\code{"startsWith"}, \code{"endsWith"} or \code{"contains"}. Default
+condition is \code{"=="}.}
+
+\item{not}{\code{logical(1)} indicating whether the filtering should be negated
+or not. \code{TRUE} indicates is negated (!). \code{FALSE} indicates not negated.
+Default \code{not} is \code{FALSE}, so no negation.}
 
 \item{object}{An instance of class \link{Features}.}
 
@@ -92,13 +96,17 @@ filterFeatures(feat1, ~startsWith(location, "Mito"))
 ## using a user-defined character filter
 filterFeatures(feat1, VariableFilter("location", "Mitochondrion"))
 
+## using a user-defined character filter with partial match
+filterFeatures(feat1, VariableFilter("location", "Mito", "startsWith"))
+filterFeatures(feat1, VariableFilter("location", "itochon", "contains"))
+
 ## ----------------------------------------------------------------
 ## Filter all features that aren't marked as unknown (sub-cellular
 ## location) in the feature variable
 ## ----------------------------------------------------------------
 
 ## using a user-defined character filter
-filterFeatures(feat1, VariableFilter("location", "unknown", condition = "!="))
+filterFeatures(feat1, VariableFilter("location", "unknown", condition = "!="))##' 
 
 ## using the forumula interface
 filterFeatures(feat1, ~ location != "unknown")
@@ -113,6 +121,9 @@ filterFeatures(feat1, VariableFilter("pval", 0.03, "<="))
 ## using the formula interface
 filterFeatures(feat1, ~ pval <= 0.03)
 
+## you can also remove all p-values that are NA (if any)
+filterFeatures(feat1, ~ !pval \%in\% NA)
+
 ## ----------------------------------------------------------------
 ## Negative control - filtering for an non-existing markers value
 ## or a missing feature variable, returning empty results
@@ -125,6 +136,8 @@ filterFeatures(feat1, ~ location == "not")
 filterFeatures(feat1, VariableFilter("foo", "bar"))
 
 filterFeatures(feat1, ~ foo == "bar")
+
+
 }
 \seealso{
 The \link{Features} man page for subsetting and the \code{Features}

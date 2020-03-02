@@ -17,7 +17,7 @@
 ##'     the column names are composed of special characters like `(`
 ##'     or `-` that will be converted to a `.` by the `read.csv`
 ##'     function. If `ecol` does not match, the error message will
-##'     dislpay the column names as seen by the `read.csv` function.
+##'     display the column names as seen by the `read.csv` function.
 ##'
 ##' @param fnames An optional `character(1)` or `numeric(1)`
 ##'     indicating the column to be used as feature names.
