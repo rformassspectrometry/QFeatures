@@ -29,7 +29,7 @@ test_that("filterFeatures", {
     expect_true(isEmpty(filterFeatures(feat1, ~ location == "not")))
     expect_true(isEmpty(filterFeatures(feat1, VariableFilter("foo", "bar"))))
     expect_true(isEmpty(filterFeatures(feat1, ~ foo == "bar")))
-    expect_true(isEmpty(filterFeatures(feat1, ~ pval %in% NA)))
+    expect_true(isEmpty(filterFeatures(feat1, ~ is.na(pval))))
     ## Test fraud filters
     expect_error(VariableFilter("pval", TRUE, "<="))
     expect_error(VariableFilter("location", TRUE, "!="))
