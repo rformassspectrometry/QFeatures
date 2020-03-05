@@ -1,3 +1,6 @@
 .Rproj.user
-vignettes/Features.html
-vignettes/Features_files
+.Rhistory
+Features.Rproj
+
+vignettes/figs/display_*
+.gitignore

@@ -24,6 +24,30 @@
   k <= pNA
 }
 
+## Internal function for printing the result of nNA when applyed to multiple
+## samples 
+## @param object a `Features` object
+## @param res a list of results obtained after applying `nNA` to multiple assays
+##     of `object`
+.printnNA <- function(object, res){
+  names(res) <- names(object)
+  ans <- vector("list", length = 3)
+  names(ans) <- c("nNA", "nNArows", "nNAcols")
+  ans[[1]] <- sapply(res, "[[", 1)              
+  ans[[3]] <- t(sapply(res, "[[", 3))
+  ans2 <- matrix(0,
+                 ncol = 1 + nrow(colData(object)),
+                 nrow = length(object))
+  rownames(ans2) <- names(object)
+  colnames(ans2) <- 0:nrow(colData(object))
+  for (i in seq_len(length(res))) {
+    x <- res[[i]]$nNArows
+    ans2[i, names(x)] <- x
+  }
+  ans[[2]] <- ans2
+  ans
+}
+
 
 ##' @title Managing missing data
 ##'
@@ -61,7 +85,8 @@
 ##'     with higher percentages are removed. If 0 (default), features
 ##'     that contain any number of `NA` values are dropped.
 ##'
-##' @param i The index or name of the assay to be processed.
+##' @param i One or more indices or names of the assay(s) to be processed. 
+##'     Default: apply to all assys in `object`.
 ##'
 ##' @return An instance of the same class as `object`.
 ##'
@@ -93,8 +118,9 @@ setMethod("zeroIsNA", c("Features", "missing"),
 ##' @rdname Features-missing-data
 setMethod("zeroIsNA", c("Features", "integer"),
           function(object, i) {
-              object[[i]] <- zeroIsNA(object[[i]])
-              object
+            for (ii in i)
+              object[[ii]] <- zeroIsNA(object[[ii]])
+            object
           })
 
 ##' @rdname Features-missing-data
@@ -104,8 +130,9 @@ setMethod("zeroIsNA", c("Features", "numeric"),
 ##' @rdname Features-missing-data
 setMethod("zeroIsNA", c("Features", "character"),
           function(object, i) {
-              object[[i]] <- zeroIsNA(object[[i]])
-              object
+            for (ii in i)
+              object[[ii]] <- zeroIsNA(object[[ii]])
+            object
           })
 
 ##' @exportMethod nNA
@@ -115,15 +142,27 @@ setMethod("nNA", c("SummarizedExperiment", "missing"),
 
 ##' @rdname Features-missing-data
 setMethod("nNA", c("Features", "integer"),
-          function(object, i) .nNA(object[[i]]))
+          function(object, i) {
+            if (length(object) == 1)
+              return(nNA(object, 1))
+            res <- lapply(i,
+                          function(ii) .nNA(object[[ii]]))
+            .printnNA(object, res)
+          })
 
 ##' @rdname Features-missing-data
 setMethod("nNA", c("Features", "numeric"),
-          function(object, i) .nNA(object[[as.integer(i)]]))
+          function(object, i) nNA(object, as.integer(i)))
 
 ##' @rdname Features-missing-data
 setMethod("nNA", c("Features", "character"),
-          function(object, i) .nNA(object[[i]]))
+          function(object, i) {
+            if (length(object) == 1)
+              return(nNA(object, 1))
+            res <- lapply(i,
+                          function(ii) .nNA(object[[ii]]))
+            .printnNA(object, res)
+          })
 
 ##' @rdname Features-missing-data
 setMethod("nNA", c("Features", "missing"),          
@@ -132,6 +171,7 @@ setMethod("nNA", c("Features", "missing"),
                   return(nNA(object, 1))
               res <- lapply(seq_len(length(object)),
                             function(i) .nNA(object[[i]]))
+              # .printnNA(object, res)
               names(res) <- names(object)
               ans <- vector("list", length = 3)
               names(ans) <- c("nNA", "nNArows", "nNAcols")
@@ -143,12 +183,14 @@ setMethod("nNA", c("Features", "missing"),
               rownames(ans2) <- names(object)
               colnames(ans2) <- 0:nrow(colData(object))
               for (i in seq_len(length(res))) {
-                  x <- res[[i]]$nNArows
-                  ans2[i, names(x)] <- x
+                x <- res[[i]]$nNArows
+                ans2[i, names(x)] <- x
               }
               ans[[2]] <- ans2
               ans
           })
+
+
 
 ##' @exportMethod filterNA
 ##' @rdname Features-missing-data
