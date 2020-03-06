@@ -173,3 +173,36 @@ setMethod("[", c("AssayLinks", "list"),
               }
               x
           })
+
+
+## -----------------------------------
+## Functions for creating custom links
+## -----------------------------------
+
+
+.createAssayLink <- function (object, ## Features object
+                             from, 
+                             to,
+                             varFrom, 
+                             varTo) {
+    ## Get the shared feature variable 
+    rowDatFrom <- unlist(rowData(object[[from]])[varFrom], use.names = FALSE)
+    rowDatTo <- unlist(rowData(object[[to]])[varTo], use.names = FALSE)
+    ## Find hits
+    hits <- findMatches(rowDatFrom, rowDatTo)
+    if(length(c(hits@from, hits@to)) == 0) 
+        stop(paste0("No match found between field '", varFrom, "' (in '", from, 
+                    "') and filed '", varTo, "' (in '", to, "')."))
+    ## Add the row names corresponding to the hits
+    elementMetadata(hits)$names_from <- rownames(object[[from]])[hits@from]
+    elementMetadata(hits)$names_to <- rownames(object[[to]])[hits@to]
+    ## Create the new link
+    al <- AssayLink(name = to,
+                    from = from,
+                    fcol = fcol,
+                    hits = hits)
+    ## Append assay link to the existing links
+    object@assayLinks@listData[[to]] <- al
+    stopifnot(validObject(object))
+    object
+}
