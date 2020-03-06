@@ -8,14 +8,11 @@ ft0 <- Features(list(na = se_na, zero = se_zero),
                 colData = DataFrame(row.names = LETTERS[1:3]))
 
 
-test_that("function: .zeroIsNA and .nNA", {
+test_that("function: .zeroIsNA, .nNA, and .nNAi", {
+    ## .zeroIsNA
     expect_equivalent(se_na, Features:::.zeroIsNA(se_zero))
     expect_equivalent(se_na, zeroIsNA(se_zero))
-    ft1 <- zeroIsNA(ft0, 1:2)
-    expect_identical(ft1, zeroIsNA(ft1, c("na", "zero")))
-    expect_identical(ft1, zeroIsNA(ft1, c(1.1, 2.1)))
-    expect_equivalent(assay(ft1[["na"]]), assay(se_na))
-    expect_equivalent(assay(ft1[["zero"]]), assay(se_na))
+    ## .nNA
     n_na <- Features:::.nNA(se_na)
     expect_identical(n_na[[1]], 3/(3 * 4))
     expect_identical(n_na[[2]], table(c(0, 1, 1, 1)))
@@ -26,17 +23,19 @@ test_that("function: .zeroIsNA and .nNA", {
     expect_identical(n_na[[2]], table(c(0, 0, 0, 0)))
     expect_identical(n_na[[3]], c(A = 0, B = 0, C = 0))
     expect_identical(nNA(se_zero), Features:::.nNA(se_zero))
-    n_na2 <- nNA(ft0, 1:2)
-    expect_identical(n_na2, nNA(ft0, c("na", "zero")))
-    expect_identical(n_na2[[1]], c(na = 0.25, zero = 0.00))
-    expect_identical(n_na2[[2]], 
+    ## .nNAi
+    n_na <- Features:::.nNAi(ft0, 1:2)
+    expect_identical(n_na, Features:::.nNAi(ft0, c("na", "zero")))
+    expect_identical(n_na, Features:::.nNAi(ft0, c(1.1, 2.1)))
+    expect_identical(n_na[[1]], c(na = 0.25, zero = 0.00))
+    expect_identical(n_na[[2]], 
                      matrix(c(1, 4, 3, rep(0, 5)), nrow = 2,
                             dimnames = list(c("na", "zero"), 0:3)))
-    expect_identical(n_na2[[3]], 
+    expect_identical(n_na[[3]], 
                      matrix(c(2, 1, rep(0, 4)), nrow = 2, byrow = TRUE,
                             dimnames = list(c("na", "zero"), LETTERS[1:3])))
+    expect_identical(nNA(ft0, 1:2), Features:::.nNAi(ft0, 1:2))
 })
-
 
 
 test_that("function: .row_for_filterNA", {
@@ -64,6 +63,7 @@ test_that("function: .row_for_filterNA", {
                      Features:::.row_for_filterNA(assay(se_na), pNA = 2))
 })
 
+
 test_that("function: zeroIsNA and nNA", {
     n_na <- Features:::.nNA(se_na)
     expect_identical(n_na[[1]], 3/(3 * 4))
@@ -79,7 +79,14 @@ test_that("zeroIsNA,Features", {
     expect_equivalent(ft[["na"]], ft[["zero"]])
     ft <- zeroIsNA(ft0, "na")
     expect_equivalent(ft[["na"]], ft[["zero"]])
+    ## zeroIsNA on multiple assays
+    ft <- zeroIsNA(ft0, 1:2)
+    expect_identical(ft, zeroIsNA(ft, c("na", "zero")))
+    expect_identical(ft, zeroIsNA(ft, c(1.1, 2.1)))
+    expect_equivalent(assay(ft[["na"]]), assay(se_na))
+    expect_equivalent(assay(ft[["zero"]]), assay(se_na))
 })
+
 
 test_that("nNA,Features", {
     n_na <- nNA(ft0)
@@ -98,6 +105,17 @@ test_that("nNA,Features", {
     expect_identical(nNA(ft0, 1), nNA(se_na))
     expect_identical(nNA(ft0, "na"), nNA(se_na))
     expect_identical(nNA(ft0[, , 1]), nNA(ft0[[1]]))
+    ## nNA on multiple assays
+    n_na <- nNA(ft0, 1:2)
+    expect_identical(n_na, nNA(ft0, c("na", "zero")))
+    expect_identical(n_na[[1]], c(na = 0.25, zero = 0.00))
+    expect_identical(n_na[[2]], 
+                     matrix(c(1, 4, 3, rep(0, 5)), nrow = 2,
+                            dimnames = list(c("na", "zero"), 0:3)))
+    expect_identical(n_na[[3]], 
+                     matrix(c(2, 1, rep(0, 4)), nrow = 2, byrow = TRUE,
+                            dimnames = list(c("na", "zero"), LETTERS[1:3])))
+    
 })
 
 
@@ -111,6 +129,7 @@ test_that("filterNA,Features and filterNA,SummarizedExperiment", {
     expect_equivalent(se_na_filtered, ft_filtered[[1]])
     expect_equivalent(se_na_filtered, ft0[[2]])
 })
+
 
 test_that("aggregateFeatures with missing data", {
     expect_message(ft_na <- aggregateFeatures(ft_na, "na", fcol = "X", name = "agg_na",
