@@ -1,6 +1,8 @@
+## R files and folders
 .Rproj.user
 .Rhistory
 Features.Rproj
-
+## Vignette files and folders
 vignettes/figs/display_*
+## git
 .gitignore

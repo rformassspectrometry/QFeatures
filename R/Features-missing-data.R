@@ -160,7 +160,7 @@ setMethod("nNA", c("Features", "integer"),
 
 ##' @rdname Features-missing-data
 setMethod("nNA", c("Features", "numeric"),
-          function(object, i) nNA(object, as.integer(i)))
+          function(object, i) .nNAi(object, as.integer(i)))
 
 ##' @rdname Features-missing-data
 setMethod("nNA", c("Features", "character"),
