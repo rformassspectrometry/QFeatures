@@ -179,7 +179,8 @@ setMethod("[", c("AssayLinks", "list"),
 ## Functions for creating custom links
 ## -----------------------------------
 
-
+## The function takes a Features object, two assay names and two feature 
+## variable names and creates an AssayLink object that links the two assays.
 .createAssayLink <- function (object, ## Features object
                              from, 
                              to,
@@ -199,10 +200,54 @@ setMethod("[", c("AssayLinks", "list"),
     ## Create the new link
     al <- AssayLink(name = to,
                     from = from,
-                    fcol = fcol,
+                    fcol = varFrom,
                     hits = hits)
+}
+
+
+#' @rdname AssayLinks
+#'
+#' @param from A character(1) or integer(1) indicating which assay to link from
+#'     in `object`
+#' @param to A character(1) or integer(1) indicating which assay to link to in
+#'     `object`
+#' @param varFrom A character (1) indicating the feature variable to use to 
+#'     match the `from` assay to the `to` assay. 
+#' @param varTo A character (1) indicating the feature variable to use to 
+#'     match the `to` assay to the `from` assay. If missing, `varTo` is the 
+#'     same as `varFrom`.
+#'
+#' @export
+createAssayLink <- function(object, 
+                            from, 
+                            to,
+                            varFrom, 
+                            varTo){
+    if (missing(varTo)) varTo <- varFrom
+    if (is.numeric(from)) from <- names(object)[[from]]
+    if (is.numeric(to)) to <- names(object)[[to]]
+    al <- .createAssayLink(object, from, to, varFrom, varTo)
     ## Append assay link to the existing links
     object@assayLinks@listData[[to]] <- al
     stopifnot(validObject(object))
     object
 }
+
+createOneToOneAssayLink <- function(object, 
+                                    from, 
+                                    to, 
+                                    fcol){
+    ## Get number of rows for each assay to link
+    N <- unique(dims(object)[1, c(from, to)])
+    if (length(N) != 1) 
+        stop("The 'from' and 'to' assays must have the same number of rows.")
+    if (missing(fcol)) {
+        ## Create a dummy variable that makes a 1-1 link between asssays
+        rowData(object[[from]])$oneToOneID <- 1:N
+        rowData(object[[to]])$oneToOneID <- 1:N
+        fcol <- "oneToOneID"
+    }
+    ## Create the 1-1 link
+    createAssayLink(object, from, to, fcol)
+}
+

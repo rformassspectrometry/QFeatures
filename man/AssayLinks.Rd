@@ -14,6 +14,7 @@
 \alias{assayLinks}
 \alias{[,AssayLink,character,ANY,ANY-method}
 \alias{[,AssayLinks,list,ANY,ANY-method}
+\alias{createAssayLink}
 \title{Links between Assays}
 \usage{
 \S4method{show}{AssayLink}(object)
@@ -29,14 +30,16 @@ assayLinks(x, i)
 \S4method{[}{AssayLink,character,ANY,ANY}(x, i, j, ..., drop = TRUE)
 
 \S4method{[}{AssayLinks,list,ANY,ANY}(x, i, j, ..., drop = TRUE)
+
+createAssayLink(object, from, to, varFrom, varTo)
 }
 \arguments{
 \item{object}{An \code{AssayLink} object to show.}
 
 \item{name}{A mandatory name of the assay(s).}
 
-\item{from}{The name of the parent assay, or \code{NA_character_}, if
-not applicable.}
+\item{from}{A character(1) or integer(1) indicating which assay to link from
+in \code{object}}
 
 \item{fcol}{The feature variable of the parent assay used to
 generate the current assay (used in
@@ -61,6 +64,16 @@ feature names to filter on.}
 \item{j}{ignored.}
 
 \item{drop}{ignored.}
+
+\item{to}{A character(1) or integer(1) indicating which assay to link to in
+\code{object}}
+
+\item{varFrom}{A character (1) indicating the feature variable to use to
+match the \code{from} assay to the \code{to} assay.}
+
+\item{varTo}{A character (1) indicating the feature variable to use to
+match the \code{to} assay to the \code{from} assay. If missing, \code{varTo} is the
+same as \code{varFrom}.}
 }
 \value{
 \code{assayLink} returns an instance of class \code{AssayLink}.
