@@ -156,6 +156,9 @@
 ##' fts1
 ##' fts1[[1]]
 ##' fts1[["assay1"]]
+##' 
+##' ## Rename assay 
+##' names(fts1) <- c("se1", "se2")
 ##'
 ##' ## Add an assay
 ##' fts1 <- addAssay(fts1, se1[1:2, ], name = "se3")
@@ -274,8 +277,11 @@ rowDataNames <- function(object) {
 }
 
 
-#' @exportMethod names<-
-#' @rdname MultiAssayExperiment-methods
+##' @rdname Features-class
+##' 
+##' @param value A character() with new name(s) for the assay(s) in `object`  
+##' 
+##' @exportMethod names<-
 setReplaceMethod("names", c("Features", "ANY"),
                  function(x, value) {
                      key_vals <- cbind(names(x), value)
