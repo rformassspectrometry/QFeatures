@@ -58,10 +58,10 @@
 ##' - The [aggregateFeatures()] function creates a new assay by
 ##'   aggregating features of an existing assay.
 ##'
-##' - `addAssay(object, x, name, assayLinks)`: Adds a new assay (or
-##'   list of assays) `x` to the `Features` instance `object`. `name`
+##' - `addAssay(x, y, name, assayLinks)`: Adds a new assay (or
+##'   list of assays) `y` to the `Features` instance `x`. `name`
 ##'   is a `character(1)` naming the single assay (default is
-##'   `"newAssay"), and is ignored if `x` is a list of
+##'   `"newAssay"`), and is ignored if `y` is a list of
 ##'   assays. `assayLinks` is an optional [AssayLinks].
 ##'
 ##' @section Subsetting:
@@ -74,9 +74,9 @@
 ##'   be matched across different assays, taking the aggregation
 ##'   relation between assays.
 ##'
-##' - The `selectRowData(object, rowvars)` function can be used to
+##' - The `selectRowData(x, rowvars)` function can be used to
 ##'   select a limited number of `rowData` columns of interest named
-##'   in `rowvars` in the `object` instance of class `Features`.
+##'   in `rowvars` in the `x` instance of class `Features`.
 ##'
 ##' @param i `character()`, `integer()`, `logical()` or `GRanges()`
 ##'     object for subsetting by rows.
@@ -209,6 +209,7 @@ setMethod("show", "Features",
 
 
 ##' @rdname Features-class
+##' @param x An instance of class `Features`.
 ##' @importFrom methods callNextMethod
 ##' @exportMethod [
 setMethod("[", c("Features", "ANY", "ANY", "ANY"),
@@ -237,25 +238,25 @@ setMethod("[", c("Features", "character", "ANY", "ANY"),
 
 ##' @rdname Features-class
 ##'
-##' @param object An instance of class `Features`.
+##' @param x An instance of class `Features`.
 ##' @param rowvars A `character()` with the names of the `rowData`
 ##'     variables (columns) to retain in any assay. All other
 ##'     variables will be dropped. In case an element in `rowvars`
 ##'     isn't found in any `rowData` variable, a message is printed.
 ##'
 ##' @export
-selectRowData <- function(object, rowvars) {
-    stopifnot(inherits(object, "Features"))
+selectRowData <- function(x, rowvars) {
+    stopifnot(inherits(x, "Features"))
     rowvars <- as.character(rowvars)
-    allvars <- unique(unlist(rowDataNames(object)))
+    allvars <- unique(unlist(rowDataNames(x)))
     missingvars <- setdiff(rowvars, allvars)
     if (length(missingvars))
         message(length(missingvars), " missing/mis-typed rowvars.")
-    for (i in seq_len(length(object))) {
-        rd <- rowData(object[[i]])
-        rowData(object[[i]]) <- rd[, colnames(rd) %in% rowvars]
+    for (i in seq_len(length(x))) {
+        rd <- rowData(x[[i]])
+        rowData(x[[i]]) <- rd[, colnames(rd) %in% rowvars]
     }
-    object
+    x
 }
 
 
@@ -264,14 +265,14 @@ selectRowData <- function(object, rowvars) {
 ##' @importFrom Biobase fData
 ##'
 ##' @export
-rowDataNames <- function(object) {
-    stopifnot(inherits(object, "MultiAssayExperiment"))
-    CharacterList(lapply(experiments(object),
-                         function(x) {
-                             if (inherits(x, "SummarizedExperiment"))
-                                 colnames(rowData(x))
-                             else if (inherits(x, "eSet"))
-                                 colnames(Biobase::fData(x))
+rowDataNames <- function(x) {
+    stopifnot(inherits(x, "MultiAssayExperiment"))
+    CharacterList(lapply(experiments(x),
+                         function(xx) {
+                             if (inherits(xx, "SummarizedExperiment"))
+                                 colnames(rowData(xx))
+                             else if (inherits(xx, "eSet"))
+                                 colnames(Biobase::fData(xx))
                              else NA_character_
                          }))
 }
@@ -279,10 +280,10 @@ rowDataNames <- function(object) {
 
 ##' @rdname Features-class
 ##' 
-##' @param value A character() with new name(s) for the assay(s) in `object`  
+##' @param value A character() with new name(s) for the assay(s) in `x`  
 ##' 
 ##' @exportMethod names<-
-setReplaceMethod("names", c("Features", "ANY"),
+setReplaceMethod("names", c("Features", "character"),
                  function(x, value) {
                      key_vals <- cbind(names(x), value)
                      x <-  callNextMethod(x, value)
@@ -295,4 +296,4 @@ setReplaceMethod("names", c("Features", "ANY"),
                          x@assayLinks[[i]] <- al
                      }
                      x
-})
+                 })
