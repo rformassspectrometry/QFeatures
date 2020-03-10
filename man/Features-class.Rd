@@ -11,6 +11,7 @@
 \alias{[,Features,character,ANY,ANY-method}
 \alias{rowDataNames}
 \alias{selectRowData}
+\alias{names<-,Features-method}
 \title{Quantitative MS Features}
 \usage{
 \S4method{show}{Features}(object)
@@ -24,6 +25,8 @@
 selectRowData(object, rowvars)
 
 rowDataNames(object)
+
+\S4method{names}{Features}(x) <- value
 
 Features(..., assayLinks = NULL)
 
@@ -52,6 +55,8 @@ subsetting by assays}
 variables (columns) to retain in any assay. All other
 variables will be dropped. In case an element in \code{rowvars}
 isn't found in any \code{rowData} variable, a message is printed.}
+
+\item{value}{A character() with new name(s) for the assay(s) in \code{object}}
 
 \item{assayLinks}{An optional \link{AssayLinks}.}
 

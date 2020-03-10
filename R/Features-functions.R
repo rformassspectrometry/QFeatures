@@ -26,10 +26,15 @@ number_assays_in_se <- function(object) {
     if (any(n_exp != n_alk))
         stop("Assay and link names don't match")
     al_names <- unname(sapply(object@assayLinks, "slot", "name"))
-    if (!is.na(al_names) && !all(al_names %in% n_exp))
+    ## An AssayLinks object is valid if the names of the node for all assays 
+    ## are contained in the assay names of the Features object
+    if (!all(al_names %in% n_exp))
         stop("@names not valid")
     al_from <- unname(sapply(object@assayLinks, "slot", "from"))
-    if (!is.na(al_from) && !all(al_from %in% n_exp))
+    ## An AssayLinks object is valid if the names of the parent assays for all 
+    ## assays are either NA (= root node) or contained in the assay names of the 
+    ## Features object
+    if (!all(is.na(al_from) | al_from %in% n_exp))
         stop("@from not valid")
     NULL
 }

@@ -79,7 +79,6 @@ setMethod("subsetByFeature", c("Features", "character"),
 
 
 .subsetByFeature <- function(x, i) {
-    browser()
     leaf_assay_name  <- find_assay_with_feature_name(x, i)
 
     if (!length(leaf_assay_name))
