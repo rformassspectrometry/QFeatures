@@ -81,13 +81,13 @@ test_that("renaming", {
                                name = "proteins", fun = colSums)
     expect_true(validObject(feat1))
     feat2 <- feat1
-    expect_error(names(feat2) <- c(mean, median, quantile))
     names(feat2) <- LETTERS[1:3]
     expect_true(validObject(feat2))
+    # Expect errors 
     feat2@assayLinks[[1]]@name <- "foo"
     expect_error(validObject(feat2))
-    feat2 <- feat1
-    names(feat2) <- LETTERS[1:3]
-    feat2@assayLinks[[1]]@from <- "foo"
-    expect_error(validObject(feat2))
+    expect_error(names(feat2) <- 1:3)
+    expect_error(names(feat2) <- letters[c(1,2,2)])
 })
+
+
