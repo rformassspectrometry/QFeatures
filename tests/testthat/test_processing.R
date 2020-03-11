@@ -47,7 +47,7 @@ test_that("function: all normalize methods", {
     data(hlpsms)
     fts <- readFeatures(hlpsms[1:5000,], ecol = 1:10, name = "psms")
     se <- fts[[1]]
-    for (.method in normalizeMethods()) {
+    for (.method in MsCoreUtils::normalizeMethods()) {
         se_norm <- normalize(se, method = .method)
         feat_norm <- normalize(fts, 1, method = .method)
         expect_identical(se_norm, feat_norm[["normAssay"]])
