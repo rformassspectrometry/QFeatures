@@ -137,12 +137,14 @@ setMethod("logTransform",
 ##' @rdname Features-processing
 setMethod("logTransform",
           "Features",
-          function(object, base = 2, i, pc = 0) {
-              if (missing(i)) 
-                stop("'i' not provided. You must specify which assay(s) to process.")
-              for (ii in i)
-                  object[[ii]] <- logTransform(object[[ii]], base, pc)
-              object
+          function(object, i, name = "logAssay", base = 2, pc = 0) {
+              if (missing(i))
+                stop("Provide index or name of assay to be processed")
+              if (length(i) != 1)
+                stop("Only one assay to be processed at a time")              
+              addAssay(object,
+                       logTransform(object[[i]], base, pc),
+                       name)
           })
 
 ##' @exportMethod scaleTransform
@@ -158,13 +160,14 @@ setMethod("scaleTransform", "SummarizedExperiment",
 
 ##' @rdname Features-processing
 setMethod("scaleTransform", "Features",
-          function(object, center = TRUE, scale = TRUE, i) {
-              if (missing(i)) 
-                  stop("'i' not provided. You must specify which assay(s) to process.")
-              for (ii in i)
-                  object[[ii]] <- scaleTransform(object[[ii]], center, scale)
-              
-              object
+          function(object, i, name = "scaledAssay", center = TRUE, scale = TRUE) {
+              if (missing(i))
+                stop("Provide index or name of assay to be processed")
+              if (length(i) != 1)
+                stop("Only one assay to be processed at a time")
+              addAssay(object,
+                       scaleTransform(object[[i]], center, scale),
+                       name)
           })
 
 ## -------------------------------------------------------
@@ -194,11 +197,12 @@ setMethod("normalize", "Features",
                    method = normalizeMethods(),
                    ..., i) {
               if (missing(i))
-                  stop("'i' not provided. You must specify which assay(s) to process.")
-              for (ii in i)
-                  object[[ii]] <- normalize(object[[ii]], method)
-
-              object
+                  stop("Provide index or name of assay to be processed")
+              if (length(i) != 1)
+                  stop("Only one assay to be processed at a time")
+              addAssay(object,
+                       normalize(object[[i]], method, ...),
+                       name)
           })
 
 
