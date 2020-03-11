@@ -3,7 +3,8 @@ data(feat1)
 test_that("function: logTransform", {
     se <- feat1[[1]]
     se_log <- logTransform(se)
-    feat1_log <- logTransform(feat1)
+    expect_error(logTransform(feat1))
+    feat1_log <- logTransform(feat1, i = "psms")
     expect_identical(se_log, feat1_log[[1]])
     e <- log2(assay(se))
     expect_identical(assay(se_log), e)
@@ -15,7 +16,8 @@ test_that("function: logTransform", {
 test_that("function: scaleTransform", {
     se <- feat1[[1]]
     se_scaled <- scaleTransform(se)
-    feat1_scaled <- scaleTransform(feat1)
+    expect_error(scaleTransform(feat1))
+    feat1_scaled <- scaleTransform(feat1, i = "psms")
     expect_identical(se_scaled, feat1_scaled[[1]])
     e <- scale(assay(se), center = TRUE, scale = TRUE)
     attr(e, "scaled:center") <-
@@ -27,10 +29,12 @@ test_that("function: scaleTransform", {
 test_that("function: normalize", {
     se <- feat1[[1]]
     se_norm <- normalize(se, method = "max")
-    feat1_norm <- normalize(feat1, method = "max")
+    expect_error(normalize(feat1, method = "max"))
+    feat1_norm <- normalize(feat1, i = "psms", method = "max")
     expect_identical(se_norm, feat1_norm[[1]])
     e <- assay(se) / rowMax(assay(se))
     expect_identical(assay(se_norm), e)    
+    
 })
 
 test_that("function: all normalize methods", {
@@ -39,7 +43,7 @@ test_that("function: all normalize methods", {
     se <- fts[[1]]
     for (.method in normalizeMethods()) {
         se_norm <- normalize(se, method = .method)
-        feat_norm <- normalize(fts, method = .method)
+        feat_norm <- normalize(fts, i = "psms", method = .method)
         expect_identical(se_norm, feat_norm[[1]])
     }
 })

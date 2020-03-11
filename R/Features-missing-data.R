@@ -99,8 +99,7 @@
 ##'     with higher percentages are removed. If 0 (default), features
 ##'     that contain any number of `NA` values are dropped.
 ##'
-##' @param i One or more indices or names of the assay(s) to be processed. 
-##'     Default: apply to all assys in `object`.
+##' @param i One or more indices or names of the assay(s) to be processed.
 ##'
 ##' @return An instance of the same class as `object`.
 ##'
@@ -120,14 +119,6 @@ NULL
 ##' @rdname Features-missing-data
 setMethod("zeroIsNA", c("SummarizedExperiment", "missing"),
           function(object, i) .zeroIsNA(object))
-
-##' @rdname Features-missing-data
-setMethod("zeroIsNA", c("Features", "missing"),
-          function(object, i) {
-            for (i in seq_len(length(object)))
-              object[[i]] <- zeroIsNA(object[[i]])
-            object
-          })
 
 ##' @rdname Features-missing-data
 setMethod("zeroIsNA", c("Features", "integer"),
@@ -166,10 +157,6 @@ setMethod("nNA", c("Features", "numeric"),
 setMethod("nNA", c("Features", "character"),
           function(object, i) .nNAi(object, i) )
 
-##' @rdname Features-missing-data
-setMethod("nNA", c("Features", "missing"),          
-          function(object, i) .nNAi(object, seq_len(length(object))) )
-
 ##' @exportMethod filterNA
 ##' @rdname Features-missing-data
 setMethod("filterNA", "SummarizedExperiment",
@@ -182,7 +169,7 @@ setMethod("filterNA", "SummarizedExperiment",
 setMethod("filterNA", "Features",
           function(object, pNA = 0, i) {
             if (missing(i))
-              i  <- seq_len(length(object))
+              stop("'i' not provided. You must specify which assay(s) to process.")
             for (ii in i)
               object[[ii]] <- filterNA(object[[ii]], pNA)
             object

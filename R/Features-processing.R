@@ -98,7 +98,8 @@ normalize_SE <- function(object, method, ...) {
 ##' @param method `character(1)` defining the normalisation method to
 ##'     apply. See Details.
 ##' 
-##' @param i The index or name of the assay to be processed.
+##' @param i A numeric vector or a character vector giving the index or the 
+##'     name, respectively, of the assay(s) to be processed.
 ##'
 ##' @param ... Additional parameters passed to inner functions.
 ##'
@@ -137,8 +138,8 @@ setMethod("logTransform",
 setMethod("logTransform",
           "Features",
           function(object, base = 2, i, pc = 0) {
-              if (missing(i))
-                  i  <-  seq_len(length(object))
+              if (missing(i)) 
+                stop("'i' not provided. You must specify which assay(s) to process.")
               for (ii in i)
                   object[[ii]] <- logTransform(object[[ii]], base, pc)
               object
@@ -158,11 +159,11 @@ setMethod("scaleTransform", "SummarizedExperiment",
 ##' @rdname Features-processing
 setMethod("scaleTransform", "Features",
           function(object, center = TRUE, scale = TRUE, i) {
-              if (missing(i))
-                  i  <-  seq_len(length(object))
+              if (missing(i)) 
+                  stop("'i' not provided. You must specify which assay(s) to process.")
               for (ii in i)
                   object[[ii]] <- scaleTransform(object[[ii]], center, scale)
-
+              
               object
           })
 
@@ -193,7 +194,7 @@ setMethod("normalize", "Features",
                    method = normalizeMethods(),
                    ..., i) {
               if (missing(i))
-                  i  <-  seq_len(length(object))
+                  stop("'i' not provided. You must specify which assay(s) to process.")
               for (ii in i)
                   object[[ii]] <- normalize(object[[ii]], method)
 

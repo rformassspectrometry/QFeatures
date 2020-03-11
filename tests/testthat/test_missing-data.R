@@ -73,8 +73,7 @@ test_that("function: zeroIsNA and nNA", {
 
 
 test_that("zeroIsNA,Features", {
-    ft <- zeroIsNA(ft0)
-    expect_equivalent(ft[["na"]], ft[["zero"]])
+    expect_error(ft <- zeroIsNA(ft0))
     ft <- zeroIsNA(ft0, 1)
     expect_equivalent(ft[["na"]], ft[["zero"]])
     ft <- zeroIsNA(ft0, "na")
@@ -89,7 +88,8 @@ test_that("zeroIsNA,Features", {
 
 
 test_that("nNA,Features", {
-    n_na <- nNA(ft0)
+    expect_error(nNA(ft0))
+    n_na <- nNA(ft0, i = seq_along(ft0))
     expect_identical(n_na[[1]], c(na = 3/(4*3), zero = 0))
     expect_identical(n_na[[2]],
                      matrix(c(1, 3, 0, 0, 4, 0, 0, 0),
@@ -104,7 +104,7 @@ test_that("nNA,Features", {
     expect_identical(nNA(ft0, 1L), nNA(se_na))
     expect_identical(nNA(ft0, 1), nNA(se_na))
     expect_identical(nNA(ft0, "na"), nNA(se_na))
-    expect_identical(nNA(ft0[, , 1]), nNA(ft0[[1]]))
+    expect_identical(nNA(ft0[[1]]), nNA(ft0, i = 1))
     ## nNA on multiple assays
     n_na <- nNA(ft0, 1:2)
     expect_identical(n_na, nNA(ft0, c("na", "zero")))
@@ -121,11 +121,12 @@ test_that("nNA,Features", {
 
 test_that("filterNA,Features and filterNA,SummarizedExperiment", {
     se_na_filtered <- filterNA(se_na)
-    ft_filtered <- filterNA(ft0)
+    expect_error(filterNA(ft0))
+    ft_filtered <- filterNA(ft0, i = seq_along(ft0))
     expect_equivalent(se_na_filtered, ft_filtered[[1]])
     expect_identical(assay(se_na_filtered), m[2, , drop = FALSE])
     se_na_filtered <- filterNA(se_na, pNA = 0.9)
-    ft_filtered <- filterNA(ft0, pNA = 0.9)
+    ft_filtered <- filterNA(ft0, i = seq_along(ft0), pNA = 0.9)
     expect_equivalent(se_na_filtered, ft_filtered[[1]])
     expect_equivalent(se_na_filtered, ft0[[2]])
 })
