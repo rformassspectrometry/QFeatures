@@ -35,8 +35,8 @@
     k <= pNA
 }
 
-## Internal function for formating the result of nNA when applied to multiple
-## samples 
+## Internal function for formating the result of nNA as a table when applied to 
+## multiple samples 
 ## @param object A `Features` object
 ## @param res A list of results obtained after applying `nNA` to multiple assays
 ##     of `object`
