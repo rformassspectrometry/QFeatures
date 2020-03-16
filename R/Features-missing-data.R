@@ -147,7 +147,7 @@ setMethod("nNA", c("SummarizedExperiment", "missing"),
 
 ##' @rdname Features-missing-data
 setMethod("nNA", c("Features", "integer"),
-          function(object, i) .nNAi(object, i) )
+          function(object, i) .nNAi(object, i))
 
 ##' @rdname Features-missing-data
 setMethod("nNA", c("Features", "numeric"),
