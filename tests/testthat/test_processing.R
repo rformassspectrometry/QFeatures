@@ -40,6 +40,7 @@ test_that("function: normalize", {
     expect_identical(se_norm, feat1_norm[[2]])
     e <- assay(se) / rowMax(assay(se))
     expect_identical(assay(se_norm), e)    
+    
 })
 
 test_that("function: all normalize methods", {

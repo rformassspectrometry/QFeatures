@@ -106,7 +106,7 @@ filterFeatures(feat1, VariableFilter("location", "itochon", "contains"))
 ## ----------------------------------------------------------------
 
 ## using a user-defined character filter
-filterFeatures(feat1, VariableFilter("location", "unknown", condition = "!="))##' 
+filterFeatures(feat1, VariableFilter("location", "unknown", condition = "!="))
 
 ## using the forumula interface
 filterFeatures(feat1, ~ location != "unknown")
@@ -122,7 +122,7 @@ filterFeatures(feat1, VariableFilter("pval", 0.03, "<="))
 filterFeatures(feat1, ~ pval <= 0.03)
 
 ## you can also remove all p-values that are NA (if any)
-filterFeatures(feat1, ~ !pval \%in\% NA)
+filterFeatures(feat1, ~ !is.na(pval))
 
 ## ----------------------------------------------------------------
 ## Negative control - filtering for an non-existing markers value
@@ -136,8 +136,6 @@ filterFeatures(feat1, ~ location == "not")
 filterFeatures(feat1, VariableFilter("foo", "bar"))
 
 filterFeatures(feat1, ~ foo == "bar")
-
-
 }
 \seealso{
 The \link{Features} man page for subsetting and the \code{Features}

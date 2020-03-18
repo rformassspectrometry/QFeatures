@@ -120,8 +120,8 @@ we need to replace 0 by `NA`, given that MaxQuant encodes missing data
 with a 0 using the `zeroIsNA` function.
 
 ```{r}
-cptac <- zeroIsNA(cptac)
-nNA(cptac)
+cptac <- zeroIsNA(cptac, i = seq_along(cptac))
+nNA(cptac, i = seq_along(cptac))
 ```
 
 The output of the `nNA` function tells us that 
@@ -141,7 +141,7 @@ values by using `pNA = 0` (which also is the default value).
 
 
 ```{r}
-cptac <- filterNA(cptac, pNA = 0)
+cptac <- filterNA(cptac, i = seq_along(cptac), pNA = 0)
 cptac
 ```
 

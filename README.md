@@ -5,7 +5,7 @@
 [![codecov.io](https://codecov.io/github/rformassspectrometry/Features/coverage.svg?branch=master)](https://codecov.io/github/rformassspectrometry/Features?branch=master)
 
 
-> Evolving `MSnSet` data towards `SummerizedExperiment`, but for MS
+> Evolving `MSnSet` data towards `SummarizedExperiment`, but for MS
 > data.
 
 New classes to manage and process quantitative features for

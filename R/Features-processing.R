@@ -72,7 +72,8 @@
 ##' @param method `character(1)` defining the normalisation method to
 ##'     apply. See Details.
 ##' 
-##' @param i The index or name of the assay to be processed.
+##' @param i A numeric vector or a character vector giving the index or the 
+##'     name, respectively, of the assay(s) to be processed.
 ##'
 ##' @param name A `character(1)` naming the new assay name. Defaults
 ##'     are `logAssay` for `logTransform`, `scaledAssay` for
@@ -118,7 +119,7 @@ setMethod("logTransform",
               if (missing(i))
                   stop("Provide index or name of assay to be processed")
               if (length(i) != 1)
-                  stop("Only one assay to be processed at a time")              
+                  stop("Only one assay to be processed at a time")  
               addAssay(object,
                        logTransform(object[[i]], base, pc),
                        name)

@@ -46,7 +46,8 @@
 \arguments{
 \item{object}{An object of class \code{Features} or \code{SummarizedExperiment}.}
 
-\item{i}{The index or name of the assay to be processed.}
+\item{i}{One or more indices or names of the assay(s) to be processed.
+Default: apply to all assys in \code{object}.}
 
 \item{pNA}{\code{numeric(1)} providing the maximim percentage of
 missing values per feature (row) that is acceptable. Feature
