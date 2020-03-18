@@ -11,6 +11,7 @@
 \alias{[,Features,character,ANY,ANY-method}
 \alias{rowDataNames}
 \alias{selectRowData}
+\alias{names<-,Features,character-method}
 \title{Quantitative MS Features}
 \usage{
 \S4method{show}{Features}(object)
@@ -21,18 +22,20 @@
 
 \S4method{[}{Features,character,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
 
-selectRowData(object, rowvars)
+selectRowData(x, rowvars)
 
-rowDataNames(object)
+rowDataNames(x)
+
+\S4method{names}{Features,character}(x) <- value
 
 Features(..., assayLinks = NULL)
 
-addAssay(object, x, name = "newAssay", assayLinks = AssayLinks(names = name))
+addAssay(x, y, name = "newAssay", assayLinks = AssayLinks(names = name))
 }
 \arguments{
-\item{object}{An instance of class \link{Features}.}
+\item{object}{An instance of class \code{Features}.}
 
-\item{x}{A single assay or a \emph{named} list of assays.}
+\item{x}{An instance of class \link{Features}.}
 
 \item{i}{\code{character()}, \code{integer()}, \code{logical()} or \code{GRanges()}
 object for subsetting by rows.}
@@ -53,10 +56,14 @@ variables (columns) to retain in any assay. All other
 variables will be dropped. In case an element in \code{rowvars}
 isn't found in any \code{rowData} variable, a message is printed.}
 
+\item{value}{A character() with new name(s) for the assay(s) in \code{x}}
+
 \item{assayLinks}{An optional \link{AssayLinks}.}
 
+\item{y}{A single assay or a \emph{named} list of assays.}
+
 \item{name}{A \code{character(1)} naming the single assay (default is
-\verb{"newAssay"). Ignored if }x` is a list of assays.}
+\code{"newAssay"}). Ignored if \code{y} is a list of assays.}
 }
 \description{
 Conceptually, a \code{Features} object holds a set of \emph{assays}, each
@@ -119,10 +126,11 @@ variable names.
 \itemize{
 \item The \code{\link[=aggregateFeatures]{aggregateFeatures()}} function creates a new assay by
 aggregating features of an existing assay.
-\item \code{addAssay(object, x, name, assayLinks)}: Adds a new assay (or
-list of assays) \code{x} to the \code{Features} instance \code{object}. \code{name}
+\item \code{addAssay(x, y, name, assayLinks)}: Adds a new assay (or
+list of assays) \code{y} to the \code{Features} instance \code{x}. \code{name}
 is a \code{character(1)} naming the single assay (default is
-\verb{"newAssay"), and is ignored if }x\verb{is a list of assays.}assayLinks` is an optional \link{AssayLinks}.
+\code{"newAssay"}), and is ignored if \code{y} is a list of
+assays. \code{assayLinks} is an optional \link{AssayLinks}.
 }
 }
 
@@ -134,9 +142,9 @@ is a \code{character(1)} naming the single assay (default is
 \code{Features} object using one or multiple feature names that will
 be matched across different assays, taking the aggregation
 relation between assays.
-\item The \code{selectRowData(object, rowvars)} function can be used to
+\item The \code{selectRowData(x, rowvars)} function can be used to
 select a limited number of \code{rowData} columns of interest named
-in \code{rowvars} in the \code{object} instance of class \code{Features}.
+in \code{rowvars} in the \code{x} instance of class \code{Features}.
 }
 }
 
@@ -177,6 +185,9 @@ fts1 <- Features(el, colData = cd)
 fts1
 fts1[[1]]
 fts1[["assay1"]]
+
+## Rename assay 
+names(fts1) <- c("se1", "se2")
 
 ## Add an assay
 fts1 <- addAssay(fts1, se1[1:2, ], name = "se3")
