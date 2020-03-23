@@ -1,5 +1,6 @@
 data(feat1)
 
+
 test_that("subsetByFeatures", {
     feat1 <- aggregateFeatures(feat1, 1, fcol = "Sequence", name = "peptides", fun = colMedians)
     feat1 <- aggregateFeatures(feat1, 2, fcol = "Protein", name = "proteins", fun = colMedians)

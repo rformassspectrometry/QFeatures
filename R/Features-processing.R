@@ -1,39 +1,3 @@
-
-##' @importFrom DelayedArray rowMaxs
-normalize_SE <- function(object, method, ...) {
-    if (method == "vsn") {
-        e <- Biobase::exprs(vsn::vsn2(assay(object), ...))
-    } else if (method == "quantiles") {
-        e <- preprocessCore::normalize.quantiles(assay(object), ...)
-    } else if (method == "quantiles.robust") {
-        e <- preprocessCore::normalize.quantiles.robust(assay(object), ...)
-    } else if (method == "center.mean") {
-        e <- assay(object)
-        center <- colMeans(e, na.rm = TRUE)
-        e <- sweep(e, 2L, center, check.margin = FALSE, ...)
-    } else if (method == "center.median") {
-        e <- assay(object)
-        center <- apply(e, 2L, median, na.rm = TRUE)
-        e <- sweep(e, 2L, center, check.margin = FALSE, ...)
-    } else if (method == "diff.median") {
-        e <- assay(object)
-        med <- median(as.numeric(e), na.rm = TRUE)
-        cmeds <- apply(e, 2L, median, na.rm = TRUE)
-        e <- sweep(e, 2L, cmeds - med)
-    } else {
-        e <- assay(object)
-        switch(method,
-               max = div <- rowMaxs(e, na.rm = TRUE),
-               sum = div <- rowSums(e, na.rm = TRUE))
-        e <- e/div
-    }
-    rownames(e) <- rownames(assay(object))
-    colnames(e) <- colnames(assay(object))
-    assay(object) <- e
-    object
-}
-
-
 ##' @title Features processing
 ##'
 ##' @description
@@ -60,23 +24,33 @@ normalize_SE <- function(object, method, ...) {
 ##' @details
 ##' 
 ##' The `method` parameter in `normalize` can be one of `"sum"`,
-##' `"max"`, `"quantiles"`, `"center.mean"`, `"center.median"`,
-##' `"center.median"`, `"quantiles.robust`" or `"vsn"`.  For `"sum"`
-##' and `"max"`, each feature's intensity is divided by the maximum or
-##' the sum of the feature respectively. These two methods are applied
-##' along the features (rows). The `normalizeMethods()` function
+##' `"max"`, `"center.mean"`, `"center.median"`, `"div.mean"`,
+##' `"div.median"`, `"diff.meda"`, `"quantiles`", `"quantiles.robust`"
+##' or `"vsn"`. The [MsCoreUtils::normalizeMethods()] function
 ##' returns a vector of available normalisation methods.
 ##'
-##' `"center.mean"` and `"center.median"` translate the respective
-##' sample (column) intensities according to the column mean or
-##' median. `"diff.median"` translates all samples (columns) so that
-##' they all match the grand median. Using `"quantiles"` or
-##' `"quantiles.robust"` applies (robust) quantile normalisation, as
-##' implemented in [preprocessCore::normalize.quantiles()] and
-##' [preprocessCore::normalize.quantiles.robust()]. `"vsn"` uses the
-##' [vsn::vsn2()] function.  Note that the latter also glog-transforms
-##' the intensities.  See respective manuals for more details and
-##' function arguments.
+##' - For `"sum"` and `"max"`, each feature's intensity is divided by the
+##'   maximum or the sum of the feature respectively. These two methods are
+##'   applied along the features (rows).
+##'
+##' - `"center.mean"` and `"center.median"` center the respective sample
+##'   (column) intensities by subtracting the respective column means or
+##'   medians. `"div.mean"` and `"div.median"` divide by the column means or
+##'   medians.
+##'
+##' - `"diff.median"` centers all samples (columns) so that they all match the
+##'   grand median by subtracting the respective columns medians differences to
+##'   the grand median.
+##'
+##' - Using `"quantiles"` or `"quantiles.robust"` applies (robust) quantile
+##'   normalisation, as implemented in [preprocessCore::normalize.quantiles()]
+##'   and [preprocessCore::normalize.quantiles.robust()]. `"vsn"` uses the
+##'   [vsn::vsn2()] function.  Note that the latter also glog-transforms the
+##'   intensities.  See respective manuals for more details and function
+##'   arguments.
+##'
+##' For further details and examples about normalisation, see
+##' [MsCoreUtils::normalize_matrix()].
 ##'
 ##' @param  object An object of class `Features` or `SummarizedExperiment`.
 ##'
@@ -98,7 +72,12 @@ normalize_SE <- function(object, method, ...) {
 ##' @param method `character(1)` defining the normalisation method to
 ##'     apply. See Details.
 ##' 
-##' @param i The index or name of the assay to be processed.
+##' @param i A numeric vector or a character vector giving the index or the 
+##'     name, respectively, of the assay(s) to be processed.
+##'
+##' @param name A `character(1)` naming the new assay name. Defaults
+##'     are `logAssay` for `logTransform`, `scaledAssay` for
+##'     `scaleTranform` and `normAssay` for `normalize`.
 ##'
 ##' @param ... Additional parameters passed to inner functions.
 ##'
@@ -116,7 +95,7 @@ normalize_SE <- function(object, method, ...) {
 ##'
 ##' @examples
 ##'
-##' normalizeMethods()
+##' MsCoreUtils::normalizeMethods()
 NULL
 
 ## -------------------------------------------------------
@@ -136,12 +115,14 @@ setMethod("logTransform",
 ##' @rdname Features-processing
 setMethod("logTransform",
           "Features",
-          function(object, base = 2, i, pc = 0) {
+          function(object, i, name = "logAssay", base = 2, pc = 0) {
               if (missing(i))
-                  i  <-  seq_len(length(object))
-              for (ii in i)
-                  object[[ii]] <- logTransform(object[[ii]], base, pc)
-              object
+                  stop("Provide index or name of assay to be processed")
+              if (length(i) != 1)
+                  stop("Only one assay to be processed at a time")  
+              addAssay(object,
+                       logTransform(object[[i]], base, pc),
+                       name)
           })
 
 ##' @exportMethod scaleTransform
@@ -157,47 +138,44 @@ setMethod("scaleTransform", "SummarizedExperiment",
 
 ##' @rdname Features-processing
 setMethod("scaleTransform", "Features",
-          function(object, center = TRUE, scale = TRUE, i) {
+          function(object, i, name = "scaledAssay", center = TRUE, scale = TRUE) {
               if (missing(i))
-                  i  <-  seq_len(length(object))
-              for (ii in i)
-                  object[[ii]] <- scaleTransform(object[[ii]], center, scale)
-
-              object
+                  stop("Provide index or name of assay to be processed")
+              if (length(i) != 1)
+                  stop("Only one assay to be processed at a time")
+              addAssay(object,
+                       scaleTransform(object[[i]], center, scale),
+                       name)
           })
 
 ## -------------------------------------------------------
 ##   Normalisation (normalize)
 ## -------------------------------------------------------
 
-##' @export
-normalizeMethods <- function()
-    c("sum", "max", "center.mean",
-      "center.median", "diff.median",
-      "quantiles", "quantiles.robust", "vsn")
-
 ##' @importFrom BiocGenerics normalize
 ##' @exportMethod normalize
 ##' @rdname Features-processing
 setMethod("normalize", "SummarizedExperiment",
           function(object,
-                   method = normalizeMethods(),
-                   ...)
-              normalize_SE(object, match.arg(method), ...))
+                   method,
+                   ...) {
+              e <- MsCoreUtils::normalize_matrix(assay(object), method, ...)
+              rownames(e) <- rownames(assay(object))
+              colnames(e) <- colnames(assay(object))
+              assay(object) <- e
+              object
+          })
 
 ## normalise <- normalize
 
 ##' @rdname Features-processing
 setMethod("normalize", "Features",
-          function(object,
-                   method = normalizeMethods(),
-                   ..., i) {
+          function(object, i, name = "normAssay", method, ...) {
               if (missing(i))
-                  i  <-  seq_len(length(object))
-              for (ii in i)
-                  object[[ii]] <- normalize(object[[ii]], method)
-
-              object
+                  stop("Provide index or name of assay to be processed")
+              if (length(i) != 1)
+                  stop("Only one assay to be processed at a time")
+              addAssay(object,
+                       normalize(object[[i]], method, ...),
+                       name)
           })
-
-

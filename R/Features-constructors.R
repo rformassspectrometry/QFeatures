@@ -132,10 +132,10 @@ Features <- function(..., assayLinks = NULL) {
 
 
 
-##' @param object An instance of class [Features].
-##' @param x A single assay or a *named* list of assays.
+##' @param x An instance of class [Features].
+##' @param y A single assay or a *named* list of assays.
 ##' @param name A `character(1)` naming the single assay (default is
-##'     `"newAssay"). Ignored if `x` is a list of assays.
+##'     `"newAssay"`). Ignored if `y` is a list of assays.
 ##' @param assayLinks An optional [AssayLinks].
 ##'
 ##' @md
@@ -143,23 +143,23 @@ Features <- function(..., assayLinks = NULL) {
 ##' @rdname Features-class
 ##'
 ##' @export
-addAssay <- function(object,
-                     x,
+addAssay <- function(x,
+                     y,
                      name = "newAssay",
                      assayLinks = AssayLinks(names = name)) {
-    stopifnot(inherits(object, "Features"))
-    el0 <- object@ExperimentList@listData
-    if (is.list(x)) el1 <- x
-    else el1 <- structure(list(x), .Names = name[1])
+    stopifnot(inherits(x, "Features"))
+    el0 <- x@ExperimentList@listData
+    if (is.list(y)) el1 <- y
+    else el1 <- structure(list(y), .Names = name[1])
     el <- ExperimentList(c(el0, el1))
-    smap <- MultiAssayExperiment:::.sampleMapFromData(colData(object), el)
+    smap <- MultiAssayExperiment:::.sampleMapFromData(colData(x), el)
     if (inherits(assayLinks, "AssayLink"))
         assayLinks <- AssayLinks(assayLinks)
     new("Features",
         ExperimentList = el,
-        colData = colData(object),
+        colData = colData(x),
         sampleMap = smap,
-        metadata = metadata(object),
-        assayLinks = append(object@assayLinks,
+        metadata = metadata(x),
+        assayLinks = append(x@assayLinks,
                             assayLinks))
 }

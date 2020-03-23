@@ -23,7 +23,7 @@ Imports:
    AnnotationFilter,
    lazyeval,
    Biobase,
-   MsCoreUtils (>= 0.0.5),
+   MsCoreUtils (>= 0.99.0),
 Suggests:
    ggplot2,
    gplots,

@@ -1,65 +1,65 @@
 .zeroIsNA <- function(x) {
-  sel <- assay(x) == 0
-  assay(x)[sel] <- NA
-  x
+    sel <- assay(x) == 0
+    assay(x)[sel] <- NA
+    x
 }
 
 .nNA <- function(x) {
-  nNA <- sum(is.na(assay(x)))/prod(dim(x))
-  nNA_rows <- table(rowSums(is.na(assay(x))))
-  nNA_cols <- colSums(is.na(assay(x)))
-  return(list(nNA = nNA, nNArows = nNA_rows, nNAcols = nNA_cols))
+    nNA <- sum(is.na(assay(x)))/prod(dim(x))
+    nNA_rows <- table(rowSums(is.na(assay(x))))
+    nNA_cols <- colSums(is.na(assay(x)))
+    return(list(nNA = nNA, nNArows = nNA_rows, nNAcols = nNA_cols))
 }
 
 ## Internal wrapper function around `.nNA` for processing multiple assays
 ## @param object A `Features` object
 ## @param i One or more indices or names of the assay(s) to be processed. 
-.nNAi <- function(object, i){
-  if (length(object) == 1)
-    return(.nNA(object[[1]]))
-  res <- lapply(i,
-                function(ii) .nNA(object[[ii]]))
-  .printnNA(object, res, i)
+.nNAi <- function(object, i) {
+    if (length(object) == 1)
+      return(.nNA(object[[1]]))
+    res <- lapply(i,
+                  function(ii) .nNA(object[[ii]]))
+    .nNAasTable(object, res, i)
 }
 
 .row_for_filterNA <- function(x, pNA = 0L) {
-  if (!is.matrix(x)) 
-    stop(sQuote("x"), " must be a matrix.")
-  if (!is.numeric(pNA)) 
-    stop(sQuote("pNA"), " must be numeric.")
-  if (length(pNA) > 1) 
-    stop(sQuote("pNA"), " must be of length one.")
-  if (pNA > 1) pNA <- 1
-  if (pNA < 0) pNA <- 0    
-  k <- rowSums(is.na(x)) / ncol(x)
-  k <= pNA
+    if (!is.matrix(x)) 
+      stop(sQuote("x"), " must be a matrix.")
+    if (!is.numeric(pNA)) 
+      stop(sQuote("pNA"), " must be numeric.")
+    if (length(pNA) > 1) 
+      stop(sQuote("pNA"), " must be of length one.")
+    if (pNA > 1) pNA <- 1
+    if (pNA < 0) pNA <- 0    
+    k <- rowSums(is.na(x)) / ncol(x)
+    k <= pNA
 }
 
-## Internal function for printing the result of nNA when applied to multiple
-## samples 
+## Internal function for formating the result of nNA as a table when applied to 
+## multiple samples 
 ## @param object A `Features` object
 ## @param res A list of results obtained after applying `nNA` to multiple assays
 ##     of `object`
 ## @param i indices or names of the assays that were processed. 
-.printnNA <- function(object, res, i){
-  if(length(i) == 1) return(res[[1]])
-  object <- object[, , i]
-  names(res) <- names(object)
-  ans <- vector("list", length = 3)
-  names(ans) <- c("nNA", "nNArows", "nNAcols")
-  ans[[1]] <- sapply(res, "[[", 1)              
-  ans[[3]] <- t(sapply(res, "[[", 3))
-  ans2 <- matrix(0,
-                 ncol = 1 + nrow(colData(object)),
-                 nrow = length(object))
-  rownames(ans2) <- names(object)
-  colnames(ans2) <- 0:nrow(colData(object))
-  for (i in seq_len(length(res))) {
-    x <- res[[i]]$nNArows
-    ans2[i, names(x)] <- x
-  }
-  ans[[2]] <- ans2
-  ans
+.nNAasTable <- function(object, res, i) {
+    if (length(i) == 1) return(res[[1]])
+    object <- object[, , i]
+    names(res) <- names(object)
+    ans <- vector("list", length = 3)
+    names(ans) <- c("nNA", "nNArows", "nNAcols")
+    ans[[1]] <- sapply(res, "[[", 1)              
+    ans[[3]] <- t(sapply(res, "[[", 3))
+    ans2 <- matrix(0,
+                   ncol = 1 + nrow(colData(object)),
+                   nrow = length(object))
+    rownames(ans2) <- names(object)
+    colnames(ans2) <- 0:nrow(colData(object))
+    for (i in seq_len(length(res))) {
+      x <- res[[i]]$nNArows
+      ans2[i, names(x)] <- x
+    }
+    ans[[2]] <- ans2
+    ans
 }
 
 
@@ -99,8 +99,7 @@
 ##'     with higher percentages are removed. If 0 (default), features
 ##'     that contain any number of `NA` values are dropped.
 ##'
-##' @param i One or more indices or names of the assay(s) to be processed. 
-##'     Default: apply to all assys in `object`.
+##' @param i One or more indices or names of the assay(s) to be processed.
 ##'
 ##' @return An instance of the same class as `object`.
 ##'
@@ -122,19 +121,11 @@ setMethod("zeroIsNA", c("SummarizedExperiment", "missing"),
           function(object, i) .zeroIsNA(object))
 
 ##' @rdname Features-missing-data
-setMethod("zeroIsNA", c("Features", "missing"),
-          function(object, i) {
-            for (i in seq_len(length(object)))
-              object[[i]] <- zeroIsNA(object[[i]])
-            object
-          })
-
-##' @rdname Features-missing-data
 setMethod("zeroIsNA", c("Features", "integer"),
           function(object, i) {
-            for (ii in i)
-              object[[ii]] <- zeroIsNA(object[[ii]])
-            object
+              for (ii in i)
+                  object[[ii]] <- zeroIsNA(object[[ii]])
+              object
           })
 
 ##' @rdname Features-missing-data
@@ -144,9 +135,9 @@ setMethod("zeroIsNA", c("Features", "numeric"),
 ##' @rdname Features-missing-data
 setMethod("zeroIsNA", c("Features", "character"),
           function(object, i) {
-            for (ii in i)
-              object[[ii]] <- zeroIsNA(object[[ii]])
-            object
+              for (ii in i)
+                object[[ii]] <- zeroIsNA(object[[ii]])
+              object
           })
 
 ##' @exportMethod nNA
@@ -156,7 +147,7 @@ setMethod("nNA", c("SummarizedExperiment", "missing"),
 
 ##' @rdname Features-missing-data
 setMethod("nNA", c("Features", "integer"),
-          function(object, i) .nNAi(object, i) )
+          function(object, i) .nNAi(object, i))
 
 ##' @rdname Features-missing-data
 setMethod("nNA", c("Features", "numeric"),
@@ -166,26 +157,21 @@ setMethod("nNA", c("Features", "numeric"),
 setMethod("nNA", c("Features", "character"),
           function(object, i) .nNAi(object, i) )
 
-##' @rdname Features-missing-data
-setMethod("nNA", c("Features", "missing"),          
-          function(object, i) .nNAi(object, seq_len(length(object))) )
-
 ##' @exportMethod filterNA
 ##' @rdname Features-missing-data
 setMethod("filterNA", "SummarizedExperiment",
           function(object, pNA = 0) {
-            k <- .row_for_filterNA(assay(object), pNA)
-            object[k, ]
+              k <- .row_for_filterNA(assay(object), pNA)
+              object[k, ]
           })
 
 ##' @rdname Features-missing-data
 setMethod("filterNA", "Features",
           function(object, pNA = 0, i) {
-            if (missing(i))
-              i  <- seq_len(length(object))
-            for (ii in i)
-              object[[ii]] <- filterNA(object[[ii]], pNA)
-            object
+              if (missing(i))
+                  stop("'i' not provided. You must specify which assay(s) to process.")
+              for (ii in i)
+                object[[ii]] <- filterNA(object[[ii]], pNA)
+              object
           })
-
 
