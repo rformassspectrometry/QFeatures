@@ -182,10 +182,10 @@ setMethod("[", c("AssayLinks", "list"),
 ## The function takes a Features object, two assay names and two feature 
 ## variable names and creates an AssayLink object that links the two assays.
 .createAssayLink <- function (object, ## Features object
-                             from, 
-                             to,
-                             varFrom, 
-                             varTo) {
+                              from, 
+                              to,
+                              varFrom, 
+                              varTo) {
     ## Get the shared feature variable 
     rowDatFrom <- unlist(rowData(object[[from]])[varFrom], use.names = FALSE)
     rowDatTo <- unlist(rowData(object[[to]])[varTo], use.names = FALSE)
@@ -218,11 +218,11 @@ setMethod("[", c("AssayLinks", "list"),
 #'     same as `varFrom`.
 #'
 #' @export
-createAssayLink <- function(object, 
-                            from, 
-                            to,
-                            varFrom, 
-                            varTo){
+createAssayLink <- function (object, 
+                             from, 
+                             to,
+                             varFrom, 
+                             varTo) {
     if (missing(varTo)) varTo <- varFrom
     if (is.numeric(from)) from <- names(object)[[from]]
     if (is.numeric(to)) to <- names(object)[[to]]
@@ -233,10 +233,17 @@ createAssayLink <- function(object,
     object
 }
 
-createOneToOneAssayLink <- function(object, 
-                                    from, 
-                                    to, 
-                                    fcol){
+#' @rdname AssayLinks
+#' 
+#' @param varCommon The name of the common feature variable in `from` and `to`. 
+#'     If missing, a new feature variable (`oneToOneID`) containing the row 
+#'     indices is added to the `rowData` of both assays to link.
+#' 
+#' @export
+createAssayLinkOneToOne <- function (object, 
+                                     from, 
+                                     to, 
+                                     fcol) {
     ## Get number of rows for each assay to link
     N <- unique(dims(object)[1, c(from, to)])
     if (length(N) != 1) 

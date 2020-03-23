@@ -15,6 +15,7 @@
 \alias{[,AssayLink,character,ANY,ANY-method}
 \alias{[,AssayLinks,list,ANY,ANY-method}
 \alias{createAssayLink}
+\alias{createAssayLinkOneToOne}
 \title{Links between Assays}
 \usage{
 \S4method{show}{AssayLink}(object)
@@ -32,6 +33,8 @@ assayLinks(x, i)
 \S4method{[}{AssayLinks,list,ANY,ANY}(x, i, j, ..., drop = TRUE)
 
 createAssayLink(object, from, to, varFrom, varTo)
+
+createAssayLinkOneToOne(object, from, to, fcol)
 }
 \arguments{
 \item{object}{An \code{AssayLink} object to show.}
@@ -74,6 +77,10 @@ match the \code{from} assay to the \code{to} assay.}
 \item{varTo}{A character (1) indicating the feature variable to use to
 match the \code{to} assay to the \code{from} assay. If missing, \code{varTo} is the
 same as \code{varFrom}.}
+
+\item{varCommon}{The name of the common feature variable in \code{from} and \code{to}.
+If missing, a new feature variable (\code{oneToOneID}) containing the row
+indices is added to the \code{rowData} of both assays to link.}
 }
 \value{
 \code{assayLink} returns an instance of class \code{AssayLink}.
