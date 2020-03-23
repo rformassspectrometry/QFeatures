@@ -120,9 +120,14 @@ setMethod("logTransform",
                   stop("Provide index or name of assay to be processed")
               if (length(i) != 1)
                   stop("Only one assay to be processed at a time")  
+              if(is.numeric(i)) i <- names(object)[[i]]
               addAssay(object,
                        logTransform(object[[i]], base, pc),
-                       name)
+                       name, 
+                       assayLinks = .createAssayLinkOneToOne(seFrom = object[[i]],
+                                                             seTo = object[[i]],
+                                                             nameFrom = i,
+                                                             nameTo = name))
           })
 
 ##' @exportMethod scaleTransform
@@ -143,9 +148,14 @@ setMethod("scaleTransform", "Features",
                   stop("Provide index or name of assay to be processed")
               if (length(i) != 1)
                   stop("Only one assay to be processed at a time")
+              if(is.numeric(i)) i <- names(object)[[i]]
               addAssay(object,
                        scaleTransform(object[[i]], center, scale),
-                       name)
+                       name,
+                       assayLinks = .createAssayLinkOneToOne(seFrom = object[[i]],
+                                                             seTo = object[[i]],
+                                                             nameFrom = i,
+                                                             nameTo = name))
           })
 
 ## -------------------------------------------------------
@@ -175,7 +185,12 @@ setMethod("normalize", "Features",
                   stop("Provide index or name of assay to be processed")
               if (length(i) != 1)
                   stop("Only one assay to be processed at a time")
+              if(is.numeric(i)) i <- names(object)[[i]]
               addAssay(object,
                        normalize(object[[i]], method, ...),
-                       name)
+                       name,
+                       assayLinks = .createAssayLinkOneToOne(seFrom = object[[i]],
+                                                             seTo = object[[i]],
+                                                             nameFrom = i,
+                                                             nameTo = name))
           })
