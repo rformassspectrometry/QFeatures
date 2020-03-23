@@ -6,7 +6,9 @@
 \alias{ft_na}
 \alias{se_na2}
 \title{Test PSM-level expression data}
-\format{An object of class \code{Features} of length 1.}
+\format{
+An object of class \code{Features} of length 1.
+}
 \usage{
 feat1
 }

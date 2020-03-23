@@ -36,7 +36,8 @@ logarithms are computed. Defaults is 2.}
 quantitative data. Useful when (true) 0 are present in the
 data. Default is 0 (no effect).}
 
-\item{i}{The index or name of the assay to be processed.}
+\item{i}{A numeric vector or a character vector giving the index or the
+name, respectively, of the assay(s) to be processed.}
 
 \item{name}{A \code{character(1)} naming the new assay name. Defaults
 are \code{logAssay} for \code{logTransform}, \code{scaledAssay} for

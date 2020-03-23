@@ -4,7 +4,9 @@
 \name{hlpsms}
 \alias{hlpsms}
 \title{hyperLOPIT PSM-level expression data}
-\format{An object of class \code{data.frame} with 32776 rows and 28 columns.}
+\format{
+An object of class \code{data.frame} with 32776 rows and 28 columns.
+}
 \source{
 The \code{pRolocdata} package: \url{http://bioconductor.org/packages/pRolocdata/}
 }
