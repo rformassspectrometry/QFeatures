@@ -18,6 +18,18 @@
 ##' - `parentAssayLinks(x, i, recursive = FALSE)` accesses the
 ##'   parent(s) `AssayLinks` or assay with index or name `i`.
 ##' 
+##' @section Creating links between assays:
+##' 
+##' `createAssayLink` and `createAssayLinkOneToOne` link two assays in a 
+##' Features object. 
+##' 
+##' - `createAssayLink` takes any two assays from the `Features` object and 
+##'   creates a link given a matching feature variable in each assay's 
+##'   `rowData`.
+##' - `createAssayLinkOneToOne` also links two assays from the `Features` 
+##'   object, but the assays must have the same size and a one-to-one 
+##'   relationship between the assays is created. A common feature variable can 
+##'   be supplied, otherwise the rows of the assays are assumed to be matched.
 ##'
 ##' @rdname AssayLinks 
 ##'
@@ -243,19 +255,19 @@ setMethod("[", c("AssayLinks", "list"),
 }
 
 
-#' @rdname AssayLinks
-#'
-#' @param from A character(1) or integer(1) indicating which assay to link from
-#'     in `object`
-#' @param to A character(1) or integer(1) indicating which assay to link to in
-#'     `object`
-#' @param varFrom A character (1) indicating the feature variable to use to 
-#'     match the `from` assay to the `to` assay. 
-#' @param varTo A character (1) indicating the feature variable to use to 
-#'     match the `to` assay to the `from` assay. If missing, `varTo` is the 
-#'     same as `varFrom`.
-#'
-#' @export
+##' @rdname AssayLinks
+##'
+##' @param from A character(1) or integer(1) indicating which assay to link from
+##'     in `object`
+##' @param to A character(1) or integer(1) indicating which assay to link to in
+##'     `object`
+##' @param varFrom A character (1) indicating the feature variable to use to 
+##'     match the `from` assay to the `to` assay. 
+##' @param varTo A character (1) indicating the feature variable to use to 
+##'     match the `to` assay to the `from` assay. If missing, `varTo` is the 
+##'     same as `varFrom`.
+##'
+##' @export
 createAssayLink <- function (object, 
                              from, 
                              to,
@@ -272,12 +284,12 @@ createAssayLink <- function (object,
     .addAssayLink(object, al)
 }
 
-#' @rdname AssayLinks
-#' 
-#' @param varCommon The name of the common feature variable in `from` and `to`. 
-#'     If missing, row indexing will be used as matching variable.
-#' 
-#' @export
+##' @rdname AssayLinks
+##' 
+##' @param varCommon The name of the common feature variable in `from` and `to`. 
+##'     If missing, row indexing will be used as matching variable.
+##' 
+##' @export
 createAssayLinkOneToOne <- function (object, 
                                      from, 
                                      to, 

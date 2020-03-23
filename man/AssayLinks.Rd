@@ -34,7 +34,7 @@ assayLinks(x, i)
 
 createAssayLink(object, from, to, varFrom, varTo)
 
-createAssayLinkOneToOne(object, from, to, fcol)
+createAssayLinkOneToOne(object, from, to, varCommon)
 }
 \arguments{
 \item{object}{An \code{AssayLink} object to show.}
@@ -79,8 +79,7 @@ match the \code{to} assay to the \code{from} assay. If missing, \code{varTo} is 
 same as \code{varFrom}.}
 
 \item{varCommon}{The name of the common feature variable in \code{from} and \code{to}.
-If missing, a new feature variable (\code{oneToOneID}) containing the row
-indices is added to the \code{rowData} of both assays to link.}
+If missing, row indexing will be used as matching variable.}
 }
 \value{
 \code{assayLink} returns an instance of class \code{AssayLink}.
@@ -105,6 +104,22 @@ Object can be created with the \code{AssayLink()} and \code{AssayLinks()} constr
 name \code{i} in the \link{Features} object \code{x}.
 \item \code{parentAssayLinks(x, i, recursive = FALSE)} accesses the
 parent(s) \code{AssayLinks} or assay with index or name \code{i}.
+}
+}
+
+\section{Creating links between assays}{
+
+
+\code{createAssayLink} and \code{createAssayLinkOneToOne} link two assays in a
+Features object.
+\itemize{
+\item \code{createAssayLink} takes any two assays from the \code{Features} object and
+creates a link given a matching feature variable in each assay's
+\code{rowData}.
+\item \code{createAssayLinkOneToOne} also links two assays from the \code{Features}
+object, but the assays must have the same size and a one-to-one
+relationship between the assays is created. A common feature variable can
+be supplied, otherwise the rows of the assays are assumed to be matched.
 }
 }
 
