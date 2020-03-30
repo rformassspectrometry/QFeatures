@@ -120,7 +120,7 @@ setMethod("logTransform",
                   stop("Provide index or name of assay to be processed")
               if (length(i) != 1)
                   stop("Only one assay to be processed at a time")  
-              if(is.numeric(i)) i <- names(object)[[i]]
+              if (is.numeric(i)) i <- names(object)[[i]]
               addAssay(object,
                        logTransform(object[[i]], base, pc),
                        name, 
@@ -148,7 +148,7 @@ setMethod("scaleTransform", "Features",
                   stop("Provide index or name of assay to be processed")
               if (length(i) != 1)
                   stop("Only one assay to be processed at a time")
-              if(is.numeric(i)) i <- names(object)[[i]]
+              if (is.numeric(i)) i <- names(object)[[i]]
               addAssay(object,
                        scaleTransform(object[[i]], center, scale),
                        name,
@@ -185,7 +185,7 @@ setMethod("normalize", "Features",
                   stop("Provide index or name of assay to be processed")
               if (length(i) != 1)
                   stop("Only one assay to be processed at a time")
-              if(is.numeric(i)) i <- names(object)[[i]]
+              if (is.numeric(i)) i <- names(object)[[i]]
               addAssay(object,
                        normalize(object[[i]], method, ...),
                        name,
