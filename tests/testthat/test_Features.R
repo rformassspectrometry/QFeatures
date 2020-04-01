@@ -85,9 +85,16 @@ test_that("renaming", {
     expect_true(validObject(feat2))
     # Expect errors 
     feat2@assayLinks[[1]]@name <- "foo"
-    expect_error(validObject(feat2))
-    expect_error(names(feat2) <- 1:3)
-    expect_error(names(feat2) <- letters[c(1,2,2)])
+    expect_error(validObject(feat2),
+                 regexp = "@names not valid")
+    feat2 <- feat1
+    feat2@assayLinks[[1]]@from <- "bar"
+    expect_error(validObject(feat2),
+                 regexp = "@from not valid")
+    expect_error(names(feat2) <- 1:3,
+                 regexp = "must be a character")
+    expect_error(names(feat2) <- letters[c(1,2,2)],
+                 regexp = "is duplicated$")
 })
 
 
