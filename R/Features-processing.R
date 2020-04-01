@@ -121,13 +121,10 @@ setMethod("logTransform",
               if (length(i) != 1)
                   stop("Only one assay to be processed at a time")  
               if (is.numeric(i)) i <- names(object)[[i]]
-              addAssay(object,
-                       logTransform(object[[i]], base, pc),
-                       name, 
-                       assayLinks = .createAssayLinkOneToOne(seFrom = object[[i]],
-                                                             seTo = object[[i]],
-                                                             nameFrom = i,
-                                                             nameTo = name))
+              object <- addAssay(object,
+                                 logTransform(object[[i]], base, pc),
+                                 name)
+              addAssayLinkOneToOne(object, from = i, to = name)
           })
 
 ##' @exportMethod scaleTransform
@@ -149,13 +146,10 @@ setMethod("scaleTransform", "Features",
               if (length(i) != 1)
                   stop("Only one assay to be processed at a time")
               if (is.numeric(i)) i <- names(object)[[i]]
-              addAssay(object,
-                       scaleTransform(object[[i]], center, scale),
-                       name,
-                       assayLinks = .createAssayLinkOneToOne(seFrom = object[[i]],
-                                                             seTo = object[[i]],
-                                                             nameFrom = i,
-                                                             nameTo = name))
+              object <- addAssay(object,
+                                 scaleTransform(object[[i]], center, scale),
+                                 name)
+              addAssayLinkOneToOne(object, from = i, to = name)
           })
 
 ## -------------------------------------------------------
@@ -186,11 +180,8 @@ setMethod("normalize", "Features",
               if (length(i) != 1)
                   stop("Only one assay to be processed at a time")
               if (is.numeric(i)) i <- names(object)[[i]]
-              addAssay(object,
-                       normalize(object[[i]], method, ...),
-                       name,
-                       assayLinks = .createAssayLinkOneToOne(seFrom = object[[i]],
-                                                             seTo = object[[i]],
-                                                             nameFrom = i,
-                                                             nameTo = name))
+              object <- addAssay(object,
+                                 normalize(object[[i]], method, ...),
+                                 name)
+              addAssayLinkOneToOne(object, from = i, to = name)
           })
