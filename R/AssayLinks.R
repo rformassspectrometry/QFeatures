@@ -202,11 +202,8 @@ setMethod("[", c("AssayLinks", "list"),
                                to,
                                varFrom, 
                                varTo) {
-    if (is.numeric(from)) from <- names(object)[[from]]
-    if (is.numeric(to)) to <- names(object)[[to]]
     if (identical(from, to))
         stop("Creating an AssayLink between an assay and itself is not allowed.")
-    if (missing(varTo)) varTo <- varFrom
     ## Get the shared feature variable 
     matchFrom <- unlist(rdFrom[varFrom], use.names = FALSE)
     matchTo <- unlist(rdTo[varTo], use.names = FALSE)
@@ -229,6 +226,12 @@ setMethod("[", c("AssayLinks", "list"),
 ## AssayLink object. 
 .update_assay_links <- function (object, al) {
     if (!inherits(al ,"AssayLink")) stop("'al' must be an AssayLink object.")
+    ## Check the child indexing on rownames
+    if (!all(elementMetadata(al@hits)$names_to %in% rownames(object[[al@name]])))
+        stop("Invalid AssayLink. The AssayLink metadata 'names_to' does not match the rownames.")
+    ## Check the parent indexing on rownames 
+    if (!all(elementMetadata(al@hits)$names_from %in% rownames(object[[al@from]])))
+        stop("Invalid AssayLink. The AssayLink metadata 'names_from' does not match the rownames.")
     
     ## TODO adapt this when allowing an assay to have several parents 
     object@assayLinks@listData[[al@name]] <- al
@@ -256,6 +259,8 @@ addAssayLink <- function(object,
                          to,
                          varFrom, 
                          varTo) {
+    if (is.numeric(from)) from <- names(object)[[from]]
+    if (is.numeric(to)) to <- names(object)[[to]]
     ## Create the assay link
     al <- .create_assay_link(rdFrom = rowData(object[[from]]),
                              rdTo = rowData(object[[to]]),
@@ -271,6 +276,8 @@ addAssayLink <- function(object,
 addAssayLinkOneToOne <- function(object, 
                                  from, 
                                  to) {
+    if (is.numeric(from)) from <- names(object)[[from]]
+    if (is.numeric(to)) to <- names(object)[[to]]
     ## Check that assays have same size
     N <- unique(dims(object)[1, c(from, to)])
     if (length(N) != 1) 
@@ -278,17 +285,17 @@ addAssayLinkOneToOne <- function(object,
     ## Check both assays contain the same rownames (different order is allowed)
     rdFrom <- rowData(object[[from]])
     rdTo <- rowData(object[[to]])
-    if (length(instersect(rownames(rdFrom), rownames(rdTo))) != N)
+    if (length(intersect(rownames(rdFrom), rownames(rdTo))) != N)
         stop(paste0("Different rownames found in assay '", from, 
                     "' and assay '", to, "'."))
     ## Create the linking variable
     rdFrom$OneToOne <- rownames(rdFrom)
     rdTo$OneToOne <- rownames(rdTo)
     ## Create the assay link
-    al <- .create_assay_link(rdFrom, reTo,
+    al <- .create_assay_link(rdFrom, rdTo,
                              from, to, 
                              "OneToOne", "OneToOne")
     ## Update the assay link in the Features object
-    .addAssayLinks(object, al)
+    .update_assay_links(object, al)
 }
 

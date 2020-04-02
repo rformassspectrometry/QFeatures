@@ -37,7 +37,7 @@ find_assay_with_feature_name <- function(x, i) {
 }
 
 find_assays_from <- function(x, i)
-    sapply(i, function(ii) names(assayLinks(x, ii)))
+    unlist(sapply(i, function(ii) names(assayLinks(x, ii))))
 
 
 ##' @title Subset by feature name
