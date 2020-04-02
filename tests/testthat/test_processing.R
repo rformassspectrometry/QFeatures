@@ -13,12 +13,9 @@ test_that("function: logTransform", {
     expect_identical(assay(logTransform(se, base = 10)),
                      log10(assay(se)))
     ## Check the one-to-one link 
-    al <- assayLink(feat1_log, "log_psms")
-    expect_identical(al, 
-                     .createAssayLinkOneToOne(seFrom = feat1_log[["psms"]],
-                                              seTo = feat1_log[["log_psms"]],
-                                              nameFrom = "psms",
-                                              nameTo = "log_psms"))
+    feat_log_sub <- feat1_log["PSM1", , ]
+    expect_identical(log2(assay(feat_log_sub, 1)),
+                     assay(feat_log_sub, 2))
 })
 
 
@@ -35,12 +32,9 @@ test_that("function: scaleTransform", {
         attr(e, "scaled:scale") <- NULL
     expect_identical(assay(se_scaled), e)
     ## Check the one-to-one link 
-    al <- assayLink(feat1_scaled, "scaled_psms")
-    expect_identical(al, 
-                     .createAssayLinkOneToOne(seFrom = feat1_scaled[["psms"]],
-                                              seTo = feat1_scaled[["scaled_psms"]],
-                                              nameFrom = "psms",
-                                              nameTo = "scaled_psms"))
+    feat_scaled_sub <- feat1_scaled["PSM1", , ]
+    expect_identical(dimnames(assay(feat_scaled_sub, 1)),
+                     dimnames(assay(feat_scaled_sub, 2)))
 })
 
 
@@ -55,12 +49,9 @@ test_that("function: normalize", {
     e <- assay(se) / rowMax(assay(se))
     expect_identical(assay(se_norm), e)    
     ## Check the one-to-one link 
-    al <- assayLink(feat1_norm, "norm_psms")
-    expect_identical(al, 
-                     .createAssayLinkOneToOne(seFrom = feat1_norm[["psms"]],
-                                              seTo = feat1_norm[["norm_psms"]],
-                                              nameFrom = "psms",
-                                              nameTo = "norm_psms"))
+    feat_norm_sub <- feat1_norm["PSM1", , ]
+    expect_identical(dimnames(assay(feat_norm_sub, 1)),
+                     dimnames(assay(feat_norm_sub, 2)))
 })
 
 test_that("function: all normalize methods", {
