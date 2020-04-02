@@ -20,13 +20,13 @@
 ##' 
 ##' @section Creating links between assays:
 ##' 
-##' `createAssayLink` and `createAssayLinkOneToOne` link two assays in a 
-##' Features object. 
+##' `addAssayLink` and `addAssayLinkOneToOne` link two assays in a [Features] 
+##' object. 
 ##' 
-##' - `createAssayLink` takes any two assays from the `Features` object and 
+##' - `addAssayLink` takes any two assays from the [Features] object and 
 ##'   creates a link given a matching feature variable in each assay's 
 ##'   `rowData`.
-##' - `createAssayLinkOneToOne` also links two assays from the `Features` 
+##' - `addAssayLinkOneToOne` also links two assays from the [Features] 
 ##'   object, but the assays must have the same size and contain the same 
 ##'   rownames although a different ordering is allowed. The matching is 
 ##'   performed based on the row names of the assays. 
@@ -41,13 +41,48 @@
 ##'
 ##' @examples
 ##'
+##' ##-----------------------------
+##' ## Creating an AssayLink object
+##' ##-----------------------------
+##' 
 ##' al1 <- AssayLink(name = "assay1")
 ##' al1
 ##' 
+##' ##------------------------------
+##' ## Creating an AssayLinks object
+##' ##------------------------------
+##' 
 ##' AssayLinks(al1)
-##'
+##' 
 ##' al2 <- AssayLinks(names = c("Assay1", "Assay2"))
 ##' al2
+##' 
+##' ##---------------------------------------
+##' ## Adding an AssayLink between two assays
+##' ##---------------------------------------
+##' 
+##' ## create a Features object with 2 (identical) assays
+##' ## see also '?Features'
+##' se <- SummarizedExperiment(matrix(runif(20), ncol = 2, 
+##'                                   dimnames = list(LETTERS[1:10], letters[1:2])),
+##'                            rowData = DataFrame(ID = 1:10))
+##' ft <- Features(list(assay1 = se, assay2 = se), 
+##'                metadata = list())
+##'                
+##' ## assay1 and assay2 are not linked
+##' assayLink(ft, "assay2") ## 'from' is NA
+##' assayLink(ft, "assay1") ## 'from' is NA
+##' 
+##' ## Suppose assay2 was generated from assay1 and the feature variable 
+##' ## 'ID' keeps track of the relationship between the two assays
+##' ftLinked <- addAssayLink(ft, from = "assay1", to = "assay2", 
+##'                          varFrom = "ID", varTo = "ID")
+##' assayLink(ftLinked, "assay2")
+##' 
+##' ## For one-to-one relationships, you can also use
+##' ftLinked <- addAssayLinkOneToOne(ft, from = "assay1", to = "assay2")
+##' assayLink(ftLinked, "assay2")
+##' 
 NULL
 
 ##' @exportClass AssayLink
@@ -250,8 +285,7 @@ setMethod("[", c("AssayLinks", "list"),
 ##' @param varFrom A character (1) indicating the feature variable to use to 
 ##'     match the `from` assay to the `to` assay. 
 ##' @param varTo A character (1) indicating the feature variable to use to 
-##'     match the `to` assay to the `from` assay. If missing, `varTo` is the 
-##'     same as `varFrom`.
+##'     match the `to` assay to the `from` assay.
 ##'
 ##' @export
 addAssayLink <- function(object, 
