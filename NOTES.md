@@ -92,7 +92,7 @@ Currently, we have
   
 - *One-to-one* Assay links produced by a processing function such as
   `logTransform` or with `addAssayLinkOneToOne`. These contain
-  `"OneToOne"` in the `fcol` slot.
+  `"OneToOne"` in the `fcol` slot (isseu 42).
 
 - There will be a need for an assay link stemming from combining
-  assays (see above).
+  assays (see above and issue 52).
