@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -61,7 +65,6 @@ readFeatures() function, that creates an instance from tabular
 data. The Features constructor can be used to create objects
 from their bare parts.  It is the user's responsability to make
 sure that these match the class validity requirements." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -79,7 +82,7 @@ sure that these match the class validity requirements." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -126,7 +129,7 @@ sure that these match the class validity requirements." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/RforMassSpectrometry/Features">
+  <a href="https://github.com/RforMassSpectrometry/Features/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -189,24 +192,27 @@ dims(x)
 # S4 method for Features,character,ANY,ANY
 [(x, i, j, k, ..., drop = TRUE)
 
-selectRowData(object, rowvars)
+selectRowData(x, rowvars)
 
-rowDataNames(object)
+rowDataNames(x)
+
+# S4 method for Features,character
+names(x) <- value
 
 Features(..., assayLinks = NULL)
 
-addAssay(object, x, name = "newAssay", assayLinks = AssayLinks(names = name))</pre>
+addAssay(x, y, name = "newAssay", assayLinks = AssayLinks(names = name))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>An instance of class Features.</p></td>
+      <td><p>An instance of class <code>Features</code>.</p></td>
     </tr>
     <tr>
       <th>x</th>
-      <td><p>A single assay or a <em>named</em> list of assays.</p></td>
+      <td><p>An instance of class Features.</p></td>
     </tr>
     <tr>
       <th>i</th>
@@ -240,13 +246,21 @@ variables will be dropped. In case an element in <code>rowvars</code>
 isn't found in any <code>rowData</code> variable, a message is printed.</p></td>
     </tr>
     <tr>
+      <th>value</th>
+      <td><p>A character() with new name(s) for the assay(s) in <code>x</code></p></td>
+    </tr>
+    <tr>
       <th>assayLinks</th>
       <td><p>An optional <a href='AssayLinks.html'>AssayLinks</a>.</p></td>
     </tr>
     <tr>
+      <th>y</th>
+      <td><p>A single assay or a <em>named</em> list of assays.</p></td>
+    </tr>
+    <tr>
       <th>name</th>
       <td><p>A <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> naming the single assay (default is
-<code>"newAssay"). Ignored if </code>x` is a list of assays.</p></td>
+<code>"newAssay"</code>). Ignored if <code>y</code> is a list of assays.</p></td>
     </tr>
     </table>
 
@@ -285,10 +299,11 @@ variable names.</p></li>
 <ul>
 <li><p>The <code><a href='Features-aggregate.html'>aggregateFeatures()</a></code> function creates a new assay by
 aggregating features of an existing assay.</p></li>
-<li><p><code>addAssay(object, x, name, assayLinks)</code>: Adds a new assay (or
-list of assays) <code>x</code> to the <code>Features</code> instance <code>object</code>. <code>name</code>
+<li><p><code>addAssay(x, y, name, assayLinks)</code>: Adds a new assay (or
+list of assays) <code>y</code> to the <code>Features</code> instance <code>x</code>. <code>name</code>
 is a <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> naming the single assay (default is
-<code>"newAssay"), and is ignored if </code>x<code>is a list of assays.</code>assayLinks` is an optional <a href='AssayLinks.html'>AssayLinks</a>.</p></li>
+<code>"newAssay"</code>), and is ignored if <code>y</code> is a list of
+assays. <code>assayLinks</code> is an optional <a href='AssayLinks.html'>AssayLinks</a>.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="subsetting"><a class="anchor" href="#subsetting"></a>Subsetting</h2>
@@ -301,9 +316,9 @@ is a <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></cod
 <code>Features</code> object using one or multiple feature names that will
 be matched across different assays, taking the aggregation
 relation between assays.</p></li>
-<li><p>The <code>selectRowData(object, rowvars)</code> function can be used to
+<li><p>The <code>selectRowData(x, rowvars)</code> function can be used to
 select a limited number of <code>rowData</code> columns of interest named
-in <code>rowvars</code> in the <code>object</code> instance of class <code>Features</code>.</p></li>
+in <code>rowvars</code> in the <code>x</code> instance of class <code>Features</code>.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -327,7 +342,7 @@ processing methods using in quantitative proteomics.</p></li>
 <span class='co'>## An empty Features object</span>
 <span class='co'>## ------------------------</span>
 
-<span class='fu'>Features</span>()</div><div class='output co'>#&gt; <span class='warning'>Warning: colData rownames and ExperimentList colnames are empty</span></div><div class='output co'>#&gt; A empty instance of class Features </div><div class='input'>
+<span class='fu'>Features</span>()</div><div class='output co'>#&gt; A empty instance of class Features </div><div class='input'>
 <span class='co'>## -----------------------------------</span>
 <span class='co'>## Creating a Features object manually</span>
 <span class='co'>## -----------------------------------</span>
@@ -384,13 +399,16 @@ processing methods using in quantitative proteomics.</p></li>
 #&gt; rowData names(2): Fa Fb
 #&gt; colnames(4): S1 S2 S3 S4
 #&gt; colData names(0):</div><div class='input'>
+<span class='co'>## Rename assay </span>
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>fts1</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"se1"</span>, <span class='st'>"se2"</span>)
+
 <span class='co'>## Add an assay</span>
 <span class='no'>fts1</span> <span class='kw'>&lt;-</span> <span class='fu'>addAssay</span>(<span class='no'>fts1</span>, <span class='no'>se1</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, ], <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"se3"</span>)
 
 <span class='co'>## Keep only the Fa variable</span>
 <span class='fu'>selectRowData</span>(<span class='no'>fts1</span>, <span class='kw'>rowvars</span> <span class='kw'>=</span> <span class='st'>"Fa"</span>)</div><div class='output co'>#&gt; A instance of class Features containing
-#&gt;  [1] assay1: SummarizedExperiment with 10 rows and 4 columns 
-#&gt;  [2] assay2: SummarizedExperiment with 4 rows and 4 columns 
+#&gt;  [1] se1: SummarizedExperiment with 10 rows and 4 columns 
+#&gt;  [2] se2: SummarizedExperiment with 4 rows and 4 columns 
 #&gt;  [3] se3: SummarizedExperiment with 2 rows and 4 columns </div><div class='input'>
 ## -----------------------------------
 ## See ?readFeatures to create a
@@ -399,20 +417,10 @@ processing methods using in quantitative proteomics.</p></li>
 ## -----------------------------------
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#constructors">Constructors</a></li>
-      <li><a href="#accessors">Accessors</a></li>
-      <li><a href="#adding-assays">Adding assays</a></li>
-      <li><a href="#subsetting">Subsetting</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>Laurent Gatto</p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -423,7 +431,7 @@ processing methods using in quantitative proteomics.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>
