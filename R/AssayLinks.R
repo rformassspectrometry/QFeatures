@@ -251,10 +251,10 @@ setMethod("[", c("AssayLinks", "list"),
     elementMetadata(hits)$names_from <- rownames(rdFrom)[hits@from]
     elementMetadata(hits)$names_to <- rownames(rdTo)[hits@to]
     ## Create the new link
-    al <- AssayLink(name = to,
-                    from = from,
-                    fcol = varFrom,
-                    hits = hits)
+    AssayLink(name = to,
+              from = from,
+              fcol = varFrom,
+              hits = hits)
 }
 
 ## Function that updates the Features object's AssayLinks with the provided 
@@ -271,8 +271,8 @@ setMethod("[", c("AssayLinks", "list"),
     ## TODO adapt this when allowing an assay to have several parents 
     object@assayLinks@listData[[al@name]] <- al
     
-    stopifnot(validObject(object))
-    return(object)
+    if (validObject(object))
+        return(object)
 }
 
 
