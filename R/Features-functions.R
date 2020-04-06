@@ -22,9 +22,6 @@ number_assays_in_se <- function(object) {
 
 .valid_assay_links <- function(object) {
     n_exp <- names(experiments(object))
-    n_alk <- names(object@assayLinks)
-    if (any(n_exp != n_alk))
-        stop("Assay and link names don't match")
     al_names <- unname(sapply(object@assayLinks, "slot", "name"))
     ## An AssayLinks object is valid if the names of the node for all assays 
     ## are contained in the assay names of the Features object

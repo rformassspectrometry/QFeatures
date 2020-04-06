@@ -14,6 +14,8 @@
 \alias{assayLinks}
 \alias{[,AssayLink,character,ANY,ANY-method}
 \alias{[,AssayLinks,list,ANY,ANY-method}
+\alias{addAssayLink}
+\alias{addAssayLinkOneToOne}
 \title{Links between Assays}
 \usage{
 \S4method{show}{AssayLink}(object)
@@ -29,14 +31,18 @@ assayLinks(x, i)
 \S4method{[}{AssayLink,character,ANY,ANY}(x, i, j, ..., drop = TRUE)
 
 \S4method{[}{AssayLinks,list,ANY,ANY}(x, i, j, ..., drop = TRUE)
+
+addAssayLink(object, from, to, varFrom, varTo)
+
+addAssayLinkOneToOne(object, from, to)
 }
 \arguments{
 \item{object}{An \code{AssayLink} object to show.}
 
 \item{name}{A mandatory name of the assay(s).}
 
-\item{from}{The name of the parent assay, or \code{NA_character_}, if
-not applicable.}
+\item{from}{A character(1) or integer(1) indicating which assay to link from
+in \code{object}}
 
 \item{fcol}{The feature variable of the parent assay used to
 generate the current assay (used in
@@ -61,6 +67,15 @@ feature names to filter on.}
 \item{j}{ignored.}
 
 \item{drop}{ignored.}
+
+\item{to}{A character(1) or integer(1) indicating which assay to link to in
+\code{object}}
+
+\item{varFrom}{A character (1) indicating the feature variable to use to
+match the \code{from} assay to the \code{to} assay.}
+
+\item{varTo}{A character (1) indicating the feature variable to use to
+match the \code{to} assay to the \code{from} assay.}
 }
 \value{
 \code{assayLink} returns an instance of class \code{AssayLink}.
@@ -88,13 +103,63 @@ parent(s) \code{AssayLinks} or assay with index or name \code{i}.
 }
 }
 
+\section{Creating links between assays}{
+
+
+\code{addAssayLink} and \code{addAssayLinkOneToOne} link two assays in a \link{Features}
+object.
+\itemize{
+\item \code{addAssayLink} takes any two assays from the \link{Features} object and
+creates a link given a matching feature variable in each assay's
+\code{rowData}.
+\item \code{addAssayLinkOneToOne} also links two assays from the \link{Features}
+object, but the assays must have the same size and contain the same
+rownames although a different ordering is allowed. The matching is
+performed based on the row names of the assays.
+}
+}
+
 \examples{
+
+##-----------------------------
+## Creating an AssayLink object
+##-----------------------------
 
 al1 <- AssayLink(name = "assay1")
 al1
+
+##------------------------------
+## Creating an AssayLinks object
+##------------------------------
 
 AssayLinks(al1)
 
 al2 <- AssayLinks(names = c("Assay1", "Assay2"))
 al2
+
+##---------------------------------------
+## Adding an AssayLink between two assays
+##---------------------------------------
+
+## create a Features object with 2 (identical) assays
+## see also '?Features'
+se <- SummarizedExperiment(matrix(runif(20), ncol = 2, 
+                                  dimnames = list(LETTERS[1:10], letters[1:2])),
+                           rowData = DataFrame(ID = 1:10))
+ft <- Features(list(assay1 = se, assay2 = se), 
+               metadata = list())
+## assay1 and assay2 are not linked
+assayLink(ft, "assay2") ## 'from' is NA
+assayLink(ft, "assay1") ## 'from' is NA
+
+## Suppose assay2 was generated from assay1 and the feature variable 
+## 'ID' keeps track of the relationship between the two assays
+ftLinked <- addAssayLink(ft, from = "assay1", to = "assay2", 
+                         varFrom = "ID", varTo = "ID")
+assayLink(ftLinked, "assay2")
+
+## For one-to-one relationships, you can also use
+ftLinked <- addAssayLinkOneToOne(ft, from = "assay1", to = "assay2")
+assayLink(ftLinked, "assay2")
+
 }

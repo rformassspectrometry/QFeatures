@@ -18,6 +18,18 @@
 ##' - `parentAssayLinks(x, i, recursive = FALSE)` accesses the
 ##'   parent(s) `AssayLinks` or assay with index or name `i`.
 ##' 
+##' @section Creating links between assays:
+##' 
+##' `addAssayLink` and `addAssayLinkOneToOne` link two assays in a [Features] 
+##' object. 
+##' 
+##' - `addAssayLink` takes any two assays from the [Features] object and 
+##'   creates a link given a matching feature variable in each assay's 
+##'   `rowData`.
+##' - `addAssayLinkOneToOne` also links two assays from the [Features] 
+##'   object, but the assays must have the same size and contain the same 
+##'   rownames although a different ordering is allowed. The matching is 
+##'   performed based on the row names of the assays. 
 ##'
 ##' @rdname AssayLinks 
 ##'
@@ -29,13 +41,48 @@
 ##'
 ##' @examples
 ##'
+##' ##-----------------------------
+##' ## Creating an AssayLink object
+##' ##-----------------------------
+##' 
 ##' al1 <- AssayLink(name = "assay1")
 ##' al1
 ##' 
+##' ##------------------------------
+##' ## Creating an AssayLinks object
+##' ##------------------------------
+##' 
 ##' AssayLinks(al1)
-##'
+##' 
 ##' al2 <- AssayLinks(names = c("Assay1", "Assay2"))
 ##' al2
+##' 
+##' ##---------------------------------------
+##' ## Adding an AssayLink between two assays
+##' ##---------------------------------------
+##' 
+##' ## create a Features object with 2 (identical) assays
+##' ## see also '?Features'
+##' se <- SummarizedExperiment(matrix(runif(20), ncol = 2, 
+##'                                   dimnames = list(LETTERS[1:10], letters[1:2])),
+##'                            rowData = DataFrame(ID = 1:10))
+##' ft <- Features(list(assay1 = se, assay2 = se), 
+##'                metadata = list())
+##'                
+##' ## assay1 and assay2 are not linked
+##' assayLink(ft, "assay2") ## 'from' is NA
+##' assayLink(ft, "assay1") ## 'from' is NA
+##' 
+##' ## Suppose assay2 was generated from assay1 and the feature variable 
+##' ## 'ID' keeps track of the relationship between the two assays
+##' ftLinked <- addAssayLink(ft, from = "assay1", to = "assay2", 
+##'                          varFrom = "ID", varTo = "ID")
+##' assayLink(ftLinked, "assay2")
+##' 
+##' ## For one-to-one relationships, you can also use
+##' ftLinked <- addAssayLinkOneToOne(ft, from = "assay1", to = "assay2")
+##' assayLink(ftLinked, "assay2")
+##' 
 NULL
 
 ##' @exportClass AssayLink
@@ -173,3 +220,116 @@ setMethod("[", c("AssayLinks", "list"),
               }
               x
           })
+
+
+## -----------------------------------
+## Functions for creating custom links
+## -----------------------------------
+
+## The function takes the rowData of an assays to link from, the rowData of an
+## assay to link to, the corresponding assay names and the feature variable 
+## names in both rowData that link the 2 assays together. The function returns 
+## an AssayLink object that links the two assays given the relationship between 
+## the corresponding feature variables.
+.create_assay_link <- function(rdFrom, 
+                               rdTo,
+                               from,
+                               to,
+                               varFrom, 
+                               varTo) {
+    if (identical(from, to))
+        stop("Creating an AssayLink between an assay and itself is not allowed.")
+    ## Get the shared feature variable 
+    matchFrom <- unlist(rdFrom[varFrom], use.names = FALSE)
+    matchTo <- unlist(rdTo[varTo], use.names = FALSE)
+    ## Find hits
+    hits <- findMatches(matchFrom, matchTo)
+    if (length(c(hits@from, hits@to)) == 0) 
+        stop(paste0("No match found between field '", varFrom, "' (in '", 
+                    from, "') and filed '", varTo, "' (in '", to, "')."))
+    ## Add the row names corresponding to the hits
+    elementMetadata(hits)$names_from <- rownames(rdFrom)[hits@from]
+    elementMetadata(hits)$names_to <- rownames(rdTo)[hits@to]
+    ## Create the new link
+    al <- AssayLink(name = to,
+                    from = from,
+                    fcol = varFrom,
+                    hits = hits)
+}
+
+## Function that updates the Features object's AssayLinks with the provided 
+## AssayLink object. 
+.update_assay_links <- function (object, al) {
+    if (!inherits(al ,"AssayLink")) stop("'al' must be an AssayLink object.")
+    ## Check the child indexing on rownames
+    if (!all(elementMetadata(al@hits)$names_to %in% rownames(object[[al@name]])))
+        stop("Invalid AssayLink. The AssayLink metadata 'names_to' does not match the rownames.")
+    ## Check the parent indexing on rownames 
+    if (!all(elementMetadata(al@hits)$names_from %in% rownames(object[[al@from]])))
+        stop("Invalid AssayLink. The AssayLink metadata 'names_from' does not match the rownames.")
+    
+    ## TODO adapt this when allowing an assay to have several parents 
+    object@assayLinks@listData[[al@name]] <- al
+    
+    stopifnot(validObject(object))
+    return(object)
+}
+
+
+##' @rdname AssayLinks
+##'
+##' @param from A character(1) or integer(1) indicating which assay to link from
+##'     in `object`
+##' @param to A character(1) or integer(1) indicating which assay to link to in
+##'     `object`
+##' @param varFrom A character (1) indicating the feature variable to use to 
+##'     match the `from` assay to the `to` assay. 
+##' @param varTo A character (1) indicating the feature variable to use to 
+##'     match the `to` assay to the `from` assay.
+##'
+##' @export
+addAssayLink <- function(object, 
+                         from, 
+                         to,
+                         varFrom, 
+                         varTo) {
+    if (is.numeric(from)) from <- names(object)[[from]]
+    if (is.numeric(to)) to <- names(object)[[to]]
+    ## Create the assay link
+    al <- .create_assay_link(rdFrom = rowData(object[[from]]),
+                             rdTo = rowData(object[[to]]),
+                             from, to,
+                             varFrom, varTo)
+    ## Update the assay link in the Features object
+    .update_assay_links(object, al)
+}
+
+##' @rdname AssayLinks
+##' 
+##' @export
+addAssayLinkOneToOne <- function(object, 
+                                 from, 
+                                 to) {
+    if (is.numeric(from)) from <- names(object)[[from]]
+    if (is.numeric(to)) to <- names(object)[[to]]
+    ## Check that assays have same size
+    N <- unique(dims(object)[1, c(from, to)])
+    if (length(N) != 1) 
+        stop("The 'from' and 'to' assays must have the same number of rows.")
+    ## Check both assays contain the same rownames (different order is allowed)
+    rdFrom <- rowData(object[[from]])
+    rdTo <- rowData(object[[to]])
+    if (length(intersect(rownames(rdFrom), rownames(rdTo))) != N)
+        stop(paste0("Different rownames found in assay '", from, 
+                    "' and assay '", to, "'."))
+    ## Create the linking variable
+    rdFrom$OneToOne <- rownames(rdFrom)
+    rdTo$OneToOne <- rownames(rdTo)
+    ## Create the assay link
+    al <- .create_assay_link(rdFrom, rdTo,
+                             from, to, 
+                             "OneToOne", "OneToOne")
+    ## Update the assay link in the Features object
+    .update_assay_links(object, al)
+}
+

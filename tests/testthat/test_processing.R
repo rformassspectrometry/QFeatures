@@ -12,6 +12,10 @@ test_that("function: logTransform", {
     expect_identical(assay(se_log), e)
     expect_identical(assay(logTransform(se, base = 10)),
                      log10(assay(se)))
+    ## Check the one-to-one link 
+    feat_log_sub <- feat1_log["PSM1", , ]
+    expect_identical(log2(assay(feat_log_sub, 1)),
+                     assay(feat_log_sub, 2))
 })
 
 
@@ -26,7 +30,11 @@ test_that("function: scaleTransform", {
     e <- scale(assay(se), center = TRUE, scale = TRUE)
     attr(e, "scaled:center") <-
         attr(e, "scaled:scale") <- NULL
-    expect_identical(assay(se_scaled), e)    
+    expect_identical(assay(se_scaled), e)
+    ## Check the one-to-one link 
+    feat_scaled_sub <- feat1_scaled["PSM1", , ]
+    expect_identical(dimnames(assay(feat_scaled_sub, 1)),
+                     dimnames(assay(feat_scaled_sub, 2)))
 })
 
 
@@ -40,7 +48,10 @@ test_that("function: normalize", {
     expect_identical(se_norm, feat1_norm[[2]])
     e <- assay(se) / rowMax(assay(se))
     expect_identical(assay(se_norm), e)    
-    
+    ## Check the one-to-one link 
+    feat_norm_sub <- feat1_norm["PSM1", , ]
+    expect_identical(dimnames(assay(feat_norm_sub, 1)),
+                     dimnames(assay(feat_norm_sub, 2)))
 })
 
 test_that("function: all normalize methods", {

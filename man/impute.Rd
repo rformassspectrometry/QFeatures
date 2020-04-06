@@ -6,7 +6,9 @@
 \alias{impute,SummarizedExperiment-method}
 \alias{impute,Features-method}
 \title{Quantitative proteomics data imputation}
-\format{An object of class \code{standardGeneric} of length 1.}
+\format{
+An object of class \code{standardGeneric} of length 1.
+}
 \usage{
 impute
 

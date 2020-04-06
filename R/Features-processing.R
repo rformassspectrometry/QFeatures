@@ -120,9 +120,11 @@ setMethod("logTransform",
                   stop("Provide index or name of assay to be processed")
               if (length(i) != 1)
                   stop("Only one assay to be processed at a time")  
-              addAssay(object,
-                       logTransform(object[[i]], base, pc),
-                       name)
+              if (is.numeric(i)) i <- names(object)[[i]]
+              object <- addAssay(object,
+                                 logTransform(object[[i]], base, pc),
+                                 name)
+              addAssayLinkOneToOne(object, from = i, to = name)
           })
 
 ##' @exportMethod scaleTransform
@@ -143,9 +145,11 @@ setMethod("scaleTransform", "Features",
                   stop("Provide index or name of assay to be processed")
               if (length(i) != 1)
                   stop("Only one assay to be processed at a time")
-              addAssay(object,
-                       scaleTransform(object[[i]], center, scale),
-                       name)
+              if (is.numeric(i)) i <- names(object)[[i]]
+              object <- addAssay(object,
+                                 scaleTransform(object[[i]], center, scale),
+                                 name)
+              addAssayLinkOneToOne(object, from = i, to = name)
           })
 
 ## -------------------------------------------------------
@@ -175,7 +179,9 @@ setMethod("normalize", "Features",
                   stop("Provide index or name of assay to be processed")
               if (length(i) != 1)
                   stop("Only one assay to be processed at a time")
-              addAssay(object,
-                       normalize(object[[i]], method, ...),
-                       name)
+              if (is.numeric(i)) i <- names(object)[[i]]
+              object <- addAssay(object,
+                                 normalize(object[[i]], method, ...),
+                                 name)
+              addAssayLinkOneToOne(object, from = i, to = name)
           })
