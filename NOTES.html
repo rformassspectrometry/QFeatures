@@ -171,6 +171,16 @@ combine(Features, c(1, 2, 3), name = "peptides")</code></pre>
 <li><p>The argument <code>i</code> mustn’t be missing, i.e. one shouldn’t (at least in general) permit to (blindly) apply some processing on all assays.</p></li>
 </ul>
 </div>
+<div id="assay-links" class="section level1">
+<h1 class="hasAnchor">
+<a href="#assay-links" class="anchor"></a>Assay links</h1>
+<p>Currently, we have</p>
+<ul>
+<li><p>Assay links produces by <code>aggregateFeatures</code> and manually with <code>addAssayLink</code>.</p></li>
+<li><p><em>One-to-one</em> Assay links produced by a processing function such as <code>logTransform</code> or with <code>addAssayLinkOneToOne</code>. These contain <code>"OneToOne"</code> in the <code>fcol</code> slot.</p></li>
+<li><p>There will be a need for an assay link stemming from combining assays (see above).</p></li>
+</ul>
+</div>
 
 
   </div>
