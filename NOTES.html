@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -160,6 +160,16 @@ logTransform(cptac, 1, name = "peptides_log")</a></code></pre>
 </ol>
 <pre><code>combine(Features, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
 combine(Features, c(1, 2, 3), name = "peptides")</code></pre>
+</div>
+<div id="features-api" class="section level1">
+<h1 class="hasAnchor">
+<a href="#features-api" class="anchor"></a>Features API</h1>
+<p>Processing functions</p>
+<ul>
+<li><p>A processing function that acts on a Feature’s assay (typically a <code>SummarizedExperiment</code> or a <code>SingleCellExperiment</code>) such as <code>process(object)</code>, returns a new object of the same type.</p></li>
+<li><p>A processing function such <code>process(object, i)</code>, that acts on a Feautre object takes a second argument <code>i</code>, that can be a vector of indices or names, returns a new object of class Features with its assay(s) <code>i</code> modified according to <code>process(object[[i]])</code>.</p></li>
+<li><p>The argument <code>i</code> mustn’t be missing, i.e. one shouldn’t (at least in general) permit to (blindly) apply some processing on all assays.</p></li>
+</ul>
 </div>
 
 
