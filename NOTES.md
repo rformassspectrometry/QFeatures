@@ -82,5 +82,17 @@ Processing functions
 - The argument `i` mustn't be missing, i.e. one shouldn't (at least in
   general) permit to (blindly) apply some processing on all assays.
   
-  
 
+# Assay links
+
+Currently, we have
+
+- Assay links produces by `aggregateFeatures` and manually with
+  `addAssayLink`.
+  
+- *One-to-one* Assay links produced by a processing function such as
+  `logTransform` or with `addAssayLinkOneToOne`. These contain
+  `"OneToOne"` in the `fcol` slot.
+
+- There will be a need for an assay link stemming from combining
+  assays (see above).
