@@ -65,3 +65,22 @@ logTransform(cptac, 1, name = "peptides_log")
 combine(Features, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
 combine(Features, c(1, 2, 3), name = "peptides")
 ```
+
+# Features API
+
+Processing functions
+
+- A processing function that acts on a Feature's assay (typically a
+  `SummarizedExperiment` or a `SingleCellExperiment`) such as
+  `process(object)`, returns a new object of the same type.
+  
+- A processing function such `process(object, i)`, that acts on a
+  Feautre object takes a second argument `i`, that can be a vector of
+  indices or names, returns a new object of class Features with its
+  assay(s) `i` modified according to `process(object[[i]])`.
+  
+- The argument `i` mustn't be missing, i.e. one shouldn't (at least in
+  general) permit to (blindly) apply some processing on all assays.
+  
+  
+
