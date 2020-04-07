@@ -136,7 +136,7 @@
 <p>This <a href="https://stat.ethz.ch/pipermail/bioc-devel/2020-January/016096.html">question</a> on the bioc-devel list ask for advice on SE processing, and whether a new SE or new assay in the original SE should be preferred. While the letter is arguably more elegant, and is also used in SingleAssayExperiment pipelines, it doesn’t seem to be the case when using SummarizedExperiments.</p>
 <p>As for features (or <a href="https://github.com/waldronlab/MultiAssayExperiment/issues/266">MultiAssayExperiments in general</a>), the two-level approach isn’t readily available out-of-the-box, and would require additional developments:</p>
 <ul>
-<li><p>Every functoin that operates on an SE of a Features object would need to allow the user to specify which assay to use (and/or by default use the latest one).</p></li>
+<li><p>Every function that operates on an SE of a Features object would need to allow the user to specify which assay to use (and/or by default use the latest one).</p></li>
 <li><p>The <code>show,Features</code> method would need to display the number/names of the assays in each SE to make these two levels explicit.</p></li>
 </ul>
 <p>Despite the elegant of the two-level option, it seems that the additional development isn’t warranted at this time.</p>
@@ -156,10 +156,11 @@ addAssay(cptac, logTransform(cptac[[1]]), name = "peptides_log")</a></code></pre
 <pre><code><a href="reference/Features-processing.html">logTransform(cptac, "peptides", name = "peptides_log")
 logTransform(cptac, 1, name = "peptides_log")</a></code></pre>
 <ol>
-<li>Combining SEs (for example multiple TMT batches) (TODO)</li>
+<li>Joining SEs (for example multiple TMT batches) (TODO)</li>
 </ol>
-<pre><code>combine(Features, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
-combine(Features, c(1, 2, 3), name = "peptides")</code></pre>
+<pre><code>joinAssays(Features, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
+joinAssays(Features, c(1, 2, 3), name = "peptides")</code></pre>
+<p>See below.</p>
 </div>
 <div id="features-api" class="section level1">
 <h1 class="hasAnchor">
@@ -180,6 +181,39 @@ combine(Features, c(1, 2, 3), name = "peptides")</code></pre>
 <li><p><em>One-to-one</em> Assay links produced by a processing function such as <code>logTransform</code> or with <code>addAssayLinkOneToOne</code>. These contain <code>"OneToOne"</code> in the <code>fcol</code> slot (isseu 42).</p></li>
 <li><p>There will be a need for an assay link stemming from combining assays (see above and issue 52).</p></li>
 </ul>
+</div>
+<div id="combining-cbinding-assays" class="section level1">
+<h1 class="hasAnchor">
+<a href="#combining-cbinding-assays" class="anchor"></a>Combining (cbinding) assays</h1>
+<p>To <em>combine</em> assays, we also need</p>
+<ol>
+<li>relaxed <code>MatchedAssayExperiment</code> constrains (see #46)</li>
+<li>assay links with multiple parent assays (see #52)</li>
+</ol>
+<p><code>combine,MSnSet,MSnSet</code> does two things, i.e. <code>rbind</code> and <code>cbind</code>. Here, we nedd (at least in a first instance) and have <code>cbind,SummarizedExperiment</code>.</p>
+<ul>
+<li>do we need some constrains requiering identical rownames? <code>cbind,SummarizedExperiment</code> uses the mcols to check whether rows match.</li>
+<li>should unique rows in one assay get NAs in the other one? yes!</li>
+</ul>
+<p>We need a <strong>join</strong>-type of function, that adds NAs at the assay level. To do this, we need to have a union of features before rbinding the assays.</p>
+<p>As for rowData, we want to</p>
+<ul>
+<li>keep the mcols that match exactly between assays (ex: PeptideSequence, ProteinAccession, …)</li>
+<li>remove mcols that differ between assays (ex: PEP, qvalues, charge, rtime, …)</li>
+</ul>
+<p>The row data will be accessible through links between assays anyway.</p>
+<p>Naming:</p>
+<pre><code>joinAssays(Features, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides", type = "full")
+joinAssays(Features, c(1, 2, 3), name = "peptides", type = "inner")</code></pre>
+<p>Algorithm:</p>
+<ol>
+<li>Find which mcols to keep</li>
+<li>Extend with rownames and NAs (depending on type of join)</li>
+<li>Order assays</li>
+<li>cbind assays</li>
+</ol>
+<p>Do we want a public <em>join</em> for SummarizedExperiments? Discuss with SE maintainers.</p>
+<p>Note: if we were to have assay from multiple fractions to be <em>rbind</em>ed, we could consider a <code>rbindAssays</code>, <code>mergeFractions</code>, <code>bindFractions</code>, …</p>
 </div>
 
 
