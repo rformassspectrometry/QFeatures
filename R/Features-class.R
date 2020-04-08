@@ -214,8 +214,17 @@ setMethod("show", "Features",
 ##' @exportMethod [
 setMethod("[", c("Features", "ANY", "ANY", "ANY"),
           function(x, i, j, ..., drop = TRUE) {
+              ## Subset the assays
               ans <- callNextMethod(x, i, j, ..., drop)
+              ## Subset the AssayLinks
               ans@assayLinks <- ans@assayLinks[names(ans)]
+              ## Removed lost links
+              allist <- lapply(ans@assayLinks, function(al) {
+                  if(!al@from %in% names(ans)) al <- AssayLink(name = al@name)
+                  al
+              })
+              ans@assayLinks <- do.call(AssayLinks, allist)
+              ## Check new object
               if (validObject(ans))
                   return(ans)
           })
