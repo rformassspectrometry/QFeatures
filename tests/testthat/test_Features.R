@@ -44,6 +44,12 @@ test_that("addAssay", {
 })
 
 test_that("[,Features", {
+    data(feat1)
+    feat1 <- aggregateFeatures(feat1, "psms", "Sequence", "peptides")
+    expect_true(validObject(feat1[, , "psms"])) 
+    expect_true(validObject(feat1[, , "peptides"])) 
+    expect_true(validObject(feat1[, , 1])) 
+    expect_true(validObject(feat1[, , 2])) 
 })
 
 
