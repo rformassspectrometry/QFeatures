@@ -1,4 +1,4 @@
-# One or two levels in Features
+# One or two levels in Features (closed)
 
 One or two assay levels could be considered in Features:
 
@@ -70,7 +70,7 @@ See below.
 
 # Features API
 
-Processing functions
+### Processing functions
 
 - A processing function that acts on a Feature's assay (typically a
   `SummarizedExperiment` or a `SingleCellExperiment`) such as
@@ -84,6 +84,12 @@ Processing functions
 - The argument `i` mustn't be missing, i.e. one shouldn't (at least in
   general) permit to (blindly) apply some processing on all assays.
   
+### Assays 
+
+- Assays should have **unique rownames** (even though this isn't
+  required for SEs). This is a requirement to be able to easily and
+  transparently keep links between different.
+
 
 # Assay links
 
@@ -99,7 +105,7 @@ Currently, we have
 - There will be a need for an assay link stemming from combining
   assays (see above and issue 52).
 
-# Combining (cbinding) assays
+# Joining assays
 
 To *combine* assays, we also need 
 1. relaxed `MatchedAssayExperiment` constrains (see #46)
@@ -138,7 +144,7 @@ Algorithm:
 1. Find which mcols to keep
 2. Extend with rownames and NAs (depending on type of join)
 3. Order assays
-4. cbind assays
+4. cbind assays (see `cbind,SummarizedExperiment`)
 
 Do we want a public *join* for SummarizedExperiments? Discuss with SE
 maintainers.
