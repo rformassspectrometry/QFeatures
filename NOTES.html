@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>One or two levels in Features • Features</title>
+<title>One or two levels in Features (closed) • Features</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="One or two levels in Features" />
+<meta property="og:title" content="One or two levels in Features (closed)" />
 
 
 
@@ -122,11 +122,11 @@
 <div class="row">
   <div class="contents col-md-9">
     <div class="page-header">
-      <h1>One or two levels in Features</h1>
+      <h1>One or two levels in Features (closed)</h1>
     </div>
 
 
-<div id="one-or-two-levels-in-features" class="section level1">
+<div id="one-or-two-levels-in-features-closed" class="section level1">
 
 <p>One or two assay levels could be considered in Features:</p>
 <ul>
@@ -165,12 +165,22 @@ joinAssays(Features, c(1, 2, 3), name = "peptides")</code></pre>
 <div id="features-api" class="section level1">
 <h1 class="hasAnchor">
 <a href="#features-api" class="anchor"></a>Features API</h1>
-<p>Processing functions</p>
+<div id="processing-functions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#processing-functions" class="anchor"></a>Processing functions</h3>
 <ul>
 <li><p>A processing function that acts on a Feature’s assay (typically a <code>SummarizedExperiment</code> or a <code>SingleCellExperiment</code>) such as <code>process(object)</code>, returns a new object of the same type.</p></li>
 <li><p>A processing function such <code>process(object, i)</code>, that acts on a Feautre object takes a second argument <code>i</code>, that can be a vector of indices or names, returns a new object of class Features with its assay(s) <code>i</code> modified according to <code>process(object[[i]])</code>.</p></li>
 <li><p>The argument <code>i</code> mustn’t be missing, i.e. one shouldn’t (at least in general) permit to (blindly) apply some processing on all assays.</p></li>
 </ul>
+</div>
+<div id="assays" class="section level3">
+<h3 class="hasAnchor">
+<a href="#assays" class="anchor"></a>Assays</h3>
+<ul>
+<li>Assays should have <strong>unique rownames</strong> (even though this isn’t required for SEs). This is a requirement to be able to easily and transparently keep links between different.</li>
+</ul>
+</div>
 </div>
 <div id="assay-links" class="section level1">
 <h1 class="hasAnchor">
@@ -182,9 +192,9 @@ joinAssays(Features, c(1, 2, 3), name = "peptides")</code></pre>
 <li><p>There will be a need for an assay link stemming from combining assays (see above and issue 52).</p></li>
 </ul>
 </div>
-<div id="combining-cbinding-assays" class="section level1">
+<div id="joining-assays" class="section level1">
 <h1 class="hasAnchor">
-<a href="#combining-cbinding-assays" class="anchor"></a>Combining (cbinding) assays</h1>
+<a href="#joining-assays" class="anchor"></a>Joining assays</h1>
 <p>To <em>combine</em> assays, we also need</p>
 <ol>
 <li>relaxed <code>MatchedAssayExperiment</code> constrains (see #46)</li>
@@ -210,7 +220,7 @@ joinAssays(Features, c(1, 2, 3), name = "peptides", type = "inner")</code></pre>
 <li>Find which mcols to keep</li>
 <li>Extend with rownames and NAs (depending on type of join)</li>
 <li>Order assays</li>
-<li>cbind assays</li>
+<li>cbind assays (see <code>cbind,SummarizedExperiment</code>)</li>
 </ol>
 <p>Do we want a public <em>join</em> for SummarizedExperiments? Discuss with SE maintainers.</p>
 <p>Note: if we were to have assay from multiple fractions to be <em>rbind</em>ed, we could consider a <code>rbindAssays</code>, <code>mergeFractions</code>, <code>bindFractions</code>, …</p>
@@ -235,7 +245,7 @@ joinAssays(Features, c(1, 2, 3), name = "peptides", type = "inner")</code></pre>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
