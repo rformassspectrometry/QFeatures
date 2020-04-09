@@ -220,7 +220,7 @@ setMethod("[", c("Features", "ANY", "ANY", "ANY"),
               ans@assayLinks <- ans@assayLinks[names(ans)]
               ## Removed lost links
               allist <- lapply(ans@assayLinks, function(al) {
-                  if(!al@from %in% names(ans)) al <- AssayLink(name = al@name)
+                  if (!al@from %in% names(ans)) al <- AssayLink(name = al@name)
                   al
               })
               ans@assayLinks <- do.call(AssayLinks, allist)
