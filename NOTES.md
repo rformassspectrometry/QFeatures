@@ -86,10 +86,32 @@ See below.
   
 ### Assays 
 
-- Assays should have **unique rownames** (even though this isn't
-  required for SEs). This is a requirement to be able to easily and
-  transparently keep links between different.
+- TODO Assay names must be different, apparently. Example below with
+  `fname = "Sequence2"`.
 
+- Assays should have unique rownames (even though this isn't required
+  for SEs). This is a requirement to be able to easily and
+  transparently keep links between different. Example below with
+  `fname = "Sequence"`.
+  
+```r
+hlpsms <- hlpsms[1:5000, ]
+## non-uniue names, but different than those in peptides
+hlpsms$Sequence2 <- paste0(hlpsms$Sequence, "2") 
+
+ft1 <- readFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence2")
+sum(rownames(ft1[[1]]) == "ANLPQSFQVDTSk")
+ft1 <- aggregateFeatures(ft1, "psms", fcol = "Sequence",
+                         name = "peptides", fun = colSums)
+ft1 <- aggregateFeatures(ft1, "peptides", fcol = "ProteinGroupAccessions",
+                         name = "proteins", fun = colSums)
+sapply(rownames(ft1), anyDuplicated)
+ft1
+
+## subsetting still works
+ft2 <- subsetByFeature(ft1, "ANLPQSFQVDTSk")
+ft2
+```
 
 # Assay links
 
