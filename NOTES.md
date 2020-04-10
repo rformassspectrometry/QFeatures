@@ -91,7 +91,7 @@ See below.
   kept:
 
 
-```r
+```
 hlpsms <- hlpsms[1:5000, ] ## faster
 
 ft1 <- readFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence")
@@ -109,7 +109,7 @@ ft2
   The underlying reason why this fails is due to matrix subsetting by
   name when these names aren't unique.
   
-```r
+```
 m <- matrix(1:10, ncol = 2)
 colnames(m) <- LETTERS[1:2]
 rownames(m) <- c("a", letters[1:4])
@@ -118,7 +118,7 @@ m
 
 And of course, this affects SEs ...
 
-```r
+```
 se <- SummarizedExperiment(m)
 assay(se["a", ])
 ```
@@ -128,17 +128,37 @@ assay(se["a", ])
 Note that in the example above, `"ANLPQSFQVDTSk"` is present in both
 the `psms` and `peptides` assays, and the 
 
-```r
+```
 for (k in setdiff(all_assays_names, leaf_assay_name)) { ... }
 ```
 loop in `.subsetByFeature` isn't executed at all. This will need to 
 be investigated. But the behaviour above can be reproduced even when
 that's not the case. See 
 
-```r
+```
 hlpsms$Sequence2 <- paste0(hlpsms$Sequence, "2")
 ft1 <- readFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence2")
 ...
+```
+
+This could be **fixed** by switching to indices:
+
+```
+> (i <- which(rownames(m) == "a"))
+[1] 1 2
+> m[i, ]
+  A B
+a 1 6
+a 2 7
+> se[i, ]
+class: SummarizedExperiment 
+dim: 2 2 
+metadata(0):
+assays(1): ''
+rownames(2): a a
+rowData names(0):
+colnames(2): A B
+colData names(0):
 ```
 
 # Assay links
