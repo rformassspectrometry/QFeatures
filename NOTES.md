@@ -86,31 +86,59 @@ See below.
   
 ### Assays 
 
-- TODO Assay names must be different, apparently. Example below with
-  `fname = "Sequence2"`.
-
 - Assays should have unique rownames (even though this isn't required
-  for SEs). This is a requirement to be able to easily and
-  transparently keep links between different. Example below with
-  `fname = "Sequence"`.
-  
-```r
-hlpsms <- hlpsms[1:5000, ]
-## non-uniue names, but different than those in peptides
-hlpsms$Sequence2 <- paste0(hlpsms$Sequence, "2") 
+  for SEs). If they aren't, only the first occurence of the name is
+  kept:
 
-ft1 <- readFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence2")
+
+```r
+hlpsms <- hlpsms[1:5000, ] ## faster
+
+ft1 <- readFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence")
 sum(rownames(ft1[[1]]) == "ANLPQSFQVDTSk")
 ft1 <- aggregateFeatures(ft1, "psms", fcol = "Sequence",
                          name = "peptides", fun = colSums)
-ft1 <- aggregateFeatures(ft1, "peptides", fcol = "ProteinGroupAccessions",
-                         name = "proteins", fun = colSums)
 sapply(rownames(ft1), anyDuplicated)
 ft1
 
 ## subsetting still works
 ft2 <- subsetByFeature(ft1, "ANLPQSFQVDTSk")
-ft2
+ft2 
+```
+
+  The underlying reason why this fails is due to matrix subsetting by
+  name when these names aren't unique.
+  
+```r
+m <- matrix(1:10, ncol = 2)
+colnames(m) <- LETTERS[1:2]
+rownames(m) <- c("a", letters[1:4])
+m
+```
+
+And of course, this affects SEs ...
+
+```r
+se <- SummarizedExperiment(m)
+assay(se["a", ])
+```
+
+... and MultiAssayExperiments.
+
+Note that in the example above, `"ANLPQSFQVDTSk"` is present in both
+the `psms` and `peptides` assays, and the 
+
+```r
+for (k in setdiff(all_assays_names, leaf_assay_name)) { ... }
+```
+loop in `.subsetByFeature` isn't executed at all. This will need to 
+be investigated. But the behaviour above can be reproduced even when
+that's not the case. See 
+
+```r
+hlpsms$Sequence2 <- paste0(hlpsms$Sequence, "2")
+ft1 <- readFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence2")
+...
 ```
 
 # Assay links
