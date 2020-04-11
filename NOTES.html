@@ -178,8 +178,51 @@ joinAssays(Features, c(1, 2, 3), name = "peptides")</code></pre>
 <h3 class="hasAnchor">
 <a href="#assays" class="anchor"></a>Assays</h3>
 <ul>
-<li>Assays should have <strong>unique rownames</strong> (even though this isn’t required for SEs). This is a requirement to be able to easily and transparently keep links between different.</li>
+<li>Assays should have unique rownames (even though this isn’t required for SEs). If they aren’t, only the first occurence of the name is kept:</li>
 </ul>
+<pre><code>hlpsms &lt;- hlpsms[1:5000, ] ## faster
+
+ft1 &lt;- readFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence")
+sum(rownames(ft1[[1]]) == "ANLPQSFQVDTSk")
+ft1 &lt;- aggregateFeatures(ft1, "psms", fcol = "Sequence",
+                         name = "peptides", fun = colSums)
+sapply(rownames(ft1), anyDuplicated)
+ft1
+
+## subsetting still works
+ft2 &lt;- subsetByFeature(ft1, "ANLPQSFQVDTSk")
+ft2 </code></pre>
+<p>The underlying reason why this fails is due to matrix subsetting by name when these names aren’t unique.</p>
+<pre><code>m &lt;- matrix(1:10, ncol = 2)
+colnames(m) &lt;- LETTERS[1:2]
+rownames(m) &lt;- c("a", letters[1:4])
+m</code></pre>
+<p>And of course, this affects SEs …</p>
+<pre><code>se &lt;- SummarizedExperiment(m)
+assay(se["a", ])</code></pre>
+<p>… and MultiAssayExperiments.</p>
+<p>Note that in the example above, <code>"ANLPQSFQVDTSk"</code> is present in both the <code>psms</code> and <code>peptides</code> assays, and the</p>
+<pre><code>for (k in setdiff(all_assays_names, leaf_assay_name)) { ... }</code></pre>
+<p>loop in <code>.subsetByFeature</code> isn’t executed at all. This will need to be investigated. But the behaviour above can be reproduced even when that’s not the case. See</p>
+<pre><code>hlpsms$Sequence2 &lt;- paste0(hlpsms$Sequence, "2")
+ft1 &lt;- readFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence2")
+...</code></pre>
+<p>This could be <strong>fixed</strong> by switching to indices:</p>
+<pre><code>&gt; (i &lt;- which(rownames(m) == "a"))
+[1] 1 2
+&gt; m[i, ]
+  A B
+a 1 6
+a 2 7
+&gt; se[i, ]
+class: SummarizedExperiment 
+dim: 2 2 
+metadata(0):
+assays(1): ''
+rownames(2): a a
+rowData names(0):
+colnames(2): A B
+colData names(0):</code></pre>
 </div>
 </div>
 <div id="assay-links" class="section level1">
