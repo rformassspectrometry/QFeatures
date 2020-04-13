@@ -49,7 +49,7 @@ invariant_cols2 <- function(x) {
 ##' the example below.
 ##'
 ##' The presence of missing values can have side effects in higher
-##' level functions that reply on reduction of `DataFrame` objects.
+##' level functions that rely on reduction of `DataFrame` objects.
 ##'
 ##' @param x The `DataFrame` to be reduced or expanded.
 ##' @param k A ‘vector’ of length `nrow(x)` defining the grouping
