@@ -81,7 +81,7 @@ DataFrame to be expanded back, it must not to be simplified." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -188,6 +188,17 @@ columns should be dropped altogether. Default is <code>FALSE</code>.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An expanded (reduced) <code>DataFrame</code>.</p>
+    <h2 class="hasAnchor" id="missing-values"><a class="anchor" href="#missing-values"></a>Missing values</h2>
+
+    
+
+
+<p>Missing values do have an important effect on <code>reduce</code>. Unless all
+values to be reduces are missing, they will result in an
+non-invariant column, and will be dropped with <code>drop = TRUE</code>. See
+the example below.</p>
+<p>The presence of missing values can have side effects in higher
+level functions that reply on reduction of <code>DataFrame</code> objects.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"IRanges"</span>)
@@ -314,7 +325,63 @@ columns should be dropped altogether. Default is <code>FALSE</code>.</p></td>
 #&gt; 97         97        98
 #&gt; 98         98        99
 #&gt; 99         99       100
-#&gt; 100       100       101</div></pre>
+#&gt; 100       100       101</div><div class='input'>
+<span class='co'>## Missing values</span>
+<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'>DataFrame</span>(<span class='kw'>k</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>, <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>3</span>),
+               <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>9</span>],
+               <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>3</span>),
+               <span class='kw'>y2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>3</span>))
+<span class='no'>d</span></div><div class='output co'>#&gt; DataFrame with 9 rows and 4 columns
+#&gt;           k           x           y          y2
+#&gt;   &lt;integer&gt; &lt;character&gt; &lt;character&gt; &lt;character&gt;
+#&gt; 1         1           a           a           a
+#&gt; 2         1           b           a           a
+#&gt; 3         1           c           a           a
+#&gt; 4         2           d           b           b
+#&gt; 5         2           e           b           b
+#&gt; 6         2           f           b           b
+#&gt; 7         3           g           c           c
+#&gt; 8         3           h           c           c
+#&gt; 9         3           i           c           c</div><div class='input'>
+<span class='co'>## y is invariant and is preserved (no dropeed)</span>
+<span class='fu'>reduceDataFrame</span>(<span class='no'>d</span>, <span class='no'>d</span>$<span class='no'>k</span>)</div><div class='output co'>#&gt; DataFrame with 3 rows and 4 columns
+#&gt;           k               x           y          y2
+#&gt;   &lt;integer&gt; &lt;CharacterList&gt; &lt;character&gt; &lt;character&gt;
+#&gt; 1         1           a,b,c           a           a
+#&gt; 2         2           d,e,f           b           b
+#&gt; 3         3           g,h,i           c           c</div><div class='input'><span class='fu'>reduceDataFrame</span>(<span class='no'>d</span>, <span class='no'>d</span>$<span class='no'>k</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; DataFrame with 3 rows and 3 columns
+#&gt;           k           y          y2
+#&gt;   &lt;integer&gt; &lt;character&gt; &lt;character&gt;
+#&gt; 1         1           a           a
+#&gt; 2         2           b           b
+#&gt; 3         3           c           c</div><div class='input'>
+<span class='co'>## BUT with a missing value</span>
+<span class='no'>d</span>[<span class='fl'>1</span>, <span class='st'>"y"</span>] <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
+<span class='no'>d</span></div><div class='output co'>#&gt; DataFrame with 9 rows and 4 columns
+#&gt;           k           x           y          y2
+#&gt;   &lt;integer&gt; &lt;character&gt; &lt;character&gt; &lt;character&gt;
+#&gt; 1         1           a          NA           a
+#&gt; 2         1           b           a           a
+#&gt; 3         1           c           a           a
+#&gt; 4         2           d           b           b
+#&gt; 5         2           e           b           b
+#&gt; 6         2           f           b           b
+#&gt; 7         3           g           c           c
+#&gt; 8         3           h           c           c
+#&gt; 9         3           i           c           c</div><div class='input'>
+<span class='co'>## y isn't simplified anymore</span>
+<span class='fu'>reduceDataFrame</span>(<span class='no'>d</span>, <span class='no'>d</span>$<span class='no'>k</span>)</div><div class='output co'>#&gt; DataFrame with 3 rows and 4 columns
+#&gt;           k               x               y          y2
+#&gt;   &lt;integer&gt; &lt;CharacterList&gt; &lt;CharacterList&gt; &lt;character&gt;
+#&gt; 1         1           a,b,c          NA,a,a           a
+#&gt; 2         2           d,e,f           b,b,b           b
+#&gt; 3         3           g,h,i           c,c,c           c</div><div class='input'><span class='co'>## y now get dropped</span>
+<span class='fu'>reduceDataFrame</span>(<span class='no'>d</span>, <span class='no'>d</span>$<span class='no'>k</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; DataFrame with 3 rows and 2 columns
+#&gt;           k          y2
+#&gt;   &lt;integer&gt; &lt;character&gt;
+#&gt; 1         1           a
+#&gt; 2         2           b
+#&gt; 3         3           c</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

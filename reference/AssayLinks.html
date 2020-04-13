@@ -74,7 +74,7 @@ instances." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -297,6 +297,7 @@ performed based on the row names of the assays.</p></li>
                            <span class='kw'>rowData</span> <span class='kw'>=</span> <span class='fu'>DataFrame</span>(<span class='kw'>ID</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>))
 <span class='no'>ft</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='Features-class.html'>Features</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>assay1</span> <span class='kw'>=</span> <span class='no'>se</span>, <span class='kw'>assay2</span> <span class='kw'>=</span> <span class='no'>se</span>),
                <span class='kw'>metadata</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())
+
 <span class='co'>## assay1 and assay2 are not linked</span>
 <span class='fu'>assayLink</span>(<span class='no'>ft</span>, <span class='st'>"assay2"</span>) <span class='co'>## 'from' is NA</span></div><div class='output co'>#&gt; AssayLink for assay &lt;assay2&gt;
 #&gt; [from:NA|fcol:NA|hits:0]</div><div class='input'><span class='fu'>assayLink</span>(<span class='no'>ft</span>, <span class='st'>"assay1"</span>) <span class='co'>## 'from' is NA</span></div><div class='output co'>#&gt; AssayLink for assay &lt;assay1&gt;
