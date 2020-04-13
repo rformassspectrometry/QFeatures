@@ -51,7 +51,7 @@ non-invariant column, and will be dropped with \code{drop = TRUE}. See
 the example below.
 
 The presence of missing values can have side effects in higher
-level functions that reply on reduction of \code{DataFrame} objects.
+level functions that rely on reduction of \code{DataFrame} objects.
 }
 
 \examples{
