@@ -148,6 +148,7 @@ se <- SummarizedExperiment(matrix(runif(20), ncol = 2,
                            rowData = DataFrame(ID = 1:10))
 ft <- Features(list(assay1 = se, assay2 = se), 
                metadata = list())
+               
 ## assay1 and assay2 are not linked
 assayLink(ft, "assay2") ## 'from' is NA
 assayLink(ft, "assay1") ## 'from' is NA
