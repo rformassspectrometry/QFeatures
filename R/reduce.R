@@ -41,6 +41,16 @@ invariant_cols2 <- function(x) {
 ##' The opposite operation is *expand*. But note that for a
 ##' `DataFrame` to be expanded back, it must not to be simplified.
 ##'
+##' @section Missing values:
+##' 
+##' Missing values do have an important effect on `reduce`. Unless all
+##' values to be reduces are missing, they will result in an
+##' non-invariant column, and will be dropped with `drop = TRUE`. See
+##' the example below.
+##'
+##' The presence of missing values can have side effects in higher
+##' level functions that reply on reduction of `DataFrame` objects.
+##'
 ##' @param x The `DataFrame` to be reduced or expanded.
 ##' @param k A ‘vector’ of length `nrow(x)` defining the grouping
 ##'     based on which the `DataFrame` will be shrunk.
@@ -83,6 +93,26 @@ invariant_cols2 <- function(x) {
 ##'
 ##' ## Drop all non-invariant columns
 ##' reduceDataFrame(df, df$k, drop = TRUE)
+##'
+##' ## Missing values
+##' d <- DataFrame(k = rep(1:3, each = 3),
+##'                x = letters[1:9],
+##'                y = rep(letters[1:3], each = 3),
+##'                y2 = rep(letters[1:3], each = 3))
+##' d
+##'
+##' ## y is invariant and is preserved (no dropeed)
+##' reduceDataFrame(d, d$k)
+##' reduceDataFrame(d, d$k, drop = TRUE)
+##'
+##' ## BUT with a missing value
+##' d[1, "y"] <- NA
+##' d
+##'
+##' ## y isn't simplified anymore
+##' reduceDataFrame(d, d$k)
+##' ## y now get dropped
+##' reduceDataFrame(d, d$k, drop = TRUE)
 reduceDataFrame <- function(x, k, count = FALSE, simplify = TRUE, drop = FALSE) {
     res <- split(x, k)
     lens <- lengths(res)
