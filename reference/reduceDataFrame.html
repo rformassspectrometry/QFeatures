@@ -343,13 +343,14 @@ level functions that rely on reduction of <code>DataFrame</code> objects.</p>
 #&gt; 7         3           g           c           c
 #&gt; 8         3           h           c           c
 #&gt; 9         3           i           c           c</div><div class='input'>
-<span class='co'>## y is invariant and is preserved (no dropeed)</span>
+<span class='co'>## y is invariant and can be simplified</span>
 <span class='fu'>reduceDataFrame</span>(<span class='no'>d</span>, <span class='no'>d</span>$<span class='no'>k</span>)</div><div class='output co'>#&gt; DataFrame with 3 rows and 4 columns
 #&gt;           k               x           y          y2
 #&gt;   &lt;integer&gt; &lt;CharacterList&gt; &lt;character&gt; &lt;character&gt;
 #&gt; 1         1           a,b,c           a           a
 #&gt; 2         2           d,e,f           b           b
-#&gt; 3         3           g,h,i           c           c</div><div class='input'><span class='fu'>reduceDataFrame</span>(<span class='no'>d</span>, <span class='no'>d</span>$<span class='no'>k</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; DataFrame with 3 rows and 3 columns
+#&gt; 3         3           g,h,i           c           c</div><div class='input'><span class='co'>## y isn't not dropped</span>
+<span class='fu'>reduceDataFrame</span>(<span class='no'>d</span>, <span class='no'>d</span>$<span class='no'>k</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; DataFrame with 3 rows and 3 columns
 #&gt;           k           y          y2
 #&gt;   &lt;integer&gt; &lt;character&gt; &lt;character&gt;
 #&gt; 1         1           a           a
@@ -369,13 +370,13 @@ level functions that rely on reduction of <code>DataFrame</code> objects.</p>
 #&gt; 7         3           g           c           c
 #&gt; 8         3           h           c           c
 #&gt; 9         3           i           c           c</div><div class='input'>
-<span class='co'>## y isn't simplified anymore</span>
+<span class='co'>## y isn't invariant/simplified anymore</span>
 <span class='fu'>reduceDataFrame</span>(<span class='no'>d</span>, <span class='no'>d</span>$<span class='no'>k</span>)</div><div class='output co'>#&gt; DataFrame with 3 rows and 4 columns
 #&gt;           k               x               y          y2
 #&gt;   &lt;integer&gt; &lt;CharacterList&gt; &lt;CharacterList&gt; &lt;character&gt;
 #&gt; 1         1           a,b,c          NA,a,a           a
 #&gt; 2         2           d,e,f           b,b,b           b
-#&gt; 3         3           g,h,i           c,c,c           c</div><div class='input'><span class='co'>## y now get dropped</span>
+#&gt; 3         3           g,h,i           c,c,c           c</div><div class='input'><span class='co'>## y now gets dropped</span>
 <span class='fu'>reduceDataFrame</span>(<span class='no'>d</span>, <span class='no'>d</span>$<span class='no'>k</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; DataFrame with 3 rows and 2 columns
 #&gt;           k          y2
 #&gt;   &lt;integer&gt; &lt;character&gt;
