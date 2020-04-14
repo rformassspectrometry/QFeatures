@@ -114,8 +114,7 @@ test_that("nNA,Features", {
                             dimnames = list(c("na", "zero"), 0:3)))
     expect_identical(n_na[[3]], 
                      matrix(c(2, 1, rep(0, 4)), nrow = 2, byrow = TRUE,
-                            dimnames = list(c("na", "zero"), LETTERS[1:3])))
-    
+                            dimnames = list(c("na", "zero"), LETTERS[1:3])))    
 })
 
 
@@ -150,6 +149,7 @@ test_that("aggregateFeatures with missing data", {
     expect_identical(assay(ft_na[[3]]), agg2)
     expect_identical(rowData(ft_na[[2]]), rowData(ft_na[[3]]))
     rd <- DataFrame(X = c(1L, 2L),
+                    Y = LETTERS[1:2],
                     .n = c(2L, 2L),
                     row.names = 1:2)
     expect_equivalent(rowData(ft_na[[2]]), rd)
