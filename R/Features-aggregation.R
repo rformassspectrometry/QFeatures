@@ -45,8 +45,11 @@
 ##'
 ##' - [base::colSums()] to use the sum of each column;
 ##'
-##' Missing values have different effect based on the aggregation
-##' method employed,
+##'
+##' @section Missing quantitative values:
+##' 
+##' Missing quantitative values have different effect based on the
+##' aggregation method employed:
 ##'
 ##' - The aggregation functions should be able to deal with missing
 ##'   values by either ignoring them, and propagating them. This is
@@ -71,10 +74,26 @@
 ##' More generally, missing values often need dedicated handling such
 ##' as filtering (see [filterNA()]) or imputation (see [impute()]).
 ##'
+##' @section Missing values in the row data:
+##'
+##' Missing values in the row data of an assay will also impact the
+##' resulting (aggregated) assay row data, as illustrated in the
+##' example below. Any feature variables (a column in the row data)
+##' containing `NA` values will be dropped from the aggregated row
+##' data. The reasons underlying this drop are detailed in the
+##' `reduceDataFrame()` manual page: only invariant aggregated rows,
+##' i.e. rows resulting from the aggregation from identical variables,
+##' are preserved during aggregations.
+##'
+##' The situation illustrated below should however only happen in rare
+##' cases and should often be imputable using the value of the other
+##' aggregation rows before aggregation to preserve the invariant
+##' nature of that column. In cases where an `NA` is present in an
+##' otherwise variant column, the column would be dropped anyway.
+##' 
 ##' @seealso The *Features* vignette provides an extended example and
 ##'     the *Processing* vignette, for a complete quantitative
 ##'     proteomics data processing pipeline.
-##'
 ##' 
 ##' @aliases aggregateFeatures aggregateFeatures,Features-method
 ##'
@@ -86,8 +105,11 @@
 ##'
 ##' @examples
 ##'
+##' ## ---------------------------------------
 ##' ## An example Features with PSM-level data
+##' ## ---------------------------------------
 ##' data(feat1)
+##' feat1
 ##'
 ##' ## Aggregate PSMs into peptides
 ##' feat1 <- aggregateFeatures(feat1, "psms", "Sequence", name = "peptides")
@@ -97,7 +119,9 @@
 ##' feat1 <- aggregateFeatures(feat1, "peptides", "Protein", name = "proteins")
 ##' feat1
 ##'
-##' ## Aggregation with missing values
+##' ## --------------------------------------------
+##' ## Aggregation with missing quantitative values
+##' ## --------------------------------------------
 ##' data(ft_na)
 ##' ft_na
 ##'
@@ -109,6 +133,21 @@
 ##'
 ##' ## Ignored when setting na.rm = TRUE
 ##' assay(aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums, na.rm = TRUE), 2)
+##'
+##' ## -----------------------------------------------
+##' ## Aggregation with missing values in the row data
+##' ## -----------------------------------------------
+##' ## Row data results without any NAs, which includes the
+##' ## Y variables
+##' rowData(aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums)[[2]])
+##'
+##' ## Missing value in the Y feature variable
+##' rowData(ft_na[[1]])[1, "Y"] <- NA
+##' rowData(ft_na[[1]])
+##'
+##' feat_na <- aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums)
+##' ## The Y feature variable has been dropped!
+##' rowData(feat_na[[2]])
 NULL
 
 ##' @exportMethod aggregateFeatures
@@ -133,14 +172,22 @@ setMethod("aggregateFeatures", "Features",
     if (!fcol %in% names(rowdata_i))
         stop("'fcol' not found in the assay's rowData.")
     groupBy <- rowdata_i[[fcol]]
-
-    if (anyNA(assay_i)) {
-        msg <- paste("Your data contains missing values.",
-                     "Please read the relevant section in the",
-                     "aggregateFeatures manual page for details the",
+    
+    ## Message about NA values is quant/row data
+    has_na <- character()
+    if (anyNA(assay_i))
+        has_na <- c(has_na, "quantitative")
+    if (anyNA(rowdata_i, recursive = TRUE))
+        has_na <- c(has_na, "row")
+    if (length(has_na)) {
+        msg <- paste(paste("Your", paste(has_na, collapse = " and "),
+                           " data contain missing values."),
+                     "Please read the relevant section(s) in the",
+                     "aggregateFeatures manual page regarding the",
                      "effects of missing values on data aggregation.")
         message(paste(strwrap(msg), collapse = "\n"))
     }
+    
     aggregated_assay <- aggregate_by_vector(assay_i, groupBy, fun, ...)
     aggregated_rowdata <- Features::reduceDataFrame(rowdata_i, rowdata_i[[fcol]],
                                                    simplify = TRUE, drop = TRUE,

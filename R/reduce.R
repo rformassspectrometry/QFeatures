@@ -101,17 +101,18 @@ invariant_cols2 <- function(x) {
 ##'                y2 = rep(letters[1:3], each = 3))
 ##' d
 ##'
-##' ## y is invariant and is preserved (no dropeed)
+##' ## y is invariant and can be simplified
 ##' reduceDataFrame(d, d$k)
+##' ## y isn't not dropped
 ##' reduceDataFrame(d, d$k, drop = TRUE)
 ##'
 ##' ## BUT with a missing value
 ##' d[1, "y"] <- NA
 ##' d
 ##'
-##' ## y isn't simplified anymore
+##' ## y isn't invariant/simplified anymore
 ##' reduceDataFrame(d, d$k)
-##' ## y now get dropped
+##' ## y now gets dropped
 ##' reduceDataFrame(d, d$k, drop = TRUE)
 reduceDataFrame <- function(x, k, count = FALSE, simplify = TRUE, drop = FALSE) {
     res <- split(x, k)
