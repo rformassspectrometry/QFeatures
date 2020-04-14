@@ -136,19 +136,17 @@
 ##' ## -----------------------------------------------
 ##' ## Aggregation with missing values in the row data
 ##' ## -----------------------------------------------
-##' 
 ##' ## Row data results without any NAs, which includes the
-##' ## location variables
-##' rowData(feat1[[2]])
+##' ## Y variables
+##' rowData(aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums)[[2]])
 ##'
+##' ## Missing value in the Y feature variable
+##' rowData(ft_na[[1]])[1, "Y"] <- NA
+##' rowData(ft_na[[1]])
 ##'
-##' data(feat1) ## reset the data
-##' ## Missing value in the location feature variable
-##' rowData(feat1[[1]])[1, "location"] <- NA
-##' rowData(feat1[[1]])
-##' feat2 <- aggregateFeatures(feat1, "psms", "Sequence", name = "peptides")
-##' ## The location feature variable has been dropped!
-##' rowData(feat2[[2]]) 
+##' feat_na <- aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums)
+##' ## The Y feature variable has been dropped!
+##' rowData(feat_na[[2]])
 NULL
 
 ##' @exportMethod aggregateFeatures
@@ -175,13 +173,13 @@ setMethod("aggregateFeatures", "Features",
     groupBy <- rowdata_i[[fcol]]
     
     ## Message about NA values is quant/row data
-    na_data <- character()
+    has_na <- character()
     if (anyNA(assay_i))
-        na_data <- c(na_data, "quantitative")
+        has_na <- c(has_na, "quantitative")
     if (anyNA(rowdata_i, recursive = TRUE))
-        na_data <- c(na_data, "row")
-    if (length(na_data())) {
-        msg <- paste(paste("Your", paste(na_data, collapse = " and "),
+        has_na <- c(has_na, "row")
+    if (length(has_na)) {
+        msg <- paste(paste("Your", paste(has_na, collapse = " and "),
                            " data contain missing values."),
                      "Please read the relevant section(s) in the",
                      "aggregateFeatures manual page regarding the",

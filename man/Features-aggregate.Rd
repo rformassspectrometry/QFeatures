@@ -136,19 +136,17 @@ assay(aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums, na.rm = TRUE), 2)
 ## -----------------------------------------------
 ## Aggregation with missing values in the row data
 ## -----------------------------------------------
-
 ## Row data results without any NAs, which includes the
-## location variables
-rowData(feat1[[2]])
+## Y variables
+rowData(aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums)[[2]])
 
+## Missing value in the Y feature variable
+rowData(ft_na[[1]])[1, "Y"] <- NA
+rowData(ft_na[[1]])
 
-data(feat1) ## reset the data
-## Missing value in the location feature variable
-rowData(feat1[[1]])[1, "location"] <- NA
-rowData(feat1[[1]])
-feat2 <- aggregateFeatures(feat1, "psms", "Sequence", name = "peptides")
-## The location feature variable has been dropped!
-rowData(feat2[[2]]) 
+feat_na <- aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums)
+## The Y feature variable has been dropped!
+rowData(feat_na[[2]])
 }
 \seealso{
 The \emph{Features} vignette provides an extended example and
