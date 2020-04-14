@@ -109,6 +109,7 @@
 ##' ## An example Features with PSM-level data
 ##' ## ---------------------------------------
 ##' data(feat1)
+##' feat1
 ##'
 ##' ## Aggregate PSMs into peptides
 ##' feat1 <- aggregateFeatures(feat1, "psms", "Sequence", name = "peptides")
