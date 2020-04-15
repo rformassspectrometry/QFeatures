@@ -155,7 +155,7 @@ rowData(filterFeatures(feat1, ~ location == "Mitochondrion", na.rm = FALSE)[[1]]
 ## The row with the NA is removed
 rowData(filterFeatures(feat1, ~ location == "Mitochondrion", na.rm = TRUE)[[1]])
 
-## Note that is situations with missing values, it is possible to
+## Note that in situations with missing values, it is possible to
 ## use the `\%in\%` operator or filter missing values out
 ## explicitly.
 
