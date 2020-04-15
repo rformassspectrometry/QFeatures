@@ -143,10 +143,10 @@ filters can be provided as instances of class <code>AnnotationFilter</code>
     <pre class="usage"><span class='fu'>VariableFilter</span>(<span class='no'>field</span>, <span class='no'>value</span>, <span class='kw'>condition</span> <span class='kw'>=</span> <span class='st'>"=="</span>, <span class='kw'>not</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S4 method for Features,AnnotationFilter</span>
-<span class='fu'>filterFeatures</span>(<span class='no'>object</span>, <span class='no'>filter</span>, <span class='no'>...</span>)
+<span class='fu'>filterFeatures</span>(<span class='no'>object</span>, <span class='no'>filter</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for Features,formula</span>
-<span class='fu'>filterFeatures</span>(<span class='no'>object</span>, <span class='no'>filter</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>filterFeatures</span>(<span class='no'>object</span>, <span class='no'>filter</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -185,6 +185,11 @@ Default <code>not</code> is <code>FALSE</code>, so no negation.</p></td>
       <th>filter</th>
       <td><p>Either an instance of class AnnotationFilter or a
 formula.</p></td>
+    </tr>
+    <tr>
+      <th>na.rm</th>
+      <td><p><code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code> indicating whether missing values should
+be removed. Default is <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -403,7 +408,82 @@ vignette provides an extended example.</p></div>
 #&gt; <span class='message'>  removing 2 colData rownames not in sampleMap 'primary'</span></div><div class='output co'>#&gt; A empty instance of class Features </div><div class='input'>
 <span class='fu'>filterFeatures</span>(<span class='no'>feat1</span>, ~ <span class='no'>foo</span> <span class='kw'>==</span> <span class='st'>"bar"</span>)</div><div class='output co'>#&gt; <span class='message'>harmonizing input:</span>
 #&gt; <span class='message'>  removing 6 sampleMap rows not in names(experiments)</span>
-#&gt; <span class='message'>  removing 2 colData rownames not in sampleMap 'primary'</span></div><div class='output co'>#&gt; A empty instance of class Features </div></pre>
+#&gt; <span class='message'>  removing 2 colData rownames not in sampleMap 'primary'</span></div><div class='output co'>#&gt; A empty instance of class Features </div><div class='input'>
+<span class='co'>## ----------------------------------------------------------------</span>
+<span class='co'>## Example with missing values</span>
+<span class='co'>## ----------------------------------------------------------------</span>
+
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>feat1</span>)
+<span class='fu'>rowData</span>(<span class='no'>feat1</span><span class='kw'>[[</span><span class='fl'>1</span>]])[<span class='fl'>1</span>, <span class='st'>"location"</span>] <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
+<span class='fu'>rowData</span>(<span class='no'>feat1</span><span class='kw'>[[</span><span class='fl'>1</span>]])</div><div class='output co'>#&gt; DataFrame with 10 rows and 5 columns
+#&gt;            Sequence     Protein       Var      location      pval
+#&gt;         &lt;character&gt; &lt;character&gt; &lt;integer&gt;   &lt;character&gt; &lt;numeric&gt;
+#&gt; PSM1       SYGFNAAR       ProtA         1            NA     0.053
+#&gt; PSM2       SYGFNAAR       ProtA         2 Mitochondr...     0.030
+#&gt; PSM3       SYGFNAAR       ProtA         3 Mitochondr...     0.011
+#&gt; PSM4       ELGNDAYK       ProtA         4 Mitochondr...     0.028
+#&gt; PSM5       ELGNDAYK       ProtA         5 Mitochondr...     0.092
+#&gt; PSM6       ELGNDAYK       ProtA         6 Mitochondr...     0.027
+#&gt; PSM7  IAEESNFPFI...       ProtB         7       unknown     0.049
+#&gt; PSM8  IAEESNFPFI...       ProtB         8       unknown     0.072
+#&gt; PSM9  IAEESNFPFI...       ProtB         9       unknown     0.038
+#&gt; PSM10 IAEESNFPFI...       ProtB        10       unknown     0.023</div><div class='input'>
+<span class='co'>## The row with the NA is not removed</span>
+<span class='fu'>rowData</span>(<span class='fu'>filterFeatures</span>(<span class='no'>feat1</span>, ~ <span class='no'>location</span> <span class='kw'>==</span> <span class='st'>"Mitochondrion"</span>)<span class='kw'>[[</span><span class='fl'>1</span>]])</div><div class='output co'>#&gt; DataFrame with 6 rows and 5 columns
+#&gt;         Sequence     Protein       Var      location      pval
+#&gt;      &lt;character&gt; &lt;character&gt; &lt;integer&gt;   &lt;character&gt; &lt;numeric&gt;
+#&gt; PSM1    SYGFNAAR       ProtA         1            NA     0.053
+#&gt; PSM2    SYGFNAAR       ProtA         2 Mitochondr...     0.030
+#&gt; PSM3    SYGFNAAR       ProtA         3 Mitochondr...     0.011
+#&gt; PSM4    ELGNDAYK       ProtA         4 Mitochondr...     0.028
+#&gt; PSM5    ELGNDAYK       ProtA         5 Mitochondr...     0.092
+#&gt; PSM6    ELGNDAYK       ProtA         6 Mitochondr...     0.027</div><div class='input'><span class='fu'>rowData</span>(<span class='fu'>filterFeatures</span>(<span class='no'>feat1</span>, ~ <span class='no'>location</span> <span class='kw'>==</span> <span class='st'>"Mitochondrion"</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)<span class='kw'>[[</span><span class='fl'>1</span>]])</div><div class='output co'>#&gt; DataFrame with 6 rows and 5 columns
+#&gt;         Sequence     Protein       Var      location      pval
+#&gt;      &lt;character&gt; &lt;character&gt; &lt;integer&gt;   &lt;character&gt; &lt;numeric&gt;
+#&gt; PSM1    SYGFNAAR       ProtA         1            NA     0.053
+#&gt; PSM2    SYGFNAAR       ProtA         2 Mitochondr...     0.030
+#&gt; PSM3    SYGFNAAR       ProtA         3 Mitochondr...     0.011
+#&gt; PSM4    ELGNDAYK       ProtA         4 Mitochondr...     0.028
+#&gt; PSM5    ELGNDAYK       ProtA         5 Mitochondr...     0.092
+#&gt; PSM6    ELGNDAYK       ProtA         6 Mitochondr...     0.027</div><div class='input'>
+<span class='co'>## The row with the NA is removed</span>
+<span class='fu'>rowData</span>(<span class='fu'>filterFeatures</span>(<span class='no'>feat1</span>, ~ <span class='no'>location</span> <span class='kw'>==</span> <span class='st'>"Mitochondrion"</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)<span class='kw'>[[</span><span class='fl'>1</span>]])</div><div class='output co'>#&gt; DataFrame with 5 rows and 5 columns
+#&gt;         Sequence     Protein       Var      location      pval
+#&gt;      &lt;character&gt; &lt;character&gt; &lt;integer&gt;   &lt;character&gt; &lt;numeric&gt;
+#&gt; PSM2    SYGFNAAR       ProtA         2 Mitochondr...     0.030
+#&gt; PSM3    SYGFNAAR       ProtA         3 Mitochondr...     0.011
+#&gt; PSM4    ELGNDAYK       ProtA         4 Mitochondr...     0.028
+#&gt; PSM5    ELGNDAYK       ProtA         5 Mitochondr...     0.092
+#&gt; PSM6    ELGNDAYK       ProtA         6 Mitochondr...     0.027</div><div class='input'>
+<span class='co'>## Note that is situations with missing values, it is possible to</span>
+<span class='co'>## use the `%in%` operator or filter missing values out</span>
+<span class='co'>## explicitly.</span>
+
+<span class='fu'>rowData</span>(<span class='fu'>filterFeatures</span>(<span class='no'>feat1</span>, ~ <span class='no'>location</span> <span class='kw'>%in%</span> <span class='st'>"Mitochondrion"</span>)<span class='kw'>[[</span><span class='fl'>1</span>]])</div><div class='output co'>#&gt; DataFrame with 5 rows and 5 columns
+#&gt;         Sequence     Protein       Var      location      pval
+#&gt;      &lt;character&gt; &lt;character&gt; &lt;integer&gt;   &lt;character&gt; &lt;numeric&gt;
+#&gt; PSM2    SYGFNAAR       ProtA         2 Mitochondr...     0.030
+#&gt; PSM3    SYGFNAAR       ProtA         3 Mitochondr...     0.011
+#&gt; PSM4    ELGNDAYK       ProtA         4 Mitochondr...     0.028
+#&gt; PSM5    ELGNDAYK       ProtA         5 Mitochondr...     0.092
+#&gt; PSM6    ELGNDAYK       ProtA         6 Mitochondr...     0.027</div><div class='input'><span class='fu'>rowData</span>(<span class='fu'>filterFeatures</span>(<span class='no'>feat1</span>, ~ <span class='no'>location</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>NA</span>, <span class='st'>"Mitochondrion"</span>))<span class='kw'>[[</span><span class='fl'>1</span>]])</div><div class='output co'>#&gt; DataFrame with 6 rows and 5 columns
+#&gt;         Sequence     Protein       Var      location      pval
+#&gt;      &lt;character&gt; &lt;character&gt; &lt;integer&gt;   &lt;character&gt; &lt;numeric&gt;
+#&gt; PSM1    SYGFNAAR       ProtA         1            NA     0.053
+#&gt; PSM2    SYGFNAAR       ProtA         2 Mitochondr...     0.030
+#&gt; PSM3    SYGFNAAR       ProtA         3 Mitochondr...     0.011
+#&gt; PSM4    ELGNDAYK       ProtA         4 Mitochondr...     0.028
+#&gt; PSM5    ELGNDAYK       ProtA         5 Mitochondr...     0.092
+#&gt; PSM6    ELGNDAYK       ProtA         6 Mitochondr...     0.027</div><div class='input'>
+<span class='co'>## Explicit handling</span>
+<span class='fu'>filterFeatures</span>(<span class='no'>feat1</span>, ~ !<span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='no'>location</span>) <span class='kw'>&amp;</span> <span class='no'>location</span> <span class='kw'>==</span> <span class='st'>"Mitochondrion"</span>)</div><div class='output co'>#&gt; A instance of class Features containing
+#&gt;  [1] psms: SummarizedExperiment with 5 rows and 2 columns </div><div class='input'>
+<span class='co'>## Using the pipe operator</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"magrittr"</span>)
+<span class='no'>feat1</span> <span class='kw'>%&gt;%</span>
+   <span class='fu'>filterFeatures</span>( ~ !<span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='no'>location</span>)) <span class='kw'>%&gt;%</span>
+   <span class='fu'>filterFeatures</span>( ~ <span class='no'>location</span> <span class='kw'>==</span> <span class='st'>"Mitochondrion"</span>)</div><div class='output co'>#&gt; A instance of class Features containing
+#&gt;  [1] psms: SummarizedExperiment with 5 rows and 2 columns </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
