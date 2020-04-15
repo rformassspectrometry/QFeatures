@@ -101,6 +101,37 @@
 ##' filterFeatures(feat1, VariableFilter("foo", "bar"))
 ##'
 ##' filterFeatures(feat1, ~ foo == "bar")
+##'
+##' ## ----------------------------------------------------------------
+##' ## Example with missing values
+##' ## ----------------------------------------------------------------
+##' 
+##' data(feat1)
+##' rowData(feat1[[1]])[1, "location"] <- NA
+##' rowData(feat1[[1]])
+##'
+##' ## The row with the NA is not removed
+##' rowData(filterFeatures(feat1, ~ location == "Mitochondrion")[[1]]) 
+##' rowData(filterFeatures(feat1, ~ location == "Mitochondrion", na.rm = FALSE)[[1]])
+##'
+##' ## The row with the NA is removed
+##' rowData(filterFeatures(feat1, ~ location == "Mitochondrion", na.rm = TRUE)[[1]])
+##'
+##' ## Note that is situations with missing values, it is possible to
+##' ## use the `%in%` operator or filter missing values out
+##' ## explicitly.
+##'
+##' rowData(filterFeatures(feat1, ~ location %in% "Mitochondrion")[[1]])
+##' rowData(filterFeatures(feat1, ~ location %in% c(NA, "Mitochondrion"))[[1]])
+##'
+##' ## Explicit handling
+##' filterFeatures(feat1, ~ !is.na(location) & location == "Mitochondrion")
+##' 
+##' ## Using the pipe operator
+##' library("magrittr")
+##' feat1 %>%
+##'    filterFeatures( ~ !is.na(location)) %>%
+##'    filterFeatures( ~ location == "Mitochondrion")
 NULL
 
 
@@ -162,6 +193,9 @@ VariableFilter <- function(field,
 ##' @param filter Either an instance of class [AnnotationFilter] or a
 ##'     formula.
 ##'
+##' @param na.rm `logical(1)` indicating whether missing values should
+##'     be removed. Default is `FALSE`.
+##'
 ##' @param ... Additional parameters. Currently ignored.
 ##'
 ##' @exportMethod filterFeatures
@@ -169,17 +203,17 @@ VariableFilter <- function(field,
 ##' @rdname Features-filtering
 setMethod("filterFeatures",
           c("Features", "AnnotationFilter"),
-          function(object, filter, ...) 
-              filterFeaturesWithAnnotationFilter(object, filter, ...))
+          function(object, filter, na.rm = FALSE, ...) 
+              filterFeaturesWithAnnotationFilter(object, filter, na.rm, ...))
 
 ##' @rdname Features-filtering
 setMethod("filterFeatures",
           c("Features", "formula"),
-          function(object, filter, ...)
-              filterFeaturesWithFormula(object, filter, ...))
+          function(object, filter, na.rm = FALSE, ...)
+              filterFeaturesWithFormula(object, filter, na.rm, ...))
 
 ##' @importFrom BiocGenerics do.call
-filterFeaturesWithAnnotationFilter <- function(object, filter, ...) {
+filterFeaturesWithAnnotationFilter <- function(object, filter, na.rm, ...) {
     sel <- lapply(experiments(object),
                   function(exp) {
                       x <- rowData(exp)
@@ -188,28 +222,36 @@ filterFeaturesWithAnnotationFilter <- function(object, filter, ...) {
                                   list(x[, field(filter)],
                                        value(filter)))
                       else
-                          rep(FALSE, nrow(x))               
+                          rep(FALSE, nrow(x))
                   })
+    sel <- lapply(sel, function(x) {
+        x[is.na(x)] <- !na.rm
+        x
+    })
     if (not(filter)) sel <- lapply(sel, "!")
     object[sel, , ]
 }
 
 
 ##' @importFrom lazyeval f_eval
-filterFeaturesWithFormula <- function(object, filter, ...) {
+filterFeaturesWithFormula <- function(object, filter, na.rm, ...) {
     sel <- lapply(experiments(object),
                   function(exp) {
                       x <- rowData(exp)
                       tryCatch(lazyeval::f_eval(filter, data = as.list(x)),
                                error = function(e) rep(FALSE, nrow(x)))
                   })
+    sel <- lapply(sel, function(x) {
+        x[is.na(x)] <- !na.rm
+        x
+    })  
     object[sel, , ]
 }
 
 
 ## Internal function called by `filterFeaturesWithAnnotationFilter` when 
 ## `condition` is `"contains"`
-contains <- function(x, value){
+contains <- function(x, value) {
     ## Replace regex special character by regular character matching
     value <- gsub('([[:punct:]])', '\\[\\1\\]', value)
     ## Return whether elements in x contain value or not

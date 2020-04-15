@@ -15,9 +15,9 @@
 \usage{
 VariableFilter(field, value, condition = "==", not = FALSE)
 
-\S4method{filterFeatures}{Features,AnnotationFilter}(object, filter, ...)
+\S4method{filterFeatures}{Features,AnnotationFilter}(object, filter, na.rm = FALSE, ...)
 
-\S4method{filterFeatures}{Features,formula}(object, filter, ...)
+\S4method{filterFeatures}{Features,formula}(object, filter, na.rm = FALSE, ...)
 }
 \arguments{
 \item{field}{\code{character(1)} refering to the name of the variable
@@ -42,6 +42,9 @@ Default \code{not} is \code{FALSE}, so no negation.}
 
 \item{filter}{Either an instance of class \link{AnnotationFilter} or a
 formula.}
+
+\item{na.rm}{\code{logical(1)} indicating whether missing values should
+be removed. Default is \code{FALSE}.}
 
 \item{...}{Additional parameters. Currently ignored.}
 }
@@ -136,6 +139,37 @@ filterFeatures(feat1, ~ location == "not")
 filterFeatures(feat1, VariableFilter("foo", "bar"))
 
 filterFeatures(feat1, ~ foo == "bar")
+
+## ----------------------------------------------------------------
+## Example with missing values
+## ----------------------------------------------------------------
+
+data(feat1)
+rowData(feat1[[1]])[1, "location"] <- NA
+rowData(feat1[[1]])
+
+## The row with the NA is not removed
+rowData(filterFeatures(feat1, ~ location == "Mitochondrion")[[1]]) 
+rowData(filterFeatures(feat1, ~ location == "Mitochondrion", na.rm = FALSE)[[1]])
+
+## The row with the NA is removed
+rowData(filterFeatures(feat1, ~ location == "Mitochondrion", na.rm = TRUE)[[1]])
+
+## Note that is situations with missing values, it is possible to
+## use the `\%in\%` operator or filter missing values out
+## explicitly.
+
+rowData(filterFeatures(feat1, ~ location \%in\% "Mitochondrion")[[1]])
+rowData(filterFeatures(feat1, ~ location \%in\% c(NA, "Mitochondrion"))[[1]])
+
+## Explicit handling
+filterFeatures(feat1, ~ !is.na(location) & location == "Mitochondrion")
+
+## Using the pipe operator
+library("magrittr")
+feat1 \%>\%
+   filterFeatures( ~ !is.na(location)) \%>\%
+   filterFeatures( ~ location == "Mitochondrion")
 }
 \seealso{
 The \link{Features} man page for subsetting and the \code{Features}
