@@ -173,12 +173,21 @@
 ##' ## -----------------------------------
 NULL
 
+
+## ----------------------------------
+## Features Class ChangeLog
+##
+## Version 0.1:
+##  - Contains MatchedAssayExperiment
+## Version 0.2:
+##  - Contains MultiAssayExperiment (see issue 46)
+
 setClass("Features",
-         contains = "MatchedAssayExperiment",
+         contains = "MultiAssayExperiment",
          slots = c(version = "character",
                    assayLinks = "AssayLinks"),
          prototype = prototype(
-             version = "0.1"))
+             version = "0.2"))
 
 
 ##' @rdname Features-class

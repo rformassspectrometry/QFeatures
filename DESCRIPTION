@@ -1,6 +1,6 @@
 Package: Features
 Title: Quantitative features for mass spectrometry data
-Version: 0.4.2
+Version: 0.5.0
 Authors@R: c(person("Laurent", "Gatto",
 		              email = "laurent.gatto@uclouvain.be",
 		              comment = c(ORCID = "0000-0002-1520-2268"),
