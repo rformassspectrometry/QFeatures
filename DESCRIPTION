@@ -25,6 +25,7 @@ Imports:
    Biobase,
    MsCoreUtils (>= 0.99.0),
 Suggests:
+   msdata,
    ggplot2,
    gplots,
    dplyr,
