@@ -116,7 +116,7 @@ readSummarizedExperiment <- function(table, ecol, fnames, ...) {
 ##' @param ... See `MultiAssayExperiment` for details.
 ##' @param assayLinks An optional [AssayLinks] object.
 Features <- function(..., assayLinks = NULL) {
-    ans <- MatchedAssayExperiment(...)
+    ans <- MultiAssayExperiment(...)
     if (isEmpty(ans)) assayLinks <- AssayLinks()
     else {
         if (is.null(assayLinks))
