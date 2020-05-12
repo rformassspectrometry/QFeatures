@@ -76,7 +76,7 @@ addition, a \code{Features} object also uses a single \code{DataFrame} to
 annotate the samples (columns) represented in all the matrices.
 
 The \code{Features} class extends the
-\link[MultiAssayExperiment:MatchedAssayExperiment]{MultiAssayExperiment::MatchedAssayExperiment} and inherits all
+\link[MultiAssayExperiment:MultiAssayExperiment]{MultiAssayExperiment::MultiAssayExperiment} and inherits all
 the functionality of the
 \link[MultiAssayExperiment:MultiAssayExperiment]{MultiAssayExperiment::MultiAssayExperiment} class.
 
