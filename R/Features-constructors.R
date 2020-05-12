@@ -60,7 +60,7 @@ readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
         name <- "features"
     el <- structure(list(se), .Names = name[1])
     al <- AssayLinks(AssayLink(name = name[1]))
-    ans <- MatchedAssayExperiment(el, colData = cd)
+    ans <- MultiAssayExperiment(el, colData = cd)
     new("Features",
         ExperimentList = ans@ExperimentList,
         colData = ans@colData,
@@ -116,7 +116,7 @@ readSummarizedExperiment <- function(table, ecol, fnames, ...) {
 ##' @param ... See `MultiAssayExperiment` for details.
 ##' @param assayLinks An optional [AssayLinks] object.
 Features <- function(..., assayLinks = NULL) {
-    ans <- MatchedAssayExperiment(...)
+    ans <- MultiAssayExperiment(...)
     if (isEmpty(ans)) assayLinks <- AssayLinks()
     else {
         if (is.null(assayLinks))
