@@ -206,8 +206,8 @@ The row data will be accessible through links between assays anyway.
 Naming:
 
 ```
-joinAssays(Features, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides", type = "full")
-joinAssays(Features, c(1, 2, 3), name = "peptides", type = "inner")
+joinAssays(Features, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
+joinAssays(Features, c(1, 2, 3), name = "peptides")
 ```
 
 Algorithm:
