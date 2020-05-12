@@ -1,27 +1,34 @@
 .merge_2_by_cols <- function(x, y) {
+    ## Only keep variables that have the same values for matching
+    ## columns/rows.
     k <- intersect(rownames(x), rownames(y))
     .x <- x[k, ]
     .y <- y[k, ]
     for (j in names(.x)) 
         if (!isTRUE(all.equal(.x[[j]], .y[[j]])))
             x[, j] <- y[, j] <- NULL
+    ## Create these to recover rownames
     x$._rownames <- rownames(x)
     y$._rownames <- rownames(y)
+    ## Perform full join
     res <- merge(x, y,
                  by = intersect(names(x), names(y)),
                  all.x = TRUE, all.y = TRUE,
                  sort = FALSE)
+    ## Set row names and remove temporary column
     rownames(res) <- res[["._rownames"]]
     res[["._rownames"]] <- NULL
     res    
 }
 
 .merge_2_by_rows <- function(x, y) {
+    ## Save class to coerce at the end
     cl <- class(x) 
     res <- merge(x, y,
                  by = 0,
                  all.x = TRUE, all.y = TRUE,
                  sort = FALSE)
+    ## Set and remove row names
     rownames(res) <- res[[1]]
     res <- res[, -1]
     as(res, cl)
