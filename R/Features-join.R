@@ -1,25 +1,61 @@
-##' This function takes the `SummarizedExperiment`s in `x`, extracts
-##' their `rowData`, and returns the column names that are shared and
-##' identical between all of them
-##'
-##' @param x A `Features` of length greater or equal to 2.
-##' @return `character()` with the `colData` column names to keep.
-##' @author Laurent Gatto
-.mcols_to_keep <- function(x) {
-    stopifnot(length(x) >= 2)
-    mcols <- lapply(experiments(x), rowData)
-    mcol_common_cols <- Reduce(intersect, lapply(mcols, names))
-    mcols <- lapply(mcols, function(xx) xx[, mcol_common_cols])
-
-    row_names <- lapply(experiments(x), names)
-    mcol_common_cols <- Reduce(intersect, row_names)
-    
+.merge_2_by_cols <- function(x, y) {
+    k <- intersect(rownames(x), rownames(y))
+    .x <- x[k, ]
+    .y <- y[k, ]
+    for (j in names(.x)) 
+        if (!isTRUE(all.equal(.x[[j]], .y[[j]])))
+            x[, j] <- y[, j] <- NULL
+    x$._rownames <- rownames(x)
+    y$._rownames <- rownames(y)
+    res <- merge(x, y,
+                 by = intersect(names(x), names(y)),
+                 all.x = TRUE, all.y = TRUE,
+                 sort = FALSE)
+    rownames(res) <- res[["._rownames"]]
+    res[["._rownames"]] <- NULL
+    res    
 }
+
+.merge_2_by_rows <- function(x, y) {
+    cl <- class(x) 
+    res <- merge(x, y,
+                 by = 0,
+                 all.x = TRUE, all.y = TRUE,
+                 sort = FALSE)
+    rownames(res) <- res[[1]]
+    res <- res[, -1]
+    as(res, cl)
+}
+
+.merge_by_rows <- function(x, y, ...) {
+    Reduce(.merge_2_by_rows, list(x, y, ...))
+}
+
+
+.merge_by_cols <- function(x, y, ...) {
+    Reduce(.merge_2_by_cols, list(x, y, ...))
+}
+
+
 
 joinAssays <- function(x,
                        i,
                        name = "joinedAssay") {
-    stopifnot(inherits(x, "Features"))
+    stopifnot("Object must be of class 'Features'" = inherits(x, "Features"),
+              "Need at least 2 assays to join" = length(i) >= 2)
     if (name %in% names(x))
         stop("Assay of name '", name, "' already exists.")
+    x <- x[, , i]
+    ## Join rowData    
+    mcols <- lapply(experiments(x), rowData)
+    mcol_common_cols <- Reduce(intersect, lapply(mcols, names))
+    mcols <- lapply(mcols, function(x) x[, mcol_common_cols])
+    joined_rowdata <- Reduce(.merge_2_by_cols, mcols)    
+    ## Join assays (first ones only)
+    joined_assay <- Reduce(.merge_2_by_rows, lapply(experiments(x), assay))
+    joined_se <- SummarizedExperiment(joined_assay[rownames(joined_rowdata), ],
+                                      joined_rowdata)
+    ## TODO: add the AssayLinks
+    addAssay(x, joined_se, name = name)
+    
 }
