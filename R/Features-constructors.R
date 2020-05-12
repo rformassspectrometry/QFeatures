@@ -60,7 +60,7 @@ readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
         name <- "features"
     el <- structure(list(se), .Names = name[1])
     al <- AssayLinks(AssayLink(name = name[1]))
-    ans <- MatchedAssayExperiment(el, colData = cd)
+    ans <- MultiAssayExperiment(el, colData = cd)
     new("Features",
         ExperimentList = ans@ExperimentList,
         colData = ans@colData,

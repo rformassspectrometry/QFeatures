@@ -12,7 +12,7 @@
 ##' annotate the samples (columns) represented in all the matrices.
 ##'
 ##' The `Features` class extends the
-##' [MultiAssayExperiment::MatchedAssayExperiment] and inherits all
+##' [MultiAssayExperiment::MultiAssayExperiment] and inherits all
 ##' the functionality of the
 ##' [MultiAssayExperiment::MultiAssayExperiment] class.
 ##'
