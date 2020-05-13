@@ -116,3 +116,12 @@ test_that("joinAssay", {
     jft <- joinAssays(feat2, 1:3)
     expect_identical(jft[["joinedAssay"]], Features:::mergeSElist(list(se1, se2, se3)))    
 })
+
+test_that("joinAssay errors", {
+    expect_error(joinAssays(feat2, 1), "Need at least 2 assays to join")
+    expect_error(joinAssays(feat2, "assay2"), "Need at least 2 assays to join")
+    expect_error(joinAssay(se1, se2))
+    expect_error(joinAssays(feat2, 1:2, name = "assay1"), "Assay with name 'assay1' already exists.")
+    feat2 <- joinAssays(feat2, 1:3)
+    expect_error(joinAssays(feat2, 1:3), "Assay with name 'joinedAssay' already exists.")    
+})

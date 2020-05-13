@@ -65,7 +65,7 @@ joinAssays <- function(x,
     stopifnot("Object must be of class 'Features'" = inherits(x, "Features"),
               "Need at least 2 assays to join" = length(i) >= 2)
     if (name %in% names(x))
-        stop("Assay of name '", name, "' already exists.")
+        stop("Assay with name '", name, "' already exists.")
     joined_se <- mergeSElist(as.list(experiments(x[, , i])))
     ## TODO: add the AssayLinks    
     addAssay(x, joined_se, name = name)
