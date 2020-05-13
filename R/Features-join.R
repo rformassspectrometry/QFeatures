@@ -58,6 +58,7 @@ mergeSElist <- function(x) {
 }
 
 
+##' @export
 joinAssays <- function(x,
                        i,
                        name = "joinedAssay") {
