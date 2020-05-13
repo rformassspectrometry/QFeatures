@@ -49,16 +49,14 @@
 
 
 mergeSElist <- function(x) {
-    ## Merge rowData (mcols)
-    mcols <- lapply(x, rowData)
-    joined_mcols <- Reduce(.merge_2_by_cols, mcols)
-    ## Merge assays (first ones only)
-    assays <- lapply(x, assay)
-    joined_assay <- Reduce(.merge_2_by_rows, assays)
-    ## TODO: add the AssayLinks    
+    joined_mcols <- Reduce(.merge_2_by_cols, lapply(x, rowData))
+    joined_assay <- Reduce(.merge_2_by_rows, lapply(x, assay))
+    joined_coldata <- Reduce(.merge_2_by_cols, lapply(x, colData))
     SummarizedExperiment(joined_assay[rownames(joined_mcols), ],
-                         joined_mcols)
+                         joined_mcols,
+                         colData = joined_coldata)
 }
+
 
 joinAssays <- function(x,
                        i,
@@ -67,7 +65,7 @@ joinAssays <- function(x,
               "Need at least 2 assays to join" = length(i) >= 2)
     if (name %in% names(x))
         stop("Assay of name '", name, "' already exists.")
-    x2 <- x[, , i]
-    joined_se <- mergeSElist(as.list(experiments(x2)))
-    addAssay(x, joined_se, name = name)    
+    joined_se <- mergeSElist(as.list(experiments(x[, , i])))
+    ## TODO: add the AssayLinks    
+    addAssay(x, joined_se, name = name)
 }
