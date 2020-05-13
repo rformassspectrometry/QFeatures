@@ -1,9 +1,13 @@
 .merge_2_by_cols <- function(x, y) {
+    ## Only keep shared variables
+    vars <- intersect(names(x), names(y))
+    x <- x[, vars, drop = FALSE]
+    y <- y[, vars, drop = FALSE]
     ## Only keep variables that have the same values for matching
     ## columns/rows.
     k <- intersect(rownames(x), rownames(y))
-    .x <- x[k, ]
-    .y <- y[k, ]
+    .x <- x[k, , drop = FALSE]
+    .y <- y[k, , drop = FALSE]
     for (j in names(.x)) 
         if (!isTRUE(all.equal(.x[[j]], .y[[j]])))
             x[, j] <- y[, j] <- NULL
@@ -44,6 +48,17 @@
 }
 
 
+mergeSElist <- function(x) {
+    ## Merge rowData (mcols)
+    mcols <- lapply(x, rowData)
+    joined_mcols <- Reduce(.merge_2_by_cols, mcols)
+    ## Merge assays (first ones only)
+    assays <- lapply(x, assay)
+    joined_assay <- Reduce(.merge_2_by_rows, assays)
+    ## TODO: add the AssayLinks    
+    SummarizedExperiment(joined_assay[rownames(joined_mcols), ],
+                         joined_mcols)
+}
 
 joinAssays <- function(x,
                        i,
@@ -52,17 +67,7 @@ joinAssays <- function(x,
               "Need at least 2 assays to join" = length(i) >= 2)
     if (name %in% names(x))
         stop("Assay of name '", name, "' already exists.")
-    x <- x[, , i]
-    ## Join rowData    
-    mcols <- lapply(experiments(x), rowData)
-    mcol_common_cols <- Reduce(intersect, lapply(mcols, names))
-    mcols <- lapply(mcols, function(x) x[, mcol_common_cols])
-    joined_rowdata <- Reduce(.merge_2_by_cols, mcols)    
-    ## Join assays (first ones only)
-    joined_assay <- Reduce(.merge_2_by_rows, lapply(experiments(x), assay))
-    joined_se <- SummarizedExperiment(joined_assay[rownames(joined_rowdata), ],
-                                      joined_rowdata)
-    ## TODO: add the AssayLinks
-    addAssay(x, joined_se, name = name)
-    
+    x2 <- x[, , i]
+    joined_se <- mergeSElist(as.list(experiments(x2)))
+    addAssay(x, joined_se, name = name)    
 }
