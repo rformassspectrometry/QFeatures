@@ -9,7 +9,6 @@ rownames(m1) <- letters[1:10]
 rownames(m2) <- letters[8:11]
 rownames(m3) <- letters[c(1, 2, 10:14)]
 
-## two corresponding feature metadata with appropriate row names
 df1 <- DataFrame(Prot = paste0("P", rownames(m1)),
                  x = rnorm(1:10),
                  row.names = rownames(m1))
@@ -30,26 +29,16 @@ df3 <- DataFrame(Prot = paste0("P", rownames(m3)),
                  x = rnorm(1:7),
                  y = rnorm(1:7),
                  row.names = rownames(m3))
-cd3 <- DataFrame(Var1 = rnorm(4), 
+cd3 <- DataFrame(Var1 = rnorm(4),
                  row.names = colnames(m3))
 
 
-(se1 <- SummarizedExperiment(m1, df1, colData = cd1))
-(se2 <- SummarizedExperiment(m2, df2, colData = cd2))
-(se3 <- SummarizedExperiment(m3, df3, colData = cd3))
-
-cd <- merge(cd1, cd2, by = intersect(names(cd1), names(cd2)),
-            all.x = TRUE, all.y = TRUE, sort = FALSE) %>%
-    merge(cd3, by = "Var1", all.x = TRUE, all.y = TRUE, sort = FALSE)
-rownames(cd) <- c(rownames(cd1),
-                  rownames(cd2),
-                  rownames(cd3))
-
-## Sample annotation (colData)
+se1 <- SummarizedExperiment(m1, df1, colData = cd1)
+se2 <- SummarizedExperiment(m2, df2, colData = cd2)
+se3 <- SummarizedExperiment(m3, df3, colData = cd3)
 
 el <- list(assay1 = se1, assay2 = se2, assay3 = se3)
 ft <- Features(el)
-## x <- Features(el, colData = cd)
 
 
 test_that("merge SEs (1,2)", {
@@ -151,4 +140,15 @@ test_that("merge SEs (1, 2, 3)", {
     expect_identical(sort(rowData(se)$Prot),
                      sort(union(c(rowData(se1)$Prot, rowData(se2)$Prot),
                                 rowData(se3)$Prot)))
+})
+
+test_that("joinAssay", {
+    jft <- joinAssays(ft, 1:2)
+    expect_identical(jft[["joinedAssay"]], mergeSElist(list(se1, se2)))
+    jft <- joinAssays(ft, 2:1)
+    expect_identical(jft[["joinedAssay"]], mergeSElist(list(se2, se1)))
+    jft <- joinAssays(ft, c("assay1", "assay3"))
+    expect_identical(jft[["joinedAssay"]], mergeSElist(list(se1, se3)))
+    jft <- joinAssays(ft, 1:3)
+    expect_identical(jft[["joinedAssay"]], mergeSElist(list(se1, se2, se3)))    
 })
