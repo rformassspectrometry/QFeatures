@@ -58,7 +58,72 @@ mergeSElist <- function(x) {
 }
 
 
+##' @title Join assays in a Features object
+##'
+##' @description
+##'
+##' This function applies a full-join type of operation on 2 or more
+##' assays in a `Features` instance. 
+##' 
+##' @param x An instance of class [Features].
+##' 
+##' @param i The indices or names of al least two assays to be joined.
+##' 
+##' @param name A `character(1)` naming the new assay. Default is
+##'     `joinedAssay`. Note that the function will fail if there's
+##'     already an assay with `name`.
+##' 
+##' @return A `Features` object with an additional assay.
+##'
+##' @details
+##'
+##' The join operation acts along the rows and expects the samples
+##' (columns) of the assays to be joined are disjoint, i.e. the assays
+##' mustn't share any samples. Rows that aren't present in an assay
+##' are set to `NA` when merged.
+##'
+##' The `rowData` slots are also joined. However, only columns that
+##' are shared and that have the same values for matching columns/rows
+##' are retained. For example of a feature variable `A` in sample `S1`
+##' contains value `a1` and variable `A` in sample `S2` in a different
+##' assay contains `a2`, then the feature variable `A` is dropped in
+##' the merged assay.
+##' 
+##' @author Laurent Gatto
+##' 
 ##' @export
+##'
+##' @examples
+##' 
+##' ## -----------------------------------------------
+##' ## An example Features with 3 assays to be joined
+##' ## -----------------------------------------------
+##' data(feat2)
+##' feat2
+##'
+##' feat2 <- joinAssays(feat2, 1:3)
+##'
+##' ## Individual assays to be joined, each with 4 samples and a
+##' ## variable number of rows.
+##' assay(feat2[[1]])
+##' assay(feat2[[2]])
+##' assay(feat2[[3]])
+##' 
+##' ## The joined assay contains 14 rows (corresponding to the union
+##' ## of those in the initial assays) and 12 samples
+##' assay(feat2[["joinedAssay"]])
+##'
+##' ## The individual rowData to be joined.
+##' rowData(feat2[[1]])
+##' rowData(feat2[[2]])
+##' rowData(feat2[[3]])
+##'
+##' ## Only the 'Prot' variable is retained because it is shared among
+##' ## all assays and the values and coherent across samples (the
+##' ## value of 'Prot' for row 'j' is always 'Pj'). The variable 'y' is
+##' ## missing in 'assay1' and while variable 'x' is present is all
+##' ## assays, the values for the shared rows are different.
+##' rowData(feat2[["joinedAssay"]])
 joinAssays <- function(x,
                        i,
                        name = "joinedAssay") {
