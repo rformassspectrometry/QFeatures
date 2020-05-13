@@ -1,48 +1,12 @@
-## Define numeric matrices
-m1 <- matrix(1:40, ncol = 4) + 0.0
-m2 <- matrix(1:16, ncol = 4) + 0.0
-m3 <- matrix(1:28, ncol = 4) + 0.0
-colnames(m1) <- paste0("S", 1:4)
-colnames(m2) <- paste0("S", 5:8)
-colnames(m3) <- paste0("S", 9:12)
-rownames(m1) <- letters[1:10]
-rownames(m2) <- letters[8:11]
-rownames(m3) <- letters[c(1, 2, 10:14)]
+data(feat2)
 
-df1 <- DataFrame(Prot = paste0("P", rownames(m1)),
-                 x = rnorm(1:10),
-                 row.names = rownames(m1))
-cd1 <- DataFrame(Var1 = rnorm(4),
-                 Var2 = LETTERS[1:4],
-                 row.names = colnames(m1))
-
-
-df2 <- DataFrame(Prot = paste0("P", rownames(m2)),
-                 x = rnorm(1:4),
-                 y = rnorm(1:4),
-                 row.names = rownames(m2))
-cd2 <- DataFrame(Var1 = rnorm(4), 
-                 Var2 = LETTERS[5:8],
-                 row.names = colnames(m2))
-
-df3 <- DataFrame(Prot = paste0("P", rownames(m3)),
-                 x = rnorm(1:7),
-                 y = rnorm(1:7),
-                 row.names = rownames(m3))
-cd3 <- DataFrame(Var1 = rnorm(4),
-                 row.names = colnames(m3))
-
-
-se1 <- SummarizedExperiment(m1, df1, colData = cd1)
-se2 <- SummarizedExperiment(m2, df2, colData = cd2)
-se3 <- SummarizedExperiment(m3, df3, colData = cd3)
-
-el <- list(assay1 = se1, assay2 = se2, assay3 = se3)
-ft <- Features(el)
+se1 <- feat2[[1]]
+se2 <- feat2[[2]]
+se3 <- feat2[[3]]
 
 
 test_that("merge SEs (1,2)", {
-    se <- mergeSElist(list(se1, se2))
+    se <- Features:::mergeSElist(list(se1, se2))
     expect_identical(ncol(se), ncol(se1) + ncol(se2))
     expect_identical(nrow(se), length(union(rownames(se1), rownames(se2))))
     expect_identical(names(rowData(se)), "Prot")
@@ -66,7 +30,7 @@ test_that("merge SEs (1,2)", {
 })
 
 test_that("merge SEs (2, 3)", {
-    se <- mergeSElist(list(se2, se3))
+    se <- Features:::mergeSElist(list(se2, se3))
     expect_identical(ncol(se), ncol(se2) + ncol(se3))
     expect_identical(nrow(se), length(union(rownames(se2), rownames(se3))))
     expect_identical(names(rowData(se)), "Prot")
@@ -89,7 +53,7 @@ test_that("merge SEs (2, 3)", {
 })
 
 test_that("merge SEs (3, 2)", {
-    se <- mergeSElist(list(se3, se2))
+    se <- Features:::mergeSElist(list(se3, se2))
     expect_identical(ncol(se), ncol(se2) + ncol(se3))
     expect_identical(nrow(se), length(union(rownames(se2), rownames(se3))))
     expect_identical(names(rowData(se)), "Prot")    
@@ -113,7 +77,7 @@ test_that("merge SEs (3, 2)", {
 
 
 test_that("merge SEs (1, 2, 3)", {
-    se <- mergeSElist(list(se1, se2, se3))
+    se <- Features:::mergeSElist(list(se1, se2, se3))
     expect_identical(ncol(se), ncol(se1) + ncol(se2) + ncol(se3))    
     expect_identical(nrow(se),
                      length(Reduce(union, list(rownames(se1), rownames(se2), rownames(se3)))))
@@ -143,12 +107,12 @@ test_that("merge SEs (1, 2, 3)", {
 })
 
 test_that("joinAssay", {
-    jft <- joinAssays(ft, 1:2)
-    expect_identical(jft[["joinedAssay"]], mergeSElist(list(se1, se2)))
-    jft <- joinAssays(ft, 2:1)
-    expect_identical(jft[["joinedAssay"]], mergeSElist(list(se2, se1)))
-    jft <- joinAssays(ft, c("assay1", "assay3"))
-    expect_identical(jft[["joinedAssay"]], mergeSElist(list(se1, se3)))
-    jft <- joinAssays(ft, 1:3)
-    expect_identical(jft[["joinedAssay"]], mergeSElist(list(se1, se2, se3)))    
+    jft <- joinAssays(feat2, 1:2)
+    expect_identical(jft[["joinedAssay"]], Features:::mergeSElist(list(se1, se2)))
+    jft <- joinAssays(feat2, 2:1)
+    expect_identical(jft[["joinedAssay"]], Features:::mergeSElist(list(se2, se1)))
+    jft <- joinAssays(feat2, c("assay1", "assay3"))
+    expect_identical(jft[["joinedAssay"]], Features:::mergeSElist(list(se1, se3)))
+    jft <- joinAssays(feat2, 1:3)
+    expect_identical(jft[["joinedAssay"]], Features:::mergeSElist(list(se1, se2, se3)))    
 })
