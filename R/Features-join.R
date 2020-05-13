@@ -25,6 +25,7 @@
     res    
 }
 
+##' @importFrom methods as
 .merge_2_by_rows <- function(x, y) {
     ## Save class to coerce at the end
     cl <- class(x) 
