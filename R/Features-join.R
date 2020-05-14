@@ -78,10 +78,15 @@ mergeSElist <- function(x) {
 ##'
 ##' @details
 ##'
+##' The rows to be joined are chosen based on the rownames of the
+##' respective assays. It is the user's responsability to make sure
+##' these are meaningful, such as for example refering to unique
+##' peptide sequences or proteins. 
+##'
 ##' The join operation acts along the rows and expects the samples
-##' (columns) of the assays to be joined are disjoint, i.e. the assays
-##' mustn't share any samples. Rows that aren't present in an assay
-##' are set to `NA` when merged.
+##' (columns) of the assays to be disjoint, i.e. the assays mustn't
+##' share any samples. Rows that aren't present in an assay are set to
+##' `NA` when merged.
 ##'
 ##' The `rowData` slots are also joined. However, only columns that
 ##' are shared and that have the same values for matching columns/rows

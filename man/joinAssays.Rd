@@ -23,10 +23,15 @@ This function applies a full-join type of operation on 2 or more
 assays in a \code{Features} instance.
 }
 \details{
+The rows to be joined are chosen based on the rownames of the
+respective assays. It is the user's responsability to make sure
+these are meaningful, such as for example refering to unique
+peptide sequences or proteins.
+
 The join operation acts along the rows and expects the samples
-(columns) of the assays to be joined are disjoint, i.e. the assays
-mustn't share any samples. Rows that aren't present in an assay
-are set to \code{NA} when merged.
+(columns) of the assays to be disjoint, i.e. the assays mustn't
+share any samples. Rows that aren't present in an assay are set to
+\code{NA} when merged.
 
 The \code{rowData} slots are also joined. However, only columns that
 are shared and that have the same values for matching columns/rows
