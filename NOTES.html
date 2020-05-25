@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -158,8 +158,8 @@ logTransform(cptac, 1, name = "peptides_log")</a></code></pre>
 <ol>
 <li>Joining SEs (for example multiple TMT batches) (TODO)</li>
 </ol>
-<pre><code>joinAssays(Features, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
-joinAssays(Features, c(1, 2, 3), name = "peptides")</code></pre>
+<pre><code><a href="reference/joinAssays.html">joinAssays(Features, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
+joinAssays(Features, c(1, 2, 3), name = "peptides")</a></code></pre>
 <p>See below.</p>
 </div>
 <div id="features-api" class="section level1">
@@ -256,8 +256,8 @@ colData names(0):</code></pre>
 </ul>
 <p>The row data will be accessible through links between assays anyway.</p>
 <p>Naming:</p>
-<pre><code>joinAssays(Features, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides", type = "full")
-joinAssays(Features, c(1, 2, 3), name = "peptides", type = "inner")</code></pre>
+<pre><code><a href="reference/joinAssays.html">joinAssays(Features, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
+joinAssays(Features, c(1, 2, 3), name = "peptides")</a></code></pre>
 <p>Algorithm:</p>
 <ol>
 <li>Find which mcols to keep</li>
