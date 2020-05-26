@@ -109,8 +109,8 @@ setMethod("subsetByFeature", c("Features", "character"),
         }
         i <- featurename_list[[k]]
     }
-
-    expts <- experiments(x)[featurename_list]
+    
+    expts <- experiments(x[featurename_list, ])
     alnks <- x@assayLinks[all_assays_names]
     alnks <- alnks[featurename_list]
 
