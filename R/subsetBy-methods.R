@@ -110,8 +110,11 @@ setMethod("subsetByFeature", c("Features", "character"),
         i <- featurename_list[[k]]
     }
     
-    expts <- experiments(x[featurename_list, ])
-    alnks <- x@assayLinks[all_assays_names]
+    ord <- order(match(names(featurename_list), names(x)))
+    featurename_list <- featurename_list[ord]
+    expts <- subsetByAssay(x, names(featurename_list))
+    expts <- experiments(subsetByRow(expts, featurename_list))
+    alnks <- x@assayLinks[names(featurename_list)]
     alnks <- alnks[featurename_list]
 
     Features(experiments = expts,
