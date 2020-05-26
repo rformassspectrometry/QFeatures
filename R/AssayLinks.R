@@ -85,12 +85,14 @@
 ##' 
 NULL
 
+setClassUnion("ListOrHits", c("Hits", "List"))
+
 ##' @exportClass AssayLink
 setClass("AssayLink",
          slots = c(name = "character",
                    from = "character",
                    fcol = "character",
-                   hits = "Hits"))
+                   hits = "ListOrHits"))
 
 ##' @exportClass AssayLinks
 setClass("AssayLinks",
@@ -103,8 +105,12 @@ setClass("AssayLinks",
 ##' @export
 setMethod("show", "AssayLink",
           function(object) {
-              cat("AssayLink for assay <", object@name, ">\n", sep = "")
-              cat("[from:", object@from, "|fcol:", object@fcol, "|hits:", length(object@hits),"]\n", sep = "")
+              cat("AssayLink for assay <", object@name, ">\n",
+                  "[from:", paste(object@from, collapse = ","), 
+                  "|fcol:", paste(object@fcol, collapse = ","), 
+                  "|hits:", ifelse(inherits(object@hits, "List"), 
+                                   paste(sapply(object@hits, length), collapse = ","),
+                                   length(object@hits)), "]\n", sep = "")
           })
 
 ## --------------
@@ -257,6 +263,36 @@ setMethod("[", c("AssayLinks", "list"),
               hits = hits)
 }
 
+
+## The function takes a Features object, the assay name*s* to link from, the 
+## assay name to link to and the feature variable names contained in the rowData 
+## of the assay*s* to link from and the assay to link to. The function returns 
+## an AssayLink object that links the parent assay*s* to the child assay given 
+## the relationship between the corresponding feature variables.
+.create_assay_link_multi <- function(object, 
+                                     from, 
+                                     to, 
+                                     varsFrom, 
+                                     varTo) {
+    if (length(from) != length(varsFrom)) 
+        stop("Length of 'from' and length of 'varsFrom' must be identical")
+    ## Create the list of hits between the child assay and the parent assays
+    hitsList <- lapply(seq_along(from), function(ii) {
+        .create_assay_link(rdFrom = rowData(object[[from[ii]]]),
+                           rdTo = rowData(object[[to]]),
+                           from[ii], to,
+                           varsFrom[[ii]], varTo)@hits
+    })
+    names(hitsList) <- from
+    ## Return a multi-parent AssayLink 
+    AssayLink(name = to, 
+              from = from, 
+              fcol = varsFrom,
+              hits = List(hitsList))
+}
+
+
+
 ## Function that updates the Features object's AssayLinks with the provided 
 ## AssayLink object. 
 .update_assay_links <- function (object, al) {
@@ -265,16 +301,37 @@ setMethod("[", c("AssayLinks", "list"),
     if (!all(elementMetadata(al@hits)$names_to %in% rownames(object[[al@name]])))
         stop("Invalid AssayLink. The AssayLink metadata 'names_to' does not match the rownames.")
     ## Check the parent indexing on rownames 
+    
     if (!all(elementMetadata(al@hits)$names_from %in% rownames(object[[al@from]])))
         stop("Invalid AssayLink. The AssayLink metadata 'names_from' does not match the rownames.")
     
-    ## TODO adapt this when allowing an assay to have several parents 
+    ## Overwrite the AssayLink
     object@assayLinks@listData[[al@name]] <- al
     
     if (validObject(object))
         return(object)
 }
 
+## Same as '.update_assay_links' but when the AssayLink contains multiple 
+## parents 
+.update_assay_links_multi_parents <- function (object, al) {
+    if (!inherits(al ,"AssayLink")) stop("'al' must be an AssayLink object.")
+    ## Check the child indexing on rownames
+    isCorrectToLink <- sapply(al@hits, function(l) all(elementMetadata(l)$names_to %in% rownames(object[[al@name]])))
+    if (any(!isCorrectToLink)) 
+        stop("Invalid AssayLink. At least one of the 'hits' metadata 'names_to' does not match the rownames.")
+    ## Check the parent indexing on rownames 
+    isCorrectFromLink <- sapply(seq_along(al@hits), 
+                              function(i) all(elementMetadata(al@hits[[i]])$names_from %in% rownames(object[[al@from[i]]])))
+    if (any(!isCorrectFromLink))
+        stop("Invalid AssayLink. The AssayLink metadata 'names_from' does not match the rownames.")
+    
+    ## Overwrite the AssayLink
+    object@assayLinks@listData[[al@name]] <- al
+    
+    if (validObject(object))
+        return(object)
+}
 
 ##' @rdname AssayLinks
 ##'
@@ -333,3 +390,20 @@ addAssayLinkOneToOne <- function(object,
     .update_assay_links(object, al)
 }
 
+addAssayLinkMultiParent <- function(object, 
+                                    from, 
+                                    to, 
+                                    varsFrom,
+                                    varTo) {
+    if (length(from) == 1) {
+        message("Only 1 parent supplied, calling 'addAssay")
+        return(addAssay(object, from, to, varFrom, varTo))
+    }
+    if (is.numeric(from)) from <- names(object)[[from]]
+    if (is.numeric(to)) to <- names(object)[[to]]
+    
+    al <- .create_assay_link_multi(object, from, to, varsFrom, varTo)                  
+    
+    ## Update the assay link in the Features object
+    .update_assay_links_multi_parents(object, al)
+}
