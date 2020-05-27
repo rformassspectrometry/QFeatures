@@ -16,3 +16,5 @@ setGeneric("nNA", function(object, i) standardGeneric("nNA"))
 setGeneric("logTransform", function(object, ...) standardGeneric("logTransform"))
 
 setGeneric("scaleTransform", function(object, ...) standardGeneric("scaleTransform"))
+
+setGeneric("aggcounts", function(object, ...) standardGeneric("aggcounts"))
