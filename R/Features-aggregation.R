@@ -100,7 +100,7 @@
 ##'     the *Processing* vignette, for a complete quantitative
 ##'     proteomics data processing pipeline.
 ##' 
-##' @aliases aggregateFeatures aggregateFeatures,Features-method
+##' @aliases aggregateFeatures aggregateFeatures,Features-method aggcounts aggcounts,SummarizedExperiment
 ##'
 ##' @name aggregateFeatures
 ##'

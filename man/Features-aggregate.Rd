@@ -4,6 +4,8 @@
 \name{aggregateFeatures}
 \alias{aggregateFeatures}
 \alias{aggregateFeatures,Features-method}
+\alias{aggcounts}
+\alias{aggcounts,SummarizedExperiment}
 \alias{aggcounts,SummarizedExperiment-method}
 \title{Aggregate an assay's quantitative features}
 \usage{
