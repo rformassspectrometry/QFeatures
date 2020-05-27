@@ -66,6 +66,7 @@ Collate:
     'Features-aggregation.R'
     'Features-imputation.R'
     'Features-join.R'
+    'SummarizedExperiment-methods.R'
     'subsetBy-methods.R'
     'data.R'
     'reduce.R'
