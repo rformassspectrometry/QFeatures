@@ -1,6 +1,6 @@
 Package: Features
 Title: Quantitative features for mass spectrometry data
-Version: 0.6.0
+Version: 0.6.1
 Authors@R: c(person("Laurent", "Gatto",
 		              email = "laurent.gatto@uclouvain.be",
 		              comment = c(ORCID = "0000-0002-1520-2268"),
@@ -23,7 +23,7 @@ Imports:
    AnnotationFilter,
    lazyeval,
    Biobase,
-   MsCoreUtils (>= 0.99.0),
+   MsCoreUtils (>= 1.1.2),
 Suggests:
    msdata,
    ggplot2,

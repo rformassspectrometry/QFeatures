@@ -101,7 +101,7 @@
 ##'
 ##' @rdname Features-aggregate
 ##'
-##' @importFrom MsCoreUtils aggregate_by_vector robustSummary
+##' @importFrom MsCoreUtils aggregate_by_vector robustSummary countFeatures
 ##'
 ##' @examples
 ##'
@@ -187,13 +187,15 @@ setMethod("aggregateFeatures", "Features",
                      "effects of missing values on data aggregation.")
         message(paste(strwrap(msg), collapse = "\n"))
     }
-    
+
     aggregated_assay <- aggregate_by_vector(assay_i, groupBy, fun, ...)
+    aggcount_assay <- aggregate_by_vector(assay_i, groupBy, countFeatures)
     aggregated_rowdata <- Features::reduceDataFrame(rowdata_i, rowdata_i[[fcol]],
                                                    simplify = TRUE, drop = TRUE,
                                                    count = TRUE)
 
-    se <- SummarizedExperiment(aggregated_assay,
+    se <- SummarizedExperiment(assays = SimpleList(assay = aggregated_assay,
+                                                   aggcounts = aggcount_assay),
                                rowData = aggregated_rowdata[rownames(aggregated_assay), ])
     hits <- findMatches(rownames(aggregated_assay), groupBy)
     elementMetadata(hits)$names_to <- rowdata_i[[fcol]][hits@to]
