@@ -13,6 +13,11 @@
 ##' i.e. the number of features that were aggregated, which can be
 ##' accessed with the `aggcounts()` accessor.
 ##'
+##' The rowData of the aggregated `SummarizedExperiment` assay
+##' contains a `.n` variable that provides the number of features that
+##' were aggregated. This `.n` value is always >= that the
+##' sample-level `aggcounts`.
+##'
 ##' @param object An instance of class [Features].
 ##'
 ##' @param i The index or name of the assay which features will be
@@ -106,7 +111,7 @@
 ##'
 ##' @rdname Features-aggregate
 ##'
-##' @importFrom MsCoreUtils aggregate_by_vector robustSummary countFeatures
+##' @importFrom MsCoreUtils aggregate_by_vector robustSummary colCounts
 ##'
 ##' @examples
 ##'
@@ -145,8 +150,7 @@
 ##' aggcounts(ft2[[2]])
 ##'
 ##' ## The rowData .n variable tallies number of initial rows that
-##' ## were aggregated (irrespective of NAs) for all the samples. It
-##' #is always >= that the sample-level aggcounts.
+##' ## were aggregated (irrespective of NAs) for all the samples. 
 ##' rowData(ft2[[2]])
 ##' 
 ##' ## Ignored when setting na.rm = TRUE
@@ -210,7 +214,7 @@ setMethod("aggregateFeatures", "Features",
     }
 
     aggregated_assay <- aggregate_by_vector(assay_i, groupBy, fun, ...)
-    aggcount_assay <- aggregate_by_vector(assay_i, groupBy, countFeatures)
+    aggcount_assay <- aggregate_by_vector(assay_i, groupBy, colCounts)
     aggregated_rowdata <- Features::reduceDataFrame(rowdata_i, rowdata_i[[fcol]],
                                                    simplify = TRUE, drop = TRUE,
                                                    count = TRUE)
