@@ -396,8 +396,8 @@ addAssayLinkMultiParent <- function(object,
                                     varsFrom,
                                     varTo) {
     if (length(from) == 1) {
-        message("Only 1 parent supplied, calling 'addAssay")
-        return(addAssay(object, from, to, varFrom, varTo))
+        warning("Only 1 parent supplied, calling 'addAssay'")
+        return(addAssayLink(object, from, to, varsFrom, varTo))
     }
     if (is.numeric(from)) from <- names(object)[[from]]
     if (is.numeric(to)) to <- names(object)[[to]]

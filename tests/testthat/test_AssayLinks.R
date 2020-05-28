@@ -1,5 +1,11 @@
 data(feat1)
 feat1 <- aggregateFeatures(feat1, "psms", "Sequence", "peptides")
+featMultiP <- addAssay(feat1, feat1[["psms"]], name = "psms2")
+alMulti <- .create_assay_link_multi(featMultiP, 
+                                    from = c("psms", "psms2"),
+                                    to = "peptides",  
+                                    varsFrom = c("Sequence", "Sequence"),
+                                    varTo = "Sequence")
 
 test_that(".create_assay_link", {
     ## Test correct usage
@@ -29,7 +35,23 @@ test_that(".create_assay_link", {
                  regexp = "Creating an AssayLink between an assay")
 })
 
-
+test_that(".create_assay_link_multi", {
+    ## Artificially duplicate psms assay
+    expect_identical(alMulti@name, "peptides")
+    expect_identical(alMulti@from, c("psms", "psms2"))
+    expect_identical(alMulti@fcol, c("Sequence", "Sequence"))
+    ## we use expect_equivalent and not identical  because the `hits` in 
+    ## `feat1[["peptides"]]` are sorted by `Sequence` during `aggregateFeatures`
+    expect_equivalent(alMulti@hits, List(psms = assayLink(feat1, "peptides")@hits,
+                                        psms2 = assayLink(feat1, "peptides")@hits))
+    ## Test errors
+    expect_error(.create_assay_link_multi(featMultiP, from = c("psms2"), 
+                                          to = "peptides",  
+                                          varsFrom = c("Sequence", "Sequence"),
+                                          varTo = "Sequence"),
+                 regexp = "Length of 'from' and length of 'varsFrom'")
+})
+    
 test_that(".update_assay_links", {
     ## Test correct usage
     feat2 <- feat1
@@ -58,6 +80,24 @@ test_that(".update_assay_links", {
         paste(elementMetadata(alWrong@hits)$names_to, "bar")
     expect_error(.update_assay_links(feat1, alWrong),
                  regexp = "The AssayLink metadata 'names_to'")
+})
+
+test_that(".update_assay_links_multi_parents", {
+    ## Test correct usage
+    feat3 <- featMultiP
+    feat3@assayLinks@listData$peptides <- alMulti
+    expect_identical(feat3, 
+                     .update_assay_links_multi_parents(featMultiP, alMulti))
+    ## Test errors
+    ## Wrong rownames from on of the parent assays
+    alMulti@hits$psms@elementMetadata$names_from[1] <- "foo"
+    expect_error(.update_assay_links_multi_parents(featMultiP, alMulti), 
+                 regexp = "'names_from' does not match")
+    ## Wrong rownames from the child assay
+    alMulti@hits$psms@elementMetadata$names_from[1] <- "PSM1" ## reset correct
+    alMulti@hits$psms@elementMetadata$names_to[1] <- "foo"
+    expect_error(.update_assay_links_multi_parents(featMultiP, alMulti), 
+                 regexp = "'names_to' does not match")
 })
 
 
@@ -109,4 +149,28 @@ test_that("addAssayLinkOneToOne", {
                       metadata = list())
     expect_error(addAssayLinkOneToOne(feat3, "psms1", "psms2"),
                  regexp = "Different rownames found")
+})
+
+test_that("addAssayLinkMultiParent", {
+    ## Test correct use
+    expect_identical(alMulti, 
+                     addAssayLinkMultiParent(featMultiP, 
+                                             from = c("psms", "psms2"), 
+                                             to = "peptides", 
+                                             varsFrom = c("Sequence", "Sequence"),
+                                             varTo = "Sequence")@assayLinks$peptides)
+    ## Test warning
+    expect_warning(addAssayLinkMultiParent(feat2, 
+                                           from = "psms", to = "peptides",
+                                           varsFrom = "Sequence", 
+                                           varTo = "Sequence"), 
+                   regexp = "Only 1 parent supplied, calling 'addAssay'")
+    ## Test subsetting still works 
+    # expect_identical(
+    #     dims(addAssayLinkMultiParent(featMultiP, 
+    #                                  from = c("psms", "psms2"), 
+    #                                  to = "peptides", 
+    #                                  varsFrom = c("Sequence", "Sequence"),
+    #                                  varTo = "Sequence")["PSM1", , ]),
+    #     matrix(1:2, ncol = 1, dimnames = list(NULL, "psms")))
 })
