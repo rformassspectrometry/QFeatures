@@ -126,4 +126,6 @@ test_that("aggregateFeatures: aggcounts", {
     rownames(m) <- 1:2
     colnames(m) <- LETTERS[1:3]
     expect_identical(aggcounts(se), m)
+    ## .n variable
+    expect_identical(rowData(se)$.n , c("1" = 2L, "2" = 2L))
 })
