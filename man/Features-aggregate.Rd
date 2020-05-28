@@ -52,6 +52,11 @@ aggregated \code{SummarizedExperiment} assay also contains a new
 \code{aggcounts} assay containing the aggregation counts matrix,
 i.e. the number of features that were aggregated, which can be
 accessed with the \code{aggcounts()} accessor.
+
+The rowData of the aggregated \code{SummarizedExperiment} assay
+contains a \code{.n} variable that provides the number of features that
+were aggregated. This \code{.n} value is always >= that the
+sample-level \code{aggcounts}.
 }
 \details{
 Aggregation is performed by a function that takes a matrix as
@@ -152,8 +157,7 @@ assay(ft2[[2]])
 aggcounts(ft2[[2]])
 
 ## The rowData .n variable tallies number of initial rows that
-## were aggregated (irrespective of NAs) for all the samples. It
-#is always >= that the sample-level aggcounts.
+## were aggregated (irrespective of NAs) for all the samples. 
 rowData(ft2[[2]])
 
 ## Ignored when setting na.rm = TRUE
