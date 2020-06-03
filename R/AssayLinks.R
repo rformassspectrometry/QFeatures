@@ -193,12 +193,14 @@ assayLink <- function(x, i)
 ##' @rdname AssayLinks
 assayLinks <- function(x, i) {
     this <- assayLink(x, i)
-    if (is.na(this@from))
+    if (all(is.na(this@from)))
         return(AssayLinks(this))
     ans <- list()
-    while (!is.na(this@from)) {
+    froms <- this@from
+    while (length(froms)) {
         ans <- append(ans, this)
-        this <- assayLink(x, this@from)
+        this <- assayLink(x, froms[1])
+        froms <- c(froms[-1], this@from[!is.na(this@from)])
     }
     ans <- append(ans, this)
     return(AssayLinks(ans))
