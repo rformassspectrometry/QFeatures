@@ -49,7 +49,7 @@ test_that(".create_assay_link_multi", {
                                           to = "peptides",  
                                           varsFrom = c("Sequence", "Sequence"),
                                           varTo = "Sequence"),
-                 regexp = "Length of 'from' and length of 'varsFrom'")
+                 regexp = "must have same length|missing")
 })
     
 test_that(".update_assay_links", {
@@ -160,7 +160,7 @@ test_that("addAssayLinkMultiParent", {
                                              varsFrom = c("Sequence", "Sequence"),
                                              varTo = "Sequence")@assayLinks$peptides)
     ## Test warning
-    expect_warning(addAssayLinkMultiParent(feat2, 
+    expect_warning(addAssayLinkMultiParent(featMultiP, 
                                            from = "psms", to = "peptides",
                                            varsFrom = "Sequence", 
                                            varTo = "Sequence"), 

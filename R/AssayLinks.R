@@ -274,15 +274,31 @@ setMethod("[", c("AssayLinks", "list"),
                                      to, 
                                      varsFrom, 
                                      varTo) {
-    if (length(from) != length(varsFrom)) 
-        stop("Length of 'from' and length of 'varsFrom' must be identical")
-    ## Create the list of hits between the child assay and the parent assays
-    hitsList <- lapply(seq_along(from), function(ii) {
-        .create_assay_link(rdFrom = rowData(object[[from[ii]]]),
-                           rdTo = rowData(object[[to]]),
-                           from[ii], to,
-                           varsFrom[[ii]], varTo)@hits
-    })
+    if (missing(varsFrom) | missing(varTo)) {
+        ## Create the list of hits between the child assay and the parent assays
+        ## based on the rownames 
+        rdTo <- cbind(rowData(object[[to]]), RowNames = rownames(object[[to]]))
+        hitsList <- lapply(seq_along(from), function(ii) {
+            rdFrom <- cbind(rowData(object[[from[ii]]]), 
+                            RowNames = rownames(object[[from[[ii]]]]))
+            .create_assay_link(rdFrom = rdFrom,
+                               rdTo = rdTo,
+                               from[ii], to,
+                               "RowNames", "RowNames")@hits
+        })
+        varsFrom <- "RowNames"
+    } else if (length(from) == length(varsFrom)) {
+        ## Create the list of hits between the child assay and the parent assays
+        ## based on the supplied varsFrom and varTo
+        hitsList <- lapply(seq_along(from), function(ii) {
+            .create_assay_link(rdFrom = rowData(object[[from[ii]]]),
+                               rdTo = rowData(object[[to]]),
+                               from[ii], to,
+                               varsFrom[[ii]], varTo)@hits
+        })
+    } else
+        stop("'from' and 'varsFrom' must have same length or varsFrom 'must' be missing.")
+    
     names(hitsList) <- from
     ## Return a multi-parent AssayLink 
     AssayLink(name = to, 
