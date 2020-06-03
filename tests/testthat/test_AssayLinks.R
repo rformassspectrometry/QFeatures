@@ -165,12 +165,5 @@ test_that("addAssayLinkMultiParent", {
                                            varsFrom = "Sequence", 
                                            varTo = "Sequence"), 
                    regexp = "Only 1 parent supplied, calling 'addAssay'")
-    ## Test subsetting still works 
-    # expect_identical(
-    #     dims(addAssayLinkMultiParent(featMultiP, 
-    #                                  from = c("psms", "psms2"), 
-    #                                  to = "peptides", 
-    #                                  varsFrom = c("Sequence", "Sequence"),
-    #                                  varTo = "Sequence")["PSM1", , ]),
-    #     matrix(1:2, ncol = 1, dimnames = list(NULL, "psms")))
 })
+
