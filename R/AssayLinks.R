@@ -20,9 +20,6 @@
 ##' 
 ##' @section Creating links between assays:
 ##' 
-##' `addAssayLink` and `addAssayLinkOneToOne` link two assays in a [Features] 
-##' object. 
-##' 
 ##' - `addAssayLink` takes any two assays from the [Features] object and 
 ##'   creates a link given a matching feature variable in each assay's 
 ##'   `rowData`.
@@ -30,6 +27,9 @@
 ##'   object, but the assays must have the same size and contain the same 
 ##'   rownames although a different ordering is allowed. The matching is 
 ##'   performed based on the row names of the assays. 
+##' - `addAssayLinkMultiParent` links a child assay to multiple parent assays in 
+##'   a [Features] object. The matching is performed based on the supplied 
+##'   variables names contained in the assay's `rowData`.
 ##'
 ##' @rdname AssayLinks 
 ##'
@@ -66,8 +66,7 @@
 ##' se <- SummarizedExperiment(matrix(runif(20), ncol = 2, 
 ##'                                   dimnames = list(LETTERS[1:10], letters[1:2])),
 ##'                            rowData = DataFrame(ID = 1:10))
-##' ft <- Features(list(assay1 = se, assay2 = se), 
-##'                metadata = list())
+##' ft <- Features(list(assay1 = se, assay2 = se))
 ##'                
 ##' ## assay1 and assay2 are not linked
 ##' assayLink(ft, "assay2") ## 'from' is NA
@@ -83,6 +82,14 @@
 ##' ftLinked <- addAssayLinkOneToOne(ft, from = "assay1", to = "assay2")
 ##' assayLink(ftLinked, "assay2")
 ##' 
+##' ## An assay can also be linked to multiple parent assays
+##' ## create a Features object with 2 parent assays and 1 child assay
+##' ft <- Features(list(parent1 = se[1:6, ], parent2 = se[4:10, ], child = se))
+##' ft <- addAssayLinkMultiParent(ft, from = c("parent1", "parent2"),
+##'                               to = "child", varsFrom = c("ID", "ID"),
+##'                               varTo = "ID")
+##' assayLink(ft, "child")
+##'
 NULL
 
 setClassUnion("ListOrHits", c("Hits", "List"))
@@ -299,7 +306,7 @@ setMethod("[", c("AssayLinks", "list"),
                                varsFrom[[ii]], varTo)@hits
         })
     } else
-        stop("'from' and 'varsFrom' must have same length or varsFrom 'must' be missing.")
+        stop("'from' and 'varsFrom' must have same length.")
     
     names(hitsList) <- from
     ## Return a multi-parent AssayLink 
@@ -408,6 +415,15 @@ addAssayLinkOneToOne <- function(object,
     .update_assay_links(object, al)
 }
 
+##' @rdname AssayLinks
+##' 
+##' @param varsFrom A `character()` indicating the feature variable**s** to use 
+##'     to match the `from` assay**s** to the `to` assay. `varsFrom` is assumed 
+##'     to be ordered as `from`, and both arguments must have same length. If 
+##'     `length(varsFrom) == length(from) == 1`, then `addAssayLink` is called
+##'     instead. 
+##' 
+##' @export
 addAssayLinkMultiParent <- function(object, 
                                     from, 
                                     to, 

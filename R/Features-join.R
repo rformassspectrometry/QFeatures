@@ -95,6 +95,10 @@ mergeSElist <- function(x) {
 ##' assay contains `a2`, then the feature variable `A` is dropped in
 ##' the merged assay.
 ##' 
+##' The joined assay is linked to its parent assays through an `AssayLink`
+##' object. The link between the child assay and the parent assays is based on 
+##' the assay row names, just like the procedure for joining the parent assays.
+##'
 ##' @author Laurent Gatto
 ##' 
 ##' @export

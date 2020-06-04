@@ -110,7 +110,6 @@ setMethod("subsetByFeature", c("Features", "character"),
             featurename_list[[k]] <- union(featurename_list[[k]],
                                            elementMetadata(assayLink_k2)$names_from[j])
         }
-        i <- featurename_list[[k]]
     }
 
     expts <- experiments(x)[featurename_list]

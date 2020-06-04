@@ -49,7 +49,7 @@ test_that(".create_assay_link_multi", {
                                           to = "peptides",  
                                           varsFrom = c("Sequence", "Sequence"),
                                           varTo = "Sequence"),
-                 regexp = "must have same length|missing")
+                 regexp = "must have same length")
 })
     
 test_that(".update_assay_links", {
