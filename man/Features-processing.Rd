@@ -11,6 +11,9 @@
 \alias{normalize}
 \alias{normalize,SummarizedExperiment-method}
 \alias{normalize,Features-method}
+\alias{sweep}
+\alias{sweep,SummarizedExperiment-method}
+\alias{sweep,Features-method}
 \alias{normalizeMethods}
 \title{Features processing}
 \usage{
@@ -25,6 +28,19 @@
 \S4method{normalize}{SummarizedExperiment}(object, method, ...)
 
 \S4method{normalize}{Features}(object, i, name = "normAssay", method, ...)
+
+\S4method{sweep}{SummarizedExperiment}(x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ...)
+
+\S4method{sweep}{Features}(
+  x,
+  i,
+  name = "sweptAssay",
+  MARGIN,
+  STATS,
+  FUN = "-",
+  check.margin = TRUE,
+  ...
+)
 }
 \arguments{
 \item{object}{An object of class \code{Features} or \code{SummarizedExperiment}.}
@@ -55,6 +71,23 @@ vector of length equal to the number of columns of
 apply. See Details.}
 
 \item{...}{Additional parameters passed to inner functions.}
+
+\item{x}{An object of class \code{Features} or \code{SummarizedExperiment}
+in \code{sweep}.}
+
+\item{MARGIN}{As in \code{\link[base:sweep]{base::sweep()}}, a vector of indices giving the
+extent(s) of \code{x} which correspond to \code{STATS}.}
+
+\item{STATS}{As in \code{\link[base:sweep]{base::sweep()}}, the summary statistic which is
+to be swept out.}
+
+\item{FUN}{As in \code{\link[base:sweep]{base::sweep()}}, the function to be used to carry
+out the sweep.}
+
+\item{check.margin}{As in \code{\link[base:sweep]{base::sweep()}}, a \code{logical}.  If \code{TRUE}
+(the default), warn if the length or dimensions of \code{STATS} do
+not match the specified dimensions of \code{x}.  Set to \code{FALSE} for
+a small speed gain when you know that dimensions match.}
 }
 \description{
 This manual page describes common quantitative proteomics data
@@ -70,7 +103,11 @@ an optional pseudocount offset) the assay(s).
 \item \code{normalize(object, method, i)} normalises the assay(s) according
 to \code{method} (see Details).
 \item \code{scaleTransform(object, center = TRUE, scale = TRUE, i)} applies
-\code{\link[base:scale]{base::scale()}} to \code{SummarizedExperiments} and \code{Features} objects.
+\code{\link[base:scale]{base::scale()}} to \code{SummarizedExperiment} and \code{Features}
+objects.
+\item \code{sweep(x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ...)}
+sweeps out array summaries from \code{SummarizedExperiment} and
+\code{Features} objects. See \code{\link[base:sweep]{base::sweep()}} for details.
 }
 
 See the \emph{Processing} vignette for examples.
@@ -79,19 +116,21 @@ See the \emph{Processing} vignette for examples.
 The \code{method} parameter in \code{normalize} can be one of \code{"sum"},
 \code{"max"}, \code{"center.mean"}, \code{"center.median"}, \code{"div.mean"},
 \code{"div.median"}, \code{"diff.meda"}, \verb{"quantiles}", \verb{"quantiles.robust}"
-or \code{"vsn"}. The \code{\link[MsCoreUtils:normalizeMethods]{MsCoreUtils::normalizeMethods()}} function
-returns a vector of available normalisation methods.
+or \code{"vsn"}. The \code{\link[MsCoreUtils:normalizeMethods]{MsCoreUtils::normalizeMethods()}} function returns
+a vector of available normalisation methods.
 \itemize{
-\item For \code{"sum"} and \code{"max"}, each feature's intensity is divided by the
-maximum or the sum of the feature respectively. These two methods are
-applied along the features (rows).
-\item \code{"center.mean"} and \code{"center.median"} center the respective sample
-(column) intensities by subtracting the respective column means or
-medians. \code{"div.mean"} and \code{"div.median"} divide by the column means or
-medians.
-\item \code{"diff.median"} centers all samples (columns) so that they all match the
-grand median by subtracting the respective columns medians differences to
-the grand median.
+\item For \code{"sum"} and \code{"max"}, each feature's intensity is divided by
+the maximum or the sum of the feature respectively. These two
+methods are applied along the features (rows).
+\item \code{"center.mean"} and \code{"center.median"} center the respective
+sample (column) intensities by subtracting the respective column
+means or medians. \code{"div.mean"} and \code{"div.median"} divide by the
+column means or medians. These are equivalent to \code{sweep}ing the
+column means (medians) along \code{MARGIN = 2} with \code{FUN = "-"} (for
+\code{"center.*"}) or \code{FUN = "/"} (for \code{"div.*"}).
+\item \code{"diff.median"} centers all samples (columns) so that they all
+match the grand median by subtracting the respective columns
+medians differences to the grand median.
 \item Using \code{"quantiles"} or \code{"quantiles.robust"} applies (robust) quantile
 normalisation, as implemented in \code{\link[preprocessCore:normalize.quantiles]{preprocessCore::normalize.quantiles()}}
 and \code{\link[preprocessCore:normalize.quantiles.robust]{preprocessCore::normalize.quantiles.robust()}}. \code{"vsn"} uses the
