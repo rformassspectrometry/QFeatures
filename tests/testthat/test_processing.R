@@ -67,7 +67,7 @@ test_that("function: all normalize methods", {
 
 
 
-test_that("function: logTransform", {
+test_that("function: sweep", {
     se <- feat1[[1]]
     cmeds <- colMedians(assay(se))
     e <- sweep(assay(se), 2, cmeds)

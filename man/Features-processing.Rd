@@ -33,13 +33,13 @@
 
 \S4method{sweep}{Features}(
   x,
-  i,
-  name = "sweptAssay",
   MARGIN,
   STATS,
   FUN = "-",
   check.margin = TRUE,
-  ...
+  ...,
+  i,
+  name = "sweptAssay"
 )
 }
 \arguments{
