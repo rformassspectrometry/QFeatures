@@ -16,7 +16,6 @@
 \alias{[,AssayLinks,list,ANY,ANY-method}
 \alias{addAssayLink}
 \alias{addAssayLinkOneToOne}
-\alias{addAssayLinkMultiParent}
 \title{Links between Assays}
 \usage{
 \S4method{show}{AssayLink}(object)
@@ -36,16 +35,14 @@ assayLinks(x, i)
 addAssayLink(object, from, to, varFrom, varTo)
 
 addAssayLinkOneToOne(object, from, to)
-
-addAssayLinkMultiParent(object, from, to, varsFrom, varTo)
 }
 \arguments{
 \item{object}{An \code{AssayLink} object to show.}
 
 \item{name}{A mandatory name of the assay(s).}
 
-\item{from}{A character(1) or integer(1) indicating which assay to link from
-in \code{object}}
+\item{from}{A \code{character()} or \code{integer()} indicating which assay(s) to link
+from in \code{object}}
 
 \item{fcol}{The feature variable of the parent assay used to
 generate the current assay (used in
@@ -71,20 +68,15 @@ feature names to filter on.}
 
 \item{drop}{ignored.}
 
-\item{to}{A character(1) or integer(1) indicating which assay to link to in
-\code{object}}
+\item{to}{A \code{character(1)} or \code{integer(1)} indicating which assay to link to
+in \code{object}}
 
-\item{varFrom}{A character (1) indicating the feature variable to use to
-match the \code{from} assay to the \code{to} assay.}
+\item{varFrom}{A \code{character()} indicating the feature variable(s) to use to
+match the \code{from} assay(s) to the \code{to} assay. \code{varFrom} must have the
+same length as \code{from} and is assumed to be ordered as \code{from}.}
 
-\item{varTo}{A character (1) indicating the feature variable to use to
-match the \code{to} assay to the \code{from} assay.}
-
-\item{varsFrom}{A \code{character()} indicating the feature variable\strong{s} to use
-to match the \code{from} assay\strong{s} to the \code{to} assay. \code{varsFrom} is assumed
-to be ordered as \code{from}, and both arguments must have same length. If
-\verb{length(varsFrom) == length(from) == 1}, then \code{addAssayLink} is called
-instead.}
+\item{varTo}{A \code{character(1)} indicating the feature variable to use to
+match the \code{to} assay to the \code{from} assay(s).}
 }
 \value{
 \code{assayLink} returns an instance of class \code{AssayLink}.
@@ -115,16 +107,15 @@ parent(s) \code{AssayLinks} or assay with index or name \code{i}.
 \section{Creating links between assays}{
 
 \itemize{
-\item \code{addAssayLink} takes any two assays from the \link{Features} object and
-creates a link given a matching feature variable in each assay's
-\code{rowData}.
-\item \code{addAssayLinkOneToOne} also links two assays from the \link{Features}
-object, but the assays must have the same size and contain the same
-rownames although a different ordering is allowed. The matching is
-performed based on the row names of the assays.
-\item \code{addAssayLinkMultiParent} links a child assay to multiple parent assays in
-a \link{Features} object. The matching is performed based on the supplied
-variables names contained in the assay's \code{rowData}.
+\item \code{addAssayLink} takes a parent assay and a child assay contained in the
+\link{Features} object and creates a link given a matching feature variable in
+each assay's \code{rowData}. \code{addAssayLink} also allows to link an assay from
+multiple parent assays (see Examples).
+\item \code{addAssayLinkOneToOne} links two assays contained in the \link{Features}
+object. The parent assay and the child assay must have the same size and
+contain the same rownames (a different ordering is allowed). The matching
+is performed based on the row names of the assays, instead of a supplied
+variable name in \code{rowData}. Providing multiple parents is not supported.
 }
 }
 
@@ -171,16 +162,15 @@ assayLink(ftLinked, "assay2")
 ftLinked <- addAssayLinkOneToOne(ft, from = "assay1", to = "assay2")
 assayLink(ftLinked, "assay2")
 
+##----------------------------------------
+## Adding an AssayLink between more assays
+##----------------------------------------
+
 ## An assay can also be linked to multiple parent assays
-## create a Features object with 2 parent assays and 1 child assay
-ft <- Features(list(parent1 = se[1:6, ], 
-                    parent2 = se[4:10, ], 
-                    child = se))
-ft <- addAssayLinkMultiParent(ft, 
-                              from = c("parent1", "parent2"),
-                              to = "child", 
-                              varsFrom = c("ID", "ID"), 
-                              varTo = "ID")
+## Create a Features object with 2 parent assays and 1 child assay
+ft <- Features(list(parent1 = se[1:6, ], parent2 = se[4:10, ], child = se))
+ft <- addAssayLink(ft, from = c("parent1", "parent2"), to = "child",
+                   varFrom = c("ID", "ID"), varTo = "ID")
 assayLink(ft, "child")
 
 }

@@ -20,16 +20,15 @@
 ##' 
 ##' @section Creating links between assays:
 ##' 
-##' - `addAssayLink` takes any two assays from the [Features] object and 
-##'   creates a link given a matching feature variable in each assay's 
-##'   `rowData`.
-##' - `addAssayLinkOneToOne` also links two assays from the [Features] 
-##'   object, but the assays must have the same size and contain the same 
-##'   rownames although a different ordering is allowed. The matching is 
-##'   performed based on the row names of the assays. 
-##' - `addAssayLinkMultiParent` links a child assay to multiple parent assays in 
-##'   a [Features] object. The matching is performed based on the supplied 
-##'   variables names contained in the assay's `rowData`.
+##' - `addAssayLink` takes a parent assay and a child assay contained in the 
+##'   [Features] object and creates a link given a matching feature variable in 
+##'   each assay's `rowData`. `addAssayLink` also allows to link an assay from 
+##'   multiple parent assays (see Examples).
+##' - `addAssayLinkOneToOne` links two assays contained in the [Features] 
+##'   object. The parent assay and the child assay must have the same size and 
+##'   contain the same rownames (a different ordering is allowed). The matching 
+##'   is performed based on the row names of the assays, instead of a supplied 
+##'   variable name in `rowData`. Providing multiple parents is not supported.
 ##'
 ##' @rdname AssayLinks 
 ##'
@@ -82,10 +81,14 @@
 ##' ftLinked <- addAssayLinkOneToOne(ft, from = "assay1", to = "assay2")
 ##' assayLink(ftLinked, "assay2")
 ##' 
+##' ##----------------------------------------
+##' ## Adding an AssayLink between more assays
+##' ##----------------------------------------
+##' 
 ##' ## An assay can also be linked to multiple parent assays
-##' ## create a Features object with 2 parent assays and 1 child assay
+##' ## Create a Features object with 2 parent assays and 1 child assay
 ##' ft <- Features(list(parent1 = se[1:6, ], parent2 = se[4:10, ], child = se))
-##' ft <- addAssayLink(ft, from = c("parent1", "parent2"), to = "child", 
+##' ft <- addAssayLink(ft, from = c("parent1", "parent2"), to = "child",
 ##'                    varFrom = c("ID", "ID"), varTo = "ID")
 ##' assayLink(ft, "child")
 ##'
@@ -243,7 +246,7 @@ setMethod("[", c("AssayLinks", "list"),
 
 ## The function takes the rowData of an assays to link from, the rowData of an
 ## assay to link to, the corresponding feature variable names in both rowData 
-## that link 2 assays together. The function returns a Hits.
+## that link 2 assays together. The function returns a `Hits` object.
 ## the corresponding feature variables.
 .get_Hits <- function(rdFrom, 
                       rdTo,
@@ -340,14 +343,15 @@ setMethod("[", c("AssayLinks", "list"),
 
 ##' @rdname AssayLinks
 ##'
-##' @param from A character(1) or integer(1) indicating which assay to link from
+##' @param from A `character()` or `integer()` indicating which assay(s) to link 
+##'     from in `object`
+##' @param to A `character(1)` or `integer(1)` indicating which assay to link to 
 ##'     in `object`
-##' @param to A character(1) or integer(1) indicating which assay to link to in
-##'     `object`
-##' @param varFrom A character (1) indicating the feature variable to use to 
-##'     match the `from` assay to the `to` assay. 
-##' @param varTo A character (1) indicating the feature variable to use to 
-##'     match the `to` assay to the `from` assay.
+##' @param varFrom A `character()` indicating the feature variable(s) to use to 
+##'     match the `from` assay(s) to the `to` assay. `varFrom` must have the 
+##'     same length as `from` and is assumed to be ordered as `from`. 
+##' @param varTo A `character(1)` indicating the feature variable to use to 
+##'     match the `to` assay to the `from` assay(s).
 ##'
 ##' @export
 addAssayLink <- function(object, 
