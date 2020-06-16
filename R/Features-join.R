@@ -145,6 +145,6 @@ joinAssays <- function(x,
     x <- addAssay(x, joined_se, name = name)
     ## Add the multi-parent AssayLinks
     if (is.numeric(i)) i <- names(x)[i]
-    al <- .create_assay_link_multi(x, from = i, to = name)
-    .update_assay_links_multi_parents(x, al)
+    al <- .create_assay_link(x, from = i, to = name)
+    .update_assay_links(x, al)
 }

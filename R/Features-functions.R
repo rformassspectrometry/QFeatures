@@ -36,15 +36,9 @@ number_assays_in_se <- function(object) {
     NULL
 }
 
-.valid_assays <- function(object) {
-    if (any(!sapply(experiments(object), inherits, "SummarizedExperiment")))
-        stop("Invalid assay. All assays must inherit from 'SummarizedExperiment' class.")
-}
-
 .valid_Features <- function(object) {
     .valid_Features_indices(object)
     .valid_assay_links(object)
-    .valid_assays(object)
 }
 
 setValidity("Features", .valid_Features)
