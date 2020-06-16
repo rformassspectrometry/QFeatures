@@ -257,8 +257,7 @@ setMethod("[", c("AssayLinks", "list"),
     matchTo <- unlist(rdTo[varTo], use.names = FALSE)
     ## Find hits
     hits <- findMatches(matchFrom, matchTo)
-    if (length(c(hits@from, hits@to)) == 0) 
-        stop(paste0("No match found"))
+    if (length(c(hits@from, hits@to)) == 0) stop(paste0("No match found"))
     ## Add the row names corresponding to the hits
     elementMetadata(hits)$names_from <- rownames(rdFrom)[hits@from]
     elementMetadata(hits)$names_to <- rownames(rdTo)[hits@to]
@@ -375,7 +374,7 @@ addAssayLinkOneToOne <- function(object,
                                  to) {
     if (is.numeric(from)) from <- names(object)[[from]]
     if (is.numeric(to)) to <- names(object)[[to]]
-    if(length(from) > 1) 
+    if (length(from) > 1) 
         stop("One to one links are not supported for multiple parents.")
     if (any(to %in% from))
         stop("Adding an AssayLink between an assay and itself is not allowed.")
