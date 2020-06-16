@@ -39,6 +39,11 @@ function](https://github.com/rformassspectrometry/Features/issues/37)
 was originally intended for the two-level approach, i.e. to add an
 assay to an SE. This is not considered anymore (for now, at least).
 
+There is one exception though. When aggregating features with
+`aggregateFeatures()`, a second assay is added, named `aggcounts` that
+counts the number of features that were aggregate for each sample and
+each low-level features.
+
 # How to add new assays
 
 1. Through aggregation with `aggregateFeatures`.

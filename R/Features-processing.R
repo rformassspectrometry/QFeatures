@@ -17,7 +17,12 @@
 ##'   to `method` (see Details).
 ##' 
 ##' - `scaleTransform(object, center = TRUE, scale = TRUE, i)` applies
-##'   [base::scale()] to `SummarizedExperiments` and `Features` objects.
+##'   [base::scale()] to `SummarizedExperiment` and `Features`
+##'   objects.
+##'
+##' - `sweep(x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ...)`
+##'   sweeps out array summaries from `SummarizedExperiment` and
+##'   `Features` objects. See [base::sweep()] for details.
 ##'
 ##' See the *Processing* vignette for examples.
 ##'
@@ -26,21 +31,23 @@
 ##' The `method` parameter in `normalize` can be one of `"sum"`,
 ##' `"max"`, `"center.mean"`, `"center.median"`, `"div.mean"`,
 ##' `"div.median"`, `"diff.meda"`, `"quantiles`", `"quantiles.robust`"
-##' or `"vsn"`. The [MsCoreUtils::normalizeMethods()] function
-##' returns a vector of available normalisation methods.
+##' or `"vsn"`. The [MsCoreUtils::normalizeMethods()] function returns
+##' a vector of available normalisation methods.
 ##'
-##' - For `"sum"` and `"max"`, each feature's intensity is divided by the
-##'   maximum or the sum of the feature respectively. These two methods are
-##'   applied along the features (rows).
+##' - For `"sum"` and `"max"`, each feature's intensity is divided by
+##'   the maximum or the sum of the feature respectively. These two
+##'   methods are applied along the features (rows).
 ##'
-##' - `"center.mean"` and `"center.median"` center the respective sample
-##'   (column) intensities by subtracting the respective column means or
-##'   medians. `"div.mean"` and `"div.median"` divide by the column means or
-##'   medians.
+##' - `"center.mean"` and `"center.median"` center the respective
+##'   sample (column) intensities by subtracting the respective column
+##'   means or medians. `"div.mean"` and `"div.median"` divide by the
+##'   column means or medians. These are equivalent to `sweep`ing the
+##'   column means (medians) along `MARGIN = 2` with `FUN = "-"` (for
+##'   `"center.*"`) or `FUN = "/"` (for `"div.*"`).
 ##'
-##' - `"diff.median"` centers all samples (columns) so that they all match the
-##'   grand median by subtracting the respective columns medians differences to
-##'   the grand median.
+##' - `"diff.median"` centers all samples (columns) so that they all
+##'   match the grand median by subtracting the respective columns
+##'   medians differences to the grand median.
 ##'
 ##' - Using `"quantiles"` or `"quantiles.robust"` applies (robust) quantile
 ##'   normalisation, as implemented in [preprocessCore::normalize.quantiles()]
@@ -52,8 +59,11 @@
 ##' For further details and examples about normalisation, see
 ##' [MsCoreUtils::normalize_matrix()].
 ##'
-##' @param  object An object of class `Features` or `SummarizedExperiment`.
+##' @param object An object of class `Features` or `SummarizedExperiment`.
 ##'
+##' @param x An object of class `Features` or `SummarizedExperiment`
+##'     in `sweep`.
+##' 
 ##' @param base `numeric(1)` providing the base with respect to which
 ##'     logarithms are computed. Defaults is 2.
 ##'
@@ -79,14 +89,26 @@
 ##'     are `logAssay` for `logTransform`, `scaledAssay` for
 ##'     `scaleTranform` and `normAssay` for `normalize`.
 ##'
+##' @param MARGIN As in [base::sweep()], a vector of indices giving the
+##'     extent(s) of `x` which correspond to `STATS`.
+##'
+##' @param STATS As in [base::sweep()], the summary statistic which is
+##'     to be swept out.
+##'
+##' @param FUN As in [base::sweep()], the function to be used to carry
+##'     out the sweep.
+##'
+##' @param check.margin As in [base::sweep()], a `logical`.  If `TRUE`
+##'     (the default), warn if the length or dimensions of `STATS` do
+##'     not match the specified dimensions of `x`.  Set to `FALSE` for
+##'     a small speed gain when you know that dimensions match.
+##' 
 ##' @param ... Additional parameters passed to inner functions.
 ##'
-##' @aliases logTransform logTransform,SummarizedExperiment-method logTransform,Features-method
-##'
+##' @aliases logTransform logTransform,SummarizedExperiment-method logTransform,Features-method 
 ##' @aliases scaleTransform scaleTransform,SummarizedExperiment-method scaleTransform,Features-method
-##' 
 ##' @aliases normalize normalize,SummarizedExperiment-method normalize,Features-method
-##'
+##' @aliases sweep sweep,SummarizedExperiment-method sweep,Features-method
 ##' @aliases normalizeMethods
 ##'
 ##' @name Features-processing
@@ -184,4 +206,38 @@ setMethod("normalize", "Features",
                                  normalize(object[[i]], method, ...),
                                  name)
               addAssayLinkOneToOne(object, from = i, to = name)
+          })
+
+
+## -------------------------------------------------------
+##   Sweep 
+## -------------------------------------------------------
+
+sweepSE <- function(x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ...) {
+    e <- base::sweep(assay(x), MARGIN, STATS, FUN, check.margin, ...)
+    rownames(e) <- rownames(assay(x))
+    colnames(e) <- colnames(assay(x))
+    assay(x) <- e
+    x
+}
+
+##' @exportMethod sweep
+##' @rdname Features-processing
+setMethod("sweep", "SummarizedExperiment",
+          function(x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ...)
+              sweepSE(x, MARGIN, STATS, FUN, check.margin, ...))
+
+
+##' @rdname Features-processing
+setMethod("sweep", "Features",
+          function(x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ..., i, name = "sweptAssay") {
+              if (missing(i))
+                  stop("Provide index or name of assay to be processed")
+              if (length(i) != 1)
+                  stop("Only one assay to be processed at a time")
+              if (is.numeric(i)) i <- names(x)[[i]]
+              x <- addAssay(x,
+                            sweepSE(x[[i]], MARGIN, STATS, FUN, check.margin, ...),
+                            name)
+              addAssayLinkOneToOne(x, from = i, to = name)
           })
