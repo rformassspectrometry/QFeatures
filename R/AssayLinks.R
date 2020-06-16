@@ -358,7 +358,7 @@ addAssayLink <- function(object,
                          to,
                          varFrom, 
                          varTo) {
-    if (is.numeric(from)) from <- names(object)[[from]]
+    if (is.numeric(from)) from <- names(object)[from]
     if (is.numeric(to)) to <- names(object)[[to]]
     ## Create the assay link
     al <- .create_assay_link(object, from, to, varFrom, varTo)

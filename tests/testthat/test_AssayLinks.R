@@ -183,6 +183,12 @@ test_that("addAssayLink", {
                                   to = "peptides", 
                                   varFrom = c("Sequence", "Sequence"),
                                   varTo = "Sequence")@assayLinks$peptides)
+    expect_identical(alMulti, 
+                     addAssayLink(featMultiP, 
+                                  from = c(1, 3), 
+                                  to = "peptides", 
+                                  varFrom = c("Sequence", "Sequence"),
+                                  varTo = "Sequence")@assayLinks$peptides)
 })
 
 
