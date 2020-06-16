@@ -213,27 +213,31 @@ setMethod("normalize", "Features",
 ##   Sweep 
 ## -------------------------------------------------------
 
+sweepSE <- function(x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ...) {
+    e <- base::sweep(assay(x), MARGIN, STATS, FUN, check.margin, ...)
+    rownames(e) <- rownames(assay(x))
+    colnames(e) <- colnames(assay(x))
+    assay(x) <- e
+    x
+}
+
 ##' @exportMethod sweep
 ##' @rdname Features-processing
 setMethod("sweep", "SummarizedExperiment",
-          function(x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ...) {
-              e <- base::sweep(assay(x), MARGIN, STATS, FUN, check.margin, ...)
-              rownames(e) <- rownames(assay(x))
-              colnames(e) <- colnames(assay(x))
-              assay(x) <- e
-              x
-          })
+          function(x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ...)
+              sweepSE(x, MARGIN, STATS, FUN, check.margin, ...))
+
 
 ##' @rdname Features-processing
 setMethod("sweep", "Features",
-          function(x, i, name = "sweptAssay", MARGIN, STATS, FUN = "-", check.margin = TRUE, ...) {
+          function(x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ..., i, name = "sweptAssay") {
               if (missing(i))
                   stop("Provide index or name of assay to be processed")
               if (length(i) != 1)
                   stop("Only one assay to be processed at a time")
-              if (is.numeric(i)) i <- names(object)[[i]]
-              object <- addAssay(object,
-                                 sweep(object[[i]], MARGIN, STATS, FUN, check.margin, ...),
-                                 name)
-              addAssayLinkOneToOne(object, from = i, to = name)
+              if (is.numeric(i)) i <- names(x)[[i]]
+              x <- addAssay(x,
+                            sweepSE(x[[i]], MARGIN, STATS, FUN, check.margin, ...),
+                            name)
+              addAssayLinkOneToOne(x, from = i, to = name)
           })

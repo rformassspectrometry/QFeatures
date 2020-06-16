@@ -64,3 +64,18 @@ test_that("function: all normalize methods", {
         expect_identical(se_norm, feat_norm[["normAssay"]])
     }
 })
+
+
+
+test_that("function: logTransform", {
+    se <- feat1[[1]]
+    cmeds <- colMedians(assay(se))
+    e <- sweep(assay(se), 2, cmeds)
+    sse <- sweep(se, 2, cmeds)
+    sse2 <- Features:::sweepSE(se, 2, cmeds)
+    expect_identical(e, assay(sse))
+    expect_identical(e, assay(sse2))
+    sfeat1 <- sweep(feat1, MARGIN = 2, STATS = cmeds, i = 1)
+    expect_identical(names(sfeat1), c("psms", "sweptAssay"))
+    expect_identical(e, assay(sfeat1[["sweptAssay"]]))        
+})
