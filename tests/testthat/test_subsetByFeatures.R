@@ -1,5 +1,37 @@
+## Note the dataset is a nice example that tests Features as it could routinely 
+## be used within a pipeline. Note that the 3 special cases of AssayLinks are 
+## present in this dataset:
+##     * One to one link: link between 1 parent and 1 child with one to one row
+##       mapping. E.g. "peptides" to "normpeptides"
+##     * One parent to multiple children: link between 1 parents and multiple 
+##       children mapping. E.g. "peptides" to "normpeptides" and "proteins"
+##     * Multiple parents to one child: link between multiple parents and one 
+##       child mapping. E.g. "psms1" and "psms2" to "psmsall"
+##                                                                              
+## psms1 ---                                                                          
+##           \
+##             ----> psmsall ----> peptides ----> proteins                                                                
+##           /                        |                                         
+## psms2 ---                          |                                          
+##                               normpeptides ----> normproteins                                                
+##
+## of the  assaylinks (aggregation, one to one, multiple parents and 
+## multiple child links) created during the processing
 data(feat1)
-
+se1 <- feat1[["psms"]][1:7, ]
+colnames(se1) <- paste0("Sample", 1:2)
+se2 <- feat1[["psms"]][3:10, ]
+colnames(se2) <- paste0("Sample", 3:4)
+fts <- Features(SimpleList(psms1 = se1,
+                           psms2 = se2))
+fts <- joinAssays(fts, c("psms1", "psms2"), name = "psmsall")
+fts <- aggregateFeatures(fts, i = "psmsall", fcol = "Sequence",
+                         name = "peptides")
+fts <- aggregateFeatures(fts, i = "peptides", fcol = "Protein",
+                         name = "proteins")
+fts <- normalize(fts, i = "peptides", name = "normpeptides", method = "sum")
+fts <- aggregateFeatures(fts, i = "normpeptides", fcol = "Protein",
+                         name = "normproteins")
 
 test_that("subsetByFeatures", {
     feat1 <- aggregateFeatures(feat1, 1, fcol = "Sequence", name = "peptides", fun = colMedians)
@@ -17,33 +49,27 @@ test_that("subsetByFeatures", {
                      sort(unique(rowData(feat1[[1]])[["Protein"]])))
 })
 
-
-test_that("subsetByFeatures_multiple", {
-    ## Note this chunk tests the behavior of subsetting, but also the integrity
-    ## of the  assaylinks (aggregation, one to one, multiple parents and 
-    ## multiple child links) created during the processing
-    se1 <- feat1[["psms"]][1:7, ]
-    colnames(se1) <- paste0("Sample", 1:2)
-    se2 <- feat1[["psms"]][3:10, ]
-    colnames(se2) <- paste0("Sample", 3:4)
-    fts <- Features(SimpleList(psms1 = se1,
-                               psms2 = se2))
-    fts <- joinAssays(fts, c("psms1", "psms2"), name = "psmsall")
-    fts <- aggregateFeatures(fts, i = "psmsall", fcol = "Sequence",
-                             name = "peptides")
-    fts <- aggregateFeatures(fts, i = "peptides", fcol = "Protein",
-                             name = "proteins")
-    fts <- normalize(fts, i = "peptides", name = "normpeptides", method = "sum")
-    fts <- aggregateFeatures(fts, i = "normpeptides", fcol = "Protein",
-                             name = "normproteins")
-    res1 <- subsetByFeature(fts, "ProtA")
-    res2 <- fts["ProtA", ]
-    expect_equal(res1, res2)
-    expect_identical(dims(fts),
-                     matrix(c(7L, 2L, 8L, 2L, 10L, 4L, 3L, 4L, 2L, 4L, 3L, 4L, 2L, 4L), 
-                            nrow = 2, dimnames = list(NULL, names(fts))))
+test_that("subsetByFeatures: full pipeline", {
+    ## Subsetting "ProtA" will go through all assays as they all contains the 
+    ## "Protein" variable in the `rowData`
+    ftsub <- subsetByFeature(fts, "ProtA")
+    expect_identical(ftsub, fts["ProtA", ])
+    expect_identical(dims(ftsub),
+                     matrix(c(1L, 4L, 2L, 4L, 6L, 4L, 6L, 2L, 4L, 2L, 1L, 4L, 2L, 4L), 
+                            nrow = 2, dimnames = list(NULL, names(ftsub))))
     expect_identical("ProtA",  
-                     unique(unlist(lapply(experiments(res2), 
+                     unique(unlist(lapply(experiments(ftsub), 
                                           function(x) rowData(x)$Protein))))
     
+    ## Subsetting "SYGFNAAR" will subset only the peptides and psms assays as 
+    ## the protein assays do not contain the peptide "Sequence" variable
+    expect_message(ftsub <- fts["SYGFNAAR", ], 
+                   regexp = "removing 8 sampleMap rows not in names")
+    expect_identical(length(ftsub), 5L)
+    expect_identical(dims(ftsub),
+                     matrix(c(1L, 4L, 3L, 4L, 3L, 2L, 1L, 2L, 1L, 4L), 
+                            nrow = 2, dimnames = list(NULL, names(ftsub))))
+    expect_identical("SYGFNAAR",  
+                     unique(unlist(lapply(experiments(ftsub), 
+                                          function(x) rowData(x)$Sequence))))
 })

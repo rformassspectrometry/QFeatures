@@ -41,9 +41,6 @@ test_that("addAssay", {
     feat1 <- addAssay(feat1, assay2, name = "psms2")
     expect_identical(names(feat1), c("psms", "psms2"))
     expect_identical(feat1[[1]], feat1[[2]])
-    ## Try adding non SE assays (eg matrix)
-    expect_error(addAssay(feat1, assay(feat1, 1)),
-                 regexp = "must inherit from 'SummarizedExperiment'")
 })
 
 test_that("[,Features", {
