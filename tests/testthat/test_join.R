@@ -125,3 +125,25 @@ test_that("joinAssay errors", {
     feat2 <- joinAssays(feat2, 1:3)
     expect_error(joinAssays(feat2, 1:3), "Assay with name 'joinedAssay' already exists.")    
 })
+
+
+test_that("joinAssay return class", {
+    m <- matrix(1:100, 10, 
+                dimnames = list(letters[1:10], 
+                                LETTERS[1:10]))
+    library("SingleCellExperiment")
+    sce <- SingleCellExperiment(list(m))
+    se <- SummarizedExperiment(list(m))
+    ## Joining two SCEs produces an SCE
+    f <- Features(ExperimentList(sce1 = sce[, 1:5], sce2 = sce[, 6:10]))
+    expect_identical(class(joinAssays(f, i = 1:2)[["joinedAssay"]])[1],
+                     "SingleCellExperiment")
+    ## Joining two SEs produces an SE
+    f <- Features(ExperimentList(se1 = se[, 1:5], se2 = se[, 6:10]))
+    expect_identical(class(joinAssays(f, i = 1:2)[["joinedAssay"]])[1],
+                     "SummarizedExperiment")
+    ## Joining an SE and an SCE throws an error
+    f <- Features(ExperimentList(se1 = se[, 1:5], sce2 = sce[, 6:10]))
+    expect_error(joinAssays(f, i = 1:2))
+
+})

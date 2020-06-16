@@ -25,6 +25,7 @@ Imports:
    Biobase,
    MsCoreUtils (>= 1.1.2),
 Suggests:
+   SingleCellExperiment,
    msdata,
    ggplot2,
    gplots,
