@@ -50,12 +50,23 @@
 
 
 mergeSElist <- function(x) {
+    x_classes <- unique(sapply(x, class))
+    if (length(x_classes) != 1)
+        stop("Can't join assays from different classes.", call. = FALSE)
     joined_mcols <- Reduce(.merge_2_by_cols, lapply(x, rowData))
     joined_assay <- Reduce(.merge_2_by_rows, lapply(x, assay))
     joined_coldata <- Reduce(.merge_2_by_cols, lapply(x, colData))
-    SummarizedExperiment(joined_assay[rownames(joined_mcols), ],
-                         joined_mcols,
-                         colData = joined_coldata)
+    res <- SummarizedExperiment(joined_assay[rownames(joined_mcols), ],
+                                joined_mcols,
+                                colData = joined_coldata)
+    ## If the input objects weren't SummarizedExperiments, then try to
+    ## convert the merged assay into that class. If the conversion
+    ## fails, keep the SummarizedExperiment, otherwise use the
+    ## converted object (see issue #78).
+    if (x_classes != "SummarizedExperiment")
+        res <- tryCatch(as(res, x_classes),
+                        error = function(e) res)
+    res
 }
 
 
