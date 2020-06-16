@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
       </span>
     </div>
 
@@ -141,6 +141,7 @@
 </ul>
 <p>Despite the elegant of the two-level option, it seems that the additional development isn’t warranted at this time.</p>
 <p>The <a href="https://github.com/rformassspectrometry/Features/issues/37"><code>updateAssay</code> function</a> was originally intended for the two-level approach, i.e. to add an assay to an SE. This is not considered anymore (for now, at least).</p>
+<p>There is one exception though. When aggregating features with <code><a href="reference/Features-aggregate.html">aggregateFeatures()</a></code>, a second assay is added, named <code>aggcounts</code> that counts the number of features that were aggregate for each sample and each low-level features.</p>
 </div>
 <div id="how-to-add-new-assays" class="section level1">
 <h1 class="hasAnchor">

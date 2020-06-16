@@ -51,7 +51,11 @@ an optional pseudocount offset) the assay(s).
 normalize(object, method, i) normalises the assay(s) according
 to method (see Details).
 scaleTransform(object, center = TRUE, scale = TRUE, i) applies
-base::scale() to SummarizedExperiments and Features objects.
+base::scale() to SummarizedExperiment and Features
+objects.
+sweep(x, MARGIN, STATS, FUN = &quot;-&quot;, check.margin = TRUE, ...)
+sweeps out array summaries from SummarizedExperiment and
+Features objects. See base::sweep() for details.
 
 
 See the Processing vignette for examples." />
@@ -86,7 +90,7 @@ See the Processing vignette for examples." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
       </span>
     </div>
 
@@ -154,7 +158,11 @@ an optional pseudocount offset) the assay(s).</p></li>
 <li><p><code>normalize(object, method, i)</code> normalises the assay(s) according
 to <code>method</code> (see Details).</p></li>
 <li><p><code>scaleTransform(object, center = TRUE, scale = TRUE, i)</code> applies
-<code><a href='https://rdrr.io/r/base/scale.html'>base::scale()</a></code> to <code>SummarizedExperiments</code> and <code>Features</code> objects.</p></li>
+<code><a href='https://rdrr.io/r/base/scale.html'>base::scale()</a></code> to <code>SummarizedExperiment</code> and <code>Features</code>
+objects.</p></li>
+<li><p><code>sweep(x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ...)</code>
+sweeps out array summaries from <code>SummarizedExperiment</code> and
+<code>Features</code> objects. See <code><a href='https://rdrr.io/r/base/sweep.html'>base::sweep()</a></code> for details.</p></li>
 </ul>
 
 <p>See the <em>Processing</em> vignette for examples.</p>
@@ -176,7 +184,22 @@ to <code>method</code> (see Details).</p></li>
 <span class='fu'>normalize</span>(<span class='no'>object</span>, <span class='no'>method</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for Features</span>
-<span class='fu'>normalize</span>(<span class='no'>object</span>, <span class='no'>i</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"normAssay"</span>, <span class='no'>method</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>normalize</span>(<span class='no'>object</span>, <span class='no'>i</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"normAssay"</span>, <span class='no'>method</span>, <span class='no'>...</span>)
+
+<span class='co'># S4 method for SummarizedExperiment</span>
+<span class='fu'>sweep</span>(<span class='no'>x</span>, <span class='no'>MARGIN</span>, <span class='no'>STATS</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='st'>"-"</span>, <span class='kw'>check.margin</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+
+<span class='co'># S4 method for Features</span>
+<span class='fu'>sweep</span>(
+  <span class='no'>x</span>,
+  <span class='no'>MARGIN</span>,
+  <span class='no'>STATS</span>,
+  <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='st'>"-"</span>,
+  <span class='kw'>check.margin</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='no'>...</span>,
+  <span class='no'>i</span>,
+  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"sweptAssay"</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -228,6 +251,33 @@ apply. See Details.</p></td>
       <th>...</th>
       <td><p>Additional parameters passed to inner functions.</p></td>
     </tr>
+    <tr>
+      <th>x</th>
+      <td><p>An object of class <code>Features</code> or <code>SummarizedExperiment</code>
+in <code>sweep</code>.</p></td>
+    </tr>
+    <tr>
+      <th>MARGIN</th>
+      <td><p>As in <code><a href='https://rdrr.io/r/base/sweep.html'>base::sweep()</a></code>, a vector of indices giving the
+extent(s) of <code>x</code> which correspond to <code>STATS</code>.</p></td>
+    </tr>
+    <tr>
+      <th>STATS</th>
+      <td><p>As in <code><a href='https://rdrr.io/r/base/sweep.html'>base::sweep()</a></code>, the summary statistic which is
+to be swept out.</p></td>
+    </tr>
+    <tr>
+      <th>FUN</th>
+      <td><p>As in <code><a href='https://rdrr.io/r/base/sweep.html'>base::sweep()</a></code>, the function to be used to carry
+out the sweep.</p></td>
+    </tr>
+    <tr>
+      <th>check.margin</th>
+      <td><p>As in <code><a href='https://rdrr.io/r/base/sweep.html'>base::sweep()</a></code>, a <code>logical</code>.  If <code>TRUE</code>
+(the default), warn if the length or dimensions of <code>STATS</code> do
+not match the specified dimensions of <code>x</code>.  Set to <code>FALSE</code> for
+a small speed gain when you know that dimensions match.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -235,18 +285,20 @@ apply. See Details.</p></td>
     <p>The <code>method</code> parameter in <code>normalize</code> can be one of <code>"sum"</code>,
 <code>"max"</code>, <code>"center.mean"</code>, <code>"center.median"</code>, <code>"div.mean"</code>,
 <code>"div.median"</code>, <code>"diff.meda"</code>, <code>"quantiles</code>", <code>"quantiles.robust</code>"
-or <code>"vsn"</code>. The <code><a href='https://rdrr.io/pkg/MsCoreUtils/man/normalize.html'>MsCoreUtils::normalizeMethods()</a></code> function
-returns a vector of available normalisation methods.</p><ul>
-<li><p>For <code>"sum"</code> and <code>"max"</code>, each feature's intensity is divided by the
-maximum or the sum of the feature respectively. These two methods are
-applied along the features (rows).</p></li>
-<li><p><code>"center.mean"</code> and <code>"center.median"</code> center the respective sample
-(column) intensities by subtracting the respective column means or
-medians. <code>"div.mean"</code> and <code>"div.median"</code> divide by the column means or
-medians.</p></li>
-<li><p><code>"diff.median"</code> centers all samples (columns) so that they all match the
-grand median by subtracting the respective columns medians differences to
-the grand median.</p></li>
+or <code>"vsn"</code>. The <code><a href='https://rdrr.io/pkg/MsCoreUtils/man/normalize.html'>MsCoreUtils::normalizeMethods()</a></code> function returns
+a vector of available normalisation methods.</p><ul>
+<li><p>For <code>"sum"</code> and <code>"max"</code>, each feature's intensity is divided by
+the maximum or the sum of the feature respectively. These two
+methods are applied along the features (rows).</p></li>
+<li><p><code>"center.mean"</code> and <code>"center.median"</code> center the respective
+sample (column) intensities by subtracting the respective column
+means or medians. <code>"div.mean"</code> and <code>"div.median"</code> divide by the
+column means or medians. These are equivalent to <code>sweep</code>ing the
+column means (medians) along <code>MARGIN = 2</code> with <code>FUN = "-"</code> (for
+<code>"center.*"</code>) or <code>FUN = "/"</code> (for <code>"div.*"</code>).</p></li>
+<li><p><code>"diff.median"</code> centers all samples (columns) so that they all
+match the grand median by subtracting the respective columns
+medians differences to the grand median.</p></li>
 <li><p>Using <code>"quantiles"</code> or <code>"quantiles.robust"</code> applies (robust) quantile
 normalisation, as implemented in <code><a href='https://rdrr.io/pkg/preprocessCore/man/normalize.quantiles.html'>preprocessCore::normalize.quantiles()</a></code>
 and <code><a href='https://rdrr.io/pkg/preprocessCore/man/normalize.quantiles.robust.html'>preprocessCore::normalize.quantiles.robust()</a></code>. <code>"vsn"</code> uses the
