@@ -109,9 +109,19 @@ setMethod("subsetByFeature", c("Features", "character"),
         }
         i <- featurename_list[[k]]
     }
-
-    expts <- experiments(x)[featurename_list]
-    alnks <- x@assayLinks[all_assays_names]
+    
+    ## Order the assays in featurename_list to match the assay order in x
+    ord <- order(match(names(featurename_list), names(x)))
+    featurename_list <- featurename_list[ord]
+    ## First subset assays, then subset the features of interest. This is 
+    ## suggested by the authors of `MultiAssayExperiment` when x contains 
+    ## `SingleCellExperiment` assays. 
+    ## Cf https://github.com/waldronlab/MultiAssayExperiment/issues/276
+    expts <- subsetByAssay(x, names(featurename_list))
+    expts <- experiments(subsetByRow(expts, featurename_list))
+    ## First subset the `AssayLink`s from the `AssayLinks`, then subset the 
+    ## features of interest.
+    alnks <- x@assayLinks[names(featurename_list)]
     alnks <- alnks[featurename_list]
 
     Features(experiments = expts,
