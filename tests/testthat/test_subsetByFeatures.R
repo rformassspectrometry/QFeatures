@@ -55,8 +55,9 @@ test_that("subsetByFeatures: full pipeline", {
     ftsub <- subsetByFeature(fts, "ProtA")
     expect_identical(ftsub, fts["ProtA", ])
     expect_identical(dims(ftsub),
-                     matrix(c(1L, 4L, 2L, 4L, 6L, 4L, 6L, 2L, 4L, 2L, 1L, 4L, 2L, 4L), 
-                            nrow = 2, dimnames = list(NULL, names(ftsub))))
+                     matrix(c(6L, 2L, 4L, 2L, 6L, 4L, 2L, 4L, 1L, 4L, 2L, 4L, 1L, 4L), 
+                            nrow = 2, 
+                            dimnames = list(NULL, c("psms1", "psms2", "psmsall", "peptides", "proteins", "normpeptides", "normproteins"))))
     expect_identical("ProtA",  
                      unique(unlist(lapply(experiments(ftsub), 
                                           function(x) rowData(x)$Protein))))
@@ -67,8 +68,9 @@ test_that("subsetByFeatures: full pipeline", {
                    regexp = "removing 8 sampleMap rows not in names")
     expect_identical(length(ftsub), 5L)
     expect_identical(dims(ftsub),
-                     matrix(c(1L, 4L, 3L, 4L, 3L, 2L, 1L, 2L, 1L, 4L), 
-                            nrow = 2, dimnames = list(NULL, names(ftsub))))
+                     matrix(c(3L, 2L, 1L, 2L, 3L, 4L, 1L, 4L, 1L, 4L), 
+                            nrow = 2, 
+                            dimnames = list(NULL, c("psms1", "psms2", "psmsall", "peptides", "normpeptides"))))
     expect_identical("SYGFNAAR",  
                      unique(unlist(lapply(experiments(ftsub), 
                                           function(x) rowData(x)$Sequence))))
