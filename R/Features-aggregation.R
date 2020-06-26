@@ -7,6 +7,16 @@
 ##' defined by the `fcol` feature variable. The new assay's features
 ##' will be named based on the unique `fcol` values.
 ##'
+##' In addition to the results of the aggregation, the newly
+##' aggregated `SummarizedExperiment` assay also contains a new
+##' `aggcounts` assay containing the aggregation counts matrix,
+##' i.e. the number of features that were aggregated, which can be
+##' accessed with the `aggcounts()` accessor.
+##'
+##' The rowData of the aggregated `SummarizedExperiment` assay
+##' contains a `.n` variable that provides the number of features that
+##' were aggregated. This `.n` value is always >= that the
+##' sample-level `aggcounts`.
 ##'
 ##' @param object An instance of class [Features].
 ##'
@@ -95,13 +105,13 @@
 ##'     the *Processing* vignette, for a complete quantitative
 ##'     proteomics data processing pipeline.
 ##' 
-##' @aliases aggregateFeatures aggregateFeatures,Features-method
+##' @aliases aggregateFeatures aggregateFeatures,Features-method aggcounts aggcounts,SummarizedExperiment
 ##'
 ##' @name aggregateFeatures
 ##'
 ##' @rdname Features-aggregate
 ##'
-##' @importFrom MsCoreUtils aggregate_by_vector robustSummary
+##' @importFrom MsCoreUtils aggregate_by_vector robustSummary colCounts
 ##'
 ##' @examples
 ##'
@@ -114,40 +124,55 @@
 ##' ## Aggregate PSMs into peptides
 ##' feat1 <- aggregateFeatures(feat1, "psms", "Sequence", name = "peptides")
 ##' feat1
-##'
+##' 
 ##' ## Aggregate peptides into proteins
 ##' feat1 <- aggregateFeatures(feat1, "peptides", "Protein", name = "proteins")
 ##' feat1
 ##'
+##' assay(feat1[[1]])
+##' assay(feat1[[2]])
+##' aggcounts(feat1[[2]])
+##' assay(feat1[[3]])
+##' aggcounts(feat1[[3]])
+##' 
 ##' ## --------------------------------------------
 ##' ## Aggregation with missing quantitative values
 ##' ## --------------------------------------------
 ##' data(ft_na)
 ##' ft_na
 ##'
-##' assay(ft_na, 1)
+##' assay(ft_na[[1]])
 ##' rowData(ft_na[[1]])
 ##'
 ##' ## By default, missing values are propagated
-##' assay(aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums), 2)
+##' ft2 <- aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums)
+##' assay(ft2[[2]])
+##' aggcounts(ft2[[2]])
 ##'
+##' ## The rowData .n variable tallies number of initial rows that
+##' ## were aggregated (irrespective of NAs) for all the samples. 
+##' rowData(ft2[[2]])
+##' 
 ##' ## Ignored when setting na.rm = TRUE
-##' assay(aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums, na.rm = TRUE), 2)
-##'
+##' ft3 <- aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums, na.rm = TRUE)
+##' assay(ft3[[2]])
+##' aggcounts(ft3[[2]])
+##' 
 ##' ## -----------------------------------------------
 ##' ## Aggregation with missing values in the row data
 ##' ## -----------------------------------------------
 ##' ## Row data results without any NAs, which includes the
 ##' ## Y variables
-##' rowData(aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums)[[2]])
+##' rowData(ft2[[2]])
 ##'
 ##' ## Missing value in the Y feature variable
 ##' rowData(ft_na[[1]])[1, "Y"] <- NA
 ##' rowData(ft_na[[1]])
 ##'
-##' feat_na <- aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums)
+##' ft3 <- aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums)
 ##' ## The Y feature variable has been dropped!
-##' rowData(feat_na[[2]])
+##' assay(ft3[[2]])
+##' rowData(ft3[[2]])
 NULL
 
 ##' @exportMethod aggregateFeatures
@@ -187,13 +212,15 @@ setMethod("aggregateFeatures", "Features",
                      "effects of missing values on data aggregation.")
         message(paste(strwrap(msg), collapse = "\n"))
     }
-    
+
     aggregated_assay <- aggregate_by_vector(assay_i, groupBy, fun, ...)
+    aggcount_assay <- aggregate_by_vector(assay_i, groupBy, colCounts)
     aggregated_rowdata <- Features::reduceDataFrame(rowdata_i, rowdata_i[[fcol]],
                                                    simplify = TRUE, drop = TRUE,
                                                    count = TRUE)
 
-    se <- SummarizedExperiment(aggregated_assay,
+    se <- SummarizedExperiment(assays = SimpleList(assay = aggregated_assay,
+                                                   aggcounts = aggcount_assay),
                                rowData = aggregated_rowdata[rownames(aggregated_assay), ])
     hits <- findMatches(rownames(aggregated_assay), groupBy)
     elementMetadata(hits)$names_to <- rowdata_i[[fcol]][hits@to]

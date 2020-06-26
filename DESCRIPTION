@@ -1,14 +1,14 @@
 Package: Features
 Title: Quantitative features for mass spectrometry data
-Version: 0.6.0
+Version: 0.6.2
 Authors@R: c(person("Laurent", "Gatto",
-		              email = "laurent.gatto@uclouvain.be",
-		              comment = c(ORCID = "0000-0002-1520-2268"),
-		              role = c("aut", "cre")),
-		       person("Christophe", "Vanderaa", 
-		              email = "christophe.vanderaa@uclouvain.be",
-		              comment = c(ORCID = "0000-0001-7443-5427"),
-		              role = "ctb"))
+	            email = "laurent.gatto@uclouvain.be",
+		    comment = c(ORCID = "0000-0002-1520-2268"),
+		    role = c("aut", "cre")),
+             person("Christophe", "Vanderaa", 
+	            email = "christophe.vanderaa@uclouvain.be",
+	            comment = c(ORCID = "0000-0001-7443-5427"),
+	            role = "ctb"))
 Description: Infrastrucutre to manage and process quantitative
    features for high-throughput mass spectrometry assays.
 Depends: R (>= 3.5.0), MultiAssayExperiment
@@ -23,8 +23,9 @@ Imports:
    AnnotationFilter,
    lazyeval,
    Biobase,
-   MsCoreUtils (>= 0.99.0),
+   MsCoreUtils (>= 1.1.2),
 Suggests:
+   SingleCellExperiment,
    msdata,
    ggplot2,
    gplots,
@@ -66,6 +67,7 @@ Collate:
     'Features-aggregation.R'
     'Features-imputation.R'
     'Features-join.R'
+    'SummarizedExperiment-methods.R'
     'subsetBy-methods.R'
     'data.R'
     'reduce.R'
