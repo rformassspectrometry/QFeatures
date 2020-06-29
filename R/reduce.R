@@ -116,14 +116,14 @@ invariant_cols2 <- function(x) {
 ##' reduceDataFrame(d, d$k, drop = TRUE)
 reduceDataFrame <- function(x, k, count = FALSE, simplify = TRUE, drop = FALSE) {
     res <- split(x, k)
-    lens <- lengths(res)
+    lens <- unname(lengths(res))
     if (simplify | drop) 
         invars <- invariant_cols2(res)
     res <- DataFrame(res)
     if (simplify) {
         ## replace invariant cols
         for (i in invars)
-            res[[i]] <- sapply(res[[i]], "[[", 1)
+            res[[i]] <- unname(sapply(res[[i]], "[[", 1))
     }
     if (drop) 
         res <- res[, invars, drop = FALSE]

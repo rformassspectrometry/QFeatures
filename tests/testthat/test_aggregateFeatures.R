@@ -26,8 +26,6 @@ test_that("aggregateFeatures(fun = sum)", {
     Protein <- c("ProtA", "ProtB", "ProtA")
     .n <- c(3, 4, 3)
     location <- c("Mitochondrion", "unknown", "Mitochondrion")
-    names(.n) <- names(Protein) <- names(Sequence) <-
-        names(location) <- Sequence
 
     coldat1 <- DataFrame(Sequence = Sequence,
                          Protein = Protein,
@@ -82,9 +80,6 @@ test_that("aggregateFeatures(fun = median)", {
     Protein <- c("ProtA", "ProtB", "ProtA")
     .n <- c(3, 4, 3)
     location <- c("Mitochondrion", "unknown", "Mitochondrion")
-    names(.n) <- names(Protein) <- names(Sequence) <-
-        names(location) <- Sequence
-    
 
     coldat1 <- DataFrame(Sequence = Sequence,
                          Protein = Protein,
@@ -127,5 +122,5 @@ test_that("aggregateFeatures: aggcounts", {
     colnames(m) <- LETTERS[1:3]
     expect_identical(aggcounts(se), m)
     ## .n variable
-    expect_identical(rowData(se)$.n , c("1" = 2L, "2" = 2L))
+    expect_identical(rowData(se)$.n , c(2L, 2L))
 })

@@ -147,3 +147,22 @@ test_that("joinAssay return class", {
     expect_error(joinAssays(f, i = 1:2))
 
 })
+
+
+test_that("aggregate and join (issue 81)", {
+    ## See issue 81 for background on this unit test
+    ## https://github.com/rformassspectrometry/Features/issues/81
+    data(feat2)
+    feat2 <- aggregateFeatures(feat2, i = 1, name = "aggr1", fcol = "Prot", colSums)
+    feat2 <- aggregateFeatures(feat2, i = 2, name = "aggr2", fcol = "Prot", colSums)
+    feat2 <- aggregateFeatures(feat2, i = 3, name = "aggr3", fcol = "Prot", colSums)
+    feat2 <- joinAssays(feat2, 1:3, "joinedAssay1")
+    feat2 <- joinAssays(feat2, 4:6, "joinedAssay2")
+
+    x <- feat2[["joinedAssay1"]]
+    y <- feat2[["joinedAssay2"]]
+    ## Both have same Prot variable
+    expect_equal(rowData(x)[["Prot"]], rowData(y)[["Prot"]])
+    ## rownames are different
+    expect_equivalent(assay(x), assay(y))
+})
