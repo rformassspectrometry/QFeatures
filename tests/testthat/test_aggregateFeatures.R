@@ -110,3 +110,22 @@ test_that("aggregateFeatures(fun = median)", {
                   sort.by.query = TRUE)
     expect_identical(alink@hits, hits1)    
 })
+
+test_that("aggregateFeatures: aggcounts", {
+    data(ft_na)
+    ## missing values are propagated
+    ft2 <- aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums)
+    se <- ft2[[2]]
+    ## assay
+    m <- matrix(c(NA, NA, NA, 14, 20, 22), nrow = 2)
+    rownames(m) <- 1:2
+    colnames(m) <- LETTERS[1:3]
+    expect_identical(assay(se), m)
+    ## aggcounts
+    m <- matrix(c(1, 1, 1, 2, 2, 2), nrow = 2)
+    rownames(m) <- 1:2
+    colnames(m) <- LETTERS[1:3]
+    expect_identical(aggcounts(se), m)
+    ## .n variable
+    expect_identical(rowData(se)$.n , c("1" = 2L, "2" = 2L))
+})

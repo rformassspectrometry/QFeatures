@@ -97,21 +97,33 @@ setMethod("subsetByFeature", c("Features", "character"),
         featurename_list[[k]] <- i
 
     for (k in setdiff(all_assays_names, leaf_assay_name)) {
-        assay_k <- x[[k]]
         ## which assay(s) created assay_k
-        assay_k_parent_name <- names(which(sapply(x@assayLinks, slot, "from") == k))
+        assay_k_parent_name <-
+            names(which(sapply(x@assayLinks, function(al) any(k %in% al@from))))
 
         for (k2 in assay_k_parent_name) {
             assayLink_k2 <- x@assayLinks[[k2]]@hits
-            j <- which(elementMetadata(assayLink_k2)$names_to %in% i)
+            if (inherits(assayLink_k2, "List")) 
+                assayLink_k2 <- assayLink_k2[[k]]
+            l <- featurename_list[[k2]]
+            j <- which(elementMetadata(assayLink_k2)$names_to %in% l)
             featurename_list[[k]] <- union(featurename_list[[k]],
                                            elementMetadata(assayLink_k2)$names_from[j])
         }
-        i <- featurename_list[[k]]
     }
-
-    expts <- experiments(x)[featurename_list]
-    alnks <- x@assayLinks[all_assays_names]
+    
+    ## Order the assays in featurename_list to match the assay order in x
+    ord <- order(match(names(featurename_list), names(x)))
+    featurename_list <- featurename_list[ord]
+    ## First subset assays, then subset the features of interest. This is 
+    ## suggested by the authors of `MultiAssayExperiment` when x contains 
+    ## `SingleCellExperiment` assays. 
+    ## Cf https://github.com/waldronlab/MultiAssayExperiment/issues/276
+    expts <- subsetByAssay(x, names(featurename_list))
+    expts <- experiments(subsetByRow(expts, featurename_list))
+    ## First subset the `AssayLink`s from the `AssayLinks`, then subset the 
+    ## features of interest.
+    alnks <- x@assayLinks[names(featurename_list)]
     alnks <- alnks[featurename_list]
 
     Features(experiments = expts,
