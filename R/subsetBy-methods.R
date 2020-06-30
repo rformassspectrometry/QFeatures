@@ -97,17 +97,19 @@ setMethod("subsetByFeature", c("Features", "character"),
         featurename_list[[k]] <- i
 
     for (k in setdiff(all_assays_names, leaf_assay_name)) {
-        assay_k <- x[[k]]
         ## which assay(s) created assay_k
-        assay_k_parent_name <- names(which(sapply(x@assayLinks, slot, "from") == k))
+        assay_k_parent_name <-
+            names(which(sapply(x@assayLinks, function(al) any(k %in% al@from))))
 
         for (k2 in assay_k_parent_name) {
             assayLink_k2 <- x@assayLinks[[k2]]@hits
-            j <- which(elementMetadata(assayLink_k2)$names_to %in% i)
+            if (inherits(assayLink_k2, "List")) 
+                assayLink_k2 <- assayLink_k2[[k]]
+            l <- featurename_list[[k2]]
+            j <- which(elementMetadata(assayLink_k2)$names_to %in% l)
             featurename_list[[k]] <- union(featurename_list[[k]],
                                            elementMetadata(assayLink_k2)$names_from[j])
         }
-        i <- featurename_list[[k]]
     }
     
     ## Order the assays in featurename_list to match the assay order in x

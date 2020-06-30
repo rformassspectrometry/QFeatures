@@ -27,7 +27,7 @@ number_assays_in_se <- function(object) {
     ## are contained in the assay names of the Features object
     if (!all(al_names %in% n_exp))
         stop("@names not valid")
-    al_from <- unname(sapply(object@assayLinks, "slot", "from"))
+    al_from <- unname(unlist(sapply(object@assayLinks, "slot", "from")))
     ## An AssayLinks object is valid if the names of the parent assays for all 
     ## assays are either NA (= root node) or contained in the assay names of the 
     ## Features object

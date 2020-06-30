@@ -41,8 +41,8 @@ addAssayLinkOneToOne(object, from, to)
 
 \item{name}{A mandatory name of the assay(s).}
 
-\item{from}{A character(1) or integer(1) indicating which assay to link from
-in \code{object}}
+\item{from}{A \code{character()} or \code{integer()} indicating which assay(s) to link
+from in \code{object}}
 
 \item{fcol}{The feature variable of the parent assay used to
 generate the current assay (used in
@@ -68,14 +68,15 @@ feature names to filter on.}
 
 \item{drop}{ignored.}
 
-\item{to}{A character(1) or integer(1) indicating which assay to link to in
-\code{object}}
+\item{to}{A \code{character(1)} or \code{integer(1)} indicating which assay to link to
+in \code{object}}
 
-\item{varFrom}{A character (1) indicating the feature variable to use to
-match the \code{from} assay to the \code{to} assay.}
+\item{varFrom}{A \code{character()} indicating the feature variable(s) to use to
+match the \code{from} assay(s) to the \code{to} assay. \code{varFrom} must have the
+same length as \code{from} and is assumed to be ordered as \code{from}.}
 
-\item{varTo}{A character (1) indicating the feature variable to use to
-match the \code{to} assay to the \code{from} assay.}
+\item{varTo}{A \code{character(1)} indicating the feature variable to use to
+match the \code{to} assay to the \code{from} assay(s).}
 }
 \value{
 \code{assayLink} returns an instance of class \code{AssayLink}.
@@ -105,17 +106,16 @@ parent(s) \code{AssayLinks} or assay with index or name \code{i}.
 
 \section{Creating links between assays}{
 
-
-\code{addAssayLink} and \code{addAssayLinkOneToOne} link two assays in a \link{Features}
-object.
 \itemize{
-\item \code{addAssayLink} takes any two assays from the \link{Features} object and
-creates a link given a matching feature variable in each assay's
-\code{rowData}.
-\item \code{addAssayLinkOneToOne} also links two assays from the \link{Features}
-object, but the assays must have the same size and contain the same
-rownames although a different ordering is allowed. The matching is
-performed based on the row names of the assays.
+\item \code{addAssayLink} takes a parent assay and a child assay contained in the
+\link{Features} object and creates a link given a matching feature variable in
+each assay's \code{rowData}. \code{addAssayLink} also allows to link an assay from
+multiple parent assays (see Examples).
+\item \code{addAssayLinkOneToOne} links two assays contained in the \link{Features}
+object. The parent assay and the child assay must have the same size and
+contain the same rownames (a different ordering is allowed). The matching
+is performed based on the row names of the assays, instead of a supplied
+variable name in \code{rowData}. Providing multiple parents is not supported.
 }
 }
 
@@ -146,8 +146,7 @@ al2
 se <- SummarizedExperiment(matrix(runif(20), ncol = 2, 
                                   dimnames = list(LETTERS[1:10], letters[1:2])),
                            rowData = DataFrame(ID = 1:10))
-ft <- Features(list(assay1 = se, assay2 = se), 
-               metadata = list())
+ft <- Features(list(assay1 = se, assay2 = se))
                
 ## assay1 and assay2 are not linked
 assayLink(ft, "assay2") ## 'from' is NA
@@ -162,5 +161,16 @@ assayLink(ftLinked, "assay2")
 ## For one-to-one relationships, you can also use
 ftLinked <- addAssayLinkOneToOne(ft, from = "assay1", to = "assay2")
 assayLink(ftLinked, "assay2")
+
+##----------------------------------------
+## Adding an AssayLink between more assays
+##----------------------------------------
+
+## An assay can also be linked to multiple parent assays
+## Create a Features object with 2 parent assays and 1 child assay
+ft <- Features(list(parent1 = se[1:6, ], parent2 = se[4:10, ], child = se))
+ft <- addAssayLink(ft, from = c("parent1", "parent2"), to = "child",
+                   varFrom = c("ID", "ID"), varTo = "ID")
+assayLink(ft, "child")
 
 }

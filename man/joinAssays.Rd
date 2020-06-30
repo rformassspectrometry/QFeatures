@@ -39,6 +39,10 @@ are retained. For example of a feature variable \code{A} in sample \code{S1}
 contains value \code{a1} and variable \code{A} in sample \code{S2} in a different
 assay contains \code{a2}, then the feature variable \code{A} is dropped in
 the merged assay.
+
+The joined assay is linked to its parent assays through an \code{AssayLink}
+object. The link between the child assay and the parent assays is based on
+the assay row names, just like the procedure for joining the parent assays.
 }
 \examples{
 
