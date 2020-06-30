@@ -124,3 +124,14 @@ test_that("aggregateFeatures: aggcounts", {
     ## .n variable
     expect_identical(rowData(se)$.n , c(2L, 2L))
 })
+
+test_that("aggregateFeatures return class (issue 78)", {
+    library(SingleCellExperiment)
+    f <- addAssay(feat1, as(feat1[[1]], "SingleCellExperiment"), name = "sce")
+    ## Aggregating an SEs produces an SE
+    expect_identical(class(aggregateFeatures(f, i = 1, fcol = "Sequence")[["newAssay"]])[1],
+                     "SummarizedExperiment")
+    ## Aggregating an SCEs produces an SCE
+    expect_identical(class(aggregateFeatures(f, i = 2, fcol = "Sequence")[["newAssay"]])[1],
+                     "SingleCellExperiment")
+})

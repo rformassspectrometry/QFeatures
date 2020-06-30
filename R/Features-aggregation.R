@@ -24,7 +24,7 @@
 ##'     aggregated the create the new assay.
 ##'
 ##' @param fcol The feature variable of assay `i` defining how to
-##'     summerise the features.
+##'     summarise the features.
 ##'
 ##' @param name A `character(1)` naming the new assay. Default is
 ##'     `newAssay`. Note that the function will fail if there's
@@ -198,6 +198,10 @@ setMethod("aggregateFeatures", "Features",
         stop("'fcol' not found in the assay's rowData.")
     groupBy <- rowdata_i[[fcol]]
     
+    ## Store class of assay i in case it is not a Summarized experiment so that
+    ## the aggregated assay can be reverted to that class
+    class_i <- class(object[[i]])
+    
     ## Message about NA values is quant/row data
     has_na <- character()
     if (anyNA(assay_i))
@@ -222,6 +226,14 @@ setMethod("aggregateFeatures", "Features",
     se <- SummarizedExperiment(assays = SimpleList(assay = aggregated_assay,
                                                    aggcounts = aggcount_assay),
                                rowData = aggregated_rowdata[rownames(aggregated_assay), ])
+    ## If the input objects weren't SummarizedExperiments, then try to
+    ## convert the merged assay into that class. If the conversion
+    ## fails, keep the SummarizedExperiment, otherwise use the
+    ## converted object (see issue #78).
+    if (class_i != "SummarizedExperiment")
+        se <- tryCatch(as(se, class_i),
+                        error = function(e) se)
+    
     hits <- findMatches(rownames(aggregated_assay), groupBy)
     elementMetadata(hits)$names_to <- rowdata_i[[fcol]][hits@to]
     elementMetadata(hits)$names_from <- rownames(assay_i)[hits@to]
