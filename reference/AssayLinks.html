@@ -170,8 +170,8 @@ addAssayLinkOneToOne(object, from, to)</pre>
     </tr>
     <tr>
       <th>from</th>
-      <td><p>A character(1) or integer(1) indicating which assay to link from
-in <code>object</code></p></td>
+      <td><p>A <code><a href='https://rdrr.io/r/base/character.html'>character()</a></code> or <code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code> indicating which assay(s) to link
+from in <code>object</code></p></td>
     </tr>
     <tr>
       <th>fcol</th>
@@ -215,18 +215,19 @@ feature names to filter on.</p></td>
     </tr>
     <tr>
       <th>to</th>
-      <td><p>A character(1) or integer(1) indicating which assay to link to in
-<code>object</code></p></td>
+      <td><p>A <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> or <code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code> indicating which assay to link to
+in <code>object</code></p></td>
     </tr>
     <tr>
       <th>varFrom</th>
-      <td><p>A character (1) indicating the feature variable to use to
-match the <code>from</code> assay to the <code>to</code> assay.</p></td>
+      <td><p>A <code><a href='https://rdrr.io/r/base/character.html'>character()</a></code> indicating the feature variable(s) to use to
+match the <code>from</code> assay(s) to the <code>to</code> assay. <code>varFrom</code> must have the
+same length as <code>from</code> and is assumed to be ordered as <code>from</code>.</p></td>
     </tr>
     <tr>
       <th>varTo</th>
-      <td><p>A character (1) indicating the feature variable to use to
-match the <code>to</code> assay to the <code>from</code> assay.</p></td>
+      <td><p>A <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> indicating the feature variable to use to
+match the <code>to</code> assay to the <code>from</code> assay(s).</p></td>
     </tr>
     </table>
 
@@ -255,16 +256,16 @@ parent(s) <code>AssayLinks</code> or assay with index or name <code>i</code>.</p
 
     
 
-
-<p><code>addAssayLink</code> and <code>addAssayLinkOneToOne</code> link two assays in a <a href='Features-class.html'>Features</a>
-object.</p><ul>
-<li><p><code>addAssayLink</code> takes any two assays from the <a href='Features-class.html'>Features</a> object and
-creates a link given a matching feature variable in each assay's
-<code>rowData</code>.</p></li>
-<li><p><code>addAssayLinkOneToOne</code> also links two assays from the <a href='Features-class.html'>Features</a>
-object, but the assays must have the same size and contain the same
-rownames although a different ordering is allowed. The matching is
-performed based on the row names of the assays.</p></li>
+<ul>
+<li><p><code>addAssayLink</code> takes a parent assay and a child assay contained in the
+<a href='Features-class.html'>Features</a> object and creates a link given a matching feature variable in
+each assay's <code>rowData</code>. <code>addAssayLink</code> also allows to link an assay from
+multiple parent assays (see Examples).</p></li>
+<li><p><code>addAssayLinkOneToOne</code> links two assays contained in the <a href='Features-class.html'>Features</a>
+object. The parent assay and the child assay must have the same size and
+contain the same rownames (a different ordering is allowed). The matching
+is performed based on the row names of the assays, instead of a supplied
+variable name in <code>rowData</code>. Providing multiple parents is not supported.</p></li>
 </ul>
 
 
@@ -295,8 +296,7 @@ performed based on the row names of the assays.</p></li>
 <span class='no'>se</span> <span class='kw'>&lt;-</span> <span class='fu'>SummarizedExperiment</span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>20</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>,
                                   <span class='kw'>dimnames</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>10</span>], <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>2</span>])),
                            <span class='kw'>rowData</span> <span class='kw'>=</span> <span class='fu'>DataFrame</span>(<span class='kw'>ID</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>))
-<span class='no'>ft</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='Features-class.html'>Features</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>assay1</span> <span class='kw'>=</span> <span class='no'>se</span>, <span class='kw'>assay2</span> <span class='kw'>=</span> <span class='no'>se</span>),
-               <span class='kw'>metadata</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())
+<span class='no'>ft</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='Features-class.html'>Features</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>assay1</span> <span class='kw'>=</span> <span class='no'>se</span>, <span class='kw'>assay2</span> <span class='kw'>=</span> <span class='no'>se</span>))
 
 <span class='co'>## assay1 and assay2 are not linked</span>
 <span class='fu'>assayLink</span>(<span class='no'>ft</span>, <span class='st'>"assay2"</span>) <span class='co'>## 'from' is NA</span></div><div class='output co'>#&gt; AssayLink for assay &lt;assay2&gt;
@@ -311,7 +311,18 @@ performed based on the row names of the assays.</p></li>
 <span class='co'>## For one-to-one relationships, you can also use</span>
 <span class='no'>ftLinked</span> <span class='kw'>&lt;-</span> <span class='fu'>addAssayLinkOneToOne</span>(<span class='no'>ft</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='st'>"assay1"</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"assay2"</span>)
 <span class='fu'>assayLink</span>(<span class='no'>ftLinked</span>, <span class='st'>"assay2"</span>)</div><div class='output co'>#&gt; AssayLink for assay &lt;assay2&gt;
-#&gt; [from:assay1|fcol:OneToOne|hits:10]</div><div class='input'>
+#&gt; [from:assay1|fcol:._oneToOne|hits:10]</div><div class='input'>
+<span class='co'>##----------------------------------------</span>
+<span class='co'>## Adding an AssayLink between more assays</span>
+<span class='co'>##----------------------------------------</span>
+
+<span class='co'>## An assay can also be linked to multiple parent assays</span>
+<span class='co'>## Create a Features object with 2 parent assays and 1 child assay</span>
+<span class='no'>ft</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='Features-class.html'>Features</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>parent1</span> <span class='kw'>=</span> <span class='no'>se</span>[<span class='fl'>1</span>:<span class='fl'>6</span>, ], <span class='kw'>parent2</span> <span class='kw'>=</span> <span class='no'>se</span>[<span class='fl'>4</span>:<span class='fl'>10</span>, ], <span class='kw'>child</span> <span class='kw'>=</span> <span class='no'>se</span>))
+<span class='no'>ft</span> <span class='kw'>&lt;-</span> <span class='fu'>addAssayLink</span>(<span class='no'>ft</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"parent1"</span>, <span class='st'>"parent2"</span>), <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"child"</span>,
+                   <span class='kw'>varFrom</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ID"</span>, <span class='st'>"ID"</span>), <span class='kw'>varTo</span> <span class='kw'>=</span> <span class='st'>"ID"</span>)
+<span class='fu'>assayLink</span>(<span class='no'>ft</span>, <span class='st'>"child"</span>)</div><div class='output co'>#&gt; AssayLink for assay &lt;child&gt;
+#&gt; [from:parent1,parent2|fcol:ID,ID|hits:6,7]</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
