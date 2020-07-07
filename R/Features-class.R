@@ -212,7 +212,7 @@ setMethod("show", "Features",
               sampdim <- vapply(el, FUN = function(obj) {
                   dim(obj)[2]
               }, FUN.VALUE = integer(1L))
-              if (n <= 6) {
+              if (n <= 7) {
                   cat(sprintf("\n [%i] %s: %s with %s rows and %s columns",
                               seq(o_len), o_names, elem_cl, featdim, sampdim), "\n")
               } else {
