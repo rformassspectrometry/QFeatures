@@ -156,8 +156,8 @@
 ##' fts1
 ##' fts1[[1]]
 ##' fts1[["assay1"]]
-##' 
-##' ## Rename assay 
+##'
+##' ## Rename assay
 ##' names(fts1) <- c("se1", "se2")
 ##'
 ##' ## Add an assay
@@ -199,7 +199,8 @@ setMethod("show", "Features",
                   cat(sprintf("A empty instance of class %s", class(object)), "\n")
                   return(NULL)
               }
-              cat(sprintf("A instance of class %s", class(object)), "containing")
+              n <- length(object)
+              cat(sprintf("A instance of class %s", class(object)), "containing", n, "assays:")
               el <- experiments(object)
               o_class <- class(el)
               elem_cl <- vapply(el, class, character(1L))
@@ -211,8 +212,16 @@ setMethod("show", "Features",
               sampdim <- vapply(el, FUN = function(obj) {
                   dim(obj)[2]
               }, FUN.VALUE = integer(1L))
-              cat(sprintf("\n [%i] %s: %s with %s rows and %s columns",
-                          seq(o_len), o_names, elem_cl, featdim, sampdim), "\n")
+              if (n <= 6) {
+                  cat(sprintf("\n [%i] %s: %s with %s rows and %s columns",
+                              seq(o_len), o_names, elem_cl, featdim, sampdim), "\n")
+              } else {
+                  cat(sprintf("\n [%i] %s: %s with %s rows and %s columns",
+                              seq(o_len)[1:3], o_names[1:3], elem_cl[1:3], featdim[1:3], sampdim[1:3]), "\n")
+                  cat(" ...")
+                  cat(sprintf("\n [%i] %s: %s with %s rows and %s columns",
+                              seq(o_len)[(n-2):n], o_names[(n-2):n], elem_cl[(n-2):n], featdim[(n-2):n], sampdim[(n-2):n]), "\n")
+              }
           })
 
 
@@ -305,9 +314,9 @@ rowDataNames <- function(x) {
 
 
 ##' @rdname Features-class
-##' 
-##' @param value A character() with new name(s) for the assay(s) in `x`  
-##' 
+##'
+##' @param value A character() with new name(s) for the assay(s) in `x`
+##'
 ##' @exportMethod names<-
 setReplaceMethod("names", c("Features", "character"),
                  function(x, value) {
