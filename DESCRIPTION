@@ -1,4 +1,4 @@
-\Package: Features
+Package: Features
 Title: Quantitative features for mass spectrometry data
 Version: 0.6.4
 Authors@R: c(person("Laurent", "Gatto",
