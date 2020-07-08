@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.4</span>
       </span>
     </div>
 
@@ -180,10 +180,10 @@ document.addEventListener("DOMContentLoaded", function() {
 <h1 class="hasAnchor">
 <a href="#filtering-out-contaminants-and-reverse-hits" class="anchor"></a>Filtering out contaminants and reverse hits</h1>
 <div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="../reference/Features-filtering.html">filterFeatures</a></span>(<span class="no">cptac</span>, ~ <span class="no">Reverse</span> <span class="kw">==</span> <span class="st">""</span>)</pre></body></html></div>
-<pre><code>## A instance of class Features containing
+<pre><code>## A instance of class Features containing 1 assays:
 ##  [1] peptides: SummarizedExperiment with 11436 rows and 6 columns</code></pre>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="../reference/Features-filtering.html">filterFeatures</a></span>(<span class="no">cptac</span>, ~ <span class="no">Potential.contaminant</span> <span class="kw">==</span> <span class="st">""</span>)</pre></body></html></div>
-<pre><code>## A instance of class Features containing
+<pre><code>## A instance of class Features containing 1 assays:
 ##  [1] peptides: SummarizedExperiment with 11385 rows and 6 columns</code></pre>
 <div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"magrittr"</span>)
 <span class="no">cptac</span> <span class="kw">&lt;-</span> <span class="no">cptac</span> <span class="kw">%&gt;%</span>
@@ -232,7 +232,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <p>In this dataset, we have such a high number of peptides without any data because the 6 samples are a subset of a larger dataset, and these peptides happened to be absent in groups A and B. Below, we use <code>filterNA</code> to remove all the peptides that contain one or more missing values by using <code>pNA = 0</code> (which also is the default value).</p>
 <div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">cptac</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/Features-missing-data.html">filterNA</a></span>(<span class="no">cptac</span>, <span class="kw">i</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span>(<span class="no">cptac</span>), <span class="kw">pNA</span> <span class="kw">=</span> <span class="fl">0</span>)
 <span class="no">cptac</span></pre></body></html></div>
-<pre><code>## A instance of class Features containing
+<pre><code>## A instance of class Features containing 1 assays:
 ##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns</code></pre>
 <p>I we wanted to keep peptides that have up to 90% of missing values, corresponsing in this case to those that have only one value (i.e 5/6 percent of missing values), we could have set <code>pNA</code> to 0.9.</p>
 </div>
@@ -262,7 +262,7 @@ Mixed imputation method. Black cells represent presence of quantitation values a
                   <span class="fu"><a href="../reference/Features-processing.html">logTransform</a></span>(<span class="no">cptac</span><span class="kw">[[</span><span class="fl">1</span>]]),
                   <span class="kw">name</span> <span class="kw">=</span> <span class="st">"peptides_log"</span>)
 <span class="no">cptac</span></pre></body></html></div>
-<pre><code>## A instance of class Features containing
+<pre><code>## A instance of class Features containing 2 assays:
 ##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns 
 ##  [2] peptides_log: SummarizedExperiment with 4051 rows and 6 columns</code></pre>
 <div class="sourceCode" id="cb25"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mfrow</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))
@@ -283,7 +283,7 @@ Quantitative data in its original scale (left) and log2-transformed (right).
                   <span class="kw">name</span> <span class="kw">=</span> <span class="st">"peptides_norm"</span>)</pre></body></html></div>
 <pre><code>## Loading required namespace: preprocessCore</code></pre>
 <div class="sourceCode" id="cb28"><html><body><pre class="r"><span class="no">cptac</span></pre></body></html></div>
-<pre><code>## A instance of class Features containing
+<pre><code>## A instance of class Features containing 3 assays:
 ##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns 
 ##  [2] peptides_log: SummarizedExperiment with 4051 rows and 6 columns 
 ##  [3] peptides_norm: SummarizedExperiment with 4051 rows and 6 columns</code></pre>
@@ -313,7 +313,7 @@ Distribution of log2 peptide intensities before (left) and after (right) quantil
 </ul>
 <div class="sourceCode" id="cb31"><html><body><pre class="r"><span class="no">cptac</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/Features-aggregate.html">aggregateFeatures</a></span>(<span class="no">cptac</span>, <span class="kw">i</span> <span class="kw">=</span> <span class="st">"peptides_norm"</span>, <span class="kw">fcol</span> <span class="kw">=</span> <span class="st">"Proteins"</span>, <span class="kw">name</span> <span class="kw">=</span> <span class="st">"proteins"</span>)
 <span class="no">cptac</span></pre></body></html></div>
-<pre><code>## A instance of class Features containing
+<pre><code>## A instance of class Features containing 4 assays:
 ##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns 
 ##  [2] peptides_log: SummarizedExperiment with 4051 rows and 6 columns 
 ##  [3] peptides_norm: SummarizedExperiment with 4051 rows and 6 columns 
@@ -408,7 +408,7 @@ Expression intensities for the protein <em>P02787ups|TRFE_HUMAN_UPS</em> (right,
 <div id="session-information" class="section level1 unnumbered">
 <h1 class="hasAnchor">
 <a href="#session-information" class="anchor"></a>Session information</h1>
-<pre><code>## R Under development (unstable) (2020-06-30 r78753)
+<pre><code>## R Under development (unstable) (2020-07-07 r78791)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 14.04.5 LTS
 ## 
@@ -429,18 +429,18 @@ Expression intensities for the protein <em>P02787ups|TRFE_HUMAN_UPS</em> (right,
 ## [8] methods   base     
 ## 
 ## other attached packages:
-##  [1] gplots_3.0.3                magrittr_1.5               
+##  [1] gplots_3.0.4                magrittr_1.5               
 ##  [3] dplyr_1.0.0                 ggplot2_3.3.2              
-##  [5] Features_0.6.3              MultiAssayExperiment_1.15.2
+##  [5] Features_0.6.4              MultiAssayExperiment_1.15.2
 ##  [7] SummarizedExperiment_1.19.5 DelayedArray_0.15.6        
 ##  [9] matrixStats_0.56.0          Matrix_1.2-18              
 ## [11] Biobase_2.49.0              GenomicRanges_1.41.5       
-## [13] GenomeInfoDb_1.25.5         IRanges_2.23.10            
+## [13] GenomeInfoDb_1.25.8         IRanges_2.23.10            
 ## [15] S4Vectors_0.27.12           BiocGenerics_0.35.4        
 ## [17] BiocStyle_2.17.0           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.4.6            msdata_0.29.0           lattice_0.20-41        
+##  [1] Rcpp_1.0.5              msdata_0.29.0           lattice_0.20-41        
 ##  [4] gtools_3.8.2            assertthat_0.2.1        rprojroot_1.3-2        
 ##  [7] digest_0.6.25           R6_2.4.1                backports_1.1.8        
 ## [10] evaluate_0.14           highr_0.8               pillar_1.4.4           
@@ -450,7 +450,7 @@ Expression intensities for the protein <em>P02787ups|TRFE_HUMAN_UPS</em> (right,
 ## [22] stringr_1.4.0           ProtGenerics_1.19.3     RCurl_1.98-1.2         
 ## [25] munsell_0.5.0           compiler_4.1.0          xfun_0.15              
 ## [28] pkgconfig_2.0.3         htmltools_0.5.0         tidyselect_1.1.0       
-## [31] tibble_3.0.1            GenomeInfoDbData_1.2.3  bookdown_0.20          
+## [31] tibble_3.0.2            GenomeInfoDbData_1.2.3  bookdown_0.20          
 ## [34] crayon_1.3.4            withr_2.2.0             MASS_7.3-51.6          
 ## [37] bitops_1.0-6            grid_4.1.0              gtable_0.3.0           
 ## [40] lifecycle_0.2.0         AnnotationFilter_1.13.0 MsCoreUtils_1.1.4      
@@ -460,7 +460,7 @@ Expression intensities for the protein <em>P02787ups|TRFE_HUMAN_UPS</em> (right,
 ## [52] generics_0.0.2          tools_4.1.0             glue_1.4.1             
 ## [55] purrr_0.3.4             yaml_2.2.1              colorspace_1.4-1       
 ## [58] BiocManager_1.30.10     caTools_1.18.0          memoise_1.1.0          
-## [61] knitr_1.29.1</code></pre>
+## [61] knitr_1.29.3</code></pre>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="hasAnchor">

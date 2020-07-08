@@ -96,7 +96,7 @@ sure that these match the class validity requirements." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.4</span>
       </span>
     </div>
 
@@ -382,7 +382,7 @@ processing methods using in quantitative proteomics.</p></li>
 
 <span class='no'>el</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>assay1</span> <span class='kw'>=</span> <span class='no'>se1</span>, <span class='kw'>assay2</span> <span class='kw'>=</span> <span class='no'>se2</span>)
 <span class='no'>fts1</span> <span class='kw'>&lt;-</span> <span class='fu'>Features</span>(<span class='no'>el</span>, <span class='kw'>colData</span> <span class='kw'>=</span> <span class='no'>cd</span>)
-<span class='no'>fts1</span></div><div class='output co'>#&gt; A instance of class Features containing
+<span class='no'>fts1</span></div><div class='output co'>#&gt; A instance of class Features containing 2 assays:
 #&gt;  [1] assay1: SummarizedExperiment with 10 rows and 4 columns 
 #&gt;  [2] assay2: SummarizedExperiment with 4 rows and 4 columns </div><div class='input'><span class='no'>fts1</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; class: SummarizedExperiment 
 #&gt; dim: 10 4 
@@ -406,7 +406,7 @@ processing methods using in quantitative proteomics.</p></li>
 <span class='no'>fts1</span> <span class='kw'>&lt;-</span> <span class='fu'>addAssay</span>(<span class='no'>fts1</span>, <span class='no'>se1</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, ], <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"se3"</span>)
 
 <span class='co'>## Keep only the Fa variable</span>
-<span class='fu'>selectRowData</span>(<span class='no'>fts1</span>, <span class='kw'>rowvars</span> <span class='kw'>=</span> <span class='st'>"Fa"</span>)</div><div class='output co'>#&gt; A instance of class Features containing
+<span class='fu'>selectRowData</span>(<span class='no'>fts1</span>, <span class='kw'>rowvars</span> <span class='kw'>=</span> <span class='st'>"Fa"</span>)</div><div class='output co'>#&gt; A instance of class Features containing 3 assays:
 #&gt;  [1] se1: SummarizedExperiment with 10 rows and 4 columns 
 #&gt;  [2] se2: SummarizedExperiment with 4 rows and 4 columns 
 #&gt;  [3] se3: SummarizedExperiment with 2 rows and 4 columns </div><div class='input'>
