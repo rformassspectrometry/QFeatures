@@ -179,34 +179,53 @@ NULL
 ##' @rdname Features-aggregate
 setMethod("aggregateFeatures", "Features",
           function(object, i, fcol, name = "newAssay",
-                   fun = MsCoreUtils::robustSummary, ...)
-              .aggregateFeatures(object, i, fcol, name, fun, ...))
+                   fun = MsCoreUtils::robustSummary, ...) {
+              if (isEmpty(object))
+                  return(object)
+              if (name %in% names(object))
+                  stop("There's already an assay named '", name, "'.")
+              if (missing(i))
+                  i <- main_assay(object)
+              ## Create the aggregated assay
+              aggAssay <- .aggregateFeatures(object[[i]], fcol, fun, ...)
+              ## Add the assay to the Features object
+              object <- addAssay(object,
+                                 aggAssay,
+                                 name = name)
+              ## Link the input assay to the aggregated assay
+              addAssayLink(object, 
+                           from = i, 
+                           to  = name,
+                           varFrom = fcol,
+                           varTo = fcol)
+          })
 
 
-.aggregateFeatures <- function(object, i, fcol, name, fun, ...) {
-    if (isEmpty(object))
-        return(object)
-    if (name %in% names(object))
-        stop("There's already an assay named '", name, "'.")
+##' @exportMethod aggregateFeatures
+##' @rdname Features-aggregate
+setMethod("aggregateFeatures", "SummarizedExperiment",
+          function(object, fcol, fun = MsCoreUtils::robustSummary, ...)
+              .aggregateFeatures(object, fcol, fun, ...))
+
+
+.aggregateFeatures <- function(object, fcol, fun, ...) {
     if (missing(fcol))
         stop("'fcol' is required.")    
-    if (missing(i))
-        i <- main_assay(object)
-    assay_i <- assay(object, i)
-    rowdata_i <- rowData(object[[i]])
-    if (!fcol %in% names(rowdata_i))
+    m <- assay(object, 1)
+    rd <- rowData(object)
+    if (!fcol %in% names(rd))
         stop("'fcol' not found in the assay's rowData.")
-    groupBy <- rowdata_i[[fcol]]
+    groupBy <- rd[[fcol]]
     
     ## Store class of assay i in case it is not a Summarized experiment so that
     ## the aggregated assay can be reverted to that class
-    class_i <- class(object[[i]])
+    .class <- class(object)
     
     ## Message about NA values is quant/row data
     has_na <- character()
-    if (anyNA(assay_i))
+    if (anyNA(m))
         has_na <- c(has_na, "quantitative")
-    if (anyNA(rowdata_i, recursive = TRUE))
+    if (anyNA(rd, recursive = TRUE))
         has_na <- c(has_na, "row")
     if (length(has_na)) {
         msg <- paste(paste("Your", paste(has_na, collapse = " and "),
@@ -216,13 +235,13 @@ setMethod("aggregateFeatures", "Features",
                      "effects of missing values on data aggregation.")
         message(paste(strwrap(msg), collapse = "\n"))
     }
-
-    aggregated_assay <- aggregate_by_vector(assay_i, groupBy, fun, ...)
-    aggcount_assay <- aggregate_by_vector(assay_i, groupBy, colCounts)
-    aggregated_rowdata <- Features::reduceDataFrame(rowdata_i, rowdata_i[[fcol]],
-                                                   simplify = TRUE, drop = TRUE,
-                                                   count = TRUE)
-
+    
+    aggregated_assay <- aggregate_by_vector(m, groupBy, fun, ...)
+    aggcount_assay <- aggregate_by_vector(m, groupBy, colCounts)
+    aggregated_rowdata <- Features::reduceDataFrame(rd, rd[[fcol]],
+                                                    simplify = TRUE, drop = TRUE,
+                                                    count = TRUE)
+    
     se <- SummarizedExperiment(assays = SimpleList(assay = aggregated_assay,
                                                    aggcounts = aggcount_assay),
                                rowData = aggregated_rowdata[rownames(aggregated_assay), ])
@@ -230,21 +249,9 @@ setMethod("aggregateFeatures", "Features",
     ## convert the merged assay into that class. If the conversion
     ## fails, keep the SummarizedExperiment, otherwise use the
     ## converted object (see issue #78).
-    if (class_i != "SummarizedExperiment")
-        se <- tryCatch(as(se, class_i),
-                        error = function(e) se)
+    if (.class != "SummarizedExperiment")
+        se <- tryCatch(as(se, .class),
+                       error = function(e) se)
     
-    hits <- findMatches(rownames(aggregated_assay), groupBy)
-    elementMetadata(hits)$names_to <- rowdata_i[[fcol]][hits@to]
-    elementMetadata(hits)$names_from <- rownames(assay_i)[hits@to]
-
-    assayLinks <- AssayLink(name = name,
-                            from = ifelse(is.character(i), i, names(object)[i]),
-                            fcol = fcol,
-                            hits = hits)
-    addAssay(object,
-             se,
-             name = name,
-             assayLinks = assayLinks)
-
+    return(se)
 }
