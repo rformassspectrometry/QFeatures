@@ -6,6 +6,7 @@
 \alias{aggregateFeatures,Features-method}
 \alias{aggcounts}
 \alias{aggcounts,SummarizedExperiment}
+\alias{aggregateFeatures,SummarizedExperiment-method}
 \alias{aggcounts,SummarizedExperiment-method}
 \title{Aggregate an assay's quantitative features}
 \usage{
@@ -18,16 +19,18 @@
   ...
 )
 
+\S4method{aggregateFeatures}{SummarizedExperiment}(object, fcol, fun = MsCoreUtils::robustSummary, ...)
+
 \S4method{aggcounts}{SummarizedExperiment}(object, ...)
 }
 \arguments{
-\item{object}{An instance of class \link{Features}.}
+\item{object}{An instance of class \link{Features} or \link{SummarizedExperiment}.}
 
 \item{i}{The index or name of the assay which features will be
 aggregated the create the new assay.}
 
 \item{fcol}{The feature variable of assay \code{i} defining how to
-summerise the features.}
+summarise the features.}
 
 \item{name}{A \code{character(1)} naming the new assay. Default is
 \code{newAssay}. Note that the function will fail if there's
@@ -39,7 +42,8 @@ aggregation. See Details for examples.}
 \item{...}{Additional parameters passed the \code{fun}.}
 }
 \value{
-A \code{Features} object with an additional assay.
+A \code{Features} object with an additional assay or a
+\code{SummarizedExperiment} object (or subclass thereof).
 }
 \description{
 This function aggregates the quantitative features of an assay,
@@ -67,8 +71,8 @@ thereof are
 decomposition) using Tukey's median polish_ procedure using \code{\link[stats:medpolish]{stats::medpolish()}};
 \item \code{\link[MsCoreUtils:robustSummary]{MsCoreUtils::robustSummary()}} to calculate a robust aggregation
 using \code{\link[MASS:rlm]{MASS::rlm()}} (default);
-\item \code{\link[base:colMeans]{base::colMeans()}} to use the mean of each column;
-\item \code{\link[matrixStats:colMedians]{matrixStats::colMedians()}} to use the median of each column.
+\item \code{\link[base:colSums]{base::colMeans()}} to use the mean of each column;
+\item \code{\link[matrixStats:rowMedians]{matrixStats::colMedians()}} to use the median of each column.
 \item \code{\link[base:colSums]{base::colSums()}} to use the sum of each column;
 }
 }

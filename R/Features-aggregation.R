@@ -18,7 +18,7 @@
 ##' were aggregated. This `.n` value is always >= that the
 ##' sample-level `aggcounts`.
 ##'
-##' @param object An instance of class [Features].
+##' @param object An instance of class [Features] or [SummarizedExperiment].
 ##'
 ##' @param i The index or name of the assay which features will be
 ##'     aggregated the create the new assay.
@@ -35,7 +35,8 @@
 ##'
 ##' @param ... Additional parameters passed the `fun`.
 ##'
-##' @return A `Features` object with an additional assay.
+##' @return A `Features` object with an additional assay or a
+##'  `SummarizedExperiment` object (or subclass thereof).
 ##'
 ##' @details
 ##'
