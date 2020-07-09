@@ -167,6 +167,9 @@ sample-level <code>aggcounts</code>.</p>
 )
 
 <span class='co'># S4 method for SummarizedExperiment</span>
+<span class='fu'>aggregateFeatures</span>(<span class='no'>object</span>, <span class='no'>fcol</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='kw pkg'>MsCoreUtils</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/MsCoreUtils/man/robustSummary.html'>robustSummary</a></span>, <span class='no'>...</span>)
+
+<span class='co'># S4 method for SummarizedExperiment</span>
 <span class='fu'>aggcounts</span>(<span class='no'>object</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -174,7 +177,7 @@ sample-level <code>aggcounts</code>.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>An instance of class <a href='Features-class.html'>Features</a>.</p></td>
+      <td><p>An instance of class <a href='Features-class.html'>Features</a> or SummarizedExperiment.</p></td>
     </tr>
     <tr>
       <th>i</th>
@@ -184,7 +187,7 @@ aggregated the create the new assay.</p></td>
     <tr>
       <th>fcol</th>
       <td><p>The feature variable of assay <code>i</code> defining how to
-summerise the features.</p></td>
+summarise the features.</p></td>
     </tr>
     <tr>
       <th>name</th>
@@ -205,7 +208,8 @@ aggregation. See Details for examples.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>Features</code> object with an additional assay.</p>
+    <p>A <code>Features</code> object with an additional assay or a
+<code>SummarizedExperiment</code> object (or subclass thereof).</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Aggregation is performed by a function that takes a matrix as
