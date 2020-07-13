@@ -6,11 +6,11 @@ One or two assay levels could be considered in Features:
   processed (log-transformed, normalised, ...) in a way that its
   dimensions stay the same, a new SE is created and added to the
   Features object.
-  
+
 - two level: SEs can contain multiple assays, and when an SE is
   processed (log-transformed, normalised, ...) in a way that its
   dimensions stay the same, a new assay is added to that SE.
-  
+
 This
 [question](https://stat.ethz.ch/pipermail/bioc-devel/2020-January/016096.html)
 on the bioc-devel list ask for advice on SE processing, and whether a
@@ -27,7 +27,7 @@ would require additional developments:
 - Every function that operates on an SE of a Features object would
   need to allow the user to specify which assay to use (and/or by
   default use the latest one).
-  
+
 - The `show,Features` method would need to display the number/names of
   the assays in each SE to make these two levels explicit.
 
@@ -48,7 +48,7 @@ each low-level features.
 
 1. Through aggregation with `aggregateFeatures`.
 
-2. Processing an SE. 
+2. Processing an SE.
 
 This can/could be done explicitly with `addAssay`
 
@@ -57,14 +57,14 @@ addAssay(cptac, logTransform(cptac[["peptides"]]), name = "peptides_log")
 addAssay(cptac, logTransform(cptac[[1]]), name = "peptides_log")
 ```
 
-or implicitly 
+or implicitly
 
 ```
 logTransform(cptac, "peptides", name = "peptides_log")
 logTransform(cptac, 1, name = "peptides_log")
 ```
 
-3. Joining SEs (for example multiple TMT batches) (TODO) 
+3. Joining SEs (for example multiple TMT batches) (TODO)
 
 ```
 joinAssays(Features, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
@@ -80,16 +80,16 @@ See below.
 - A processing function that acts on a Feature's assay (typically a
   `SummarizedExperiment` or a `SingleCellExperiment`) such as
   `process(object)`, returns a new object of the same type.
-  
+
 - A processing function such `process(object, i)`, that acts on a
   Feautre object takes a second argument `i`, that can be a vector of
   indices or names, returns a new object of class Features with its
   assay(s) `i` modified according to `process(object[[i]])`.
-  
+
 - The argument `i` mustn't be missing, i.e. one shouldn't (at least in
   general) permit to (blindly) apply some processing on all assays.
-  
-### Assays 
+
+### Assays
 
 - Assays should have unique rownames (even though this isn't required
   for SEs). If they aren't, only the first occurence of the name is
@@ -102,28 +102,29 @@ hlpsms <- hlpsms[1:5000, ] ## faster
 ft1 <- readFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence")
 sum(rownames(ft1[[1]]) == "ANLPQSFQVDTSk")
 ft1 <- aggregateFeatures(ft1, "psms", fcol = "Sequence",
-                         name = "peptides", fun = colSums)
+						 name = "peptides", fun = colSums)
 sapply(rownames(ft1), anyDuplicated)
 ft1
 
 ## subsetting still works
 ft2 <- subsetByFeature(ft1, "ANLPQSFQVDTSk")
-ft2 
+ft2
 ```
 
   The underlying reason why this fails is due to matrix subsetting by
   name when these names aren't unique.
-  
-```
+
+```r
 m <- matrix(1:10, ncol = 2)
 colnames(m) <- LETTERS[1:2]
 rownames(m) <- c("a", letters[1:4])
 m
+m["a", ]
 ```
 
 And of course, this affects SEs ...
 
-```
+```r
 se <- SummarizedExperiment(m)
 assay(se["a", ])
 ```
@@ -131,14 +132,14 @@ assay(se["a", ])
 ... and MultiAssayExperiments.
 
 Note that in the example above, `"ANLPQSFQVDTSk"` is present in both
-the `psms` and `peptides` assays, and the 
+the `psms` and `peptides` assays, and the
 
 ```
 for (k in setdiff(all_assays_names, leaf_assay_name)) { ... }
 ```
-loop in `.subsetByFeature` isn't executed at all. This will need to 
+loop in `.subsetByFeature` isn't executed at all. This will need to
 be investigated. But the behaviour above can be reproduced even when
-that's not the case. See 
+that's not the case. See
 
 ```
 hlpsms$Sequence2 <- paste0(hlpsms$Sequence, "2")
@@ -156,8 +157,8 @@ This could be **fixed** by switching to indices:
 a 1 6
 a 2 7
 > se[i, ]
-class: SummarizedExperiment 
-dim: 2 2 
+class: SummarizedExperiment
+dim: 2 2
 metadata(0):
 assays(1): ''
 rownames(2): a a
@@ -166,13 +167,15 @@ colnames(2): A B
 colData names(0):
 ```
 
+See issue #91.
+
 # Assay links
 
 Currently, we have
 
 - Assay links produces by `aggregateFeatures` and manually with
   `addAssayLink`.
-  
+
 - *One-to-one* Assay links produced by a processing function such as
   `logTransform` or with `addAssayLinkOneToOne`. These contain
   `"OneToOne"` in the `fcol` slot (isseu 42).
@@ -182,7 +185,7 @@ Currently, we have
 
 # Joining assays
 
-To *combine* assays, we also need 
+To *combine* assays, we also need
 1. relaxed `MatchedAssayExperiment` constrains (see #46)
 2. assay links with multiple parent assays (see #52)
 
@@ -199,7 +202,7 @@ We need a **join**-type of function, that adds NAs at the assay
 level. To do this, we need to have a union of features before rbinding
 the assays.
 
-As for rowData, we want to 
+As for rowData, we want to
 
 - keep the mcols that match exactly between assays (ex:
   PeptideSequence, ProteinAccession, ...)
