@@ -11,7 +11,8 @@ test_that("readFeatures", {
     ft1 <- readFeatures(x, ecol = 1:10, name = NULL)
     ft2 <- readFeatures(f, ecol = 1:10, name = NULL)
     expect_equal(ft1, ft2)
-    ft1 <- readFeatures(x, ecol = 1:10, name = "psms", fname = "Sequence")
+    expect_message(ft1 <- readFeatures(x, ecol = 1:10, name = "psms", fname = "Sequence"),
+                   "Making assay rownames unique.")
     ft2 <- readFeatures(f, ecol = 1:10, name = "psms", fname = "Sequence")
     expect_equal(ft1, ft2)
     ft2 <- readFeatures(x, ecol = 1:10, name = "psms", fname = 11)

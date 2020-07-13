@@ -106,4 +106,8 @@ test_that("renaming", {
 
 
 test_that("assays must have unique rownames", {
+    hlpsms <- hlpsms[1:10, ]
+    ft1 <- readFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence")
+    rownames(ft1[[1]][1:2]) <- rep("1", 2)
+    expect_error(validObject(ft1))
 })

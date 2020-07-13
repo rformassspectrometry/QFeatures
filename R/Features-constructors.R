@@ -56,7 +56,7 @@
 readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
     se <- readSummarizedExperiment(table, ecol, fnames, ...)
     if (anyDuplicated(rownames(se))) {
-        message("Make feature names unique.")
+        message("Making assay rownames unique.")
         rownames(se) <- make.unique(rownames(se))
     }
     cd <- DataFrame(row.names = colnames(se))
