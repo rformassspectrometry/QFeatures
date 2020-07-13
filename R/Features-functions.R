@@ -23,22 +23,32 @@ number_assays_in_se <- function(object) {
 .valid_assay_links <- function(object) {
     n_exp <- names(experiments(object))
     al_names <- unname(sapply(object@assayLinks, "slot", "name"))
-    ## An AssayLinks object is valid if the names of the node for all assays 
+    ## An AssayLinks object is valid if the names of the node for all assays
     ## are contained in the assay names of the Features object
     if (!all(al_names %in% n_exp))
         stop("@names not valid")
     al_from <- unname(unlist(sapply(object@assayLinks, "slot", "from")))
-    ## An AssayLinks object is valid if the names of the parent assays for all 
-    ## assays are either NA (= root node) or contained in the assay names of the 
+    ## An AssayLinks object is valid if the names of the parent assays for all
+    ## assays are either NA (= root node) or contained in the assay names of the
     ## Features object
     if (!all(is.na(al_from) | al_from %in% n_exp))
         stop("@from not valid")
     NULL
 }
 
+.unique_row_names <- function(object) {
+    dup_row_names <- sapply(experiments(object),
+                            function(x) anyDuplicated(rownames(x)))
+    if (any(dup_row_names != 0))
+        stop("Assay(s) ", paste(which(dup_row_names != 0), collapse = ", "),
+             " has/have duplicated row names.")
+    NULL
+}
+
 .valid_Features <- function(object) {
     .valid_Features_indices(object)
     .valid_assay_links(object)
+    .unique_row_names(object)
 }
 
 setValidity("Features", .valid_Features)

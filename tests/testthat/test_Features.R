@@ -46,10 +46,10 @@ test_that("addAssay", {
 test_that("[,Features", {
     data(feat1)
     feat1 <- aggregateFeatures(feat1, "psms", "Sequence", "peptides")
-    expect_true(validObject(feat1[, , "psms"])) 
-    expect_true(validObject(feat1[, , "peptides"])) 
-    expect_true(validObject(feat1[, , 1])) 
-    expect_true(validObject(feat1[, , 2])) 
+    expect_true(validObject(feat1[, , "psms"]))
+    expect_true(validObject(feat1[, , "peptides"]))
+    expect_true(validObject(feat1[, , 1]))
+    expect_true(validObject(feat1[, , 2]))
 })
 
 
@@ -89,7 +89,7 @@ test_that("renaming", {
     feat2 <- feat1
     names(feat2) <- LETTERS[1:3]
     expect_true(validObject(feat2))
-    # Expect errors 
+    # Expect errors
     feat2@assayLinks[[1]]@name <- "foo"
     expect_error(validObject(feat2),
                  regexp = "@names not valid")
@@ -104,3 +104,10 @@ test_that("renaming", {
 })
 
 
+
+test_that("assays must have unique rownames", {
+    hlpsms <- hlpsms[1:10, ]
+    ft1 <- readFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence")
+    rownames(ft1[[1]][1:2]) <- rep("1", 2)
+    expect_error(validObject(ft1))
+})
