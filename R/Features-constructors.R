@@ -4,7 +4,7 @@
 ##'
 ##' Convert tabular data from a spreadsheet or a `data.frame` into a
 ##' `Features` object.
-##'                          
+##'
 ##' @param table File or object holding the quantitative data. Can be
 ##'     either a `character(1)` with the path to a text-based
 ##'     spreadsheet (comma-separated values by default, but see `...`)
@@ -25,7 +25,7 @@
 ##' @param ... Further arguments that can be passed on to `read.csv`
 ##'     except `stringsAsFactors`, which is always `FALSE`.
 ##'
-##' @param name An `character(1)` to name assay in the `Features` 
+##' @param name An `character(1)` to name assay in the `Features`
 ##'     object. If not set, `features` is used.
 ##'
 ##' @return An instance of class [Features] or [SummarizedExperiment].
@@ -33,7 +33,7 @@
 ##' @author Laurent Gatto
 ##'
 ##' @describeIn readFeatures See description.
-##' 
+##'
 ##' @importFrom utils read.csv
 ##' @importFrom methods new validObject
 ##' @import SummarizedExperiment
@@ -48,13 +48,17 @@
 ##' @examples
 ##'
 ##' ## Load a data.frame with PSM-level data
-##' data(hlpsms) 
+##' data(hlpsms)
 ##'
 ##' ## Create the Features object
 ##' fts2 <- readFeatures(hlpsms, ecol = 1:10, name = "psms")
 ##' fts2
 readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
     se <- readSummarizedExperiment(table, ecol, fnames, ...)
+    if (anyDuplicated(rownames(se))) {
+        message("Make feature names unique.")
+        rownames(se) <- make.unique(rownames(se))
+    }
     cd <- DataFrame(row.names = colnames(se))
     if (is.null(name))
         name <- "features"
@@ -68,7 +72,7 @@ readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
         metadata = ans@metadata,
         assayLinks = al)
 }
-##' @describeIn readFeatures Convert tabular data from a spreadsheet or a 
+##' @describeIn readFeatures Convert tabular data from a spreadsheet or a
 ##' `data.frame` into a `SummarizedExperiment` object.
 ##' @export
 readSummarizedExperiment <- function(table, ecol, fnames, ...) {
@@ -94,7 +98,7 @@ readSummarizedExperiment <- function(table, ecol, fnames, ...) {
     }
     assay <- as.matrix(xx[, ecol])
     fdata <- DataFrame(xx[, -ecol, drop = FALSE])
-    
+
     if (!missing(fnames)) {
         fnames <- fnames[1]
         if (is.numeric(fnames))
