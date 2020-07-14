@@ -12,8 +12,8 @@
 }
 
 ## Internal wrapper function around `.nNA` for processing multiple assays
-## @param object A `Features` object
-## @param i One or more indices or names of the assay(s) to be processed. 
+## @param object A `QFeatures` object
+## @param i One or more indices or names of the assay(s) to be processed.
 .nNAi <- function(object, i) {
     if (length(object) == 1)
       return(.nNA(object[[1]]))
@@ -23,31 +23,31 @@
 }
 
 .row_for_filterNA <- function(x, pNA = 0L) {
-    if (!is.matrix(x)) 
+    if (!is.matrix(x))
       stop(sQuote("x"), " must be a matrix.")
-    if (!is.numeric(pNA)) 
+    if (!is.numeric(pNA))
       stop(sQuote("pNA"), " must be numeric.")
-    if (length(pNA) > 1) 
+    if (length(pNA) > 1)
       stop(sQuote("pNA"), " must be of length one.")
     if (pNA > 1) pNA <- 1
-    if (pNA < 0) pNA <- 0    
+    if (pNA < 0) pNA <- 0
     k <- rowSums(is.na(x)) / ncol(x)
     k <= pNA
 }
 
-## Internal function for formating the result of nNA as a table when applied to 
-## multiple samples 
-## @param object A `Features` object
+## Internal function for formating the result of nNA as a table when applied to
+## multiple samples
+## @param object A `QFeatures` object
 ## @param res A list of results obtained after applying `nNA` to multiple assays
 ##     of `object`
-## @param i indices or names of the assays that were processed. 
+## @param i indices or names of the assays that were processed.
 .nNAasTable <- function(object, res, i) {
     if (length(i) == 1) return(res[[1]])
     object <- object[, , i]
     names(res) <- names(object)
     ans <- vector("list", length = 3)
     names(ans) <- c("nNA", "nNArows", "nNAcols")
-    ans[[1]] <- sapply(res, "[[", 1)              
+    ans[[1]] <- sapply(res, "[[", 1)
     ans[[3]] <- t(sapply(res, "[[", 3))
     ans2 <- matrix(0,
                    ncol = 1 + nrow(colData(object)),
@@ -66,10 +66,10 @@
 ##' @title Managing missing data
 ##'
 ##' @description
-##' 
+##'
 ##' This manual page describes the handling of missing values in
-##' [Features] objects. In the following functions, if `object` is of
-##' class `Features`, and optional assay index or name `i` can be
+##' [QFeatures] objects. In the following functions, if `object` is of
+##' class `QFeatures`, and optional assay index or name `i` can be
 ##' specified to define the assay (by name of index) on which to
 ##' operate.
 ##'
@@ -78,7 +78,7 @@
 ##' - `zeroIsNA(object, i)` replaces all 0 in `object` by `NA`. This
 ##'    is often necessary when third-party software assume that
 ##'    features that weren't quantified should be assigned an
-##'    intensity of 0. 
+##'    intensity of 0.
 ##'
 ##' - `nNA(object, i)` return a list of missing value summaries. The
 ##'   first element `nNA` gives the percentage of missing values; the
@@ -91,8 +91,8 @@
 ##'   `pNA` percentage or more missing values.
 ##'
 ##' See the *Processing* vignette for examples.
-##' 
-##' @param object An object of class `Features` or `SummarizedExperiment`.
+##'
+##' @param object An object of class `QFeatures` or `SummarizedExperiment`.
 ##'
 ##' @param pNA `numeric(1)` providing the maximim percentage of
 ##'     missing values per feature (row) that is acceptable. Feature
@@ -103,37 +103,37 @@
 ##'
 ##' @return An instance of the same class as `object`.
 ##'
-##' @aliases zeroIsNA zeroIsNA,SummarizedExperiment,missing-method zeroIsNA,Features,missing-method zeroIsNA,Features,numeric-method zeroIsNA,Features,integer-method zeroIsNA,Features,character-method
+##' @aliases zeroIsNA zeroIsNA,SummarizedExperiment,missing-method zeroIsNA,QFeatures,missing-method zeroIsNA,QFeatures,numeric-method zeroIsNA,QFeatures,integer-method zeroIsNA,QFeatures,character-method
 ##'
-##' @aliases nNA nNA,SummarizedExperiment,missing-method nNA,Features,missing-method nNA,Features,numeric-method nNA,Features,integer-method nNA,Features,character-method
+##' @aliases nNA nNA,SummarizedExperiment,missing-method nNA,QFeatures,missing-method nNA,QFeatures,numeric-method nNA,QFeatures,integer-method nNA,QFeatures,character-method
 ##'
-##' @aliases filterNA filterNA,SummarizedExperiment-method filterNA,Features-method
+##' @aliases filterNA filterNA,SummarizedExperiment-method filterNA,QFeatures-method
 ##'
 ##' @name missing-data
-##' 
-##' @rdname Features-missing-data
+##'
+##' @rdname QFeatures-missing-data
 NULL
 
 
 ##' @exportMethod zeroIsNA
-##' @rdname Features-missing-data
+##' @rdname QFeatures-missing-data
 setMethod("zeroIsNA", c("SummarizedExperiment", "missing"),
           function(object, i) .zeroIsNA(object))
 
-##' @rdname Features-missing-data
-setMethod("zeroIsNA", c("Features", "integer"),
+##' @rdname QFeatures-missing-data
+setMethod("zeroIsNA", c("QFeatures", "integer"),
           function(object, i) {
               for (ii in i)
                   object[[ii]] <- zeroIsNA(object[[ii]])
               object
           })
 
-##' @rdname Features-missing-data
-setMethod("zeroIsNA", c("Features", "numeric"),
+##' @rdname QFeatures-missing-data
+setMethod("zeroIsNA", c("QFeatures", "numeric"),
           function(object, i) zeroIsNA(object, as.integer(i)))
 
-##' @rdname Features-missing-data
-setMethod("zeroIsNA", c("Features", "character"),
+##' @rdname QFeatures-missing-data
+setMethod("zeroIsNA", c("QFeatures", "character"),
           function(object, i) {
               for (ii in i)
                 object[[ii]] <- zeroIsNA(object[[ii]])
@@ -141,32 +141,32 @@ setMethod("zeroIsNA", c("Features", "character"),
           })
 
 ##' @exportMethod nNA
-##' @rdname Features-missing-data
+##' @rdname QFeatures-missing-data
 setMethod("nNA", c("SummarizedExperiment", "missing"),
           function(object, i) .nNA(object))
 
-##' @rdname Features-missing-data
-setMethod("nNA", c("Features", "integer"),
+##' @rdname QFeatures-missing-data
+setMethod("nNA", c("QFeatures", "integer"),
           function(object, i) .nNAi(object, i))
 
-##' @rdname Features-missing-data
-setMethod("nNA", c("Features", "numeric"),
+##' @rdname QFeatures-missing-data
+setMethod("nNA", c("QFeatures", "numeric"),
           function(object, i) .nNAi(object, as.integer(i)))
 
-##' @rdname Features-missing-data
-setMethod("nNA", c("Features", "character"),
+##' @rdname QFeatures-missing-data
+setMethod("nNA", c("QFeatures", "character"),
           function(object, i) .nNAi(object, i) )
 
 ##' @exportMethod filterNA
-##' @rdname Features-missing-data
+##' @rdname QFeatures-missing-data
 setMethod("filterNA", "SummarizedExperiment",
           function(object, pNA = 0) {
               k <- .row_for_filterNA(assay(object), pNA)
               object[k, ]
           })
 
-##' @rdname Features-missing-data
-setMethod("filterNA", "Features",
+##' @rdname QFeatures-missing-data
+setMethod("filterNA", "QFeatures",
           function(object, pNA = 0, i) {
               if (missing(i))
                   stop("'i' not provided. You must specify which assay(s) to process.")
@@ -174,4 +174,3 @@ setMethod("filterNA", "Features",
                 object[[ii]] <- filterNA(object[[ii]], pNA)
               object
           })
-

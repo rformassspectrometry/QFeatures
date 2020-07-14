@@ -2,16 +2,16 @@
 title: "Quantitative features for mass spectrometry data"
 author:
 - name: Laurent Gatto
-package: Features
+package: QFeatures
 abstract: >
- This vignette describes the functionality implemented in the Features
- package. Features provides infrastructure to manage and process
+ This vignette describes the functionality implemented in the QFeatures
+ package. QFeatures provides infrastructure to manage and process
  quantitative features for high-throughput mass spectrometry assays,
  including proteomics and metabolomics.
 output:
   BiocStyle::html_document:
     toc_float: true
-bibliography: Features.bib
+bibliography: QFeatures.bib
 vignette: >
   %\VignetteIndexEntry{Quantitative features for mass spectrometry data}
   %\VignetteEngine{knitr::rmarkdown}
@@ -24,25 +24,25 @@ BiocStyle::markdown()
 ```
 
 ```{r env, message = FALSE, warning = FALSE, echo = FALSE}
-library("Features")
+library("QFeatures")
 ```
 
 
 # Introduction
 
-The `Features` package provides infrastructure (that is classes and
+The `QFeatures` package provides infrastructure (that is classes and
 the methods to process and manipulate them) to manage and analyse
 quantitative features from mass spectrometry experiments. It is based
 on the `MultiAssayExperiment` class from the `r BiocStyle::Biocpkg("MultiAssayExperiment")`
-[@Ramos:2017].  that stores a set of assays. Assays in a `Features`
+[@Ramos:2017].  that stores a set of assays. Assays in a `QFeatures`
 object have a specific relation, that is depicted in figure
-\@ref(fig:featuresplot): assays in a `Features` object are the result
+\@ref(fig:featuresplot): assays in a `QFeatures` object are the result
 of the aggregation of quantitative features of other assays. In the
 case of a quantitative proteomics experiment, these different assays
 would be PSMs, that are aggregated into peptides, that are themselves
 aggregated into proteins.
 
-```{r featuresplot, fig.cap = "Conceptual representation of a `Features` object and the aggregative relation between different assays.", echo = FALSE}
+```{r featuresplot, fig.cap = "Conceptual representation of a `QFeatures` object and the aggregative relation between different assays.", echo = FALSE}
 par(mar = c(0, 0, 0, 0))
 plot(NA, xlim = c(0, 12), ylim = c(0, 20),
      xaxt = "n", yaxt = "n",
@@ -103,35 +103,35 @@ segments(8, 15, 9, 12, lty = "dashed")
 ```
 
 In the following sections, we are going to demonstrate how to create a
-single-assay `Features` objects starting from a spreadsheet, how to
+single-assay `QFeatures` objects starting from a spreadsheet, how to
 compute the next assays (peptides and proteins), and how these can be
 manipulated and explored.
 
 ```{r loadpkg}
-library("Features")
+library("QFeatures")
 ```
 
-# Creating `Features` object
+# Creating `QFeatures` object
 
 ```{r loaddfr, echo = FALSE}
 data(hlpsms)
 ```
 
-While `Features` objects can be created manually (see `?Features` for
+While `QFeatures` objects can be created manually (see `?QFeatures` for
 details), most users will probably possess quantitative data in a
 spreadsheet or a dataframe. In such cases, the easiest is to use the
-`readFeatures` function to extract the quantitative data and metadata
+`readQFeatures` function to extract the quantitative data and metadata
 columns. Below, we load the `hlpsms` dataframe that contains data for
 `r ncol(hlpsms)` PSMs from the TMT-10plex *hyper*LOPIT spatial proteomics experiment
 from [@Christoforou:2016]. The `ecol` argument specifies that columns
 1 to 10 contain quantitation data, and that the assay should be named
-`psms` in the returned `Features` object, to reflect the nature of the
+`psms` in the returned `QFeatures` object, to reflect the nature of the
 data.
 
 
-```{r readFeatures}
+```{r readQFeatures}
 data(hlpsms)
-hl <- readFeatures(hlpsms, ecol = 1:10, name = "psms")
+hl <- readQFeatures(hlpsms, ecol = 1:10, name = "psms")
 hl
 ```
 
@@ -154,7 +154,7 @@ For further details on how to manipulate such objects, refer to the
 `r BiocStyle::Biocpkg("SummerizedExperiment")` [@SE] packages.
 
 As illustrated in figure \@ref(fig:featuresplot), an central
-characteristic of `Features` objects is the aggregative relation
+characteristic of `QFeatures` objects is the aggregative relation
 between their assays. This can be obtained with the
 `aggregateFeatures` function that will aggregate quantitative features
 from one assay into a new one. In the next code chunk, we aggregate
@@ -176,7 +176,7 @@ hl
 hl[["proteins"]]
 ```
 
-The sample assayed in a `Features` object can be documented in the
+The sample assayed in a `QFeatures` object can be documented in the
 `colData` slot. The `hl` data doens't currently possess any sample
 metadata. These can be addedd as a new `DataFrame` with matching names
 (i.e. the `DataFrame` rownames must be identical assay's colnames) or
@@ -192,10 +192,10 @@ colData(hl)
 # Subsetting
 
 
-One particularity of the `Features` infrastructure is that the
+One particularity of the `QFeatures` infrastructure is that the
 features of the constitutive assays are linked through an aggregative
 relation. This relation is recorded when creating new assays with
-`aggregateFeatures` and is exploited when subsetting `Feature` by their
+`aggregateFeatures` and is exploited when subsetting `QFeature` by their
 feature names.
 
 In the example below, we are interested in the Stat3B isoform of the
@@ -210,7 +210,7 @@ stat3 <- hl["P42227-2", , ]
 stat3
 ```
 
-We can easily visualise this new *Features* object using `ggplot2`
+We can easily visualise this new *QFeatures* object using `ggplot2`
 once converted into a `data.frame`.
 
 ```{r plotstat3}
@@ -229,7 +229,7 @@ ggplot(data = stat3_df,
 
 Below we repeat the same operation for the Signal transducer and
 activator of transcription 1 (STAT1) and 3 (STAT3) accession numbers,
-namely P42227-2 and P42225. We obtain a new `Features` instance
+namely P42227-2 and P42225. We obtain a new `QFeatures` instance
 containing 2 proteins, 9 peptides and 10 PSMS. From this, we can
 readily conclude that STAT1 was identified by a single PSM/peptide.
 
@@ -284,20 +284,20 @@ hl %>%
 to reproduce the line plot.
 
 Finally, a simply `shiny` app allows to explore and visualise the
-respective assays of a `Features` object.
+respective assays of a `QFeatures` object.
 
 ```{r display, eval = FALSE}
 display(stat)
 ```
 
-```{r heatmapdisplay, results='markup', fig.cap="`Features` interactive interface: heatmap of the peptide assay data.", echo=FALSE, out.width='100%', fig.align='center', fig.wide = TRUE}
+```{r heatmapdisplay, results='markup', fig.cap="`QFeatures` interactive interface: heatmap of the peptide assay data.", echo=FALSE, out.width='100%', fig.align='center', fig.wide = TRUE}
 knitr::include_graphics("./figs/display_hmap.png", error = FALSE)
 ```
 
-```{r assaydisplay, results='markup', fig.cap="`Features` interactive interface: quantitative peptide assay data.", echo=FALSE, out.width='100%', fig.align='center', fig.wide = TRUE}
+```{r assaydisplay, results='markup', fig.cap="`QFeatures` interactive interface: quantitative peptide assay data.", echo=FALSE, out.width='100%', fig.align='center', fig.wide = TRUE}
 knitr::include_graphics("./figs/display_assay.png", error = FALSE)
 ```
-```{r rowdatadisplay, results='markup', fig.cap="`Features` interactive interface: peptide assay row data", echo=FALSE, out.width='100%', fig.align='center', fig.wide = TRUE}
+```{r rowdatadisplay, results='markup', fig.cap="`QFeatures` interactive interface: peptide assay row data", echo=FALSE, out.width='100%', fig.align='center', fig.wide = TRUE}
 knitr::include_graphics("./figs/display_rowdata.png", error = FALSE)
 ```
 
@@ -309,7 +309,7 @@ interest, which can then be visualised as a heatmap (figure
 
 # Filtering
 
-Features is assays can also be filtered based on variables in their
+QFeatures is assays can also be filtered based on variables in their
 respective row data slots using the `filterFeatures` function. The
 filters can be defined using the formula interface or using
 `AnnotationFilter` objects from the `r BiocStyle::Biocpkg("AnnotationFilter")`

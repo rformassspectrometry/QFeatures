@@ -4,6 +4,6 @@
 Sys.setenv("R_TESTS" = "")
 
 library("testthat")
-library("Features")
+library("QFeatures")
 
-test_check("Features")
+test_check("QFeatures")

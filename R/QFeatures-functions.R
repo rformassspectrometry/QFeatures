@@ -14,7 +14,7 @@ number_assays_in_se <- function(object) {
 ## ----------------------------
 
 ##' @importFrom methods slot
-.valid_Features_indices <- function(object) {
+.valid_QFeatures_indices <- function(object) {
     if (!isEmpty(object) && !identical(names(object), names(object@assayLinks)))
         stop("Assay links names are wrong.")
     NULL
@@ -24,13 +24,13 @@ number_assays_in_se <- function(object) {
     n_exp <- names(experiments(object))
     al_names <- unname(sapply(object@assayLinks, "slot", "name"))
     ## An AssayLinks object is valid if the names of the node for all assays
-    ## are contained in the assay names of the Features object
+    ## are contained in the assay names of the QFeatures object
     if (!all(al_names %in% n_exp))
         stop("@names not valid")
     al_from <- unname(unlist(sapply(object@assayLinks, "slot", "from")))
     ## An AssayLinks object is valid if the names of the parent assays for all
     ## assays are either NA (= root node) or contained in the assay names of the
-    ## Features object
+    ## QFeatures object
     if (!all(is.na(al_from) | al_from %in% n_exp))
         stop("@from not valid")
     NULL
@@ -45,10 +45,10 @@ number_assays_in_se <- function(object) {
     NULL
 }
 
-.valid_Features <- function(object) {
-    .valid_Features_indices(object)
+.valid_QFeatures <- function(object) {
+    .valid_QFeatures_indices(object)
     .valid_assay_links(object)
     .unique_row_names(object)
 }
 
-setValidity("Features", .valid_Features)
+setValidity("QFeatures", .valid_QFeatures)

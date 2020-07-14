@@ -2,17 +2,17 @@
 % Please edit documentation in R/subsetBy-methods.R
 \name{subsetByFeature}
 \alias{subsetByFeature}
-\alias{subsetByFeature,Features,character-method}
+\alias{subsetByFeature,QFeatures,character-method}
 \title{Subset by feature name}
 \arguments{
-\item{x}{An instance of class \link{Features}.}
+\item{x}{An instance of class \link{QFeatures}.}
 
 \item{y}{A \code{character} of feature names present in an assay in \code{x}.}
 
 \item{...}{Additional parameters. Ignored.}
 }
 \value{
-An new instance of class \link{Features} containing relevant
+An new instance of class \link{QFeatures} containing relevant
 assays and features.
 }
 \description{
@@ -24,7 +24,7 @@ The \code{subsetByFeature} function will first identify the assay that
 contains the feature(s) \code{i} and filter the rows matching these
 feature names exactly. It will then find, in the other assays, the
 features that produces \code{i} through aggregation with the
-\code{aggregateFeatures} function.
+\code{aggregateQFeatures} function.
 
-See \link{Features} for an example.
+See \link{QFeatures} for an example.
 }

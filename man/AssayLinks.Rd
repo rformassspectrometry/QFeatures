@@ -48,7 +48,7 @@ from in \code{object}}
 generate the current assay (used in
 \code{aggregateFeatures}). \code{NA_character_}, if not applicable.}
 
-\item{hits}{An object of class \link[S4Vectors:Hits]{S4Vectors::Hits} matching the
+\item{hits}{An object of class \link[S4Vectors:Hits-class]{S4Vectors::Hits} matching the
 features of two assays.}
 
 \item{...}{A set of \code{AssayLink} objects or a list thereof.}
@@ -58,7 +58,7 @@ features of two assays.}
 \code{AssayLinks} object with \code{AssayLink} instances with names
 \code{names}.}
 
-\item{x}{An instance of class \link{Features}.}
+\item{x}{An instance of class \link{QFeatures}.}
 
 \item{i}{The index or name of the assay whose \code{AssayLink} and
 parents \code{AssayLink} instances are to be returned. For \code{[}, the
@@ -84,7 +84,7 @@ match the \code{to} assay to the \code{from} assay(s).}
 \code{assayLinks} returns an instance of class \code{AssayLinks}.
 }
 \description{
-Links between assays within a \link{Features} object are handled by an
+Links between assays within a \link{QFeatures} object are handled by an
 \code{AssayLinks} object. It is composed by a list of \code{AssayLink}
 instances.
 }
@@ -98,7 +98,7 @@ Object can be created with the \code{AssayLink()} and \code{AssayLinks()} constr
 
 \itemize{
 \item \code{assayLink(x, i)} accesses the AssayLink at position \code{i} or with
-name \code{i} in the \link{Features} object \code{x}.
+name \code{i} in the \link{QFeatures} object \code{x}.
 \item \code{parentAssayLinks(x, i, recursive = FALSE)} accesses the
 parent(s) \code{AssayLinks} or assay with index or name \code{i}.
 }
@@ -108,10 +108,10 @@ parent(s) \code{AssayLinks} or assay with index or name \code{i}.
 
 \itemize{
 \item \code{addAssayLink} takes a parent assay and a child assay contained in the
-\link{Features} object and creates a link given a matching feature variable in
+\link{QFeatures} object and creates a link given a matching feature variable in
 each assay's \code{rowData}. \code{addAssayLink} also allows to link an assay from
 multiple parent assays (see Examples).
-\item \code{addAssayLinkOneToOne} links two assays contained in the \link{Features}
+\item \code{addAssayLinkOneToOne} links two assays contained in the \link{QFeatures}
 object. The parent assay and the child assay must have the same size and
 contain the same rownames (a different ordering is allowed). The matching
 is performed based on the row names of the assays, instead of a supplied
@@ -141,20 +141,20 @@ al2
 ## Adding an AssayLink between two assays
 ##---------------------------------------
 
-## create a Features object with 2 (identical) assays
-## see also '?Features'
-se <- SummarizedExperiment(matrix(runif(20), ncol = 2, 
+## create a QFeatures object with 2 (identical) assays
+## see also '?QFeatures'
+se <- SummarizedExperiment(matrix(runif(20), ncol = 2,
                                   dimnames = list(LETTERS[1:10], letters[1:2])),
                            rowData = DataFrame(ID = 1:10))
-ft <- Features(list(assay1 = se, assay2 = se))
-               
+ft <- QFeatures(list(assay1 = se, assay2 = se))
+
 ## assay1 and assay2 are not linked
 assayLink(ft, "assay2") ## 'from' is NA
 assayLink(ft, "assay1") ## 'from' is NA
 
-## Suppose assay2 was generated from assay1 and the feature variable 
+## Suppose assay2 was generated from assay1 and the feature variable
 ## 'ID' keeps track of the relationship between the two assays
-ftLinked <- addAssayLink(ft, from = "assay1", to = "assay2", 
+ftLinked <- addAssayLink(ft, from = "assay1", to = "assay2",
                          varFrom = "ID", varTo = "ID")
 assayLink(ftLinked, "assay2")
 
@@ -167,8 +167,8 @@ assayLink(ftLinked, "assay2")
 ##----------------------------------------
 
 ## An assay can also be linked to multiple parent assays
-## Create a Features object with 2 parent assays and 1 child assay
-ft <- Features(list(parent1 = se[1:6, ], parent2 = se[4:10, ], child = se))
+## Create a QFeatures object with 2 parent assays and 1 child assay
+ft <- QFeatures(list(parent1 = se[1:6, ], parent2 = se[4:10, ], child = se))
 ft <- addAssayLink(ft, from = c("parent1", "parent2"), to = "child",
                    varFrom = c("ID", "ID"), varTo = "ID")
 assayLink(ft, "child")

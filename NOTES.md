@@ -1,11 +1,11 @@
-# One or two levels in Features (closed)
+# One or two levels in QFeatures (closed)
 
-One or two assay levels could be considered in Features:
+One or two assay levels could be considered in QFeatures:
 
 - one level: each SE contains only a single assay, and when an SE is
   processed (log-transformed, normalised, ...) in a way that its
   dimensions stay the same, a new SE is created and added to the
-  Features object.
+  QFeatures object.
 
 - two level: SEs can contain multiple assays, and when an SE is
   processed (log-transformed, normalised, ...) in a way that its
@@ -24,18 +24,18 @@ general](https://github.com/waldronlab/MultiAssayExperiment/issues/266)),
 the two-level approach isn't readily available out-of-the-box, and
 would require additional developments:
 
-- Every function that operates on an SE of a Features object would
+- Every function that operates on an SE of a QFeatures object would
   need to allow the user to specify which assay to use (and/or by
   default use the latest one).
 
-- The `show,Features` method would need to display the number/names of
+- The `show,QFeatures` method would need to display the number/names of
   the assays in each SE to make these two levels explicit.
 
 Despite the elegant of the two-level option, it seems that the
 additional development isn't warranted at this time.
 
 The [`updateAssay`
-function](https://github.com/rformassspectrometry/Features/issues/37)
+function](https://github.com/rformassspectrometry/QFeatures/issues/37)
 was originally intended for the two-level approach, i.e. to add an
 assay to an SE. This is not considered anymore (for now, at least).
 
@@ -67,13 +67,13 @@ logTransform(cptac, 1, name = "peptides_log")
 3. Joining SEs (for example multiple TMT batches) (TODO)
 
 ```
-joinAssays(Features, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
-joinAssays(Features, c(1, 2, 3), name = "peptides")
+joinAssays(QFeatures, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
+joinAssays(QFeatures, c(1, 2, 3), name = "peptides")
 ```
 
 See below.
 
-# Features API
+# QFeatures API
 
 ### Processing functions
 
@@ -83,7 +83,7 @@ See below.
 
 - A processing function such `process(object, i)`, that acts on a
   Feautre object takes a second argument `i`, that can be a vector of
-  indices or names, returns a new object of class Features with its
+  indices or names, returns a new object of class QFeatures with its
   assay(s) `i` modified according to `process(object[[i]])`.
 
 - The argument `i` mustn't be missing, i.e. one shouldn't (at least in
@@ -99,7 +99,7 @@ See below.
 ```
 hlpsms <- hlpsms[1:5000, ] ## faster
 
-ft1 <- readFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence")
+ft1 <- readQFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence")
 sum(rownames(ft1[[1]]) == "ANLPQSFQVDTSk")
 ft1 <- aggregateFeatures(ft1, "psms", fcol = "Sequence",
 						 name = "peptides", fun = colSums)
@@ -143,7 +143,7 @@ that's not the case. See
 
 ```
 hlpsms$Sequence2 <- paste0(hlpsms$Sequence, "2")
-ft1 <- readFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence2")
+ft1 <- readQFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence2")
 ...
 ```
 
@@ -214,8 +214,8 @@ The row data will be accessible through links between assays anyway.
 Naming:
 
 ```
-joinAssays(Features, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
-joinAssays(Features, c(1, 2, 3), name = "peptides")
+joinAssays(QFeatures, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
+joinAssays(QFeatures, c(1, 2, 3), name = "peptides")
 ```
 
 Algorithm:

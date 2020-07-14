@@ -6,7 +6,7 @@ se3 <- feat2[[3]]
 
 
 test_that("merge SEs (1,2)", {
-    se <- Features:::mergeSElist(list(se1, se2))
+    se <- QFeatures:::mergeSElist(list(se1, se2))
     expect_identical(ncol(se), ncol(se1) + ncol(se2))
     expect_identical(nrow(se), length(union(rownames(se1), rownames(se2))))
     expect_identical(names(rowData(se)), "Prot")
@@ -30,7 +30,7 @@ test_that("merge SEs (1,2)", {
 })
 
 test_that("merge SEs (2, 3)", {
-    se <- Features:::mergeSElist(list(se2, se3))
+    se <- QFeatures:::mergeSElist(list(se2, se3))
     expect_identical(ncol(se), ncol(se2) + ncol(se3))
     expect_identical(nrow(se), length(union(rownames(se2), rownames(se3))))
     expect_identical(names(rowData(se)), "Prot")
@@ -53,10 +53,10 @@ test_that("merge SEs (2, 3)", {
 })
 
 test_that("merge SEs (3, 2)", {
-    se <- Features:::mergeSElist(list(se3, se2))
+    se <- QFeatures:::mergeSElist(list(se3, se2))
     expect_identical(ncol(se), ncol(se2) + ncol(se3))
     expect_identical(nrow(se), length(union(rownames(se2), rownames(se3))))
-    expect_identical(names(rowData(se)), "Prot")    
+    expect_identical(names(rowData(se)), "Prot")
     ## test assay data
     na2 <- c(S5 = NA, S6 = NA, S7 = NA, S8 = NA)
     na3 <- c(S9 = NA, S10 = NA, S11 = NA, S12 = NA)
@@ -77,8 +77,8 @@ test_that("merge SEs (3, 2)", {
 
 
 test_that("merge SEs (1, 2, 3)", {
-    se <- Features:::mergeSElist(list(se1, se2, se3))
-    expect_identical(ncol(se), ncol(se1) + ncol(se2) + ncol(se3))    
+    se <- QFeatures:::mergeSElist(list(se1, se2, se3))
+    expect_identical(ncol(se), ncol(se1) + ncol(se2) + ncol(se3))
     expect_identical(nrow(se),
                      length(Reduce(union, list(rownames(se1), rownames(se2), rownames(se3)))))
     expect_identical(names(rowData(se)), "Prot")
@@ -108,13 +108,13 @@ test_that("merge SEs (1, 2, 3)", {
 
 test_that("joinAssay", {
     jft <- joinAssays(feat2, 1:2)
-    expect_identical(jft[["joinedAssay"]], Features:::mergeSElist(list(se1, se2)))
+    expect_identical(jft[["joinedAssay"]], QFeatures:::mergeSElist(list(se1, se2)))
     jft <- joinAssays(feat2, 2:1)
-    expect_identical(jft[["joinedAssay"]], Features:::mergeSElist(list(se2, se1)))
+    expect_identical(jft[["joinedAssay"]], QFeatures:::mergeSElist(list(se2, se1)))
     jft <- joinAssays(feat2, c("assay1", "assay3"))
-    expect_identical(jft[["joinedAssay"]], Features:::mergeSElist(list(se1, se3)))
+    expect_identical(jft[["joinedAssay"]], QFeatures:::mergeSElist(list(se1, se3)))
     jft <- joinAssays(feat2, 1:3)
-    expect_identical(jft[["joinedAssay"]], Features:::mergeSElist(list(se1, se2, se3)))    
+    expect_identical(jft[["joinedAssay"]], QFeatures:::mergeSElist(list(se1, se2, se3)))
 })
 
 test_that("joinAssay errors", {
@@ -123,27 +123,27 @@ test_that("joinAssay errors", {
     expect_error(joinAssay(se1, se2))
     expect_error(joinAssays(feat2, 1:2, name = "assay1"), "Assay with name 'assay1' already exists.")
     feat2 <- joinAssays(feat2, 1:3)
-    expect_error(joinAssays(feat2, 1:3), "Assay with name 'joinedAssay' already exists.")    
+    expect_error(joinAssays(feat2, 1:3), "Assay with name 'joinedAssay' already exists.")
 })
 
 
 test_that("joinAssay return class", {
-    m <- matrix(1:100, 10, 
-                dimnames = list(letters[1:10], 
+    m <- matrix(1:100, 10,
+                dimnames = list(letters[1:10],
                                 LETTERS[1:10]))
     library("SingleCellExperiment")
     sce <- SingleCellExperiment(list(m))
     se <- SummarizedExperiment(list(m))
     ## Joining two SCEs produces an SCE
-    f <- Features(ExperimentList(sce1 = sce[, 1:5], sce2 = sce[, 6:10]))
+    f <- QFeatures(ExperimentList(sce1 = sce[, 1:5], sce2 = sce[, 6:10]))
     expect_identical(class(joinAssays(f, i = 1:2)[["joinedAssay"]])[1],
                      "SingleCellExperiment")
     ## Joining two SEs produces an SE
-    f <- Features(ExperimentList(se1 = se[, 1:5], se2 = se[, 6:10]))
+    f <- QFeatures(ExperimentList(se1 = se[, 1:5], se2 = se[, 6:10]))
     expect_identical(class(joinAssays(f, i = 1:2)[["joinedAssay"]])[1],
                      "SummarizedExperiment")
     ## Joining an SE and an SCE throws an error
-    f <- Features(ExperimentList(se1 = se[, 1:5], sce2 = sce[, 6:10]))
+    f <- QFeatures(ExperimentList(se1 = se[, 1:5], sce2 = sce[, 6:10]))
     expect_error(joinAssays(f, i = 1:2))
 
 })
@@ -151,7 +151,7 @@ test_that("joinAssay return class", {
 
 test_that("aggregate and join (issue 81)", {
     ## See issue 81 for background on this unit test
-    ## https://github.com/rformassspectrometry/Features/issues/81
+    ## https://github.com/rformassspectrometry/QFeatures/issues/81
     data(feat2)
     feat2 <- aggregateFeatures(feat2, i = 1, name = "aggr1", fcol = "Prot", colSums)
     feat2 <- aggregateFeatures(feat2, i = 2, name = "aggr2", fcol = "Prot", colSums)

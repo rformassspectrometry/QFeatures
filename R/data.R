@@ -1,7 +1,7 @@
 ##' @title hyperLOPIT PSM-level expression data
 ##'
 ##' @description
-##' 
+##'
 ##' A `data.frame` with PSM-level quantitation data by Christoforou *et al.*
 ##' (2016). This is the first replicate of a spatial proteomics dataset from a
 ##' hyperLOPIT experimental design on Mouse E14TG2a embryonic stem
@@ -50,7 +50,7 @@
 ##' - RTmin: the peptide retention time, in minutes.
 ##'
 ##' - markers: localisation for well known sub-cellular
-##'   markers. Features of unknown location are encode as `"unknown"`.
+##'   markers. QFeatures of unknown location are encode as `"unknown"`.
 ##'
 ##' For further details, install the `pRolocdata` package and see
 ##' `?hyperLOPIT2015`.
@@ -69,7 +69,7 @@
 ##'
 ##' @seealso
 ##'
-##' See [Features] to import this data using the [readFeatures()] function.
+##' See [QFeatures] to import this data using the [readQFeatures()] function.
 ##'
 ##' @md
 "hlpsms"
@@ -77,7 +77,7 @@
 
 ##' Feature example data
 ##'
-##' `feat1` is a small test `Features` object for testing and
+##' `feat1` is a small test `QFeatures` object for testing and
 ##' demonstration. `feat2` is used to demonstrate assay joins. `ft_na`
 ##' is a tiny test set that contains missing values used to
 ##' demonstrate and test the impact of missing values on data

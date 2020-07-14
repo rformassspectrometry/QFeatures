@@ -52,29 +52,29 @@ find_assays_from <- function(x, i)
 ##' contains the feature(s) `i` and filter the rows matching these
 ##' feature names exactly. It will then find, in the other assays, the
 ##' features that produces `i` through aggregation with the
-##' `aggregateFeatures` function.
+##' `aggregateQFeatures` function.
 ##'
-##' See [Features] for an example.
+##' See [QFeatures] for an example.
 ##'
-##' @param x An instance of class [Features].
+##' @param x An instance of class [QFeatures].
 ##'
 ##' @param y A `character` of feature names present in an assay in `x`.
 ##'
 ##' @param ... Additional parameters. Ignored.
 ##'
-##' @return An new instance of class [Features] containing relevant
+##' @return An new instance of class [QFeatures] containing relevant
 ##'     assays and features.
 ##'
-##' @aliases subsetByFeature,Features,character-method
+##' @aliases subsetByFeature,QFeatures,character-method
 ##'
 ##' @name subsetByFeature
 ##'
-##' @rdname Features-subsetBy
+##' @rdname QFeatures-subsetBy
 NULL
 
 
 ##' @exportMethod subsetByFeature
-setMethod("subsetByFeature", c("Features", "character"),
+setMethod("subsetByFeature", c("QFeatures", "character"),
           function(x, y, ...) .subsetByFeature(x, y))
 
 
@@ -103,7 +103,7 @@ setMethod("subsetByFeature", c("Features", "character"),
 
         for (k2 in assay_k_parent_name) {
             assayLink_k2 <- x@assayLinks[[k2]]@hits
-            if (inherits(assayLink_k2, "List")) 
+            if (inherits(assayLink_k2, "List"))
                 assayLink_k2 <- assayLink_k2[[k]]
             l <- featurename_list[[k2]]
             j <- which(elementMetadata(assayLink_k2)$names_to %in% l)
@@ -111,24 +111,24 @@ setMethod("subsetByFeature", c("Features", "character"),
                                            elementMetadata(assayLink_k2)$names_from[j])
         }
     }
-    
+
     ## Order the assays in featurename_list to match the assay order in x
     ord <- order(match(names(featurename_list), names(x)))
     featurename_list <- featurename_list[ord]
-    ## First subset assays, then subset the features of interest. This is 
-    ## suggested by the authors of `MultiAssayExperiment` when x contains 
-    ## `SingleCellExperiment` assays. 
+    ## First subset assays, then subset the features of interest. This is
+    ## suggested by the authors of `MultiAssayExperiment` when x contains
+    ## `SingleCellExperiment` assays.
     ## Cf https://github.com/waldronlab/MultiAssayExperiment/issues/276
     expts <- subsetByAssay(x, names(featurename_list))
     expts <- experiments(subsetByRow(expts, featurename_list))
-    ## First subset the `AssayLink`s from the `AssayLinks`, then subset the 
+    ## First subset the `AssayLink`s from the `AssayLinks`, then subset the
     ## features of interest.
     alnks <- x@assayLinks[names(featurename_list)]
     alnks <- alnks[featurename_list]
 
-    Features(experiments = expts,
-             colData = colData(x),
-             sampleMap = sampleMap(x),
-             metadata = metadata(x),
-             assayLinks = alnks)
+    QFeatures(experiments = expts,
+              colData = colData(x),
+              sampleMap = sampleMap(x),
+              metadata = metadata(x),
+              assayLinks = alnks)
 }

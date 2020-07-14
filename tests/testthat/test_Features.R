@@ -1,13 +1,13 @@
 data(feat1)
 
-test_that("empty Features", {
-    feat0 <- Features()
+test_that("empty QFeatures", {
+    feat0 <- QFeatures()
     expect_true(validObject(feat0))
     expect_true(isEmpty(feat0))
     expect_null(show(feat0))
 })
 
-test_that("Manual Features", {
+test_that("Manual QFeatures", {
     ## code from inst/scripts/test_data.R
     ## used to generate feat1
     psms <- matrix(1:20, ncol = 2)
@@ -22,7 +22,7 @@ test_that("Manual Features", {
     coldata <- DataFrame(Group = 1:2)
     rownames(coldata) <- colnames(psms)
     psms <- SummarizedExperiment(psms, rowData = rowdata)
-    feat2 <- Features(list(psms = psms), colData = coldata)
+    feat2 <- QFeatures(list(psms = psms), colData = coldata)
     expect_true(validObject(feat2))
     ## subsetting
     expect_null(show(feat2))
@@ -43,7 +43,7 @@ test_that("addAssay", {
     expect_identical(feat1[[1]], feat1[[2]])
 })
 
-test_that("[,Features", {
+test_that("[,QFeatures", {
     data(feat1)
     feat1 <- aggregateFeatures(feat1, "psms", "Sequence", "peptides")
     expect_true(validObject(feat1[, , "psms"]))
@@ -107,7 +107,7 @@ test_that("renaming", {
 
 test_that("assays must have unique rownames", {
     hlpsms <- hlpsms[1:10, ]
-    ft1 <- readFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence")
+    ft1 <- readQFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence")
     rownames(ft1[[1]][1:2]) <- rep("1", 2)
     expect_error(validObject(ft1))
 })

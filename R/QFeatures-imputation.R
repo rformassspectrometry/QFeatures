@@ -2,7 +2,7 @@
 ##'
 ##' @description
 ##'
-##' The `impute` method performs data imputation on `Features` and
+##' The `impute` method performs data imputation on `QFeatures` and
 ##' `SummarizedExperiment` instance using a variety of methods.
 ##'
 ##' Users should proceed with care when imputing data and take
@@ -15,7 +15,7 @@
 ##'
 ##' @rdname impute
 ##'
-##' @aliases impute impute,SummarizedExperiment-method impute,Features-method
+##' @aliases impute impute,SummarizedExperiment-method impute,QFeatures-method
 ##'
 ##' @importFrom MsCoreUtils impute_matrix
 ##'
@@ -46,7 +46,7 @@
 ##' impute(se_na2, method = "mixed",
 ##'        randna = rowData(se_na2)$randna,
 ##'        mar = "knn", mnar = "QRILC")
-##' 
+##'
 ##' ## neighbour averaging
 ##' x <- se_na2[1:4, 1:6]
 ##' assay(x)[1, 1] <- NA ## min value
@@ -59,14 +59,14 @@
 "impute"
 
 
-##' @param object A `SummarizedExperiment` or `Features` object with
+##' @param object A `SummarizedExperiment` or `QFeatures` object with
 ##'     missing values to be imputed.
 ##' @param method `character(1)` defining the imputation method. See
 ##'     `imputeMethods()` for available ones. See
 ##'     [MsCoreUtils::impute_matrix()] for details.
 ##' @param ... Additional parameters passed to the inner imputation
 ##'     function. See [MsCoreUtils::impute_matrix()] for details.
-##' 
+##'
 ##' @export
 ##' @rdname impute
 setMethod("impute", "SummarizedExperiment",
@@ -77,12 +77,12 @@ setMethod("impute", "SummarizedExperiment",
           })
 
 
-##' @param i Defines which element of the `Features` instance to
+##' @param i Defines which element of the `QFeatures` instance to
 ##'     impute. If missing, all assays will be imputed.
-##' 
+##'
 ##' @export
 ##' @rdname impute
-setMethod("impute", "Features",
+setMethod("impute", "QFeatures",
           function(object, method, ..., i) {
               if (missing(i))
                   i  <-  seq_len(length(object))

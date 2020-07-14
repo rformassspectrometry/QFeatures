@@ -1,9 +1,9 @@
-##' @title Features from tabular data
+##' @title QFeatures from tabular data
 ##'
 ##' @description
 ##'
 ##' Convert tabular data from a spreadsheet or a `data.frame` into a
-##' `Features` object.
+##' `QFeatures` object.
 ##'
 ##' @param table File or object holding the quantitative data. Can be
 ##'     either a `character(1)` with the path to a text-based
@@ -25,21 +25,21 @@
 ##' @param ... Further arguments that can be passed on to `read.csv`
 ##'     except `stringsAsFactors`, which is always `FALSE`.
 ##'
-##' @param name An `character(1)` to name assay in the `Features`
+##' @param name An `character(1)` to name assay in the `QFeatures`
 ##'     object. If not set, `features` is used.
 ##'
-##' @return An instance of class [Features] or [SummarizedExperiment].
+##' @return An instance of class [QFeatures] or [SummarizedExperiment].
 ##'
 ##' @author Laurent Gatto
 ##'
-##' @describeIn readFeatures See description.
+##' @describeIn readQFeatures See description.
 ##'
 ##' @importFrom utils read.csv
 ##' @importFrom methods new validObject
 ##' @import SummarizedExperiment
 ##'
-##' @seealso The [Features] class for an example on how to use
-##'     `readFeatures` and how to further manipulate the resulting data.
+##' @seealso The [QFeatures] class for an example on how to use
+##'     `readQFeatures` and how to further manipulate the resulting data.
 ##'
 ##' @md
 ##' @aliases readSummarizedExperiment
@@ -50,10 +50,10 @@
 ##' ## Load a data.frame with PSM-level data
 ##' data(hlpsms)
 ##'
-##' ## Create the Features object
-##' fts2 <- readFeatures(hlpsms, ecol = 1:10, name = "psms")
+##' ## Create the QFeatures object
+##' fts2 <- readQFeatures(hlpsms, ecol = 1:10, name = "psms")
 ##' fts2
-readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
+readQFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
     se <- readSummarizedExperiment(table, ecol, fnames, ...)
     if (anyDuplicated(rownames(se))) {
         message("Making assay rownames unique.")
@@ -65,14 +65,14 @@ readFeatures <- function(table, ecol, fnames, ..., name = NULL)  {
     el <- structure(list(se), .Names = name[1])
     al <- AssayLinks(AssayLink(name = name[1]))
     ans <- MultiAssayExperiment(el, colData = cd)
-    new("Features",
+    new("QFeatures",
         ExperimentList = ans@ExperimentList,
         colData = ans@colData,
         sampleMap = ans@sampleMap,
         metadata = ans@metadata,
         assayLinks = al)
 }
-##' @describeIn readFeatures Convert tabular data from a spreadsheet or a
+##' @describeIn readQFeatures Convert tabular data from a spreadsheet or a
 ##' `data.frame` into a `SummarizedExperiment` object.
 ##' @export
 readSummarizedExperiment <- function(table, ecol, fnames, ...) {
@@ -116,17 +116,17 @@ readSummarizedExperiment <- function(table, ecol, fnames, ...) {
 
 
 ##' @export
-##' @rdname Features-class
+##' @rdname QFeatures-class
 ##' @param ... See `MultiAssayExperiment` for details.
 ##' @param assayLinks An optional [AssayLinks] object.
-Features <- function(..., assayLinks = NULL) {
+QFeatures <- function(..., assayLinks = NULL) {
     ans <- MultiAssayExperiment(...)
     if (isEmpty(ans)) assayLinks <- AssayLinks()
     else {
         if (is.null(assayLinks))
             assayLinks <- AssayLinks(names = names(ans))
     }
-    new("Features",
+    new("QFeatures",
         ExperimentList = ans@ExperimentList,
         colData = ans@colData,
         sampleMap = ans@sampleMap,
@@ -136,7 +136,7 @@ Features <- function(..., assayLinks = NULL) {
 
 
 
-##' @param x An instance of class [Features].
+##' @param x An instance of class [QFeatures].
 ##' @param y A single assay or a *named* list of assays.
 ##' @param name A `character(1)` naming the single assay (default is
 ##'     `"newAssay"`). Ignored if `y` is a list of assays.
@@ -144,14 +144,14 @@ Features <- function(..., assayLinks = NULL) {
 ##'
 ##' @md
 ##'
-##' @rdname Features-class
+##' @rdname QFeatures-class
 ##'
 ##' @export
 addAssay <- function(x,
                      y,
                      name = "newAssay",
                      assayLinks = AssayLinks(names = name)) {
-    stopifnot(inherits(x, "Features"))
+    stopifnot(inherits(x, "QFeatures"))
     el0 <- x@ExperimentList@listData
     if (is.list(y)) el1 <- y
     else el1 <- structure(list(y), .Names = name[1])
@@ -159,7 +159,7 @@ addAssay <- function(x,
     smap <- MultiAssayExperiment:::.sampleMapFromData(colData(x), el)
     if (inherits(assayLinks, "AssayLink"))
         assayLinks <- AssayLinks(assayLinks)
-    new("Features",
+    new("QFeatures",
         ExperimentList = el,
         colData = colData(x),
         sampleMap = smap,
