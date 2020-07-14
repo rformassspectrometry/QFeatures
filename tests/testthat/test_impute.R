@@ -12,7 +12,7 @@ test_that("impute: absence of missing values", {
     data(se_na2)
     se_imp <- impute(se_na2, method = "knn")
     se_imp_2 <- impute(se_imp, method = "knn")
-    expect_identical(se_imp, se_imp_2)    
+    expect_identical(se_imp, se_imp_2)
 })
 
 test_that("impute,SummarizedExperiment", {
@@ -20,12 +20,12 @@ test_that("impute,SummarizedExperiment", {
     x <- assay(se_na2)
     se_imp <- impute(se_na2, method = "knn")
     x_imp <- MsCoreUtils::impute_matrix(x, method = "knn")
-    expect_identical(x_imp, assay(se_imp))    
+    expect_identical(x_imp, assay(se_imp))
 })
 
-test_that("impute,Features", {
+test_that("impute,QFeatures", {
     data(se_na2)
-    ft <- Features(list(se_na2 = se_na2), colData = colData(se_na2))
+    ft <- QFeatures(list(se_na2 = se_na2), colData = colData(se_na2))
     x <- assay(se_na2)
     ft_imp <- impute(ft, method = "MinDet")
     x_imp <- MsCoreUtils::impute_matrix(x, method = "MinDet")

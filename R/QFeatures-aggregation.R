@@ -1,7 +1,7 @@
 ##' @title Aggregate an assay's quantitative features
 ##'
 ##' @description
-##' 
+##'
 ##' This function aggregates the quantitative features of an assay,
 ##' applying a summarisation function (`fun`) to sets of features as
 ##' defined by the `fcol` feature variable. The new assay's features
@@ -18,7 +18,7 @@
 ##' were aggregated. This `.n` value is always >= that the
 ##' sample-level `aggcounts`.
 ##'
-##' @param object An instance of class [Features] or [SummarizedExperiment].
+##' @param object An instance of class [QFeatures] or [SummarizedExperiment].
 ##'
 ##' @param i The index or name of the assay which features will be
 ##'     aggregated the create the new assay.
@@ -35,7 +35,7 @@
 ##'
 ##' @param ... Additional parameters passed the `fun`.
 ##'
-##' @return A `Features` object with an additional assay or a
+##' @return A `QFeatures` object with an additional assay or a
 ##'  `SummarizedExperiment` object (or subclass thereof).
 ##'
 ##' @details
@@ -58,7 +58,7 @@
 ##'
 ##'
 ##' @section Missing quantitative values:
-##' 
+##'
 ##' Missing quantitative values have different effect based on the
 ##' aggregation method employed:
 ##'
@@ -101,23 +101,23 @@
 ##' aggregation rows before aggregation to preserve the invariant
 ##' nature of that column. In cases where an `NA` is present in an
 ##' otherwise variant column, the column would be dropped anyway.
-##' 
-##' @seealso The *Features* vignette provides an extended example and
+##'
+##' @seealso The *QFeatures* vignette provides an extended example and
 ##'     the *Processing* vignette, for a complete quantitative
 ##'     proteomics data processing pipeline.
-##' 
-##' @aliases aggregateFeatures aggregateFeatures,Features-method aggcounts aggcounts,SummarizedExperiment
+##'
+##' @aliases aggregateFeatures aggregateFeatures,QFeatures-method aggcounts aggcounts,SummarizedExperiment
 ##'
 ##' @name aggregateFeatures
 ##'
-##' @rdname Features-aggregate
+##' @rdname QFeatures-aggregate
 ##'
 ##' @importFrom MsCoreUtils aggregate_by_vector robustSummary colCounts
 ##'
 ##' @examples
 ##'
 ##' ## ---------------------------------------
-##' ## An example Features with PSM-level data
+##' ## An example QFeatures with PSM-level data
 ##' ## ---------------------------------------
 ##' data(feat1)
 ##' feat1
@@ -125,7 +125,7 @@
 ##' ## Aggregate PSMs into peptides
 ##' feat1 <- aggregateFeatures(feat1, "psms", "Sequence", name = "peptides")
 ##' feat1
-##' 
+##'
 ##' ## Aggregate peptides into proteins
 ##' feat1 <- aggregateFeatures(feat1, "peptides", "Protein", name = "proteins")
 ##' feat1
@@ -135,7 +135,7 @@
 ##' aggcounts(feat1[[2]])
 ##' assay(feat1[[3]])
 ##' aggcounts(feat1[[3]])
-##' 
+##'
 ##' ## --------------------------------------------
 ##' ## Aggregation with missing quantitative values
 ##' ## --------------------------------------------
@@ -151,14 +151,14 @@
 ##' aggcounts(ft2[[2]])
 ##'
 ##' ## The rowData .n variable tallies number of initial rows that
-##' ## were aggregated (irrespective of NAs) for all the samples. 
+##' ## were aggregated (irrespective of NAs) for all the samples.
 ##' rowData(ft2[[2]])
-##' 
+##'
 ##' ## Ignored when setting na.rm = TRUE
 ##' ft3 <- aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums, na.rm = TRUE)
 ##' assay(ft3[[2]])
 ##' aggcounts(ft3[[2]])
-##' 
+##'
 ##' ## -----------------------------------------------
 ##' ## Aggregation with missing values in the row data
 ##' ## -----------------------------------------------
@@ -177,8 +177,8 @@
 NULL
 
 ##' @exportMethod aggregateFeatures
-##' @rdname Features-aggregate
-setMethod("aggregateFeatures", "Features",
+##' @rdname QFeatures-aggregate
+setMethod("aggregateFeatures", "QFeatures",
           function(object, i, fcol, name = "newAssay",
                    fun = MsCoreUtils::robustSummary, ...) {
               if (isEmpty(object))
@@ -188,14 +188,14 @@ setMethod("aggregateFeatures", "Features",
               if (missing(i))
                   i <- main_assay(object)
               ## Create the aggregated assay
-              aggAssay <- .aggregateFeatures(object[[i]], fcol, fun, ...)
-              ## Add the assay to the Features object
+              aggAssay <- .aggregateQFeatures(object[[i]], fcol, fun, ...)
+              ## Add the assay to the QFeatures object
               object <- addAssay(object,
                                  aggAssay,
                                  name = name)
               ## Link the input assay to the aggregated assay
-              addAssayLink(object, 
-                           from = i, 
+              addAssayLink(object,
+                           from = i,
                            to  = name,
                            varFrom = fcol,
                            varTo = fcol)
@@ -203,25 +203,25 @@ setMethod("aggregateFeatures", "Features",
 
 
 ##' @exportMethod aggregateFeatures
-##' @rdname Features-aggregate
+##' @rdname QFeatures-aggregate
 setMethod("aggregateFeatures", "SummarizedExperiment",
           function(object, fcol, fun = MsCoreUtils::robustSummary, ...)
-              .aggregateFeatures(object, fcol, fun, ...))
+              .aggregateQFeatures(object, fcol, fun, ...))
 
 
-.aggregateFeatures <- function(object, fcol, fun, ...) {
+.aggregateQFeatures <- function(object, fcol, fun, ...) {
     if (missing(fcol))
-        stop("'fcol' is required.")    
+        stop("'fcol' is required.")
     m <- assay(object, 1)
     rd <- rowData(object)
     if (!fcol %in% names(rd))
         stop("'fcol' not found in the assay's rowData.")
     groupBy <- rd[[fcol]]
-    
+
     ## Store class of assay i in case it is not a Summarized experiment so that
     ## the aggregated assay can be reverted to that class
     .class <- class(object)
-    
+
     ## Message about NA values is quant/row data
     has_na <- character()
     if (anyNA(m))
@@ -236,13 +236,13 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
                      "effects of missing values on data aggregation.")
         message(paste(strwrap(msg), collapse = "\n"))
     }
-    
+
     aggregated_assay <- aggregate_by_vector(m, groupBy, fun, ...)
     aggcount_assay <- aggregate_by_vector(m, groupBy, colCounts)
-    aggregated_rowdata <- Features::reduceDataFrame(rd, rd[[fcol]],
+    aggregated_rowdata <- QFeatures::reduceDataFrame(rd, rd[[fcol]],
                                                     simplify = TRUE, drop = TRUE,
                                                     count = TRUE)
-    
+
     se <- SummarizedExperiment(assays = SimpleList(assay = aggregated_assay,
                                                    aggcounts = aggcount_assay),
                                rowData = aggregated_rowdata[rownames(aggregated_assay), ])
@@ -253,6 +253,6 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
     if (.class != "SummarizedExperiment")
         se <- tryCatch(as(se, .class),
                        error = function(e) se)
-    
+
     return(se)
 }

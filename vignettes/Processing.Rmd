@@ -1,20 +1,20 @@
 ---
-title: "Processing quantitative proteomics data with Features"
+title: "Processing quantitative proteomics data with QFeatures"
 author:
 - name: Laurent Gatto
-package: Features
+package: QFeatures
 abstract: >
   This vignette describes how to process quantitative mass
-  spectrometry data with Features: cleaning up unneeded feature
+  spectrometry data with QFeatures: cleaning up unneeded feature
   variables, adding an experimental design, filtering out contaminants
   and reverse hits, managing missing values, log-transforming,
   normalising and aggregating data.
 output:
   BiocStyle::html_document:
     toc_float: true
-bibliography: Features.bib
+bibliography: QFeatures.bib
 vignette: >
-  %\VignetteIndexEntry{Processing quantitative proteomics data with Features}
+  %\VignetteIndexEntry{Processing quantitative proteomics data with QFeatures}
   %\VignetteEngine{knitr::rmarkdown}
   %%\VignetteKeywords{Mass Spectrometry, MS, MSMS, Proteomics, Metabolomics, Infrastructure, Quantitative}
   %\VignetteEncoding{UTF-8}
@@ -25,13 +25,13 @@ BiocStyle::markdown()
 ```
 
 ```{r env, message = FALSE, warning = FALSE, echo = FALSE}
-library("Features")
+library("QFeatures")
 library("ggplot2")
 library("dplyr")
 library("magrittr")
 ```
 
-# Reading data as `Features`
+# Reading data as `QFeatures`
 
 We are going to use a subset of the CPTAC study 6 containing
 conditions A and B [@Paulovich:2010]. The peptide-level data, as
@@ -52,15 +52,15 @@ names(read.delim(f))
 (i <- grep("Intensity\\.", names(read.delim(f))))
 ```
 
-We now read these data using the `readFeatures` function. The peptide
+We now read these data using the `readQFeatures` function. The peptide
 level expression data will be imported into R as an instance of class
-`Features` named `cptac` with an assay named `peptides`. We also use
+`QFeatures` named `cptac` with an assay named `peptides`. We also use
 the `fnames` argument to set the row-names of the `peptides` assay to
 the peptide sequences.
 
 ```{r read_cptac}
-library("Features")
-cptac <- readFeatures(f, ecol = i, sep = "\t", name = "peptides", fnames = "Sequence")
+library("QFeatures")
+cptac <- readQFeatures(f, ecol = i, sep = "\t", name = "peptides", fnames = "Sequence")
 ```
 
 # Encoding the experimental design
@@ -95,7 +95,7 @@ cptac <- cptac %>%
 
 The spreadsheet that was read above contained numerous variables that
 are returned by MaxQuant, but not necessarily necessary in the frame
-of a downstream statistical analysis. 
+of a downstream statistical analysis.
 
 ```{r}
 rowDataNames(cptac)
@@ -124,7 +124,7 @@ cptac <- zeroIsNA(cptac, i = seq_along(cptac))
 nNA(cptac, i = seq_along(cptac))
 ```
 
-The output of the `nNA` function tells us that 
+The output of the `nNA` function tells us that
 
 - there are currently close to 50% is missing values in the data;
 - there are 4051 peptides with 0 missing values, 989 with a single
@@ -153,9 +153,9 @@ percent of missing values), we could have set `pNA` to 0.9.
 
 The `impute` method can be used to perform missing value imputation
 using a variety of imputation methods. The method takes an instance of
-class `Features` (or a `SummarizedExperiment`) as input, an a
+class `QFeatures` (or a `SummarizedExperiment`) as input, an a
 character naming the desired method (see `?impute` for the complete
-list with details) and returns a new instance of class `Features` (or
+list with details) and returns a new instance of class `QFeatures` (or
 `SummarizedExperiment`) with imputed data.
 
 As described in more details in [@Lazar:2016], there are two types
@@ -235,7 +235,7 @@ limma::plotDensities(assay(cptac[[2]]))
 
 # Normalisation
 
-Assays in `Features` objects can be normalised with the `normalize`
+Assays in `QFeatures` objects can be normalised with the `normalize`
  function. The type of normalisation is defined by the `method`
  argument; below, we use quantiles normalisation, store the normalised
  data into a new experiment, and visualise the resulting data.
@@ -263,7 +263,7 @@ the differential expression analysis at the protein level.
 To aggregate feature data, we can use the `aggregateFeatures` function
 that takes the following inputs:
 
-- the name of the `Features` instance that contains the peptide
+- the name of the `QFeatures` instance that contains the peptide
   quantitation data - `"cptac"` in our example;
 - **`i`**: the name or index of the assay that contains the
   (normalised) peptide quantitation data - `"peptides_norm"` in our
@@ -271,7 +271,7 @@ that takes the following inputs:
 - **`fcol`**: the feature variable (in the assay above) to be used to
   define what peptides to aggregate - `"Proteins"` here, given that we
   want to aggregate all peptides that belong to one protein (group);
-- **`name`**: the name of the new aggregates assay - `"proteins"` in this case; 
+- **`name`**: the name of the new aggregates assay - `"proteins"` in this case;
 - and finally **`fun`**, the function that will compute this
   aggregation - we will be using the default value, namely
   `robustSummary` [@Sticker:2019].

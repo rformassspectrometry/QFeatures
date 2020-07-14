@@ -1,22 +1,22 @@
-##' @title Quantitative MS Features
+##' @title Quantitative MS QFeatures
 ##'
 ##' @description
 ##'
-##' Conceptually, a `Features` object holds a set of *assays*, each
+##' Conceptually, a `QFeatures` object holds a set of *assays*, each
 ##' composed of a `matrix` (or `array`) containing quantitative data
 ##' and row annotations (meta-data).  The number and the names of the
 ##' columns (samples) must always be the same across the assays, but
 ##' the number and the names of the rows (features) can vary. The
 ##' assays are typically defined as `SummarizedExperiment` objects. In
-##' addition, a `Features` object also uses a single `DataFrame` to
+##' addition, a `QFeatures` object also uses a single `DataFrame` to
 ##' annotate the samples (columns) represented in all the matrices.
 ##'
-##' The `Features` class extends the
+##' The `QFeatures` class extends the
 ##' [MultiAssayExperiment::MultiAssayExperiment] and inherits all
 ##' the functionality of the
 ##' [MultiAssayExperiment::MultiAssayExperiment] class.
 ##'
-##' A typical use case for such `Features` object is to represent
+##' A typical use case for such `QFeatures` object is to represent
 ##' quantitative proteomics (or metabolomics) data, where different
 ##' assays represent quantitation data at the PSM (the main assay),
 ##' peptide and protein level, and where peptide values are computed
@@ -25,28 +25,28 @@
 ##' highest number of features, PSMs in the example above) is
 ##' considered the main assay.
 ##'
-##' The recommended way to create `Features` objects is the use the
-##' `readFeatures()` function, that creates an instance from tabular
-##' data. The `Features` constructor can be used to create objects
+##' The recommended way to create `QFeatures` objects is the use the
+##' `readQFeatures()` function, that creates an instance from tabular
+##' data. The `QFeatures` constructor can be used to create objects
 ##' from their bare parts.  It is the user's responsability to make
 ##' sure that these match the class validity requirements.
 ##'
 ##' @section Constructors:
 ##'
-##' - `Features(..., assayLinks)` allows the manual construction of
+##' - `QFeatures(..., assayLinks)` allows the manual construction of
 ##'   objects. It is the user's responsability to make sure these
 ##'   comply. The arguments in `...` are those documented in
 ##'   [MultiAssayExperiment::MultiAssayExperiment()]. For details
 ##'   about `assayLinks`, see [AssayLinks]. An example is shown below.
 ##'
-##' - The [readFeatures()] function constructs a `Features` object
+##' - The [readQFeatures()] function constructs a `QFeatures` object
 ##'   from text-based spreadsheet or a `data.frame` used to generate
 ##'   an assay. See the function manual page for details and an
 ##'   example.
 ##'
 ##' @section Accessors:
 ##'
-##' - The `Features` class extends the
+##' - The `QFeatures` class extends the
 ##'   [MultiAssayExperiment::MultiAssayExperiment] class and inherits
 ##'   all its accessors and replacement methods.
 ##'
@@ -59,24 +59,24 @@
 ##'   aggregating features of an existing assay.
 ##'
 ##' - `addAssay(x, y, name, assayLinks)`: Adds a new assay (or
-##'   list of assays) `y` to the `Features` instance `x`. `name`
+##'   list of assays) `y` to the `QFeatures` instance `x`. `name`
 ##'   is a `character(1)` naming the single assay (default is
 ##'   `"newAssay"`), and is ignored if `y` is a list of
 ##'   assays. `assayLinks` is an optional [AssayLinks].
 ##'
 ##' @section Subsetting:
 ##'
-##' - Features object can be subset using the `x[i, j, k, drop =
+##' - QFeatures object can be subset using the `x[i, j, k, drop =
 ##'   TRUE]` paradigm. See the argument descriptions for details.
 ##'
 ##' - The [subsetByFeature()] function can be used to subset a
-##'   `Features` object using one or multiple feature names that will
+##'   `QFeatures` object using one or multiple feature names that will
 ##'   be matched across different assays, taking the aggregation
 ##'   relation between assays.
 ##'
 ##' - The `selectRowData(x, rowvars)` function can be used to
 ##'   select a limited number of `rowData` columns of interest named
-##'   in `rowvars` in the `x` instance of class `Features`.
+##'   in `rowvars` in the `x` instance of class `QFeatures`.
 ##'
 ##' @param i `character()`, `integer()`, `logical()` or `GRanges()`
 ##'     object for subsetting by rows.
@@ -92,42 +92,42 @@
 ##'
 ##' @seealso
 ##'
-##' - The [readFeatures()] constructor and the [aggregateFeatures()]
-##'   function. The *Features* vignette provides an extended example.
+##' - The [readQFeatures()] constructor and the [aggregateFeatures()]
+##'   function. The *QFeatures* vignette provides an extended example.
 ##'
-##' - The [Features-filtering] manual page demonstrates how to filter
+##' - The [QFeatures-filtering] manual page demonstrates how to filter
 ##'   features based on their rowData.
 ##'
 ##' - The [missing-data] manual page to manage missing values in
-##'   `Features` objects.
+##'   `QFeatures` objects.
 ##'
-##' - The [Features-processing] and [aggregateFeatures()] manual pages
+##' - The [QFeatures-processing] and [aggregateFeatures()] manual pages
 ##'   and *Processing* vignette describe common quantitative data
 ##'   processing methods using in quantitative proteomics.
 ##'
 ##' @import MultiAssayExperiment ProtGenerics
 ##'
-##' @name Features
+##' @name QFeatures
 ##'
-##' @aliases Features Features-class class:Features addAssay dims,Features-method show,Features-method [,Features,ANY,ANY,ANY-method [,Features,character,ANY,ANY-method
+##' @aliases QFeatures QFeatures-class class:QFeatures addAssay dims,QFeatures-method show,QFeatures-method [,QFeatures,ANY,ANY,ANY-method [,QFeatures,character,ANY,ANY-method
 ##'
 ##' @aliases rowDataNames selectRowData
 ##'
-##' @rdname Features-class
+##' @rdname QFeatures-class
 ##'
-##' @exportClass Features
+##' @exportClass QFeatures
 ##'
 ##' @author Laurent Gatto
 ##'
 ##' @examples
 ##' ## ------------------------
-##' ## An empty Features object
+##' ## An empty QFeatures object
 ##' ## ------------------------
 ##'
-##' Features()
+##' QFeatures()
 ##'
 ##' ## -----------------------------------
-##' ## Creating a Features object manually
+##' ## Creating a QFeatures object manually
 ##' ## -----------------------------------
 ##'
 ##' ## two assays (matrices) with matching column names
@@ -152,7 +152,7 @@
 ##'                 row.names = sample_names)
 ##'
 ##' el <- list(assay1 = se1, assay2 = se2)
-##' fts1 <- Features(el, colData = cd)
+##' fts1 <- QFeatures(el, colData = cd)
 ##' fts1
 ##' fts1[[1]]
 ##' fts1[["assay1"]]
@@ -167,33 +167,35 @@
 ##' selectRowData(fts1, rowvars = "Fa")
 ##'
 ##' ## -----------------------------------
-##' ## See ?readFeatures to create a
-##' ## Features object from a data.frame
+##' ## See ?readQFeatures to create a
+##' ## QFeatures object from a data.frame
 ##' ## or spreadsheet.
 ##' ## -----------------------------------
 NULL
 
 
 ## ----------------------------------
-## Features Class ChangeLog
+## QFeatures Class ChangeLog
 ##
 ## Version 0.1:
 ##  - Contains MatchedAssayExperiment
 ## Version 0.2:
 ##  - Contains MultiAssayExperiment (see issue 46)
+## Version 0.3:
+##  - Rename to QFeatures (see issue 89)
 
-setClass("Features",
+setClass("QFeatures",
          contains = "MultiAssayExperiment",
          slots = c(version = "character",
                    assayLinks = "AssayLinks"),
          prototype = prototype(
-             version = "0.2"))
+             version = "0.3"))
 
 
-##' @rdname Features-class
-##' @param object An instance of class `Features`.
+##' @rdname QFeatures-class
+##' @param object An instance of class `QFeatures`.
 ##' @exportMethod show
-setMethod("show", "Features",
+setMethod("show", "QFeatures",
           function(object) {
               if (isEmpty(object)) {
                   cat(sprintf("A empty instance of class %s", class(object)), "\n")
@@ -226,11 +228,11 @@ setMethod("show", "Features",
 
 
 
-##' @rdname Features-class
-##' @param x An instance of class `Features`.
+##' @rdname QFeatures-class
+##' @param x An instance of class `QFeatures`.
 ##' @importFrom methods callNextMethod
 ##' @exportMethod [
-setMethod("[", c("Features", "ANY", "ANY", "ANY"),
+setMethod("[", c("QFeatures", "ANY", "ANY", "ANY"),
           function(x, i, j, ..., drop = TRUE) {
               ## Subset the assays
               ans <- callNextMethod(x, i, j, ..., drop)
@@ -256,24 +258,24 @@ setMethod("[", c("Features", "ANY", "ANY", "ANY"),
           })
 
 
-##' @rdname Features-class
+##' @rdname QFeatures-class
 ##' @importFrom BiocGenerics dims
 ##' @exportMethod dims
-setMethod("dims", "Features",
+setMethod("dims", "QFeatures",
           function(x) sapply(experiments(x), dim))
 
 
-##' @rdname Features-class
-setMethod("[", c("Features", "character", "ANY", "ANY"),
+##' @rdname QFeatures-class
+setMethod("[", c("QFeatures", "character", "ANY", "ANY"),
           function(x, i, j, k, ..., drop = TRUE) {
               if (missing(j)) j <- TRUE
               if (missing(k)) k <- TRUE
               subsetByFeature(x, i)[, j, k]
           })
 
-##' @rdname Features-class
+##' @rdname QFeatures-class
 ##'
-##' @param x An instance of class `Features`.
+##' @param x An instance of class `QFeatures`.
 ##' @param rowvars A `character()` with the names of the `rowData`
 ##'     variables (columns) to retain in any assay. All other
 ##'     variables will be dropped. In case an element in `rowvars`
@@ -281,7 +283,7 @@ setMethod("[", c("Features", "character", "ANY", "ANY"),
 ##'
 ##' @export
 selectRowData <- function(x, rowvars) {
-    stopifnot(inherits(x, "Features"))
+    stopifnot(inherits(x, "QFeatures"))
     rowvars <- as.character(rowvars)
     allvars <- unique(unlist(rowDataNames(x)))
     missingvars <- setdiff(rowvars, allvars)
@@ -295,7 +297,7 @@ selectRowData <- function(x, rowvars) {
 }
 
 
-##' @rdname Features-class
+##' @rdname QFeatures-class
 ##'
 ##' @importFrom Biobase fData
 ##'
@@ -313,12 +315,12 @@ rowDataNames <- function(x) {
 }
 
 
-##' @rdname Features-class
+##' @rdname QFeatures-class
 ##'
 ##' @param value A character() with new name(s) for the assay(s) in `x`
 ##'
 ##' @exportMethod names<-
-setReplaceMethod("names", c("Features", "character"),
+setReplaceMethod("names", c("QFeatures", "character"),
                  function(x, value) {
                      key_vals <- cbind(names(x), value)
                      x <-  callNextMethod(x, value)

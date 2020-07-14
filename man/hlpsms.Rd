@@ -44,7 +44,7 @@ along the density gradient.
 \item DeltaMassPPM: the difference in measure and calculated mass, in parts per millions.
 \item RTmin: the peptide retention time, in minutes.
 \item markers: localisation for well known sub-cellular
-markers. Features of unknown location are encode as \code{"unknown"}.
+markers. QFeatures of unknown location are encode as \code{"unknown"}.
 }
 
 For further details, install the \code{pRolocdata} package and see
@@ -58,6 +58,6 @@ Naake T, Gatto L, Viner R, Martinez Arias A, Lilley KS. Nat Commun. 2016 Jan
 PMCID: PMC4729960.
 }
 \seealso{
-See \link{Features} to import this data using the \code{\link[=readFeatures]{readFeatures()}} function.
+See \link{QFeatures} to import this data using the \code{\link[=readQFeatures]{readQFeatures()}} function.
 }
 \keyword{datasets}

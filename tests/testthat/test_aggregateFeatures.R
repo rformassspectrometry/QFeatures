@@ -3,24 +3,24 @@ se <- feat1[[1]]
 
 test_that("aggregateFeatures,SummarizedExperiment: errors and message", {
     ## Error: Missing fcol
-    expect_error(.aggregateFeatures(se), regexp = "'fcol' is required")
+    expect_error(.aggregateQFeatures(se), regexp = "'fcol' is required")
     ## Error: fcol not present in rowData
-    expect_error(.aggregateFeatures(se, fcol = "missing_fcol"),
+    expect_error(.aggregateQFeatures(se, fcol = "missing_fcol"),
                  regexp = "'fcol' not found")
     ## Aggregation with missing data creates message
     data("se_na2")
     ## Message: missing data in assay
-    expect_message(.aggregateFeatures(se_na2, fcol = "nNA", fun = colSums), 
+    expect_message(.aggregateQFeatures(se_na2, fcol = "nNA", fun = colSums),
                    regexp = "Your quantitative data contain missing values")
     ## Message: missing data in assay AND rowData
     rowData(se_na2)[1, 2] <- NA
-    expect_message(.aggregateFeatures(se_na2, fcol = "nNA", fun = colSums), 
+    expect_message(.aggregateQFeatures(se_na2, fcol = "nNA", fun = colSums),
                    regexp = "Your quantitative and row data contain missing values")
 })
 
 test_that("aggregateFeatures,SummarizedExperiment with 'fun = sum'", {
-    aggSE <- .aggregateFeatures(se, fcol = "Sequence", fun = colSums)
-    
+    aggSE <- .aggregateQFeatures(se, fcol = "Sequence", fun = colSums)
+
     ## checking quantiation data
     assay1 <- matrix(as.numeric(c(sum(1:3), sum(4:6), sum(7:10),
                                   sum(11:13), sum(14:16), sum(17:20))),
@@ -44,9 +44,9 @@ test_that("aggregateFeatures,SummarizedExperiment with 'fun = sum'", {
 })
 
 test_that("aggregateFeatures,SummarizedExperiment with 'fun = median'", {
-    aggSE <- .aggregateFeatures(se, fcol = "Sequence", 
+    aggSE <- .aggregateQFeatures(se, fcol = "Sequence",
                                 fun = matrixStats::colMedians)
-    
+
     ## checking quantiation data
     assay1 <- matrix(as.numeric(c(median(1:3), median(4:6), median(7:10),
                                   median(11:13), median(14:16), median(17:20))),
@@ -55,7 +55,7 @@ test_that("aggregateFeatures,SummarizedExperiment with 'fun = median'", {
                                      c("S1", "S2")))
     assay1 <- assay1[order(rownames(assay1)), ]
     expect_identical(assay1, assay(aggSE))
-    
+
     ## checking rowData
     Sequence <- rownames(assay1)
     Protein <- c("ProtA", "ProtB", "ProtA")
@@ -64,7 +64,7 @@ test_that("aggregateFeatures,SummarizedExperiment with 'fun = median'", {
     coldat1 <- DataFrame(Sequence = Sequence,
                          Protein = Protein,
                          location = location,
-                         .n = .n,               
+                         .n = .n,
                          row.names = rownames(assay1))
     expect_equal(coldat1, rowData(aggSE))
 })
@@ -75,18 +75,18 @@ test_that("aggregateFeatures,SummarizedExperiment return class (issue 78)", {
     expect_identical(class(aggregateFeatures(se, fcol = "Sequence"))[[1]],
                      "SummarizedExperiment")
     ## Aggregating an SCEs produces an SCE
-    expect_identical(class(aggregateFeatures(as(se, "SingleCellExperiment"), 
+    expect_identical(class(aggregateFeatures(as(se, "SingleCellExperiment"),
                                              fcol = "Sequence"))[[1]],
                      "SingleCellExperiment")
 })
 
-test_that("aggregateFeatures,Features: empty and errors", {
-    expect_identical(Features(), aggregateFeatures(Features()))
-    expect_error(aggregateFeatures(feat1, name = "psms"), 
+test_that("aggregateFeatures,QFeatures: empty and errors", {
+    expect_identical(QFeatures(), aggregateFeatures(QFeatures()))
+    expect_error(aggregateFeatures(feat1, name = "psms"),
                  regexp = "There's already an assay named 'psms'")
 })
 
-test_that("aggregateFeatures,Features: check links and subsetting", {
+test_that("aggregateFeatures,QFeatures: check links and subsetting", {
     feat1 <- aggregateFeatures(feat1, "psms", fcol = "Sequence",
                                name = "peptides", fun = colSums)
     ## Checking the aggregated assay is correctly added
@@ -94,7 +94,7 @@ test_that("aggregateFeatures,Features: check links and subsetting", {
     expect_identical(dims(feat1),
                      matrix(c(10L, 2L, 3L, 2L), ncol = 2,
                             dimnames = list(NULL, c("psms", "peptides"))))
-    
+
     ## Checking assayLinks
     alink <- feat1@assayLinks[[2]]
     expect_identical(alink@from, "psms")
@@ -104,23 +104,23 @@ test_that("aggregateFeatures,Features: check links and subsetting", {
                   names_from = paste0("PSM", 1:10),
                   names_to = c(rep("SYGFNAAR", 3),
                                rep("ELGNDAYK", 3),
-                               rep("IAEESNFPFIK", 4)),                      
+                               rep("IAEESNFPFIK", 4)),
                   nLnode = 10L,
                   nRnode = 3L,
                   sort.by.query = TRUE)
     expect_identical(alink@hits, hits1)
-    
+
     ## Checking subsetting still works
     featsub <- feat1["IAEESNFPFIK", , ]
     expect_identical(dims(featsub),
                      matrix(c(4L, 2L, 1L, 2L), ncol = 2,
                             dimnames = list(NULL, c("psms", "peptides"))))
     ## The rowData should contain only the Sequence used for subsetting
-    expect_identical(unique(rowData(featsub[["peptides"]])$Sequence), 
+    expect_identical(unique(rowData(featsub[["peptides"]])$Sequence),
                      "IAEESNFPFIK")
 })
 
-test_that("aggregateFeatures,Features: aggcounts", {
+test_that("aggregateFeatures,QFeatures: aggcounts", {
     data(ft_na)
     ## missing values are propagated
     ft2 <- aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums)
@@ -138,5 +138,3 @@ test_that("aggregateFeatures,Features: aggcounts", {
     ## .n variable
     expect_identical(rowData(se)$.n , c(2L, 2L))
 })
-
-

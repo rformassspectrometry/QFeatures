@@ -8,7 +8,7 @@
     k <- intersect(rownames(x), rownames(y))
     .x <- x[k, , drop = FALSE]
     .y <- y[k, , drop = FALSE]
-    for (j in names(.x)) 
+    for (j in names(.x))
         if (!isTRUE(all.equal(.x[[j]], .y[[j]])))
             x[, j] <- y[, j] <- NULL
     ## Create these to recover rownames
@@ -22,13 +22,13 @@
     ## Set row names and remove temporary column
     rownames(res) <- res[["._rownames"]]
     res[["._rownames"]] <- NULL
-    res    
+    res
 }
 
 ##' @importFrom methods as
 .merge_2_by_rows <- function(x, y) {
     ## Save class to coerce at the end
-    cl <- class(x) 
+    cl <- class(x)
     res <- merge(x, y,
                  by = 0,
                  all.x = TRUE, all.y = TRUE,
@@ -70,29 +70,29 @@ mergeSElist <- function(x) {
 }
 
 
-##' @title Join assays in a Features object
+##' @title Join assays in a QFeatures object
 ##'
 ##' @description
 ##'
 ##' This function applies a full-join type of operation on 2 or more
-##' assays in a `Features` instance. 
-##' 
-##' @param x An instance of class [Features].
-##' 
+##' assays in a `QFeatures` instance.
+##'
+##' @param x An instance of class [QFeatures].
+##'
 ##' @param i The indices or names of al least two assays to be joined.
-##' 
+##'
 ##' @param name A `character(1)` naming the new assay. Default is
 ##'     `joinedAssay`. Note that the function will fail if there's
 ##'     already an assay with `name`.
-##' 
-##' @return A `Features` object with an additional assay.
+##'
+##' @return A `QFeatures` object with an additional assay.
 ##'
 ##' @details
 ##'
 ##' The rows to be joined are chosen based on the rownames of the
 ##' respective assays. It is the user's responsability to make sure
 ##' these are meaningful, such as for example refering to unique
-##' peptide sequences or proteins. 
+##' peptide sequences or proteins.
 ##'
 ##' The join operation acts along the rows and expects the samples
 ##' (columns) of the assays to be disjoint, i.e. the assays mustn't
@@ -105,19 +105,19 @@ mergeSElist <- function(x) {
 ##' contains value `a1` and variable `A` in sample `S2` in a different
 ##' assay contains `a2`, then the feature variable `A` is dropped in
 ##' the merged assay.
-##' 
+##'
 ##' The joined assay is linked to its parent assays through an `AssayLink`
-##' object. The link between the child assay and the parent assays is based on 
+##' object. The link between the child assay and the parent assays is based on
 ##' the assay row names, just like the procedure for joining the parent assays.
 ##'
 ##' @author Laurent Gatto
-##' 
+##'
 ##' @export
 ##'
 ##' @examples
-##' 
+##'
 ##' ## -----------------------------------------------
-##' ## An example Features with 3 assays to be joined
+##' ## An example QFeatures with 3 assays to be joined
 ##' ## -----------------------------------------------
 ##' data(feat2)
 ##' feat2
@@ -129,7 +129,7 @@ mergeSElist <- function(x) {
 ##' assay(feat2[[1]])
 ##' assay(feat2[[2]])
 ##' assay(feat2[[3]])
-##' 
+##'
 ##' ## The joined assay contains 14 rows (corresponding to the union
 ##' ## of those in the initial assays) and 12 samples
 ##' assay(feat2[["joinedAssay"]])
@@ -148,7 +148,7 @@ mergeSElist <- function(x) {
 joinAssays <- function(x,
                        i,
                        name = "joinedAssay") {
-    stopifnot("Object must be of class 'Features'" = inherits(x, "Features"),
+    stopifnot("Object must be of class 'QFeatures'" = inherits(x, "QFeatures"),
               "Need at least 2 assays to join" = length(i) >= 2)
     if (name %in% names(x))
         stop("Assay with name '", name, "' already exists.")

@@ -1,10 +1,10 @@
-##' @title Features processing
+##' @title QFeatures processing
 ##'
 ##' @description
 ##'
 ##' This manual page describes common quantitative proteomics data
-##' processing methods using [Features] objects. In the following
-##' functions, if `object` is of class `Features`, and optional assay
+##' processing methods using [QFeatures] objects. In the following
+##' functions, if `object` is of class `QFeatures`, and optional assay
 ##' index or name `i` can be specified to define the assay (by name of
 ##' index) on which to operate.
 ##'
@@ -15,19 +15,19 @@
 ##'
 ##' - `normalize(object, method, i)` normalises the assay(s) according
 ##'   to `method` (see Details).
-##' 
+##'
 ##' - `scaleTransform(object, center = TRUE, scale = TRUE, i)` applies
-##'   [base::scale()] to `SummarizedExperiment` and `Features`
+##'   [base::scale()] to `SummarizedExperiment` and `QFeatures`
 ##'   objects.
 ##'
 ##' - `sweep(x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ...)`
 ##'   sweeps out array summaries from `SummarizedExperiment` and
-##'   `Features` objects. See [base::sweep()] for details.
+##'   `QFeatures` objects. See [base::sweep()] for details.
 ##'
 ##' See the *Processing* vignette for examples.
 ##'
 ##' @details
-##' 
+##'
 ##' The `method` parameter in `normalize` can be one of `"sum"`,
 ##' `"max"`, `"center.mean"`, `"center.median"`, `"div.mean"`,
 ##' `"div.median"`, `"diff.meda"`, `"quantiles`", `"quantiles.robust`"
@@ -59,11 +59,11 @@
 ##' For further details and examples about normalisation, see
 ##' [MsCoreUtils::normalize_matrix()].
 ##'
-##' @param object An object of class `Features` or `SummarizedExperiment`.
+##' @param object An object of class `QFeatures` or `SummarizedExperiment`.
 ##'
-##' @param x An object of class `Features` or `SummarizedExperiment`
+##' @param x An object of class `QFeatures` or `SummarizedExperiment`
 ##'     in `sweep`.
-##' 
+##'
 ##' @param base `numeric(1)` providing the base with respect to which
 ##'     logarithms are computed. Defaults is 2.
 ##'
@@ -74,15 +74,15 @@
 ##' @param center `logical(1)` (default is `TRUE`) value or
 ##'     numeric-alike vector of length equal to the number of columns
 ##'     of `object`. See [base::scale()] for details.
-##' 
+##'
 ##' @param scale `logical(1)` (default is `TRUE`) or a numeric-alike
 ##'     vector of length equal to the number of columns of
 ##'     `object`. See [base::scale()] for details.
 ##'
 ##' @param method `character(1)` defining the normalisation method to
 ##'     apply. See Details.
-##' 
-##' @param i A numeric vector or a character vector giving the index or the 
+##'
+##' @param i A numeric vector or a character vector giving the index or the
 ##'     name, respectively, of the assay(s) to be processed.
 ##'
 ##' @param name A `character(1)` naming the new assay name. Defaults
@@ -102,18 +102,18 @@
 ##'     (the default), warn if the length or dimensions of `STATS` do
 ##'     not match the specified dimensions of `x`.  Set to `FALSE` for
 ##'     a small speed gain when you know that dimensions match.
-##' 
+##'
 ##' @param ... Additional parameters passed to inner functions.
 ##'
-##' @aliases logTransform logTransform,SummarizedExperiment-method logTransform,Features-method 
-##' @aliases scaleTransform scaleTransform,SummarizedExperiment-method scaleTransform,Features-method
-##' @aliases normalize normalize,SummarizedExperiment-method normalize,Features-method
-##' @aliases sweep sweep,SummarizedExperiment-method sweep,Features-method
+##' @aliases logTransform logTransform,SummarizedExperiment-method logTransform,QFeatures-method
+##' @aliases scaleTransform scaleTransform,SummarizedExperiment-method scaleTransform,QFeatures-method
+##' @aliases normalize normalize,SummarizedExperiment-method normalize,QFeatures-method
+##' @aliases sweep sweep,SummarizedExperiment-method sweep,QFeatures-method
 ##' @aliases normalizeMethods
 ##'
-##' @name Features-processing
+##' @name QFeatures-processing
 ##'
-##' @rdname Features-processing
+##' @rdname QFeatures-processing
 ##'
 ##' @examples
 ##'
@@ -126,7 +126,7 @@ NULL
 
 
 ##' @exportMethod logTransform
-##' @rdname Features-processing
+##' @rdname QFeatures-processing
 setMethod("logTransform",
           "SummarizedExperiment",
           function(object, base = 2, pc = 0) {
@@ -134,14 +134,14 @@ setMethod("logTransform",
               object
           })
 
-##' @rdname Features-processing
+##' @rdname QFeatures-processing
 setMethod("logTransform",
-          "Features",
+          "QFeatures",
           function(object, i, name = "logAssay", base = 2, pc = 0) {
               if (missing(i))
                   stop("Provide index or name of assay to be processed")
               if (length(i) != 1)
-                  stop("Only one assay to be processed at a time")  
+                  stop("Only one assay to be processed at a time")
               if (is.numeric(i)) i <- names(object)[[i]]
               object <- addAssay(object,
                                  logTransform(object[[i]], base, pc),
@@ -150,18 +150,18 @@ setMethod("logTransform",
           })
 
 ##' @exportMethod scaleTransform
-##' @rdname Features-processing
+##' @rdname QFeatures-processing
 setMethod("scaleTransform", "SummarizedExperiment",
           function(object, center = TRUE, scale = TRUE) {
               e <- scale(assay(object), center = center, scale = scale)
               attr(e, "scaled:center") <- NULL
-              attr(e, "scaled:scale") <- NULL              
+              attr(e, "scaled:scale") <- NULL
               assay(object) <- e
               object
           })
 
-##' @rdname Features-processing
-setMethod("scaleTransform", "Features",
+##' @rdname QFeatures-processing
+setMethod("scaleTransform", "QFeatures",
           function(object, i, name = "scaledAssay", center = TRUE, scale = TRUE) {
               if (missing(i))
                   stop("Provide index or name of assay to be processed")
@@ -180,7 +180,7 @@ setMethod("scaleTransform", "Features",
 
 ##' @importFrom BiocGenerics normalize
 ##' @exportMethod normalize
-##' @rdname Features-processing
+##' @rdname QFeatures-processing
 setMethod("normalize", "SummarizedExperiment",
           function(object,
                    method,
@@ -194,8 +194,8 @@ setMethod("normalize", "SummarizedExperiment",
 
 ## normalise <- normalize
 
-##' @rdname Features-processing
-setMethod("normalize", "Features",
+##' @rdname QFeatures-processing
+setMethod("normalize", "QFeatures",
           function(object, i, name = "normAssay", method, ...) {
               if (missing(i))
                   stop("Provide index or name of assay to be processed")
@@ -210,7 +210,7 @@ setMethod("normalize", "Features",
 
 
 ## -------------------------------------------------------
-##   Sweep 
+##   Sweep
 ## -------------------------------------------------------
 
 sweepSE <- function(x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ...) {
@@ -222,14 +222,14 @@ sweepSE <- function(x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ...) {
 }
 
 ##' @exportMethod sweep
-##' @rdname Features-processing
+##' @rdname QFeatures-processing
 setMethod("sweep", "SummarizedExperiment",
           function(x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ...)
               sweepSE(x, MARGIN, STATS, FUN, check.margin, ...))
 
 
-##' @rdname Features-processing
-setMethod("sweep", "Features",
+##' @rdname QFeatures-processing
+setMethod("sweep", "QFeatures",
           function(x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ..., i, name = "sweptAssay") {
               if (missing(i))
                   stop("Provide index or name of assay to be processed")

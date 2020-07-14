@@ -1,4 +1,4 @@
-library("Features")
+library("QFeatures")
 
 set.seet(1)
 
@@ -22,7 +22,7 @@ rownames(coldata) <- colnames(psms)
 
 psms <- SummarizedExperiment(psms, rowData = rowdata)
 
-feat1 <- Features(list(psms = psms), colData = coldata)
+feat1 <- QFeatures(list(psms = psms), colData = coldata)
 
 save(feat1, file = "../../data/feat1.rda", compress = "xz", compression_level = 9)
 
@@ -53,7 +53,7 @@ df2 <- DataFrame(Prot = paste0("P", rownames(m2)),
                  x = rnorm(1:4),
                  y = rnorm(1:4),
                  row.names = rownames(m2))
-cd2 <- DataFrame(Var1 = rnorm(4), 
+cd2 <- DataFrame(Var1 = rnorm(4),
                  Var2 = LETTERS[5:8],
                  row.names = colnames(m2))
 
@@ -70,6 +70,6 @@ se2 <- SummarizedExperiment(m2, df2, colData = cd2)
 se3 <- SummarizedExperiment(m3, df3, colData = cd3)
 
 el <- list(assay1 = se1, assay2 = se2, assay3 = se3)
-feat2 <- Features(el)
+feat2 <- QFeatures(el)
 
 save(feat2, file = "../../data/feat2.rda", compress = "xz", compression_level = 9)

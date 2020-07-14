@@ -28,7 +28,7 @@ metadata are displayed in the respective \emph{Assay} and \emph{Row data}
 tabs. The \emph{Heatmap} tab displays a heatmap of the assay. The
 selection of rows in the \emph{Row data} table is used to subset the
 features displayed in the \emph{Assay} table and the heatmap to those
-currectly selected. See \link{Features} for an example.
+currectly selected. See \link{QFeatures} for an example.
 }
 \author{
 Laurent Gatto

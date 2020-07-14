@@ -14,7 +14,7 @@ An object of class \code{Features} of length 1.
 feat1
 }
 \description{
-\code{feat1} is a small test \code{Features} object for testing and
+\code{feat1} is a small test \code{QFeatures} object for testing and
 demonstration. \code{feat2} is used to demonstrate assay joins. \code{ft_na}
 is a tiny test set that contains missing values used to
 demonstrate and test the impact of missing values on data

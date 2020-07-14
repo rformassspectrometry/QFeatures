@@ -1,4 +1,4 @@
-Package: Features
+Package: QFeatures
 Title: Quantitative features for mass spectrometry data
 Version: 0.6.5
 Authors@R: c(person("Laurent", "Gatto",
@@ -53,20 +53,20 @@ License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
-BugReports: https://github.com/RforMassSpectrometry/Features/issues
-URL: https://github.com/RforMassSpectrometry/Features
+BugReports: https://github.com/RforMassSpectrometry/QFeatures/issues
+URL: https://github.com/RforMassSpectrometry/QFeatures
 Collate:
     'AllGenerics.R'
     'AssayLinks.R'
-    'Features-class.R'
-    'Features-constructors.R'
-    'Features-functions.R'
-    'Features-processing.R'
-    'Features-filter.R'
-    'Features-missing-data.R'
-    'Features-aggregation.R'
-    'Features-imputation.R'
-    'Features-join.R'
+    'QFeatures-class.R'
+    'QFeatures-constructors.R'
+    'QFeatures-functions.R'
+    'QFeatures-processing.R'
+    'QFeatures-filter.R'
+    'QFeatures-missing-data.R'
+    'QFeatures-aggregation.R'
+    'QFeatures-imputation.R'
+    'QFeatures-join.R'
     'SummarizedExperiment-methods.R'
     'subsetBy-methods.R'
     'data.R'
@@ -74,4 +74,4 @@ Collate:
     'utils.R'
     'display.R'
 Roxygen: list(markdown=TRUE)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1

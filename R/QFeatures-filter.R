@@ -4,7 +4,7 @@
 ##'
 ##' The `filterFeatures` methods enables users to filter features
 ##' based on a variable in their `rowData`. The features matching the
-##' filter will be returned as a new object of class `Features`. The
+##' filter will be returned as a new object of class `QFeatures`. The
 ##' filters can be provided as instances of class `AnnotationFilter`
 ##' (see below) or as formulas.
 ##'
@@ -18,16 +18,16 @@
 ##' `NumericVariableFilters` objects), which can be created with the
 ##' `VariableFilter` constructor.
 ##'
-##' @seealso The [Features] man page for subsetting and the `Features`
+##' @seealso The [QFeatures] man page for subsetting and the `QFeatures`
 ##'     vignette provides an extended example.
 ##'
 ##' @author Laurent Gatto
 ##'
-##' @name Features-filtering
-##' 
-##' @rdname Features-filtering
+##' @name QFeatures-filtering
 ##'
-##' @aliases filterFeatures filterFeatures,Features,formula-method filterFeatures,Features,AnnotationFilter-method CharacterVariableFilter NumericVariableFilter VariableFilter
+##' @rdname QFeatures-filtering
+##'
+##' @aliases filterFeatures filterFeatures,QFeatures,formula-method filterFeatures,QFeatures,AnnotationFilter-method CharacterVariableFilter NumericVariableFilter VariableFilter
 ##'
 ##' @examples
 ##'
@@ -45,7 +45,7 @@
 ##'                condition = "<=")
 ##'
 ##' example(aggregateFeatures)
-##' 
+##'
 ##' ## ----------------------------------------------------------------
 ##' ## Filter all features that are associated to the Mitochondrion in
 ##' ## the location feature variable. This variable is present in all
@@ -60,7 +60,7 @@
 ##'
 ##' ## using a user-defined character filter
 ##' filterFeatures(feat1, VariableFilter("location", "Mitochondrion"))
-##' 
+##'
 ##' ## using a user-defined character filter with partial match
 ##' filterFeatures(feat1, VariableFilter("location", "Mito", "startsWith"))
 ##' filterFeatures(feat1, VariableFilter("location", "itochon", "contains"))
@@ -79,13 +79,13 @@
 ##' ## ----------------------------------------------------------------
 ##' ## Filter features that have a p-values lower or equal to 0.03
 ##' ## ----------------------------------------------------------------
-##' 
+##'
 ##' ## using a user-defined numeric filter
 ##' filterFeatures(feat1, VariableFilter("pval", 0.03, "<="))
 ##'
 ##' ## using the formula interface
 ##' filterFeatures(feat1, ~ pval <= 0.03)
-##' 
+##'
 ##' ## you can also remove all p-values that are NA (if any)
 ##' filterFeatures(feat1, ~ !is.na(pval))
 ##'
@@ -105,13 +105,13 @@
 ##' ## ----------------------------------------------------------------
 ##' ## Example with missing values
 ##' ## ----------------------------------------------------------------
-##' 
+##'
 ##' data(feat1)
 ##' rowData(feat1[[1]])[1, "location"] <- NA
 ##' rowData(feat1[[1]])
 ##'
 ##' ## The row with the NA is not removed
-##' rowData(filterFeatures(feat1, ~ location == "Mitochondrion")[[1]]) 
+##' rowData(filterFeatures(feat1, ~ location == "Mitochondrion")[[1]])
 ##' rowData(filterFeatures(feat1, ~ location == "Mitochondrion", na.rm = FALSE)[[1]])
 ##'
 ##' ## The row with the NA is removed
@@ -126,7 +126,7 @@
 ##'
 ##' ## Explicit handling
 ##' filterFeatures(feat1, ~ !is.na(location) & location == "Mitochondrion")
-##' 
+##'
 ##' ## Using the pipe operator
 ##' library("magrittr")
 ##' feat1 %>%
@@ -138,17 +138,17 @@ NULL
 
 ##' @import AnnotationFilter
 ##' @exportClass CharacterVariableFilter
-##' @rdname Features-filtering
+##' @rdname QFeatures-filtering
 setClass("CharacterVariableFilter", contains = "CharacterFilter")
 
 ##' @exportClass NumericVariableFilter
-##' @rdname Features-filtering
+##' @rdname QFeatures-filtering
 setClass("NumericVariableFilter", contains = "DoubleFilter")
 
 
 ##' @param field `character(1)` refering to the name of the variable
 ##'     to apply the filter on.
-##' 
+##'
 ##' @param value `character()` or `integer()` value for the
 ##'     `CharacterVariableFilter` and `NumericVariableFilter` filters
 ##'     respectively.
@@ -159,23 +159,23 @@ setClass("NumericVariableFilter", contains = "DoubleFilter")
 ##'     `CharacterVariableFilter`, one of `"=="`, `"!="`,
 ##'     `"startsWith"`, `"endsWith"` or `"contains"`. Default
 ##'     condition is `"=="`.
-##'     
-##' @param not `logical(1)` indicating whether the filtering should be negated 
-##'     or not. `TRUE` indicates is negated (!). `FALSE` indicates not negated. 
+##'
+##' @param not `logical(1)` indicating whether the filtering should be negated
+##'     or not. `TRUE` indicates is negated (!). `FALSE` indicates not negated.
 ##'     Default `not` is `FALSE`, so no negation.
-##' 
+##'
 ##' @export VariableFilter
-##' @rdname Features-filtering
+##' @rdname QFeatures-filtering
 VariableFilter <- function(field,
                            value,
-                           condition = "==", 
+                           condition = "==",
                            not = FALSE) {
     if (is.numeric(value))
         new("NumericVariableFilter",
             field = as.character(field),
             value = value,
             condition = condition,
-            not = not)                
+            not = not)
     else if (is.character(value))
         new("CharacterVariableFilter",
             field = as.character(field),
@@ -188,7 +188,7 @@ VariableFilter <- function(field,
 
 
 
-##' @param object An instance of class [Features].
+##' @param object An instance of class [QFeatures].
 ##'
 ##' @param filter Either an instance of class [AnnotationFilter] or a
 ##'     formula.
@@ -200,15 +200,15 @@ VariableFilter <- function(field,
 ##'
 ##' @exportMethod filterFeatures
 ##'
-##' @rdname Features-filtering
+##' @rdname QFeatures-filtering
 setMethod("filterFeatures",
-          c("Features", "AnnotationFilter"),
-          function(object, filter, na.rm = FALSE, ...) 
+          c("QFeatures", "AnnotationFilter"),
+          function(object, filter, na.rm = FALSE, ...)
               filterFeaturesWithAnnotationFilter(object, filter, na.rm, ...))
 
-##' @rdname Features-filtering
+##' @rdname QFeatures-filtering
 setMethod("filterFeatures",
-          c("Features", "formula"),
+          c("QFeatures", "formula"),
           function(object, filter, na.rm = FALSE, ...)
               filterFeaturesWithFormula(object, filter, na.rm, ...))
 
@@ -244,12 +244,12 @@ filterFeaturesWithFormula <- function(object, filter, na.rm, ...) {
     sel <- lapply(sel, function(x) {
         x[is.na(x)] <- !na.rm
         x
-    })  
+    })
     object[sel, , ]
 }
 
 
-## Internal function called by `filterFeaturesWithAnnotationFilter` when 
+## Internal function called by `filterFeaturesWithAnnotationFilter` when
 ## `condition` is `"contains"`
 contains <- function(x, value) {
     ## Replace regex special character by regular character matching
