@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Join assays in a Features object — joinAssays • Features</title>
+<title>Join assays in a QFeatures object — joinAssays • QFeatures</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,9 @@
 
 
 
-<meta property="og:title" content="Join assays in a Features object — joinAssays" />
+<meta property="og:title" content="Join assays in a QFeatures object — joinAssays" />
 <meta property="og:description" content="This function applies a full-join type of operation on 2 or more
-assays in a Features instance." />
+assays in a QFeatures instance." />
 
 
 
@@ -72,8 +72,8 @@ assays in a Features instance." />
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.4</span>
+        <a class="navbar-link" href="../index.html">QFeatures</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
       </span>
     </div>
 
@@ -86,7 +86,7 @@ assays in a Features instance." />
   </a>
 </li>
 <li>
-  <a href="../articles/Features.html">Get started</a>
+  <a href="../articles/QFeatures.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -99,14 +99,14 @@ assays in a Features instance." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Processing.html">Processing quantitative proteomics data with Features</a>
+      <a href="../articles/Processing.html">Processing quantitative proteomics data with QFeatures</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/RforMassSpectrometry/Features/">
+  <a href="https://github.com/RforMassSpectrometry/QFeatures/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -124,14 +124,14 @@ assays in a Features instance." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Join assays in a Features object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/Features/blob/master/R/Features-join.R'><code>R/Features-join.R</code></a></small>
+    <h1>Join assays in a QFeatures object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/QFeatures/blob/master/R/QFeatures-join.R'><code>R/QFeatures-join.R</code></a></small>
     <div class="hidden name"><code>joinAssays.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>This function applies a full-join type of operation on 2 or more
-assays in a <code>Features</code> instance.</p>
+assays in a <code>QFeatures</code> instance.</p>
     </div>
 
     <pre class="usage"><span class='fu'>joinAssays</span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"joinedAssay"</span>)</pre>
@@ -141,7 +141,7 @@ assays in a <code>Features</code> instance.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>An instance of class <a href='Features-class.html'>Features</a>.</p></td>
+      <td><p>An instance of class <a href='QFeatures-class.html'>QFeatures</a>.</p></td>
     </tr>
     <tr>
       <th>i</th>
@@ -157,7 +157,7 @@ already an assay with <code>name</code>.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>Features</code> object with an additional assay.</p>
+    <p>A <code>QFeatures</code> object with an additional assay.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The rows to be joined are chosen based on the rownames of the
@@ -181,10 +181,10 @@ the assay row names, just like the procedure for joining the parent assays.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'>## -----------------------------------------------</span>
-<span class='co'>## An example Features with 3 assays to be joined</span>
+<span class='co'>## An example QFeatures with 3 assays to be joined</span>
 <span class='co'>## -----------------------------------------------</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>feat2</span>)
-<span class='no'>feat2</span></div><div class='output co'>#&gt; A instance of class Features containing 3 assays:
+<span class='no'>feat2</span></div><div class='output co'>#&gt; A instance of class QFeatures containing 3 assays:
 #&gt;  [1] assay1: SummarizedExperiment with 10 rows and 4 columns 
 #&gt;  [2] assay2: SummarizedExperiment with 4 rows and 4 columns 
 #&gt;  [3] assay3: SummarizedExperiment with 7 rows and 4 columns </div><div class='input'>
@@ -235,31 +235,31 @@ the assay row names, just like the procedure for joining the parent assays.</p>
 <span class='fu'>rowData</span>(<span class='no'>feat2</span><span class='kw'>[[</span><span class='fl'>1</span>]])</div><div class='output co'>#&gt; DataFrame with 10 rows and 2 columns
 #&gt;          Prot         x
 #&gt;   &lt;character&gt; &lt;numeric&gt;
-#&gt; a          Pa  0.588574
-#&gt; b          Pb -0.575829
-#&gt; c          Pc  0.605011
-#&gt; d          Pd  2.429209
-#&gt; e          Pe  1.626772
-#&gt; f          Pf -0.363418
-#&gt; g          Pg  1.810187
-#&gt; h          Ph  1.077797
-#&gt; i          Pi -0.371126
-#&gt; j          Pj -1.339931</div><div class='input'><span class='fu'>rowData</span>(<span class='no'>feat2</span><span class='kw'>[[</span><span class='fl'>2</span>]])</div><div class='output co'>#&gt; DataFrame with 4 rows and 3 columns
-#&gt;          Prot         x         y
-#&gt;   &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt;
-#&gt; h          Ph  2.597155 -0.686043
-#&gt; i          Pi -0.744545 -1.137314
-#&gt; j          Pj -1.523246  0.393392
-#&gt; k          Pk  0.688511  1.219692</div><div class='input'><span class='fu'>rowData</span>(<span class='no'>feat2</span><span class='kw'>[[</span><span class='fl'>3</span>]])</div><div class='output co'>#&gt; DataFrame with 7 rows and 3 columns
-#&gt;          Prot          x          y
-#&gt;   &lt;character&gt;  &lt;numeric&gt;  &lt;numeric&gt;
-#&gt; a          Pa  0.0479371 -0.9191475
-#&gt; b          Pb -0.7811901  0.2944353
-#&gt; j          Pj  0.9038133  0.4026299
-#&gt; k          Pk -1.4037040 -0.5742419
-#&gt; l          Pl -1.9711493 -0.3740353
-#&gt; m          Pm -0.8592450 -0.0773437
-#&gt; n          Pn  1.7847736  1.1744162</div><div class='input'>
+#&gt; a          Pa  2.067646
+#&gt; b          Pb -0.188981
+#&gt; c          Pc  0.266870
+#&gt; d          Pd  1.671331
+#&gt; e          Pe -1.857170
+#&gt; f          Pf  1.166811
+#&gt; g          Pg  0.316521
+#&gt; h          Ph  0.976154
+#&gt; i          Pi  0.117673
+#&gt; j          Pj  2.420734</div><div class='input'><span class='fu'>rowData</span>(<span class='no'>feat2</span><span class='kw'>[[</span><span class='fl'>2</span>]])</div><div class='output co'>#&gt; DataFrame with 4 rows and 3 columns
+#&gt;          Prot          x         y
+#&gt;   &lt;character&gt;  &lt;numeric&gt; &lt;numeric&gt;
+#&gt; h          Ph -0.0463617  1.547125
+#&gt; i          Pi  0.6833728 -1.513248
+#&gt; j          Pj  0.7917619  0.574492
+#&gt; k          Pk -0.5226943  1.404666</div><div class='input'><span class='fu'>rowData</span>(<span class='no'>feat2</span><span class='kw'>[[</span><span class='fl'>3</span>]])</div><div class='output co'>#&gt; DataFrame with 7 rows and 3 columns
+#&gt;          Prot          x         y
+#&gt;   &lt;character&gt;  &lt;numeric&gt; &lt;numeric&gt;
+#&gt; a          Pa -0.0762406 -0.420478
+#&gt; b          Pb  0.5580027 -0.389534
+#&gt; j          Pj  2.5905327 -0.377114
+#&gt; k          Pk  0.1605870 -0.418806
+#&gt; l          Pl  0.7486858  1.967733
+#&gt; m          Pm  1.2365642 -0.516798
+#&gt; n          Pn -0.4848651  0.263387</div><div class='input'>
 <span class='co'>## Only the 'Prot' variable is retained because it is shared among</span>
 <span class='co'>## all assays and the values and coherent across samples (the</span>
 <span class='co'>## value of 'Prot' for row 'j' is always 'Pj'). The variable 'y' is</span>

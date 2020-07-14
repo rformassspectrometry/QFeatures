@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • Features</title>
+<title>Function reference • QFeatures</title>
 
 
 <!-- jquery -->
@@ -70,8 +70,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.4</span>
+        <a class="navbar-link" href="../index.html">QFeatures</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
       </span>
     </div>
 
@@ -84,7 +84,7 @@
   </a>
 </li>
 <li>
-  <a href="../articles/Features.html">Get started</a>
+  <a href="../articles/QFeatures.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -97,14 +97,14 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Processing.html">Processing quantitative proteomics data with Features</a>
+      <a href="../articles/Processing.html">Processing quantitative proteomics data with QFeatures</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/RforMassSpectrometry/Features/">
+  <a href="https://github.com/RforMassSpectrometry/QFeatures/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -160,37 +160,37 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="Features-aggregate.html">aggregateFeatures(<i>&lt;Features&gt;</i>)</a></code> <code><a href="Features-aggregate.html">aggregateFeatures(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="Features-aggregate.html">aggcounts(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> </p>
+          <p><code><a href="QFeatures-aggregate.html">aggregateFeatures(<i>&lt;QFeatures&gt;</i>)</a></code> <code><a href="QFeatures-aggregate.html">aggregateFeatures(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="QFeatures-aggregate.html">aggcounts(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> </p>
         </td>
         <td><p>Aggregate an assay's quantitative features</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="Features-class.html">show(<i>&lt;Features&gt;</i>)</a></code> <code><a href="Features-class.html">`[`(<i>&lt;Features&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="Features-class.html">dims(<i>&lt;Features&gt;</i>)</a></code> <code><a href="Features-class.html">`[`(<i>&lt;Features&gt;</i>,<i>&lt;character&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="Features-class.html">selectRowData()</a></code> <code><a href="Features-class.html">rowDataNames()</a></code> <code><a href="Features-class.html">`names&lt;-`(<i>&lt;Features&gt;</i>,<i>&lt;character&gt;</i>)</a></code> <code><a href="Features-class.html">Features()</a></code> <code><a href="Features-class.html">addAssay()</a></code> </p>
+          <p><code><a href="QFeatures-class.html">show(<i>&lt;QFeatures&gt;</i>)</a></code> <code><a href="QFeatures-class.html">`[`(<i>&lt;QFeatures&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="QFeatures-class.html">dims(<i>&lt;QFeatures&gt;</i>)</a></code> <code><a href="QFeatures-class.html">`[`(<i>&lt;QFeatures&gt;</i>,<i>&lt;character&gt;</i>,<i>&lt;ANY&gt;</i>,<i>&lt;ANY&gt;</i>)</a></code> <code><a href="QFeatures-class.html">selectRowData()</a></code> <code><a href="QFeatures-class.html">rowDataNames()</a></code> <code><a href="QFeatures-class.html">`names&lt;-`(<i>&lt;QFeatures&gt;</i>,<i>&lt;character&gt;</i>)</a></code> <code><a href="QFeatures-class.html">QFeatures()</a></code> <code><a href="QFeatures-class.html">addAssay()</a></code> </p>
         </td>
-        <td><p>Quantitative MS Features</p></td>
+        <td><p>Quantitative MS QFeatures</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="Features-filtering.html">VariableFilter()</a></code> <code><a href="Features-filtering.html">filterFeatures(<i>&lt;Features&gt;</i>,<i>&lt;AnnotationFilter&gt;</i>)</a></code> <code><a href="Features-filtering.html">filterFeatures(<i>&lt;Features&gt;</i>,<i>&lt;formula&gt;</i>)</a></code> </p>
+          <p><code><a href="QFeatures-filtering.html">VariableFilter()</a></code> <code><a href="QFeatures-filtering.html">filterFeatures(<i>&lt;QFeatures&gt;</i>,<i>&lt;AnnotationFilter&gt;</i>)</a></code> <code><a href="QFeatures-filtering.html">filterFeatures(<i>&lt;QFeatures&gt;</i>,<i>&lt;formula&gt;</i>)</a></code> </p>
         </td>
         <td><p>Filter features based on their rowData</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="Features-missing-data.html">zeroIsNA(<i>&lt;SummarizedExperiment&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="Features-missing-data.html">zeroIsNA(<i>&lt;Features&gt;</i>,<i>&lt;integer&gt;</i>)</a></code> <code><a href="Features-missing-data.html">zeroIsNA(<i>&lt;Features&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Features-missing-data.html">zeroIsNA(<i>&lt;Features&gt;</i>,<i>&lt;character&gt;</i>)</a></code> <code><a href="Features-missing-data.html">nNA(<i>&lt;SummarizedExperiment&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="Features-missing-data.html">nNA(<i>&lt;Features&gt;</i>,<i>&lt;integer&gt;</i>)</a></code> <code><a href="Features-missing-data.html">nNA(<i>&lt;Features&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Features-missing-data.html">nNA(<i>&lt;Features&gt;</i>,<i>&lt;character&gt;</i>)</a></code> <code><a href="Features-missing-data.html">filterNA(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="Features-missing-data.html">filterNA(<i>&lt;Features&gt;</i>)</a></code> </p>
+          <p><code><a href="QFeatures-missing-data.html">zeroIsNA(<i>&lt;SummarizedExperiment&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="QFeatures-missing-data.html">zeroIsNA(<i>&lt;QFeatures&gt;</i>,<i>&lt;integer&gt;</i>)</a></code> <code><a href="QFeatures-missing-data.html">zeroIsNA(<i>&lt;QFeatures&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="QFeatures-missing-data.html">zeroIsNA(<i>&lt;QFeatures&gt;</i>,<i>&lt;character&gt;</i>)</a></code> <code><a href="QFeatures-missing-data.html">nNA(<i>&lt;SummarizedExperiment&gt;</i>,<i>&lt;missing&gt;</i>)</a></code> <code><a href="QFeatures-missing-data.html">nNA(<i>&lt;QFeatures&gt;</i>,<i>&lt;integer&gt;</i>)</a></code> <code><a href="QFeatures-missing-data.html">nNA(<i>&lt;QFeatures&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="QFeatures-missing-data.html">nNA(<i>&lt;QFeatures&gt;</i>,<i>&lt;character&gt;</i>)</a></code> <code><a href="QFeatures-missing-data.html">filterNA(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="QFeatures-missing-data.html">filterNA(<i>&lt;QFeatures&gt;</i>)</a></code> </p>
         </td>
         <td><p>Managing missing data</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="Features-processing.html">logTransform(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="Features-processing.html">logTransform(<i>&lt;Features&gt;</i>)</a></code> <code><a href="Features-processing.html">scaleTransform(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="Features-processing.html">scaleTransform(<i>&lt;Features&gt;</i>)</a></code> <code><a href="Features-processing.html">normalize(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="Features-processing.html">normalize(<i>&lt;Features&gt;</i>)</a></code> <code><a href="Features-processing.html">sweep(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="Features-processing.html">sweep(<i>&lt;Features&gt;</i>)</a></code> </p>
+          <p><code><a href="QFeatures-processing.html">logTransform(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="QFeatures-processing.html">logTransform(<i>&lt;QFeatures&gt;</i>)</a></code> <code><a href="QFeatures-processing.html">scaleTransform(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="QFeatures-processing.html">scaleTransform(<i>&lt;QFeatures&gt;</i>)</a></code> <code><a href="QFeatures-processing.html">normalize(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="QFeatures-processing.html">normalize(<i>&lt;QFeatures&gt;</i>)</a></code> <code><a href="QFeatures-processing.html">sweep(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="QFeatures-processing.html">sweep(<i>&lt;QFeatures&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Features processing</p></td>
+        <td><p>QFeatures processing</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="Features-subsetBy.html">subsetByFeature</a></code> </p>
+          <p><code><a href="QFeatures-subsetBy.html">subsetByFeature</a></code> </p>
         </td>
         <td><p>Subset by feature name</p></td>
       </tr><tr>
@@ -214,7 +214,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="impute.html">impute</a></code> <code><a href="impute.html">impute(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="impute.html">impute(<i>&lt;Features&gt;</i>)</a></code> </p>
+          <p><code><a href="impute.html">impute</a></code> <code><a href="impute.html">impute(<i>&lt;SummarizedExperiment&gt;</i>)</a></code> <code><a href="impute.html">impute(<i>&lt;QFeatures&gt;</i>)</a></code> </p>
         </td>
         <td><p>Quantitative proteomics data imputation</p></td>
       </tr><tr>
@@ -222,13 +222,13 @@
         <td>
           <p><code><a href="joinAssays.html">joinAssays()</a></code> </p>
         </td>
-        <td><p>Join assays in a Features object</p></td>
+        <td><p>Join assays in a QFeatures object</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="readFeatures.html">readFeatures()</a></code> <code><a href="readFeatures.html">readSummarizedExperiment()</a></code> </p>
+          <p><code><a href="readQFeatures.html">readQFeatures()</a></code> <code><a href="readQFeatures.html">readSummarizedExperiment()</a></code> </p>
         </td>
-        <td><p>Features from tabular data</p></td>
+        <td><p>QFeatures from tabular data</p></td>
       </tr><tr>
         
         <td>

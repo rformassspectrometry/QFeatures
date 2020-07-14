@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Features processing — Features-processing • Features</title>
+<title>QFeatures processing — QFeatures-processing • QFeatures</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,10 @@
 
 
 
-<meta property="og:title" content="Features processing — Features-processing" />
+<meta property="og:title" content="QFeatures processing — QFeatures-processing" />
 <meta property="og:description" content="This manual page describes common quantitative proteomics data
-processing methods using Features objects. In the following
-functions, if object is of class Features, and optional assay
+processing methods using QFeatures objects. In the following
+functions, if object is of class QFeatures, and optional assay
 index or name i can be specified to define the assay (by name of
 index) on which to operate.
 The following functions are currently available:
@@ -51,11 +51,11 @@ an optional pseudocount offset) the assay(s).
 normalize(object, method, i) normalises the assay(s) according
 to method (see Details).
 scaleTransform(object, center = TRUE, scale = TRUE, i) applies
-base::scale() to SummarizedExperiment and Features
+base::scale() to SummarizedExperiment and QFeatures
 objects.
 sweep(x, MARGIN, STATS, FUN = &quot;-&quot;, check.margin = TRUE, ...)
 sweeps out array summaries from SummarizedExperiment and
-Features objects. See base::sweep() for details.
+QFeatures objects. See base::sweep() for details.
 
 
 See the Processing vignette for examples." />
@@ -89,8 +89,8 @@ See the Processing vignette for examples." />
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.4</span>
+        <a class="navbar-link" href="../index.html">QFeatures</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
       </span>
     </div>
 
@@ -103,7 +103,7 @@ See the Processing vignette for examples." />
   </a>
 </li>
 <li>
-  <a href="../articles/Features.html">Get started</a>
+  <a href="../articles/QFeatures.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -116,14 +116,14 @@ See the Processing vignette for examples." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Processing.html">Processing quantitative proteomics data with Features</a>
+      <a href="../articles/Processing.html">Processing quantitative proteomics data with QFeatures</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/RforMassSpectrometry/Features/">
+  <a href="https://github.com/RforMassSpectrometry/QFeatures/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -141,15 +141,15 @@ See the Processing vignette for examples." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Features processing</h1>
-    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/Features/blob/master/R/Features-processing.R'><code>R/Features-processing.R</code></a></small>
-    <div class="hidden name"><code>Features-processing.Rd</code></div>
+    <h1>QFeatures processing</h1>
+    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/QFeatures/blob/master/R/QFeatures-processing.R'><code>R/QFeatures-processing.R</code></a></small>
+    <div class="hidden name"><code>QFeatures-processing.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>This manual page describes common quantitative proteomics data
-processing methods using <a href='Features-class.html'>Features</a> objects. In the following
-functions, if <code>object</code> is of class <code>Features</code>, and optional assay
+processing methods using <a href='QFeatures-class.html'>QFeatures</a> objects. In the following
+functions, if <code>object</code> is of class <code>QFeatures</code>, and optional assay
 index or name <code>i</code> can be specified to define the assay (by name of
 index) on which to operate.</p>
 <p>The following functions are currently available:</p><ul>
@@ -158,11 +158,11 @@ an optional pseudocount offset) the assay(s).</p></li>
 <li><p><code>normalize(object, method, i)</code> normalises the assay(s) according
 to <code>method</code> (see Details).</p></li>
 <li><p><code>scaleTransform(object, center = TRUE, scale = TRUE, i)</code> applies
-<code><a href='https://rdrr.io/r/base/scale.html'>base::scale()</a></code> to <code>SummarizedExperiment</code> and <code>Features</code>
+<code><a href='https://rdrr.io/r/base/scale.html'>base::scale()</a></code> to <code>SummarizedExperiment</code> and <code>QFeatures</code>
 objects.</p></li>
 <li><p><code>sweep(x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ...)</code>
 sweeps out array summaries from <code>SummarizedExperiment</code> and
-<code>Features</code> objects. See <code><a href='https://rdrr.io/r/base/sweep.html'>base::sweep()</a></code> for details.</p></li>
+<code>QFeatures</code> objects. See <code><a href='https://rdrr.io/r/base/sweep.html'>base::sweep()</a></code> for details.</p></li>
 </ul>
 
 <p>See the <em>Processing</em> vignette for examples.</p>
@@ -171,25 +171,25 @@ sweeps out array summaries from <code>SummarizedExperiment</code> and
     <pre class="usage"><span class='co'># S4 method for SummarizedExperiment</span>
 <span class='fu'>logTransform</span>(<span class='no'>object</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>pc</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 
-<span class='co'># S4 method for Features</span>
+<span class='co'># S4 method for QFeatures</span>
 <span class='fu'>logTransform</span>(<span class='no'>object</span>, <span class='no'>i</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"logAssay"</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>pc</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 
 <span class='co'># S4 method for SummarizedExperiment</span>
 <span class='fu'>scaleTransform</span>(<span class='no'>object</span>, <span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='co'># S4 method for Features</span>
+<span class='co'># S4 method for QFeatures</span>
 <span class='fu'>scaleTransform</span>(<span class='no'>object</span>, <span class='no'>i</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"scaledAssay"</span>, <span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># S4 method for SummarizedExperiment</span>
 <span class='fu'>normalize</span>(<span class='no'>object</span>, <span class='no'>method</span>, <span class='no'>...</span>)
 
-<span class='co'># S4 method for Features</span>
+<span class='co'># S4 method for QFeatures</span>
 <span class='fu'>normalize</span>(<span class='no'>object</span>, <span class='no'>i</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"normAssay"</span>, <span class='no'>method</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for SummarizedExperiment</span>
 <span class='fu'>sweep</span>(<span class='no'>x</span>, <span class='no'>MARGIN</span>, <span class='no'>STATS</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='st'>"-"</span>, <span class='kw'>check.margin</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
-<span class='co'># S4 method for Features</span>
+<span class='co'># S4 method for QFeatures</span>
 <span class='fu'>sweep</span>(
   <span class='no'>x</span>,
   <span class='no'>MARGIN</span>,
@@ -206,7 +206,7 @@ sweeps out array summaries from <code>SummarizedExperiment</code> and
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>An object of class <code>Features</code> or <code>SummarizedExperiment</code>.</p></td>
+      <td><p>An object of class <code>QFeatures</code> or <code>SummarizedExperiment</code>.</p></td>
     </tr>
     <tr>
       <th>base</th>
@@ -253,7 +253,7 @@ apply. See Details.</p></td>
     </tr>
     <tr>
       <th>x</th>
-      <td><p>An object of class <code>Features</code> or <code>SummarizedExperiment</code>
+      <td><p>An object of class <code>QFeatures</code> or <code>SummarizedExperiment</code>
 in <code>sweep</code>.</p></td>
     </tr>
     <tr>

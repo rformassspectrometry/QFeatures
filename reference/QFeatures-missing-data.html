@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Managing missing data — missing-data • Features</title>
+<title>Managing missing data — missing-data • QFeatures</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
 
 <meta property="og:title" content="Managing missing data — missing-data" />
 <meta property="og:description" content="This manual page describes the handling of missing values in
-Features objects. In the following functions, if object is of
-class Features, and optional assay index or name i can be
+QFeatures objects. In the following functions, if object is of
+class QFeatures, and optional assay index or name i can be
 specified to define the assay (by name of index) on which to
 operate.
 The following functions are currently available:
@@ -91,8 +91,8 @@ See the Processing vignette for examples." />
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.4</span>
+        <a class="navbar-link" href="../index.html">QFeatures</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
       </span>
     </div>
 
@@ -105,7 +105,7 @@ See the Processing vignette for examples." />
   </a>
 </li>
 <li>
-  <a href="../articles/Features.html">Get started</a>
+  <a href="../articles/QFeatures.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -118,14 +118,14 @@ See the Processing vignette for examples." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Processing.html">Processing quantitative proteomics data with Features</a>
+      <a href="../articles/Processing.html">Processing quantitative proteomics data with QFeatures</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/RforMassSpectrometry/Features/">
+  <a href="https://github.com/RforMassSpectrometry/QFeatures/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -144,14 +144,14 @@ See the Processing vignette for examples." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Managing missing data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/Features/blob/master/R/Features-missing-data.R'><code>R/Features-missing-data.R</code></a></small>
-    <div class="hidden name"><code>Features-missing-data.Rd</code></div>
+    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/QFeatures/blob/master/R/QFeatures-missing-data.R'><code>R/QFeatures-missing-data.R</code></a></small>
+    <div class="hidden name"><code>QFeatures-missing-data.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>This manual page describes the handling of missing values in
-<a href='Features-class.html'>Features</a> objects. In the following functions, if <code>object</code> is of
-class <code>Features</code>, and optional assay index or name <code>i</code> can be
+<a href='QFeatures-class.html'>QFeatures</a> objects. In the following functions, if <code>object</code> is of
+class <code>QFeatures</code>, and optional assay index or name <code>i</code> can be
 specified to define the assay (by name of index) on which to
 operate.</p>
 <p>The following functions are currently available:</p><ul>
@@ -175,31 +175,31 @@ each sample of the assay(s).</p></li>
     <pre class="usage"><span class='co'># S4 method for SummarizedExperiment,missing</span>
 <span class='fu'>zeroIsNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
 
-<span class='co'># S4 method for Features,integer</span>
+<span class='co'># S4 method for QFeatures,integer</span>
 <span class='fu'>zeroIsNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
 
-<span class='co'># S4 method for Features,numeric</span>
+<span class='co'># S4 method for QFeatures,numeric</span>
 <span class='fu'>zeroIsNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
 
-<span class='co'># S4 method for Features,character</span>
+<span class='co'># S4 method for QFeatures,character</span>
 <span class='fu'>zeroIsNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
 
 <span class='co'># S4 method for SummarizedExperiment,missing</span>
 <span class='fu'>nNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
 
-<span class='co'># S4 method for Features,integer</span>
+<span class='co'># S4 method for QFeatures,integer</span>
 <span class='fu'>nNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
 
-<span class='co'># S4 method for Features,numeric</span>
+<span class='co'># S4 method for QFeatures,numeric</span>
 <span class='fu'>nNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
 
-<span class='co'># S4 method for Features,character</span>
+<span class='co'># S4 method for QFeatures,character</span>
 <span class='fu'>nNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
 
 <span class='co'># S4 method for SummarizedExperiment</span>
 <span class='fu'>filterNA</span>(<span class='no'>object</span>, <span class='kw'>pNA</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 
-<span class='co'># S4 method for Features</span>
+<span class='co'># S4 method for QFeatures</span>
 <span class='fu'>filterNA</span>(<span class='no'>object</span>, <span class='kw'>pNA</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='no'>i</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -207,7 +207,7 @@ each sample of the assay(s).</p></li>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>An object of class <code>Features</code> or <code>SummarizedExperiment</code>.</p></td>
+      <td><p>An object of class <code>QFeatures</code> or <code>SummarizedExperiment</code>.</p></td>
     </tr>
     <tr>
       <th>i</th>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Subset by feature name — subsetByFeature • Features</title>
+<title>QFeatures from tabular data — readQFeatures • QFeatures</title>
 
 
 <!-- jquery -->
@@ -39,16 +39,9 @@
 
 
 
-<meta property="og:title" content="Subset by feature name — subsetByFeature" />
-<meta property="og:description" content="This function will find the assays and features that match
-directly (by name) or indirectly (through aggregation) the feature
-name.
-The subsetByFeature function will first identify the assay that
-contains the feature(s) i and filter the rows matching these
-feature names exactly. It will then find, in the other assays, the
-features that produces i through aggregation with the
-aggregateFeatures function.
-See Features for an example." />
+<meta property="og:title" content="QFeatures from tabular data — readQFeatures" />
+<meta property="og:description" content="Convert tabular data from a spreadsheet or a data.frame into a
+QFeatures object." />
 
 
 
@@ -79,8 +72,8 @@ See Features for an example." />
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.4</span>
+        <a class="navbar-link" href="../index.html">QFeatures</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
       </span>
     </div>
 
@@ -93,7 +86,7 @@ See Features for an example." />
   </a>
 </li>
 <li>
-  <a href="../articles/Features.html">Get started</a>
+  <a href="../articles/QFeatures.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -106,14 +99,14 @@ See Features for an example." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Processing.html">Processing quantitative proteomics data with Features</a>
+      <a href="../articles/Processing.html">Processing quantitative proteomics data with QFeatures</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/RforMassSpectrometry/Features/">
+  <a href="https://github.com/RforMassSpectrometry/QFeatures/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -131,46 +124,83 @@ See Features for an example." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Subset by feature name</h1>
-    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/Features/blob/master/R/subsetBy-methods.R'><code>R/subsetBy-methods.R</code></a></small>
-    <div class="hidden name"><code>Features-subsetBy.Rd</code></div>
+    <h1>QFeatures from tabular data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/QFeatures/blob/master/R/QFeatures-constructors.R'><code>R/QFeatures-constructors.R</code></a></small>
+    <div class="hidden name"><code>readQFeatures.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function will find the assays and features that match
-directly (by name) or indirectly (through aggregation) the feature
-name.</p>
-<p>The <code>subsetByFeature</code> function will first identify the assay that
-contains the feature(s) <code>i</code> and filter the rows matching these
-feature names exactly. It will then find, in the other assays, the
-features that produces <code>i</code> through aggregation with the
-<code>aggregateFeatures</code> function.</p>
-<p>See <a href='Features-class.html'>Features</a> for an example.</p>
+    <p>Convert tabular data from a spreadsheet or a <code>data.frame</code> into a
+<code>QFeatures</code> object.</p>
     </div>
 
+    <pre class="usage"><span class='fu'>readQFeatures</span>(<span class='no'>table</span>, <span class='no'>ecol</span>, <span class='no'>fnames</span>, <span class='no'>...</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>readSummarizedExperiment</span>(<span class='no'>table</span>, <span class='no'>ecol</span>, <span class='no'>fnames</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>An instance of class <a href='Features-class.html'>Features</a>.</p></td>
+      <th>table</th>
+      <td><p>File or object holding the quantitative data. Can be
+either a <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> with the path to a text-based
+spreadsheet (comma-separated values by default, but see <code>...</code>)
+or an object that can be coerced to a <code>data.frame</code>. It is
+advised not to encode characters as factors.</p></td>
     </tr>
     <tr>
-      <th>y</th>
-      <td><p>A <code>character</code> of feature names present in an assay in <code>x</code>.</p></td>
+      <th>ecol</th>
+      <td><p>A <code>numeric</code> indicating the indices of the columns to
+be used as expression values. Can also be a <code>character</code>
+indicating the names of the columns. Caution must be taken if
+the column names are composed of special characters like <code>(</code>
+or <code>-</code> that will be converted to a <code>.</code> by the <code>read.csv</code>
+function. If <code>ecol</code> does not match, the error message will
+display the column names as seen by the <code>read.csv</code> function.</p></td>
+    </tr>
+    <tr>
+      <th>fnames</th>
+      <td><p>An optional <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> or <code><a href='https://rdrr.io/r/base/numeric.html'>numeric(1)</a></code>
+indicating the column to be used as feature names.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional parameters. Ignored.</p></td>
+      <td><p>Further arguments that can be passed on to <code>read.csv</code>
+except <code>stringsAsFactors</code>, which is always <code>FALSE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>name</th>
+      <td><p>An <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> to name assay in the <code>QFeatures</code>
+object. If not set, <code>features</code> is used.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An new instance of class <a href='Features-class.html'>Features</a> containing relevant
-assays and features.</p>
+    <p>An instance of class <a href='QFeatures-class.html'>QFeatures</a> or SummarizedExperiment.</p>
+    <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
 
+    
+<ul>
+<li><p><code>readQFeatures</code>: See description.</p></li>
+<li><p><code>readSummarizedExperiment</code>: Convert tabular data from a spreadsheet or a
+<code>data.frame</code> into a <code>SummarizedExperiment</code> object.</p></li>
+</ul>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>The <a href='QFeatures-class.html'>QFeatures</a> class for an example on how to use
+<code>readQFeatures</code> and how to further manipulate the resulting data.</p></div>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='co'>## Load a data.frame with PSM-level data</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>hlpsms</span>)
+
+<span class='co'>## Create the QFeatures object</span>
+<span class='no'>fts2</span> <span class='kw'>&lt;-</span> <span class='fu'>readQFeatures</span>(<span class='no'>hlpsms</span>, <span class='kw'>ecol</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"psms"</span>)
+<span class='no'>fts2</span></div><div class='output co'>#&gt; A instance of class QFeatures containing 1 assays:
+#&gt;  [1] psms: SummarizedExperiment with 32776 rows and 10 columns </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

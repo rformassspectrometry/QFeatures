@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>One or two levels in Features (closed) • Features</title>
+<title>One or two levels in QFeatures (closed) • QFeatures</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="One or two levels in Features (closed)" />
+<meta property="og:title" content="One or two levels in QFeatures (closed)" />
 
 
 
@@ -70,8 +70,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.4</span>
+        <a class="navbar-link" href="index.html">QFeatures</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
       </span>
     </div>
 
@@ -84,7 +84,7 @@
   </a>
 </li>
 <li>
-  <a href="articles/Features.html">Get started</a>
+  <a href="articles/QFeatures.html">Get started</a>
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
@@ -97,14 +97,14 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="articles/Processing.html">Processing quantitative proteomics data with Features</a>
+      <a href="articles/Processing.html">Processing quantitative proteomics data with QFeatures</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/RforMassSpectrometry/Features/">
+  <a href="https://github.com/RforMassSpectrometry/QFeatures/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -122,26 +122,26 @@
 <div class="row">
   <div class="contents col-md-9">
     <div class="page-header">
-      <h1>One or two levels in Features (closed)</h1>
+      <h1>One or two levels in QFeatures (closed)</h1>
     </div>
 
 
-<div id="one-or-two-levels-in-features-closed" class="section level1">
+<div id="one-or-two-levels-in-qfeatures-closed" class="section level1">
 
-<p>One or two assay levels could be considered in Features:</p>
+<p>One or two assay levels could be considered in QFeatures:</p>
 <ul>
-<li><p>one level: each SE contains only a single assay, and when an SE is processed (log-transformed, normalised, …) in a way that its dimensions stay the same, a new SE is created and added to the Features object.</p></li>
+<li><p>one level: each SE contains only a single assay, and when an SE is processed (log-transformed, normalised, …) in a way that its dimensions stay the same, a new SE is created and added to the QFeatures object.</p></li>
 <li><p>two level: SEs can contain multiple assays, and when an SE is processed (log-transformed, normalised, …) in a way that its dimensions stay the same, a new assay is added to that SE.</p></li>
 </ul>
 <p>This <a href="https://stat.ethz.ch/pipermail/bioc-devel/2020-January/016096.html">question</a> on the bioc-devel list ask for advice on SE processing, and whether a new SE or new assay in the original SE should be preferred. While the letter is arguably more elegant, and is also used in SingleAssayExperiment pipelines, it doesn’t seem to be the case when using SummarizedExperiments.</p>
 <p>As for features (or <a href="https://github.com/waldronlab/MultiAssayExperiment/issues/266">MultiAssayExperiments in general</a>), the two-level approach isn’t readily available out-of-the-box, and would require additional developments:</p>
 <ul>
-<li><p>Every function that operates on an SE of a Features object would need to allow the user to specify which assay to use (and/or by default use the latest one).</p></li>
-<li><p>The <code>show,Features</code> method would need to display the number/names of the assays in each SE to make these two levels explicit.</p></li>
+<li><p>Every function that operates on an SE of a QFeatures object would need to allow the user to specify which assay to use (and/or by default use the latest one).</p></li>
+<li><p>The <code>show,QFeatures</code> method would need to display the number/names of the assays in each SE to make these two levels explicit.</p></li>
 </ul>
 <p>Despite the elegant of the two-level option, it seems that the additional development isn’t warranted at this time.</p>
-<p>The <a href="https://github.com/rformassspectrometry/Features/issues/37"><code>updateAssay</code> function</a> was originally intended for the two-level approach, i.e. to add an assay to an SE. This is not considered anymore (for now, at least).</p>
-<p>There is one exception though. When aggregating features with <code><a href="reference/Features-aggregate.html">aggregateFeatures()</a></code>, a second assay is added, named <code>aggcounts</code> that counts the number of features that were aggregate for each sample and each low-level features.</p>
+<p>The <a href="https://github.com/rformassspectrometry/QFeatures/issues/37"><code>updateAssay</code> function</a> was originally intended for the two-level approach, i.e. to add an assay to an SE. This is not considered anymore (for now, at least).</p>
+<p>There is one exception though. When aggregating features with <code><a href="reference/QFeatures-aggregate.html">aggregateFeatures()</a></code>, a second assay is added, named <code>aggcounts</code> that counts the number of features that were aggregate for each sample and each low-level features.</p>
 </div>
 <div id="how-to-add-new-assays" class="section level1">
 <h1 class="hasAnchor">
@@ -151,27 +151,27 @@
 <li><p>Processing an SE.</p></li>
 </ol>
 <p>This can/could be done explicitly with <code>addAssay</code></p>
-<pre><code><a href="reference/Features-class.html">addAssay(cptac, logTransform(cptac[["peptides"]]), name = "peptides_log")
+<pre><code><a href="reference/QFeatures-class.html">addAssay(cptac, logTransform(cptac[["peptides"]]), name = "peptides_log")
 addAssay(cptac, logTransform(cptac[[1]]), name = "peptides_log")</a></code></pre>
 <p>or implicitly</p>
-<pre><code><a href="reference/Features-processing.html">logTransform(cptac, "peptides", name = "peptides_log")
+<pre><code><a href="reference/QFeatures-processing.html">logTransform(cptac, "peptides", name = "peptides_log")
 logTransform(cptac, 1, name = "peptides_log")</a></code></pre>
 <ol>
 <li>Joining SEs (for example multiple TMT batches) (TODO)</li>
 </ol>
-<pre><code><a href="reference/joinAssays.html">joinAssays(Features, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
-joinAssays(Features, c(1, 2, 3), name = "peptides")</a></code></pre>
+<pre><code><a href="reference/joinAssays.html">joinAssays(QFeatures, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
+joinAssays(QFeatures, c(1, 2, 3), name = "peptides")</a></code></pre>
 <p>See below.</p>
 </div>
-<div id="features-api" class="section level1">
+<div id="qfeatures-api" class="section level1">
 <h1 class="hasAnchor">
-<a href="#features-api" class="anchor"></a>Features API</h1>
+<a href="#qfeatures-api" class="anchor"></a>QFeatures API</h1>
 <div id="processing-functions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#processing-functions" class="anchor"></a>Processing functions</h3>
 <ul>
 <li><p>A processing function that acts on a Feature’s assay (typically a <code>SummarizedExperiment</code> or a <code>SingleCellExperiment</code>) such as <code>process(object)</code>, returns a new object of the same type.</p></li>
-<li><p>A processing function such <code>process(object, i)</code>, that acts on a Feautre object takes a second argument <code>i</code>, that can be a vector of indices or names, returns a new object of class Features with its assay(s) <code>i</code> modified according to <code>process(object[[i]])</code>.</p></li>
+<li><p>A processing function such <code>process(object, i)</code>, that acts on a Feautre object takes a second argument <code>i</code>, that can be a vector of indices or names, returns a new object of class QFeatures with its assay(s) <code>i</code> modified according to <code>process(object[[i]])</code>.</p></li>
 <li><p>The argument <code>i</code> mustn’t be missing, i.e. one shouldn’t (at least in general) permit to (blindly) apply some processing on all assays.</p></li>
 </ul>
 </div>
@@ -183,7 +183,7 @@ joinAssays(Features, c(1, 2, 3), name = "peptides")</a></code></pre>
 </ul>
 <pre><code>hlpsms &lt;- hlpsms[1:5000, ] ## faster
 
-ft1 &lt;- readFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence")
+ft1 &lt;- readQFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence")
 sum(rownames(ft1[[1]]) == "ANLPQSFQVDTSk")
 ft1 &lt;- aggregateFeatures(ft1, "psms", fcol = "Sequence",
                          name = "peptides", fun = colSums)
@@ -192,21 +192,22 @@ ft1
 
 ## subsetting still works
 ft2 &lt;- subsetByFeature(ft1, "ANLPQSFQVDTSk")
-ft2 </code></pre>
+ft2</code></pre>
 <p>The underlying reason why this fails is due to matrix subsetting by name when these names aren’t unique.</p>
-<pre><code>m &lt;- matrix(1:10, ncol = 2)
-colnames(m) &lt;- LETTERS[1:2]
-rownames(m) &lt;- c("a", letters[1:4])
-m</code></pre>
+<div class="sourceCode" id="cb5"><html><pre class="r"><span class="no">m</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fl">1</span>:<span class="fl">10</span>, <span class="kw">ncol</span> <span class="kw">=</span> <span class="fl">2</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">m</span>) <span class="kw">&lt;-</span> <span class="no">LETTERS</span>[<span class="fl">1</span>:<span class="fl">2</span>]
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">m</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"a"</span>, <span class="no">letters</span>[<span class="fl">1</span>:<span class="fl">4</span>])
+<span class="no">m</span>
+<span class="no">m</span>[<span class="st">"a"</span>, ]</pre></html></div>
 <p>And of course, this affects SEs …</p>
-<pre><code>se &lt;- SummarizedExperiment(m)
-assay(se["a", ])</code></pre>
+<div class="sourceCode" id="cb6"><html><pre class="r"><span class="no">se</span> <span class="kw">&lt;-</span> <span class="fu">SummarizedExperiment</span>(<span class="no">m</span>)
+<span class="fu">assay</span>(<span class="no">se</span>[<span class="st">"a"</span>, ])</pre></html></div>
 <p>… and MultiAssayExperiments.</p>
 <p>Note that in the example above, <code>"ANLPQSFQVDTSk"</code> is present in both the <code>psms</code> and <code>peptides</code> assays, and the</p>
 <pre><code>for (k in setdiff(all_assays_names, leaf_assay_name)) { ... }</code></pre>
 <p>loop in <code>.subsetByFeature</code> isn’t executed at all. This will need to be investigated. But the behaviour above can be reproduced even when that’s not the case. See</p>
 <pre><code>hlpsms$Sequence2 &lt;- paste0(hlpsms$Sequence, "2")
-ft1 &lt;- readFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence2")
+ft1 &lt;- readQFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence2")
 ...</code></pre>
 <p>This could be <strong>fixed</strong> by switching to indices:</p>
 <pre><code>&gt; (i &lt;- which(rownames(m) == "a"))
@@ -216,14 +217,15 @@ ft1 &lt;- readFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence2")
 a 1 6
 a 2 7
 &gt; se[i, ]
-class: SummarizedExperiment 
-dim: 2 2 
+class: SummarizedExperiment
+dim: 2 2
 metadata(0):
 assays(1): ''
 rownames(2): a a
 rowData names(0):
 colnames(2): A B
 colData names(0):</code></pre>
+<p>See issue #91.</p>
 </div>
 </div>
 <div id="assay-links" class="section level1">
@@ -257,8 +259,8 @@ colData names(0):</code></pre>
 </ul>
 <p>The row data will be accessible through links between assays anyway.</p>
 <p>Naming:</p>
-<pre><code><a href="reference/joinAssays.html">joinAssays(Features, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
-joinAssays(Features, c(1, 2, 3), name = "peptides")</a></code></pre>
+<pre><code><a href="reference/joinAssays.html">joinAssays(QFeatures, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
+joinAssays(QFeatures, c(1, 2, 3), name = "peptides")</a></code></pre>
 <p>Algorithm:</p>
 <ol>
 <li>Find which mcols to keep</li>

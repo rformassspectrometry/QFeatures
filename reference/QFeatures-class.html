@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Quantitative MS Features — Features • Features</title>
+<title>Quantitative MS QFeatures — QFeatures • QFeatures</title>
 
 
 <!-- jquery -->
@@ -39,20 +39,20 @@
 
 
 
-<meta property="og:title" content="Quantitative MS Features — Features" />
-<meta property="og:description" content="Conceptually, a Features object holds a set of assays, each
+<meta property="og:title" content="Quantitative MS QFeatures — QFeatures" />
+<meta property="og:description" content="Conceptually, a QFeatures object holds a set of assays, each
 composed of a matrix (or array) containing quantitative data
 and row annotations (meta-data).  The number and the names of the
 columns (samples) must always be the same across the assays, but
 the number and the names of the rows (features) can vary. The
 assays are typically defined as SummarizedExperiment objects. In
-addition, a Features object also uses a single DataFrame to
+addition, a QFeatures object also uses a single DataFrame to
 annotate the samples (columns) represented in all the matrices.
-The Features class extends the
+The QFeatures class extends the
 MultiAssayExperiment::MultiAssayExperiment and inherits all
 the functionality of the
 MultiAssayExperiment::MultiAssayExperiment class.
-A typical use case for such Features object is to represent
+A typical use case for such QFeatures object is to represent
 quantitative proteomics (or metabolomics) data, where different
 assays represent quantitation data at the PSM (the main assay),
 peptide and protein level, and where peptide values are computed
@@ -60,9 +60,9 @@ from the PSM data, and the protein-level data is calculated based
 on the peptide-level values. The largest assay (the one with the
 highest number of features, PSMs in the example above) is
 considered the main assay.
-The recommended way to create Features objects is the use the
-readFeatures() function, that creates an instance from tabular
-data. The Features constructor can be used to create objects
+The recommended way to create QFeatures objects is the use the
+readQFeatures() function, that creates an instance from tabular
+data. The QFeatures constructor can be used to create objects
 from their bare parts.  It is the user's responsability to make
 sure that these match the class validity requirements." />
 
@@ -95,8 +95,8 @@ sure that these match the class validity requirements." />
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.4</span>
+        <a class="navbar-link" href="../index.html">QFeatures</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
       </span>
     </div>
 
@@ -109,7 +109,7 @@ sure that these match the class validity requirements." />
   </a>
 </li>
 <li>
-  <a href="../articles/Features.html">Get started</a>
+  <a href="../articles/QFeatures.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -122,14 +122,14 @@ sure that these match the class validity requirements." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Processing.html">Processing quantitative proteomics data with Features</a>
+      <a href="../articles/Processing.html">Processing quantitative proteomics data with QFeatures</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/RforMassSpectrometry/Features/">
+  <a href="https://github.com/RforMassSpectrometry/QFeatures/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -147,25 +147,25 @@ sure that these match the class validity requirements." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Quantitative MS Features</h1>
-    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/Features/blob/master/R/Features-class.R'><code>R/Features-class.R</code></a>, <a href='https://github.com/RforMassSpectrometry/Features/blob/master/R/Features-constructors.R'><code>R/Features-constructors.R</code></a></small>
-    <div class="hidden name"><code>Features-class.Rd</code></div>
+    <h1>Quantitative MS QFeatures</h1>
+    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/QFeatures/blob/master/R/QFeatures-class.R'><code>R/QFeatures-class.R</code></a>, <a href='https://github.com/RforMassSpectrometry/QFeatures/blob/master/R/QFeatures-constructors.R'><code>R/QFeatures-constructors.R</code></a></small>
+    <div class="hidden name"><code>QFeatures-class.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Conceptually, a <code>Features</code> object holds a set of <em>assays</em>, each
+    <p>Conceptually, a <code>QFeatures</code> object holds a set of <em>assays</em>, each
 composed of a <code>matrix</code> (or <code>array</code>) containing quantitative data
 and row annotations (meta-data).  The number and the names of the
 columns (samples) must always be the same across the assays, but
 the number and the names of the rows (features) can vary. The
 assays are typically defined as <code>SummarizedExperiment</code> objects. In
-addition, a <code>Features</code> object also uses a single <code>DataFrame</code> to
+addition, a <code>QFeatures</code> object also uses a single <code>DataFrame</code> to
 annotate the samples (columns) represented in all the matrices.</p>
-<p>The <code>Features</code> class extends the
+<p>The <code>QFeatures</code> class extends the
 <a href='https://rdrr.io/pkg/MultiAssayExperiment/man/MultiAssayExperiment.html'>MultiAssayExperiment::MultiAssayExperiment</a> and inherits all
 the functionality of the
 <a href='https://rdrr.io/pkg/MultiAssayExperiment/man/MultiAssayExperiment.html'>MultiAssayExperiment::MultiAssayExperiment</a> class.</p>
-<p>A typical use case for such <code>Features</code> object is to represent
+<p>A typical use case for such <code>QFeatures</code> object is to represent
 quantitative proteomics (or metabolomics) data, where different
 assays represent quantitation data at the PSM (the main assay),
 peptide and protein level, and where peptide values are computed
@@ -173,33 +173,33 @@ from the PSM data, and the protein-level data is calculated based
 on the peptide-level values. The largest assay (the one with the
 highest number of features, PSMs in the example above) is
 considered the main assay.</p>
-<p>The recommended way to create <code>Features</code> objects is the use the
-<code><a href='readFeatures.html'>readFeatures()</a></code> function, that creates an instance from tabular
-data. The <code>Features</code> constructor can be used to create objects
+<p>The recommended way to create <code>QFeatures</code> objects is the use the
+<code><a href='readQFeatures.html'>readQFeatures()</a></code> function, that creates an instance from tabular
+data. The <code>QFeatures</code> constructor can be used to create objects
 from their bare parts.  It is the user's responsability to make
 sure that these match the class validity requirements.</p>
     </div>
 
-    <pre class="usage"># S4 method for Features
+    <pre class="usage"># S4 method for QFeatures
 show(object)
 
-# S4 method for Features,ANY,ANY,ANY
+# S4 method for QFeatures,ANY,ANY,ANY
 [(x, i, j, ..., drop = TRUE)
 
-# S4 method for Features
+# S4 method for QFeatures
 dims(x)
 
-# S4 method for Features,character,ANY,ANY
+# S4 method for QFeatures,character,ANY,ANY
 [(x, i, j, k, ..., drop = TRUE)
 
 selectRowData(x, rowvars)
 
 rowDataNames(x)
 
-# S4 method for Features,character
+# S4 method for QFeatures,character
 names(x) &lt;- value
 
-Features(..., assayLinks = NULL)
+QFeatures(..., assayLinks = NULL)
 
 addAssay(x, y, name = "newAssay", assayLinks = AssayLinks(names = name))</pre>
 
@@ -208,11 +208,11 @@ addAssay(x, y, name = "newAssay", assayLinks = AssayLinks(names = name))</pre>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>An instance of class <code>Features</code>.</p></td>
+      <td><p>An instance of class <code>QFeatures</code>.</p></td>
     </tr>
     <tr>
       <th>x</th>
-      <td><p>An instance of class Features.</p></td>
+      <td><p>An instance of class QFeatures.</p></td>
     </tr>
     <tr>
       <th>i</th>
@@ -269,12 +269,12 @@ isn't found in any <code>rowData</code> variable, a message is printed.</p></td>
     
 
 <ul>
-<li><p><code>Features(..., assayLinks)</code> allows the manual construction of
+<li><p><code>QFeatures(..., assayLinks)</code> allows the manual construction of
 objects. It is the user's responsability to make sure these
 comply. The arguments in <code>...</code> are those documented in
 <code><a href='https://rdrr.io/pkg/MultiAssayExperiment/man/MultiAssayExperiment.html'>MultiAssayExperiment::MultiAssayExperiment()</a></code>. For details
 about <code>assayLinks</code>, see <a href='AssayLinks.html'>AssayLinks</a>. An example is shown below.</p></li>
-<li><p>The <code><a href='readFeatures.html'>readFeatures()</a></code> function constructs a <code>Features</code> object
+<li><p>The <code><a href='readQFeatures.html'>readQFeatures()</a></code> function constructs a <code>QFeatures</code> object
 from text-based spreadsheet or a <code>data.frame</code> used to generate
 an assay. See the function manual page for details and an
 example.</p></li>
@@ -285,7 +285,7 @@ example.</p></li>
     
 
 <ul>
-<li><p>The <code>Features</code> class extends the
+<li><p>The <code>QFeatures</code> class extends the
 <a href='https://rdrr.io/pkg/MultiAssayExperiment/man/MultiAssayExperiment.html'>MultiAssayExperiment::MultiAssayExperiment</a> class and inherits
 all its accessors and replacement methods.</p></li>
 <li><p>The <code>rowDataNames</code> accessor returns a list with the <code>rowData</code>
@@ -297,10 +297,10 @@ variable names.</p></li>
     
 
 <ul>
-<li><p>The <code><a href='Features-aggregate.html'>aggregateFeatures()</a></code> function creates a new assay by
+<li><p>The <code><a href='QFeatures-aggregate.html'>aggregateFeatures()</a></code> function creates a new assay by
 aggregating features of an existing assay.</p></li>
 <li><p><code>addAssay(x, y, name, assayLinks)</code>: Adds a new assay (or
-list of assays) <code>y</code> to the <code>Features</code> instance <code>x</code>. <code>name</code>
+list of assays) <code>y</code> to the <code>QFeatures</code> instance <code>x</code>. <code>name</code>
 is a <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> naming the single assay (default is
 <code>"newAssay"</code>), and is ignored if <code>y</code> is a list of
 assays. <code>assayLinks</code> is an optional <a href='AssayLinks.html'>AssayLinks</a>.</p></li>
@@ -311,27 +311,27 @@ assays. <code>assayLinks</code> is an optional <a href='AssayLinks.html'>AssayLi
     
 
 <ul>
-<li><p>Features object can be subset using the <code>x[i, j, k, drop = TRUE]</code> paradigm. See the argument descriptions for details.</p></li>
-<li><p>The <code><a href='Features-subsetBy.html'>subsetByFeature()</a></code> function can be used to subset a
-<code>Features</code> object using one or multiple feature names that will
+<li><p>QFeatures object can be subset using the <code>x[i, j, k, drop = TRUE]</code> paradigm. See the argument descriptions for details.</p></li>
+<li><p>The <code><a href='QFeatures-subsetBy.html'>subsetByFeature()</a></code> function can be used to subset a
+<code>QFeatures</code> object using one or multiple feature names that will
 be matched across different assays, taking the aggregation
 relation between assays.</p></li>
 <li><p>The <code>selectRowData(x, rowvars)</code> function can be used to
 select a limited number of <code>rowData</code> columns of interest named
-in <code>rowvars</code> in the <code>x</code> instance of class <code>Features</code>.</p></li>
+in <code>rowvars</code> in the <code>x</code> instance of class <code>QFeatures</code>.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'>
 <ul>
-<li><p>The <code><a href='readFeatures.html'>readFeatures()</a></code> constructor and the <code><a href='Features-aggregate.html'>aggregateFeatures()</a></code>
-function. The <em>Features</em> vignette provides an extended example.</p></li>
-<li><p>The <a href='Features-filtering.html'>Features-filtering</a> manual page demonstrates how to filter
+<li><p>The <code><a href='readQFeatures.html'>readQFeatures()</a></code> constructor and the <code><a href='QFeatures-aggregate.html'>aggregateFeatures()</a></code>
+function. The <em>QFeatures</em> vignette provides an extended example.</p></li>
+<li><p>The <a href='QFeatures-filtering.html'>QFeatures-filtering</a> manual page demonstrates how to filter
 features based on their rowData.</p></li>
-<li><p>The <a href='Features-missing-data.html'>missing-data</a> manual page to manage missing values in
-<code>Features</code> objects.</p></li>
-<li><p>The <a href='Features-processing.html'>Features-processing</a> and <code><a href='Features-aggregate.html'>aggregateFeatures()</a></code> manual pages
+<li><p>The <a href='QFeatures-missing-data.html'>missing-data</a> manual page to manage missing values in
+<code>QFeatures</code> objects.</p></li>
+<li><p>The <a href='QFeatures-processing.html'>QFeatures-processing</a> and <code><a href='QFeatures-aggregate.html'>aggregateFeatures()</a></code> manual pages
 and <em>Processing</em> vignette describe common quantitative data
 processing methods using in quantitative proteomics.</p></li>
 </ul>
@@ -339,12 +339,12 @@ processing methods using in quantitative proteomics.</p></li>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## ------------------------</span>
-<span class='co'>## An empty Features object</span>
+<span class='co'>## An empty QFeatures object</span>
 <span class='co'>## ------------------------</span>
 
-<span class='fu'>Features</span>()</div><div class='output co'>#&gt; A empty instance of class Features </div><div class='input'>
+<span class='fu'>QFeatures</span>()</div><div class='output co'>#&gt; A empty instance of class QFeatures </div><div class='input'>
 <span class='co'>## -----------------------------------</span>
-<span class='co'>## Creating a Features object manually</span>
+<span class='co'>## Creating a QFeatures object manually</span>
 <span class='co'>## -----------------------------------</span>
 
 <span class='co'>## two assays (matrices) with matching column names</span>
@@ -381,8 +381,8 @@ processing methods using in quantitative proteomics.</p></li>
                 <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='no'>sample_names</span>)
 
 <span class='no'>el</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>assay1</span> <span class='kw'>=</span> <span class='no'>se1</span>, <span class='kw'>assay2</span> <span class='kw'>=</span> <span class='no'>se2</span>)
-<span class='no'>fts1</span> <span class='kw'>&lt;-</span> <span class='fu'>Features</span>(<span class='no'>el</span>, <span class='kw'>colData</span> <span class='kw'>=</span> <span class='no'>cd</span>)
-<span class='no'>fts1</span></div><div class='output co'>#&gt; A instance of class Features containing 2 assays:
+<span class='no'>fts1</span> <span class='kw'>&lt;-</span> <span class='fu'>QFeatures</span>(<span class='no'>el</span>, <span class='kw'>colData</span> <span class='kw'>=</span> <span class='no'>cd</span>)
+<span class='no'>fts1</span></div><div class='output co'>#&gt; A instance of class QFeatures containing 2 assays:
 #&gt;  [1] assay1: SummarizedExperiment with 10 rows and 4 columns 
 #&gt;  [2] assay2: SummarizedExperiment with 4 rows and 4 columns </div><div class='input'><span class='no'>fts1</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; class: SummarizedExperiment 
 #&gt; dim: 10 4 
@@ -399,20 +399,20 @@ processing methods using in quantitative proteomics.</p></li>
 #&gt; rowData names(2): Fa Fb
 #&gt; colnames(4): S1 S2 S3 S4
 #&gt; colData names(0):</div><div class='input'>
-<span class='co'>## Rename assay </span>
+<span class='co'>## Rename assay</span>
 <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>fts1</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"se1"</span>, <span class='st'>"se2"</span>)
 
 <span class='co'>## Add an assay</span>
 <span class='no'>fts1</span> <span class='kw'>&lt;-</span> <span class='fu'>addAssay</span>(<span class='no'>fts1</span>, <span class='no'>se1</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, ], <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"se3"</span>)
 
 <span class='co'>## Keep only the Fa variable</span>
-<span class='fu'>selectRowData</span>(<span class='no'>fts1</span>, <span class='kw'>rowvars</span> <span class='kw'>=</span> <span class='st'>"Fa"</span>)</div><div class='output co'>#&gt; A instance of class Features containing 3 assays:
+<span class='fu'>selectRowData</span>(<span class='no'>fts1</span>, <span class='kw'>rowvars</span> <span class='kw'>=</span> <span class='st'>"Fa"</span>)</div><div class='output co'>#&gt; A instance of class QFeatures containing 3 assays:
 #&gt;  [1] se1: SummarizedExperiment with 10 rows and 4 columns 
 #&gt;  [2] se2: SummarizedExperiment with 4 rows and 4 columns 
 #&gt;  [3] se3: SummarizedExperiment with 2 rows and 4 columns </div><div class='input'>
 ## -----------------------------------
-## See ?readFeatures to create a
-## Features object from a data.frame
+## See ?readQFeatures to create a
+## QFeatures object from a data.frame
 ## or spreadsheet.
 ## -----------------------------------
 </div></pre>

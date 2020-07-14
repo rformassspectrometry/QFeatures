@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Aggregate an assay's quantitative features — aggregateFeatures • Features</title>
+<title>Aggregate an assay's quantitative features — aggregateFeatures • QFeatures</title>
 
 
 <!-- jquery -->
@@ -83,8 +83,8 @@ sample-level aggcounts." />
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">Features</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.4</span>
+        <a class="navbar-link" href="../index.html">QFeatures</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@ sample-level aggcounts." />
   </a>
 </li>
 <li>
-  <a href="../articles/Features.html">Get started</a>
+  <a href="../articles/QFeatures.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -110,14 +110,14 @@ sample-level aggcounts." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Processing.html">Processing quantitative proteomics data with Features</a>
+      <a href="../articles/Processing.html">Processing quantitative proteomics data with QFeatures</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/RforMassSpectrometry/Features/">
+  <a href="https://github.com/RforMassSpectrometry/QFeatures/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -136,8 +136,8 @@ sample-level aggcounts." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Aggregate an assay's quantitative features</h1>
-    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/Features/blob/master/R/Features-aggregation.R'><code>R/Features-aggregation.R</code></a>, <a href='https://github.com/RforMassSpectrometry/Features/blob/master/R/SummarizedExperiment-methods.R'><code>R/SummarizedExperiment-methods.R</code></a></small>
-    <div class="hidden name"><code>Features-aggregate.Rd</code></div>
+    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/QFeatures/blob/master/R/QFeatures-aggregation.R'><code>R/QFeatures-aggregation.R</code></a>, <a href='https://github.com/RforMassSpectrometry/QFeatures/blob/master/R/SummarizedExperiment-methods.R'><code>R/SummarizedExperiment-methods.R</code></a></small>
+    <div class="hidden name"><code>QFeatures-aggregate.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -156,7 +156,7 @@ were aggregated. This <code>.n</code> value is always &gt;= that the
 sample-level <code>aggcounts</code>.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S4 method for Features</span>
+    <pre class="usage"><span class='co'># S4 method for QFeatures</span>
 <span class='fu'>aggregateFeatures</span>(
   <span class='no'>object</span>,
   <span class='no'>i</span>,
@@ -177,7 +177,7 @@ sample-level <code>aggcounts</code>.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>An instance of class <a href='Features-class.html'>Features</a> or SummarizedExperiment.</p></td>
+      <td><p>An instance of class <a href='QFeatures-class.html'>QFeatures</a> or SummarizedExperiment.</p></td>
     </tr>
     <tr>
       <th>i</th>
@@ -208,7 +208,7 @@ aggregation. See Details for examples.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>Features</code> object with an additional assay or a
+    <p>A <code>QFeatures</code> object with an additional assay or a
 <code>SummarizedExperiment</code> object (or subclass thereof).</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -247,11 +247,11 @@ genuinely missing value.</p></li>
 <li><p>When using robust summarisation, individual missing values are
 excluded prior to fitting the linear model by robust
 regression. To remove all values in the feature containing the
-missing values, use <code><a href='Features-missing-data.html'>filterNA()</a></code>.</p></li>
+missing values, use <code><a href='QFeatures-missing-data.html'>filterNA()</a></code>.</p></li>
 </ul>
 
 <p>More generally, missing values often need dedicated handling such
-as filtering (see <code><a href='Features-missing-data.html'>filterNA()</a></code>) or imputation (see <code><a href='impute.html'>impute()</a></code>).</p>
+as filtering (see <code><a href='QFeatures-missing-data.html'>filterNA()</a></code>) or imputation (see <code><a href='impute.html'>impute()</a></code>).</p>
     <h2 class="hasAnchor" id="missing-values-in-the-row-data"><a class="anchor" href="#missing-values-in-the-row-data"></a>Missing values in the row data</h2>
 
     
@@ -272,26 +272,26 @@ nature of that column. In cases where an <code>NA</code> is present in an
 otherwise variant column, the column would be dropped anyway.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>The <em>Features</em> vignette provides an extended example and
+    <div class='dont-index'><p>The <em>QFeatures</em> vignette provides an extended example and
 the <em>Processing</em> vignette, for a complete quantitative
 proteomics data processing pipeline.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'>## ---------------------------------------</span>
-<span class='co'>## An example Features with PSM-level data</span>
+<span class='co'>## An example QFeatures with PSM-level data</span>
 <span class='co'>## ---------------------------------------</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>feat1</span>)
-<span class='no'>feat1</span></div><div class='output co'>#&gt; A instance of class Features containing 1 assays:
+<span class='no'>feat1</span></div><div class='output co'>#&gt; A instance of class QFeatures containing 1 assays:
 #&gt;  [1] psms: SummarizedExperiment with 10 rows and 2 columns </div><div class='input'>
 <span class='co'>## Aggregate PSMs into peptides</span>
 <span class='no'>feat1</span> <span class='kw'>&lt;-</span> <span class='fu'>aggregateFeatures</span>(<span class='no'>feat1</span>, <span class='st'>"psms"</span>, <span class='st'>"Sequence"</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"peptides"</span>)
-<span class='no'>feat1</span></div><div class='output co'>#&gt; A instance of class Features containing 2 assays:
+<span class='no'>feat1</span></div><div class='output co'>#&gt; A instance of class QFeatures containing 2 assays:
 #&gt;  [1] psms: SummarizedExperiment with 10 rows and 2 columns 
 #&gt;  [2] peptides: SummarizedExperiment with 3 rows and 2 columns </div><div class='input'>
 <span class='co'>## Aggregate peptides into proteins</span>
 <span class='no'>feat1</span> <span class='kw'>&lt;-</span> <span class='fu'>aggregateFeatures</span>(<span class='no'>feat1</span>, <span class='st'>"peptides"</span>, <span class='st'>"Protein"</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"proteins"</span>)
-<span class='no'>feat1</span></div><div class='output co'>#&gt; A instance of class Features containing 3 assays:
+<span class='no'>feat1</span></div><div class='output co'>#&gt; A instance of class QFeatures containing 3 assays:
 #&gt;  [1] psms: SummarizedExperiment with 10 rows and 2 columns 
 #&gt;  [2] peptides: SummarizedExperiment with 3 rows and 2 columns 
 #&gt;  [3] proteins: SummarizedExperiment with 2 rows and 2 columns </div><div class='input'>
@@ -320,7 +320,7 @@ proteomics data processing pipeline.</p></div>
 <span class='co'>## Aggregation with missing quantitative values</span>
 <span class='co'>## --------------------------------------------</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>ft_na</span>)
-<span class='no'>ft_na</span></div><div class='output co'>#&gt; A instance of class Features containing 1 assays:
+<span class='no'>ft_na</span></div><div class='output co'>#&gt; A instance of class QFeatures containing 1 assays:
 #&gt;  [1] na: SummarizedExperiment with 4 rows and 3 columns </div><div class='input'>
 <span class='fu'>assay</span>(<span class='no'>ft_na</span><span class='kw'>[[</span><span class='fl'>1</span>]])</div><div class='output co'>#&gt;    A  B  C
 #&gt; a NA  5  9
@@ -342,7 +342,7 @@ proteomics data processing pipeline.</p></div>
 #&gt; 1 1 1 2
 #&gt; 2 1 2 2</div><div class='input'>
 <span class='co'>## The rowData .n variable tallies number of initial rows that</span>
-<span class='co'>## were aggregated (irrespective of NAs) for all the samples. </span>
+<span class='co'>## were aggregated (irrespective of NAs) for all the samples.</span>
 <span class='fu'>rowData</span>(<span class='no'>ft2</span><span class='kw'>[[</span><span class='fl'>2</span>]])</div><div class='output co'>#&gt; DataFrame with 2 rows and 3 columns
 #&gt;           X           Y        .n
 #&gt;   &lt;integer&gt; &lt;character&gt; &lt;integer&gt;
