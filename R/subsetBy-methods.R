@@ -87,8 +87,6 @@ setMethod("subsetByFeature", c("QFeatures", "character"),
     all_assays_names <- find_assays_from(x, leaf_assay_name)
     all_assays_names <- unique(as.vector(all_assays_names))
 
-    ans <- x[, , all_assays_names]
-
     ## Let's first collect the feature names for all assays
     featurename_list <- vector("list", length = length(all_assays_names))
     names(featurename_list) <- all_assays_names
