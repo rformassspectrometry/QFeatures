@@ -28,3 +28,9 @@ features that produces \code{i} through aggregation with the
 
 See \link{QFeatures} for an example.
 }
+\examples{
+example(aggregateFeatures)
+
+## Retrieve protein 'ProtA' and its 2 peptides and 6 PSMs
+feat1["ProtA", , ]
+}

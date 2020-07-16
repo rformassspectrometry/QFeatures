@@ -11,13 +11,14 @@ Authors@R: c(person("Laurent", "Gatto",
 		    role = "ctb"))
 Description: Infrastrucutre to manage and process quantitative
    features for high-throughput mass spectrometry assays.
-Depends: R (>= 3.5.0), MultiAssayExperiment
+Depends: R (>= 4.0), MultiAssayExperiment
 Imports:
    methods,
+   stats,
+   utils,
    S4Vectors,
    IRanges,
    SummarizedExperiment,
-   DelayedArray,
    BiocGenerics,
    ProtGenerics (>= 1.19.3),
    AnnotationFilter,
@@ -47,8 +48,6 @@ Suggests:
    impute,
    norm
 biocViews: Infrastructure, MassSpectrometry, Proteomics, Metabolomics
-Remotes:
-   RforMassSpectrometry/MsCoreUtils
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true

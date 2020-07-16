@@ -8,7 +8,7 @@
 \alias{feat2}
 \title{Feature example data}
 \format{
-An object of class \code{Features} of length 1.
+An object of class \code{QFeatures} of length 1.
 }
 \usage{
 feat1

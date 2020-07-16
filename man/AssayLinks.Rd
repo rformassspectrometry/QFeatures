@@ -91,7 +91,8 @@ instances.
 \section{Constructors}{
 
 
-Object can be created with the \code{AssayLink()} and \code{AssayLinks()} constructors.
+Object can be created with the \code{AssayLink()} and \code{AssayLinks()}
+constructors.
 }
 
 \section{Methods and functions}{
@@ -107,15 +108,17 @@ parent(s) \code{AssayLinks} or assay with index or name \code{i}.
 \section{Creating links between assays}{
 
 \itemize{
-\item \code{addAssayLink} takes a parent assay and a child assay contained in the
-\link{QFeatures} object and creates a link given a matching feature variable in
-each assay's \code{rowData}. \code{addAssayLink} also allows to link an assay from
-multiple parent assays (see Examples).
-\item \code{addAssayLinkOneToOne} links two assays contained in the \link{QFeatures}
-object. The parent assay and the child assay must have the same size and
-contain the same rownames (a different ordering is allowed). The matching
-is performed based on the row names of the assays, instead of a supplied
-variable name in \code{rowData}. Providing multiple parents is not supported.
+\item \code{addAssayLink} takes a parent assay and a child assay contained
+in the \link{QFeatures} object and creates a link given a matching
+feature variable in each assay's \code{rowData}. \code{addAssayLink} also
+allows to link an assay from multiple parent assays (see
+Examples).
+\item \code{addAssayLinkOneToOne} links two assays contained in the
+\link{QFeatures} object. The parent assay and the child assay must
+have the same size and contain the same rownames (a different
+ordering is allowed). The matching is performed based on the row
+names of the assays, instead of a supplied variable name in
+\code{rowData}. Providing multiple parents is not supported.
 }
 }
 

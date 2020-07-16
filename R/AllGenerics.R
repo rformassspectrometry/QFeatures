@@ -5,22 +5,30 @@
 NULL
 
 
-setGeneric("filterFeatures", function(object, filter, ...) standardGeneric("filterFeatures"))
+setGeneric("filterFeatures",
+           function(object, filter, ...) standardGeneric("filterFeatures"))
 
-setGeneric("subsetByFeature", function(x, y, ...) standardGeneric("subsetByFeature"))
+setGeneric("subsetByFeature",
+           function(x, y, ...) standardGeneric("subsetByFeature"))
 
-setGeneric("zeroIsNA", function(object, i) standardGeneric("zeroIsNA"))
+setGeneric("zeroIsNA",
+           function(object, i) standardGeneric("zeroIsNA"))
 
-setGeneric("nNA", function(object, i) standardGeneric("nNA"))
+setGeneric("nNA",
+           function(object, i) standardGeneric("nNA"))
 
-setGeneric("logTransform", function(object, ...) standardGeneric("logTransform"))
+setGeneric("logTransform",
+           function(object, ...) standardGeneric("logTransform"))
 
-setGeneric("scaleTransform", function(object, ...) standardGeneric("scaleTransform"))
+setGeneric("scaleTransform",
+           function(object, ...) standardGeneric("scaleTransform"))
 
-setGeneric("aggcounts", function(object, ...) standardGeneric("aggcounts"))
+setGeneric("aggcounts",
+           function(object, ...) standardGeneric("aggcounts"))
 
 ## base::sweep
-.sweep.useAsDefault <- function(x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ...) 
+.sweep.useAsDefault <- function(x, MARGIN, STATS, FUN = "-",
+                                check.margin = TRUE, ...)
     base::sweep(x, MARGIN, STATS, FUN, check.margin, ...)
 
 setGeneric("sweep",

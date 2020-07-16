@@ -8,7 +8,8 @@
 ##'
 ##' @section Constructors:
 ##'
-##' Object can be created with the `AssayLink()` and `AssayLinks()` constructors.
+##' Object can be created with the `AssayLink()` and `AssayLinks()`
+##' constructors.
 ##'
 ##' @section Methods and functions:
 ##'
@@ -20,15 +21,17 @@
 ##'
 ##' @section Creating links between assays:
 ##'
-##' - `addAssayLink` takes a parent assay and a child assay contained in the
-##'   [QFeatures] object and creates a link given a matching feature variable in
-##'   each assay's `rowData`. `addAssayLink` also allows to link an assay from
-##'   multiple parent assays (see Examples).
-##' - `addAssayLinkOneToOne` links two assays contained in the [QFeatures]
-##'   object. The parent assay and the child assay must have the same size and
-##'   contain the same rownames (a different ordering is allowed). The matching
-##'   is performed based on the row names of the assays, instead of a supplied
-##'   variable name in `rowData`. Providing multiple parents is not supported.
+##' - `addAssayLink` takes a parent assay and a child assay contained
+##'   in the [QFeatures] object and creates a link given a matching
+##'   feature variable in each assay's `rowData`. `addAssayLink` also
+##'   allows to link an assay from multiple parent assays (see
+##'   Examples).
+##' - `addAssayLinkOneToOne` links two assays contained in the
+##'   [QFeatures] object. The parent assay and the child assay must
+##'   have the same size and contain the same rownames (a different
+##'   ordering is allowed). The matching is performed based on the row
+##'   names of the assays, instead of a supplied variable name in
+##'   `rowData`. Providing multiple parents is not supported.
 ##'
 ##' @rdname AssayLinks
 ##'
@@ -63,7 +66,8 @@
 ##' ## create a QFeatures object with 2 (identical) assays
 ##' ## see also '?QFeatures'
 ##' se <- SummarizedExperiment(matrix(runif(20), ncol = 2,
-##'                                   dimnames = list(LETTERS[1:10], letters[1:2])),
+##'                                   dimnames = list(LETTERS[1:10],
+##'                                                   letters[1:2])),
 ##'                            rowData = DataFrame(ID = 1:10))
 ##' ft <- QFeatures(list(assay1 = se, assay2 = se))
 ##'
@@ -118,7 +122,8 @@ setMethod("show", "AssayLink",
                   "[from:", paste(object@from, collapse = ","),
                   "|fcol:", paste(object@fcol, collapse = ","),
                   "|hits:", ifelse(inherits(object@hits, "List"),
-                                   paste(sapply(object@hits, length), collapse = ","),
+                                   paste(sapply(object@hits, length),
+                                         collapse = ","),
                                    length(object@hits)),
                   "]\n", sep = "")
           })
@@ -244,10 +249,10 @@ setMethod("[", c("AssayLinks", "list"),
 ## Functions for creating custom links
 ## -----------------------------------
 
-## The function takes the rowData of an assays to link from, the rowData of an
-## assay to link to, the corresponding feature variable names in both rowData
-## that link 2 assays together. The function returns a `Hits` object.
-## the corresponding feature variables.
+## The function takes the rowData of an assays to link from, the
+## rowData of an assay to link to, the corresponding feature variable
+## names in both rowData that link 2 assays together. The function
+## returns a `Hits` object.  the corresponding feature variables.
 .get_Hits <- function(rdFrom,
                       rdTo,
                       varFrom,
@@ -279,8 +284,8 @@ setMethod("[", c("AssayLinks", "list"),
     if (any(to %in% from))
         stop("Adding an AssayLink between an assay and itself is not allowed.")
     if (missing(varFrom) | missing(varTo)) {
-        ## Create the list of hits between the child assay and the parent assays
-        ## based on the rownames
+        ## Create the list of hits between the child assay and the
+        ## parent assays based on the rownames
         rdTo <- cbind(rowData(object[[to]]), ._rownames = rownames(object[[to]]))
         hits <- lapply(seq_along(from), function(ii) {
             rdFrom <- cbind(rowData(object[[from[ii]]]),
@@ -291,8 +296,8 @@ setMethod("[", c("AssayLinks", "list"),
         })
         varFrom <- "._rownames"
     } else if (length(from) == length(varFrom)) {
-        ## Create the list of hits between the child assay and the parent assays
-        ## based on the supplied varFrom and varTo
+        ## Create the list of hits between the child assay and the
+        ## parent assays based on the supplied varFrom and varTo
         hits <- lapply(seq_along(from), function(ii) {
             .get_Hits(rdFrom = rowData(object[[from[ii]]]),
                       rdTo = rowData(object[[to]]),
@@ -316,15 +321,17 @@ setMethod("[", c("AssayLinks", "list"),
               hits = hits)
 }
 
-## Function that updates the QFeatures object's AssayLinks with the provided
-## AssayLink object.
+## Function that updates the QFeatures object's AssayLinks with the
+## provided AssayLink object.
 .update_assay_links <- function (object, al) {
-    if (!inherits(al ,"AssayLink")) stop("'al' must be an AssayLink object.")
+    if (!inherits(al ,"AssayLink"))
+        stop("'al' must be an AssayLink object.")
     ## Get the hits slot
     hits <- al@hits
     if (inherits(hits, "Hits")) hits <- List(hits)
     ## Check the child indexing on rownames
-    isCorrectToLink <- sapply(hits, function(l) all(elementMetadata(l)$names_to %in% rownames(object[[al@name]])))
+    isCorrectToLink <- sapply(hits,
+                              function(l) all(elementMetadata(l)$names_to %in% rownames(object[[al@name]])))
     if (any(!isCorrectToLink))
         stop("Invalid AssayLink. At least one of the 'hits' metadata 'names_to' does not match the rownames.")
     ## Check the parent indexing on rownames
@@ -342,15 +349,16 @@ setMethod("[", c("AssayLinks", "list"),
 
 ##' @rdname AssayLinks
 ##'
-##' @param from A `character()` or `integer()` indicating which assay(s) to link
-##'     from in `object`
-##' @param to A `character(1)` or `integer(1)` indicating which assay to link to
-##'     in `object`
-##' @param varFrom A `character()` indicating the feature variable(s) to use to
-##'     match the `from` assay(s) to the `to` assay. `varFrom` must have the
-##'     same length as `from` and is assumed to be ordered as `from`.
-##' @param varTo A `character(1)` indicating the feature variable to use to
-##'     match the `to` assay to the `from` assay(s).
+##' @param from A `character()` or `integer()` indicating which
+##'     assay(s) to link from in `object`
+##' @param to A `character(1)` or `integer(1)` indicating which assay
+##'     to link to in `object`
+##' @param varFrom A `character()` indicating the feature variable(s)
+##'     to use to match the `from` assay(s) to the `to`
+##'     assay. `varFrom` must have the same length as `from` and is
+##'     assumed to be ordered as `from`.
+##' @param varTo A `character(1)` indicating the feature variable to
+##'     use to match the `to` assay to the `from` assay(s).
 ##'
 ##' @export
 addAssayLink <- function(object,
@@ -378,25 +386,30 @@ addAssayLinkOneToOne <- function(object,
         stop("One to one links are not supported for multiple parents.")
     if (any(to %in% from))
         stop("Adding an AssayLink between an assay and itself is not allowed.")
+    
     ## Check that assays have same size
     N <- unique(dims(object)[1, c(from, to)])
     if (length(N) != 1)
         stop("The 'from' and 'to' assays must have the same number of rows.")
+    
     ## Check both assays contain the same rownames (different order is allowed)
     rdFrom <- rowData(object[[from]])
     rdTo <- rowData(object[[to]])
     if (length(intersect(rownames(rdFrom), rownames(rdTo))) != N)
         stop(paste0("Different rownames found in assay '", from,
                     "' and assay '", to, "'."))
+    
     ## Create the linking variable
     rdFrom$._oneToOne <- rownames(rdFrom)
     rdTo$._oneToOne <- rownames(rdTo)
+    
     ## Create the assay link
     hits <- .get_Hits(rdFrom, rdTo, "._oneToOne", "._oneToOne")
     al <- AssayLink(name = to,
                     from = from,
                     fcol = "._oneToOne",
                     hits = hits)
+    
     ## Update the assay link in the QFeatures object
     .update_assay_links(object, al)
 }

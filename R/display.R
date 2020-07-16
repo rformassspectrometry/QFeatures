@@ -72,7 +72,8 @@ display <- function(object, n = 100, ...) {
                 .Rowv <- NA
                 .labRow <- NA
             }
-            heatmap(.assay[sel, , drop = FALSE], Rowv = .Rowv, labRow = .labRow, ...)
+            heatmap(.assay[sel, , drop = FALSE],
+                    Rowv = .Rowv, labRow = .labRow, ...)
         })
 
         output$assay <- DT::renderDataTable({
