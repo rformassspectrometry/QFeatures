@@ -70,6 +70,12 @@ find_assays_from <- function(x, i)
 ##' @name subsetByFeature
 ##'
 ##' @rdname QFeatures-subsetBy
+##'
+##' @examples
+##' example(aggregateFeatures)
+##'
+##' ## Retrieve protein 'ProtA' and its 2 peptides and 6 PSMs
+##' feat1["ProtA", , ]
 NULL
 
 

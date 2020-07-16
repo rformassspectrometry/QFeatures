@@ -112,6 +112,23 @@
 ##' @name missing-data
 ##'
 ##' @rdname QFeatures-missing-data
+##'
+##' @seealso The `impute()` for `QFeautres` instances.
+##'
+##' @examples
+##' se_na2
+##'
+##' ## Summary if missing values
+##' nNA(ft_na, 1)
+##'
+##' ## Remove rows with missing values
+##' assay(filterNA(ft_na, i = 1))
+##'
+##' ## Replace NAs by zero and back
+##' ft_na <- impute(ft_na, i = 1, method = "zero")
+##' assay(ft_na)
+##' ft_na <- zeroIsNA(ft_na, 1)
+##' assay(ft_na)
 NULL
 
 
