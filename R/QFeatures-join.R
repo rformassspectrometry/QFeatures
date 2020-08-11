@@ -9,7 +9,7 @@
     .x <- x[k, , drop = FALSE]
     .y <- y[k, , drop = FALSE]
     for (j in names(.x))
-        if (!isTRUE(all.equal(.x[[j]], .y[[j]])))
+        if (!isTRUE(identical(.x[[j]], .y[[j]])))
             x[, j] <- y[, j] <- NULL
     ## Create these to recover rownames
     x$._rownames <- rownames(x)
