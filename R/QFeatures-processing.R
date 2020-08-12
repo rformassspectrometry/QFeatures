@@ -105,6 +105,8 @@
 ##'
 ##' @param ... Additional parameters passed to inner functions.
 ##'
+##' @return An processed object of the same class as `x` or `object`.
+##'
 ##' @aliases logTransform logTransform,SummarizedExperiment-method logTransform,QFeatures-method
 ##' @aliases scaleTransform scaleTransform,SummarizedExperiment-method scaleTransform,QFeatures-method
 ##' @aliases normalize normalize,SummarizedExperiment-method normalize,QFeatures-method

@@ -21,6 +21,8 @@
 ##' @seealso The [QFeatures] man page for subsetting and the `QFeatures`
 ##'     vignette provides an extended example.
 ##'
+##' @return An filtered `QFeature` object.
+##'
 ##' @author Laurent Gatto
 ##'
 ##' @name QFeatures-filtering
