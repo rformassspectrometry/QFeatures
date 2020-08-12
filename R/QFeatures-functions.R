@@ -3,10 +3,12 @@
 ## ------------------
 
 main_assay <- function(object)
-    which.max(sapply(experiments(object), nrow))
+    which.max(vapply(experiments(object),
+                     nrow,
+                     numeric(1)))
 
 number_assays_in_se <- function(object)
-    lengths(sapply(experiments(object), assays))
+    lengths(lapply(experiments(object), assays))
 
 
 ## ----------------------------
@@ -22,12 +24,13 @@ number_assays_in_se <- function(object)
 
 .valid_assay_links <- function(object) {
     n_exp <- names(experiments(object))
-    al_names <- unname(sapply(object@assayLinks, "slot", "name"))
+    al_names <- unname(vapply(object@assayLinks, "slot", "name",
+                              FUN.VALUE = character(1)))
     ## An AssayLinks object is valid if the names of the node for all assays
     ## are contained in the assay names of the QFeatures object
     if (!all(al_names %in% n_exp))
         stop("@names not valid")
-    al_from <- unname(unlist(sapply(object@assayLinks, "slot", "from")))
+    al_from <- unname(unlist(lapply(object@assayLinks, "slot", "from")))
     ## An AssayLinks object is valid if the names of the parent assays for all
     ## assays are either NA (= root node) or contained in the assay names of the
     ## QFeatures object
@@ -37,8 +40,9 @@ number_assays_in_se <- function(object)
 }
 
 .unique_row_names <- function(object) {
-    dup_row_names <- sapply(experiments(object),
-                            function(x) anyDuplicated(rownames(x)))
+    dup_row_names <- vapply(experiments(object),
+                            function(x) anyDuplicated(rownames(x)),
+                            numeric(1))
     if (any(dup_row_names != 0))
         stop("Assay(s) ", paste(which(dup_row_names != 0), collapse = ", "),
              " has/have duplicated row names.")

@@ -1,11 +1,13 @@
 setMethod("showAsCell", "character",
           function (object) {
               n <- 10
-              sapply(object, function(x) {
+              vapply(object, function(x) {
                   if (!is.na(x) & nchar(x) & nchar(x) > n)
                       paste0(substr(x, 1, n), "...")
-                  else x
-              }, USE.NAMES = FALSE)
+                  else as.character(x)
+              },
+              character(1),
+              USE.NAMES = FALSE)
           })
 
 
@@ -52,21 +54,31 @@ invariant_cols2 <- function(x) {
 ##' level functions that rely on reduction of `DataFrame` objects.
 ##'
 ##' @param x The `DataFrame` to be reduced or expanded.
+##' 
 ##' @param k A ‘vector’ of length `nrow(x)` defining the grouping
 ##'     based on which the `DataFrame` will be shrunk.
+##' 
 ##' @param count `logical(1)` specifying of an additional column
 ##'     (called by default `.n`) with the tally of rows shrunk into on
 ##'     new row should be added. Note that if already existing, `.n`
 ##'     will be silently overwritten.
+##' 
 ##' @param simplify A `logical(1)` defining if invariant columns
 ##'     should be converted to simple lists. Default is `TRUE`.
+##' 
 ##' @param drop A `logical(1)` specifying whether the non-invariant
 ##'     columns should be dropped altogether. Default is `FALSE`.
+##' 
 ##' @return An expanded (reduced) `DataFrame`.
+##' 
 ##' @author Laurent Gatto
+##' 
 ##' @import S4Vectors
+##' 
 ##' @import IRanges
+##' 
 ##' @export reduceDataFrame
+##' 
 ##' @examples
 ##' library("IRanges")
 ##'
