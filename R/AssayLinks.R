@@ -122,7 +122,9 @@ setMethod("show", "AssayLink",
                   "[from:", paste(object@from, collapse = ","),
                   "|fcol:", paste(object@fcol, collapse = ","),
                   "|hits:", ifelse(inherits(object@hits, "List"),
-                                   paste(sapply(object@hits, length),
+                                   paste(vapply(object@hits,
+                                                length,
+                                                numeric(1)),
                                          collapse = ","),
                                    length(object@hits)),
                   "]\n", sep = "")
@@ -173,13 +175,12 @@ AssayLink <- function(name, from = NA_character_,
 ##'
 ##' @export
 AssayLinks <- function(..., names = NULL) {
-    browser()
     if (!is.null(names))
         return(AssayLinks(sapply(names, AssayLink)))
     args <- list(...)
     if (length(args) == 1L && extends(class(args[[1L]]), "list"))
         args <- args[[1L]]
-    names(args) <- vapply(args, slot, "name", character(1))
+    names(args) <- vapply(args, slot, "name", FUN.VALUE = character(1))
     new("AssayLinks", listData = args)
 }
 
@@ -331,13 +332,15 @@ setMethod("[", c("AssayLinks", "list"),
     hits <- al@hits
     if (inherits(hits, "Hits")) hits <- List(hits)
     ## Check the child indexing on rownames
-    isCorrectToLink <- sapply(hits,
-                              function(l) all(elementMetadata(l)$names_to %in% rownames(object[[al@name]])))
+    isCorrectToLink <- vapply(hits,
+                              function(l) all(elementMetadata(l)$names_to %in% rownames(object[[al@name]])),
+                              logical(1))
     if (any(!isCorrectToLink))
         stop("Invalid AssayLink. At least one of the 'hits' metadata 'names_to' does not match the rownames.")
     ## Check the parent indexing on rownames
-    isCorrectFromLink <- sapply(seq_along(hits),
-                                function(i) all(elementMetadata(hits[[i]])$names_from %in% rownames(object[[al@from[i]]])))
+    isCorrectFromLink <- vapply(seq_along(hits),
+                                function(i) all(elementMetadata(hits[[i]])$names_from %in% rownames(object[[al@from[i]]])),
+                                logical(1))
     if (any(!isCorrectFromLink))
         stop("Invalid AssayLink. The AssayLink metadata 'names_from' does not match the rownames.")
 

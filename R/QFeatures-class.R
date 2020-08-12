@@ -268,7 +268,7 @@ setMethod("[", c("QFeatures", "ANY", "ANY", "ANY"),
 ##' @importFrom BiocGenerics dims
 ##' @exportMethod dims
 setMethod("dims", "QFeatures",
-          function(x) sapply(experiments(x), dim))
+          function(x) vapply(experiments(x), dim, integer(2)))
 
 
 ##' @rdname QFeatures-class
