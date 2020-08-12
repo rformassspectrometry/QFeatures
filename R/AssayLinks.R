@@ -173,12 +173,13 @@ AssayLink <- function(name, from = NA_character_,
 ##'
 ##' @export
 AssayLinks <- function(..., names = NULL) {
+    browser()
     if (!is.null(names))
         return(AssayLinks(sapply(names, AssayLink)))
     args <- list(...)
     if (length(args) == 1L && extends(class(args[[1L]]), "list"))
         args <- args[[1L]]
-    names(args) <- sapply(args, slot, "name")
+    names(args) <- vapply(args, slot, "name", character(1))
     new("AssayLinks", listData = args)
 }
 
@@ -386,30 +387,30 @@ addAssayLinkOneToOne <- function(object,
         stop("One to one links are not supported for multiple parents.")
     if (any(to %in% from))
         stop("Adding an AssayLink between an assay and itself is not allowed.")
-    
+
     ## Check that assays have same size
     N <- unique(dims(object)[1, c(from, to)])
     if (length(N) != 1)
         stop("The 'from' and 'to' assays must have the same number of rows.")
-    
+
     ## Check both assays contain the same rownames (different order is allowed)
     rdFrom <- rowData(object[[from]])
     rdTo <- rowData(object[[to]])
     if (length(intersect(rownames(rdFrom), rownames(rdTo))) != N)
         stop(paste0("Different rownames found in assay '", from,
                     "' and assay '", to, "'."))
-    
+
     ## Create the linking variable
     rdFrom$._oneToOne <- rownames(rdFrom)
     rdTo$._oneToOne <- rownames(rdTo)
-    
+
     ## Create the assay link
     hits <- .get_Hits(rdFrom, rdTo, "._oneToOne", "._oneToOne")
     al <- AssayLink(name = to,
                     from = from,
                     fcol = "._oneToOne",
                     hits = hits)
-    
+
     ## Update the assay link in the QFeatures object
     .update_assay_links(object, al)
 }
