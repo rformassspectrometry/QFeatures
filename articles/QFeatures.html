@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.1</span>
       </span>
     </div>
 
@@ -130,76 +130,76 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">hlpsms</span>)
 <span class="no">hl</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/readQFeatures.html">readQFeatures</a></span>(<span class="no">hlpsms</span>, <span class="kw">ecol</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">10</span>, <span class="kw">name</span> <span class="kw">=</span> <span class="st">"psms"</span>)
 <span class="no">hl</span></pre></body></html></div>
-<pre><code>## A instance of class QFeatures containing 1 assays:
-##  [1] psms: SummarizedExperiment with 32776 rows and 10 columns</code></pre>
+<pre><code>## An instance of class QFeatures containing 1 assays:
+##  [1] psms: SummarizedExperiment with 3010 rows and 10 columns</code></pre>
 <p>Below, we see that we can extract an assay using its index or its name. The individual assays are stored as <em>SummerizedExperiment</em> object and further access its quantitative data and metadata using the <code>assay</code> and <code>rowData</code> functions</p>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">hl</span><span class="kw">[[</span><span class="fl">1</span>]]</pre></body></html></div>
 <pre><code>## class: SummarizedExperiment 
-## dim: 32776 10 
+## dim: 3010 10 
 ## metadata(0):
 ## assays(1): ''
-## rownames(32776): 1 2 ... 32775 32776
+## rownames(3010): 1 2 ... 3009 3010
 ## rowData names(18): Sequence ProteinDescriptions ... RTmin markers
 ## colnames(10): X126 X127C ... X130N X131
 ## colData names(0):</code></pre>
 <div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">hl</span><span class="kw">[[</span><span class="st">"psms"</span>]]</pre></body></html></div>
 <pre><code>## class: SummarizedExperiment 
-## dim: 32776 10 
+## dim: 3010 10 
 ## metadata(0):
 ## assays(1): ''
-## rownames(32776): 1 2 ... 32775 32776
+## rownames(3010): 1 2 ... 3009 3010
 ## rowData names(18): Sequence ProteinDescriptions ... RTmin markers
 ## colnames(10): X126 X127C ... X130N X131
 ## colData names(0):</code></pre>
 <div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu">assay</span>(<span class="no">hl</span><span class="kw">[[</span><span class="st">"psms"</span>]]))</pre></body></html></div>
-<pre><code>##         X126       X127C      X127N       X128C       X128N      X129C
-## 1 0.01279427 0.024462641 0.01044012 0.083418628 0.018577277 0.23234391
-## 2 0.01524632 0.089010311 0.08151934 0.105754825 0.054639993 0.17449546
-## 3 0.13087550 0.023223985 0.01372910 0.010906291 0.010777982 0.10478594
-## 4 0.04637540 0.023187698 0.09812058 0.058579448 0.052233341 0.13229192
-## 5 0.07011643 0.004831193 0.00321367 0.006790748 0.004389403 0.10047172
-## 6 0.05415942 0.127071073 0.05786052 0.366408823 0.113253636 0.04071209
-##        X129N      X130C      X130N       X131
-## 1 0.29836233 0.02942682 0.16427840 0.12589560
-## 2 0.22516965 0.01533445 0.12293998 0.11588966
-## 3 0.02951114 0.38663872 0.16038664 0.12916471
-## 4 0.15377105 0.09665609 0.17134489 0.16743959
-## 5 0.04204136 0.33276803 0.22445809 0.21091935
-## 6 0.12275312 0.01020270 0.06057466 0.04700396</code></pre>
+<pre><code>##         X126      X127C       X127N      X128C       X128N      X129C
+## 1 0.12283431 0.08045915 0.070804055 0.09386901 0.051815695 0.13034383
+## 2 0.35268185 0.14162381 0.167523880 0.07843497 0.071087436 0.03214548
+## 3 0.01546089 0.16142297 0.086938133 0.23120844 0.114664348 0.09610188
+## 4 0.04702854 0.09288723 0.102012167 0.11125409 0.067969116 0.14155358
+## 5 0.01044693 0.15866147 0.167315736 0.21017494 0.147946673 0.07088253
+## 6 0.04955362 0.01215244 0.002477681 0.01297833 0.002988949 0.06253195
+##        X129N       X130C      X130N       X131
+## 1 0.17540095 0.040068658 0.11478839 0.11961594
+## 2 0.06686260 0.031961793 0.02810434 0.02957384
+## 3 0.15977819 0.010127118 0.08059400 0.04370403
+## 4 0.18015910 0.035329902 0.12166589 0.10014038
+## 5 0.17555789 0.007088253 0.02884754 0.02307803
+## 6 0.01726511 0.172651119 0.37007905 0.29732174</code></pre>
 <div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu">rowData</span>(<span class="no">hl</span><span class="kw">[[</span><span class="st">"psms"</span>]]))</pre></body></html></div>
 <pre><code>## DataFrame with 6 rows and 18 columns
 ##      Sequence ProteinDescriptions NbProteins ProteinGroupAccessions
 ##   &lt;character&gt;         &lt;character&gt;  &lt;integer&gt;            &lt;character&gt;
-## 1     aAAGEAk       Ribosome-b...          1                 Q99PL5
-## 2      VTEEAk       Heme oxyge...          1                 P14901
-## 3     aSGDPGk       Transcript...          2                 O89090
-## 4     sAAAEAk       Isoform 3 ...          3               O89032-3
-## 5     aANAEGk       Deoxynucle...          1                 Q8R2M2
-## 6     aAAEEAR       Coiled-coi...          1                 Q9JIG7
+## 1     SQGEIDk       Tetratrico...          1                 Q8BYY4
+## 2     YEAQGDk       Vacuolar p...          1                 P46467
+## 3     TTScDTk       C-type man...          1                 Q64449
+## 4     aEELESR       Liprin-alp...          1                 P60469
+## 5     aQEEAIk       Isoform 2 ...          2               P13597-2
+## 6    dGAVDGcR       Structural...          1                 Q6P5D8
 ##   Modifications    qValue       PEP  IonScore NbMissedCleavages
 ##     &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt; &lt;integer&gt;         &lt;integer&gt;
-## 1 N-Term(Car...     0.001    0.0162        46                 0
-## 2 K6(TMT6ple...     0.002    0.0393        46                 0
-## 3 N-Term(Car...     0.008    0.1170        18                 0
-## 4 N-Term(Car...     0.001    0.0194        28                 0
-## 5 N-Term(Car...     0.002    0.0387        28                 0
-## 6 N-Term(TMT...     0.002    0.0386        36                 0
+## 1 K7(TMT6ple...     0.008   0.11800        27                 0
+## 2 K7(TMT6ple...     0.001   0.01070        27                 0
+## 3 C4(Carbami...     0.008   0.11800        11                 0
+## 4 N-Term(TMT...     0.002   0.04450        24                 0
+## 5 N-Term(Car...     0.001   0.00850        36                 0
+## 6 N-Term(TMT...     0.000   0.00322        26                 0
 ##   IsolationInterference IonInjectTimems Intensity    Charge      mzDa      MHDa
 ##               &lt;integer&gt;       &lt;integer&gt; &lt;numeric&gt; &lt;integer&gt; &lt;numeric&gt; &lt;numeric&gt;
-## 1                     0              70    192000         2   452.258   903.510
-## 2                     0              70    416000         2   453.261   905.515
-## 3                     0              70    351000         2   459.249   917.491
-## 4                     0              70     62100         2   467.263   933.520
-## 5                     0              70    246000         2   473.761   946.515
-## 6                     0              70    172000         2   473.762   946.516
+## 1                     0              70    335000         2   503.274   1005.54
+## 2                     0              70    926000         2   520.267   1039.53
+## 3                     0              70    159000         2   521.258   1041.51
+## 4                     0              70    232000         2   531.785   1062.56
+## 5                     0              70    212000         2   537.804   1074.60
+## 6                     0              70    865000         2   539.761   1078.51
 ##   DeltaMassPPM     RTmin       markers
 ##      &lt;numeric&gt; &lt;numeric&gt;   &lt;character&gt;
-## 1        -0.14     10.45 Endoplasmi...
-## 2         0.93     15.96       unknown
-## 3         1.98     11.42       unknown
-## 4        -0.73     13.32       unknown
-## 5        -1.05     10.25 Nucleus - ...
-## 6         0.88     14.79       unknown</code></pre>
+## 1        -0.38     24.02       unknown
+## 2         0.61     18.85       unknown
+## 3         1.11     10.17       unknown
+## 4         0.35     29.18       unknown
+## 5         1.70     25.56 Plasma mem...
+## 6        -0.67     21.27 Nucleus - ...</code></pre>
 <p>For further details on how to manipulate such objects, refer to the <em><a href="https://bioconductor.org/packages/3.12/MultiAssayExperiment">MultiAssayExperiment</a></em> <span class="citation">(Ramos et al. 2017)</span> and <em><a href="https://bioconductor.org/packages/3.12/SummerizedExperiment">SummerizedExperiment</a></em> <span class="citation">(Morgan et al. 2019)</span> packages.</p>
 <p>As illustrated in figure @ref(fig:featuresplot), an central characteristic of <code>QFeatures</code> objects is the aggregative relation between their assays. This can be obtained with the <code>aggregateFeatures</code> function that will aggregate quantitative features from one assay into a new one. In the next code chunk, we aggregate PSM-level data into peptide by grouping all PSMs that were matched the same peptide sequence. Below, the aggregation function is set, as an example, to the mean. The new assay is named <em>peptides</em>.</p>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">hl</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-aggregate.html">aggregateFeatures</a></span>(<span class="no">hl</span>, <span class="st">"psms"</span>, <span class="st">"Sequence"</span>, <span class="kw">name</span> <span class="kw">=</span> <span class="st">"peptides"</span>, <span class="kw">fun</span> <span class="kw">=</span> <span class="no">colMeans</span>)</pre></body></html></div>
@@ -207,32 +207,31 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 ## section(s) in the aggregateFeatures manual page regarding the effects
 ## of missing values on data aggregation.</code></pre>
 <div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">hl</span></pre></body></html></div>
-<pre><code>## A instance of class QFeatures containing 2 assays:
-##  [1] psms: SummarizedExperiment with 32776 rows and 10 columns 
-##  [2] peptides: SummarizedExperiment with 26796 rows and 10 columns</code></pre>
+<pre><code>## An instance of class QFeatures containing 2 assays:
+##  [1] psms: SummarizedExperiment with 3010 rows and 10 columns 
+##  [2] peptides: SummarizedExperiment with 2923 rows and 10 columns</code></pre>
 <div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">hl</span><span class="kw">[[</span><span class="st">"peptides"</span>]]</pre></body></html></div>
 <pre><code>## class: SummarizedExperiment 
-## dim: 26796 10 
+## dim: 2923 10 
 ## metadata(0):
 ## assays(2): assay aggcounts
-## rownames(26796): aAAAAAAAAAAAAAAGAAGk AAAAAAAAAAAAAAAGAAGk ...
-##   yYVQPQWVFDcVNAR yYVTIIDAPGHR
+## rownames(2923): aAADADVSLHNFSAR aAADPSEk ... yYSFFDLNPk YYSIASSSk
 ## rowData names(7): Sequence ProteinDescriptions ... markers .n
 ## colnames(10): X126 X127C ... X130N X131
 ## colData names(0):</code></pre>
 <p>Below, we repeat the aggregation operation by grouping peptides into proteins as defined by the <em>ProteinGroupAccessions</em> variable.</p>
 <div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="no">hl</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-aggregate.html">aggregateFeatures</a></span>(<span class="no">hl</span>, <span class="st">"peptides"</span>, <span class="st">"ProteinGroupAccessions"</span>, <span class="kw">name</span> <span class="kw">=</span> <span class="st">"proteins"</span>, <span class="kw">fun</span> <span class="kw">=</span> <span class="no">colMeans</span>)
 <span class="no">hl</span></pre></body></html></div>
-<pre><code>## A instance of class QFeatures containing 3 assays:
-##  [1] psms: SummarizedExperiment with 32776 rows and 10 columns 
-##  [2] peptides: SummarizedExperiment with 26796 rows and 10 columns 
-##  [3] proteins: SummarizedExperiment with 4276 rows and 10 columns</code></pre>
+<pre><code>## An instance of class QFeatures containing 3 assays:
+##  [1] psms: SummarizedExperiment with 3010 rows and 10 columns 
+##  [2] peptides: SummarizedExperiment with 2923 rows and 10 columns 
+##  [3] proteins: SummarizedExperiment with 1596 rows and 10 columns</code></pre>
 <div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">hl</span><span class="kw">[[</span><span class="st">"proteins"</span>]]</pre></body></html></div>
 <pre><code>## class: SummarizedExperiment 
-## dim: 4276 10 
+## dim: 1596 10 
 ## metadata(0):
 ## assays(2): assay aggcounts
-## rownames(4276): A2A432 A2A4P0 ... Q9Z315 Q9Z321
+## rownames(1596): A2A432 A2A6Q5-3 ... Q9Z2Z9 Q9Z315
 ## rowData names(3): ProteinGroupAccessions markers .n
 ## colnames(10): X126 X127C ... X130N X131
 ## colData names(0):</code></pre>
@@ -263,7 +262,7 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 <p>In the example below, we are interested in the Stat3B isoform of the Signal transducer and activator of transcription 3 (STAT3) with accession number P42227-2. This accession number corresponds to a feature name in the <em>proteins</em> assay. But this protein row was computed from 8 peptide rows in the <em>peptides</em> assay, themselves resulting from the aggregation of 8 rows in the <em>psms</em> assay.</p>
 <div class="sourceCode" id="cb26"><html><body><pre class="r"><span class="no">stat3</span> <span class="kw">&lt;-</span> <span class="no">hl</span>[<span class="st">"P42227-2"</span>, , ]
 <span class="no">stat3</span></pre></body></html></div>
-<pre><code>## A instance of class QFeatures containing 3 assays:
+<pre><code>## An instance of class QFeatures containing 3 assays:
 ##  [1] psms: SummarizedExperiment with 9 rows and 10 columns 
 ##  [2] peptides: SummarizedExperiment with 8 rows and 10 columns 
 ##  [3] proteins: SummarizedExperiment with 1 rows and 10 columns</code></pre>
@@ -283,7 +282,7 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 <p>Below we repeat the same operation for the Signal transducer and activator of transcription 1 (STAT1) and 3 (STAT3) accession numbers, namely P42227-2 and P42225. We obtain a new <code>QFeatures</code> instance containing 2 proteins, 9 peptides and 10 PSMS. From this, we can readily conclude that STAT1 was identified by a single PSM/peptide.</p>
 <div class="sourceCode" id="cb29"><html><body><pre class="r"><span class="no">stat</span> <span class="kw">&lt;-</span> <span class="no">hl</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"P42227-2"</span>, <span class="st">"P42225"</span>), , ]
 <span class="no">stat</span></pre></body></html></div>
-<pre><code>## A instance of class QFeatures containing 3 assays:
+<pre><code>## An instance of class QFeatures containing 3 assays:
 ##  [1] psms: SummarizedExperiment with 10 rows and 10 columns 
 ##  [2] peptides: SummarizedExperiment with 9 rows and 10 columns 
 ##  [3] proteins: SummarizedExperiment with 2 rows and 10 columns</code></pre>
@@ -305,13 +304,13 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 <div class="sourceCode" id="cb32"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">magrittr</span>)
 <span class="no">hl</span> <span class="kw">%&gt;%</span>
     <span class="fu"><a href="../reference/QFeatures-subsetBy.html">subsetByFeature</a></span>(<span class="st">"P42227-2"</span>)</pre></body></html></div>
-<pre><code>## A instance of class QFeatures containing 3 assays:
+<pre><code>## An instance of class QFeatures containing 3 assays:
 ##  [1] psms: SummarizedExperiment with 9 rows and 10 columns 
 ##  [2] peptides: SummarizedExperiment with 8 rows and 10 columns 
 ##  [3] proteins: SummarizedExperiment with 1 rows and 10 columns</code></pre>
 <div class="sourceCode" id="cb34"><html><body><pre class="r"><span class="no">hl</span> <span class="kw">%&gt;%</span>
     <span class="fu"><a href="../reference/QFeatures-subsetBy.html">subsetByFeature</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"P42227-2"</span>, <span class="st">"P42225"</span>))</pre></body></html></div>
-<pre><code>## A instance of class QFeatures containing 3 assays:
+<pre><code>## An instance of class QFeatures containing 3 assays:
 ##  [1] psms: SummarizedExperiment with 10 rows and 10 columns 
 ##  [2] peptides: SummarizedExperiment with 9 rows and 10 columns 
 ##  [3] proteins: SummarizedExperiment with 2 rows and 10 columns</code></pre>
@@ -365,27 +364,27 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 ## value: 0.001</code></pre>
 <p>These filter can then readily be applied to all assays’ row data slots. The <code>mito_filter</code> will return all PSMs, peptides and proteins that were annotated as localising to the mitochondrion.</p>
 <div class="sourceCode" id="cb42"><html><body><pre class="r"><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span>(<span class="no">hl</span>, <span class="no">mito_filter</span>)</pre></body></html></div>
-<pre><code>## A instance of class QFeatures containing 3 assays:
-##  [1] psms: SummarizedExperiment with 2019 rows and 10 columns 
-##  [2] peptides: SummarizedExperiment with 1770 rows and 10 columns 
-##  [3] proteins: SummarizedExperiment with 360 rows and 10 columns</code></pre>
+<pre><code>## An instance of class QFeatures containing 3 assays:
+##  [1] psms: SummarizedExperiment with 167 rows and 10 columns 
+##  [2] peptides: SummarizedExperiment with 162 rows and 10 columns 
+##  [3] proteins: SummarizedExperiment with 113 rows and 10 columns</code></pre>
 <p>The <code>qval_filter</code>, on the other hand, will only return a subset of PSMs, because the <code>qValue</code> variable is only present in the <code>psms</code> assays. The q-values are only relevant to PSMs and that variable was dropped from the other assays.</p>
 <div class="sourceCode" id="cb44"><html><body><pre class="r"><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span>(<span class="no">hl</span>, <span class="no">qval_filter</span>)</pre></body></html></div>
 <pre><code>## harmonizing input:
 ##   removing 20 sampleMap rows not in names(experiments)</code></pre>
-<pre><code>## A instance of class QFeatures containing 1 assays:
-##  [1] psms: SummarizedExperiment with 26768 rows and 10 columns</code></pre>
+<pre><code>## An instance of class QFeatures containing 1 assays:
+##  [1] psms: SummarizedExperiment with 2466 rows and 10 columns</code></pre>
 <p>The same filters can be created using the forumla interface:</p>
 <div class="sourceCode" id="cb47"><html><body><pre class="r"><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span>(<span class="no">hl</span>, ~ <span class="no">markers</span> <span class="kw">==</span> <span class="st">"Mitochondrion"</span>)</pre></body></html></div>
-<pre><code>## A instance of class QFeatures containing 3 assays:
-##  [1] psms: SummarizedExperiment with 2019 rows and 10 columns 
-##  [2] peptides: SummarizedExperiment with 1770 rows and 10 columns 
-##  [3] proteins: SummarizedExperiment with 360 rows and 10 columns</code></pre>
+<pre><code>## An instance of class QFeatures containing 3 assays:
+##  [1] psms: SummarizedExperiment with 167 rows and 10 columns 
+##  [2] peptides: SummarizedExperiment with 162 rows and 10 columns 
+##  [3] proteins: SummarizedExperiment with 113 rows and 10 columns</code></pre>
 <div class="sourceCode" id="cb49"><html><body><pre class="r"><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span>(<span class="no">hl</span>, ~ <span class="no">qValue</span> <span class="kw">&lt;=</span> <span class="fl">0.001</span>)</pre></body></html></div>
 <pre><code>## harmonizing input:
 ##   removing 20 sampleMap rows not in names(experiments)</code></pre>
-<pre><code>## A instance of class QFeatures containing 1 assays:
-##  [1] psms: SummarizedExperiment with 26768 rows and 10 columns</code></pre>
+<pre><code>## An instance of class QFeatures containing 1 assays:
+##  [1] psms: SummarizedExperiment with 2466 rows and 10 columns</code></pre>
 </div>
 <div id="session-information" class="section level1 unnumbered">
 <h1 class="hasAnchor">
@@ -412,16 +411,16 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 ## 
 ## other attached packages:
 ##  [1] magrittr_1.5                ggplot2_3.3.2              
-##  [3] QFeatures_0.99.0            MultiAssayExperiment_1.15.2
+##  [3] QFeatures_0.99.1            MultiAssayExperiment_1.15.3
 ##  [5] SummarizedExperiment_1.19.6 DelayedArray_0.15.7        
 ##  [7] matrixStats_0.56.0          Matrix_1.2-18              
 ##  [9] Biobase_2.49.0              GenomicRanges_1.41.5       
-## [11] GenomeInfoDb_1.25.8         IRanges_2.23.10            
+## [11] GenomeInfoDb_1.25.10        IRanges_2.23.10            
 ## [13] S4Vectors_0.27.12           BiocGenerics_0.35.4        
 ## [15] BiocStyle_2.17.0           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] tidyselect_1.1.0        xfun_0.15               purrr_0.3.4            
+##  [1] tidyselect_1.1.0        xfun_0.16               purrr_0.3.4            
 ##  [4] lattice_0.20-41         generics_0.0.2          vctrs_0.3.2            
 ##  [7] colorspace_1.4-1        htmltools_0.5.0         yaml_2.2.1             
 ## [10] rlang_0.4.7             pkgdown_1.5.1           pillar_1.4.6           
@@ -429,11 +428,11 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 ## [16] lifecycle_0.2.0         stringr_1.4.0           zlibbioc_1.35.0        
 ## [19] ProtGenerics_1.19.3     munsell_0.5.0           gtable_0.3.0           
 ## [22] memoise_1.1.0           evaluate_0.14           labeling_0.3           
-## [25] knitr_1.29.3            highr_0.8               backports_1.1.8        
+## [25] knitr_1.29.4            highr_0.8               backports_1.1.8        
 ## [28] scales_1.1.1            BiocManager_1.30.10     desc_1.2.0             
 ## [31] XVector_0.29.3          farver_2.0.3            fs_1.4.2               
 ## [34] MsCoreUtils_1.1.4       digest_0.6.25           stringi_1.4.6          
-## [37] dplyr_1.0.0             bookdown_0.20           grid_4.0.0             
+## [37] dplyr_1.0.1             bookdown_0.20           grid_4.0.0             
 ## [40] rprojroot_1.3-2         tools_4.0.0             bitops_1.0-6           
 ## [43] RCurl_1.98-1.2          lazyeval_0.2.2          tibble_3.0.3           
 ## [46] pkgconfig_2.0.3         crayon_1.3.4            MASS_7.3-51.5          

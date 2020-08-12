@@ -74,7 +74,7 @@ instances." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.1</span>
       </span>
     </div>
 
@@ -173,8 +173,8 @@ addAssayLinkOneToOne(object, from, to)</pre>
     </tr>
     <tr>
       <th>from</th>
-      <td><p>A <code><a href='https://rdrr.io/r/base/character.html'>character()</a></code> or <code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code> indicating which assay(s) to link
-from in <code>object</code></p></td>
+      <td><p>A <code><a href='https://rdrr.io/r/base/character.html'>character()</a></code> or <code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code> indicating which
+assay(s) to link from in <code>object</code></p></td>
     </tr>
     <tr>
       <th>fcol</th>
@@ -218,19 +218,20 @@ feature names to filter on.</p></td>
     </tr>
     <tr>
       <th>to</th>
-      <td><p>A <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> or <code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code> indicating which assay to link to
-in <code>object</code></p></td>
+      <td><p>A <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> or <code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code> indicating which assay
+to link to in <code>object</code></p></td>
     </tr>
     <tr>
       <th>varFrom</th>
-      <td><p>A <code><a href='https://rdrr.io/r/base/character.html'>character()</a></code> indicating the feature variable(s) to use to
-match the <code>from</code> assay(s) to the <code>to</code> assay. <code>varFrom</code> must have the
-same length as <code>from</code> and is assumed to be ordered as <code>from</code>.</p></td>
+      <td><p>A <code><a href='https://rdrr.io/r/base/character.html'>character()</a></code> indicating the feature variable(s)
+to use to match the <code>from</code> assay(s) to the <code>to</code>
+assay. <code>varFrom</code> must have the same length as <code>from</code> and is
+assumed to be ordered as <code>from</code>.</p></td>
     </tr>
     <tr>
       <th>varTo</th>
-      <td><p>A <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> indicating the feature variable to use to
-match the <code>to</code> assay to the <code>from</code> assay(s).</p></td>
+      <td><p>A <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> indicating the feature variable to
+use to match the <code>to</code> assay to the <code>from</code> assay(s).</p></td>
     </tr>
     </table>
 
@@ -300,7 +301,8 @@ names of the assays, instead of a supplied variable name in
 <span class='co'>## create a QFeatures object with 2 (identical) assays</span>
 <span class='co'>## see also '?QFeatures'</span>
 <span class='no'>se</span> <span class='kw'>&lt;-</span> <span class='fu'>SummarizedExperiment</span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>20</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-                                  <span class='kw'>dimnames</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>10</span>], <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>2</span>])),
+                                  <span class='kw'>dimnames</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>10</span>],
+                                                  <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>2</span>])),
                            <span class='kw'>rowData</span> <span class='kw'>=</span> <span class='fu'>DataFrame</span>(<span class='kw'>ID</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>))
 <span class='no'>ft</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='QFeatures-class.html'>QFeatures</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>assay1</span> <span class='kw'>=</span> <span class='no'>se</span>, <span class='kw'>assay2</span> <span class='kw'>=</span> <span class='no'>se</span>))
 

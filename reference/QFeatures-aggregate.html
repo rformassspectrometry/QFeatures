@@ -84,7 +84,7 @@ sample-level aggcounts." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.1</span>
       </span>
     </div>
 
@@ -219,7 +219,8 @@ aggregation. See Details for examples.</p></td>
 input and returns a vector of length equal to <code><a href='https://rdrr.io/r/base/nrow.html'>ncol(x)</a></code>. Examples
 thereof are</p><ul>
 <li><p><code><a href='https://rdrr.io/pkg/MsCoreUtils/man/medianPolish.html'>MsCoreUtils::medianPolish()</a></code> to fits an additive model (two way
-decomposition) using Tukey's median polish_ procedure using <code><a href='https://rdrr.io/r/stats/medpolish.html'>stats::medpolish()</a></code>;</p></li>
+decomposition) using Tukey's median polish_ procedure using
+<code><a href='https://rdrr.io/r/stats/medpolish.html'>stats::medpolish()</a></code>;</p></li>
 <li><p><code><a href='https://rdrr.io/pkg/MsCoreUtils/man/robustSummary.html'>MsCoreUtils::robustSummary()</a></code> to calculate a robust aggregation
 using <code><a href='https://rdrr.io/pkg/MASS/man/rlm.html'>MASS::rlm()</a></code> (default);</p></li>
 <li><p><code><a href='https://rdrr.io/r/base/colSums.html'>base::colMeans()</a></code> to use the mean of each column;</p></li>
@@ -285,16 +286,16 @@ proteomics data processing pipeline.</p></div>
 <span class='co'>## An example QFeatures with PSM-level data</span>
 <span class='co'>## ---------------------------------------</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>feat1</span>)
-<span class='no'>feat1</span></div><div class='output co'>#&gt; A instance of class QFeatures containing 1 assays:
+<span class='no'>feat1</span></div><div class='output co'>#&gt; An instance of class QFeatures containing 1 assays:
 #&gt;  [1] psms: SummarizedExperiment with 10 rows and 2 columns </div><div class='input'>
 <span class='co'>## Aggregate PSMs into peptides</span>
 <span class='no'>feat1</span> <span class='kw'>&lt;-</span> <span class='fu'>aggregateFeatures</span>(<span class='no'>feat1</span>, <span class='st'>"psms"</span>, <span class='st'>"Sequence"</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"peptides"</span>)
-<span class='no'>feat1</span></div><div class='output co'>#&gt; A instance of class QFeatures containing 2 assays:
+<span class='no'>feat1</span></div><div class='output co'>#&gt; An instance of class QFeatures containing 2 assays:
 #&gt;  [1] psms: SummarizedExperiment with 10 rows and 2 columns 
 #&gt;  [2] peptides: SummarizedExperiment with 3 rows and 2 columns </div><div class='input'>
 <span class='co'>## Aggregate peptides into proteins</span>
 <span class='no'>feat1</span> <span class='kw'>&lt;-</span> <span class='fu'>aggregateFeatures</span>(<span class='no'>feat1</span>, <span class='st'>"peptides"</span>, <span class='st'>"Protein"</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"proteins"</span>)
-<span class='no'>feat1</span></div><div class='output co'>#&gt; A instance of class QFeatures containing 3 assays:
+<span class='no'>feat1</span></div><div class='output co'>#&gt; An instance of class QFeatures containing 3 assays:
 #&gt;  [1] psms: SummarizedExperiment with 10 rows and 2 columns 
 #&gt;  [2] peptides: SummarizedExperiment with 3 rows and 2 columns 
 #&gt;  [3] proteins: SummarizedExperiment with 2 rows and 2 columns </div><div class='input'>
@@ -323,7 +324,7 @@ proteomics data processing pipeline.</p></div>
 <span class='co'>## Aggregation with missing quantitative values</span>
 <span class='co'>## --------------------------------------------</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>ft_na</span>)
-<span class='no'>ft_na</span></div><div class='output co'>#&gt; A instance of class QFeatures containing 1 assays:
+<span class='no'>ft_na</span></div><div class='output co'>#&gt; An instance of class QFeatures containing 1 assays:
 #&gt;  [1] na: SummarizedExperiment with 4 rows and 3 columns </div><div class='input'>
 <span class='fu'>assay</span>(<span class='no'>ft_na</span><span class='kw'>[[</span><span class='fl'>1</span>]])</div><div class='output co'>#&gt;    A  B  C
 #&gt; a NA  5  9

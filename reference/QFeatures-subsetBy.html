@@ -80,7 +80,7 @@ See QFeatures for an example." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.1</span>
       </span>
     </div>
 
@@ -182,14 +182,14 @@ assays and features.</p>
 #&gt; aggrgF&gt; data(feat1)
 #&gt; 
 #&gt; aggrgF&gt; feat1
-#&gt; A instance of class QFeatures containing 1 assays:
+#&gt; An instance of class QFeatures containing 1 assays:
 #&gt;  [1] psms: SummarizedExperiment with 10 rows and 2 columns 
 #&gt; 
 #&gt; aggrgF&gt; ## Aggregate PSMs into peptides
 #&gt; aggrgF&gt; feat1 &lt;- aggregateFeatures(feat1, "psms", "Sequence", name = "peptides")
 #&gt; 
 #&gt; aggrgF&gt; feat1
-#&gt; A instance of class QFeatures containing 2 assays:
+#&gt; An instance of class QFeatures containing 2 assays:
 #&gt;  [1] psms: SummarizedExperiment with 10 rows and 2 columns 
 #&gt;  [2] peptides: SummarizedExperiment with 3 rows and 2 columns 
 #&gt; 
@@ -197,7 +197,7 @@ assays and features.</p>
 #&gt; aggrgF&gt; feat1 &lt;- aggregateFeatures(feat1, "peptides", "Protein", name = "proteins")
 #&gt; 
 #&gt; aggrgF&gt; feat1
-#&gt; A instance of class QFeatures containing 3 assays:
+#&gt; An instance of class QFeatures containing 3 assays:
 #&gt;  [1] psms: SummarizedExperiment with 10 rows and 2 columns 
 #&gt;  [2] peptides: SummarizedExperiment with 3 rows and 2 columns 
 #&gt;  [3] proteins: SummarizedExperiment with 2 rows and 2 columns 
@@ -243,7 +243,7 @@ assays and features.</p>
 #&gt; aggrgF&gt; data(ft_na)
 #&gt; 
 #&gt; aggrgF&gt; ft_na
-#&gt; A instance of class QFeatures containing 1 assays:
+#&gt; An instance of class QFeatures containing 1 assays:
 #&gt;  [1] na: SummarizedExperiment with 4 rows and 3 columns 
 #&gt; 
 #&gt; aggrgF&gt; assay(ft_na[[1]])
@@ -339,7 +339,7 @@ assays and features.</p>
 #&gt; 1         1         2
 #&gt; 2         2         2</div><div class='input'>
 <span class='co'>## Retrieve protein 'ProtA' and its 2 peptides and 6 PSMs</span>
-<span class='no'>feat1</span>[<span class='st'>"ProtA"</span>, , ]</div><div class='output co'>#&gt; A instance of class QFeatures containing 3 assays:
+<span class='no'>feat1</span>[<span class='st'>"ProtA"</span>, , ]</div><div class='output co'>#&gt; An instance of class QFeatures containing 3 assays:
 #&gt;  [1] psms: SummarizedExperiment with 6 rows and 2 columns 
 #&gt;  [2] peptides: SummarizedExperiment with 2 rows and 2 columns 
 #&gt;  [3] proteins: SummarizedExperiment with 1 rows and 2 columns </div></pre>
