@@ -1,6 +1,6 @@
 data(hlpsms)
-x <- hlpsms[1:5000, ]
 f <- tempfile()
+x <- hlpsms
 write.csv(x, file = f, row.names = FALSE)
 
 
