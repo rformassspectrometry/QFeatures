@@ -5,7 +5,7 @@
 \alias{hlpsms}
 \title{hyperLOPIT PSM-level expression data}
 \format{
-An object of class \code{data.frame} with 32776 rows and 28 columns.
+An object of class \code{data.frame} with 3010 rows and 28 columns.
 }
 \source{
 The \code{pRolocdata} package: \url{http://bioconductor.org/packages/pRolocdata/}
@@ -27,9 +27,11 @@ The variable names are
 X131: the 10 TMT tags used to quantify the peptides
 along the density gradient.
 \item Sequence: the peptide sequence.
-\item ProteinDescriptions: the description of the protein this peptide was associated to.
+\item ProteinDescriptions: the description of the protein this peptide was
+associated to.
 \item NbProteins: the number of proteins in the protein group.
-\item ProteinGroupAccessions: the main protein accession number in the protein group.
+\item ProteinGroupAccessions: the main protein accession number in the protein
+group.
 \item Modifications: post-translational modifications identified in the peptide.
 \item qValue: the PSM identification q-value.
 \item PEP: the PSM posterior error probability.
@@ -41,10 +43,11 @@ along the density gradient.
 \item Charge: the peptide charge.
 \item mzDa: the peptide mass to charge ratio, in Daltons.
 \item MHDa: the peptide mass, in Daltons.
-\item DeltaMassPPM: the difference in measure and calculated mass, in parts per millions.
+\item DeltaMassPPM: the difference in measure and calculated mass, in parts per
+millions.
 \item RTmin: the peptide retention time, in minutes.
-\item markers: localisation for well known sub-cellular
-markers. QFeatures of unknown location are encode as \code{"unknown"}.
+\item markers: localisation for well known sub-cellular markers. QFeatures of
+unknown location are encode as \code{"unknown"}.
 }
 
 For further details, install the \code{pRolocdata} package and see

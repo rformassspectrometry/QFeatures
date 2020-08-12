@@ -48,6 +48,9 @@ be removed. Default is \code{FALSE}.}
 
 \item{...}{Additional parameters. Currently ignored.}
 }
+\value{
+An filtered \code{QFeature} object.
+}
 \description{
 The \code{filterFeatures} methods enables users to filter features
 based on a variable in their \code{rowData}. The features matching the

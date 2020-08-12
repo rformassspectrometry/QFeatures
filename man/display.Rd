@@ -30,6 +30,12 @@ selection of rows in the \emph{Row data} table is used to subset the
 features displayed in the \emph{Assay} table and the heatmap to those
 currectly selected. See \link{QFeatures} for an example.
 }
+\examples{
+\dontrun{
+data(feat2)
+display(feat2)
+}
+}
 \author{
 Laurent Gatto
 }

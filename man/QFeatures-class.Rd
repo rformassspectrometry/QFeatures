@@ -65,6 +65,9 @@ isn't found in any \code{rowData} variable, a message is printed.}
 \item{name}{A \code{character(1)} naming the single assay (default is
 \code{"newAssay"}). Ignored if \code{y} is a list of assays.}
 }
+\value{
+See individual method description for the return value.
+}
 \description{
 Conceptually, a \code{QFeatures} object holds a set of \emph{assays}, each
 composed of a \code{matrix} (or \code{array}) containing quantitative data

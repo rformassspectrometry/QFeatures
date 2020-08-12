@@ -89,6 +89,9 @@ out the sweep.}
 not match the specified dimensions of \code{x}.  Set to \code{FALSE} for
 a small speed gain when you know that dimensions match.}
 }
+\value{
+An processed object of the same class as \code{x} or \code{object}.
+}
 \description{
 This manual page describes common quantitative proteomics data
 processing methods using \link{QFeatures} objects. In the following

@@ -41,8 +41,8 @@ addAssayLinkOneToOne(object, from, to)
 
 \item{name}{A mandatory name of the assay(s).}
 
-\item{from}{A \code{character()} or \code{integer()} indicating which assay(s) to link
-from in \code{object}}
+\item{from}{A \code{character()} or \code{integer()} indicating which
+assay(s) to link from in \code{object}}
 
 \item{fcol}{The feature variable of the parent assay used to
 generate the current assay (used in
@@ -68,15 +68,16 @@ feature names to filter on.}
 
 \item{drop}{ignored.}
 
-\item{to}{A \code{character(1)} or \code{integer(1)} indicating which assay to link to
-in \code{object}}
+\item{to}{A \code{character(1)} or \code{integer(1)} indicating which assay
+to link to in \code{object}}
 
-\item{varFrom}{A \code{character()} indicating the feature variable(s) to use to
-match the \code{from} assay(s) to the \code{to} assay. \code{varFrom} must have the
-same length as \code{from} and is assumed to be ordered as \code{from}.}
+\item{varFrom}{A \code{character()} indicating the feature variable(s)
+to use to match the \code{from} assay(s) to the \code{to}
+assay. \code{varFrom} must have the same length as \code{from} and is
+assumed to be ordered as \code{from}.}
 
-\item{varTo}{A \code{character(1)} indicating the feature variable to use to
-match the \code{to} assay to the \code{from} assay(s).}
+\item{varTo}{A \code{character(1)} indicating the feature variable to
+use to match the \code{to} assay to the \code{from} assay(s).}
 }
 \value{
 \code{assayLink} returns an instance of class \code{AssayLink}.
@@ -147,7 +148,8 @@ al2
 ## create a QFeatures object with 2 (identical) assays
 ## see also '?QFeatures'
 se <- SummarizedExperiment(matrix(runif(20), ncol = 2,
-                                  dimnames = list(LETTERS[1:10], letters[1:2])),
+                                  dimnames = list(LETTERS[1:10],
+                                                  letters[1:2])),
                            rowData = DataFrame(ID = 1:10))
 ft <- QFeatures(list(assay1 = se, assay2 = se))
 
