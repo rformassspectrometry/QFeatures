@@ -37,9 +37,12 @@
 
 ## Internal function for formating the result of nNA as a table when applied to
 ## multiple samples
+##
 ## @param object A `QFeatures` object
+##
 ## @param res A list of results obtained after applying `nNA` to multiple assays
 ##     of `object`
+##
 ## @param i indices or names of the assays that were processed.
 .nNAasTable <- function(object, res, i) {
     if (length(i) == 1) return(res[[1]])
