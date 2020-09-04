@@ -68,7 +68,8 @@ input and returns a vector of length equal to \code{ncol(x)}. Examples
 thereof are
 \itemize{
 \item \code{\link[MsCoreUtils:medianPolish]{MsCoreUtils::medianPolish()}} to fits an additive model (two way
-decomposition) using Tukey's median polish_ procedure using \code{\link[stats:medpolish]{stats::medpolish()}};
+decomposition) using Tukey's median polish_ procedure using
+\code{\link[stats:medpolish]{stats::medpolish()}};
 \item \code{\link[MsCoreUtils:robustSummary]{MsCoreUtils::robustSummary()}} to calculate a robust aggregation
 using \code{\link[MASS:rlm]{MASS::rlm()}} (default);
 \item \code{\link[base:colSums]{base::colMeans()}} to use the mean of each column;

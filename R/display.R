@@ -30,6 +30,12 @@
 ##' @importFrom stats heatmap
 ##'
 ##' @export
+##'
+##' @examples
+##' \dontrun{
+##' data(feat2)
+##' display(feat2)
+##' }
 display <- function(object, n = 100, ...) {
     stopifnot(inherits(object, "MultiAssayExperiment"))
 

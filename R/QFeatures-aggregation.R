@@ -45,7 +45,8 @@
 ##' thereof are
 ##'
 ##' - [MsCoreUtils::medianPolish()] to fits an additive model (two way
-##'   decomposition) using Tukey's median polish_ procedure using [stats::medpolish()];
+##'   decomposition) using Tukey's median polish_ procedure using
+##'   [stats::medpolish()];
 ##'
 ##' - [MsCoreUtils::robustSummary()] to calculate a robust aggregation
 ##'   using [MASS::rlm()] (default);
@@ -240,8 +241,9 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
     aggregated_assay <- aggregate_by_vector(m, groupBy, fun, ...)
     aggcount_assay <- aggregate_by_vector(m, groupBy, colCounts)
     aggregated_rowdata <- QFeatures::reduceDataFrame(rd, rd[[fcol]],
-                                                    simplify = TRUE, drop = TRUE,
-                                                    count = TRUE)
+                                                     simplify = TRUE,
+                                                     drop = TRUE,
+                                                     count = TRUE)
 
     se <- SummarizedExperiment(assays = SimpleList(assay = aggregated_assay,
                                                    aggcounts = aggcount_assay),

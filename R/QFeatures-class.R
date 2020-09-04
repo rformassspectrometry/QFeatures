@@ -90,6 +90,9 @@
 ##' @param drop logical (default `TRUE`) whether to drop empty assay
 ##'     elements in the `ExperimentList`.
 ##'
+##'
+##' @return See individual method description for the return value.
+##'
 ##' @seealso
 ##'
 ##' - The [readQFeatures()] constructor and the [aggregateFeatures()]
@@ -216,13 +219,16 @@ setMethod("show", "QFeatures",
               }, FUN.VALUE = integer(1L))
               if (n <= 7) {
                   cat(sprintf("\n [%i] %s: %s with %s rows and %s columns",
-                              seq(o_len), o_names, elem_cl, featdim, sampdim), "\n")
+                              seq(o_len), o_names, elem_cl,
+                              featdim, sampdim), "\n")
               } else {
                   cat(sprintf("\n [%i] %s: %s with %s rows and %s columns",
-                              seq(o_len)[1:3], o_names[1:3], elem_cl[1:3], featdim[1:3], sampdim[1:3]), "\n")
+                              seq(o_len)[1:3], o_names[1:3], elem_cl[1:3],
+                              featdim[1:3], sampdim[1:3]), "\n")
                   cat(" ...")
                   cat(sprintf("\n [%i] %s: %s with %s rows and %s columns",
-                              seq(o_len)[(n-2):n], o_names[(n-2):n], elem_cl[(n-2):n], featdim[(n-2):n], sampdim[(n-2):n]), "\n")
+                              seq(o_len)[(n-2):n], o_names[(n-2):n], elem_cl[(n-2):n],
+                              featdim[(n-2):n], sampdim[(n-2):n]), "\n")
               }
           })
 
@@ -262,7 +268,7 @@ setMethod("[", c("QFeatures", "ANY", "ANY", "ANY"),
 ##' @importFrom BiocGenerics dims
 ##' @exportMethod dims
 setMethod("dims", "QFeatures",
-          function(x) sapply(experiments(x), dim))
+          function(x) vapply(experiments(x), dim, integer(2)))
 
 
 ##' @rdname QFeatures-class

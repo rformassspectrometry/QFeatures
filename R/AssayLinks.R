@@ -122,7 +122,9 @@ setMethod("show", "AssayLink",
                   "[from:", paste(object@from, collapse = ","),
                   "|fcol:", paste(object@fcol, collapse = ","),
                   "|hits:", ifelse(inherits(object@hits, "List"),
-                                   paste(sapply(object@hits, length),
+                                   paste(vapply(object@hits,
+                                                length,
+                                                numeric(1)),
                                          collapse = ","),
                                    length(object@hits)),
                   "]\n", sep = "")
@@ -178,7 +180,7 @@ AssayLinks <- function(..., names = NULL) {
     args <- list(...)
     if (length(args) == 1L && extends(class(args[[1L]]), "list"))
         args <- args[[1L]]
-    names(args) <- sapply(args, slot, "name")
+    names(args) <- vapply(args, slot, "name", FUN.VALUE = character(1))
     new("AssayLinks", listData = args)
 }
 
@@ -330,13 +332,15 @@ setMethod("[", c("AssayLinks", "list"),
     hits <- al@hits
     if (inherits(hits, "Hits")) hits <- List(hits)
     ## Check the child indexing on rownames
-    isCorrectToLink <- sapply(hits,
-                              function(l) all(elementMetadata(l)$names_to %in% rownames(object[[al@name]])))
+    isCorrectToLink <- vapply(hits,
+                              function(l) all(elementMetadata(l)$names_to %in% rownames(object[[al@name]])),
+                              logical(1))
     if (any(!isCorrectToLink))
         stop("Invalid AssayLink. At least one of the 'hits' metadata 'names_to' does not match the rownames.")
     ## Check the parent indexing on rownames
-    isCorrectFromLink <- sapply(seq_along(hits),
-                                function(i) all(elementMetadata(hits[[i]])$names_from %in% rownames(object[[al@from[i]]])))
+    isCorrectFromLink <- vapply(seq_along(hits),
+                                function(i) all(elementMetadata(hits[[i]])$names_from %in% rownames(object[[al@from[i]]])),
+                                logical(1))
     if (any(!isCorrectFromLink))
         stop("Invalid AssayLink. The AssayLink metadata 'names_from' does not match the rownames.")
 
@@ -386,30 +390,30 @@ addAssayLinkOneToOne <- function(object,
         stop("One to one links are not supported for multiple parents.")
     if (any(to %in% from))
         stop("Adding an AssayLink between an assay and itself is not allowed.")
-    
+
     ## Check that assays have same size
     N <- unique(dims(object)[1, c(from, to)])
     if (length(N) != 1)
         stop("The 'from' and 'to' assays must have the same number of rows.")
-    
+
     ## Check both assays contain the same rownames (different order is allowed)
     rdFrom <- rowData(object[[from]])
     rdTo <- rowData(object[[to]])
     if (length(intersect(rownames(rdFrom), rownames(rdTo))) != N)
         stop(paste0("Different rownames found in assay '", from,
                     "' and assay '", to, "'."))
-    
+
     ## Create the linking variable
     rdFrom$._oneToOne <- rownames(rdFrom)
     rdTo$._oneToOne <- rownames(rdTo)
-    
+
     ## Create the assay link
     hits <- .get_Hits(rdFrom, rdTo, "._oneToOne", "._oneToOne")
     al <- AssayLink(name = to,
                     from = from,
                     fcol = "._oneToOne",
                     hits = hits)
-    
+
     ## Update the assay link in the QFeatures object
     .update_assay_links(object, al)
 }

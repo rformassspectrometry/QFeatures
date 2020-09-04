@@ -32,12 +32,12 @@
 find_assay_with_feature_name <- function(x, i) {
     rnms <- rownames(x)
     ans <- lapply(rnms, function(x) i %in% x)
-    ans <- sapply(ans, all)
+    ans <- vapply(ans, all, logical(1))
     names(ans)[ans]
 }
 
-find_assays_from <- function(x, i)
-    unlist(sapply(i, function(ii) names(assayLinks(x, ii))))
+find_assays_from <- function(x, i) 
+    unlist(lapply(i, function(ii) names(assayLinks(x, ii))))
 
 
 ##' @title Subset by feature name
@@ -103,7 +103,8 @@ setMethod("subsetByFeature", c("QFeatures", "character"),
     for (k in setdiff(all_assays_names, leaf_assay_name)) {
         ## which assay(s) created assay_k
         assay_k_parent_name <-
-            names(which(sapply(x@assayLinks, function(al) any(k %in% al@from))))
+            names(which(vapply(x@assayLinks, function(al) any(k %in% al@from),
+                               logical(1))))
 
         for (k2 in assay_k_parent_name) {
             assayLink_k2 <- x@assayLinks[[k2]]@hits

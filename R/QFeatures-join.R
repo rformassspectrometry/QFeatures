@@ -50,7 +50,7 @@
 
 
 mergeSElist <- function(x) {
-    x_classes <- unique(sapply(x, class))
+    x_classes <- unique(vapply(x, class, character(1)))
     if (length(x_classes) != 1)
         stop("Can't join assays from different classes.", call. = FALSE)
     joined_mcols <- Reduce(.merge_2_by_cols, lapply(x, rowData))

@@ -17,11 +17,13 @@
 ##'
 ##' - Sequence: the peptide sequence.
 ##'
-##' - ProteinDescriptions: the description of the protein this peptide was associated to.
+##' - ProteinDescriptions: the description of the protein this peptide was
+##'   associated to.
 ##'
 ##' - NbProteins: the number of proteins in the protein group.
 ##'
-##' - ProteinGroupAccessions: the main protein accession number in the protein group.
+##' - ProteinGroupAccessions: the main protein accession number in the protein
+##'   group.
 ##'
 ##' - Modifications: post-translational modifications identified in the peptide.
 ##'
@@ -45,12 +47,13 @@
 ##'
 ##' - MHDa: the peptide mass, in Daltons.
 ##'
-##' - DeltaMassPPM: the difference in measure and calculated mass, in parts per millions.
+##' - DeltaMassPPM: the difference in measure and calculated mass, in parts per
+##'   millions.
 ##'
 ##' - RTmin: the peptide retention time, in minutes.
 ##'
-##' - markers: localisation for well known sub-cellular
-##'   markers. QFeatures of unknown location are encode as `"unknown"`.
+##' - markers: localisation for well known sub-cellular markers. QFeatures of
+##'   unknown location are encode as `"unknown"`.
 ##'
 ##' For further details, install the `pRolocdata` package and see
 ##' `?hyperLOPIT2015`.

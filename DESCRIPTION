@@ -1,6 +1,6 @@
 Package: QFeatures
 Title: Quantitative features for mass spectrometry data
-Version: 0.99.0
+Version: 0.99.2
 Authors@R: c(person("Laurent", "Gatto",
 		    email = "laurent.gatto@uclouvain.be",
 		    comment = c(ORCID = "0000-0002-1520-2268"),
@@ -9,8 +9,12 @@ Authors@R: c(person("Laurent", "Gatto",
 		    email = "christophe.vanderaa@uclouvain.be",
 		    comment = c(ORCID = "0000-0001-7443-5427"),
 		    role = "ctb"))
-Description: Infrastrucutre to manage and process quantitative
-   features for high-throughput mass spectrometry assays.
+Description: The QFeatures infrastructure enables the management and
+   processing of quantitative features for high-throughput mass
+   spectrometry assays. It provides a familiar Bioconductor user
+   experience to manages quantitative data across different assay
+   levels (such as peptide spectrum matches, peptides and proteins) in
+   a coherent and tractable format.
 Depends: R (>= 4.0), MultiAssayExperiment
 Imports:
    methods,
