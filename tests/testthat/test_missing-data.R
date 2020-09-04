@@ -1,17 +1,22 @@
 data(ft_na)
 se_na <- ft_na[["na"]]
-m0 <- m <- assay(se_na)
+minf <- m0 <- m <- assay(se_na)
 m0[3, 2] <- m0[4, 1] <- m0[1, 1] <- 0
+minf[m0 == 0] <- Inf
 se_zero <- SummarizedExperiment(assay = m0)
+se_inf <- SummarizedExperiment(assay = minf)
 
-ft0 <- QFeatures(list(na = se_na, zero = se_zero),
+ft0 <- QFeatures(list(na = se_na, zero = se_zero, inf = se_inf),
                  colData = DataFrame(row.names = LETTERS[1:3]))
 
 
-test_that("function: .zeroIsNA, .nNA, and .nNAi", {
+test_that("function: .zeroIsNA, .infIsNA, .nNA, and .nNAi", {
     ## .zeroIsNA
     expect_equivalent(se_na, QFeatures:::.zeroIsNA(se_zero))
     expect_equivalent(se_na, zeroIsNA(se_zero))
+    ## .infIsNA
+    expect_equivalent(se_na, QFeatures:::.infIsNA(se_inf))
+    expect_equivalent(se_na, infIsNA(se_inf))
     ## .nNA
     n_na <- QFeatures:::.nNA(se_na)
     expect_identical(n_na[[1]], 3/(3 * 4))
@@ -86,10 +91,24 @@ test_that("zeroIsNA,QFeatures", {
     expect_equivalent(assay(ft[["zero"]]), assay(se_na))
 })
 
+test_that("infIsNA,QFeatures", {
+    expect_error(ft <- infIsNA(ft0))
+    ft <- zeroIsNA(ft0, 1)
+    expect_equivalent(ft[["na"]], ft[["zero"]])
+    ft <- zeroIsNA(ft0, "na")
+    expect_equivalent(ft[["na"]], ft[["zero"]])
+    ## zeroIsNA on multiple assays
+    ft <- zeroIsNA(ft0, 1:2)
+    expect_identical(ft, zeroIsNA(ft, c("na", "zero")))
+    expect_identical(ft, zeroIsNA(ft, c(1.1, 2.1)))
+    expect_equivalent(assay(ft[["na"]]), assay(se_na))
+    expect_equivalent(assay(ft[["zero"]]), assay(se_na))
+})
+
 
 test_that("nNA,QFeatures", {
     expect_error(nNA(ft0))
-    n_na <- nNA(ft0, i = seq_along(ft0))
+    n_na <- nNA(ft0, i = 1:2)
     expect_identical(n_na[[1]], c(na = 3/(4*3), zero = 0))
     expect_identical(n_na[[2]],
                      matrix(c(1, 3, 0, 0, 4, 0, 0, 0),
