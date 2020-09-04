@@ -69,14 +69,6 @@ test_that("function: .row_for_filterNA", {
 })
 
 
-test_that("function: zeroIsNA and nNA", {
-    n_na <- QFeatures:::.nNA(se_na)
-    expect_identical(n_na[[1]], 3/(3 * 4))
-    expect_identical(n_na[[2]], table(c(c(0, 1, 1, 1))))
-    expect_identical(n_na[[3]], c(A = 2, B = 1, C = 0))
-})
-
-
 test_that("zeroIsNA,QFeatures", {
     expect_error(ft <- zeroIsNA(ft0))
     ft <- zeroIsNA(ft0, 1)
