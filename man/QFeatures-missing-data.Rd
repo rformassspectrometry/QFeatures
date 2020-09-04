@@ -8,6 +8,12 @@
 \alias{zeroIsNA,QFeatures,numeric-method}
 \alias{zeroIsNA,QFeatures,integer-method}
 \alias{zeroIsNA,QFeatures,character-method}
+\alias{infIsNA}
+\alias{infIsNA,SummarizedExperiment,missing-method}
+\alias{infIsNA,QFeatures,missing-method}
+\alias{infIsNA,QFeatures,numeric-method}
+\alias{infIsNA,QFeatures,integer-method}
+\alias{infIsNA,QFeatures,character-method}
 \alias{nNA}
 \alias{nNA,SummarizedExperiment,missing-method}
 \alias{nNA,QFeatures,missing-method}
@@ -26,6 +32,14 @@
 \S4method{zeroIsNA}{QFeatures,numeric}(object, i)
 
 \S4method{zeroIsNA}{QFeatures,character}(object, i)
+
+\S4method{infIsNA}{SummarizedExperiment,missing}(object, i)
+
+\S4method{infIsNA}{QFeatures,integer}(object, i)
+
+\S4method{infIsNA}{QFeatures,numeric}(object, i)
+
+\S4method{infIsNA}{QFeatures,character}(object, i)
 
 \S4method{nNA}{SummarizedExperiment,missing}(object, i)
 
@@ -65,6 +79,10 @@ The following functions are currently available:
 is often necessary when third-party software assume that
 features that weren't quantified should be assigned an
 intensity of 0.
+\item \code{infIsNA(object, i)} replaces all infinite values in \code{object} by
+\code{NA}. This is necessary when third-party software divide
+expression data by zero values, for instance during custom
+normalization.
 \item \code{nNA(object, i)} return a list of missing value summaries. The
 first element \code{nNA} gives the percentage of missing values; the
 second element \code{nNArows} provides a table of the number of
