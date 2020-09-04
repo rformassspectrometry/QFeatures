@@ -30,9 +30,6 @@
 }
 
 
-
-
-
 .row_for_filterNA <- function(x, pNA = 0L) {
     if (!is.matrix(x))
         stop(sQuote("x"), " must be a matrix.")
