@@ -4,6 +4,13 @@
     x
 }
 
+.infIsNA <- function(x) {
+    sel <- is.infinite(assay(x)) 
+    assay(x)[sel] <- NA
+    x
+}
+
+
 .nNA <- function(x) {
     nNA <- sum(is.na(assay(x)))/prod(dim(x))
     nNA_rows <- table(rowSums(is.na(assay(x))))
@@ -21,6 +28,7 @@
                   function(ii) .nNA(object[[ii]]))
     .nNAasTable(object, res, i)
 }
+
 
 .row_for_filterNA <- function(x, pNA = 0L) {
     if (!is.matrix(x))
@@ -83,6 +91,11 @@
 ##'    features that weren't quantified should be assigned an
 ##'    intensity of 0.
 ##'
+##' - `infIsNA(object, i)` replaces all infinite values in `object` by 
+##'    `NA`. This is necessary when third-party software divide 
+##'    expression data by zero values, for instance during custom 
+##'    normalization.
+##'
 ##' - `nNA(object, i)` return a list of missing value summaries. The
 ##'   first element `nNA` gives the percentage of missing values; the
 ##'   second element `nNArows` provides a table of the number of
@@ -107,6 +120,8 @@
 ##' @return An instance of the same class as `object`.
 ##'
 ##' @aliases zeroIsNA zeroIsNA,SummarizedExperiment,missing-method zeroIsNA,QFeatures,missing-method zeroIsNA,QFeatures,numeric-method zeroIsNA,QFeatures,integer-method zeroIsNA,QFeatures,character-method
+##'
+##' @aliases infIsNA infIsNA,SummarizedExperiment,missing-method infIsNA,QFeatures,missing-method infIsNA,QFeatures,numeric-method infIsNA,QFeatures,integer-method infIsNA,QFeatures,character-method
 ##'
 ##' @aliases nNA nNA,SummarizedExperiment,missing-method nNA,QFeatures,missing-method nNA,QFeatures,numeric-method nNA,QFeatures,integer-method nNA,QFeatures,character-method
 ##'
@@ -135,6 +150,9 @@
 NULL
 
 
+####---- zeroIsNA ----####
+
+
 ##' @exportMethod zeroIsNA
 ##' @rdname QFeatures-missing-data
 setMethod("zeroIsNA", c("SummarizedExperiment", "missing"),
@@ -160,6 +178,39 @@ setMethod("zeroIsNA", c("QFeatures", "character"),
               object
           })
 
+
+####---- infIsNA ----####
+
+
+##' @exportMethod infIsNA
+##' @rdname QFeatures-missing-data
+setMethod("infIsNA", c("SummarizedExperiment", "missing"),
+          function(object, i) .infIsNA(object))
+
+##' @rdname QFeatures-missing-data
+setMethod("infIsNA", c("QFeatures", "integer"),
+          function(object, i) {
+            for (ii in i)
+              object[[ii]] <- infIsNA(object[[ii]])
+            object
+          })
+
+##' @rdname QFeatures-missing-data
+setMethod("infIsNA", c("QFeatures", "numeric"),
+          function(object, i) infIsNA(object, as.integer(i)))
+
+##' @rdname QFeatures-missing-data
+setMethod("infIsNA", c("QFeatures", "character"),
+          function(object, i) {
+            for (ii in i)
+              object[[ii]] <- infIsNA(object[[ii]])
+            object
+          })
+
+
+####---- nNA ----####
+
+
 ##' @exportMethod nNA
 ##' @rdname QFeatures-missing-data
 setMethod("nNA", c("SummarizedExperiment", "missing"),
@@ -176,6 +227,10 @@ setMethod("nNA", c("QFeatures", "numeric"),
 ##' @rdname QFeatures-missing-data
 setMethod("nNA", c("QFeatures", "character"),
           function(object, i) .nNAi(object, i) )
+
+
+####---- filterNA ----####
+
 
 ##' @exportMethod filterNA
 ##' @rdname QFeatures-missing-data

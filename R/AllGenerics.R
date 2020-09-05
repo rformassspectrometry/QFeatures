@@ -14,6 +14,9 @@ setGeneric("subsetByFeature",
 setGeneric("zeroIsNA",
            function(object, i) standardGeneric("zeroIsNA"))
 
+setGeneric("infIsNA",
+           function(object, i) standardGeneric("infIsNA"))
+
 setGeneric("nNA",
            function(object, i) standardGeneric("nNA"))
 

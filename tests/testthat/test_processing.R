@@ -56,7 +56,7 @@ test_that("function: normalize", {
 
 test_that("function: all normalize methods", {
     data(hlpsms)
-    fts <- readQFeatures(hlpsms[1:5000,], ecol = 1:10, name = "psms")
+    fts <- readQFeatures(hlpsms, ecol = 1:10, name = "psms")
     se <- fts[[1]]
     for (.method in MsCoreUtils::normalizeMethods()) {
         se_norm <- normalize(se, method = .method)

@@ -1,5 +1,9 @@
 # QFeatures 0.99
 
+## QFeatures 0.99.2
+
+- Added `infIsNA`
+
 ## QFeatures 0.99.1
 
 - Address comments Bioconductor review (see [submission
