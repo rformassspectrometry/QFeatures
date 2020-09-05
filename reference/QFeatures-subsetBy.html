@@ -80,7 +80,7 @@ See QFeatures for an example." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.2</span>
       </span>
     </div>
 
@@ -148,7 +148,7 @@ contains the feature(s) <code>i</code> and filter the rows matching these
 feature names exactly. It will then find, in the other assays, the
 features that produces <code>i</code> through aggregation with the
 <code>aggregateQFeatures</code> function.</p>
-<p>See <a href='QFeatures-class.html'>QFeatures</a> for an example.</p>
+<p>See <a href='QFeatures.html'>QFeatures</a> for an example.</p>
     </div>
 
 
@@ -157,7 +157,7 @@ features that produces <code>i</code> through aggregation with the
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>An instance of class <a href='QFeatures-class.html'>QFeatures</a>.</p></td>
+      <td><p>An instance of class <a href='QFeatures.html'>QFeatures</a>.</p></td>
     </tr>
     <tr>
       <th>y</th>
@@ -171,11 +171,12 @@ features that produces <code>i</code> through aggregation with the
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An new instance of class <a href='QFeatures-class.html'>QFeatures</a> containing relevant
+    <p>An new instance of class <a href='QFeatures.html'>QFeatures</a> containing relevant
 assays and features.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/example.html'>example</a></span>(<span class='no'>aggregateFeatures</span>)</div><div class='output co'>#&gt; 
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/example.html'>example</a></span>(<span class='kw'>aggregateFeatures</span>)
+</div><div class='output co'>#&gt; 
 #&gt; aggrgF&gt; ## ---------------------------------------
 #&gt; aggrgF&gt; ## An example QFeatures with PSM-level data
 #&gt; aggrgF&gt; ## ---------------------------------------
@@ -339,7 +340,8 @@ assays and features.</p>
 #&gt; 1         1         2
 #&gt; 2         2         2</div><div class='input'>
 <span class='co'>## Retrieve protein 'ProtA' and its 2 peptides and 6 PSMs</span>
-<span class='no'>feat1</span>[<span class='st'>"ProtA"</span>, , ]</div><div class='output co'>#&gt; An instance of class QFeatures containing 3 assays:
+<span class='kw'>feat1</span>[<span class='st'>"ProtA"</span>, , ]
+</div><div class='output co'>#&gt; An instance of class QFeatures containing 3 assays:
 #&gt;  [1] psms: SummarizedExperiment with 6 rows and 2 columns 
 #&gt;  [2] peptides: SummarizedExperiment with 2 rows and 2 columns 
 #&gt;  [3] proteins: SummarizedExperiment with 1 rows and 2 columns </div></pre>
@@ -358,7 +360,7 @@ assays and features.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

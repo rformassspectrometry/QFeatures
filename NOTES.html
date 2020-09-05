@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.2</span>
       </span>
     </div>
 
@@ -144,7 +144,7 @@
 </ul>
 <p>Despite the elegant of the two-level option, it seems that the additional development isn’t warranted at this time.</p>
 <p>The <a href="https://github.com/rformassspectrometry/QFeatures/issues/37"><code>updateAssay</code> function</a> was originally intended for the two-level approach, i.e. to add an assay to an SE. This is not considered anymore (for now, at least).</p>
-<p>There is one exception though. When aggregating features with <code><a href="reference/QFeatures-aggregate.html">aggregateFeatures()</a></code>, a second assay is added, named <code>aggcounts</code> that counts the number of features that were aggregate for each sample and each low-level features.</p>
+<p>There is one exception though. When aggregating features with <code><a href="reference/aggregateFeatures.html">aggregateFeatures()</a></code>, a second assay is added, named <code>aggcounts</code> that counts the number of features that were aggregate for each sample and each low-level features.</p>
 </div>
 <div id="how-to-add-new-assays" class="section level1">
 <h1 class="hasAnchor">
@@ -154,7 +154,7 @@
 <li><p>Processing an SE.</p></li>
 </ol>
 <p>This can/could be done explicitly with <code>addAssay</code></p>
-<pre><code><a href="reference/QFeatures-class.html">addAssay(cptac, logTransform(cptac[["peptides"]]), name = "peptides_log")
+<pre><code><a href="reference/QFeatures.html">addAssay(cptac, logTransform(cptac[["peptides"]]), name = "peptides_log")
 addAssay(cptac, logTransform(cptac[[1]]), name = "peptides_log")</a></code></pre>
 <p>or implicitly</p>
 <pre><code><a href="reference/QFeatures-processing.html">logTransform(cptac, "peptides", name = "peptides_log")
@@ -197,14 +197,18 @@ ft1
 ft2 &lt;- subsetByFeature(ft1, "ANLPQSFQVDTSk")
 ft2</code></pre>
 <p>The underlying reason why this fails is due to matrix subsetting by name when these names aren’t unique.</p>
-<div class="sourceCode" id="cb5"><html><pre class="r"><span class="no">m</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fl">1</span>:<span class="fl">10</span>, <span class="kw">ncol</span> <span class="kw">=</span> <span class="fl">2</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">m</span>) <span class="kw">&lt;-</span> <span class="no">LETTERS</span>[<span class="fl">1</span>:<span class="fl">2</span>]
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">m</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"a"</span>, <span class="no">letters</span>[<span class="fl">1</span>:<span class="fl">4</span>])
-<span class="no">m</span>
-<span class="no">m</span>[<span class="st">"a"</span>, ]</pre></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="kw">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, ncol = <span class="fl">2</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="kw">m</span>) <span class="op">&lt;-</span> <span class="kw">LETTERS</span>[<span class="fl">1</span><span class="op">:</span><span class="fl">2</span>]
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="kw">m</span>) <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"a"</span>, <span class="kw">letters</span>[<span class="fl">1</span><span class="op">:</span><span class="fl">4</span>])
+<span class="kw">m</span>
+<span class="kw">m</span>[<span class="st">"a"</span>, ]
+</pre></div>
 <p>And of course, this affects SEs …</p>
-<div class="sourceCode" id="cb6"><html><pre class="r"><span class="no">se</span> <span class="kw">&lt;-</span> <span class="fu">SummarizedExperiment</span>(<span class="no">m</span>)
-<span class="fu">assay</span>(<span class="no">se</span>[<span class="st">"a"</span>, ])</pre></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="kw">se</span> <span class="op">&lt;-</span> <span class="fu">SummarizedExperiment</span>(<span class="kw">m</span>)
+<span class="fu">assay</span>(<span class="kw">se</span>[<span class="st">"a"</span>, ])
+</pre></div>
 <p>… and MultiAssayExperiments.</p>
 <p>Note that in the example above, <code>"ANLPQSFQVDTSk"</code> is present in both the <code>psms</code> and <code>peptides</code> assays, and the</p>
 <pre><code>for (k in setdiff(all_assays_names, leaf_assay_name)) { ... }</code></pre>
@@ -249,7 +253,7 @@ colData names(0):</code></pre>
 <li>relaxed <code>MatchedAssayExperiment</code> constrains (see #46)</li>
 <li>assay links with multiple parent assays (see #52)</li>
 </ol>
-<p><code>combine,MSnSet,MSnSet</code> does two things, i.e. <code>rbind</code> and <code>cbind</code>. Here, we nedd (at least in a first instance) and have <code>cbind,SummarizedExperiment</code>.</p>
+<p><code>combine,MSnSet,MSnSet</code> does two things, i.e. <code>rbind</code> and <code>cbind</code>. Here, we nedd (at least in a first instance) and have <code>cbind,SummarizedExperiment</code>.</p>
 <ul>
 <li>do we need some constrains requiering identical rownames? <code>cbind,SummarizedExperiment</code> uses the mcols to check whether rows match.</li>
 <li>should unique rows in one assay get NAs in the other one? yes!</li>
@@ -294,7 +298,7 @@ joinAssays(QFeatures, c(1, 2, 3), name = "peptides")</a></code></pre>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

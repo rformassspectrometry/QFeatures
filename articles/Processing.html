@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.2</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="Processing_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Processing quantitative proteomics data with QFeatures</h1>
@@ -97,7 +97,7 @@
     
         <div class="abstract">
       <p class="abstract">Abstract</p>
-      This vignette describes how to process quantitative mass spectrometry data with QFeatures: cleaning up unneeded feature variables, adding an experimental design, filtering out contaminants and reverse hits, managing missing values, log-transforming, normalising and aggregating data.
+      <p>This vignette describes how to process quantitative mass spectrometry data with QFeatures: cleaning up unneeded feature variables, adding an experimental design, filtering out contaminants and reverse hits, managing missing values, log-transforming, normalising and aggregating data.</p>
     </div>
     
 <script type="text/javascript">
@@ -116,10 +116,14 @@ document.addEventListener("DOMContentLoaded", function() {
 <a href="#reading-data-as-qfeatures" class="anchor"></a>Reading data as <code>QFeatures</code>
 </h1>
 <p>We are going to use a subset of the CPTAC study 6 containing conditions A and B <span class="citation">(Paulovich et al. 2010)</span>. The peptide-level data, as processed by MaxQuant <span class="citation">(Cox and Mann 2008)</span> is available in the <code>msdata</code> package:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span>(<span class="no">f</span> <span class="kw">&lt;-</span> <span class="kw pkg">msdata</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/msdata/man/proteomics.html">quant</a></span>(<span class="kw">pattern</span> <span class="kw">=</span> <span class="st">"cptac"</span>, <span class="kw">full.names</span> <span class="kw">=</span> <span class="fl">TRUE</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span>(<span class="kw">f</span> <span class="op">&lt;-</span> <span class="kw">msdata</span>::<span class="fu"><a href="https://rdrr.io/pkg/msdata/man/proteomics.html">quant</a></span>(pattern = <span class="st">"cptac"</span>, full.names = <span class="fl">TRUE</span>))
+</pre></div>
 <pre><code>## [1] "cptac_a_b_peptides.txt"</code></pre>
 <p>From the names of the columns, we see that the quantitative columns, starting with <code>"Intensity."</code> (note the space!) are at positions 56 to 61.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.delim</a></span>(<span class="no">f</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.delim</a></span>(<span class="kw">f</span>))
+</pre></div>
 <pre><code>##  [1] "Sequence"                 "N.term.cleavage.window"  
 ##  [3] "C.term.cleavage.window"   "Amino.acid.before"       
 ##  [5] "First.amino.acid"         "Second.amino.acid"       
@@ -156,19 +160,25 @@ document.addEventListener("DOMContentLoaded", function() {
 ## [67] "Evidence.IDs"             "MS.MS.IDs"               
 ## [69] "Best.MS.MS"               "Oxidation..M..site.IDs"  
 ## [71] "MS.MS.Count"</code></pre>
-<div class="sourceCode" id="cb5"><html><body><pre class="r">(<span class="no">i</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span>(<span class="st">"Intensity\\."</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.delim</a></span>(<span class="no">f</span>))))</pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+(<span class="kw">i</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span>(<span class="st">"Intensity\\."</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.delim</a></span>(<span class="kw">f</span>))))
+</pre></div>
 <pre><code>## [1] 56 57 58 59 60 61</code></pre>
 <p>We now read these data using the <code>readQFeatures</code> function. The peptide level expression data will be imported into R as an instance of class <code>QFeatures</code> named <code>cptac</code> with an assay named <code>peptides</code>. We also use the <code>fnames</code> argument to set the row-names of the <code>peptides</code> assay to the peptide sequences.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"QFeatures"</span>)
-<span class="no">cptac</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/readQFeatures.html">readQFeatures</a></span>(<span class="no">f</span>, <span class="kw">ecol</span> <span class="kw">=</span> <span class="no">i</span>, <span class="kw">sep</span> <span class="kw">=</span> <span class="st">"\t"</span>, <span class="kw">name</span> <span class="kw">=</span> <span class="st">"peptides"</span>, <span class="kw">fnames</span> <span class="kw">=</span> <span class="st">"Sequence"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st"><a href="https://github.com/RforMassSpectrometry/QFeatures">"QFeatures"</a></span>)
+<span class="kw">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readQFeatures.html">readQFeatures</a></span>(<span class="kw">f</span>, ecol = <span class="kw">i</span>, sep = <span class="st">"\t"</span>, name = <span class="st">"peptides"</span>, fnames = <span class="st">"Sequence"</span>)
+</pre></div>
 </div>
 <div id="encoding-the-experimental-design" class="section level1">
 <h1 class="hasAnchor">
 <a href="#encoding-the-experimental-design" class="anchor"></a>Encoding the experimental design</h1>
 <p>Below we update the sample (column) annotations to encode the two groups, 6A and 6B, and the original sample numbers.</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">cptac</span>$<span class="no">group</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"6A"</span>, <span class="st">"6B"</span>), <span class="kw">each</span> <span class="kw">=</span> <span class="fl">3</span>)
-<span class="no">cptac</span>$<span class="no">sample</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">7</span>:<span class="fl">9</span>, <span class="fl">2</span>)
-<span class="fu">colData</span>(<span class="no">cptac</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="kw">cptac</span><span class="op">$</span><span class="kw">group</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"6A"</span>, <span class="st">"6B"</span>), each = <span class="fl">3</span>)
+<span class="kw">cptac</span><span class="op">$</span><span class="kw">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">7</span><span class="op">:</span><span class="fl">9</span>, <span class="fl">2</span>)
+<span class="fu">colData</span>(<span class="kw">cptac</span>)
+</pre></div>
 <pre><code>## DataFrame with 6 rows and 2 columns
 ##                      group    sample
 ##                &lt;character&gt; &lt;integer&gt;
@@ -182,28 +192,38 @@ document.addEventListener("DOMContentLoaded", function() {
 <div id="filtering-out-contaminants-and-reverse-hits" class="section level1">
 <h1 class="hasAnchor">
 <a href="#filtering-out-contaminants-and-reverse-hits" class="anchor"></a>Filtering out contaminants and reverse hits</h1>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span>(<span class="no">cptac</span>, ~ <span class="no">Reverse</span> <span class="kw">==</span> <span class="st">""</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span>(<span class="kw">cptac</span>, <span class="op">~</span> <span class="kw">Reverse</span> <span class="op">==</span> <span class="st">""</span>)
+</pre></div>
 <pre><code>## An instance of class QFeatures containing 1 assays:
 ##  [1] peptides: SummarizedExperiment with 11436 rows and 6 columns</code></pre>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span>(<span class="no">cptac</span>, ~ <span class="no">Potential.contaminant</span> <span class="kw">==</span> <span class="st">""</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb12"><pre class="downlit">
+<span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span>(<span class="kw">cptac</span>, <span class="op">~</span> <span class="kw">Potential.contaminant</span> <span class="op">==</span> <span class="st">""</span>)
+</pre></div>
 <pre><code>## An instance of class QFeatures containing 1 assays:
 ##  [1] peptides: SummarizedExperiment with 11385 rows and 6 columns</code></pre>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"magrittr"</span>)
-<span class="no">cptac</span> <span class="kw">&lt;-</span> <span class="no">cptac</span> <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span>(~ <span class="no">Reverse</span> <span class="kw">==</span> <span class="st">""</span>) <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span>(~ <span class="no">Potential.contaminant</span> <span class="kw">==</span> <span class="st">""</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb14"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"magrittr"</span>)
+<span class="kw">cptac</span> <span class="op">&lt;-</span> <span class="kw">cptac</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span>(<span class="op">~</span> <span class="kw">Reverse</span> <span class="op">==</span> <span class="st">""</span>) <span class="op">%&gt;%</span>
+    <span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span>(<span class="op">~</span> <span class="kw">Potential.contaminant</span> <span class="op">==</span> <span class="st">""</span>)
+</pre></div>
 </div>
 <div id="removing-up-unneeded-feature-variables" class="section level1">
 <h1 class="hasAnchor">
 <a href="#removing-up-unneeded-feature-variables" class="anchor"></a>Removing up unneeded feature variables</h1>
 <p>The spreadsheet that was read above contained numerous variables that are returned by MaxQuant, but not necessarily necessary in the frame of a downstream statistical analysis.</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="../reference/QFeatures-class.html">rowDataNames</a></span>(<span class="no">cptac</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb15"><pre class="downlit">
+<span class="fu"><a href="../reference/QFeatures.html">rowDataNames</a></span>(<span class="kw">cptac</span>)
+</pre></div>
 <pre><code>## CharacterList of length 1
 ## [["peptides"]] Sequence N.term.cleavage.window ... MS.MS.Count</code></pre>
 <p>The only ones that we will be needing below are the peptides sequences and the protein identifiers. Below, we store these variables of interest and filter them using the <code>selectRowData</code> function.</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">rowvars</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Sequence"</span>, <span class="st">"Proteins"</span>, <span class="st">"Leading.razor.protein"</span>)
-<span class="no">cptac</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-class.html">selectRowData</a></span>(<span class="no">cptac</span>, <span class="no">rowvars</span>)
-<span class="fu"><a href="../reference/QFeatures-class.html">rowDataNames</a></span>(<span class="no">cptac</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb17"><pre class="downlit">
+<span class="kw">rowvars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Sequence"</span>, <span class="st">"Proteins"</span>, <span class="st">"Leading.razor.protein"</span>)
+<span class="kw">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures.html">selectRowData</a></span>(<span class="kw">cptac</span>, <span class="kw">rowvars</span>)
+<span class="fu"><a href="../reference/QFeatures.html">rowDataNames</a></span>(<span class="kw">cptac</span>)
+</pre></div>
 <pre><code>## CharacterList of length 1
 ## [["peptides"]] Sequence Proteins Leading.razor.protein</code></pre>
 </div>
@@ -211,8 +231,10 @@ document.addEventListener("DOMContentLoaded", function() {
 <h1 class="hasAnchor">
 <a href="#managing-missing-values" class="anchor"></a>Managing missing values</h1>
 <p>Missing values can be very numerous in certain proteomics experiments and need to be dealt with carefully. The first step is to assess their presence across samples and features. But before being able to do so, we need to replace 0 by <code>NA</code>, given that MaxQuant encodes missing data with a 0 using the <code>zeroIsNA</code> function.</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">cptac</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-missing-data.html">zeroIsNA</a></span>(<span class="no">cptac</span>, <span class="kw">i</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span>(<span class="no">cptac</span>))
-<span class="fu"><a href="../reference/QFeatures-missing-data.html">nNA</a></span>(<span class="no">cptac</span>, <span class="kw">i</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span>(<span class="no">cptac</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb19"><pre class="downlit">
+<span class="kw">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/missing-data.html">zeroIsNA</a></span>(<span class="kw">cptac</span>, i = <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span>(<span class="kw">cptac</span>))
+<span class="fu"><a href="../reference/missing-data.html">nNA</a></span>(<span class="kw">cptac</span>, i = <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span>(<span class="kw">cptac</span>))
+</pre></div>
 <pre><code>## $nNA
 ## [1] 0.4491943
 ## 
@@ -233,8 +255,10 @@ document.addEventListener("DOMContentLoaded", function() {
 <li>the range of missing values in the 6 samples is comparable and ranges between 4651 and 5470.</li>
 </ul>
 <p>In this dataset, we have such a high number of peptides without any data because the 6 samples are a subset of a larger dataset, and these peptides happened to be absent in groups A and B. Below, we use <code>filterNA</code> to remove all the peptides that contain one or more missing values by using <code>pNA = 0</code> (which also is the default value).</p>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">cptac</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-missing-data.html">filterNA</a></span>(<span class="no">cptac</span>, <span class="kw">i</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span>(<span class="no">cptac</span>), <span class="kw">pNA</span> <span class="kw">=</span> <span class="fl">0</span>)
-<span class="no">cptac</span></pre></body></html></div>
+<div class="sourceCode" id="cb21"><pre class="downlit">
+<span class="kw">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/missing-data.html">filterNA</a></span>(<span class="kw">cptac</span>, i = <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span>(<span class="kw">cptac</span>), pNA = <span class="fl">0</span>)
+<span class="kw">cptac</span>
+</pre></div>
 <pre><code>## An instance of class QFeatures containing 1 assays:
 ##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns</code></pre>
 <p>I we wanted to keep peptides that have up to 90% of missing values, corresponsing in this case to those that have only one value (i.e 5/6 percent of missing values), we could have set <code>pNA</code> to 0.9.</p>
@@ -261,16 +285,20 @@ Mixed imputation method. Black cells represent presence of quantitation values a
 <a href="#data-transformation" class="anchor"></a>Data transformation</h1>
 <p>When analysing continuous data using parametric methods (such as t-test or linear models), it is often necessary to log-transform the data. The figure below (left) show that how our data is mainly composed of small values with a long tail of larger ones, which is a typical pattern of quantitative omics data.</p>
 <p>Below, we use the <code>logTransform</code> function to log2-transform our data. This time, instead of overwriting the peptides assay, we are going to create a new one to contain the log2-transformed data.</p>
-<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="no">cptac</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-class.html">addAssay</a></span>(<span class="no">cptac</span>,
-                  <span class="fu"><a href="../reference/QFeatures-processing.html">logTransform</a></span>(<span class="no">cptac</span><span class="kw">[[</span><span class="fl">1</span>]]),
-                  <span class="kw">name</span> <span class="kw">=</span> <span class="st">"peptides_log"</span>)
-<span class="no">cptac</span></pre></body></html></div>
+<div class="sourceCode" id="cb23"><pre class="downlit">
+<span class="kw">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures.html">addAssay</a></span>(<span class="kw">cptac</span>,
+                  <span class="fu"><a href="../reference/QFeatures-processing.html">logTransform</a></span>(<span class="kw">cptac</span>[[<span class="fl">1</span>]]),
+                  name = <span class="st">"peptides_log"</span>)
+<span class="kw">cptac</span>
+</pre></div>
 <pre><code>## An instance of class QFeatures containing 2 assays:
 ##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns 
 ##  [2] peptides_log: SummarizedExperiment with 4051 rows and 6 columns</code></pre>
-<div class="sourceCode" id="cb25"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mfrow</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))
-<span class="kw pkg">limma</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html">plotDensities</a></span>(<span class="fu">assay</span>(<span class="no">cptac</span><span class="kw">[[</span><span class="fl">1</span>]]))
-<span class="kw pkg">limma</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html">plotDensities</a></span>(<span class="fu">assay</span>(<span class="no">cptac</span><span class="kw">[[</span><span class="fl">2</span>]]))</pre></body></html></div>
+<div class="sourceCode" id="cb25"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(mfrow = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))
+<span class="kw">limma</span>::<span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html">plotDensities</a></span>(<span class="fu">assay</span>(<span class="kw">cptac</span>[[<span class="fl">1</span>]]))
+<span class="kw">limma</span>::<span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html">plotDensities</a></span>(<span class="fu">assay</span>(<span class="kw">cptac</span>[[<span class="fl">2</span>]]))
+</pre></div>
 <div class="figure">
 <img src="Processing_files/figure-html/unnamed-chunk-10-1.png" alt="Quantitative data in its original scale (left) and log2-transformed (right)." width="700"><p class="caption">
 Quantitative data in its original scale (left) and log2-transformed (right).
@@ -281,18 +309,24 @@ Quantitative data in its original scale (left) and log2-transformed (right).
 <h1 class="hasAnchor">
 <a href="#normalisation" class="anchor"></a>Normalisation</h1>
 <p>Assays in <code>QFeatures</code> objects can be normalised with the <code>normalize</code> function. The type of normalisation is defined by the <code>method</code> argument; below, we use quantiles normalisation, store the normalised data into a new experiment, and visualise the resulting data.</p>
-<div class="sourceCode" id="cb26"><html><body><pre class="r"><span class="no">cptac</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-class.html">addAssay</a></span>(<span class="no">cptac</span>,
-                  <span class="fu"><a href="../reference/QFeatures-processing.html">normalize</a></span>(<span class="no">cptac</span><span class="kw">[[</span><span class="st">"peptides_log"</span>]], <span class="kw">method</span> <span class="kw">=</span> <span class="st">"quantiles"</span>),
-                  <span class="kw">name</span> <span class="kw">=</span> <span class="st">"peptides_norm"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb26"><pre class="downlit">
+<span class="kw">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures.html">addAssay</a></span>(<span class="kw">cptac</span>,
+                  <span class="fu"><a href="../reference/QFeatures-processing.html">normalize</a></span>(<span class="kw">cptac</span>[[<span class="st">"peptides_log"</span>]], method = <span class="st">"quantiles"</span>),
+                  name = <span class="st">"peptides_norm"</span>)
+</pre></div>
 <pre><code>## Loading required namespace: preprocessCore</code></pre>
-<div class="sourceCode" id="cb28"><html><body><pre class="r"><span class="no">cptac</span></pre></body></html></div>
+<div class="sourceCode" id="cb28"><pre class="downlit">
+<span class="kw">cptac</span>
+</pre></div>
 <pre><code>## An instance of class QFeatures containing 3 assays:
 ##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns 
 ##  [2] peptides_log: SummarizedExperiment with 4051 rows and 6 columns 
 ##  [3] peptides_norm: SummarizedExperiment with 4051 rows and 6 columns</code></pre>
-<div class="sourceCode" id="cb30"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mfrow</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))
-<span class="kw pkg">limma</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html">plotDensities</a></span>(<span class="fu">assay</span>(<span class="no">cptac</span><span class="kw">[[</span><span class="st">"peptides_log"</span>]]))
-<span class="kw pkg">limma</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html">plotDensities</a></span>(<span class="fu">assay</span>(<span class="no">cptac</span><span class="kw">[[</span><span class="st">"peptides_norm"</span>]]))</pre></body></html></div>
+<div class="sourceCode" id="cb30"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(mfrow = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))
+<span class="kw">limma</span>::<span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html">plotDensities</a></span>(<span class="fu">assay</span>(<span class="kw">cptac</span>[[<span class="st">"peptides_log"</span>]]))
+<span class="kw">limma</span>::<span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html">plotDensities</a></span>(<span class="fu">assay</span>(<span class="kw">cptac</span>[[<span class="st">"peptides_norm"</span>]]))
+</pre></div>
 <div class="figure">
 <img src="Processing_files/figure-html/unnamed-chunk-12-1.png" alt="Distribution of log2 peptide intensities before (left) and after (right) quantiles normalisation." width="700"><p class="caption">
 Distribution of log2 peptide intensities before (left) and after (right) quantiles normalisation.
@@ -314,15 +348,19 @@ Distribution of log2 peptide intensities before (left) and after (right) quantil
 <strong><code>name</code></strong>: the name of the new aggregates assay - <code>"proteins"</code> in this case;</li>
 <li>and finally <strong><code>fun</code></strong>, the function that will compute this aggregation - we will be using the default value, namely <code>robustSummary</code> <span class="citation">(Sticker et al. 2019)</span>.</li>
 </ul>
-<div class="sourceCode" id="cb31"><html><body><pre class="r"><span class="no">cptac</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-aggregate.html">aggregateFeatures</a></span>(<span class="no">cptac</span>, <span class="kw">i</span> <span class="kw">=</span> <span class="st">"peptides_norm"</span>, <span class="kw">fcol</span> <span class="kw">=</span> <span class="st">"Proteins"</span>, <span class="kw">name</span> <span class="kw">=</span> <span class="st">"proteins"</span>)
-<span class="no">cptac</span></pre></body></html></div>
+<div class="sourceCode" id="cb31"><pre class="downlit">
+<span class="kw">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/aggregateFeatures.html">aggregateFeatures</a></span>(<span class="kw">cptac</span>, i = <span class="st">"peptides_norm"</span>, fcol = <span class="st">"Proteins"</span>, name = <span class="st">"proteins"</span>)
+<span class="kw">cptac</span>
+</pre></div>
 <pre><code>## An instance of class QFeatures containing 4 assays:
 ##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns 
 ##  [2] peptides_log: SummarizedExperiment with 4051 rows and 6 columns 
 ##  [3] peptides_norm: SummarizedExperiment with 4051 rows and 6 columns 
 ##  [4] proteins: SummarizedExperiment with 1125 rows and 6 columns</code></pre>
 <p>We obtain a final 1125 quantified proteins in the new <code>proteins</code> assay. Below, we display the quantitation data for the first 6 proteins and their respective variables. The latter shown that number of peptides that were using during the aggregation step (<code>.n</code> column).</p>
-<div class="sourceCode" id="cb33"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu">assay</span>(<span class="no">cptac</span><span class="kw">[[</span><span class="st">"proteins"</span>]]))</pre></body></html></div>
+<div class="sourceCode" id="cb33"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu">assay</span>(<span class="kw">cptac</span>[[<span class="st">"proteins"</span>]]))
+</pre></div>
 <pre><code>##                                      Intensity.6A_7 Intensity.6A_8
 ## P00918ups|CAH2_HUMAN_UPS                   17.30380       16.89828
 ## P01008ups|ANT3_HUMAN_UPS;CON__P41361       16.89434       15.98417
@@ -344,7 +382,9 @@ Distribution of log2 peptide intensities before (left) and after (right) quantil
 ## P02144ups|MYG_HUMAN_UPS                    18.58260       18.29267
 ## P02753ups|RETBP_HUMAN_UPS                  17.73285       18.13718
 ## P02787ups|TRFE_HUMAN_UPS                   18.52184       18.15342</code></pre>
-<div class="sourceCode" id="cb35"><html><body><pre class="r"><span class="fu">rowData</span>(<span class="no">cptac</span><span class="kw">[[</span><span class="st">"proteins"</span>]])</pre></body></html></div>
+<div class="sourceCode" id="cb35"><pre class="downlit">
+<span class="fu">rowData</span>(<span class="kw">cptac</span>[[<span class="st">"proteins"</span>]])
+</pre></div>
 <pre><code>## DataFrame with 1125 rows and 3 columns
 ##                                           Proteins Leading.razor.protein
 ##                                        &lt;character&gt;           &lt;character&gt;
@@ -373,22 +413,26 @@ Distribution of log2 peptide intensities before (left) and after (right) quantil
 ## sp|Q99258|RIB3_YEAST                         2
 ## sp|Q99383|HRP1_YEAST                         2</code></pre>
 <p>We can get a quick overview of this <code>.n</code> variable by computing the table below, that shows us that we have 405 proteins that are based on a single peptides, 230 that are based on two, 119 that are based on three, … and a single protein that is the results of aggregating 44 peptides.</p>
-<div class="sourceCode" id="cb37"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="fu">rowData</span>(<span class="no">cptac</span><span class="kw">[[</span><span class="st">"proteins"</span>]])$<span class="no">.n</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb37"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="fu">rowData</span>(<span class="kw">cptac</span>[[<span class="st">"proteins"</span>]])<span class="op">$</span><span class="kw">.n</span>)
+</pre></div>
 <pre><code>## 
 ##   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20 
 ## 405 230 119  84  64  53  37  29  24  24  13   9   4   3   3   7   3   1   1   1 
 ##  21  22  23  24  25  30  31  33  44 
 ##   1   2   2   1   1   1   1   1   1</code></pre>
 <p>Let’s choose <code>P02787ups|TRFE_HUMAN_UPS</code> and visualise its expression pattern in the 2 groups at the protein and peptide level.</p>
-<div class="sourceCode" id="cb39"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"ggplot2"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"dplyr"</span>)
-<span class="fu">longFormat</span>(<span class="no">cptac</span>[<span class="st">"P02787ups|TRFE_HUMAN_UPS"</span>, ]) <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span>() <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">group</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span>(<span class="st">"A"</span>, <span class="no">colname</span>), <span class="st">"A"</span>, <span class="st">"B"</span>)) <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">sample</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">sub</a></span>(<span class="st">"Intensity\\."</span>, <span class="st">""</span>, <span class="no">colname</span>)) <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">sample</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">value</span>, <span class="kw">colour</span> <span class="kw">=</span> <span class="no">rowname</span>, <span class="kw">shape</span> <span class="kw">=</span> <span class="no">group</span>)) +
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() +
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span>(~ <span class="no">assay</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb39"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st"><a href="http://ggplot2.tidyverse.org">"ggplot2"</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st"><a href="https://dplyr.tidyverse.org">"dplyr"</a></span>)
+<span class="fu">longFormat</span>(<span class="kw">cptac</span>[<span class="st">"P02787ups|TRFE_HUMAN_UPS"</span>, ]) <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span>() <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(group = <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span>(<span class="st">"A"</span>, <span class="kw">colname</span>), <span class="st">"A"</span>, <span class="st">"B"</span>)) <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(sample = <span class="fu"><a href="https://rdrr.io/r/base/grep.html">sub</a></span>(<span class="st">"Intensity\\."</span>, <span class="st">""</span>, <span class="kw">colname</span>)) <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x = <span class="kw">sample</span>, y = <span class="kw">value</span>, colour = <span class="kw">rowname</span>, shape = <span class="kw">group</span>)) <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span>(<span class="op">~</span> <span class="kw">assay</span>)
+</pre></div>
 <pre><code>## harmonizing input:
 ##   removing 12 sampleMap rows not in names(experiments)
 ## harmonizing input:
@@ -409,18 +453,17 @@ Expression intensities for the protein <em>P02787ups|TRFE_HUMAN_UPS</em> (right,
 <div id="session-information" class="section level1 unnumbered">
 <h1 class="hasAnchor">
 <a href="#session-information" class="anchor"></a>Session information</h1>
-<pre><code>## R version 4.0.0 (2020-04-24)
+<pre><code>## R version 4.0.2 Patched (2020-09-02 r79126)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 14.04.5 LTS
+## Running under: Ubuntu 20.04.1 LTS
 ## 
 ## Matrix products: default
-## BLAS:   /home/travis/R-bin/lib/R/lib/libRblas.so
-## LAPACK: /home/travis/R-bin/lib/R/lib/libRlapack.so
+## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-openmp/libopenblasp-r0.3.8.so
 ## 
 ## locale:
 ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
 ##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=C             
 ##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
 ##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
 ## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
@@ -431,55 +474,56 @@ Expression intensities for the protein <em>P02787ups|TRFE_HUMAN_UPS</em> (right,
 ## 
 ## other attached packages:
 ##  [1] gplots_3.0.4                magrittr_1.5               
-##  [3] dplyr_1.0.1                 ggplot2_3.3.2              
-##  [5] QFeatures_0.99.1            MultiAssayExperiment_1.15.3
+##  [3] dplyr_1.0.2                 ggplot2_3.3.2              
+##  [5] QFeatures_0.99.2            MultiAssayExperiment_1.15.3
 ##  [7] SummarizedExperiment_1.19.6 DelayedArray_0.15.7        
 ##  [9] matrixStats_0.56.0          Matrix_1.2-18              
-## [11] Biobase_2.49.0              GenomicRanges_1.41.5       
-## [13] GenomeInfoDb_1.25.10        IRanges_2.23.10            
+## [11] Biobase_2.49.1              GenomicRanges_1.41.6       
+## [13] GenomeInfoDb_1.25.11        IRanges_2.23.10            
 ## [15] S4Vectors_0.27.12           BiocGenerics_0.35.4        
 ## [17] BiocStyle_2.17.0           
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] msdata_0.29.0           lattice_0.20-41         gtools_3.8.2           
 ##  [4] assertthat_0.2.1        rprojroot_1.3-2         digest_0.6.25          
-##  [7] R6_2.4.1                backports_1.1.8         evaluate_0.14          
+##  [7] R6_2.4.1                backports_1.1.9         evaluate_0.14          
 ## [10] highr_0.8               pillar_1.4.6            zlibbioc_1.35.0        
 ## [13] rlang_0.4.7             lazyeval_0.2.2          gdata_2.18.0           
-## [16] preprocessCore_1.51.0   rmarkdown_2.3           pkgdown_1.5.1          
+## [16] preprocessCore_1.51.0   rmarkdown_2.3           pkgdown_1.5.1.9000     
 ## [19] labeling_0.3            desc_1.2.0              stringr_1.4.0          
-## [22] ProtGenerics_1.19.3     RCurl_1.98-1.2          munsell_0.5.0          
-## [25] compiler_4.0.0          xfun_0.16               pkgconfig_2.0.3        
-## [28] htmltools_0.5.0         tidyselect_1.1.0        tibble_3.0.3           
-## [31] GenomeInfoDbData_1.2.3  bookdown_0.20           crayon_1.3.4           
-## [34] withr_2.2.0             MASS_7.3-51.5           bitops_1.0-6           
-## [37] grid_4.0.0              gtable_0.3.0            lifecycle_0.2.0        
-## [40] AnnotationFilter_1.13.0 MsCoreUtils_1.1.4       scales_1.1.1           
-## [43] KernSmooth_2.23-16      stringi_1.4.6           farver_2.0.3           
-## [46] XVector_0.29.3          fs_1.4.2                limma_3.45.10          
-## [49] ellipsis_0.3.1          vctrs_0.3.2             generics_0.0.2         
-## [52] tools_4.0.0             glue_1.4.1              purrr_0.3.4            
-## [55] yaml_2.2.1              colorspace_1.4-1        BiocManager_1.30.10    
-## [58] caTools_1.18.0          memoise_1.1.0           knitr_1.29.4</code></pre>
+## [22] ProtGenerics_1.21.0     RCurl_1.98-1.2          munsell_0.5.0          
+## [25] compiler_4.0.2          xfun_0.16               pkgconfig_2.0.3        
+## [28] systemfonts_0.3.0       htmltools_0.5.0         tidyselect_1.1.0       
+## [31] tibble_3.0.3            GenomeInfoDbData_1.2.3  bookdown_0.20          
+## [34] crayon_1.3.4            withr_2.2.0             MASS_7.3-52            
+## [37] bitops_1.0-6            grid_4.0.2              gtable_0.3.0           
+## [40] lifecycle_0.2.0         AnnotationFilter_1.13.0 MsCoreUtils_1.1.3      
+## [43] scales_1.1.1            KernSmooth_2.23-17      stringi_1.4.6          
+## [46] farver_2.0.3            XVector_0.29.3          fs_1.5.0               
+## [49] limma_3.45.13           ellipsis_0.3.1          ragg_0.3.1             
+## [52] vctrs_0.3.4             generics_0.0.2          tools_4.0.2            
+## [55] glue_1.4.2              purrr_0.3.4             yaml_2.2.1             
+## [58] colorspace_1.4-1        BiocManager_1.30.10     caTools_1.18.0         
+## [61] cpp11_0.2.1             memoise_1.1.0           knitr_1.29</code></pre>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h1>
 <div id="refs" class="references">
 <div id="ref-Cox:2008">
-<p>Cox, J, and M Mann. 2008. “MaxQuant Enables High Peptide Identification Rates, Individualized P.p.b.-range Mass Accuracies and Proteome-Wide Protein Quantification.” <em>Nat Biotechnol</em> 26 (12): 1367–72. <a href="https://doi.org/10.1038/nbt.1511" class="uri">https://doi.org/10.1038/nbt.1511</a>.</p>
+<p>Cox, J, and M Mann. 2008. “MaxQuant Enables High Peptide Identification Rates, Individualized P.p.b.-range Mass Accuracies and Proteome-Wide Protein Quantification.” <em>Nat Biotechnol</em> 26 (12): 1367–72. <a href="https://doi.org/10.1038/nbt.1511">https://doi.org/10.1038/nbt.1511</a>.</p>
 </div>
 <div id="ref-Goeminne:2016">
-<p>Goeminne, L J, K Gevaert, and L Clement. 2016. “Peptide-Level Robust Ridge Regression Improves Estimation, Sensitivity, and Specificity in Data-Dependent Quantitative Label-Free Shotgun Proteomics.” <em>Mol Cell Proteomics</em> 15 (2): 657–68. <a href="https://doi.org/10.1074/mcp.M115.055897" class="uri">https://doi.org/10.1074/mcp.M115.055897</a>.</p>
+<p>Goeminne, L J, K Gevaert, and L Clement. 2016. “Peptide-Level Robust Ridge Regression Improves Estimation, Sensitivity, and Specificity in Data-Dependent Quantitative Label-Free Shotgun Proteomics.” <em>Mol Cell Proteomics</em> 15 (2): 657–68. <a href="https://doi.org/10.1074/mcp.M115.055897">https://doi.org/10.1074/mcp.M115.055897</a>.</p>
 </div>
 <div id="ref-Lazar:2016">
-<p>Lazar, C, L Gatto, M Ferro, C Bruley, and T Burger. 2016. “Accounting for the Multiple Natures of Missing Values in Label-Free Quantitative Proteomics Data Sets to Compare Imputation Strategies.” <em>J Proteome Res</em> 15 (4): 1116–25. <a href="https://doi.org/10.1021/acs.jproteome.5b00981" class="uri">https://doi.org/10.1021/acs.jproteome.5b00981</a>.</p>
+<p>Lazar, C, L Gatto, M Ferro, C Bruley, and T Burger. 2016. “Accounting for the Multiple Natures of Missing Values in Label-Free Quantitative Proteomics Data Sets to Compare Imputation Strategies.” <em>J Proteome Res</em> 15 (4): 1116–25. <a href="https://doi.org/10.1021/acs.jproteome.5b00981">https://doi.org/10.1021/acs.jproteome.5b00981</a>.</p>
 </div>
 <div id="ref-Paulovich:2010">
 <p>Paulovich, Amanda G, Dean Billheimer, Amy-Joan L Ham, Lorenzo Vega-Montoto, Paul A Rudnick, David L Tabb, Pei Wang, et al. 2010. “Interlaboratory Study Characterizing a Yeast Performance Standard for Benchmarking LC-MS Platform Performance.” <em>Mol. Cell. Proteomics</em> 9 (2): 242–54.</p>
 </div>
 <div id="ref-Sticker:2019">
-<p>Sticker, Adriaan, Ludger Goeminne, Lennart Martens, and Lieven Clement. 2019. “Robust Summarization and Inference in Proteome-Wide Label-Free Quantification.” <em>bioRxiv</em>. Cold Spring Harbor Laboratory. <a href="https://doi.org/10.1101/668863" class="uri">https://doi.org/10.1101/668863</a>.</p>
+<p>Sticker, Adriaan, Ludger Goeminne, Lennart Martens, and Lieven Clement. 2019. “Robust Summarization and Inference in Proteome-Wide Label-Free Quantification.” <em>bioRxiv</em>. <a href="https://doi.org/10.1101/668863">https://doi.org/10.1101/668863</a>.</p>
 </div>
 </div>
 </div>
@@ -500,7 +544,7 @@ Expression intensities for the protein <em>P02787ups|TRFE_HUMAN_UPS</em> (right,
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

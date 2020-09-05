@@ -50,6 +50,10 @@ zeroIsNA(object, i) replaces all 0 in object by NA. This
 is often necessary when third-party software assume that
 features that weren't quantified should be assigned an
 intensity of 0.
+infIsNA(object, i) replaces all infinite values in object by
+NA. This is necessary when third-party software divide
+expression data by zero values, for instance during custom
+normalization.
 nNA(object, i) return a list of missing value summaries. The
 first element nNA gives the percentage of missing values; the
 second element nNArows provides a table of the number of
@@ -92,7 +96,7 @@ See the Processing vignette for examples." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.2</span>
       </span>
     </div>
 
@@ -153,7 +157,7 @@ See the Processing vignette for examples." />
 
     <div class="ref-description">
     <p>This manual page describes the handling of missing values in
-<a href='QFeatures-class.html'>QFeatures</a> objects. In the following functions, if <code>object</code> is of
+<a href='QFeatures.html'>QFeatures</a> objects. In the following functions, if <code>object</code> is of
 class <code>QFeatures</code>, and optional assay index or name <code>i</code> can be
 specified to define the assay (by name of index) on which to
 operate.</p>
@@ -162,6 +166,10 @@ operate.</p>
 is often necessary when third-party software assume that
 features that weren't quantified should be assigned an
 intensity of 0.</p></li>
+<li><p><code>infIsNA(object, i)</code> replaces all infinite values in <code>object</code> by
+<code>NA</code>. This is necessary when third-party software divide
+expression data by zero values, for instance during custom
+normalization.</p></li>
 <li><p><code>nNA(object, i)</code> return a list of missing value summaries. The
 first element <code>nNA</code> gives the percentage of missing values; the
 second element <code>nNArows</code> provides a table of the number of
@@ -176,34 +184,46 @@ each sample of the assay(s).</p></li>
     </div>
 
     <pre class="usage"><span class='co'># S4 method for SummarizedExperiment,missing</span>
-<span class='fu'>zeroIsNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
+<span class='fu'>zeroIsNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
 
 <span class='co'># S4 method for QFeatures,integer</span>
-<span class='fu'>zeroIsNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
+<span class='fu'>zeroIsNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
 
 <span class='co'># S4 method for QFeatures,numeric</span>
-<span class='fu'>zeroIsNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
+<span class='fu'>zeroIsNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
 
 <span class='co'># S4 method for QFeatures,character</span>
-<span class='fu'>zeroIsNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
+<span class='fu'>zeroIsNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
 
 <span class='co'># S4 method for SummarizedExperiment,missing</span>
-<span class='fu'>nNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
+<span class='fu'>infIsNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
 
 <span class='co'># S4 method for QFeatures,integer</span>
-<span class='fu'>nNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
+<span class='fu'>infIsNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
 
 <span class='co'># S4 method for QFeatures,numeric</span>
-<span class='fu'>nNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
+<span class='fu'>infIsNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
 
 <span class='co'># S4 method for QFeatures,character</span>
-<span class='fu'>nNA</span>(<span class='no'>object</span>, <span class='no'>i</span>)
+<span class='fu'>infIsNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
+
+<span class='co'># S4 method for SummarizedExperiment,missing</span>
+<span class='fu'>nNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
+
+<span class='co'># S4 method for QFeatures,integer</span>
+<span class='fu'>nNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
+
+<span class='co'># S4 method for QFeatures,numeric</span>
+<span class='fu'>nNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
+
+<span class='co'># S4 method for QFeatures,character</span>
+<span class='fu'>nNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
 
 <span class='co'># S4 method for SummarizedExperiment</span>
-<span class='fu'>filterNA</span>(<span class='no'>object</span>, <span class='kw'>pNA</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+<span class='fu'>filterNA</span>(<span class='kw'>object</span>, pNA = <span class='fl'>0</span>)
 
 <span class='co'># S4 method for QFeatures</span>
-<span class='fu'>filterNA</span>(<span class='no'>object</span>, <span class='kw'>pNA</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='no'>i</span>)</pre>
+<span class='fu'>filterNA</span>(<span class='kw'>object</span>, pNA = <span class='fl'>0</span>, <span class='kw'>i</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -233,7 +253,8 @@ that contain any number of <code>NA</code> values are dropped.</p></td>
     <div class='dont-index'><p>The <code><a href='impute.html'>impute()</a></code> for <code>QFeautres</code> instances.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>se_na2</span></div><div class='output co'>#&gt; class: SummarizedExperiment 
+    <pre class="examples"><div class='input'><span class='kw'>se_na2</span>
+</div><div class='output co'>#&gt; class: SummarizedExperiment 
 #&gt; dim: 689 16 
 #&gt; metadata(3): MSnbaseFiles MSnbaseProcessing MSnbaseVersion
 #&gt; assays(1): ''
@@ -242,7 +263,8 @@ that contain any number of <code>NA</code> values are dropped.</p></td>
 #&gt; colnames(16): M1F1A M1F4A ... M2F8B M2F11B
 #&gt; colData names(1): nNA</div><div class='input'>
 <span class='co'>## Summary if missing values</span>
-<span class='fu'>nNA</span>(<span class='no'>ft_na</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; $nNA
+<span class='fu'>nNA</span>(<span class='kw'>ft_na</span>, <span class='fl'>1</span>)
+</div><div class='output co'>#&gt; $nNA
 #&gt; [1] 0.25
 #&gt; 
 #&gt; $nNArows
@@ -255,16 +277,19 @@ that contain any number of <code>NA</code> values are dropped.</p></td>
 #&gt; 2 1 0 
 #&gt; </div><div class='input'>
 <span class='co'>## Remove rows with missing values</span>
-<span class='fu'>assay</span>(<span class='fu'>filterNA</span>(<span class='no'>ft_na</span>, <span class='kw'>i</span> <span class='kw'>=</span> <span class='fl'>1</span>))</div><div class='output co'>#&gt;   A B  C
+<span class='fu'>assay</span>(<span class='fu'>filterNA</span>(<span class='kw'>ft_na</span>, i = <span class='fl'>1</span>))
+</div><div class='output co'>#&gt;   A B  C
 #&gt; b 2 6 10</div><div class='input'>
 <span class='co'>## Replace NAs by zero and back</span>
-<span class='no'>ft_na</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='impute.html'>impute</a></span>(<span class='no'>ft_na</span>, <span class='kw'>i</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"zero"</span>)
-<span class='fu'>assay</span>(<span class='no'>ft_na</span>)</div><div class='output co'>#&gt;   A B  C
+<span class='kw'>ft_na</span> <span class='op'>&lt;-</span> <span class='fu'><a href='impute.html'>impute</a></span>(<span class='kw'>ft_na</span>, i = <span class='fl'>1</span>, method = <span class='st'>"zero"</span>)
+<span class='fu'>assay</span>(<span class='kw'>ft_na</span>)
+</div><div class='output co'>#&gt;   A B  C
 #&gt; a 0 5  9
 #&gt; b 2 6 10
 #&gt; c 3 0 11
-#&gt; d 0 8 12</div><div class='input'><span class='no'>ft_na</span> <span class='kw'>&lt;-</span> <span class='fu'>zeroIsNA</span>(<span class='no'>ft_na</span>, <span class='fl'>1</span>)
-<span class='fu'>assay</span>(<span class='no'>ft_na</span>)</div><div class='output co'>#&gt;    A  B  C
+#&gt; d 0 8 12</div><div class='input'><span class='kw'>ft_na</span> <span class='op'>&lt;-</span> <span class='fu'>zeroIsNA</span>(<span class='kw'>ft_na</span>, <span class='fl'>1</span>)
+<span class='fu'>assay</span>(<span class='kw'>ft_na</span>)
+</div><div class='output co'>#&gt;    A  B  C
 #&gt; a NA  5  9
 #&gt; b  2  6 10
 #&gt; c  3 NA 11
@@ -284,7 +309,7 @@ that contain any number of <code>NA</code> values are dropped.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

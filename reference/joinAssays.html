@@ -73,7 +73,7 @@ assays in a QFeatures instance." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.2</span>
       </span>
     </div>
 
@@ -137,14 +137,14 @@ assays in a QFeatures instance." />
 assays in a <code>QFeatures</code> instance.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>joinAssays</span>(<span class='no'>x</span>, <span class='no'>i</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"joinedAssay"</span>)</pre>
+    <pre class="usage"><span class='fu'>joinAssays</span>(<span class='kw'>x</span>, <span class='kw'>i</span>, name = <span class='st'>"joinedAssay"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>An instance of class <a href='QFeatures-class.html'>QFeatures</a>.</p></td>
+      <td><p>An instance of class <a href='QFeatures.html'>QFeatures</a>.</p></td>
     </tr>
     <tr>
       <th>i</th>
@@ -180,22 +180,27 @@ the merged assay.</p>
 <p>The joined assay is linked to its parent assays through an <code>AssayLink</code>
 object. The link between the child assay and the parent assays is based on
 the assay row names, just like the procedure for joining the parent assays.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Laurent Gatto</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'>## -----------------------------------------------</span>
 <span class='co'>## An example QFeatures with 3 assays to be joined</span>
 <span class='co'>## -----------------------------------------------</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>feat2</span>)
-<span class='no'>feat2</span></div><div class='output co'>#&gt; An instance of class QFeatures containing 3 assays:
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>feat2</span>)
+<span class='kw'>feat2</span>
+</div><div class='output co'>#&gt; An instance of class QFeatures containing 3 assays:
 #&gt;  [1] assay1: SummarizedExperiment with 10 rows and 4 columns 
 #&gt;  [2] assay2: SummarizedExperiment with 4 rows and 4 columns 
 #&gt;  [3] assay3: SummarizedExperiment with 7 rows and 4 columns </div><div class='input'>
-<span class='no'>feat2</span> <span class='kw'>&lt;-</span> <span class='fu'>joinAssays</span>(<span class='no'>feat2</span>, <span class='fl'>1</span>:<span class='fl'>3</span>)
+<span class='kw'>feat2</span> <span class='op'>&lt;-</span> <span class='fu'>joinAssays</span>(<span class='kw'>feat2</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>)
 
 <span class='co'>## Individual assays to be joined, each with 4 samples and a</span>
 <span class='co'>## variable number of rows.</span>
-<span class='fu'>assay</span>(<span class='no'>feat2</span><span class='kw'>[[</span><span class='fl'>1</span>]])</div><div class='output co'>#&gt;   S1 S2 S3 S4
+<span class='fu'>assay</span>(<span class='kw'>feat2</span>[[<span class='fl'>1</span>]])
+</div><div class='output co'>#&gt;   S1 S2 S3 S4
 #&gt; a  1 11 21 31
 #&gt; b  2 12 22 32
 #&gt; c  3 13 23 33
@@ -205,11 +210,13 @@ the assay row names, just like the procedure for joining the parent assays.</p>
 #&gt; g  7 17 27 37
 #&gt; h  8 18 28 38
 #&gt; i  9 19 29 39
-#&gt; j 10 20 30 40</div><div class='input'><span class='fu'>assay</span>(<span class='no'>feat2</span><span class='kw'>[[</span><span class='fl'>2</span>]])</div><div class='output co'>#&gt;   S5 S6 S7 S8
+#&gt; j 10 20 30 40</div><div class='input'><span class='fu'>assay</span>(<span class='kw'>feat2</span>[[<span class='fl'>2</span>]])
+</div><div class='output co'>#&gt;   S5 S6 S7 S8
 #&gt; h  1  5  9 13
 #&gt; i  2  6 10 14
 #&gt; j  3  7 11 15
-#&gt; k  4  8 12 16</div><div class='input'><span class='fu'>assay</span>(<span class='no'>feat2</span><span class='kw'>[[</span><span class='fl'>3</span>]])</div><div class='output co'>#&gt;   S9 S10 S11 S12
+#&gt; k  4  8 12 16</div><div class='input'><span class='fu'>assay</span>(<span class='kw'>feat2</span>[[<span class='fl'>3</span>]])
+</div><div class='output co'>#&gt;   S9 S10 S11 S12
 #&gt; a  1   8  15  22
 #&gt; b  2   9  16  23
 #&gt; j  3  10  17  24
@@ -219,7 +226,8 @@ the assay row names, just like the procedure for joining the parent assays.</p>
 #&gt; n  7  14  21  28</div><div class='input'>
 <span class='co'>## The joined assay contains 14 rows (corresponding to the union</span>
 <span class='co'>## of those in the initial assays) and 12 samples</span>
-<span class='fu'>assay</span>(<span class='no'>feat2</span><span class='kw'>[[</span><span class='st'>"joinedAssay"</span>]])</div><div class='output co'>#&gt;   S1 S2 S3 S4 S5 S6 S7 S8 S9 S10 S11 S12
+<span class='fu'>assay</span>(<span class='kw'>feat2</span>[[<span class='st'>"joinedAssay"</span>]])
+</div><div class='output co'>#&gt;   S1 S2 S3 S4 S5 S6 S7 S8 S9 S10 S11 S12
 #&gt; j 10 20 30 40  3  7 11 15  3  10  17  24
 #&gt; a  1 11 21 31 NA NA NA NA  1   8  15  22
 #&gt; b  2 12 22 32 NA NA NA NA  2   9  16  23
@@ -235,7 +243,8 @@ the assay row names, just like the procedure for joining the parent assays.</p>
 #&gt; m NA NA NA NA NA NA NA NA  6  13  20  27
 #&gt; n NA NA NA NA NA NA NA NA  7  14  21  28</div><div class='input'>
 <span class='co'>## The individual rowData to be joined.</span>
-<span class='fu'>rowData</span>(<span class='no'>feat2</span><span class='kw'>[[</span><span class='fl'>1</span>]])</div><div class='output co'>#&gt; DataFrame with 10 rows and 2 columns
+<span class='fu'>rowData</span>(<span class='kw'>feat2</span>[[<span class='fl'>1</span>]])
+</div><div class='output co'>#&gt; DataFrame with 10 rows and 2 columns
 #&gt;          Prot         x
 #&gt;   &lt;character&gt; &lt;numeric&gt;
 #&gt; a          Pa  2.067646
@@ -247,13 +256,15 @@ the assay row names, just like the procedure for joining the parent assays.</p>
 #&gt; g          Pg  0.316521
 #&gt; h          Ph  0.976154
 #&gt; i          Pi  0.117673
-#&gt; j          Pj  2.420734</div><div class='input'><span class='fu'>rowData</span>(<span class='no'>feat2</span><span class='kw'>[[</span><span class='fl'>2</span>]])</div><div class='output co'>#&gt; DataFrame with 4 rows and 3 columns
+#&gt; j          Pj  2.420734</div><div class='input'><span class='fu'>rowData</span>(<span class='kw'>feat2</span>[[<span class='fl'>2</span>]])
+</div><div class='output co'>#&gt; DataFrame with 4 rows and 3 columns
 #&gt;          Prot          x         y
 #&gt;   &lt;character&gt;  &lt;numeric&gt; &lt;numeric&gt;
 #&gt; h          Ph -0.0463617  1.547125
 #&gt; i          Pi  0.6833728 -1.513248
 #&gt; j          Pj  0.7917619  0.574492
-#&gt; k          Pk -0.5226943  1.404666</div><div class='input'><span class='fu'>rowData</span>(<span class='no'>feat2</span><span class='kw'>[[</span><span class='fl'>3</span>]])</div><div class='output co'>#&gt; DataFrame with 7 rows and 3 columns
+#&gt; k          Pk -0.5226943  1.404666</div><div class='input'><span class='fu'>rowData</span>(<span class='kw'>feat2</span>[[<span class='fl'>3</span>]])
+</div><div class='output co'>#&gt; DataFrame with 7 rows and 3 columns
 #&gt;          Prot          x         y
 #&gt;   &lt;character&gt;  &lt;numeric&gt; &lt;numeric&gt;
 #&gt; a          Pa -0.0762406 -0.420478
@@ -268,7 +279,8 @@ the assay row names, just like the procedure for joining the parent assays.</p>
 <span class='co'>## value of 'Prot' for row 'j' is always 'Pj'). The variable 'y' is</span>
 <span class='co'>## missing in 'assay1' and while variable 'x' is present is all</span>
 <span class='co'>## assays, the values for the shared rows are different.</span>
-<span class='fu'>rowData</span>(<span class='no'>feat2</span><span class='kw'>[[</span><span class='st'>"joinedAssay"</span>]])</div><div class='output co'>#&gt; DataFrame with 14 rows and 1 column
+<span class='fu'>rowData</span>(<span class='kw'>feat2</span>[[<span class='st'>"joinedAssay"</span>]])
+</div><div class='output co'>#&gt; DataFrame with 14 rows and 1 column
 #&gt;            Prot
 #&gt;     &lt;character&gt;
 #&gt; j            Pj
@@ -297,7 +309,7 @@ the assay row names, just like the procedure for joining the parent assays.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

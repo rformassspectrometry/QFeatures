@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.2</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="QFeatures_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Quantitative features for mass spectrometry data</h1>
@@ -97,7 +97,7 @@
     
         <div class="abstract">
       <p class="abstract">Abstract</p>
-      This vignette describes the functionality implemented in the QFeatures package. QFeatures provides infrastructure to manage and process quantitative features for high-throughput mass spectrometry assays, including proteomics and metabolomics.
+      <p>This vignette describes the functionality implemented in the QFeatures package. QFeatures provides infrastructure to manage and process quantitative features for high-throughput mass spectrometry assays, including proteomics and metabolomics.</p>
     </div>
     
 <script type="text/javascript">
@@ -121,19 +121,25 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 </p>
 </div>
 <p>In the following sections, we are going to demonstrate how to create a single-assay <code>QFeatures</code> objects starting from a spreadsheet, how to compute the next assays (peptides and proteins), and how these can be manipulated and explored.</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"QFeatures"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st"><a href="https://github.com/RforMassSpectrometry/QFeatures">"QFeatures"</a></span>)
+</pre></div>
 </div>
 <div id="creating-qfeatures-object" class="section level1">
 <h1 class="hasAnchor">
 <a href="#creating-qfeatures-object" class="anchor"></a>Creating <code>QFeatures</code> object</h1>
-<p>While <code>QFeatures</code> objects can be created manually (see <code><a href="../reference/QFeatures-class.html">?QFeatures</a></code> for details), most users will probably possess quantitative data in a spreadsheet or a dataframe. In such cases, the easiest is to use the <code>readQFeatures</code> function to extract the quantitative data and metadata columns. Below, we load the <code>hlpsms</code> dataframe that contains data for 28 PSMs from the TMT-10plex <em>hyper</em>LOPIT spatial proteomics experiment from <span class="citation">(Christoforou et al. 2016)</span>. The <code>ecol</code> argument specifies that columns 1 to 10 contain quantitation data, and that the assay should be named <code>psms</code> in the returned <code>QFeatures</code> object, to reflect the nature of the data.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">hlpsms</span>)
-<span class="no">hl</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/readQFeatures.html">readQFeatures</a></span>(<span class="no">hlpsms</span>, <span class="kw">ecol</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">10</span>, <span class="kw">name</span> <span class="kw">=</span> <span class="st">"psms"</span>)
-<span class="no">hl</span></pre></body></html></div>
+<p>While <code>QFeatures</code> objects can be created manually (see <code><a href="../reference/QFeatures.html">?QFeatures</a></code> for details), most users will probably possess quantitative data in a spreadsheet or a dataframe. In such cases, the easiest is to use the <code>readQFeatures</code> function to extract the quantitative data and metadata columns. Below, we load the <code>hlpsms</code> dataframe that contains data for 28 PSMs from the TMT-10plex <em>hyper</em>LOPIT spatial proteomics experiment from <span class="citation">(Christoforou et al. 2016)</span>. The <code>ecol</code> argument specifies that columns 1 to 10 contain quantitation data, and that the assay should be named <code>psms</code> in the returned <code>QFeatures</code> object, to reflect the nature of the data.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="kw">hlpsms</span>)
+<span class="kw">hl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readQFeatures.html">readQFeatures</a></span>(<span class="kw">hlpsms</span>, ecol = <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, name = <span class="st">"psms"</span>)
+<span class="kw">hl</span>
+</pre></div>
 <pre><code>## An instance of class QFeatures containing 1 assays:
 ##  [1] psms: SummarizedExperiment with 3010 rows and 10 columns</code></pre>
 <p>Below, we see that we can extract an assay using its index or its name. The individual assays are stored as <em>SummerizedExperiment</em> object and further access its quantitative data and metadata using the <code>assay</code> and <code>rowData</code> functions</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">hl</span><span class="kw">[[</span><span class="fl">1</span>]]</pre></body></html></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="kw">hl</span>[[<span class="fl">1</span>]]
+</pre></div>
 <pre><code>## class: SummarizedExperiment 
 ## dim: 3010 10 
 ## metadata(0):
@@ -142,7 +148,9 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 ## rowData names(18): Sequence ProteinDescriptions ... RTmin markers
 ## colnames(10): X126 X127C ... X130N X131
 ## colData names(0):</code></pre>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">hl</span><span class="kw">[[</span><span class="st">"psms"</span>]]</pre></body></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="kw">hl</span>[[<span class="st">"psms"</span>]]
+</pre></div>
 <pre><code>## class: SummarizedExperiment 
 ## dim: 3010 10 
 ## metadata(0):
@@ -151,7 +159,9 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 ## rowData names(18): Sequence ProteinDescriptions ... RTmin markers
 ## colnames(10): X126 X127C ... X130N X131
 ## colData names(0):</code></pre>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu">assay</span>(<span class="no">hl</span><span class="kw">[[</span><span class="st">"psms"</span>]]))</pre></body></html></div>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu">assay</span>(<span class="kw">hl</span>[[<span class="st">"psms"</span>]]))
+</pre></div>
 <pre><code>##         X126      X127C       X127N      X128C       X128N      X129C
 ## 1 0.12283431 0.08045915 0.070804055 0.09386901 0.051815695 0.13034383
 ## 2 0.35268185 0.14162381 0.167523880 0.07843497 0.071087436 0.03214548
@@ -166,7 +176,9 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 ## 4 0.18015910 0.035329902 0.12166589 0.10014038
 ## 5 0.17555789 0.007088253 0.02884754 0.02307803
 ## 6 0.01726511 0.172651119 0.37007905 0.29732174</code></pre>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu">rowData</span>(<span class="no">hl</span><span class="kw">[[</span><span class="st">"psms"</span>]]))</pre></body></html></div>
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu">rowData</span>(<span class="kw">hl</span>[[<span class="st">"psms"</span>]]))
+</pre></div>
 <pre><code>## DataFrame with 6 rows and 18 columns
 ##      Sequence ProteinDescriptions NbProteins ProteinGroupAccessions
 ##   &lt;character&gt;         &lt;character&gt;  &lt;integer&gt;            &lt;character&gt;
@@ -202,15 +214,21 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 ## 6        -0.67     21.27 Nucleus - ...</code></pre>
 <p>For further details on how to manipulate such objects, refer to the <em><a href="https://bioconductor.org/packages/3.12/MultiAssayExperiment">MultiAssayExperiment</a></em> <span class="citation">(Ramos et al. 2017)</span> and <em><a href="https://bioconductor.org/packages/3.12/SummerizedExperiment">SummerizedExperiment</a></em> <span class="citation">(Morgan et al. 2019)</span> packages.</p>
 <p>As illustrated in figure @ref(fig:featuresplot), an central characteristic of <code>QFeatures</code> objects is the aggregative relation between their assays. This can be obtained with the <code>aggregateFeatures</code> function that will aggregate quantitative features from one assay into a new one. In the next code chunk, we aggregate PSM-level data into peptide by grouping all PSMs that were matched the same peptide sequence. Below, the aggregation function is set, as an example, to the mean. The new assay is named <em>peptides</em>.</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">hl</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-aggregate.html">aggregateFeatures</a></span>(<span class="no">hl</span>, <span class="st">"psms"</span>, <span class="st">"Sequence"</span>, <span class="kw">name</span> <span class="kw">=</span> <span class="st">"peptides"</span>, <span class="kw">fun</span> <span class="kw">=</span> <span class="no">colMeans</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb12"><pre class="downlit">
+<span class="kw">hl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/aggregateFeatures.html">aggregateFeatures</a></span>(<span class="kw">hl</span>, <span class="st">"psms"</span>, <span class="st">"Sequence"</span>, name = <span class="st">"peptides"</span>, fun = <span class="kw">colMeans</span>)
+</pre></div>
 <pre><code>## Your row data contain missing values. Please read the relevant
 ## section(s) in the aggregateFeatures manual page regarding the effects
 ## of missing values on data aggregation.</code></pre>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">hl</span></pre></body></html></div>
+<div class="sourceCode" id="cb14"><pre class="downlit">
+<span class="kw">hl</span>
+</pre></div>
 <pre><code>## An instance of class QFeatures containing 2 assays:
 ##  [1] psms: SummarizedExperiment with 3010 rows and 10 columns 
 ##  [2] peptides: SummarizedExperiment with 2923 rows and 10 columns</code></pre>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">hl</span><span class="kw">[[</span><span class="st">"peptides"</span>]]</pre></body></html></div>
+<div class="sourceCode" id="cb16"><pre class="downlit">
+<span class="kw">hl</span>[[<span class="st">"peptides"</span>]]
+</pre></div>
 <pre><code>## class: SummarizedExperiment 
 ## dim: 2923 10 
 ## metadata(0):
@@ -220,13 +238,17 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 ## colnames(10): X126 X127C ... X130N X131
 ## colData names(0):</code></pre>
 <p>Below, we repeat the aggregation operation by grouping peptides into proteins as defined by the <em>ProteinGroupAccessions</em> variable.</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="no">hl</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-aggregate.html">aggregateFeatures</a></span>(<span class="no">hl</span>, <span class="st">"peptides"</span>, <span class="st">"ProteinGroupAccessions"</span>, <span class="kw">name</span> <span class="kw">=</span> <span class="st">"proteins"</span>, <span class="kw">fun</span> <span class="kw">=</span> <span class="no">colMeans</span>)
-<span class="no">hl</span></pre></body></html></div>
+<div class="sourceCode" id="cb18"><pre class="downlit">
+<span class="kw">hl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/aggregateFeatures.html">aggregateFeatures</a></span>(<span class="kw">hl</span>, <span class="st">"peptides"</span>, <span class="st">"ProteinGroupAccessions"</span>, name = <span class="st">"proteins"</span>, fun = <span class="kw">colMeans</span>)
+<span class="kw">hl</span>
+</pre></div>
 <pre><code>## An instance of class QFeatures containing 3 assays:
 ##  [1] psms: SummarizedExperiment with 3010 rows and 10 columns 
 ##  [2] peptides: SummarizedExperiment with 2923 rows and 10 columns 
 ##  [3] proteins: SummarizedExperiment with 1596 rows and 10 columns</code></pre>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">hl</span><span class="kw">[[</span><span class="st">"proteins"</span>]]</pre></body></html></div>
+<div class="sourceCode" id="cb20"><pre class="downlit">
+<span class="kw">hl</span>[[<span class="st">"proteins"</span>]]
+</pre></div>
 <pre><code>## class: SummarizedExperiment 
 ## dim: 1596 10 
 ## metadata(0):
@@ -236,11 +258,15 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 ## colnames(10): X126 X127C ... X130N X131
 ## colData names(0):</code></pre>
 <p>The sample assayed in a <code>QFeatures</code> object can be documented in the <code>colData</code> slot. The <code>hl</code> data doens’t currently possess any sample metadata. These can be addedd as a new <code>DataFrame</code> with matching names (i.e. the <code>DataFrame</code> rownames must be identical assay’s colnames) or can be added one variable at at time, as shown below.</p>
-<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="fu">colData</span>(<span class="no">hl</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb22"><pre class="downlit">
+<span class="fu">colData</span>(<span class="kw">hl</span>)
+</pre></div>
 <pre><code>## DataFrame with 10 rows and 0 columns</code></pre>
-<div class="sourceCode" id="cb24"><html><body><pre class="r"><span class="no">hl</span>$<span class="no">tag</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"126"</span>, <span class="st">"127N"</span>, <span class="st">"127C"</span>, <span class="st">"128N"</span>, <span class="st">"128C"</span>, <span class="st">"129N"</span>, <span class="st">"129C"</span>,
+<div class="sourceCode" id="cb24"><pre class="downlit">
+<span class="kw">hl</span><span class="op">$</span><span class="kw">tag</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"126"</span>, <span class="st">"127N"</span>, <span class="st">"127C"</span>, <span class="st">"128N"</span>, <span class="st">"128C"</span>, <span class="st">"129N"</span>, <span class="st">"129C"</span>,
             <span class="st">"130N"</span>, <span class="st">"130C"</span>, <span class="st">"131"</span>)
-<span class="fu">colData</span>(<span class="no">hl</span>)</pre></body></html></div>
+<span class="fu">colData</span>(<span class="kw">hl</span>)
+</pre></div>
 <pre><code>## DataFrame with 10 rows and 1 column
 ##               tag
 ##       &lt;character&gt;
@@ -260,73 +286,89 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 <a href="#subsetting" class="anchor"></a>Subsetting</h1>
 <p>One particularity of the <code>QFeatures</code> infrastructure is that the features of the constitutive assays are linked through an aggregative relation. This relation is recorded when creating new assays with <code>aggregateFeatures</code> and is exploited when subsetting <code>QFeature</code> by their feature names.</p>
 <p>In the example below, we are interested in the Stat3B isoform of the Signal transducer and activator of transcription 3 (STAT3) with accession number P42227-2. This accession number corresponds to a feature name in the <em>proteins</em> assay. But this protein row was computed from 8 peptide rows in the <em>peptides</em> assay, themselves resulting from the aggregation of 8 rows in the <em>psms</em> assay.</p>
-<div class="sourceCode" id="cb26"><html><body><pre class="r"><span class="no">stat3</span> <span class="kw">&lt;-</span> <span class="no">hl</span>[<span class="st">"P42227-2"</span>, , ]
-<span class="no">stat3</span></pre></body></html></div>
+<div class="sourceCode" id="cb26"><pre class="downlit">
+<span class="kw">stat3</span> <span class="op">&lt;-</span> <span class="kw">hl</span>[<span class="st">"P42227-2"</span>, , ]
+<span class="kw">stat3</span>
+</pre></div>
 <pre><code>## An instance of class QFeatures containing 3 assays:
 ##  [1] psms: SummarizedExperiment with 9 rows and 10 columns 
 ##  [2] peptides: SummarizedExperiment with 8 rows and 10 columns 
 ##  [3] proteins: SummarizedExperiment with 1 rows and 10 columns</code></pre>
 <p>We can easily visualise this new <em>QFeatures</em> object using <code>ggplot2</code> once converted into a <code>data.frame</code>.</p>
-<div class="sourceCode" id="cb28"><html><body><pre class="r"><span class="no">stat3_df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="fu">longFormat</span>(<span class="no">stat3</span>))
-<span class="no">stat3_df</span>$<span class="no">assay</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="no">stat3_df</span>$<span class="no">assay</span>,
-                        <span class="kw">levels</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"psms"</span>, <span class="st">"peptides"</span>, <span class="st">"proteins"</span>))
+<div class="sourceCode" id="cb28"><pre class="downlit">
+<span class="kw">stat3_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="fu">longFormat</span>(<span class="kw">stat3</span>))
+<span class="kw">stat3_df</span><span class="op">$</span><span class="kw">assay</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="kw">stat3_df</span><span class="op">$</span><span class="kw">assay</span>,
+                        levels = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"psms"</span>, <span class="st">"peptides"</span>, <span class="st">"proteins"</span>))
 
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"ggplot2"</span>)
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">stat3_df</span>,
-       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">colname</span>,
-           <span class="kw">y</span> <span class="kw">=</span> <span class="no">value</span>,
-           <span class="kw">group</span> <span class="kw">=</span> <span class="no">rowname</span>)) +
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() + <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() +
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span>(~ <span class="no">assay</span>)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st"><a href="http://ggplot2.tidyverse.org">"ggplot2"</a></span>)
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(data = <span class="kw">stat3_df</span>,
+       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x = <span class="kw">colname</span>,
+           y = <span class="kw">value</span>,
+           group = <span class="kw">rowname</span>)) <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span>(<span class="op">~</span> <span class="kw">assay</span>)
+</pre></div>
 <p><img src="QFeatures_files/figure-html/plotstat3-1.png" width="700"></p>
 <p>Below we repeat the same operation for the Signal transducer and activator of transcription 1 (STAT1) and 3 (STAT3) accession numbers, namely P42227-2 and P42225. We obtain a new <code>QFeatures</code> instance containing 2 proteins, 9 peptides and 10 PSMS. From this, we can readily conclude that STAT1 was identified by a single PSM/peptide.</p>
-<div class="sourceCode" id="cb29"><html><body><pre class="r"><span class="no">stat</span> <span class="kw">&lt;-</span> <span class="no">hl</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"P42227-2"</span>, <span class="st">"P42225"</span>), , ]
-<span class="no">stat</span></pre></body></html></div>
+<div class="sourceCode" id="cb29"><pre class="downlit">
+<span class="kw">stat</span> <span class="op">&lt;-</span> <span class="kw">hl</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"P42227-2"</span>, <span class="st">"P42225"</span>), , ]
+<span class="kw">stat</span>
+</pre></div>
 <pre><code>## An instance of class QFeatures containing 3 assays:
 ##  [1] psms: SummarizedExperiment with 10 rows and 10 columns 
 ##  [2] peptides: SummarizedExperiment with 9 rows and 10 columns 
 ##  [3] proteins: SummarizedExperiment with 2 rows and 10 columns</code></pre>
 <p>Below, we visualise the expression profiles for the two proteins.</p>
-<div class="sourceCode" id="cb31"><html><body><pre class="r"><span class="no">stat_df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="fu">longFormat</span>(<span class="no">stat</span>))
-<span class="no">stat_df</span>$<span class="no">stat3</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="no">stat_df</span>$<span class="no">rowname</span> <span class="kw">%in%</span> <span class="no">stat3_df</span>$<span class="no">rowname</span>,
+<div class="sourceCode" id="cb31"><pre class="downlit">
+<span class="kw">stat_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="fu">longFormat</span>(<span class="kw">stat</span>))
+<span class="kw">stat_df</span><span class="op">$</span><span class="kw">stat3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="kw">stat_df</span><span class="op">$</span><span class="kw">rowname</span> <span class="op">%in%</span> <span class="kw">stat3_df</span><span class="op">$</span><span class="kw">rowname</span>,
                         <span class="st">"STAT3"</span>, <span class="st">"STAT1"</span>)
-<span class="no">stat_df</span>$<span class="no">assay</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="no">stat_df</span>$<span class="no">assay</span>,
-                        <span class="kw">levels</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"psms"</span>, <span class="st">"peptides"</span>, <span class="st">"proteins"</span>))
+<span class="kw">stat_df</span><span class="op">$</span><span class="kw">assay</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="kw">stat_df</span><span class="op">$</span><span class="kw">assay</span>,
+                        levels = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"psms"</span>, <span class="st">"peptides"</span>, <span class="st">"proteins"</span>))
 
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">stat_df</span>,
-       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">colname</span>,
-           <span class="kw">y</span> <span class="kw">=</span> <span class="no">value</span>,
-           <span class="kw">group</span> <span class="kw">=</span> <span class="no">rowname</span>)) +
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() + <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() +
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span>(<span class="no">stat3</span> ~ <span class="no">assay</span>)</pre></body></html></div>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(data = <span class="kw">stat_df</span>,
+       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x = <span class="kw">colname</span>,
+           y = <span class="kw">value</span>,
+           group = <span class="kw">rowname</span>)) <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span>(<span class="kw">stat3</span> <span class="op">~</span> <span class="kw">assay</span>)
+</pre></div>
 <p><img src="QFeatures_files/figure-html/plotstat-1.png" width="700"></p>
 <p>The subsetting by feature names is also available as a call to the <code>subsetByFeature</code> function, for use with the pipe operator.</p>
-<div class="sourceCode" id="cb32"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">magrittr</span>)
-<span class="no">hl</span> <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="../reference/QFeatures-subsetBy.html">subsetByFeature</a></span>(<span class="st">"P42227-2"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb32"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">magrittr</span>)
+<span class="kw">hl</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="../reference/subsetByFeature.html">subsetByFeature</a></span>(<span class="st">"P42227-2"</span>)
+</pre></div>
 <pre><code>## An instance of class QFeatures containing 3 assays:
 ##  [1] psms: SummarizedExperiment with 9 rows and 10 columns 
 ##  [2] peptides: SummarizedExperiment with 8 rows and 10 columns 
 ##  [3] proteins: SummarizedExperiment with 1 rows and 10 columns</code></pre>
-<div class="sourceCode" id="cb34"><html><body><pre class="r"><span class="no">hl</span> <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="../reference/QFeatures-subsetBy.html">subsetByFeature</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"P42227-2"</span>, <span class="st">"P42225"</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb34"><pre class="downlit">
+<span class="kw">hl</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="../reference/subsetByFeature.html">subsetByFeature</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"P42227-2"</span>, <span class="st">"P42225"</span>))
+</pre></div>
 <pre><code>## An instance of class QFeatures containing 3 assays:
 ##  [1] psms: SummarizedExperiment with 10 rows and 10 columns 
 ##  [2] peptides: SummarizedExperiment with 9 rows and 10 columns 
 ##  [3] proteins: SummarizedExperiment with 2 rows and 10 columns</code></pre>
 <p>and possibly</p>
-<div class="sourceCode" id="cb36"><html><body><pre class="r"><span class="no">hl</span> <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="../reference/QFeatures-subsetBy.html">subsetByFeature</a></span>(<span class="st">"P42227-2"</span>) <span class="kw">%&gt;%</span>
-    <span class="fu">longFormat</span>() <span class="kw">%&gt;%</span>
-    <span class="no">as.data.frame</span> <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">colname</span>,
-               <span class="kw">y</span> <span class="kw">=</span> <span class="no">value</span>,
-               <span class="kw">group</span> <span class="kw">=</span> <span class="no">rowname</span>)) +
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() +
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span>(~ <span class="no">assay</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb36"><pre class="downlit">
+<span class="kw">hl</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="../reference/subsetByFeature.html">subsetByFeature</a></span>(<span class="st">"P42227-2"</span>) <span class="op">%&gt;%</span>
+    <span class="fu">longFormat</span>() <span class="op">%&gt;%</span>
+    <span class="kw">as.data.frame</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x = <span class="kw">colname</span>,
+               y = <span class="kw">value</span>,
+               group = <span class="kw">rowname</span>)) <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span>(<span class="op">~</span> <span class="kw">assay</span>)
+</pre></div>
 <p>to reproduce the line plot.</p>
 <p>Finally, a simply <code>shiny</code> app allows to explore and visualise the respective assays of a <code>QFeatures</code> object.</p>
-<div class="sourceCode" id="cb37"><html><body><pre class="r"><span class="fu"><a href="../reference/display.html">display</a></span>(<span class="no">stat</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb37"><pre class="downlit">
+<span class="fu"><a href="../reference/display.html">display</a></span>(<span class="kw">stat</span>)
+</pre></div>
 <div class="figure" style="text-align: center">
 <img src="figs/display_hmap.png" alt="`QFeatures` interactive interface: heatmap of the peptide assay data." width="100%"><p class="caption">
 <code>QFeatures</code> interactive interface: heatmap of the peptide assay data.
@@ -348,39 +390,51 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 <h1 class="hasAnchor">
 <a href="#filtering" class="anchor"></a>Filtering</h1>
 <p>QFeatures is assays can also be filtered based on variables in their respective row data slots using the <code>filterFeatures</code> function. The filters can be defined using the formula interface or using <code>AnnotationFilter</code> objects from the <em><a href="https://bioconductor.org/packages/3.12/AnnotationFilter">AnnotationFilter</a></em> package <span class="citation">(Morgan and Rainer 2019)</span>. In addition to the pre-defined filters (such as <code>SymbolFilter</code>, <code>ProteinIdFilter</code>, … that filter on gene symbol, protein identifier, …), this package allows users to define arbitrary character or numeric filters using the <code>VariableFilter</code>.</p>
-<div class="sourceCode" id="cb38"><html><body><pre class="r"><span class="no">mito_filter</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-filtering.html">VariableFilter</a></span>(<span class="kw">field</span> <span class="kw">=</span> <span class="st">"markers"</span>,
-                              <span class="kw">value</span> <span class="kw">=</span> <span class="st">"Mitochondrion"</span>,
-                              <span class="kw">condition</span> <span class="kw">=</span> <span class="st">"=="</span>)
-<span class="no">mito_filter</span></pre></body></html></div>
+<div class="sourceCode" id="cb38"><pre class="downlit">
+<span class="kw">mito_filter</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-filtering.html">VariableFilter</a></span>(field = <span class="st">"markers"</span>,
+                              value = <span class="st">"Mitochondrion"</span>,
+                              condition = <span class="st">"=="</span>)
+<span class="kw">mito_filter</span>
+</pre></div>
 <pre><code>## class: CharacterVariableFilter 
 ## condition: == 
 ## value: Mitochondrion</code></pre>
-<div class="sourceCode" id="cb40"><html><body><pre class="r"><span class="no">qval_filter</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-filtering.html">VariableFilter</a></span>(<span class="kw">field</span> <span class="kw">=</span> <span class="st">"qValue"</span>,
-                              <span class="kw">value</span> <span class="kw">=</span> <span class="fl">0.001</span>,
-                              <span class="kw">condition</span> <span class="kw">=</span> <span class="st">"&lt;="</span>)
-<span class="no">qval_filter</span></pre></body></html></div>
+<div class="sourceCode" id="cb40"><pre class="downlit">
+<span class="kw">qval_filter</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-filtering.html">VariableFilter</a></span>(field = <span class="st">"qValue"</span>,
+                              value = <span class="fl">0.001</span>,
+                              condition = <span class="st">"&lt;="</span>)
+<span class="kw">qval_filter</span>
+</pre></div>
 <pre><code>## class: NumericVariableFilter 
 ## condition: &lt;= 
 ## value: 0.001</code></pre>
 <p>These filter can then readily be applied to all assays’ row data slots. The <code>mito_filter</code> will return all PSMs, peptides and proteins that were annotated as localising to the mitochondrion.</p>
-<div class="sourceCode" id="cb42"><html><body><pre class="r"><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span>(<span class="no">hl</span>, <span class="no">mito_filter</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb42"><pre class="downlit">
+<span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span>(<span class="kw">hl</span>, <span class="kw">mito_filter</span>)
+</pre></div>
 <pre><code>## An instance of class QFeatures containing 3 assays:
 ##  [1] psms: SummarizedExperiment with 167 rows and 10 columns 
 ##  [2] peptides: SummarizedExperiment with 162 rows and 10 columns 
 ##  [3] proteins: SummarizedExperiment with 113 rows and 10 columns</code></pre>
 <p>The <code>qval_filter</code>, on the other hand, will only return a subset of PSMs, because the <code>qValue</code> variable is only present in the <code>psms</code> assays. The q-values are only relevant to PSMs and that variable was dropped from the other assays.</p>
-<div class="sourceCode" id="cb44"><html><body><pre class="r"><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span>(<span class="no">hl</span>, <span class="no">qval_filter</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb44"><pre class="downlit">
+<span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span>(<span class="kw">hl</span>, <span class="kw">qval_filter</span>)
+</pre></div>
 <pre><code>## harmonizing input:
 ##   removing 20 sampleMap rows not in names(experiments)</code></pre>
 <pre><code>## An instance of class QFeatures containing 1 assays:
 ##  [1] psms: SummarizedExperiment with 2466 rows and 10 columns</code></pre>
 <p>The same filters can be created using the forumla interface:</p>
-<div class="sourceCode" id="cb47"><html><body><pre class="r"><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span>(<span class="no">hl</span>, ~ <span class="no">markers</span> <span class="kw">==</span> <span class="st">"Mitochondrion"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb47"><pre class="downlit">
+<span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span>(<span class="kw">hl</span>, <span class="op">~</span> <span class="kw">markers</span> <span class="op">==</span> <span class="st">"Mitochondrion"</span>)
+</pre></div>
 <pre><code>## An instance of class QFeatures containing 3 assays:
 ##  [1] psms: SummarizedExperiment with 167 rows and 10 columns 
 ##  [2] peptides: SummarizedExperiment with 162 rows and 10 columns 
 ##  [3] proteins: SummarizedExperiment with 113 rows and 10 columns</code></pre>
-<div class="sourceCode" id="cb49"><html><body><pre class="r"><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span>(<span class="no">hl</span>, ~ <span class="no">qValue</span> <span class="kw">&lt;=</span> <span class="fl">0.001</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb49"><pre class="downlit">
+<span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span>(<span class="kw">hl</span>, <span class="op">~</span> <span class="kw">qValue</span> <span class="op">&lt;=</span> <span class="fl">0.001</span>)
+</pre></div>
 <pre><code>## harmonizing input:
 ##   removing 20 sampleMap rows not in names(experiments)</code></pre>
 <pre><code>## An instance of class QFeatures containing 1 assays:
@@ -389,18 +443,17 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 <div id="session-information" class="section level1 unnumbered">
 <h1 class="hasAnchor">
 <a href="#session-information" class="anchor"></a>Session information</h1>
-<pre><code>## R version 4.0.0 (2020-04-24)
+<pre><code>## R version 4.0.2 Patched (2020-09-02 r79126)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 14.04.5 LTS
+## Running under: Ubuntu 20.04.1 LTS
 ## 
 ## Matrix products: default
-## BLAS:   /home/travis/R-bin/lib/R/lib/libRblas.so
-## LAPACK: /home/travis/R-bin/lib/R/lib/libRlapack.so
+## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-openmp/libopenblasp-r0.3.8.so
 ## 
 ## locale:
 ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
 ##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=C             
 ##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
 ##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
 ## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
@@ -411,46 +464,47 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 ## 
 ## other attached packages:
 ##  [1] magrittr_1.5                ggplot2_3.3.2              
-##  [3] QFeatures_0.99.1            MultiAssayExperiment_1.15.3
+##  [3] QFeatures_0.99.2            MultiAssayExperiment_1.15.3
 ##  [5] SummarizedExperiment_1.19.6 DelayedArray_0.15.7        
 ##  [7] matrixStats_0.56.0          Matrix_1.2-18              
-##  [9] Biobase_2.49.0              GenomicRanges_1.41.5       
-## [11] GenomeInfoDb_1.25.10        IRanges_2.23.10            
+##  [9] Biobase_2.49.1              GenomicRanges_1.41.6       
+## [11] GenomeInfoDb_1.25.11        IRanges_2.23.10            
 ## [13] S4Vectors_0.27.12           BiocGenerics_0.35.4        
 ## [15] BiocStyle_2.17.0           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] tidyselect_1.1.0        xfun_0.16               purrr_0.3.4            
-##  [4] lattice_0.20-41         generics_0.0.2          vctrs_0.3.2            
-##  [7] colorspace_1.4-1        htmltools_0.5.0         yaml_2.2.1             
-## [10] rlang_0.4.7             pkgdown_1.5.1           pillar_1.4.6           
-## [13] withr_2.2.0             glue_1.4.1              GenomeInfoDbData_1.2.3 
-## [16] lifecycle_0.2.0         stringr_1.4.0           zlibbioc_1.35.0        
-## [19] ProtGenerics_1.19.3     munsell_0.5.0           gtable_0.3.0           
-## [22] memoise_1.1.0           evaluate_0.14           labeling_0.3           
-## [25] knitr_1.29.4            highr_0.8               backports_1.1.8        
-## [28] scales_1.1.1            BiocManager_1.30.10     desc_1.2.0             
-## [31] XVector_0.29.3          farver_2.0.3            fs_1.4.2               
-## [34] MsCoreUtils_1.1.4       digest_0.6.25           stringi_1.4.6          
-## [37] dplyr_1.0.1             bookdown_0.20           grid_4.0.0             
-## [40] rprojroot_1.3-2         tools_4.0.0             bitops_1.0-6           
-## [43] RCurl_1.98-1.2          lazyeval_0.2.2          tibble_3.0.3           
-## [46] pkgconfig_2.0.3         crayon_1.3.4            MASS_7.3-51.5          
-## [49] ellipsis_0.3.1          assertthat_0.2.1        rmarkdown_2.3          
-## [52] AnnotationFilter_1.13.0 R6_2.4.1                compiler_4.0.0</code></pre>
+##  [1] lattice_0.20-41         assertthat_0.2.1        rprojroot_1.3-2        
+##  [4] digest_0.6.25           R6_2.4.1                backports_1.1.9        
+##  [7] evaluate_0.14           highr_0.8               pillar_1.4.6           
+## [10] zlibbioc_1.35.0         rlang_0.4.7             lazyeval_0.2.2         
+## [13] rmarkdown_2.3           pkgdown_1.5.1.9000      labeling_0.3           
+## [16] desc_1.2.0              stringr_1.4.0           ProtGenerics_1.21.0    
+## [19] RCurl_1.98-1.2          munsell_0.5.0           compiler_4.0.2         
+## [22] xfun_0.16               pkgconfig_2.0.3         systemfonts_0.3.0      
+## [25] htmltools_0.5.0         tidyselect_1.1.0        tibble_3.0.3           
+## [28] GenomeInfoDbData_1.2.3  bookdown_0.20           withr_2.2.0            
+## [31] crayon_1.3.4            dplyr_1.0.2             MASS_7.3-52            
+## [34] bitops_1.0-6            grid_4.0.2              gtable_0.3.0           
+## [37] lifecycle_0.2.0         AnnotationFilter_1.13.0 MsCoreUtils_1.1.3      
+## [40] scales_1.1.1            stringi_1.4.6           farver_2.0.3           
+## [43] XVector_0.29.3          fs_1.5.0                ellipsis_0.3.1         
+## [46] ragg_0.3.1              vctrs_0.3.4             generics_0.0.2         
+## [49] tools_4.0.2             glue_1.4.2              purrr_0.3.4            
+## [52] yaml_2.2.1              colorspace_1.4-1        BiocManager_1.30.10    
+## [55] cpp11_0.2.1             memoise_1.1.0           knitr_1.29</code></pre>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h1>
 <div id="refs" class="references">
 <div id="ref-Christoforou:2016">
-<p>Christoforou, Andy, Claire M Mulvey, Lisa M Breckels, Aikaterini Geladaki, Tracey Hurrell, Penelope C Hayward, Thomas Naake, et al. 2016. “A Draft Map of the Mouse Pluripotent Stem Cell Spatial Proteome.” <em>Nat Commun</em> 7: 8992. <a href="https://doi.org/10.1038/ncomms9992" class="uri">https://doi.org/10.1038/ncomms9992</a>.</p>
+<p>Christoforou, Andy, Claire M Mulvey, Lisa M Breckels, Aikaterini Geladaki, Tracey Hurrell, Penelope C Hayward, Thomas Naake, et al. 2016. “A Draft Map of the Mouse Pluripotent Stem Cell Spatial Proteome.” <em>Nat Commun</em> 7: 8992. <a href="https://doi.org/10.1038/ncomms9992">https://doi.org/10.1038/ncomms9992</a>.</p>
 </div>
 <div id="ref-SE">
 <p>Morgan, Martin, Valerie Obenchain, Jim Hester, and Hervé Pagès. 2019. <em>SummarizedExperiment: SummarizedExperiment Container</em>.</p>
 </div>
 <div id="ref-AnnotationFilter">
-<p>Morgan, Martin, and Johannes Rainer. 2019. <em>AnnotationFilter: Facilities for Filtering Bioconductor Annotation Resources</em>. <a href="https://github.com/Bioconductor/AnnotationFilter" class="uri">https://github.com/Bioconductor/AnnotationFilter</a>.</p>
+<p>Morgan, Martin, and Johannes Rainer. 2019. <em>AnnotationFilter: Facilities for Filtering Bioconductor Annotation Resources</em>. <a href="https://github.com/Bioconductor/AnnotationFilter">https://github.com/Bioconductor/AnnotationFilter</a>.</p>
 </div>
 <div id="ref-Ramos:2017">
 <p>Ramos, Marcel, Lucas Schiffer, Angela Re, Rimsha Azhar, Azfar Basunia, Carmen Rodriguez Cabrera, Tiffany Chan, et al. 2017. “Software for the Integration of Multi-Omics Experiments in Bioconductor.” <em>Cancer Research</em> 77(21); e39-42.</p>
@@ -474,7 +528,7 @@ Conceptual representation of a <code>QFeatures</code> object and the aggregative
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>
