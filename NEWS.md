@@ -1,5 +1,9 @@
 # QFeatures 0.99
 
+## QFeatures 0.99.3
+
+- Nothing yet.
+
 ## QFeatures 0.99.2
 
 - Added `infIsNA`.
