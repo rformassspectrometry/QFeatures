@@ -2,7 +2,8 @@
 
 ## QFeatures 0.99.2
 
-- Added `infIsNA`
+- Added `infIsNA`.
+- Add Christophe Vanderaa as an author.
 
 ## QFeatures 0.99.1
 

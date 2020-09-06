@@ -8,7 +8,7 @@ Authors@R: c(person("Laurent", "Gatto",
 	     person("Christophe", "Vanderaa",
 		    email = "christophe.vanderaa@uclouvain.be",
 		    comment = c(ORCID = "0000-0001-7443-5427"),
-		    role = "ctb"))
+		    role = "aut"))
 Description: The QFeatures infrastructure enables the management and
    processing of quantitative features for high-throughput mass
    spectrometry assays. It provides a familiar Bioconductor user
