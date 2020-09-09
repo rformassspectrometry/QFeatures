@@ -2,7 +2,8 @@
 
 ## QFeatures 0.99.3
 
-- Nothing yet.
+- Keep colnames when reading a single column assay (see #108)
+  <2020-09-09 Wed>
 
 ## QFeatures 0.99.2
 
