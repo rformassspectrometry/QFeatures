@@ -96,7 +96,7 @@ readSummarizedExperiment <- function(table, ecol, fnames, ...) {
                  " not recognised among\n",
                  paste(colnames(xx), paste = ", "))
     }
-    assay <- as.matrix(xx[, ecol])
+    assay <- as.matrix(xx[, ecol, drop = FALSE])
     fdata <- DataFrame(xx[, -ecol, drop = FALSE])
 
     if (!missing(fnames)) {
