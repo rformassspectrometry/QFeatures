@@ -2,7 +2,8 @@
 
 ## QFeatures 0.99.3
 
-- Nothing yet.
+- Fixed bug: columns names are preserved even for a single 
+  quantification column
 
 ## QFeatures 0.99.2
 
