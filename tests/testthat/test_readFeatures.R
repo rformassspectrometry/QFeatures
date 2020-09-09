@@ -33,7 +33,7 @@ test_that("readQFeatures", {
                               fname = "not_present"))
 })
 
-test_that("readQFeatures", {
+test_that("readSummarizedExperiment", {
     ft1 <- readSummarizedExperiment(x, ecol = 1:10)
     ft2 <- readSummarizedExperiment(f, ecol = 1:10)
     expect_equal(ft1, ft2)
@@ -42,6 +42,14 @@ test_that("readQFeatures", {
     expect_equal(ft1, ft2)
     ft3 <- readSummarizedExperiment(f, ecol = 1:10, fname = 11)
     expect_equal(ft1, ft3)
+    ## Read data with only 1 quantitation column
+    ft4 <- readSummarizedExperiment(f, ecol = 1, fname = 11)
+    ## Check column names
+    ecol <- c("X126", "X127C", "X127N", "X128C", "X128N", "X129C",
+              "X129N", "X130C", "X130N", "X131")
+    expect_identical(colnames(ft1), ecol)
+    expect_identical(colnames(ft4), ecol[1])
+    ## Expect errors
     ecol <- LETTERS[1:10]
     expect_error(readSummarizedExperiment(x, ecol = ecol, name = "psms"))
     expect_error(readSummarizedExperiment(f, ecol = ecol, name = "psms"))
