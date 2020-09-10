@@ -85,7 +85,7 @@ setMethod("subsetByFeature", c("QFeatures", "character"),
 
 
 .subsetByFeature <- function(x, i) {
-    leaf_assay_name  <- find_assay_with_feature_name(x, i)
+    leaf_assay_name <- find_assay_with_feature_name(x, i)
 
     if (!length(leaf_assay_name))
         stop("Feature not found")

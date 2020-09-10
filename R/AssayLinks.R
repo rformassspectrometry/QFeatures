@@ -229,8 +229,16 @@ assayLinks <- function(x, i) {
 ##' @rdname AssayLinks
 setMethod("[", c("AssayLink", "character"),
           function(x, i, j, ..., drop = TRUE) {
-              k <- which(elementMetadata(x@hits)$names_to %in% i)
-              x@hits <-  x@hits[k, ]
+              if (is(x@hits, "List")) {
+                  hits <- lapply(x@hits, function(hit) {
+                      k <- which(elementMetadata(hit)$names_to %in% i)
+                      hit[k, ]
+                  })
+                  x@hits <- List(hits)
+              } else {
+                  k <- which(elementMetadata(x@hits)$names_to %in% i)
+                  x@hits <-  x@hits[k, ]
+              }
               x
           })
 
