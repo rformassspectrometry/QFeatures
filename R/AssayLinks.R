@@ -223,7 +223,7 @@ assayLinks <- function(x, i) {
     return(AssayLinks(ans))
 }
 
-
+##' @importFrom methods is
 ##' @param j ignored.
 ##' @param drop ignored.
 ##' @rdname AssayLinks
