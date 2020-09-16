@@ -77,6 +77,13 @@
 ##' - The `selectRowData(x, rowvars)` function can be used to
 ##'   select a limited number of `rowData` columns of interest named
 ##'   in `rowvars` in the `x` instance of class `QFeatures`.
+##'   
+##' - The `collectRowData(x, i, rowvars)` function can be used to 
+##'   extract the `rowData` for one or more assays `i` and combine it 
+##'   into a single `DataFrame`. `rowvars` can be supplied to select
+##'   specific `rowData` variable(s), otherwise the function selects 
+##'   all shared variables between assays. If `i` is not supplied, the
+##'   function will attempt to extract the `rowData` of all assays.
 ##'
 ##' @param i `character()`, `integer()`, `logical()` or `GRanges()`
 ##'     object for subsetting by rows.
@@ -233,7 +240,6 @@ setMethod("show", "QFeatures",
           })
 
 
-
 ##' @rdname QFeatures-class
 ##' @param x An instance of class `QFeatures`.
 ##' @importFrom methods callNextMethod
@@ -279,6 +285,7 @@ setMethod("[", c("QFeatures", "character", "ANY", "ANY"),
               subsetByFeature(x, i)[, j, k]
           })
 
+
 ##' @rdname QFeatures-class
 ##'
 ##' @param x An instance of class `QFeatures`.
@@ -304,6 +311,42 @@ selectRowData <- function(x, rowvars) {
 
 
 ##' @rdname QFeatures-class
+##' 
+##' @param rowvars A `character()` vector indicating which variables 
+##'     from the `rowData` should be extracted.
+##' 
+##' @export
+collectRowData <- function(x, 
+                           i, 
+                           rowvars) {
+    stopifnot(inherits(x, "QFeatures"))
+    if (missing(i)) i <- names(x)
+    if (is.numeric(i)) i <- names(x)[i]
+    ## If rowvars is missing, get the common rowData variables
+    ## between assays
+    if (missing(rowvars)) {
+        rowvars <- Reduce(intersect, rowDataNames(x)) 
+        if(!length(rowvars)) stop("No common variables were found ",
+                                      "between assays")
+    }
+    ## Make sure that the variables to extract are present in the 
+    ## rowData
+    mis <- vapply(experiments(x)[i], 
+                  function(se) any(!rowvars %in% colnames(rowData(se))),
+                  logical(1))
+    if (any(mis)) 
+        stop("rowData variable(s) not found in:\n", 
+             paste(i[mis], collapse = ", "))
+    ## Extract the rowData and add from which assay it was extracted
+    out <- lapply(i, function(ii) {
+        x <- rowData(x[[ii]])[, rowvars, drop = FALSE]
+        cbind(x, .assay = ii, .rowname = rownames(x))
+    })
+    do.call(rbind, out)
+}
+
+
+##' @rdname QFeatures-class
 ##'
 ##' @importFrom Biobase fData
 ##'
@@ -319,6 +362,24 @@ rowDataNames <- function(x) {
                              else NA_character_
                          }))
 }
+
+##' @rdname QFeatures-class
+##'
+##' @importFrom Biobase fData
+##'
+##' @export
+rowDataNames <- function(x) {
+    stopifnot(inherits(x, "MultiAssayExperiment"))
+    CharacterList(lapply(experiments(x),
+                         function(xx) {
+                             if (inherits(xx, "SummarizedExperiment"))
+                                 colnames(rowData(xx))
+                             else if (inherits(xx, "eSet"))
+                                 colnames(Biobase::fData(xx))
+                             else NA_character_
+                         }))
+}
+
 
 
 ##' @rdname QFeatures-class
