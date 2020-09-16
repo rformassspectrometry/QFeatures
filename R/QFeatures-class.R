@@ -76,7 +76,9 @@
 ##'
 ##' - The `selectRowData(x, rowvars)` function can be used to
 ##'   select a limited number of `rowData` columns of interest named
-##'   in `rowvars` in the `x` instance of class `QFeatures`.
+##'   in `rowvars` in the `x` instance of class `QFeatures`. In case 
+##'   an element in `rowvars` isn't found in any `rowData` variable, 
+##'   a message is printed.
 ##'   
 ##' - The `collectRowData(x, i, rowvars)` function can be used to 
 ##'   extract the `rowData` for one or more assays `i` and combine it 
@@ -291,8 +293,7 @@ setMethod("[", c("QFeatures", "character", "ANY", "ANY"),
 ##' @param x An instance of class `QFeatures`.
 ##' @param rowvars A `character()` with the names of the `rowData`
 ##'     variables (columns) to retain in any assay. All other
-##'     variables will be dropped. In case an element in `rowvars`
-##'     isn't found in any `rowData` variable, a message is printed.
+##'     variables will be dropped. 
 ##'
 ##' @export
 selectRowData <- function(x, rowvars) {
@@ -311,9 +312,6 @@ selectRowData <- function(x, rowvars) {
 
 
 ##' @rdname QFeatures-class
-##' 
-##' @param rowvars A `character()` vector indicating which variables 
-##'     from the `rowData` should be extracted.
 ##' 
 ##' @export
 collectRowData <- function(x, 

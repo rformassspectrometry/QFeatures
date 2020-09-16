@@ -11,6 +11,7 @@
 \alias{[,QFeatures,character,ANY,ANY-method}
 \alias{rowDataNames}
 \alias{selectRowData}
+\alias{collectRowData}
 \alias{names<-,QFeatures,character-method}
 \title{Quantitative MS QFeatures}
 \usage{
@@ -23,6 +24,10 @@
 \S4method{[}{QFeatures,character,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
 
 selectRowData(x, rowvars)
+
+collectRowData(x, i, rowvars)
+
+rowDataNames(x)
 
 rowDataNames(x)
 
@@ -53,8 +58,7 @@ subsetting by assays}
 
 \item{rowvars}{A \code{character()} with the names of the \code{rowData}
 variables (columns) to retain in any assay. All other
-variables will be dropped. In case an element in \code{rowvars}
-isn't found in any \code{rowData} variable, a message is printed.}
+variables will be dropped.}
 
 \item{value}{A character() with new name(s) for the assay(s) in \code{x}}
 
@@ -147,7 +151,15 @@ be matched across different assays, taking the aggregation
 relation between assays.
 \item The \code{selectRowData(x, rowvars)} function can be used to
 select a limited number of \code{rowData} columns of interest named
-in \code{rowvars} in the \code{x} instance of class \code{QFeatures}.
+in \code{rowvars} in the \code{x} instance of class \code{QFeatures}. In case
+an element in \code{rowvars} isn't found in any \code{rowData} variable,
+a message is printed.
+\item The \code{collectRowData(x, i, rowvars)} function can be used to
+extract the \code{rowData} for one or more assays \code{i} and combine it
+into a single \code{DataFrame}. \code{rowvars} can be supplied to select
+specific \code{rowData} variable(s), otherwise the function selects
+all shared variables between assays. If \code{i} is not supplied, the
+function will attempt to extract the \code{rowData} of all assays.
 }
 }
 
