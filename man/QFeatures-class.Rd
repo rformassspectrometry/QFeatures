@@ -11,7 +11,7 @@
 \alias{[,QFeatures,character,ANY,ANY-method}
 \alias{rowDataNames}
 \alias{selectRowData}
-\alias{collectRowData}
+\alias{rowData,QFeatures-method}
 \alias{names<-,QFeatures,character-method}
 \title{Quantitative MS QFeatures}
 \usage{
@@ -23,11 +23,9 @@
 
 \S4method{[}{QFeatures,character,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
 
+\S4method{rowData}{QFeatures}(x, use.names = TRUE, ...)
+
 selectRowData(x, rowvars)
-
-collectRowData(x, i, rowvars)
-
-rowDataNames(x)
 
 rowDataNames(x)
 
@@ -56,9 +54,13 @@ elements in the \code{ExperimentList}.}
 \item{k}{\code{character()}, \code{logical()}, or \code{numeric()} vector for
 subsetting by assays}
 
+\item{use.names}{A \code{logical(1)} indicating whether the rownames of
+each assay should be propagated to the corresponding \code{rowData}.}
+
 \item{rowvars}{A \code{character()} with the names of the \code{rowData}
 variables (columns) to retain in any assay. All other
-variables will be dropped.}
+variables will be dropped. In case an element in \code{rowvars}
+isn't found in any \code{rowData} variable, a message is printed.}
 
 \item{value}{A character() with new name(s) for the assay(s) in \code{x}}
 
@@ -151,15 +153,7 @@ be matched across different assays, taking the aggregation
 relation between assays.
 \item The \code{selectRowData(x, rowvars)} function can be used to
 select a limited number of \code{rowData} columns of interest named
-in \code{rowvars} in the \code{x} instance of class \code{QFeatures}. In case
-an element in \code{rowvars} isn't found in any \code{rowData} variable,
-a message is printed.
-\item The \code{collectRowData(x, i, rowvars)} function can be used to
-extract the \code{rowData} for one or more assays \code{i} and combine it
-into a single \code{DataFrame}. \code{rowvars} can be supplied to select
-specific \code{rowData} variable(s), otherwise the function selects
-all shared variables between assays. If \code{i} is not supplied, the
-function will attempt to extract the \code{rowData} of all assays.
+in \code{rowvars} in the \code{x} instance of class \code{QFeatures}.
 }
 }
 
@@ -206,6 +200,9 @@ names(fts1) <- c("se1", "se2")
 
 ## Add an assay
 fts1 <- addAssay(fts1, se1[1:2, ], name = "se3")
+
+## Get the assays feature metadata
+rowData(fts1) 
 
 ## Keep only the Fa variable
 selectRowData(fts1, rowvars = "Fa")

@@ -282,6 +282,10 @@ setMethod("[", c("QFeatures", "character", "ANY", "ANY"),
           })
 
 ##' @rdname QFeatures-class
+##' 
+##' @param use.names A `logical(1)` indicating whether the rownames of
+##'     each assay should be propagated to the corresponding `rowData`.
+##' 
 setMethod("rowData", "QFeatures",
           function(x, use.names = TRUE, ...) {
               List(lapply(experiments(x), function(xx) 

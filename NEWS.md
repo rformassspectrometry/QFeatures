@@ -2,9 +2,8 @@
 
 ## QFeatures 0.99.3
 
-- New feature: the `collectRowData(x, i, rowvars)` function can be 
-  used to extract the `rowData` for one or more assays `i` and combine 
-  it into a single `DataFrame` (see #86)
+- New feature: the `rowData` method returns a list containing the 
+  `rowData` for all assays (see #86)
   <2020-09-16 Wed>
 - Keep colnames when reading a single column assay (see #108)
   <2020-09-09 Wed>
