@@ -53,6 +53,16 @@ test_that("[,QFeatures", {
 })
 
 
+test_that("RowData", {
+    data(feat2)
+    rd <- rowData(feat2)
+    expect_identical(names(rd), paste0("assay", 1:3))
+    expect_identical(rd[[1]], rowData(feat2[[1]]))
+    expect_identical(rd[[2]], rowData(feat2[[2]]))
+    expect_identical(rd[[3]], rowData(feat2[[3]]))
+})
+
+
 test_that("rowDataNames", {
     rdn <- rowDataNames(feat1)
     expect_identical(length(feat1), length(rdn))
@@ -61,34 +71,6 @@ test_that("rowDataNames", {
         expect_identical(rdn[[i]], names(rowData(feat1[[i]])))
 })
 
-test_that("collectRowData", {
-    feat1 <- aggregateFeatures(feat1, "psms", "Sequence", "peptides")
-    ## Correct usage 
-    ## Supplying all arguments
-    df <- collectRowData(feat1, i = 1, rowvars = c("Sequence"))
-    expect_identical(nrow(df), nrow(feat1[[1]]))
-    expect_identical(dimnames(df), 
-                     list(rownames(feat1[[1]]), c("Sequence", ".assay", ".rowname")))
-    ## Missing assay 
-    df <- collectRowData(feat1, rowvars = c("Sequence"))
-    expect_identical(unique(df$.assay), names(feat1))
-    expect_identical(nrow(df), sum(dims(feat1)[1, ]))
-    ## Missing rowvars
-    df <- collectRowData(feat1, i = 1:2)
-    expect_identical(colnames(df), c("Sequence", "Protein", "location", 
-                                     ".assay", ".rowname"))
-    ## Missing both
-    expect_identical(df, collectRowData(feat1))
-    ## Test errors
-    ## Missing rowvars and no shared variable 
-    featErr <- feat1
-    rowData(featErr[[1]]) <- DataFrame(foo = 1:10)
-    expect_error(collectRowData(featErr), 
-                 regexp = "No common")
-    ## rowvars not found
-    expect_error(collectRowData(feat1, rowvars = "foo"),
-                 regexp = "not found")
-})
 
 test_that("selectRowData", {
     x <- c("Sequence", "Protein")
