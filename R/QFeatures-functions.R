@@ -36,6 +36,11 @@ number_assays_in_se <- function(object)
     ## QFeatures object
     if (!all(is.na(al_from) | al_from %in% n_exp))
         stop("@from not valid")
+    ## An AssayLink can never have an empty hits slot when @from exists
+    hitsIsEmpty <- sapply(object@assayLinks,
+                          function(x) length(x@hits) == 0 && !is.na(x@from) )
+    if (any(hitsIsEmpty))
+        stop("@hits is empty")
     NULL
 }
 

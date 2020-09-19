@@ -76,8 +76,8 @@
 ##'
 ##' - The `selectRowData(x, rowvars)` function can be used to
 ##'   select a limited number of `rowData` columns of interest named
-##'   in `rowvars` in the `x` instance of class `QFeatures`.
-##'
+##'   in `rowvars` in the `x` instance of class `QFeatures`. 
+##'   
 ##' @param i `character()`, `integer()`, `logical()` or `GRanges()`
 ##'     object for subsetting by rows.
 ##'
@@ -165,6 +165,9 @@
 ##'
 ##' ## Add an assay
 ##' fts1 <- addAssay(fts1, se1[1:2, ], name = "se3")
+##' 
+##' ## Get the assays feature metadata
+##' rowData(fts1) 
 ##'
 ##' ## Keep only the Fa variable
 ##' selectRowData(fts1, rowvars = "Fa")
@@ -233,7 +236,6 @@ setMethod("show", "QFeatures",
           })
 
 
-
 ##' @rdname QFeatures-class
 ##' @param x An instance of class `QFeatures`.
 ##' @importFrom methods callNextMethod
@@ -280,11 +282,22 @@ setMethod("[", c("QFeatures", "character", "ANY", "ANY"),
           })
 
 ##' @rdname QFeatures-class
+##' 
+##' @param use.names A `logical(1)` indicating whether the rownames of
+##'     each assay should be propagated to the corresponding `rowData`.
+##' 
+setMethod("rowData", "QFeatures",
+          function(x, use.names = TRUE, ...) {
+              List(lapply(experiments(x), function(xx) 
+                  mcols(xx, use.names = use.names, ...)))
+          })
+
+##' @rdname QFeatures-class
 ##'
 ##' @param x An instance of class `QFeatures`.
 ##' @param rowvars A `character()` with the names of the `rowData`
 ##'     variables (columns) to retain in any assay. All other
-##'     variables will be dropped. In case an element in `rowvars`
+##'     variables will be dropped. In case an element in `rowvars` 
 ##'     isn't found in any `rowData` variable, a message is printed.
 ##'
 ##' @export
@@ -301,7 +314,6 @@ selectRowData <- function(x, rowvars) {
     }
     x
 }
-
 
 ##' @rdname QFeatures-class
 ##'

@@ -53,6 +53,14 @@ test_that("[,QFeatures", {
 })
 
 
+test_that("RowData", {
+    data(feat2)
+    rd <- rowData(feat2)
+    expect_identical(names(rd), paste0("assay", 1:3))
+    expect_identical(rd[[1]], rowData(feat2[[1]]))
+    expect_identical(rd[[2]], rowData(feat2[[2]]))
+    expect_identical(rd[[3]], rowData(feat2[[3]]))
+})
 
 
 test_that("rowDataNames", {
@@ -62,6 +70,7 @@ test_that("rowDataNames", {
     for (i in seq_along(length(feat1)))
         expect_identical(rdn[[i]], names(rowData(feat1[[i]])))
 })
+
 
 test_that("selectRowData", {
     x <- c("Sequence", "Protein")

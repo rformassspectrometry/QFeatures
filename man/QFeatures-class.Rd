@@ -11,6 +11,7 @@
 \alias{[,QFeatures,character,ANY,ANY-method}
 \alias{rowDataNames}
 \alias{selectRowData}
+\alias{rowData,QFeatures-method}
 \alias{names<-,QFeatures,character-method}
 \title{Quantitative MS QFeatures}
 \usage{
@@ -21,6 +22,8 @@
 \S4method{dims}{QFeatures}(x)
 
 \S4method{[}{QFeatures,character,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
+
+\S4method{rowData}{QFeatures}(x, use.names = TRUE, ...)
 
 selectRowData(x, rowvars)
 
@@ -50,6 +53,9 @@ elements in the \code{ExperimentList}.}
 
 \item{k}{\code{character()}, \code{logical()}, or \code{numeric()} vector for
 subsetting by assays}
+
+\item{use.names}{A \code{logical(1)} indicating whether the rownames of
+each assay should be propagated to the corresponding \code{rowData}.}
 
 \item{rowvars}{A \code{character()} with the names of the \code{rowData}
 variables (columns) to retain in any assay. All other
@@ -194,6 +200,9 @@ names(fts1) <- c("se1", "se2")
 
 ## Add an assay
 fts1 <- addAssay(fts1, se1[1:2, ], name = "se3")
+
+## Get the assays feature metadata
+rowData(fts1) 
 
 ## Keep only the Fa variable
 selectRowData(fts1, rowvars = "Fa")
