@@ -195,6 +195,9 @@ dims(x)
 # S4 method for QFeatures,character,ANY,ANY
 [(x, i, j, k, ..., drop = TRUE)
 
+# S4 method for QFeatures
+rowData(x, use.names = TRUE, ...)
+
 selectRowData(x, rowvars)
 
 rowDataNames(x)
@@ -240,6 +243,11 @@ elements in the <code>ExperimentList</code>.</p></td>
       <th>k</th>
       <td><p><code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>, <code><a href='https://rdrr.io/r/base/logical.html'>logical()</a></code>, or <code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code> vector for
 subsetting by assays</p></td>
+    </tr>
+    <tr>
+      <th>use.names</th>
+      <td><p>A <code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code> indicating whether the rownames of
+each assay should be propagated to the corresponding <code>rowData</code>.</p></td>
     </tr>
     <tr>
       <th>rowvars</th>
@@ -420,6 +428,10 @@ processing methods using in quantitative proteomics.</p></li>
 <span class='co'>## Add an assay</span>
 <span class='kw'>fts1</span> <span class='op'>&lt;-</span> <span class='fu'>addAssay</span>(<span class='kw'>fts1</span>, <span class='kw'>se1</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, ], name = <span class='st'>"se3"</span>)
 
+<span class='co'>## Get the assays feature metadata</span>
+<span class='fu'>rowData</span>(<span class='kw'>fts1</span>) 
+</div><div class='output co'>#&gt; DataFrameList of length 3
+#&gt; names(3): se1 se2 se3</div><div class='input'>
 <span class='co'>## Keep only the Fa variable</span>
 <span class='fu'>selectRowData</span>(<span class='kw'>fts1</span>, rowvars = <span class='st'>"Fa"</span>)
 </div><div class='output co'>#&gt; An instance of class QFeatures containing 3 assays:
@@ -447,7 +459,7 @@ processing methods using in quantitative proteomics.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
