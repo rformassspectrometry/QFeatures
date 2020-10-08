@@ -53,11 +53,11 @@
 ##' - The `rowDataNames` accessor returns a list with the `rowData`
 ##'   variable names.
 ##'   
-##' - The `longFormat` accessor returns a `QFeatures` object in a long
-##'   format `DataFrame`. Each quanitive value is reported on a 
-##'   separate line. `colData` and `rowData` data can also be added. 
-##'   This function is an extension of the `longFormat` function in 
-##'   the [MultiAssayExperiment::MultiAssayExperiment].
+##' - The `longFormat` accessor takes a `QFeatures` object and returns 
+##'   it in a long format `DataFrame`. Each quantitative value is 
+##'   reported on a separate line. `colData` and `rowData` data can 
+##'   also be added. This function is an extension of the `longFormat` 
+##'   function in the [MultiAssayExperiment::MultiAssayExperiment].
 ##'
 ##' @section Adding assays:
 ##'

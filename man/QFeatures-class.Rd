@@ -141,11 +141,11 @@ example.
 all its accessors and replacement methods.
 \item The \code{rowDataNames} accessor returns a list with the \code{rowData}
 variable names.
-\item The \code{longFormat} accessor returns a \code{QFeatures} object in a long
-format \code{DataFrame}. Each quanitive value is reported on a
-separate line. \code{colData} and \code{rowData} data can also be added.
-This function is an extension of the \code{longFormat} function in
-the \link[MultiAssayExperiment:MultiAssayExperiment]{MultiAssayExperiment::MultiAssayExperiment}.
+\item The \code{longFormat} accessor takes a \code{QFeatures} object and returns
+it in a long format \code{DataFrame}. Each quantitative value is
+reported on a separate line. \code{colData} and \code{rowData} data can
+also be added. This function is an extension of the \code{longFormat}
+function in the \link[MultiAssayExperiment:MultiAssayExperiment]{MultiAssayExperiment::MultiAssayExperiment}.
 }
 }
 
