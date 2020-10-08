@@ -2,6 +2,9 @@
 
 ## QFeatures 0.99.3
 
+- New feature: the `longFormat` function returns a long `DataFrame` 
+  with quantitative data along with metadata (see #116)
+  <2020-10-8 Thu>
 - New feature: the `rowData` method returns a list containing the 
   `rowData` for all assays (see #86)
   <2020-09-16 Wed>
