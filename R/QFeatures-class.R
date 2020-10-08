@@ -352,3 +352,45 @@ setReplaceMethod("names", c("QFeatures", "character"),
                      }
                      x
                  })
+
+
+##' @rdname QFeatures-class
+##'
+##' @param colDataCols A `character()`, `logical()`, or `numeric()` 
+##'     index for colData columns to be included.
+##' @param rowDataCols A `character()` index for colData columns to be 
+##'     included. 
+##' @param index The assay indicator for `SummarizedExperiment` 
+##'     objects. A vector input is supported in the case that the 
+##'     `SummarizedExperiment` object(s) has more than one assay 
+##'     (default `1L`)
+##' 
+##' @importFrom MultiAssayExperiment longFormat
+longFormat <- function(object, 
+                       colDataCols = NULL,
+                       rowDataCols = NULL, 
+                       index = 1L) {
+    if (!is.null(rowDataCols)) {
+        rdNames <- rowDataNames(object)
+        misNames <- sapply(rdNames, 
+                           function (x) any(!rowDataCols %in% x))
+        ## Check that all required
+        if (any(misNames))
+            stop("Some 'rowDataCols' not found in assay(s): ",
+                 paste0(names(misNames)[misNames], collapse = ", "))
+        ## Get long format table with quantification values and colDataCols
+        longDataFrame <- 
+            MultiAssayExperiment::longFormat(object, colDataCols, index)
+        ## Get the required rowData
+        rds <- lapply(rowData(object),
+                      function(rd) rd[, rowDataCols, drop = FALSE])
+        rds <- do.call(rbind, rds)
+        ## Merge the rowData to the long table
+        cbind(longDataFrame,
+              rds[longDataFrame$rowname, , drop = FALSE])
+    } else {
+        ## If rowDataCols is null, return the MAE longFormat output
+        MultiAssayExperiment::longFormat(object, colDataCols, index)
+    }
+}
+
