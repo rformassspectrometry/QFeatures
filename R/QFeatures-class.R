@@ -372,6 +372,8 @@ setReplaceMethod("names", c("QFeatures", "character"),
 ##'     (default `1L`)
 ##' 
 ##' @importFrom MultiAssayExperiment longFormat
+##' 
+##' @export
 longFormat <- function(object, 
                        colDataCols = NULL,
                        rowDataCols = NULL, 
