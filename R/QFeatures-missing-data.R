@@ -1,3 +1,8 @@
+
+
+###---- Internal functions ----####
+
+
 .zeroIsNA <- function(x) {
     sel <- assay(x) == 0
     assay(x)[sel] <- NA
@@ -10,25 +15,54 @@
     x
 }
 
+## Internal function that compute the number and percent of missing 
+## data from a SummarizedExperiment object
+.nNAByAssay <- function(object) {
+    x <- assay(object)
+    nNA <- sum(is.na(x))
+    pNA <- nNA / length(x) * 100
+    DataFrame(nNA = unname(nNA), 
+              pNA = unname(pNA))
+}
 
+## Internal function that compute the number and percent of missing 
+## data for a given margin (features = 1 and sample = 2) from a 
+## SummarizedExperiment object
+.nNAByMargin <- function(object, MARGIN = 1) {
+    x <- assay(object)
+    nNA <- apply(is.na(x), MARGIN, sum)
+    n <- ifelse(MARGIN == 1, ncol(x), nrow(x))
+    pNA <- nNA / n * 100
+    DataFrame(name = names(pNA), 
+              nNA = unname(nNA), 
+              pNA = unname(pNA))
+}
+
+## Internal function that compute the number and percent of missing 
+## data for a SummarizedExperiment object
 .nNA <- function(x) {
-    nNA <- sum(is.na(assay(x)))/prod(dim(x))
-    nNA_rows <- table(rowSums(is.na(assay(x))))
-    nNA_cols <- colSums(is.na(assay(x)))
-    return(list(nNA = nNA, nNArows = nNA_rows, nNAcols = nNA_cols))
+    nNA <- .nNAByAssay(x)
+    nNA_rows <- .nNAByMargin(x, 1)
+    nNA_cols <- .nNAByMargin(x, 2)
+    list(nNA = nNA, nNArows = nNA_rows, nNAcols = nNA_cols)
 }
 
-## Internal wrapper function around `.nNA` for processing multiple assays
-## @param object A `QFeatures` object
-## @param i One or more indices or names of the assay(s) to be processed.
+## Internal function that compute the number and percent of missing 
+## data for a QFeatures object
 .nNAi <- function(object, i) {
-    if (length(object) == 1)
-        return(.nNA(object[[1]]))
-    res <- lapply(i,
-                  function(ii) .nNA(object[[ii]]))
-    .nNAasTable(object, res, i)
+    if (is.numeric(i)) i <- names(object)[i]
+    ## Get number of missing data per assay 
+    nNAassay <- do.call(rbind, lapply(i, function(ii)
+        cbind(assay = ii, .nNAByAssay(object[[ii]])) ))
+    ## Get number of missing data per row
+    nNArow <- do.call(rbind, lapply(i, function(ii)
+        cbind(assay = ii, .nNAByMargin(object[[ii]], 1)) ))
+    ## Get number of missing data per column 
+    nNAcol <- do.call(rbind, lapply(i, function(ii)
+        cbind(assay = ii, .nNAByMargin(object[[ii]], 2)) ))
+    ## Return as list
+    list(nNA = nNAassay, nNArows = nNArow, nNAcols = nNAcol)
 }
-
 
 .row_for_filterNA <- function(x, pNA = 0L) {
     if (!is.matrix(x))
@@ -43,35 +77,8 @@
     k <= pNA
 }
 
-## Internal function for formating the result of nNA as a table when applied to
-## multiple samples
-##
-## @param object A `QFeatures` object
-##
-## @param res A list of results obtained after applying `nNA` to multiple assays
-##     of `object`
-##
-## @param i indices or names of the assays that were processed.
-.nNAasTable <- function(object, res, i) {
-    if (length(i) == 1) return(res[[1]])
-    object <- object[, , i]
-    names(res) <- names(object)
-    ans <- vector("list", length = 3)
-    names(ans) <- c("nNA", "nNArows", "nNAcols")
-    ans[[1]] <- vapply(res, "[[", 1, FUN.VALUE = numeric(1))
-    ans[[3]] <- t(vapply(res, "[[", 3, FUN.VALUE = numeric(3)))
-    ans2 <- matrix(0,
-                   ncol = 1 + nrow(colData(object)),
-                   nrow = length(object))
-    rownames(ans2) <- names(object)
-    colnames(ans2) <- 0:nrow(colData(object))
-    for (i in seq_len(length(res))) {
-        x <- res[[i]]$nNArows
-        ans2[i, names(x)] <- x
-    }
-    ans[[2]] <- ans2
-    ans
-}
+
+###---- Documentation ----####
 
 
 ##' @title Managing missing data
@@ -97,11 +104,14 @@
 ##'    normalization.
 ##'
 ##' - `nNA(object, i)` return a list of missing value summaries. The
-##'   first element `nNA` gives the percentage of missing values; the
-##'   second element `nNArows` provides a table of the number of
-##'   missing values for the features (rows) of the assay(s); the
-##'   third element `nNAcols` provides the number of missing values in
-##'   each sample of the assay(s).
+##'   first element `nNA` gives a `DataFrame` with the number and the
+##'   percentage of missing values for the whole assay; the second 
+##'   element `nNArows` provides a `DataFrame` of the number and the 
+##'   percentage of missing values for the features (rows) of the 
+##'   assay(s); the third element `nNAcols` provides the number and 
+##'   the percentage of missing values in each sample of the assay(s).
+##'   When `object` has class `QFeatures` and additional column with 
+##'   the assays is provided in each element's `DataFrame`.
 ##'
 ##' - `filterNA(object, pNA, i)` removes features (rows) that contain
 ##'   `pNA` percentage or more missing values.
@@ -190,9 +200,9 @@ setMethod("infIsNA", c("SummarizedExperiment", "missing"),
 ##' @rdname QFeatures-missing-data
 setMethod("infIsNA", c("QFeatures", "integer"),
           function(object, i) {
-            for (ii in i)
-              object[[ii]] <- infIsNA(object[[ii]])
-            object
+              for (ii in i)
+                  object[[ii]] <- infIsNA(object[[ii]])
+              object
           })
 
 ##' @rdname QFeatures-missing-data
@@ -202,9 +212,9 @@ setMethod("infIsNA", c("QFeatures", "numeric"),
 ##' @rdname QFeatures-missing-data
 setMethod("infIsNA", c("QFeatures", "character"),
           function(object, i) {
-            for (ii in i)
-              object[[ii]] <- infIsNA(object[[ii]])
-            object
+              for (ii in i)
+                  object[[ii]] <- infIsNA(object[[ii]])
+              object
           })
 
 

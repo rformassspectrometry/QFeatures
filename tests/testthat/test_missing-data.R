@@ -1,4 +1,4 @@
-data(ft_na)
+data("ft_na")
 se_na <- ft_na[["na"]]
 minf <- m0 <- m <- assay(se_na)
 m0[3, 2] <- m0[4, 1] <- m0[1, 1] <- 0
@@ -9,39 +9,74 @@ se_inf <- SummarizedExperiment(assay = minf)
 ft0 <- QFeatures(list(na = se_na, zero = se_zero, inf = se_inf),
                  colData = DataFrame(row.names = LETTERS[1:3]))
 
-
-test_that("function: .zeroIsNA, .infIsNA, .nNA, and .nNAi", {
+test_that("function: .zeroIsNA, .infIsNA", {
     ## .zeroIsNA
     expect_equivalent(se_na, QFeatures:::.zeroIsNA(se_zero))
     expect_equivalent(se_na, zeroIsNA(se_zero))
     ## .infIsNA
     expect_equivalent(se_na, QFeatures:::.infIsNA(se_inf))
     expect_equivalent(se_na, infIsNA(se_inf))
-    ## .nNA
-    n_na <- QFeatures:::.nNA(se_na)
-    expect_identical(n_na[[1]], 3/(3 * 4))
-    expect_identical(n_na[[2]], table(c(0, 1, 1, 1)))
-    expect_identical(n_na[[3]], c(A = 2, B = 1, C = 0))
-    expect_identical(nNA(se_na), QFeatures:::.nNA(se_na))
-    n_na <- QFeatures:::.nNA(se_zero)
-    expect_identical(n_na[[1]], 0)
-    expect_identical(n_na[[2]], table(c(0, 0, 0, 0)))
-    expect_identical(n_na[[3]], c(A = 0, B = 0, C = 0))
-    expect_identical(nNA(se_zero), QFeatures:::.nNA(se_zero))
-    ## .nNAi
-    n_na <- QFeatures:::.nNAi(ft0, 1:2)
-    expect_identical(n_na, QFeatures:::.nNAi(ft0, c("na", "zero")))
-    expect_identical(n_na, QFeatures:::.nNAi(ft0, c(1.1, 2.1)))
-    expect_identical(n_na[[1]], c(na = 0.25, zero = 0.00))
-    expect_identical(n_na[[2]],
-                     matrix(c(1, 4, 3, rep(0, 5)), nrow = 2,
-                            dimnames = list(c("na", "zero"), 0:3)))
-    expect_identical(n_na[[3]],
-                     matrix(c(2, 1, rep(0, 4)), nrow = 2, byrow = TRUE,
-                            dimnames = list(c("na", "zero"), LETTERS[1:3])))
-    expect_identical(nNA(ft0, 1:2), QFeatures:::.nNAi(ft0, 1:2))
 })
 
+test_that("function: .nNAByAssay, .nNAByMargin, .nNA, and .nNAi", {
+    ## .nNAByAssay
+    nNAassay <- QFeatures:::.nNAByAssay(se_na)
+    ## The expected results are initialized after manual inspection
+    expect_identical(nNAassay,
+                     DataFrame(nNA = 3L,
+                               pNA = 3 / 12 * 100))
+    
+    ## .nNAByMargin
+    nNArows <- QFeatures:::.nNAByMargin(se_na, MARGIN = 1)
+    nNAcols <- QFeatures:::.nNAByMargin(se_na, MARGIN = 2)
+    ## The expected results are initialized after manual inspection
+    expect_identical(nNArows,
+                     DataFrame(name = rownames(se_na),
+                               nNA = c(1L, 0L, 1L, 1L),
+                               pNA = c(1/3, 0, 1/3, 1/3) * 100))
+    expect_identical(nNAcols,
+                     DataFrame(name = colnames(se_na),
+                               nNA = c(2L, 1L, 0L),
+                               pNA = c(1/2, 1/4, 0) * 100))
+    
+    ## .nNA for SummarizedExperiemnt
+    expect_identical(QFeatures:::.nNA(se_na),
+                     list(nNA = nNAassay, nNArows = nNArows, 
+                          nNAcols =nNAcols))
+    ## Expect only 0's (no missing data) for se_zero
+    expect_true(all(sapply(QFeatures:::.nNA(se_zero), 
+                           function(x) all(x[, "pNA"] == 0))))
+    
+    ## .nNAi for QFeatures
+    ## The expected results are initialized after manual inspection
+    nNAassay <- c(3L, 0L)
+    pNAassay <- nNAassay / 12 * 100
+    nNArows <- c(1L, 0L, 1L, 1L, rep(0L, 4))
+    pNArows <- nNArows / 3 * 100
+    nNAcols <- c(2L, 1L, 0L, rep(0L, 3))
+    pNAcols <- nNAcols / 4 * 100
+    ## Test results 
+    n_na <- QFeatures:::.nNAi(ft0, 1:2)
+    ## .nNAByAssay
+    expect_identical(n_na$nNA,
+                     DataFrame(assay = names(ft0)[1:2],
+                               nNA = nNAassay, pNA = pNAassay))
+    ## .nNAByMargin by row
+    expect_identical(n_na$nNArows,
+                     DataFrame(assay = rep(names(ft0)[1:2], each = 4),
+                               name = unlist(rownames(ft0[, , 1:2]), 
+                                             use.names = FALSE),
+                               nNA = nNArows, pNA = pNArows))
+    ## .nNAByMargin by column
+    expect_identical(n_na$nNAcols,
+                     DataFrame(assay = rep(names(ft0)[1:2], each = 3),
+                               name = unlist(colnames(ft0[, , 1:2]), 
+                                             use.names = FALSE),
+                               nNA = nNAcols, 
+                               pNA = pNAcols))
+    ## Check .nNAi with character indexing
+    expect_identical(n_na, QFeatures:::.nNAi(ft0, c("na", "zero")))
+})
 
 test_that("function: .row_for_filterNA", {
     def <- QFeatures:::.row_for_filterNA(m)
@@ -67,7 +102,6 @@ test_that("function: .row_for_filterNA", {
     expect_identical(QFeatures:::.row_for_filterNA(assay(se_na), pNA = 1),
                      QFeatures:::.row_for_filterNA(assay(se_na), pNA = 2))
 })
-
 
 test_that("zeroIsNA,QFeatures", {
     expect_error(ft <- zeroIsNA(ft0))
@@ -97,37 +131,17 @@ test_that("infIsNA,QFeatures", {
     expect_equivalent(assay(ft[["zero"]]), assay(se_na))
 })
 
-
-test_that("nNA,QFeatures", {
-    expect_error(nNA(ft0))
-    n_na <- nNA(ft0, i = 1:2)
-    expect_identical(n_na[[1]], c(na = 3/(4*3), zero = 0))
-    expect_identical(n_na[[2]],
-                     matrix(c(1, 3, 0, 0, 4, 0, 0, 0),
-                            nrow = 2, byrow = TRUE,
-                            dimnames = list(c("na", "zero"),
-                                            0:3)))
-    expect_identical(n_na[[3]],
-                     matrix(c(2, 1, 0, 0, 0, 0),
-                            nrow = 2, byrow = TRUE,
-                            dimnames = list(c("na", "zero"),
-                                            LETTERS[1:3])))
-    expect_identical(nNA(ft0, 1L), nNA(se_na))
-    expect_identical(nNA(ft0, 1), nNA(se_na))
-    expect_identical(nNA(ft0, "na"), nNA(se_na))
-    expect_identical(nNA(ft0[[1]]), nNA(ft0, i = 1))
+test_that("nNA,SummarizedExperiment and nNA,QFeatures", {
+    ## Add an assay with different dimensions (cf issue 118)
+    ft0 <- addAssay(ft0, ft0[[1]][1:2, 1:2])
+    ## Method vs internal function
+    expect_identical(nNA(se_na), QFeatures:::.nNA(se_na))
+    expect_identical(nNA(ft0, 1:4), QFeatures:::.nNAi(ft0, 1:4))
+    ## nNA on a single assay
+    expect_identical(nNA(ft0[[1]]), nNA(se_na))
     ## nNA on multiple assays
-    n_na <- nNA(ft0, 1:2)
-    expect_identical(n_na, nNA(ft0, c("na", "zero")))
-    expect_identical(n_na[[1]], c(na = 0.25, zero = 0.00))
-    expect_identical(n_na[[2]],
-                     matrix(c(1, 4, 3, rep(0, 5)), nrow = 2,
-                            dimnames = list(c("na", "zero"), 0:3)))
-    expect_identical(n_na[[3]],
-                     matrix(c(2, 1, rep(0, 4)), nrow = 2, byrow = TRUE,
-                            dimnames = list(c("na", "zero"), LETTERS[1:3])))
+    expect_identical(nNA(ft0, 1:3), nNA(ft0, c("na", "zero", "inf")))
 })
-
 
 test_that("filterNA,QFeatures and filterNA,SummarizedExperiment", {
     se_na_filtered <- filterNA(se_na)
@@ -140,7 +154,6 @@ test_that("filterNA,QFeatures and filterNA,SummarizedExperiment", {
     expect_equivalent(se_na_filtered, ft_filtered[[1]])
     expect_equivalent(se_na_filtered, ft0[[2]])
 })
-
 
 test_that("aggregateFeatures with missing data", {
     expect_message(ft_na <- aggregateFeatures(ft_na, "na", fcol = "X", name = "agg_na",
