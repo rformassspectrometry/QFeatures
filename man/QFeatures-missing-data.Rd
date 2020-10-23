@@ -84,11 +84,14 @@ intensity of 0.
 expression data by zero values, for instance during custom
 normalization.
 \item \code{nNA(object, i)} return a list of missing value summaries. The
-first element \code{nNA} gives the percentage of missing values; the
-second element \code{nNArows} provides a table of the number of
-missing values for the features (rows) of the assay(s); the
-third element \code{nNAcols} provides the number of missing values in
-each sample of the assay(s).
+first element \code{nNA} gives a \code{DataFrame} with the number and the
+percentage of missing values for the whole assay; the second
+element \code{nNArows} provides a \code{DataFrame} of the number and the
+percentage of missing values for the features (rows) of the
+assay(s); the third element \code{nNAcols} provides the number and
+the percentage of missing values in each sample of the assay(s).
+When \code{object} has class \code{QFeatures} and additional column with
+the assays is provided in each element's \code{DataFrame}.
 \item \code{filterNA(object, pNA, i)} removes features (rows) that contain
 \code{pNA} percentage or more missing values.
 }
