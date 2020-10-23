@@ -2,6 +2,9 @@
 
 ## QFeatures 0.99.3
 
+- Fix: improved `nNA` with new implementation and additional unit 
+  tests
+  <2020-10-23 Fri>
 - New feature: the `longFormat` function returns a long `DataFrame` 
   with quantitative data along with metadata (see #116)
   <2020-10-8 Thu>
