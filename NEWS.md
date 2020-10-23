@@ -1,14 +1,17 @@
 # QFeatures 0.99
 
+
+## QFeatures 0.99.4
+
+- Fix: improved `nNA` with new implementation and additional unit
+  tests <2020-10-23 Fri>
+
 ## QFeatures 0.99.3
 
-- Fix: improved `nNA` with new implementation and additional unit 
-  tests
-  <2020-10-23 Fri>
-- New feature: the `longFormat` function returns a long `DataFrame` 
+- New feature: the `longFormat` function returns a long `DataFrame`
   with quantitative data along with metadata (see #116)
   <2020-10-8 Thu>
-- New feature: the `rowData` method returns a list containing the 
+- New feature: the `rowData` method returns a list containing the
   `rowData` for all assays (see #86)
   <2020-09-16 Wed>
 - Keep colnames when reading a single column assay (see #108)
