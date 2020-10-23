@@ -88,12 +88,6 @@ DataFrame to be expanded back, it must not to be simplified." />
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../articles/QFeatures.html">Get started</a>
 </li>
 <li>
@@ -153,9 +147,9 @@ defined by a vector.</p>
 <code>DataFrame</code> to be expanded back, it must not to be simplified.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>reduceDataFrame</span>(<span class='kw'>x</span>, <span class='kw'>k</span>, count = <span class='fl'>FALSE</span>, simplify = <span class='fl'>TRUE</span>, drop = <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>reduceDataFrame</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>k</span>, count <span class='op'>=</span> <span class='cn'>FALSE</span>, simplify <span class='op'>=</span> <span class='cn'>TRUE</span>, drop <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
-<span class='fu'>expandDataFrame</span>(<span class='kw'>x</span>, k = <span class='kw'>NULL</span>)</pre>
+<span class='fu'>expandDataFrame</span><span class='op'>(</span><span class='va'>x</span>, k <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -207,17 +201,17 @@ level functions that rely on reduction of <code>DataFrame</code> objects.</p>
     <p>Laurent Gatto</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"IRanges"</span>)
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'>"IRanges"</span><span class='op'>)</span>
 
-<span class='kw'>k</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>100</span>, <span class='fl'>1e3</span>, replace = <span class='fl'>TRUE</span>)
-<span class='kw'>df</span> <span class='op'>&lt;-</span> <span class='fu'>DataFrame</span>(k = <span class='kw'>k</span>,
-                x = <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='kw'>k</span>)), <span class='fl'>2</span>),
-                y = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='kw'>k</span>)),
-                z = <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='kw'>LETTERS</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='kw'>k</span>), replace = <span class='fl'>TRUE</span>),
-                ir = <span class='fu'><a href='https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html'>IRanges</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_along</a></span>(<span class='kw'>k</span>), width = <span class='fl'>10</span>),
-                r = <span class='fu'>Rle</span>(<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>5</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='kw'>k</span>), replace = <span class='fl'>TRUE</span>)),
-                invar = <span class='kw'>k</span> <span class='op'>+</span> <span class='fl'>1</span>)
-<span class='kw'>df</span>
+<span class='va'>k</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>1e3</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>DataFrame</span><span class='op'>(</span>k <span class='op'>=</span> <span class='va'>k</span>,
+                x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>k</span><span class='op'>)</span><span class='op'>)</span>, <span class='fl'>2</span><span class='op'>)</span>,
+                y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>k</span><span class='op'>)</span><span class='op'>)</span>,
+                z <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>LETTERS</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>k</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
+                ir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html'>IRanges</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_along</a></span><span class='op'>(</span><span class='va'>k</span><span class='op'>)</span>, width <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>,
+                r <span class='op'>=</span> <span class='fu'>Rle</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>k</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>,
+                invar <span class='op'>=</span> <span class='va'>k</span> <span class='op'>+</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='va'>df</span>
 </div><div class='output co'>#&gt; DataFrame with 1000 rows and 7 columns
 #&gt;              k         x         y           z        ir     r     invar
 #&gt;      &lt;integer&gt; &lt;numeric&gt; &lt;integer&gt; &lt;character&gt; &lt;IRanges&gt; &lt;Rle&gt; &lt;numeric&gt;
@@ -233,8 +227,8 @@ level functions that rely on reduction of <code>DataFrame</code> objects.</p>
 #&gt; 999         19     -2.47       999           T  999-1008     5        20
 #&gt; 1000        30     -0.68      1000           L 1000-1009     5        31</div><div class='input'>
 <span class='co'>## Shinks the DataFrame</span>
-<span class='kw'>df2</span> <span class='op'>&lt;-</span> <span class='fu'>reduceDataFrame</span>(<span class='kw'>df</span>, <span class='kw'>df</span><span class='op'>$</span><span class='kw'>k</span>)
-<span class='kw'>df2</span>
+<span class='va'>df2</span> <span class='op'>&lt;-</span> <span class='fu'>reduceDataFrame</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>df</span><span class='op'>$</span><span class='va'>k</span><span class='op'>)</span>
+<span class='va'>df2</span>
 </div><div class='output co'>#&gt; DataFrame with 100 rows and 7 columns
 #&gt;             k                     x               y               z
 #&gt;     &lt;integer&gt;         &lt;NumericList&gt;   &lt;IntegerList&gt; &lt;CharacterList&gt;
@@ -263,7 +257,7 @@ level functions that rely on reduction of <code>DataFrame</code> objects.</p>
 #&gt; 99  106-115,236-245,354-363,... 1,2,3,...       100
 #&gt; 100  99-108,109-118,164-173,... 3,2,1,...       101</div><div class='input'>
 <span class='co'>## With a tally of the number of members in each group</span>
-<span class='fu'>reduceDataFrame</span>(<span class='kw'>df</span>, <span class='kw'>df</span><span class='op'>$</span><span class='kw'>k</span>, count = <span class='fl'>TRUE</span>)
+<span class='fu'>reduceDataFrame</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>df</span><span class='op'>$</span><span class='va'>k</span>, count <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; DataFrame with 100 rows and 8 columns
 #&gt;             k                     x               y               z
 #&gt;     &lt;integer&gt;         &lt;NumericList&gt;   &lt;IntegerList&gt; &lt;CharacterList&gt;
@@ -292,8 +286,8 @@ level functions that rely on reduction of <code>DataFrame</code> objects.</p>
 #&gt; 99  106-115,236-245,354-363,... 1,2,3,...       100        10
 #&gt; 100  99-108,109-118,164-173,... 3,2,1,...       101        17</div><div class='input'>
 <span class='co'>## Much faster, but more crowded result</span>
-<span class='kw'>df3</span> <span class='op'>&lt;-</span> <span class='fu'>reduceDataFrame</span>(<span class='kw'>df</span>, <span class='kw'>df</span><span class='op'>$</span><span class='kw'>k</span>, simplify = <span class='fl'>FALSE</span>)
-<span class='kw'>df3</span>
+<span class='va'>df3</span> <span class='op'>&lt;-</span> <span class='fu'>reduceDataFrame</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>df</span><span class='op'>$</span><span class='va'>k</span>, simplify <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='va'>df3</span>
 </div><div class='output co'>#&gt; DataFrame with 100 rows and 7 columns
 #&gt;                   k                     x               y               z
 #&gt;       &lt;IntegerList&gt;         &lt;NumericList&gt;   &lt;IntegerList&gt; &lt;CharacterList&gt;
@@ -322,7 +316,7 @@ level functions that rely on reduction of <code>DataFrame</code> objects.</p>
 #&gt; 99  106-115,236-245,354-363,... 1,2,3,... 100,100,100,...
 #&gt; 100  99-108,109-118,164-173,... 3,2,1,... 101,101,101,...</div><div class='input'>
 <span class='co'>## Drop all non-invariant columns</span>
-<span class='fu'>reduceDataFrame</span>(<span class='kw'>df</span>, <span class='kw'>df</span><span class='op'>$</span><span class='kw'>k</span>, drop = <span class='fl'>TRUE</span>)
+<span class='fu'>reduceDataFrame</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>df</span><span class='op'>$</span><span class='va'>k</span>, drop <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; DataFrame with 100 rows and 2 columns
 #&gt;             k     invar
 #&gt;     &lt;integer&gt; &lt;numeric&gt;
@@ -338,11 +332,11 @@ level functions that rely on reduction of <code>DataFrame</code> objects.</p>
 #&gt; 99         99       100
 #&gt; 100       100       101</div><div class='input'>
 <span class='co'>## Missing values</span>
-<span class='kw'>d</span> <span class='op'>&lt;-</span> <span class='fu'>DataFrame</span>(k = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, each = <span class='fl'>3</span>),
-               x = <span class='kw'>letters</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>9</span>],
-               y = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='kw'>letters</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>], each = <span class='fl'>3</span>),
-               y2 = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='kw'>letters</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>], each = <span class='fl'>3</span>))
-<span class='kw'>d</span>
+<span class='va'>d</span> <span class='op'>&lt;-</span> <span class='fu'>DataFrame</span><span class='op'>(</span>k <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, each <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>,
+               x <span class='op'>=</span> <span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>9</span><span class='op'>]</span>,
+               y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span>, each <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>,
+               y2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span>, each <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>d</span>
 </div><div class='output co'>#&gt; DataFrame with 9 rows and 4 columns
 #&gt;           k           x           y          y2
 #&gt;   &lt;integer&gt; &lt;character&gt; &lt;character&gt; &lt;character&gt;
@@ -356,14 +350,14 @@ level functions that rely on reduction of <code>DataFrame</code> objects.</p>
 #&gt; 8         3           h           c           c
 #&gt; 9         3           i           c           c</div><div class='input'>
 <span class='co'>## y is invariant and can be simplified</span>
-<span class='fu'>reduceDataFrame</span>(<span class='kw'>d</span>, <span class='kw'>d</span><span class='op'>$</span><span class='kw'>k</span>)
+<span class='fu'>reduceDataFrame</span><span class='op'>(</span><span class='va'>d</span>, <span class='va'>d</span><span class='op'>$</span><span class='va'>k</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; DataFrame with 3 rows and 4 columns
 #&gt;           k               x           y          y2
 #&gt;   &lt;integer&gt; &lt;CharacterList&gt; &lt;character&gt; &lt;character&gt;
 #&gt; 1         1           a,b,c           a           a
 #&gt; 2         2           d,e,f           b           b
 #&gt; 3         3           g,h,i           c           c</div><div class='input'><span class='co'>## y isn't not dropped</span>
-<span class='fu'>reduceDataFrame</span>(<span class='kw'>d</span>, <span class='kw'>d</span><span class='op'>$</span><span class='kw'>k</span>, drop = <span class='fl'>TRUE</span>)
+<span class='fu'>reduceDataFrame</span><span class='op'>(</span><span class='va'>d</span>, <span class='va'>d</span><span class='op'>$</span><span class='va'>k</span>, drop <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; DataFrame with 3 rows and 3 columns
 #&gt;           k           y          y2
 #&gt;   &lt;integer&gt; &lt;character&gt; &lt;character&gt;
@@ -371,8 +365,8 @@ level functions that rely on reduction of <code>DataFrame</code> objects.</p>
 #&gt; 2         2           b           b
 #&gt; 3         3           c           c</div><div class='input'>
 <span class='co'>## BUT with a missing value</span>
-<span class='kw'>d</span>[<span class='fl'>1</span>, <span class='st'>"y"</span>] <span class='op'>&lt;-</span> <span class='fl'>NA</span>
-<span class='kw'>d</span>
+<span class='va'>d</span><span class='op'>[</span><span class='fl'>1</span>, <span class='st'>"y"</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='cn'>NA</span>
+<span class='va'>d</span>
 </div><div class='output co'>#&gt; DataFrame with 9 rows and 4 columns
 #&gt;           k           x           y          y2
 #&gt;   &lt;integer&gt; &lt;character&gt; &lt;character&gt; &lt;character&gt;
@@ -386,14 +380,14 @@ level functions that rely on reduction of <code>DataFrame</code> objects.</p>
 #&gt; 8         3           h           c           c
 #&gt; 9         3           i           c           c</div><div class='input'>
 <span class='co'>## y isn't invariant/simplified anymore</span>
-<span class='fu'>reduceDataFrame</span>(<span class='kw'>d</span>, <span class='kw'>d</span><span class='op'>$</span><span class='kw'>k</span>)
+<span class='fu'>reduceDataFrame</span><span class='op'>(</span><span class='va'>d</span>, <span class='va'>d</span><span class='op'>$</span><span class='va'>k</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; DataFrame with 3 rows and 4 columns
 #&gt;           k               x               y          y2
 #&gt;   &lt;integer&gt; &lt;CharacterList&gt; &lt;CharacterList&gt; &lt;character&gt;
 #&gt; 1         1           a,b,c          NA,a,a           a
 #&gt; 2         2           d,e,f           b,b,b           b
 #&gt; 3         3           g,h,i           c,c,c           c</div><div class='input'><span class='co'>## y now gets dropped</span>
-<span class='fu'>reduceDataFrame</span>(<span class='kw'>d</span>, <span class='kw'>d</span><span class='op'>$</span><span class='kw'>k</span>, drop = <span class='fl'>TRUE</span>)
+<span class='fu'>reduceDataFrame</span><span class='op'>(</span><span class='va'>d</span>, <span class='va'>d</span><span class='op'>$</span><span class='va'>k</span>, drop <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; DataFrame with 3 rows and 2 columns
 #&gt;           k          y2
 #&gt;   &lt;integer&gt; &lt;character&gt;

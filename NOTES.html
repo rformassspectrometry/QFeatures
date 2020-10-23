@@ -78,12 +78,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="articles/QFeatures.html">Get started</a>
 </li>
 <li>
@@ -198,17 +192,15 @@ ft2 &lt;- subsetByFeature(ft1, "ANLPQSFQVDTSk")
 ft2</code></pre>
 <p>The underlying reason why this fails is due to matrix subsetting by name when these names aren’t unique.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="kw">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, ncol = <span class="fl">2</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="kw">m</span>) <span class="op">&lt;-</span> <span class="kw">LETTERS</span>[<span class="fl">1</span><span class="op">:</span><span class="fl">2</span>]
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="kw">m</span>) <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"a"</span>, <span class="kw">letters</span>[<span class="fl">1</span><span class="op">:</span><span class="fl">4</span>])
-<span class="kw">m</span>
-<span class="kw">m</span>[<span class="st">"a"</span>, ]
-</pre></div>
+<span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span>
+<span class="va">m</span>
+<span class="va">m</span><span class="op">[</span><span class="st">"a"</span>, <span class="op">]</span></pre></div>
 <p>And of course, this affects SEs …</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="kw">se</span> <span class="op">&lt;-</span> <span class="fu">SummarizedExperiment</span>(<span class="kw">m</span>)
-<span class="fu">assay</span>(<span class="kw">se</span>[<span class="st">"a"</span>, ])
-</pre></div>
+<span class="va">se</span> <span class="op">&lt;-</span> <span class="fu">SummarizedExperiment</span><span class="op">(</span><span class="va">m</span><span class="op">)</span>
+<span class="fu">assay</span><span class="op">(</span><span class="va">se</span><span class="op">[</span><span class="st">"a"</span>, <span class="op">]</span><span class="op">)</span></pre></div>
 <p>… and MultiAssayExperiments.</p>
 <p>Note that in the example above, <code>"ANLPQSFQVDTSk"</code> is present in both the <code>psms</code> and <code>peptides</code> assays, and the</p>
 <pre><code>for (k in setdiff(all_assays_names, leaf_assay_name)) { ... }</code></pre>

@@ -103,12 +103,6 @@ See the Processing vignette for examples." />
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../articles/QFeatures.html">Get started</a>
 </li>
 <li>
@@ -184,46 +178,46 @@ each sample of the assay(s).</p></li>
     </div>
 
     <pre class="usage"><span class='co'># S4 method for SummarizedExperiment,missing</span>
-<span class='fu'>zeroIsNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
+<span class='fu'>zeroIsNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for QFeatures,integer</span>
-<span class='fu'>zeroIsNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
+<span class='fu'>zeroIsNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for QFeatures,numeric</span>
-<span class='fu'>zeroIsNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
+<span class='fu'>zeroIsNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for QFeatures,character</span>
-<span class='fu'>zeroIsNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
+<span class='fu'>zeroIsNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for SummarizedExperiment,missing</span>
-<span class='fu'>infIsNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
+<span class='fu'>infIsNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for QFeatures,integer</span>
-<span class='fu'>infIsNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
+<span class='fu'>infIsNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for QFeatures,numeric</span>
-<span class='fu'>infIsNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
+<span class='fu'>infIsNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for QFeatures,character</span>
-<span class='fu'>infIsNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
+<span class='fu'>infIsNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for SummarizedExperiment,missing</span>
-<span class='fu'>nNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
+<span class='fu'>nNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for QFeatures,integer</span>
-<span class='fu'>nNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
+<span class='fu'>nNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for QFeatures,numeric</span>
-<span class='fu'>nNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
+<span class='fu'>nNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for QFeatures,character</span>
-<span class='fu'>nNA</span>(<span class='kw'>object</span>, <span class='kw'>i</span>)
+<span class='fu'>nNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for SummarizedExperiment</span>
-<span class='fu'>filterNA</span>(<span class='kw'>object</span>, pNA = <span class='fl'>0</span>)
+<span class='fu'>filterNA</span><span class='op'>(</span><span class='va'>object</span>, pNA <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
 
 <span class='co'># S4 method for QFeatures</span>
-<span class='fu'>filterNA</span>(<span class='kw'>object</span>, pNA = <span class='fl'>0</span>, <span class='kw'>i</span>)</pre>
+<span class='fu'>filterNA</span><span class='op'>(</span><span class='va'>object</span>, pNA <span class='op'>=</span> <span class='fl'>0</span>, <span class='va'>i</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -253,7 +247,7 @@ that contain any number of <code>NA</code> values are dropped.</p></td>
     <div class='dont-index'><p>The <code><a href='impute.html'>impute()</a></code> for <code>QFeautres</code> instances.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>se_na2</span>
+    <pre class="examples"><div class='input'><span class='va'>se_na2</span>
 </div><div class='output co'>#&gt; class: SummarizedExperiment 
 #&gt; dim: 689 16 
 #&gt; metadata(3): MSnbaseFiles MSnbaseProcessing MSnbaseVersion
@@ -263,7 +257,7 @@ that contain any number of <code>NA</code> values are dropped.</p></td>
 #&gt; colnames(16): M1F1A M1F4A ... M2F8B M2F11B
 #&gt; colData names(1): nNA</div><div class='input'>
 <span class='co'>## Summary if missing values</span>
-<span class='fu'>nNA</span>(<span class='kw'>ft_na</span>, <span class='fl'>1</span>)
+<span class='fu'>nNA</span><span class='op'>(</span><span class='va'>ft_na</span>, <span class='fl'>1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $nNA
 #&gt; [1] 0.25
 #&gt; 
@@ -277,18 +271,18 @@ that contain any number of <code>NA</code> values are dropped.</p></td>
 #&gt; 2 1 0 
 #&gt; </div><div class='input'>
 <span class='co'>## Remove rows with missing values</span>
-<span class='fu'>assay</span>(<span class='fu'>filterNA</span>(<span class='kw'>ft_na</span>, i = <span class='fl'>1</span>))
+<span class='fu'>assay</span><span class='op'>(</span><span class='fu'>filterNA</span><span class='op'>(</span><span class='va'>ft_na</span>, i <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   A B  C
 #&gt; b 2 6 10</div><div class='input'>
 <span class='co'>## Replace NAs by zero and back</span>
-<span class='kw'>ft_na</span> <span class='op'>&lt;-</span> <span class='fu'><a href='impute.html'>impute</a></span>(<span class='kw'>ft_na</span>, i = <span class='fl'>1</span>, method = <span class='st'>"zero"</span>)
-<span class='fu'>assay</span>(<span class='kw'>ft_na</span>)
+<span class='va'>ft_na</span> <span class='op'>&lt;-</span> <span class='fu'><a href='impute.html'>impute</a></span><span class='op'>(</span><span class='va'>ft_na</span>, i <span class='op'>=</span> <span class='fl'>1</span>, method <span class='op'>=</span> <span class='st'>"zero"</span><span class='op'>)</span>
+<span class='fu'>assay</span><span class='op'>(</span><span class='va'>ft_na</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   A B  C
 #&gt; a 0 5  9
 #&gt; b 2 6 10
 #&gt; c 3 0 11
-#&gt; d 0 8 12</div><div class='input'><span class='kw'>ft_na</span> <span class='op'>&lt;-</span> <span class='fu'>zeroIsNA</span>(<span class='kw'>ft_na</span>, <span class='fl'>1</span>)
-<span class='fu'>assay</span>(<span class='kw'>ft_na</span>)
+#&gt; d 0 8 12</div><div class='input'><span class='va'>ft_na</span> <span class='op'>&lt;-</span> <span class='fu'>zeroIsNA</span><span class='op'>(</span><span class='va'>ft_na</span>, <span class='fl'>1</span><span class='op'>)</span>
+<span class='fu'>assay</span><span class='op'>(</span><span class='va'>ft_na</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;    A  B  C
 #&gt; a NA  5  9
 #&gt; b  2  6 10
