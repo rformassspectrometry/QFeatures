@@ -112,11 +112,42 @@ test_that("renaming", {
                  regexp = "is duplicated$")
 })
 
-
-
 test_that("assays must have unique rownames", {
     hlpsms <- hlpsms[1:10, ]
     ft1 <- readQFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence")
     rownames(ft1[[1]][1:2]) <- rep("1", 2)
     expect_error(validObject(ft1))
+})
+
+
+test_that("longFormat", {
+    colData(feat2)$X <- 1:12
+    ## Select a single colDataCols and rowDataCols
+    lt <- longFormat(feat2, rowDataCols = "Prot", colDataCols = "X")
+    ## Check dimensions
+    expect_equal(nrow(lt),
+                 sum(apply(dims(feat2), 2, prod)))
+    expect_identical(ncol(lt),
+                     5L+2L)
+    ## Check content
+    expect_identical(lt$Prot,
+                     unname(unlist(lapply(rowData(feat2), 
+                                          ## Repeat 4x because 4 samples
+                                          function(x) rep(x$Prot, 4)))))
+    ## Select a single colDataCols and no rowDataCols (make sure that 
+    ## the implementation does not break the MAE implementation)
+    lt <- longFormat(feat2, colDataCols = "X")
+    expect_equal(nrow(lt),
+                 sum(apply(dims(feat2), 2, prod)))
+    expect_identical(ncol(lt),
+                     5L+1L)
+    ## Select multiple rowDataCols
+    lt <- longFormat(feat2, rowDataCols = c("Prot", "x"))
+    expect_equal(nrow(lt),
+                 sum(apply(dims(feat2), 2, prod)))
+    expect_identical(ncol(lt),
+                     5L+2L)
+    ## Test error: rowDataCols is missing in rowData
+    expect_error(longFormat(feat2, rowDataCols = "y"),
+                 regexp = "not found")
 })

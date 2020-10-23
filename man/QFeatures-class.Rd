@@ -13,6 +13,7 @@
 \alias{selectRowData}
 \alias{rowData,QFeatures-method}
 \alias{names<-,QFeatures,character-method}
+\alias{longFormat}
 \title{Quantitative MS QFeatures}
 \usage{
 \S4method{show}{QFeatures}(object)
@@ -30,6 +31,8 @@ selectRowData(x, rowvars)
 rowDataNames(x)
 
 \S4method{names}{QFeatures,character}(x) <- value
+
+longFormat(object, colDataCols = NULL, rowDataCols = NULL, index = 1L)
 
 QFeatures(..., assayLinks = NULL)
 
@@ -63,6 +66,17 @@ variables will be dropped. In case an element in \code{rowvars}
 isn't found in any \code{rowData} variable, a message is printed.}
 
 \item{value}{A character() with new name(s) for the assay(s) in \code{x}}
+
+\item{colDataCols}{A \code{character()}, \code{logical()}, or \code{numeric()}
+index for colData columns to be included.}
+
+\item{rowDataCols}{A \code{character()} index for colData columns to be
+included.}
+
+\item{index}{The assay indicator for \code{SummarizedExperiment}
+objects. A vector input is supported in the case that the
+\code{SummarizedExperiment} object(s) has more than one assay
+(default \code{1L})}
 
 \item{assayLinks}{An optional \link{AssayLinks}.}
 
@@ -127,6 +141,11 @@ example.
 all its accessors and replacement methods.
 \item The \code{rowDataNames} accessor returns a list with the \code{rowData}
 variable names.
+\item The \code{longFormat} accessor takes a \code{QFeatures} object and returns
+it in a long format \code{DataFrame}. Each quantitative value is
+reported on a separate line. \code{colData} and \code{rowData} data can
+also be added. This function is an extension of the \code{longFormat}
+function in the \link[MultiAssayExperiment:MultiAssayExperiment]{MultiAssayExperiment::MultiAssayExperiment}.
 }
 }
 
