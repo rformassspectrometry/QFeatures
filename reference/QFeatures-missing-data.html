@@ -55,11 +55,14 @@ NA. This is necessary when third-party software divide
 expression data by zero values, for instance during custom
 normalization.
 nNA(object, i) return a list of missing value summaries. The
-first element nNA gives the percentage of missing values; the
-second element nNArows provides a table of the number of
-missing values for the features (rows) of the assay(s); the
-third element nNAcols provides the number of missing values in
-each sample of the assay(s).
+first element nNA gives a DataFrame with the number and the
+percentage of missing values for the whole assay; the second
+element nNArows provides a DataFrame of the number and the
+percentage of missing values for the features (rows) of the
+assay(s); the third element nNAcols provides the number and
+the percentage of missing values in each sample of the assay(s).
+When object has class QFeatures and additional column with
+the assays is provided in each element's DataFrame.
 filterNA(object, pNA, i) removes features (rows) that contain
 pNA percentage or more missing values.
 
@@ -165,11 +168,14 @@ intensity of 0.</p></li>
 expression data by zero values, for instance during custom
 normalization.</p></li>
 <li><p><code>nNA(object, i)</code> return a list of missing value summaries. The
-first element <code>nNA</code> gives the percentage of missing values; the
-second element <code>nNArows</code> provides a table of the number of
-missing values for the features (rows) of the assay(s); the
-third element <code>nNAcols</code> provides the number of missing values in
-each sample of the assay(s).</p></li>
+first element <code>nNA</code> gives a <code>DataFrame</code> with the number and the
+percentage of missing values for the whole assay; the second
+element <code>nNArows</code> provides a <code>DataFrame</code> of the number and the
+percentage of missing values for the features (rows) of the
+assay(s); the third element <code>nNAcols</code> provides the number and
+the percentage of missing values in each sample of the assay(s).
+When <code>object</code> has class <code>QFeatures</code> and additional column with
+the assays is provided in each element's <code>DataFrame</code>.</p></li>
 <li><p><code>filterNA(object, pNA, i)</code> removes features (rows) that contain
 <code>pNA</code> percentage or more missing values.</p></li>
 </ul>
@@ -259,16 +265,27 @@ that contain any number of <code>NA</code> values are dropped.</p></td>
 <span class='co'>## Summary if missing values</span>
 <span class='fu'>nNA</span><span class='op'>(</span><span class='va'>ft_na</span>, <span class='fl'>1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $nNA
-#&gt; [1] 0.25
+#&gt; DataFrame with 1 row and 3 columns
+#&gt;         assay       nNA       pNA
+#&gt;   &lt;character&gt; &lt;integer&gt; &lt;numeric&gt;
+#&gt; 1          na         3        25
 #&gt; 
 #&gt; $nNArows
-#&gt; 
-#&gt; 0 1 
-#&gt; 1 3 
+#&gt; DataFrame with 4 rows and 4 columns
+#&gt;         assay        name       nNA       pNA
+#&gt;   &lt;character&gt; &lt;character&gt; &lt;integer&gt; &lt;numeric&gt;
+#&gt; 1          na           a         1   33.3333
+#&gt; 2          na           b         0    0.0000
+#&gt; 3          na           c         1   33.3333
+#&gt; 4          na           d         1   33.3333
 #&gt; 
 #&gt; $nNAcols
-#&gt; A B C 
-#&gt; 2 1 0 
+#&gt; DataFrame with 3 rows and 4 columns
+#&gt;         assay        name       nNA       pNA
+#&gt;   &lt;character&gt; &lt;character&gt; &lt;integer&gt; &lt;numeric&gt;
+#&gt; 1          na           A         2        50
+#&gt; 2          na           B         1        25
+#&gt; 3          na           C         0         0
 #&gt; </div><div class='input'>
 <span class='co'>## Remove rows with missing values</span>
 <span class='fu'>assay</span><span class='op'>(</span><span class='fu'>filterNA</span><span class='op'>(</span><span class='va'>ft_na</span>, i <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>

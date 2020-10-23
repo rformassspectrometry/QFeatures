@@ -219,18 +219,37 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/missing-data.html">zeroIsNA</a></span><span class="op">(</span><span class="va">cptac</span>, i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/missing-data.html">nNA</a></span><span class="op">(</span><span class="va">cptac</span>, i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">)</span><span class="op">)</span></pre></div>
 <pre><code>## $nNA
-## [1] 0.4491943
+## DataFrame with 1 row and 3 columns
+##         assay       nNA       pNA
+##   &lt;character&gt; &lt;integer&gt; &lt;numeric&gt;
+## 1    peptides     30609   44.9194
 ## 
 ## $nNArows
-## 
-##    0    1    2    3    4    5    6 
-## 4051  989  879  715  912  797 3014 
+## DataFrame with 11357 rows and 4 columns
+##             assay          name       nNA       pNA
+##       &lt;character&gt;   &lt;character&gt; &lt;integer&gt; &lt;numeric&gt;
+## 1        peptides AAAAGAGGAG...         4   66.6667
+## 2        peptides     AAAALAGGK         0    0.0000
+## 3        peptides    AAAALAGGKK         0    0.0000
+## 4        peptides AAADALSDLE...         0    0.0000
+## 5        peptides AAADALSDLE...         0    0.0000
+## ...           ...           ...       ...       ...
+## 11353    peptides YYSIYDLGNN...         6  100.0000
+## 11354    peptides YYTFNGPNYN...         3   50.0000
+## 11355    peptides    YYTITEVATR         4   66.6667
+## 11356    peptides YYTVFDRDNN...         6  100.0000
+## 11357    peptides YYTVFDRDNN...         6  100.0000
 ## 
 ## $nNAcols
-## Intensity.6A_7 Intensity.6A_8 Intensity.6A_9 Intensity.6B_7 Intensity.6B_8 
-##           4669           5388           5224           4651           5470 
-## Intensity.6B_9 
-##           5207</code></pre>
+## DataFrame with 6 rows and 4 columns
+##         assay          name       nNA       pNA
+##   &lt;character&gt;   &lt;character&gt; &lt;integer&gt; &lt;numeric&gt;
+## 1    peptides Intensity....      4669   41.1112
+## 2    peptides Intensity....      5388   47.4421
+## 3    peptides Intensity....      5224   45.9981
+## 4    peptides Intensity....      4651   40.9527
+## 5    peptides Intensity....      5470   48.1641
+## 6    peptides Intensity....      5207   45.8484</code></pre>
 <p>The output of the <code>nNA</code> function tells us that</p>
 <ul>
 <li>there are currently close to 50% is missing values in the data;</li>
@@ -425,7 +444,7 @@ Expression intensities for the protein <em>P02787ups|TRFE_HUMAN_UPS</em> (right,
 <div id="session-information" class="section level1 unnumbered">
 <h1 class="hasAnchor">
 <a href="#session-information" class="anchor"></a>Session information</h1>
-<pre><code>## R version 4.0.3 Patched (2020-10-13 r79342)
+<pre><code>## R version 4.0.3 Patched (2020-10-21 r79360)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.1 LTS
 ## 
