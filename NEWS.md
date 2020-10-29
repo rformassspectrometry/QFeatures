@@ -1,5 +1,10 @@
-# QFeatures 0.99
+# QFeatures 1.1.0
 
+## QFeatures 1.1.0
+
+- New Bioconductor devel version
+
+# QFeatures 0.99
 
 ## QFeatures 0.99.4
 
