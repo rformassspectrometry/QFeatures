@@ -44,7 +44,7 @@ basename(f <- msdata::quant(pattern = "cptac", full.names = TRUE))
 ```
 
 From the names of the columns, we see that the quantitative columns,
-starting with `"Intensity."` (note the space!) are at positions 56 to
+starting with `"Intensity."` (note the dot!) are at positions 56 to
 61.
 
 ```{r cptac_cols}
