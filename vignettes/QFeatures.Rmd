@@ -30,17 +30,18 @@ library("QFeatures")
 
 # Introduction
 
-The `QFeatures` package provides infrastructure (that is classes and
-the methods to process and manipulate them) to manage and analyse
-quantitative features from mass spectrometry experiments. It is based
-on the `MultiAssayExperiment` class from the `r BiocStyle::Biocpkg("MultiAssayExperiment")`
-[@Ramos:2017].  that stores a set of assays. Assays in a `QFeatures`
-object have a specific relation, that is depicted in figure
-\@ref(fig:featuresplot): assays in a `QFeatures` object are the result
-of the aggregation of quantitative features of other assays. In the
-case of a quantitative proteomics experiment, these different assays
-would be PSMs, that are aggregated into peptides, that are themselves
-aggregated into proteins.
+The `QFeatures` package provides infrastructure (that is classes to
+store data and the methods to process and manipulate them) to manage
+and analyse quantitative features from mass spectrometry
+experiments. It is based on the `SummarizedExperiment` and
+`MultiAssayExperiment` classes. Assays in a QFeatures object have a
+hierarchical relation: proteins are composed of peptides, themselves
+produced by spectra, as depicted in figure
+\@ref(fig:featuresplot). Throughout the aggregation and processing of
+these data, the relations between assays are tracked and recorded,
+thus allowing users to easily navigate across spectra, peptide and
+protein quantitative data.
+
 
 ```{r featuresplot, fig.cap = "Conceptual representation of a `QFeatures` object and the aggregative relation between different assays.", echo = FALSE}
 par(mar = c(0, 0, 0, 0))

@@ -3,6 +3,7 @@
 ## QFeatures 1.1.1
 
 - Fix typo in vignette
+- Improve first paragraph if intro vignette.
 
 ## QFeatures 1.1.0
 
