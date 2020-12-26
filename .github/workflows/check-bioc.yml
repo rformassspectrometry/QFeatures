@@ -315,7 +315,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config:
+        # config:
           ## Comment/Un-comment in case you also want to run other versions
           # - {os: windows-latest}
           # - {os: macOS-latest}
