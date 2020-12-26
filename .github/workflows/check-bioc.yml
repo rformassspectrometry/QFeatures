@@ -314,12 +314,12 @@ jobs:
 
     strategy:
       fail-fast: false
-      # matrix:
-      #    config:
+      matrix:
+          config:
           ## Comment/Un-comment in case you also want to run other versions
           # - {os: windows-latest}
           # - {os: macOS-latest}
-          # - {os: ubuntu-16.04, rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+          - {os: ubuntu-16.04, rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
