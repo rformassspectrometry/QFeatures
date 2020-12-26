@@ -2,7 +2,9 @@
 
 ## QFeatures 1.1.2
 
-- Nothing yet
+- Temporarily use median normalisation (see
+  https://github.com/Bioconductor/bioconductor_docker/issues/22 for
+  details).
 
 ## QFeatures 1.1.1
 
