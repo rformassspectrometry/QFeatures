@@ -32,12 +32,12 @@
 on:
   push:
     branches:
-      - master
-      # - 'RELEASE_*'
+      # - master
+      - 'RELEASE_3_12'
   pull_request:
     branches:
-      - master
-      # - 'RELEASE_*'
+      # - master
+      - 'RELEASE_3_12'
 
 name: R-CMD-check-bioc
 
@@ -71,7 +71,7 @@ jobs:
           if echo "$GITHUB_REF" | grep -q "RELEASE_"; then
               biocversion="$(basename -- $GITHUB_REF | tr '[:upper:]' '[:lower:]')"
           else
-              biocversion="3.12" ## was devel
+              biocversion="devel"
           fi
           ## Define the image name and print the information
           imagename="bioconductor/bioconductor_docker:${biocversion}"
