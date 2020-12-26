@@ -19,6 +19,8 @@
 ## with the information that will make it easier for others to help you.
 ## Thank you!
 
+
+
 ## Acronyms:
 ## * GHA: GitHub Action
 ## * OS: operating system
@@ -30,12 +32,12 @@
 on:
   push:
     branches:
-      # - master
-      - 'RELEASE_3_12'
+      - master
+      - 'RELEASE_*'
   pull_request:
     branches:
-      # - master
-      - 'RELEASE_3_12'
+      - master
+      - 'RELEASE_*'
 
 name: R-CMD-check-bioc
 
