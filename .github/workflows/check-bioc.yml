@@ -33,11 +33,11 @@ on:
   push:
     branches:
       - master
-      - 'RELEASE_*'
+      # - 'RELEASE_*'
   pull_request:
     branches:
       - master
-      - 'RELEASE_*'
+      # - 'RELEASE_*'
 
 name: R-CMD-check-bioc
 
@@ -71,7 +71,7 @@ jobs:
           if echo "$GITHUB_REF" | grep -q "RELEASE_"; then
               biocversion="$(basename -- $GITHUB_REF | tr '[:upper:]' '[:lower:]')"
           else
-              biocversion="devel"
+              biocversion="3.12" ## was devel
           fi
           ## Define the image name and print the information
           imagename="bioconductor/bioconductor_docker:${biocversion}"
@@ -318,8 +318,7 @@ jobs:
           config:
           ## Comment/Un-comment in case you also want to run other versions
           # - {os: windows-latest}
-          # - {os: macOS-latest}
-          - {os: macOS-latest, r: '4.0'}
+          - {os: macOS-latest}
           # - {os: ubuntu-16.04, rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
 
     env:
