@@ -294,12 +294,17 @@ Mixed imputation method. Black cells represent presence of quantitation values a
 <pre><code>## An instance of class QFeatures containing 2 assays:
 ##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns 
 ##  [2] peptides_log: SummarizedExperiment with 4051 rows and 6 columns</code></pre>
+<p>The <code><a href="../reference/QFeatures.html">addAssay()</a></code> function is the general function that adds new assays to a <code>QFeatures</code> object. The step above could also be fun with the following syntax, that implicitly returns an updated <code>QFeatures</code> object.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/QFeatures-processing.html">logTransform</a></span><span class="op">(</span><span class="va">cptac</span>,
+             i <span class="op">=</span> <span class="st">"peptides"</span>,
+             name <span class="op">=</span> <span class="st">"log_peptides"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html">plotDensities</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
 <span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html">plotDensities</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="figure">
-<img src="Processing_files/figure-html/unnamed-chunk-10-1.png" alt="Quantitative data in its original scale (left) and log2-transformed (right)." width="700"><p class="caption">
+<img src="Processing_files/figure-html/unnamed-chunk-11-1.png" alt="Quantitative data in its original scale (left) and log2-transformed (right)." width="700"><p class="caption">
 Quantitative data in its original scale (left) and log2-transformed (right).
 </p>
 </div>
@@ -308,24 +313,28 @@ Quantitative data in its original scale (left) and log2-transformed (right).
 <h1 class="hasAnchor">
 <a href="#normalisation" class="anchor"></a>Normalisation</h1>
 <p>Assays in <code>QFeatures</code> objects can be normalised with the <code>normalize</code> function. The type of normalisation is defined by the <code>method</code> argument; below, we use quantile normalisation, store the normalised data into a new experiment, and visualise the resulting data.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures.html">addAssay</a></span><span class="op">(</span><span class="va">cptac</span>,
-                  <span class="fu"><a href="../reference/QFeatures-processing.html">normalize</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"peptides_log"</span><span class="op">]</span><span class="op">]</span>, method <span class="op">=</span> <span class="st">"quantiles"</span><span class="op">)</span>,
-                  name <span class="op">=</span> <span class="st">"peptides_norm"</span><span class="op">)</span></code></pre></div>
-<pre><code>## Loading required namespace: preprocessCore</code></pre>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cptac</span></code></pre></div>
+                  <span class="fu"><a href="../reference/QFeatures-processing.html">normalize</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"peptides_log"</span><span class="op">]</span><span class="op">]</span>, method <span class="op">=</span> <span class="st">"center.median"</span><span class="op">)</span>,
+                  name <span class="op">=</span> <span class="st">"peptides_norm"</span><span class="op">)</span>
+<span class="va">cptac</span></code></pre></div>
 <pre><code>## An instance of class QFeatures containing 3 assays:
 ##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns 
 ##  [2] peptides_log: SummarizedExperiment with 4051 rows and 6 columns 
 ##  [3] peptides_norm: SummarizedExperiment with 4051 rows and 6 columns</code></pre>
+<p>As above, the <code><a href="../reference/QFeatures-processing.html">normalize()</a></code> function can also be firectly applied to the <code>QFeatures</code> object.</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/QFeatures-processing.html">normalize</a></span><span class="op">(</span><span class="va">cptac</span>,
+          i <span class="op">=</span> <span class="st">"log_peptides"</span>,
+          name <span class="op">=</span> <span class="st">"lognorm_peptides"</span>,
+          method <span class="op">=</span> <span class="st">"center.median"</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html">plotDensities</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"peptides_log"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
 <span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html">plotDensities</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"peptides_norm"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="figure">
-<img src="Processing_files/figure-html/unnamed-chunk-12-1.png" alt="Distribution of log2 peptide intensities before (left) and after (right) quantile normalisation." width="700"><p class="caption">
-Distribution of log2 peptide intensities before (left) and after (right) quantile normalisation.
+<img src="Processing_files/figure-html/unnamed-chunk-14-1.png" alt="Distribution of log2 peptide intensities before (left) and after (right) median normalisation." width="700"><p class="caption">
+Distribution of log2 peptide intensities before (left) and after (right) median normalisation.
 </p>
 </div>
 </div>
@@ -356,26 +365,26 @@ Distribution of log2 peptide intensities before (left) and after (right) quantil
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##                                      Intensity.6A_7 Intensity.6A_8
-## P00918ups|CAH2_HUMAN_UPS                   17.30380       16.89828
-## P01008ups|ANT3_HUMAN_UPS;CON__P41361       16.89434       15.98417
-## P01127ups|PDGFB_HUMAN_UPS                  16.52022       16.81015
-## P02144ups|MYG_HUMAN_UPS                    16.88925       16.46800
-## P02753ups|RETBP_HUMAN_UPS                  17.84540       16.65529
-## P02787ups|TRFE_HUMAN_UPS                   16.82634       16.88629
+## P00918ups|CAH2_HUMAN_UPS                 -1.1215216      -1.379182
+## P01008ups|ANT3_HUMAN_UPS;CON__P41361     -1.5422314      -2.248132
+## P01127ups|PDGFB_HUMAN_UPS                -1.9097789      -1.459409
+## P02144ups|MYG_HUMAN_UPS                  -1.5447867      -1.802439
+## P02753ups|RETBP_HUMAN_UPS                -0.5570714      -1.565853
+## P02787ups|TRFE_HUMAN_UPS                 -1.6165226      -1.387464
 ##                                      Intensity.6A_9 Intensity.6B_7
-## P00918ups|CAH2_HUMAN_UPS                   16.63440       18.28533
-## P01008ups|ANT3_HUMAN_UPS;CON__P41361       16.30053       16.82910
-## P01127ups|PDGFB_HUMAN_UPS                  16.83638       18.20670
-## P02144ups|MYG_HUMAN_UPS                    17.27137       17.87518
-## P02753ups|RETBP_HUMAN_UPS                  16.49888       18.39589
-## P02787ups|TRFE_HUMAN_UPS                   16.34263       18.14808
+## P00918ups|CAH2_HUMAN_UPS                  -1.729731    -0.08402797
+## P01008ups|ANT3_HUMAN_UPS;CON__P41361      -2.027588    -1.64110874
+## P01127ups|PDGFB_HUMAN_UPS                 -1.526767    -0.16310747
+## P02144ups|MYG_HUMAN_UPS                   -1.081029    -0.49570667
+## P02753ups|RETBP_HUMAN_UPS                 -1.806130     0.03241792
+## P02787ups|TRFE_HUMAN_UPS                  -2.014992    -0.22328799
 ##                                      Intensity.6B_8 Intensity.6B_9
-## P00918ups|CAH2_HUMAN_UPS                   18.57310       18.47074
-## P01008ups|ANT3_HUMAN_UPS;CON__P41361       16.72590       16.44177
-## P01127ups|PDGFB_HUMAN_UPS                  18.79476       17.14791
-## P02144ups|MYG_HUMAN_UPS                    18.58260       18.29267
-## P02753ups|RETBP_HUMAN_UPS                  17.73285       18.13718
-## P02787ups|TRFE_HUMAN_UPS                   18.52184       18.15342</code></pre>
+## P00918ups|CAH2_HUMAN_UPS                  0.1874563     0.10613700
+## P01008ups|ANT3_HUMAN_UPS;CON__P41361     -1.6201035    -1.88043072
+## P01127ups|PDGFB_HUMAN_UPS                 0.4099189    -1.19416255
+## P02144ups|MYG_HUMAN_UPS                   0.1929367    -0.06935162
+## P02753ups|RETBP_HUMAN_UPS                -0.6263334    -0.20902837
+## P02787ups|TRFE_HUMAN_UPS                  0.1491834    -0.20422237</code></pre>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">rowData</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <pre><code>## DataFrame with 1125 rows and 3 columns
@@ -415,7 +424,7 @@ Distribution of log2 peptide intensities before (left) and after (right) quantil
 ##   1   2   2   1   1   1   1   1   1</code></pre>
 <p>Let’s choose <code>P02787ups|TRFE_HUMAN_UPS</code> and visualise its expression pattern in the 2 groups at the protein and peptide level.</p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="http://ggplot2.tidyverse.org">"ggplot2"</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org">"ggplot2"</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://dplyr.tidyverse.org">"dplyr"</a></span><span class="op">)</span>
 <span class="fu"><a href="../reference/QFeatures.html">longFormat</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">[</span><span class="st">"P02787ups|TRFE_HUMAN_UPS"</span>, <span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -429,7 +438,7 @@ Distribution of log2 peptide intensities before (left) and after (right) quantil
 ## harmonizing input:
 ##   removing 12 sampleMap rows not in names(experiments)</code></pre>
 <div class="figure">
-<img src="Processing_files/figure-html/unnamed-chunk-16-1.png" alt="Expression intensities for the protein *P02787ups|TRFE_HUMAN_UPS* (right, green) and its peptides (left) in groups A (circles) and B (triangles)." width="700"><p class="caption">
+<img src="Processing_files/figure-html/unnamed-chunk-18-1.png" alt="Expression intensities for the protein *P02787ups|TRFE_HUMAN_UPS* (right, green) and its peptides (left) in groups A (circles) and B (triangles)." width="700"><p class="caption">
 Expression intensities for the protein <em>P02787ups|TRFE_HUMAN_UPS</em> (right, green) and its peptides (left) in groups A (circles) and B (triangles).
 </p>
 </div>
@@ -441,10 +450,17 @@ Expression intensities for the protein <em>P02787ups|TRFE_HUMAN_UPS</em> (right,
 <li>Improve on data visualisation.</li>
 </ul>
 </div>
+<div id="see-also" class="section level1">
+<h1 class="hasAnchor">
+<a href="#see-also" class="anchor"></a>See also</h1>
+<ul>
+<li>The <a href="https://lgatto.github.io/QFeaturesWorkshop2020/index.html">QFeaturesWorkshop2020</a> workshop, presented at the EuroBioc2020 meeting. It also documents how to use a custom docker container to run the workshop code.</li>
+</ul>
+</div>
 <div id="session-information" class="section level1 unnumbered">
 <h1 class="hasAnchor">
 <a href="#session-information" class="anchor"></a>Session information</h1>
-<pre><code>## R Under development (unstable) (2020-12-24 r79679)
+<pre><code>## R Under development (unstable) (2021-01-07 r79806)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.1 LTS
 ## 
@@ -465,8 +481,8 @@ Expression intensities for the protein <em>P02787ups|TRFE_HUMAN_UPS</em> (right,
 ## 
 ## other attached packages:
 ##  [1] gplots_3.1.1                magrittr_2.0.1             
-##  [3] dplyr_1.0.2                 ggplot2_3.3.2              
-##  [5] QFeatures_1.1.2             MultiAssayExperiment_1.17.2
+##  [3] dplyr_1.0.3                 ggplot2_3.3.3              
+##  [5] QFeatures_1.1.2             MultiAssayExperiment_1.17.6
 ##  [7] SummarizedExperiment_1.21.1 Biobase_2.51.0             
 ##  [9] GenomicRanges_1.43.1        GenomeInfoDb_1.27.3        
 ## [11] IRanges_2.25.6              S4Vectors_0.29.6           
@@ -474,27 +490,27 @@ Expression intensities for the protein <em>P02787ups|TRFE_HUMAN_UPS</em> (right,
 ## [15] matrixStats_0.57.0          BiocStyle_2.19.1           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] msdata_0.31.0           lattice_0.20-41         gtools_3.8.2           
+##  [1] msdata_0.31.1           lattice_0.20-41         gtools_3.8.2           
 ##  [4] assertthat_0.2.1        rprojroot_2.0.2         digest_0.6.27          
 ##  [7] R6_2.5.0                evaluate_0.14           highr_0.8              
-## [10] pillar_1.4.7            zlibbioc_1.37.0         rlang_0.4.9            
-## [13] lazyeval_0.2.2          Matrix_1.3-0            preprocessCore_1.53.1  
-## [16] rmarkdown_2.6           pkgdown_1.6.1.9000      labeling_0.4.2         
-## [19] textshaping_0.2.1       desc_1.2.0              stringr_1.4.0          
-## [22] ProtGenerics_1.23.5     RCurl_1.98-1.2          munsell_0.5.0          
-## [25] DelayedArray_0.17.6     compiler_4.1.0          xfun_0.19              
-## [28] pkgconfig_2.0.3         systemfonts_0.3.2       htmltools_0.5.0        
-## [31] tidyselect_1.1.0        tibble_3.0.4            GenomeInfoDbData_1.2.4 
-## [34] bookdown_0.21           withr_2.3.0             crayon_1.3.4           
-## [37] MASS_7.3-53             bitops_1.0-6            grid_4.1.0             
-## [40] gtable_0.3.0            lifecycle_0.2.0         AnnotationFilter_1.15.0
-## [43] MsCoreUtils_1.3.2       scales_1.1.1            KernSmooth_2.23-18     
-## [46] stringi_1.5.3           farver_2.0.3            XVector_0.31.1         
-## [49] fs_1.5.0                limma_3.47.3            ellipsis_0.3.1         
-## [52] ragg_0.4.0              vctrs_0.3.6             generics_0.1.0         
-## [55] tools_4.1.0             glue_1.4.2              purrr_0.3.4            
-## [58] yaml_2.2.1              colorspace_2.0-0        BiocManager_1.30.10    
-## [61] caTools_1.18.0          memoise_1.1.0           knitr_1.30</code></pre>
+## [10] pillar_1.4.7            zlibbioc_1.37.0         rlang_0.4.10           
+## [13] lazyeval_0.2.2          Matrix_1.3-2            rmarkdown_2.6          
+## [16] pkgdown_1.6.1.9000      labeling_0.4.2          textshaping_0.2.1      
+## [19] desc_1.2.0              stringr_1.4.0           ProtGenerics_1.23.6    
+## [22] RCurl_1.98-1.2          munsell_0.5.0           DelayedArray_0.17.7    
+## [25] compiler_4.1.0          xfun_0.20               pkgconfig_2.0.3        
+## [28] systemfonts_0.3.2       htmltools_0.5.1         tidyselect_1.1.0       
+## [31] tibble_3.0.5            GenomeInfoDbData_1.2.4  bookdown_0.21          
+## [34] withr_2.3.0             crayon_1.3.4            MASS_7.3-53            
+## [37] bitops_1.0-6            grid_4.1.0              gtable_0.3.0           
+## [40] lifecycle_0.2.0         AnnotationFilter_1.15.0 MsCoreUtils_1.3.2      
+## [43] scales_1.1.1            KernSmooth_2.23-18      stringi_1.5.3          
+## [46] farver_2.0.3            XVector_0.31.1          fs_1.5.0               
+## [49] limma_3.47.3            ellipsis_0.3.1          ragg_0.4.1             
+## [52] vctrs_0.3.6             generics_0.1.0          tools_4.1.0            
+## [55] glue_1.4.2              purrr_0.3.4             yaml_2.2.1             
+## [58] colorspace_2.0-0        BiocManager_1.30.10     caTools_1.18.1         
+## [61] memoise_1.1.0           knitr_1.30</code></pre>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="hasAnchor">
