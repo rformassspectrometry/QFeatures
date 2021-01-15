@@ -248,7 +248,7 @@ limma::plotDensities(assay(cptac[[2]]))
 
 Assays in `QFeatures` objects can be normalised with the `normalize`
  function. The type of normalisation is defined by the `method`
- argument; below, we use median normalisation, store the normalised
+ argument; below, we use quantile normalisation, store the normalised
  data into a new experiment, and visualise the resulting data.
 
 ```{r}
@@ -261,8 +261,9 @@ cptac
 As above, the `normalize()` function can also be firectly applied to
 the `QFeatures` object.
 
-```{r}
-normalize(cptac, i = "log_peptides",
+```{r, eval = FALSE}
+normalize(cptac,
+		  i = "log_peptides",
 		  name = "lognorm_peptides",
 		  method = "center.median")
 ```

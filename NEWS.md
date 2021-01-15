@@ -2,9 +2,9 @@
 
 ## QFeatures 1.1.2
 
-- Temporarily use median normalisation (see
+- Manually install preprocessCore (see
   https://github.com/Bioconductor/bioconductor_docker/issues/22 for
-  details).
+  details) to use quantile normalisation in vignette and tests.
 
 - Update vignette to show `normalize()` and `logTransform()` directly
   on a `QFeatures` object and reference the QFeaturesWorkshop2020
@@ -13,7 +13,7 @@
 ## QFeatures 1.1.1
 
 - Fix typo in vignette
-- Improve first paragraph if intro vignette.
+- Improve first paragraph in intro vignette.
 
 ## QFeatures 1.1.0
 
