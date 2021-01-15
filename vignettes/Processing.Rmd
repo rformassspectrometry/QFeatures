@@ -350,6 +350,10 @@ longFormat(cptac["P02787ups|TRFE_HUMAN_UPS", ]) %>%
   workshop, presented at the EuroBioc2020 meeting. It also documents
   how to use a custom docker container to run the workshop code.
 
+- The [Quantitative proteomics data
+  analysis](https://uclouvain-cbio.github.io/WSBIM2122/sec-prot.html)
+  chapter of the WSBIM2122 course.
+
 # Session information {-}
 
 ```{r sessioninfo, echo=FALSE}

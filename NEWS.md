@@ -8,7 +8,7 @@
 
 - Update vignette to show `normalize()` and `logTransform()` directly
   on a `QFeatures` object and reference the QFeaturesWorkshop2020
-  workshop.
+  workshop and WSBIM2122 chap 8.
 
 ## QFeatures 1.1.1
 
