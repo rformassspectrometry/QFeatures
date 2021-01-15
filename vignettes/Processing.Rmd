@@ -11,7 +11,7 @@ abstract: >
   normalising and aggregating data.
 output:
   BiocStyle::html_document:
-    toc_float: true
+	toc_float: true
 bibliography: QFeatures.bib
 vignette: >
   %\VignetteIndexEntry{Processing quantitative proteomics data with QFeatures}
@@ -87,8 +87,8 @@ filterFeatures(cptac, ~ Potential.contaminant == "")
 ```{r}
 library("magrittr")
 cptac <- cptac %>%
-    filterFeatures(~ Reverse == "") %>%
-    filterFeatures(~ Potential.contaminant == "")
+	filterFeatures(~ Reverse == "") %>%
+	filterFeatures(~ Potential.contaminant == "")
 ```
 
 # Removing up unneeded feature variables
@@ -191,10 +191,10 @@ x <- assay(impute(se_na2, "zero"))
 x[x != 0] <- 1
 suppressPackageStartupMessages(library("gplots"))
 heatmap.2(x, col = c("lightgray", "black"),
-          scale = "none", dendrogram = "none",
-          trace = "none", keysize = 0.5, key = FALSE,
-          RowSideColors = ifelse(rowData(se_na2)$randna, "orange", "brown"),
-          ColSideColors = rep(c("steelblue", "darkolivegreen"), each = 8))
+		  scale = "none", dendrogram = "none",
+		  trace = "none", keysize = 0.5, key = FALSE,
+		  RowSideColors = ifelse(rowData(se_na2)$randna, "orange", "brown"),
+		  ColSideColors = rep(c("steelblue", "darkolivegreen"), each = 8))
 ```
 
 It is anticipated that the identification of both classes of missing
@@ -222,9 +222,20 @@ going to create a new one to contain the log2-transformed data.
 
 ```{r}
 cptac <- addAssay(cptac,
-                  logTransform(cptac[[1]]),
-                  name = "peptides_log")
+				  logTransform(cptac[[1]]),
+				  name = "peptides_log")
 cptac
+```
+
+The `addAssay()` function is the general function that adds new assays
+to a `QFeatures` object. The step above could also be fun with the
+following syntax, that implicitly returns an updated `QFeatures`
+object.
+
+```{r, eval = FALSE}
+logTransform(cptac,
+			 i = "peptides",
+			 name = "log_peptides")
 ```
 
 ```{r, fig.cap = "Quantitative data in its original scale (left) and log2-transformed (right)."}
@@ -242,10 +253,20 @@ Assays in `QFeatures` objects can be normalised with the `normalize`
 
 ```{r}
 cptac <- addAssay(cptac,
-                  normalize(cptac[["peptides_log"]], method = "center.median"),
-                  name = "peptides_norm")
+				  normalize(cptac[["peptides_log"]], method = "center.median"),
+				  name = "peptides_norm")
 cptac
 ```
+
+As above, the `normalize()` function can also be firectly applied to
+the `QFeatures` object.
+
+```{r}
+normalize(cptac, i = "log_peptides",
+		  name = "lognorm_peptides",
+		  method = "center.median")
+```
+
 
 ```{r, fig.cap = "Distribution of log2 peptide intensities before (left) and after (right) median normalisation."}
 par(mfrow = c(1, 2))
@@ -309,17 +330,24 @@ pattern in the 2 groups at the protein and peptide level.
 library("ggplot2")
 library("dplyr")
 longFormat(cptac["P02787ups|TRFE_HUMAN_UPS", ]) %>%
-    as.data.frame() %>%
-    mutate(group = ifelse(grepl("A", colname), "A", "B")) %>%
-    mutate(sample = sub("Intensity\\.", "", colname)) %>%
-    ggplot(aes(x = sample, y = value, colour = rowname, shape = group)) +
-    geom_point() +
-    facet_grid(~ assay)
+	as.data.frame() %>%
+	mutate(group = ifelse(grepl("A", colname), "A", "B")) %>%
+	mutate(sample = sub("Intensity\\.", "", colname)) %>%
+	ggplot(aes(x = sample, y = value, colour = rowname, shape = group)) +
+	geom_point() +
+	facet_grid(~ assay)
 ```
 
 # TODO
 
 - Improve on data visualisation.
+
+# See also
+
+- The
+  [QFeaturesWorkshop2020](https://lgatto.github.io/QFeaturesWorkshop2020/index.html)
+  workshop, presented at the EuroBioc2020 meeting. It also documents
+  how to use a custom docker container to run the workshop code.
 
 # Session information {-}
 

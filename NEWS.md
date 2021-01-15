@@ -6,6 +6,10 @@
   https://github.com/Bioconductor/bioconductor_docker/issues/22 for
   details).
 
+- Update vignette to show `normalize()` and `logTransform()` directly
+  on a `QFeatures` object and reference the QFeaturesWorkshop2020
+  workshop.
+
 ## QFeatures 1.1.1
 
 - Fix typo in vignette
