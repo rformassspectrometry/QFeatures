@@ -1,0 +1,259 @@
+---
+title: "Building a QFeatures object from scratch (using MaxQuant output)"
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+bibliography: QFeatures.bib
+runtime: shiny_prerendered
+description: >
+  Learn how to use the QFeatures objects using MaxQuant peptide.txt output.
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library("QFeatures")
+library("ggplot2")
+library("dplyr")
+library("readr")
+library("magrittr")
+tutorial_options(exercise.timelimit = 60)
+knitr::opts_chunk$set(error = TRUE)
+f <- readr::read_delim("https://raw.githubusercontent.com/lgatto/bioc-ms-prot/master/data/cptac_peptides.txt",delim="\t")
+(i <- grep("Intensity.", names(f)))
+cptac <- readQFeatures(f, ecol = i, sep = "\t", name = "peptides", fnames = "Sequence")
+cptac_filter <- cptac %>%
+    filterFeatures(~ Reverse == "") %>%
+    filterFeatures(~ Potential.contaminant == "")
+```
+
+## *Overview*
+
+### Introduction
+
+In this tutorial, you will learn how to:
+
+* build `QFeatures` data structure
+* extract components of a `QFeatures` data structure
+* use functions supported by `QFeatures` package to process quantitative 
+  proteomics data
+
+### Anatomy of a `SummarizedExperiment` object
+
+Mass spectrometry-based quantitative proteomics data can be representated as a 
+matrix of quantitative values for features (PSMs, peptides, proteins) arranged 
+along the rows, measured for a set of samples, arranged along the columns.
+`SummarizedExperiment` class [@SE] handle this kind of tabular data.
+
+These are the component pieces of the `SummarizedExperiment` for data representation.
+
+```{r QF1, echo = FALSE, out.width="90%"}
+knitr::include_graphics("images/SE.png")
+```
+
+### Anatomy of a `QFeatures` object
+
+The `QFeatures` package [@Gatto:2020] is based on the `SummarizedExperiment` and `MultiAssayExperiment` classes and provides infrastructure to manage and analyse quantitative features from mass spectrometry experiments. It follows a hierarchical structure: *spectra* compose  *peptides* which in turn compose *proteins*. The main advantage of this structure is that is very easy to  navigate across spectra, peptide and protein quantitative data.
+
+```{r QF2, echo = FALSE, out.width="90%"}
+knitr::include_graphics("images/QF.png")
+```
+
+## *Reading data as `txt` file*
+
+### obtaining peptide-level data, as processed by MaxQuant  [@Cox:2008].   
+
+Read the peptide.txt file and locate the quantitative columns containing `"Intensity."`. This file is available on github and is a subset a subset of the CPTAC study 6 containing
+conditions A and B [@Paulovich:2010]. 
+
+```{r exp1, exercise = TRUE, exercise.eval = FALSE, message= FALSE}
+f <- readr::read_delim("https://raw.githubusercontent.com/lgatto/bioc-ms-prot/master/data/cptac_peptides.txt",delim="\t")
+
+```
+
+```{r exp1-solution,message= FALSE}
+f <- readr::read_delim("https://raw.githubusercontent.com/lgatto/bioc-ms-prot/master/data/cptac_peptides.txt",delim="\t")
+
+(i <- grep("Intensity.", names(f)))
+
+```
+
+###
+
+From the names of the columns, we see that the quantitative columns,
+starting with `"Intensity."` (note the dot!) are at positions 56 to 61.
+
+###
+
+Great! Now we can read these data as a `QFeatures` object.
+
+
+## *Reading data as `QFeatures`*
+
+### use file and column information to create a QFeatures
+
+Use the `readQFeatures` function to imported these data into R as an instance of class `QFeatures` named `cptac`. 
+
+```{r exp2, exercise = TRUE, exercise.eval = FALSE}
+library("QFeatures")
+cptac <- readQFeatures(___, ecol = ___, sep = ___, name = "peptides", fnames = "Sequence")
+
+```
+
+```{r exp2-hint-1}
+library("QFeatures")
+cptac <- readQFeatures(___, ecol = ___, sep = "\t", name = "peptides", fnames = "Sequence")
+```
+
+```{r exp2-hint-2}
+library("QFeatures")
+cptac <- readQFeatures(___, ecol = i, sep = "\t", name = "peptides", fnames = "Sequence")
+```
+
+```{r exp2-solution}
+library("QFeatures")
+cptac <- readQFeatures(f, ecol = i, sep = "\t", name = "peptides", fnames = "Sequence")
+```
+
+###
+
+We also use the optional arguments `peptides` to name assay in the QFeatures object and `fnames` to set the row-names of the`peptides` assay to the peptide sequences.
+
+## *colData*
+ 
+### sample information
+
+Use the `colData` function to see description of each sample from `cptac`
+
+```{r exp3, exercise = TRUE, exercise.eval = FALSE}
+cptac
+```
+
+```{r exp3-solution}
+colData(cptac)
+```
+
+###
+
+We see that this experiment has not been annotated yet, so will need to annotate with the experimental desing.
+
+## *Annotating the experiment*
+ 
+### Encoding the experimental design
+
+We can update the sample (column) annotations to encode the two
+groups, 6A and 6B, and the original sample numbers.
+
+```{r exp3b, exercise = TRUE, exercise.eval = FALSE}
+cptac$group <- rep(c("6A", "6B"), each = 3)
+cptac$sample <- rep(7:9, 2)
+```
+
+```{r exp3b-solution}
+cptac$group <- rep(c("6A", "6B"), each = 3)
+cptac$sample <- rep(7:9, 2)
+colData(cptac)
+```
+###
+Awesome! We have made and annotate our first `QFeatures`!
+
+###
+
+This `QFeatures` object is ready for downstream processing. We can explore other elements of the SummarizedExperiment class before doing so.  
+
+
+## *rowData*
+ 
+### metadata information
+
+Use the `rowData` function to see the metadata information from `cptac`
+
+```{r exp4, exercise = TRUE, exercise.eval = FALSE}
+cptac
+```
+
+```{r exp4-solution}
+rowData(cptac)
+```
+
+## *assay*
+ 
+### matrix-like container 
+
+Use the `assay` function to get a matrix-like `cptac`
+
+```{r exp5, exercise = TRUE, exercise.eval = FALSE}
+cptac
+```
+
+```{r exp5-solution}
+assay(cptac) %>% head(2)
+```
+
+###
+The rows represent features of interest (e.g. peptides) and columns represent samples (with sample data summarized as a DataFrame). 
+
+
+## *assays*
+
+### data representation as a 'List'
+
+We can also extract the list of data within the object by using the `assays` function.
+
+Now use the `class` function on the output of the `assays` function.
+
+```{r exp6, exercise = TRUE, exercise.eval = FALSE}
+assays(cptac)
+```
+
+```{r exp6-solution}
+    assays(cptac) %>% 
+  class()
+```
+
+### SimpleList
+
+The `SimpleList` class is an `S4Vectors` representation of `List`s with metadata. The length of this `SimpleList` is 1, since there is only one assay in this dataset (but there could be more in experiments such as single cell proteomics) . 
+
+
+## *Filtering out contaminants*
+ 
+### `filterFeatures` function to filter `QFeatures` contaminants
+
+Use the `filterFeatures` function to filter contaminants in `cptac`
+
+```{r exp7, exercise = TRUE, exercise.eval = FALSE}
+library("magrittr")
+cptac_filter <- cptac %>%
+    filterFeatures(~ Reverse == "") %>%
+    filterFeatures(~ Potential.contaminant == "")
+```
+
+```{r exp7-solution}
+library("magrittr")
+cptac_filter <- cptac %>%
+    filterFeatures(~ Reverse == "") %>%
+    filterFeatures(~ Potential.contaminant == "")
+```
+
+###
+Compare number of rows of `cptac` which is `r dim(assay(cptac))[1]` with number of rows of `cptac_filter` which is `r dim(assay(cptac_filter))[1]`
+
+## *Bonus*
+
+### Further downstream analysis 
+
+Please see [QFeatures](https://rformassspectrometry.github.io/QFeatures/) website for further downstream analysis
+
+### Test Your Knowledge
+
+```{r expers, echo = FALSE}
+question(" What function do you use to extract the matrix-like information from cptac?",
+    answer("Assay", message = "Remember, R is case sensitive!"),
+    answer("assay", correct = TRUE),
+    answer("assays", message = "Not quite! This is a `SimpleList` which length is equal to the number of QFeatures."),
+    allow_retry = TRUE
+)
+```
+
+
