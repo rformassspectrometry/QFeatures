@@ -28,11 +28,11 @@ test_that("filterFeatures", {
     ## Test no match filters
     filter1 <- filterFeatures(feat1, ~  location != "Mitochondrion")
     expect_identical(lengths(filter1), c(4L, 1L, 1L))
-    expect_true(isEmpty(filterFeatures(feat1, VariableFilter("location", "not"))))
-    expect_true(isEmpty(filterFeatures(feat1, ~ location == "not")))
-    expect_true(isEmpty(filterFeatures(feat1, VariableFilter("foo", "bar"))))
-    expect_true(isEmpty(filterFeatures(feat1, ~ foo == "bar")))
-    expect_true(isEmpty(filterFeatures(feat1, ~ is.na(pval))))
+    expect_true(all(dims(filterFeatures(feat1, VariableFilter("location", "not")))[1, ] == 0))
+    expect_true(all(dims(filterFeatures(feat1, ~ location == "not"))[1, ] == 0))
+    expect_true(all(dims(filterFeatures(feat1, VariableFilter("foo", "bar")))[1, ] == 0))
+    expect_true(all(dims(filterFeatures(feat1, ~ foo == "bar"))[1, ] == 0))
+    expect_true(all(dims(filterFeatures(feat1, ~ is.na(pval)))[1, ] == 0))
     
     ## Test fraud filters
     expect_error(VariableFilter("pval", TRUE, "<="))

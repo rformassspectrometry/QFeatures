@@ -36,9 +36,12 @@ fts <- aggregateFeatures(fts, i = "normpeptides", fcol = "Protein",
 test_that("subsetByFeatures", {
     feat1 <- aggregateFeatures(feat1, 1, fcol = "Sequence", name = "peptides", fun = colMedians)
     feat1 <- aggregateFeatures(feat1, 2, fcol = "Protein", name = "proteins", fun = colMedians)
+    ## Subset a feature that is present in all assays
     res1 <- subsetByFeature(feat1, "ProtA")
     res2 <- feat1["ProtA", ]
-    expect_equal(res1, res2)
+    res3 <- feat1["ProtA", , ]
+    expect_identical(res1, res2)
+    expect_identical(res1, res3)
     expect_identical(lengths(feat1),
                      c(nrow(feat1[[1]]),
                        length(unique(rowData(feat1[[1]])[["Sequence"]])),
@@ -47,6 +50,15 @@ test_that("subsetByFeatures", {
                      sort(unique(rowData(feat1[[1]])[["Sequence"]])))
     expect_identical(sort(rownames(feat1[[3]])),
                      sort(unique(rowData(feat1[[1]])[["Protein"]])))
+    ## Subset a feature that is present in some assays
+    res1 <- expect_warning(subsetByFeature(feat1, "SYGFNAAR"),
+                           regexp = "'experiments' dropped; see 'metadata'")
+    res2 <- expect_warning(feat1["SYGFNAAR", ],
+                           regexp = "'experiments' dropped; see 'metadata'")
+    res3 <- expect_warning(feat1["SYGFNAAR", , ],
+                           regexp = "'experiments' dropped; see 'metadata'")
+    expect_identical(res1, res2)
+    expect_identical(res1, res3)
 })
 
 test_that("subsetByFeatures: full pipeline", {
@@ -64,8 +76,9 @@ test_that("subsetByFeatures: full pipeline", {
 
     ## Subsetting "SYGFNAAR" will subset only the peptides and psms assays as
     ## the protein assays do not contain the peptide "Sequence" variable
-    expect_message(ftsub <- fts["SYGFNAAR", ],
-                   regexp = "removing 8 sampleMap rows not in names")
+    expect_warning(expect_message(ftsub <- fts["SYGFNAAR", ],
+                                  regexp = "removing 8 sampleMap rows not in names"),
+                   regexp = "'experiments' dropped; see 'metadata'")
     expect_identical(length(ftsub), 5L)
     expect_identical(dims(ftsub),
                      matrix(c(3L, 2L, 1L, 2L, 3L, 4L, 1L, 4L, 1L, 4L),
