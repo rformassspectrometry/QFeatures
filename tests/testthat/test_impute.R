@@ -8,9 +8,18 @@ test_that("impute: mandatory method", {
     expect_error(impute(se_na2, method = "not"))
 })
 
+test_that("impute: test warning", {
+    data(se_na2)
+    ## Get the number of rows with more than 50% missing
+    nnarows <- sum(rowMeans(is.na(assay(se_na2))) > 0.5)
+    ## Test warning
+    expect_warning(impute(se_na2, method = "knn"),
+                   regexp = paste0(nnarows, " rows with more than 50 %"))
+})
+
 test_that("impute: absence of missing values", {
     data(se_na2)
-    se_imp <- impute(se_na2, method = "knn")
+    se_imp <- expect_warning(impute(se_na2, method = "knn"))
     se_imp_2 <- impute(se_imp, method = "knn")
     expect_identical(se_imp, se_imp_2)
 })
@@ -18,8 +27,8 @@ test_that("impute: absence of missing values", {
 test_that("impute,SummarizedExperiment", {
     data(se_na2)
     x <- assay(se_na2)
-    se_imp <- impute(se_na2, method = "knn")
-    x_imp <- MsCoreUtils::impute_matrix(x, method = "knn")
+    se_imp <- expect_warning(impute(se_na2, method = "knn"))
+    x_imp <- expect_warning(MsCoreUtils::impute_matrix(x, method = "knn"))
     expect_identical(x_imp, assay(se_imp))
 })
 

@@ -64,13 +64,13 @@ test_that("function: .nNAByAssay, .nNAByMargin, .nNA, and .nNAi", {
     ## .nNAByMargin by row
     expect_identical(n_na$nNArows,
                      DataFrame(assay = rep(names(ft0)[1:2], each = 4),
-                               name = unlist(rownames(ft0[, , 1:2]), 
+                               name = unlist(rownames(ft0)[1:2], 
                                              use.names = FALSE),
                                nNA = nNArows, pNA = pNArows))
     ## .nNAByMargin by column
     expect_identical(n_na$nNAcols,
                      DataFrame(assay = rep(names(ft0)[1:2], each = 3),
-                               name = unlist(colnames(ft0[, , 1:2]), 
+                               name = unlist(colnames(ft0)[1:2], 
                                              use.names = FALSE),
                                nNA = nNAcols, 
                                pNA = pNAcols))
