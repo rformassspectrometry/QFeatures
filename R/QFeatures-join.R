@@ -152,7 +152,7 @@ joinAssays <- function(x,
               "Need at least 2 assays to join" = length(i) >= 2)
     if (name %in% names(x))
         stop("Assay with name '", name, "' already exists.")
-    joined_se <- mergeSElist(as.list(experiments(x[, , i])))
+    joined_se <- mergeSElist(as.list(experiments(x)[i]))
     x <- addAssay(x, joined_se, name = name)
     ## Add the multi-parent AssayLinks
     if (is.numeric(i)) i <- names(x)[i]

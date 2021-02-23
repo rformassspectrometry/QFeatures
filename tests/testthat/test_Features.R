@@ -46,10 +46,14 @@ test_that("addAssay", {
 test_that("[,QFeatures", {
     data(feat1)
     feat1 <- aggregateFeatures(feat1, "psms", "Sequence", "peptides")
-    expect_true(validObject(feat1[, , "psms"]))
-    expect_true(validObject(feat1[, , "peptides"]))
-    expect_true(validObject(feat1[, , 1]))
-    expect_true(validObject(feat1[, , 2]))
+    expect_true(expect_warning(validObject(feat1[, , "psms"]),
+                               regexp = "'experiments' dropped; see 'metadata'"))
+    expect_true(expect_warning(validObject(feat1[, , "peptides"]),
+                               regexp = "'experiments' dropped; see 'metadata'"))
+    expect_true(expect_warning(validObject(feat1[, , 1]),
+                               regexp = "'experiments' dropped; see 'metadata'"))
+    expect_true(expect_warning(validObject(feat1[, , 2]),
+                               regexp = "'experiments' dropped; see 'metadata'"))
 })
 
 
@@ -151,3 +155,4 @@ test_that("longFormat", {
     expect_error(longFormat(feat2, rowDataCols = "y"),
                  regexp = "not found")
 })
+
