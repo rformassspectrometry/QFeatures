@@ -27,8 +27,9 @@ number_assays_in_se <- function(object)
     al_names <- unname(vapply(object@assayLinks, "slot", "name",
                               FUN.VALUE = character(1)))
     ## An AssayLinks object is valid if the names of the node for all assays
-    ## are contained in the assay names of the QFeatures object
-    if (!all(al_names %in% n_exp))
+    ## are contained in the assay names of the QFeatures object. The order
+    ## matters!
+    if (!all(al_names == n_exp))
         stop("@names not valid")
     al_from <- unname(unlist(lapply(object@assayLinks, "slot", "from")))
     ## An AssayLinks object is valid if the names of the parent assays for all
@@ -36,11 +37,13 @@ number_assays_in_se <- function(object)
     ## QFeatures object
     if (!all(is.na(al_from) | al_from %in% n_exp))
         stop("@from not valid")
-    ## An AssayLink can never have an empty hits slot when @from exists
-    hitsIsEmpty <- sapply(object@assayLinks,
-                          function(x) length(x@hits) == 0 && !is.na(x@from) )
-    if (any(hitsIsEmpty))
-        stop("@hits is empty")
+    ## An AssayLinks object is valid if `hits` is not empty, unless 
+    ## the assay is empty or it is the parent node
+    hitsIsValid <- mapply(function(x, y){
+        length(y@hits) != 0 || is.na(y@from) || nrow(x) == 0
+    }, x = experiments(object), y = object@assayLinks)
+    if (any(!hitsIsValid))
+        stop("@hits are not valid")
     NULL
 }
 
