@@ -171,9 +171,12 @@ setMethod("zeroIsNA", c("SummarizedExperiment", "missing"),
 ##' @rdname QFeatures-missing-data
 setMethod("zeroIsNA", c("QFeatures", "integer"),
           function(object, i) {
+              el <- experiments(object)
               for (ii in i)
-                  object[[ii]] <- zeroIsNA(object[[ii]])
-              object
+                  el[[ii]] <- zeroIsNA(el[[ii]])
+              BiocGenerics:::replaceSlots(object,
+                                          ExperimentList = el,
+                                          check = TRUE)
           })
 
 ##' @rdname QFeatures-missing-data
@@ -183,9 +186,9 @@ setMethod("zeroIsNA", c("QFeatures", "numeric"),
 ##' @rdname QFeatures-missing-data
 setMethod("zeroIsNA", c("QFeatures", "character"),
           function(object, i) {
-              for (ii in i)
-                  object[[ii]] <- zeroIsNA(object[[ii]])
-              object
+              if (any(! i %in% names(object)))
+                  stop("subscript contains invalid names")
+              zeroIsNA(object, which(names(object) %in% i))
           })
 
 
@@ -200,9 +203,12 @@ setMethod("infIsNA", c("SummarizedExperiment", "missing"),
 ##' @rdname QFeatures-missing-data
 setMethod("infIsNA", c("QFeatures", "integer"),
           function(object, i) {
+              el <- experiments(object)
               for (ii in i)
-                  object[[ii]] <- infIsNA(object[[ii]])
-              object
+                  el[[ii]] <- infIsNA(el[[ii]])
+              BiocGenerics:::replaceSlots(object,
+                                          ExperimentList = el,
+                                          check = TRUE)
           })
 
 ##' @rdname QFeatures-missing-data
@@ -212,9 +218,9 @@ setMethod("infIsNA", c("QFeatures", "numeric"),
 ##' @rdname QFeatures-missing-data
 setMethod("infIsNA", c("QFeatures", "character"),
           function(object, i) {
-              for (ii in i)
-                  object[[ii]] <- infIsNA(object[[ii]])
-              object
+              if (any(! i %in% names(object)))
+                  stop("subscript contains invalid names")
+              infIsNA(object, which(names(object) %in% i))
           })
 
 

@@ -1,21 +1,25 @@
 data("ft_na")
 se_na <- ft_na[["na"]]
+## Create data matrices containing 0's or NA's
 minf <- m0 <- m <- assay(se_na)
-m0[3, 2] <- m0[4, 1] <- m0[1, 1] <- 0
+m0[3, 2] <- m0[4, 1] <- m0[1, 1] <- 0L
 minf[m0 == 0] <- Inf
-se_zero <- SummarizedExperiment(assay = m0)
-se_inf <- SummarizedExperiment(assay = minf)
-
+## Create SE objects containing 0's or NA's
+se_zero <- se_inf <- se_na
+assay(se_zero) <- m0
+assay(se_inf) <- minf
+## Create a QFeatures object containing 0's or NA's
 ft0 <- QFeatures(list(na = se_na, zero = se_zero, inf = se_inf),
                  colData = DataFrame(row.names = LETTERS[1:3]))
 
 test_that("function: .zeroIsNA, .infIsNA", {
     ## .zeroIsNA
-    expect_equivalent(se_na, QFeatures:::.zeroIsNA(se_zero))
-    expect_equivalent(se_na, zeroIsNA(se_zero))
+    expect_identical(se_na, QFeatures:::.zeroIsNA(se_zero))
+    expect_identical(se_na, zeroIsNA(se_zero))
     ## .infIsNA
-    expect_equivalent(se_na, QFeatures:::.infIsNA(se_inf))
-    expect_equivalent(se_na, infIsNA(se_inf))
+    ## Note: use expect_equal because m is int and minf is num
+    expect_equal(se_na, QFeatures:::.infIsNA(se_inf))
+    expect_equal(se_na, infIsNA(se_inf))
 })
 
 test_that("function: .nNAByAssay, .nNAByMargin, .nNA, and .nNAi", {
@@ -104,31 +108,38 @@ test_that("function: .row_for_filterNA", {
 })
 
 test_that("zeroIsNA,QFeatures", {
+    ## Check that no "zeroIsNA,missing" exist
     expect_error(ft <- zeroIsNA(ft0))
-    ft <- zeroIsNA(ft0, 1)
-    expect_equivalent(ft[["na"]], ft[["zero"]])
+    ## Check replace on 0 containing assay
+    ft <- zeroIsNA(ft0, "zero")
+    expect_identical(se_na, ft[["zero"]])
+    ## Check replace on NA containing assay (no replacement)
     ft <- zeroIsNA(ft0, "na")
-    expect_equivalent(ft[["na"]], ft[["zero"]])
+    expect_identical(se_na, ft[["na"]])
     ## zeroIsNA on multiple assays
-    ft <- zeroIsNA(ft0, 1:2)
-    expect_identical(ft, zeroIsNA(ft, c("na", "zero")))
-    expect_identical(ft, zeroIsNA(ft, c(1.1, 2.1)))
-    expect_equivalent(assay(ft[["na"]]), assay(se_na))
-    expect_equivalent(assay(ft[["zero"]]), assay(se_na))
+    ft <- zeroIsNA(ft0, c(1L, 2L)) ## test zeroIsNA,integer
+    expect_identical(ft, zeroIsNA(ft, c("na", "zero"))) ## test zeroIsNA,character
+    expect_identical(ft, zeroIsNA(ft, c(1.1, 2.1))) ## test zeroIsNA,numeric
+    expect_identical(assay(ft[["na"]]), assay(se_na))
+    expect_identical(assay(ft[["zero"]]), assay(se_na))
 })
 
 test_that("infIsNA,QFeatures", {
+    ## Check that no "infIsNA,missing" exist
     expect_error(ft <- infIsNA(ft0))
-    ft <- zeroIsNA(ft0, 1)
-    expect_equivalent(ft[["na"]], ft[["zero"]])
-    ft <- zeroIsNA(ft0, "na")
-    expect_equivalent(ft[["na"]], ft[["zero"]])
-    ## zeroIsNA on multiple assays
-    ft <- zeroIsNA(ft0, 1:2)
-    expect_identical(ft, zeroIsNA(ft, c("na", "zero")))
-    expect_identical(ft, zeroIsNA(ft, c(1.1, 2.1)))
-    expect_equivalent(assay(ft[["na"]]), assay(se_na))
-    expect_equivalent(assay(ft[["zero"]]), assay(se_na))
+    ## Check replace on inf containing assay
+    ft <- infIsNA(ft0, "inf")
+    ## Note: use expect_equal because m is int and minf is num
+    expect_equal(se_na, ft[["inf"]])
+    ## Check replace on NA containing assay (no replacement)
+    ft <- infIsNA(ft0, "na")
+    expect_equal(se_na, ft[["na"]])
+    ## infIsNA on multiple assays
+    ft <- infIsNA(ft0, c(1L, 3L)) ## test infIsNA,integer
+    expect_identical(ft, infIsNA(ft, c("na", "inf"))) ## test infIsNA,character
+    expect_identical(ft, infIsNA(ft, c(1, 3))) ## test infIsNA,numeric
+    expect_equal(assay(ft[["inf"]]), assay(se_na))
+    expect_equal(assay(ft[["inf"]]), assay(se_na))
 })
 
 test_that("nNA,SummarizedExperiment and nNA,QFeatures", {
