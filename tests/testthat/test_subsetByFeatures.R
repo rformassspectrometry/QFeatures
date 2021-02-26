@@ -51,14 +51,15 @@ test_that("subsetByFeatures", {
     expect_identical(sort(rownames(feat1[[3]])),
                      sort(unique(rowData(feat1[[1]])[["Protein"]])))
     ## Subset a feature that is present in some assays
-    res1 <- expect_warning(subsetByFeature(feat1, "SYGFNAAR"),
-                           regexp = "'experiments' dropped; see 'metadata'")
-    res2 <- expect_warning(feat1["SYGFNAAR", ],
-                           regexp = "'experiments' dropped; see 'metadata'")
-    res3 <- expect_warning(feat1["SYGFNAAR", , ],
-                           regexp = "'experiments' dropped; see 'metadata'")
+    res1 <- subsetByFeature(feat1, "SYGFNAAR")
+    res2 <- feat1["SYGFNAAR", ]
+    res3 <- feat1["SYGFNAAR", , ]
     expect_identical(res1, res2)
     expect_identical(res1, res3)
+    ## Check the QFeatures subsetting follows the same behavior as 
+    ## MultiAssayExperiment
+    expect_identical(dims(subsetByFeature(feat1, "PSM1")), 
+                     dims(subsetByRow(feat1, "PSM1")))
 })
 
 test_that("subsetByFeatures: full pipeline", {
@@ -76,15 +77,12 @@ test_that("subsetByFeatures: full pipeline", {
 
     ## Subsetting "SYGFNAAR" will subset only the peptides and psms assays as
     ## the protein assays do not contain the peptide "Sequence" variable
-    expect_warning(expect_message(ftsub <- fts["SYGFNAAR", ],
-                                  regexp = "removing 8 sampleMap rows not in names"),
-                   regexp = "'experiments' dropped; see 'metadata'")
-    expect_identical(length(ftsub), 5L)
-    expect_identical(dims(ftsub),
-                     matrix(c(3L, 2L, 1L, 2L, 3L, 4L, 1L, 4L, 1L, 4L),
-                            nrow = 2,
-                            dimnames = list(NULL, c("psms1", "psms2", "psmsall", "peptides", "normpeptides"))))
+    ftsub <- fts["SYGFNAAR", ]
+    expect_identical(length(ftsub), 7L)
+    expect_identical(names(ftsub), names(fts))
+    expect_identical(dims(ftsub)[2, ], dims(fts)[2, ])
+    expect_identical(dims(ftsub)[1, ], dims(fts)[1, ] - c(4L, 7L, 7L, rep(2L, 4)))
     expect_identical("SYGFNAAR",
-                     unique(unlist(lapply(experiments(ftsub),
-                                          function(x) rowData(x)$Sequence))))
+                     unique(unlist(lapply(rowData(ftsub), 
+                                          function(x) x$Sequence))))
 })

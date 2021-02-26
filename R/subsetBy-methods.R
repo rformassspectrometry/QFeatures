@@ -97,10 +97,13 @@ setMethod("subsetByFeature", c("QFeatures", "character"),
     featurename_list <- vector("list", length = length(all_assays_names))
     names(featurename_list) <- all_assays_names
 
+    ## Find which assays contain the features of interest
     for (k in leaf_assay_name)
         featurename_list[[k]] <- i
 
-    for (k in setdiff(all_assays_names, leaf_assay_name)) {
+    ## Recursively find the assay nodes that are linked to the leaves
+    node_assay_name <- setdiff(all_assays_names, leaf_assay_name)
+    for (k in node_assay_name) {
         ## which assay(s) created assay_k
         assay_k_parent_name <-
             names(which(vapply(x@assayLinks, function(al) any(k %in% al@from),
@@ -116,16 +119,17 @@ setMethod("subsetByFeature", c("QFeatures", "character"),
                                            elementMetadata(assayLink_k2)$names_from[j])
         }
     }
-
+    ## The assays that are not containing or linked to the feature of
+    ## interest are assigned an empty vector
+    absent_assay_name <- setdiff(names(x), c(node_assay_name, leaf_assay_name))
+    for (k in absent_assay_name)
+        featurename_list[[k]] <- character()
+        
     ## Order the assays in featurename_list to match the assay order in x
     ord <- order(match(names(featurename_list), names(x)))
     featurename_list <- featurename_list[ord]
-    ## First subset assays, then subset the features of interest. This is
-    ## suggested by the authors of `MultiAssayExperiment` when x contains
-    ## `SingleCellExperiment` assays.
-    ## Cf https://github.com/waldronlab/MultiAssayExperiment/issues/276
-    expts <- subsetByAssay(x, names(featurename_list))
-    expts <- experiments(subsetByRow(expts, featurename_list))
+    ## Perform the subsetting
+    expts <- subsetByRow(experiments(x), featurename_list)
     ## First subset the `AssayLink`s from the `AssayLinks`, then subset the
     ## features of interest.
     alnks <- x@assayLinks[names(featurename_list)]
