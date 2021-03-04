@@ -201,6 +201,10 @@ jobs:
           deps <- remotes::dev_package_deps(dependencies = TRUE, repos = BiocManager::repositories())
           BiocManager::install(deps$package[deps$diff != 0])
 
+          ## Install this dependency manually otherwise MultiAssayExperiment
+          ## fails building. HDF5Array is suggested by MAE.
+          BiocManager::install("HDF5Array")
+          
           ## For running the checks
           message(paste('****', Sys.time(), 'installing rcmdcheck and BiocCheck ****'))
           remotes::install_cran("rcmdcheck")
@@ -210,11 +214,6 @@ jobs:
       ## Fix error: The magick package is required to crop "...png" but not available.
       - name: Manually install magick
         run: BiocManager::install("magick")
-        shell: Rscript {0}
-
-      ## Fix error: MultiAssayExperiment not available during check ?!?!
-      - name: Manually install MultiAssayExperiment
-        run: BiocManager::install("MultiAssayExperiment")
         shell: Rscript {0}
 
       ## See https://github.com/Bioconductor/bioconductor_docker/issues/22
