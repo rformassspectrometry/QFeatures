@@ -212,6 +212,11 @@ jobs:
         run: BiocManager::install("magick")
         shell: Rscript {0}
 
+      ## Fix error: MultiAssayExperiment not available during check ?!?!
+      - name: Manually install MultiAssayExperiment
+        run: BiocManager::install("MultiAssayExperiment")
+        shell: Rscript {0}
+
       ## See https://github.com/Bioconductor/bioconductor_docker/issues/22
       - name: Manually install preprocessCore
         run: |
