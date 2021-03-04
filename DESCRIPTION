@@ -31,6 +31,7 @@ Imports:
    MsCoreUtils (>= 1.1.2),
 Suggests:
    SingleCellExperiment,
+   HDF5Array,
    msdata,
    ggplot2,
    gplots,
