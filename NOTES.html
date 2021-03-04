@@ -57,9 +57,15 @@
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-title-body">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -132,20 +138,20 @@
 <li><p>one level: each SE contains only a single assay, and when an SE is processed (log-transformed, normalised, …) in a way that its dimensions stay the same, a new SE is created and added to the QFeatures object.</p></li>
 <li><p>two level: SEs can contain multiple assays, and when an SE is processed (log-transformed, normalised, …) in a way that its dimensions stay the same, a new assay is added to that SE.</p></li>
 </ul>
-<p>This <a href="https://stat.ethz.ch/pipermail/bioc-devel/2020-January/016096.html">question</a> on the bioc-devel list ask for advice on SE processing, and whether a new SE or new assay in the original SE should be preferred. While the letter is arguably more elegant, and is also used in SingleAssayExperiment pipelines, it doesn’t seem to be the case when using SummarizedExperiments.</p>
-<p>As for features (or <a href="https://github.com/waldronlab/MultiAssayExperiment/issues/266">MultiAssayExperiments in general</a>), the two-level approach isn’t readily available out-of-the-box, and would require additional developments:</p>
+<p>This <a href="https://stat.ethz.ch/pipermail/bioc-devel/2020-January/016096.html" class="external-link">question</a> on the bioc-devel list ask for advice on SE processing, and whether a new SE or new assay in the original SE should be preferred. While the letter is arguably more elegant, and is also used in SingleAssayExperiment pipelines, it doesn’t seem to be the case when using SummarizedExperiments.</p>
+<p>As for features (or <a href="https://github.com/waldronlab/MultiAssayExperiment/issues/266" class="external-link">MultiAssayExperiments in general</a>), the two-level approach isn’t readily available out-of-the-box, and would require additional developments:</p>
 <ul>
 <li><p>Every function that operates on an SE of a QFeatures object would need to allow the user to specify which assay to use (and/or by default use the latest one).</p></li>
 <li><p>The <code>show,QFeatures</code> method would need to display the number/names of the assays in each SE to make these two levels explicit.</p></li>
 </ul>
 <p>Despite the elegant of the two-level option, it seems that the additional development isn’t warranted at this time.</p>
-<p>The <a href="https://github.com/rformassspectrometry/QFeatures/issues/37"><code>updateAssay</code> function</a> was originally intended for the two-level approach, i.e. to add an assay to an SE. This is not considered anymore (for now, at least).</p>
+<p>The <a href="https://github.com/rformassspectrometry/QFeatures/issues/37" class="external-link"><code>updateAssay</code> function</a> was originally intended for the two-level approach, i.e. to add an assay to an SE. This is not considered anymore (for now, at least).</p>
 <p>There is one exception though. When aggregating features with <code><a href="reference/aggregateFeatures.html">aggregateFeatures()</a></code>, a second assay is added, named <code>aggcounts</code> that counts the number of features that were aggregate for each sample and each low-level features.</p>
 </div>
 <div id="how-to-add-new-assays" class="section level1">
 <h1 class="hasAnchor">
 <a href="#how-to-add-new-assays" class="anchor"></a>How to add new assays</h1>
-<ol>
+<ol style="list-style-type: decimal">
 <li><p>Through aggregation with <code>aggregateFeatures</code>.</p></li>
 <li><p>Processing an SE.</p></li>
 </ol>
@@ -155,7 +161,7 @@ addAssay(cptac, logTransform(cptac[[1]]), name = "peptides_log")</a></code></pre
 <p>or implicitly</p>
 <pre><code><a href="reference/QFeatures-processing.html">logTransform(cptac, "peptides", name = "peptides_log")
 logTransform(cptac, 1, name = "peptides_log")</a></code></pre>
-<ol>
+<ol start="3" style="list-style-type: decimal">
 <li>Joining SEs (for example multiple TMT batches) (TODO)</li>
 </ol>
 <pre><code><a href="reference/joinAssays.html">joinAssays(QFeatures, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
@@ -194,9 +200,9 @@ ft2 &lt;- subsetByFeature(ft1, "ANLPQSFQVDTSk")
 ft2</code></pre>
 <p>The underlying reason why this fails is due to matrix subsetting by name when these names aren’t unique.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span>
 <span class="va">m</span>
 <span class="va">m</span><span class="op">[</span><span class="st">"a"</span>, <span class="op">]</span></code></pre></div>
 <p>And of course, this affects SEs …</p>
@@ -242,11 +248,7 @@ colData names(0):</code></pre>
 <div id="joining-assays" class="section level1">
 <h1 class="hasAnchor">
 <a href="#joining-assays" class="anchor"></a>Joining assays</h1>
-<p>To <em>combine</em> assays, we also need</p>
-<ol>
-<li>relaxed <code>MatchedAssayExperiment</code> constrains (see #46)</li>
-<li>assay links with multiple parent assays (see #52)</li>
-</ol>
+<p>To <em>combine</em> assays, we also need 1. relaxed <code>MatchedAssayExperiment</code> constrains (see #46) 2. assay links with multiple parent assays (see #52)</p>
 <p><code>combine,MSnSet,MSnSet</code> does two things, i.e. <code>rbind</code> and <code>cbind</code>. Here, we nedd (at least in a first instance) and have <code>cbind,SummarizedExperiment</code>.</p>
 <ul>
 <li>do we need some constrains requiering identical rownames? <code>cbind,SummarizedExperiment</code> uses the mcols to check whether rows match.</li>
@@ -262,13 +264,7 @@ colData names(0):</code></pre>
 <p>Naming:</p>
 <pre><code><a href="reference/joinAssays.html">joinAssays(QFeatures, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
 joinAssays(QFeatures, c(1, 2, 3), name = "peptides")</a></code></pre>
-<p>Algorithm:</p>
-<ol>
-<li>Find which mcols to keep</li>
-<li>Extend with rownames and NAs (depending on type of join)</li>
-<li>Order assays</li>
-<li>cbind assays (see <code>cbind,SummarizedExperiment</code>)</li>
-</ol>
+<p>Algorithm: 1. Find which mcols to keep 2. Extend with rownames and NAs (depending on type of join) 3. Order assays 4. cbind assays (see <code>cbind,SummarizedExperiment</code>)</p>
 <p>Do we want a public <em>join</em> for SummarizedExperiments? Discuss with SE maintainers.</p>
 <p>Note: if we were to have assay from multiple fractions to be <em>rbind</em>ed, we could consider a <code>rbindAssays</code>, <code>mergeFractions</code>, <code>bindFractions</code>, …</p>
 </div>
@@ -288,11 +284,11 @@ joinAssays(QFeatures, c(1, 2, 3), name = "peptides")</a></code></pre>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Laurent Gatto, Christophe Vanderaa.</p>
+  <p><p>Developed by Laurent Gatto, Christophe Vanderaa.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -300,6 +296,8 @@ joinAssays(QFeatures, c(1, 2, 3), name = "peptides")</a></code></pre>
 
   
 
+
+  
 
   </body>
 </html>
