@@ -200,10 +200,6 @@ jobs:
           message(paste('****', Sys.time(), 'pass number 2 at installing dependencies: any remaining dependencies ****'))
           deps <- remotes::dev_package_deps(dependencies = TRUE, repos = BiocManager::repositories())
           BiocManager::install(deps$package[deps$diff != 0])
-
-          ## Install this dependency manually otherwise MultiAssayExperiment
-          ## fails building. HDF5Array is suggested by MAE.
-          BiocManager::install("HDF5Array")
           
           ## For running the checks
           message(paste('****', Sys.time(), 'installing rcmdcheck and BiocCheck ****'))
