@@ -1,5 +1,9 @@
 # QFeatures 1.1.0
 
+## QFeatures 1.1.3
+
+- Nothing yet
+
 ## QFeatures 1.1.2
 
 - Manually install preprocessCore (see
