@@ -2,7 +2,8 @@
 
 ## QFeatures 1.1.3
 
-- Nothing yet
+- Added `countUniqueFeatures`, a function to count the number of 
+  unique features per sample.
 
 ## QFeatures 1.1.2
 
