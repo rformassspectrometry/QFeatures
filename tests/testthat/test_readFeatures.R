@@ -49,6 +49,10 @@ test_that("readSummarizedExperiment", {
               "X129N", "X130C", "X130N", "X131")
     expect_identical(colnames(ft1), ecol)
     expect_identical(colnames(ft4), ecol[1])
+    ## Provide ecol as logical 
+    ecol <- seq_along(x) %in% 1:10
+    expect_identical(ft1, readSummarizedExperiment(f, ecol = ecol))
+    
     ## Expect errors
     ecol <- LETTERS[1:10]
     expect_error(readSummarizedExperiment(x, ecol = ecol, name = "psms"))

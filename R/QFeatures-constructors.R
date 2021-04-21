@@ -95,6 +95,9 @@ readSummarizedExperiment <- function(table, ecol, fnames, ...) {
                  paste(ecol0[is.na(ecol)], collapse = ", "),
                  " not recognised among\n",
                  paste(colnames(xx), paste = ", "))
+    } else if (is.logical(ecol)) {
+        if (length(ecol) != length(xx)) stop("Length of 'ecol' and 'table' do not match.")
+        ecol <- which(ecol)
     }
     assay <- as.matrix(xx[, ecol, drop = FALSE])
     fdata <- DataFrame(xx[, -ecol, drop = FALSE])
