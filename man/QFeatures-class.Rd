@@ -14,6 +14,8 @@
 \alias{rowData,QFeatures-method}
 \alias{names<-,QFeatures,character-method}
 \alias{longFormat}
+\alias{replaceRowDataCols}
+\alias{removeRowDataCols}
 \title{Quantitative MS QFeatures}
 \usage{
 \S4method{show}{QFeatures}(object)
@@ -33,6 +35,10 @@ rowDataNames(x)
 \S4method{names}{QFeatures,character}(x) <- value
 
 longFormat(object, colDataCols = NULL, rowDataCols = NULL, index = 1L)
+
+replaceRowDataCols(object, replacement)
+
+removeRowDataCols(object, i, rowDataCols)
 
 QFeatures(..., assayLinks = NULL)
 
@@ -70,13 +76,20 @@ isn't found in any \code{rowData} variable, a message is printed.}
 \item{colDataCols}{A \code{character()}, \code{logical()}, or \code{numeric()}
 index for colData columns to be included.}
 
-\item{rowDataCols}{A \code{character()} index for colData columns to be
-included.}
+\item{rowDataCols}{A \code{character()} with column names of the rowData.}
 
 \item{index}{The assay indicator for \code{SummarizedExperiment}
 objects. A vector input is supported in the case that the
 \code{SummarizedExperiment} object(s) has more than one assay
 (default \code{1L})}
+
+\item{replacement}{A \code{list()} of same length as \code{i}. The elements
+of \code{value} must be named after \code{i}. Each element should
+contain the replacement values to insert in the rowData. If
+\code{length(r) > 1}, each element should be a table with the same
+rows as its corresponding assay and contain the \code{rowDataCols}
+variable(s). Set \code{replacement = NULL} to \strong{remove} the
+\code{rowDataCols}.}
 
 \item{assayLinks}{An optional \link{AssayLinks}.}
 
@@ -176,6 +189,20 @@ in \code{rowvars} in the \code{x} instance of class \code{QFeatures}.
 }
 }
 
+\section{Manipulating assays}{
+
+\itemize{
+\item The \code{replaceRowDataCols} function replaces one or more columns
+in the \code{rowData} of one or more assays. Note that if the column
+to replace does not exist, a new column will get added to the
+\code{rowData}.
+\item The \code{removeRowDataCols} function removes one or more columns
+in the \code{rowData} of one or more assays. If the column to remove
+does not exist in one of the assays, the \code{rowData} of that assay
+will stay unchanged.
+}
+}
+
 \examples{
 ## ------------------------
 ## An empty QFeatures object
@@ -231,6 +258,7 @@ selectRowData(fts1, rowvars = "Fa")
 ## QFeatures object from a data.frame
 ## or spreadsheet.
 ## -----------------------------------
+
 }
 \seealso{
 \itemize{

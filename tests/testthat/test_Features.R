@@ -156,3 +156,60 @@ test_that("longFormat", {
                  regexp = "not found")
 })
 
+test_that("replaceRowDataCols, add rowData column", {
+    data("feat2")
+    ## Test on 1 assay
+    repl <- data.frame(Foo = paste("bar", 1:nrow(feat2[[1]])))
+    ft <- replaceRowDataCols(feat2, list(assay1 = repl))
+    expect_identical(rowData(ft)[[1]], 
+                     cbind(rowData(feat2)[[1]], repl))
+    ## Test on more assays
+    repl <- lapply(names(feat2), function(i) DataFrame(Foo = paste("bar", 1:nrow(feat2[[i]]))))
+    names(repl) <- names(feat2)
+    ft <- replaceRowDataCols(feat2, repl)
+    for (i in names(ft))
+        expect_identical(rowData(ft)[[i]], 
+                         cbind(rowData(feat2)[[i]], repl[[i]]))
+    ## Add multiple column
+    repl <- lapply(names(feat2), function(i) DataFrame(Foo1 = paste("bar1", 1:nrow(feat2[[i]])),
+                                                       Foo2 = paste("bar2", 1:nrow(feat2[[i]]))))
+    names(repl) <- names(feat2)
+    ft <- replaceRowDataCols(feat2, repl)
+    for (i in names(ft))
+        expect_identical(rowData(ft)[[i]], 
+                         cbind(rowData(feat2)[[i]], repl[[i]]))
+    repl <- lapply(names(feat2), function(i) DataFrame(Prot = paste("prot", 1:nrow(feat2[[i]])),
+                                                       x = rnorm(nrow(feat2[[i]]))))
+    ## Replace multiple column
+    names(repl) <- names(feat2)
+    ft <- replaceRowDataCols(feat2, repl)
+    for (i in names(ft)) ## For each assay
+        for (col in colnames(repl[[i]])) ## for each column to replace
+            expect_identical(rowData(ft)[[i]][, col],
+                             repl[[i]][, col])
+    ## Expect error: replacement is not named correctly
+    names(repl) <- paste0("Foo_", names(feat2))
+    expect_error(replaceRowDataCols(feat2, repl), 
+                 regexp = "all.*names.*replacement.*object.*is not TRUE")
+    ## Expect error: replacement has wrong dimensions
+    repl[[3]] <- repl[[3]][1:2,]
+    names(repl) <- names(feat2)
+    expect_error(replaceRowDataCols(feat2, repl), 
+                 regexp = "don't have the same number of rows")
+})
+
+test_that("removeRowDataCols", {
+    data("feat2")
+    ## Test on 1 assay
+    ft <- removeRowDataCols(feat2, i = 1, rowDataCols = "Var")
+    expect_identical(rowData(ft)[[1]], 
+                     rowData(feat2)[[1]][, !grepl("Var", rowDataNames(feat2)[[1]])])
+    ## Test on all assays
+    ft <- removeRowDataCols(feat2, rowDataCols = "Var")
+    for (i in names(ft))
+        expect_identical(rowData(ft)[[i]], 
+                         rowData(feat2)[[i]][, !grepl("Var", rowDataNames(feat2)[[i]])])
+    ## When the column does not exist, the object stays unchanged
+    expect_identical(feat2, removeRowDataCols(feat2, rowDataCols = "Foo"))
+})
+
