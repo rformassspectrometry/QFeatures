@@ -87,7 +87,7 @@ readSummarizedExperiment <- function(table, ecol, fnames, ...) {
         args$stringsAsFactors <- FALSE
         xx <- do.call(read.csv, args)
     }
-    if (is.character(ecol)) {
+    if (is.character(ecol) || is.factor(ecol)) {
         ecol0 <- ecol
         ecol <- match(ecol0, colnames(xx))
         if (any(is.na(ecol)))
