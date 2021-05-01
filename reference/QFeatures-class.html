@@ -82,6 +82,9 @@ sure that these match the class validity requirements." />
 
 
 
+<!-- dependencies from examples -->
+
+
   
 
   
@@ -209,6 +212,10 @@ names(x) &lt;- value
 
 longFormat(object, colDataCols = NULL, rowDataCols = NULL, index = 1L)
 
+replaceRowDataCols(object, replacement)
+
+removeRowDataCols(object, i, rowDataCols)
+
 QFeatures(..., assayLinks = NULL)
 
 addAssay(x, y, name = "newAssay", assayLinks = AssayLinks(names = name))</pre>
@@ -222,7 +229,7 @@ addAssay(x, y, name = "newAssay", assayLinks = AssayLinks(names = name))</pre>
     </tr>
     <tr>
       <th>x</th>
-      <td><p>An instance of class QFeatures.</p></td>
+      <td><p>An instance of class <a href='QFeatures-class.html'>QFeatures</a>.</p></td>
     </tr>
     <tr>
       <th>i</th>
@@ -250,7 +257,7 @@ subsetting by assays</p></td>
     </tr>
     <tr>
       <th>use.names</th>
-      <td><p>A <code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code> indicating whether the rownames of
+      <td><p>A <code>logical(1)</code> indicating whether the rownames of
 each assay should be propagated to the corresponding <code>rowData</code>.</p></td>
     </tr>
     <tr>
@@ -271,8 +278,7 @@ index for colData columns to be included.</p></td>
     </tr>
     <tr>
       <th>rowDataCols</th>
-      <td><p>A <code><a href='https://rdrr.io/r/base/character.html'>character()</a></code> index for colData columns to be
-included.</p></td>
+      <td><p>A <code><a href='https://rdrr.io/r/base/character.html'>character()</a></code> with column names of the rowData.</p></td>
     </tr>
     <tr>
       <th>index</th>
@@ -280,6 +286,16 @@ included.</p></td>
 objects. A vector input is supported in the case that the
 <code>SummarizedExperiment</code> object(s) has more than one assay
 (default <code>1L</code>)</p></td>
+    </tr>
+    <tr>
+      <th>replacement</th>
+      <td><p>A <code><a href='https://rdrr.io/r/base/list.html'>list()</a></code> of same length as <code>i</code>. The elements
+of <code>value</code> must be named after <code>i</code>. Each element should
+contain the replacement values to insert in the rowData. If
+<code>length(r) &gt; 1</code>, each element should be a table with the same
+rows as its corresponding assay and contain the <code>rowDataCols</code>
+variable(s). Set <code>replacement = NULL</code> to <strong>remove</strong> the
+<code>rowDataCols</code>.</p></td>
     </tr>
     <tr>
       <th>assayLinks</th>
@@ -291,7 +307,7 @@ objects. A vector input is supported in the case that the
     </tr>
     <tr>
       <th>name</th>
-      <td><p>A <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> naming the single assay (default is
+      <td><p>A <code>character(1)</code> naming the single assay (default is
 <code>"newAssay"</code>). Ignored if <code>y</code> is a list of assays.</p></td>
     </tr>
     </table>
@@ -337,11 +353,11 @@ function in the <a href='http://waldronlab.io/MultiAssayExperiment/reference/Mul
     
 
 <ul>
-<li><p>The <code><a href='aggregateFeatures.html'>aggregateFeatures()</a></code> function creates a new assay by
+<li><p>The <code><a href='QFeatures-aggregate.html'>aggregateFeatures()</a></code> function creates a new assay by
 aggregating features of an existing assay.</p></li>
 <li><p><code>addAssay(x, y, name, assayLinks)</code>: Adds a new assay (or
 list of assays) <code>y</code> to the <code>QFeatures</code> instance <code>x</code>. <code>name</code>
-is a <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> naming the single assay (default is
+is a <code>character(1)</code> naming the single assay (default is
 <code>"newAssay"</code>), and is ignored if <code>y</code> is a list of
 assays. <code>assayLinks</code> is an optional <a href='AssayLinks.html'>AssayLinks</a>.</p></li>
 </ul>
@@ -352,7 +368,7 @@ assays. <code>assayLinks</code> is an optional <a href='AssayLinks.html'>AssayLi
 
 <ul>
 <li><p>QFeatures object can be subset using the <code>x[i, j, k, drop = TRUE]</code> paradigm. See the argument descriptions for details.</p></li>
-<li><p>The <code><a href='subsetByFeature.html'>subsetByFeature()</a></code> function can be used to subset a
+<li><p>The <code><a href='QFeatures-subsetBy.html'>subsetByFeature()</a></code> function can be used to subset a
 <code>QFeatures</code> object using one or multiple feature names that will
 be matched across different assays, taking the aggregation
 relation between assays.</p></li>
@@ -361,17 +377,32 @@ select a limited number of <code>rowData</code> columns of interest named
 in <code>rowvars</code> in the <code>x</code> instance of class <code>QFeatures</code>.</p></li>
 </ul>
 
+    <h2 class="hasAnchor" id="manipulating-assays"><a class="anchor" href="#manipulating-assays"></a>Manipulating assays</h2>
+
+    
+
+<ul>
+<li><p>The <code>replaceRowDataCols</code> function replaces one or more columns
+in the <code>rowData</code> of one or more assays. Note that if the column
+to replace does not exist, a new column will get added to the
+<code>rowData</code>.</p></li>
+<li><p>The <code>removeRowDataCols</code> function removes one or more columns
+in the <code>rowData</code> of one or more assays. If the column to remove
+does not exist in one of the assays, the <code>rowData</code> of that assay
+will stay unchanged.</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'>
 <ul>
-<li><p>The <code><a href='readQFeatures.html'>readQFeatures()</a></code> constructor and the <code><a href='aggregateFeatures.html'>aggregateFeatures()</a></code>
+<li><p>The <code><a href='readQFeatures.html'>readQFeatures()</a></code> constructor and the <code><a href='QFeatures-aggregate.html'>aggregateFeatures()</a></code>
 function. The <em>QFeatures</em> vignette provides an extended example.</p></li>
 <li><p>The <a href='QFeatures-filtering.html'>QFeatures-filtering</a> manual page demonstrates how to filter
 features based on their rowData.</p></li>
-<li><p>The <a href='missing-data.html'>missing-data</a> manual page to manage missing values in
+<li><p>The <a href='QFeatures-missing-data.html'>missing-data</a> manual page to manage missing values in
 <code>QFeatures</code> objects.</p></li>
-<li><p>The <a href='QFeatures-processing.html'>QFeatures-processing</a> and <code><a href='aggregateFeatures.html'>aggregateFeatures()</a></code> manual pages
+<li><p>The <a href='QFeatures-processing.html'>QFeatures-processing</a> and <code><a href='QFeatures-aggregate.html'>aggregateFeatures()</a></code> manual pages
 and <em>Processing</em> vignette describe common quantitative data
 processing methods using in quantitative proteomics.</p></li>
 </ul>
@@ -385,8 +416,8 @@ processing methods using in quantitative proteomics.</p></li>
 <span class='co'>## An empty QFeatures object</span>
 <span class='co'>## ------------------------</span>
 
-<span class='fu'>QFeatures</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; A empty instance of class QFeatures </div><div class='input'>
+<span class='fu'><a href='QFeatures-class.html'>QFeatures</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='co'>#&gt; A empty instance of class QFeatures </div><div class='input'>
 <span class='co'>## -----------------------------------</span>
 <span class='co'>## Creating a QFeatures object manually</span>
 <span class='co'>## -----------------------------------</span>
@@ -405,7 +436,7 @@ processing methods using in quantitative proteomics.</p></li>
 <span class='va'>df2</span> <span class='op'>&lt;-</span> <span class='fu'>DataFrame</span><span class='op'>(</span>row.names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>m2</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='op'>(</span><span class='va'>se1</span> <span class='op'>&lt;-</span> <span class='fu'>SummarizedExperiment</span><span class='op'>(</span><span class='va'>m1</span>, <span class='va'>df1</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; class: SummarizedExperiment 
+</div><div class='co'>#&gt; class: SummarizedExperiment 
 #&gt; dim: 10 4 
 #&gt; metadata(0):
 #&gt; assays(1): ''
@@ -413,7 +444,7 @@ processing methods using in quantitative proteomics.</p></li>
 #&gt; rowData names(2): Fa Fb
 #&gt; colnames(4): S1 S2 S3 S4
 #&gt; colData names(0):</div><div class='input'><span class='op'>(</span><span class='va'>se2</span> <span class='op'>&lt;-</span> <span class='fu'>SummarizedExperiment</span><span class='op'>(</span><span class='va'>m2</span>, <span class='va'>df2</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; class: SummarizedExperiment 
+</div><div class='co'>#&gt; class: SummarizedExperiment 
 #&gt; dim: 4 4 
 #&gt; metadata(0):
 #&gt; assays(1): ''
@@ -427,12 +458,12 @@ processing methods using in quantitative proteomics.</p></li>
                 row.names <span class='op'>=</span> <span class='va'>sample_names</span><span class='op'>)</span>
 
 <span class='va'>el</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>assay1 <span class='op'>=</span> <span class='va'>se1</span>, assay2 <span class='op'>=</span> <span class='va'>se2</span><span class='op'>)</span>
-<span class='va'>fts1</span> <span class='op'>&lt;-</span> <span class='fu'>QFeatures</span><span class='op'>(</span><span class='va'>el</span>, colData <span class='op'>=</span> <span class='va'>cd</span><span class='op'>)</span>
+<span class='va'>fts1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='QFeatures-class.html'>QFeatures</a></span><span class='op'>(</span><span class='va'>el</span>, colData <span class='op'>=</span> <span class='va'>cd</span><span class='op'>)</span>
 <span class='va'>fts1</span>
-</div><div class='output co'>#&gt; An instance of class QFeatures containing 2 assays:
+</div><div class='co'>#&gt; An instance of class QFeatures containing 2 assays:
 #&gt;  [1] assay1: SummarizedExperiment with 10 rows and 4 columns 
 #&gt;  [2] assay2: SummarizedExperiment with 4 rows and 4 columns </div><div class='input'><span class='va'>fts1</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; class: SummarizedExperiment 
+</div><div class='co'>#&gt; class: SummarizedExperiment 
 #&gt; dim: 10 4 
 #&gt; metadata(0):
 #&gt; assays(1): ''
@@ -440,7 +471,7 @@ processing methods using in quantitative proteomics.</p></li>
 #&gt; rowData names(2): Fa Fb
 #&gt; colnames(4): S1 S2 S3 S4
 #&gt; colData names(0):</div><div class='input'><span class='va'>fts1</span><span class='op'>[[</span><span class='st'>"assay1"</span><span class='op'>]</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; class: SummarizedExperiment 
+</div><div class='co'>#&gt; class: SummarizedExperiment 
 #&gt; dim: 10 4 
 #&gt; metadata(0):
 #&gt; assays(1): ''
@@ -452,15 +483,15 @@ processing methods using in quantitative proteomics.</p></li>
 <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>fts1</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"se1"</span>, <span class='st'>"se2"</span><span class='op'>)</span>
 
 <span class='co'>## Add an assay</span>
-<span class='va'>fts1</span> <span class='op'>&lt;-</span> <span class='fu'>addAssay</span><span class='op'>(</span><span class='va'>fts1</span>, <span class='va'>se1</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, <span class='op'>]</span>, name <span class='op'>=</span> <span class='st'>"se3"</span><span class='op'>)</span>
+<span class='va'>fts1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='QFeatures-class.html'>addAssay</a></span><span class='op'>(</span><span class='va'>fts1</span>, <span class='va'>se1</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, <span class='op'>]</span>, name <span class='op'>=</span> <span class='st'>"se3"</span><span class='op'>)</span>
 
 <span class='co'>## Get the assays feature metadata</span>
 <span class='fu'>rowData</span><span class='op'>(</span><span class='va'>fts1</span><span class='op'>)</span> 
-</div><div class='output co'>#&gt; DataFrameList of length 3
+</div><div class='co'>#&gt; DataFrameList of length 3
 #&gt; names(3): se1 se2 se3</div><div class='input'>
 <span class='co'>## Keep only the Fa variable</span>
-<span class='fu'>selectRowData</span><span class='op'>(</span><span class='va'>fts1</span>, rowvars <span class='op'>=</span> <span class='st'>"Fa"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; An instance of class QFeatures containing 3 assays:
+<span class='fu'><a href='QFeatures-class.html'>selectRowData</a></span><span class='op'>(</span><span class='va'>fts1</span>, rowvars <span class='op'>=</span> <span class='st'>"Fa"</span><span class='op'>)</span>
+</div><div class='co'>#&gt; An instance of class QFeatures containing 3 assays:
 #&gt;  [1] se1: SummarizedExperiment with 10 rows and 4 columns 
 #&gt;  [2] se2: SummarizedExperiment with 4 rows and 4 columns 
 #&gt;  [3] se3: SummarizedExperiment with 2 rows and 4 columns </div><div class='input'>
@@ -469,6 +500,7 @@ processing methods using in quantitative proteomics.</p></li>
 <span class='co'>## QFeatures object from a data.frame</span>
 <span class='co'>## or spreadsheet.</span>
 <span class='co'>## -----------------------------------</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -485,7 +517,7 @@ processing methods using in quantitative proteomics.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>

@@ -57,6 +57,7 @@
 
 
 
+
   
 
   
@@ -146,34 +147,34 @@
 </ul>
 <p>Despite the elegant of the two-level option, it seems that the additional development isn’t warranted at this time.</p>
 <p>The <a href="https://github.com/rformassspectrometry/QFeatures/issues/37" class="external-link"><code>updateAssay</code> function</a> was originally intended for the two-level approach, i.e. to add an assay to an SE. This is not considered anymore (for now, at least).</p>
-<p>There is one exception though. When aggregating features with <code><a href="reference/aggregateFeatures.html">aggregateFeatures()</a></code>, a second assay is added, named <code>aggcounts</code> that counts the number of features that were aggregate for each sample and each low-level features.</p>
+<p>There is one exception though. When aggregating features with <code><a href="reference/QFeatures-aggregate.html">aggregateFeatures()</a></code>, a second assay is added, named <code>aggcounts</code> that counts the number of features that were aggregate for each sample and each low-level features.</p>
 </div>
 <div id="how-to-add-new-assays" class="section level1">
 <h1 class="hasAnchor">
-<a href="#how-to-add-new-assays" class="anchor"></a>How to add new assays</h1>
+<a href="#how-to-add-new-assays" class="anchor" aria-hidden="true"></a>How to add new assays</h1>
 <ol style="list-style-type: decimal">
 <li><p>Through aggregation with <code>aggregateFeatures</code>.</p></li>
 <li><p>Processing an SE.</p></li>
 </ol>
 <p>This can/could be done explicitly with <code>addAssay</code></p>
-<pre><code><a href="reference/QFeatures.html">addAssay(cptac, logTransform(cptac[["peptides"]]), name = "peptides_log")
-addAssay(cptac, logTransform(cptac[[1]]), name = "peptides_log")</a></code></pre>
+<pre><code>addAssay(cptac, logTransform(cptac[["peptides"]]), name = "peptides_log")
+addAssay(cptac, logTransform(cptac[[1]]), name = "peptides_log")</code></pre>
 <p>or implicitly</p>
-<pre><code><a href="reference/QFeatures-processing.html">logTransform(cptac, "peptides", name = "peptides_log")
-logTransform(cptac, 1, name = "peptides_log")</a></code></pre>
+<pre><code>logTransform(cptac, "peptides", name = "peptides_log")
+logTransform(cptac, 1, name = "peptides_log")</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Joining SEs (for example multiple TMT batches) (TODO)</li>
 </ol>
-<pre><code><a href="reference/joinAssays.html">joinAssays(QFeatures, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
-joinAssays(QFeatures, c(1, 2, 3), name = "peptides")</a></code></pre>
+<pre><code>joinAssays(QFeatures, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
+joinAssays(QFeatures, c(1, 2, 3), name = "peptides")</code></pre>
 <p>See below.</p>
 </div>
 <div id="qfeatures-api" class="section level1">
 <h1 class="hasAnchor">
-<a href="#qfeatures-api" class="anchor"></a>QFeatures API</h1>
+<a href="#qfeatures-api" class="anchor" aria-hidden="true"></a>QFeatures API</h1>
 <div id="processing-functions" class="section level3">
 <h3 class="hasAnchor">
-<a href="#processing-functions" class="anchor"></a>Processing functions</h3>
+<a href="#processing-functions" class="anchor" aria-hidden="true"></a>Processing functions</h3>
 <ul>
 <li><p>A processing function that acts on a Feature’s assay (typically a <code>SummarizedExperiment</code> or a <code>SingleCellExperiment</code>) such as <code>process(object)</code>, returns a new object of the same type.</p></li>
 <li><p>A processing function such <code>process(object, i)</code>, that acts on a Feautre object takes a second argument <code>i</code>, that can be a vector of indices or names, returns a new object of class QFeatures with its assay(s) <code>i</code> modified according to <code>process(object[[i]])</code>.</p></li>
@@ -182,7 +183,7 @@ joinAssays(QFeatures, c(1, 2, 3), name = "peptides")</a></code></pre>
 </div>
 <div id="assays" class="section level3">
 <h3 class="hasAnchor">
-<a href="#assays" class="anchor"></a>Assays</h3>
+<a href="#assays" class="anchor" aria-hidden="true"></a>Assays</h3>
 <ul>
 <li>Assays should have unique rownames (even though this isn’t required for SEs). If they aren’t, only the first occurence of the name is kept:</li>
 </ul>
@@ -237,7 +238,7 @@ colData names(0):</code></pre>
 </div>
 <div id="assay-links" class="section level1">
 <h1 class="hasAnchor">
-<a href="#assay-links" class="anchor"></a>Assay links</h1>
+<a href="#assay-links" class="anchor" aria-hidden="true"></a>Assay links</h1>
 <p>Currently, we have</p>
 <ul>
 <li><p>Assay links produces by <code>aggregateFeatures</code> and manually with <code>addAssayLink</code>.</p></li>
@@ -247,7 +248,7 @@ colData names(0):</code></pre>
 </div>
 <div id="joining-assays" class="section level1">
 <h1 class="hasAnchor">
-<a href="#joining-assays" class="anchor"></a>Joining assays</h1>
+<a href="#joining-assays" class="anchor" aria-hidden="true"></a>Joining assays</h1>
 <p>To <em>combine</em> assays, we also need 1. relaxed <code>MatchedAssayExperiment</code> constrains (see #46) 2. assay links with multiple parent assays (see #52)</p>
 <p><code>combine,MSnSet,MSnSet</code> does two things, i.e. <code>rbind</code> and <code>cbind</code>. Here, we nedd (at least in a first instance) and have <code>cbind,SummarizedExperiment</code>.</p>
 <ul>
@@ -262,8 +263,8 @@ colData names(0):</code></pre>
 </ul>
 <p>The row data will be accessible through links between assays anyway.</p>
 <p>Naming:</p>
-<pre><code><a href="reference/joinAssays.html">joinAssays(QFeatures, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
-joinAssays(QFeatures, c(1, 2, 3), name = "peptides")</a></code></pre>
+<pre><code>joinAssays(QFeatures, c("pep_batch1", "pep_batch2", "pep_batch3"), name = "peptides")
+joinAssays(QFeatures, c(1, 2, 3), name = "peptides")</code></pre>
 <p>Algorithm: 1. Find which mcols to keep 2. Extend with rownames and NAs (depending on type of join) 3. Order assays 4. cbind assays (see <code>cbind,SummarizedExperiment</code>)</p>
 <p>Do we want a public <em>join</em> for SummarizedExperiments? Discuss with SE maintainers.</p>
 <p>Note: if we were to have assay from multiple fractions to be <em>rbind</em>ed, we could consider a <code>rbindAssays</code>, <code>mergeFractions</code>, <code>bindFractions</code>, …</p>
@@ -288,7 +289,7 @@ joinAssays(QFeatures, c(1, 2, 3), name = "peptides")</a></code></pre>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>

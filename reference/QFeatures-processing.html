@@ -76,6 +76,9 @@ See the Processing vignette for examples." />
 
 
 
+<!-- dependencies from examples -->
+
+
   
 
   
@@ -153,7 +156,7 @@ See the Processing vignette for examples." />
 
     <div class="ref-description">
     <p>This manual page describes common quantitative proteomics data
-processing methods using <a href='QFeatures.html'>QFeatures</a> objects. In the following
+processing methods using <a href='QFeatures-class.html'>QFeatures</a> objects. In the following
 functions, if <code>object</code> is of class <code>QFeatures</code>, and optional assay
 index or name <code>i</code> can be specified to define the assay (by name of
 index) on which to operate.</p>
@@ -215,12 +218,12 @@ sweeps out array summaries from <code>SummarizedExperiment</code> and
     </tr>
     <tr>
       <th>base</th>
-      <td><p><code><a href='https://rdrr.io/r/base/numeric.html'>numeric(1)</a></code> providing the base with respect to which
+      <td><p><code>numeric(1)</code> providing the base with respect to which
 logarithms are computed. Defaults is 2.</p></td>
     </tr>
     <tr>
       <th>pc</th>
-      <td><p><code><a href='https://rdrr.io/r/base/numeric.html'>numeric(1)</a></code> with a pseudocount to add to the
+      <td><p><code>numeric(1)</code> with a pseudocount to add to the
 quantitative data. Useful when (true) 0 are present in the
 data. Default is 0 (no effect).</p></td>
     </tr>
@@ -231,25 +234,25 @@ name, respectively, of the assay(s) to be processed.</p></td>
     </tr>
     <tr>
       <th>name</th>
-      <td><p>A <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> naming the new assay name. Defaults
+      <td><p>A <code>character(1)</code> naming the new assay name. Defaults
 are <code>logAssay</code> for <code>logTransform</code>, <code>scaledAssay</code> for
 <code>scaleTranform</code> and <code>normAssay</code> for <code>normalize</code>.</p></td>
     </tr>
     <tr>
       <th>center</th>
-      <td><p><code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code> (default is <code>TRUE</code>) value or
+      <td><p><code>logical(1)</code> (default is <code>TRUE</code>) value or
 numeric-alike vector of length equal to the number of columns
 of <code>object</code>. See <code><a href='https://rdrr.io/r/base/scale.html'>base::scale()</a></code> for details.</p></td>
     </tr>
     <tr>
       <th>scale</th>
-      <td><p><code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code> (default is <code>TRUE</code>) or a numeric-alike
+      <td><p><code>logical(1)</code> (default is <code>TRUE</code>) or a numeric-alike
 vector of length equal to the number of columns of
 <code>object</code>. See <code><a href='https://rdrr.io/r/base/scale.html'>base::scale()</a></code> for details.</p></td>
     </tr>
     <tr>
       <th>method</th>
-      <td><p><code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> defining the normalisation method to
+      <td><p><code>character(1)</code> defining the normalisation method to
 apply. See Details.</p></td>
     </tr>
     <tr>
@@ -321,7 +324,7 @@ arguments.</p></li>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='fu'>MsCoreUtils</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/MsCoreUtils/man/normalize.html'>normalizeMethods</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] "sum"              "max"              "center.mean"      "center.median"   
+</div><div class='co'>#&gt;  [1] "sum"              "max"              "center.mean"      "center.median"   
 #&gt;  [5] "div.mean"         "div.median"       "diff.median"      "quantiles"       
 #&gt;  [9] "quantiles.robust" "vsn"             </div></pre>
   </div>
@@ -339,7 +342,7 @@ arguments.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>

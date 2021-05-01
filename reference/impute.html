@@ -65,6 +65,9 @@ the different imputation methods available and strategies." />
 
 
 
+<!-- dependencies from examples -->
+
+
   
 
   
@@ -169,7 +172,7 @@ missing values to be imputed.</p></td>
     </tr>
     <tr>
       <th>method</th>
-      <td><p><code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> defining the imputation method. See
+      <td><p><code>character(1)</code> defining the imputation method. See
 <code>imputeMethods()</code> for available ones. See
 <code><a href='https://rdrr.io/pkg/MsCoreUtils/man/imputation.html'>MsCoreUtils::impute_matrix()</a></code> for details.</p></td>
     </tr>
@@ -191,24 +194,24 @@ impute. If missing, all assays will be imputed.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>MsCoreUtils</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/MsCoreUtils/man/imputation.html'>imputeMethods</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] "bpca"    "knn"     "QRILC"   "MLE"     "MinDet"  "MinProb" "min"    
+</div><div class='co'>#&gt;  [1] "bpca"    "knn"     "QRILC"   "MLE"     "MinDet"  "MinProb" "min"    
 #&gt;  [8] "zero"    "mixed"   "nbavg"   "with"    "none"   </div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>se_na2</span><span class='op'>)</span>
 <span class='co'>## table of missing values along the rows (proteins)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='fu'>rowData</span><span class='op'>(</span><span class='va'>se_na2</span><span class='op'>)</span><span class='op'>$</span><span class='va'>nNA</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
+</div><div class='co'>#&gt; 
 #&gt;   0   1   2   3   4   8   9  10 
 #&gt; 301 247  91  13   2  23  10   2 </div><div class='input'><span class='co'>## table of missing values along the columns (samples)</span>
 <span class='fu'>colData</span><span class='op'>(</span><span class='va'>se_na2</span><span class='op'>)</span><span class='op'>$</span><span class='va'>nNA</span>
-</div><div class='output co'>#&gt;  [1] 34 45 56 39 47 52 49 61 41 42 55 45 51 43 57 53</div><div class='input'>
+</div><div class='co'>#&gt;  [1] 34 45 56 39 47 52 49 61 41 42 55 45 51 43 57 53</div><div class='input'>
 <span class='co'>## non-random missing values</span>
 <span class='va'>notna</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/which.html'>which</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'>rowData</span><span class='op'>(</span><span class='va'>se_na2</span><span class='op'>)</span><span class='op'>$</span><span class='va'>randna</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>notna</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 35</div><div class='input'><span class='va'>notna</span>
-</div><div class='output co'>#&gt;  [1]   6  20  79  88 130 187 227 231 238 264 275 317 324 363 373 382 409 437 445
+</div><div class='co'>#&gt; [1] 35</div><div class='input'><span class='va'>notna</span>
+</div><div class='co'>#&gt;  [1]   6  20  79  88 130 187 227 231 238 264 275 317 324 363 373 382 409 437 445
 #&gt; [20] 453 456 474 484 485 492 514 516 546 568 580 594 631 648 664 671</div><div class='input'>
 <span class='fu'>impute</span><span class='op'>(</span><span class='va'>se_na2</span>, method <span class='op'>=</span> <span class='st'>"min"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; class: SummarizedExperiment 
+</div><div class='co'>#&gt; class: SummarizedExperiment 
 #&gt; dim: 689 16 
 #&gt; metadata(3): MSnbaseFiles MSnbaseProcessing MSnbaseVersion
 #&gt; assays(1): ''
@@ -220,13 +223,13 @@ impute. If missing, all assays will be imputed.</p></td>
   <span class='fu'>impute</span><span class='op'>(</span><span class='va'>se_na2</span>, method <span class='op'>=</span> <span class='st'>"QRILC"</span><span class='op'>)</span>
   <span class='fu'>impute</span><span class='op'>(</span><span class='va'>se_na2</span>, method <span class='op'>=</span> <span class='st'>"MinDet"</span><span class='op'>)</span>
 <span class='op'>}</span>
-</div><div class='output co'>#&gt; <span class='message'>Loading required package: imputeLCMD</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: tmvtnorm</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: mvtnorm</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: Matrix</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘Matrix’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:S4Vectors’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    expand</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: gmm</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: sandwich</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: norm</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: pcaMethods</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘pcaMethods’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    loadings</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: impute</span></div><div class='output co'>#&gt; class: SummarizedExperiment 
+</div><div class='co'>#&gt; Loading required package: imputeLCMD</div><div class='co'>#&gt; Loading required package: tmvtnorm</div><div class='co'>#&gt; Loading required package: mvtnorm</div><div class='co'>#&gt; Loading required package: Matrix</div><div class='co'>#&gt; 
+#&gt; Attaching package: ‘Matrix’</div><div class='co'>#&gt; The following object is masked from ‘package:S4Vectors’:
+#&gt; 
+#&gt;     expand</div><div class='co'>#&gt; Loading required package: gmm</div><div class='co'>#&gt; Loading required package: sandwich</div><div class='co'>#&gt; Loading required package: norm</div><div class='co'>#&gt; Loading required package: pcaMethods</div><div class='co'>#&gt; 
+#&gt; Attaching package: ‘pcaMethods’</div><div class='co'>#&gt; The following object is masked from ‘package:stats’:
+#&gt; 
+#&gt;     loadings</div><div class='co'>#&gt; Loading required package: impute</div><div class='co'>#&gt; class: SummarizedExperiment 
 #&gt; dim: 689 16 
 #&gt; metadata(3): MSnbaseFiles MSnbaseProcessing MSnbaseVersion
 #&gt; assays(1): ''
@@ -236,8 +239,8 @@ impute. If missing, all assays will be imputed.</p></td>
 #&gt; colData names(1): nNA</div><div class='input'>
 <span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='st'><a href='http://www.stat.psu.edu/~jls/misoftwa.html#aut'>"norm"</a></span><span class='op'>)</span><span class='op'>)</span>
   <span class='fu'>impute</span><span class='op'>(</span><span class='va'>se_na2</span>, method <span class='op'>=</span> <span class='st'>"MLE"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Iterations of EM: 
-#&gt; 1...2...3...4...5...6...7...8...9...10...11...</div><div class='output co'>#&gt; class: SummarizedExperiment 
+</div><div class='co'>#&gt; Iterations of EM: 
+#&gt; 1...2...3...4...5...6...7...8...9...10...11...</div><div class='co'>#&gt; class: SummarizedExperiment 
 #&gt; dim: 689 16 
 #&gt; metadata(3): MSnbaseFiles MSnbaseProcessing MSnbaseVersion
 #&gt; assays(1): ''
@@ -248,7 +251,7 @@ impute. If missing, all assays will be imputed.</p></td>
 <span class='fu'>impute</span><span class='op'>(</span><span class='va'>se_na2</span>, method <span class='op'>=</span> <span class='st'>"mixed"</span>,
        randna <span class='op'>=</span> <span class='fu'>rowData</span><span class='op'>(</span><span class='va'>se_na2</span><span class='op'>)</span><span class='op'>$</span><span class='va'>randna</span>,
        mar <span class='op'>=</span> <span class='st'>"knn"</span>, mnar <span class='op'>=</span> <span class='st'>"QRILC"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; class: SummarizedExperiment 
+</div><div class='co'>#&gt; class: SummarizedExperiment 
 #&gt; dim: 689 16 
 #&gt; metadata(3): MSnbaseFiles MSnbaseProcessing MSnbaseVersion
 #&gt; assays(1): ''
@@ -263,13 +266,13 @@ impute. If missing, all assays will be imputed.</p></td>
 <span class='fu'>assay</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>3</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='cn'>NA</span> <span class='co'>## min value and average</span>
 <span class='co'>## 4th row: no imputation</span>
 <span class='fu'>assay</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;              M1F1A    M1F4A   M1F7A  M1F11A    M1F2B    M1F5B
+</div><div class='co'>#&gt;              M1F1A    M1F4A   M1F7A  M1F11A    M1F2B    M1F5B
 #&gt; AT1G09210       NA 0.275500 0.21600 0.18525 0.465667 0.199667
 #&gt; AT1G21750 0.332000 0.279667      NA 0.16600 0.451500 0.200375
 #&gt; AT1G51760       NA       NA 0.16825 0.18825 0.459750 0.214500
 #&gt; AT1G56340 0.336733       NA      NA      NA 0.487167 0.201833</div><div class='input'>
 <span class='fu'>assay</span><span class='op'>(</span><span class='fu'>impute</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"nbavg"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Assuming values are ordered.</span></div><div class='output co'>#&gt;              M1F1A    M1F4A     M1F7A  M1F11A    M1F2B    M1F5B
+</div><div class='co'>#&gt; Assuming values are ordered.</div><div class='co'>#&gt;              M1F1A    M1F4A     M1F7A  M1F11A    M1F2B    M1F5B
 #&gt; AT1G09210 0.166000 0.275500 0.2160000 0.18525 0.465667 0.199667
 #&gt; AT1G21750 0.332000 0.279667 0.2228335 0.16600 0.451500 0.200375
 #&gt; AT1G51760 0.166000 0.167125 0.1682500 0.18825 0.459750 0.214500
@@ -289,7 +292,7 @@ impute. If missing, all assays will be imputed.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>

@@ -85,6 +85,9 @@ See the Processing vignette for examples." />
 
 
 
+<!-- dependencies from examples -->
+
+
   
 
   
@@ -162,7 +165,7 @@ See the Processing vignette for examples." />
 
     <div class="ref-description">
     <p>This manual page describes the handling of missing values in
-<a href='QFeatures.html'>QFeatures</a> objects. In the following functions, if <code>object</code> is of
+<a href='QFeatures-class.html'>QFeatures</a> objects. In the following functions, if <code>object</code> is of
 class <code>QFeatures</code>, and optional assay index or name <code>i</code> can be
 specified to define the assay (by name of index) on which to
 operate.</p>
@@ -192,46 +195,46 @@ the assays is provided in each element's <code>DataFrame</code>.</p></li>
     </div>
 
     <pre class="usage"><span class='co'># S4 method for SummarizedExperiment,missing</span>
-<span class='fu'>zeroIsNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
+<span class='fu'><a href='QFeatures-missing-data.html'>zeroIsNA</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for QFeatures,integer</span>
-<span class='fu'>zeroIsNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
+<span class='fu'><a href='QFeatures-missing-data.html'>zeroIsNA</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for QFeatures,numeric</span>
-<span class='fu'>zeroIsNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
+<span class='fu'><a href='QFeatures-missing-data.html'>zeroIsNA</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for QFeatures,character</span>
-<span class='fu'>zeroIsNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
+<span class='fu'><a href='QFeatures-missing-data.html'>zeroIsNA</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for SummarizedExperiment,missing</span>
-<span class='fu'>infIsNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
+<span class='fu'><a href='QFeatures-missing-data.html'>infIsNA</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for QFeatures,integer</span>
-<span class='fu'>infIsNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
+<span class='fu'><a href='QFeatures-missing-data.html'>infIsNA</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for QFeatures,numeric</span>
-<span class='fu'>infIsNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
+<span class='fu'><a href='QFeatures-missing-data.html'>infIsNA</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for QFeatures,character</span>
-<span class='fu'>infIsNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
+<span class='fu'><a href='QFeatures-missing-data.html'>infIsNA</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for SummarizedExperiment,missing</span>
-<span class='fu'>nNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
+<span class='fu'><a href='QFeatures-missing-data.html'>nNA</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for QFeatures,integer</span>
-<span class='fu'>nNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
+<span class='fu'><a href='QFeatures-missing-data.html'>nNA</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for QFeatures,numeric</span>
-<span class='fu'>nNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
+<span class='fu'><a href='QFeatures-missing-data.html'>nNA</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for QFeatures,character</span>
-<span class='fu'>nNA</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
+<span class='fu'><a href='QFeatures-missing-data.html'>nNA</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span><span class='op'>)</span>
 
 <span class='co'># S4 method for SummarizedExperiment</span>
-<span class='fu'>filterNA</span><span class='op'>(</span><span class='va'>object</span>, pNA <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
+<span class='fu'><a href='QFeatures-missing-data.html'>filterNA</a></span><span class='op'>(</span><span class='va'>object</span>, pNA <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
 
 <span class='co'># S4 method for QFeatures</span>
-<span class='fu'>filterNA</span><span class='op'>(</span><span class='va'>object</span>, pNA <span class='op'>=</span> <span class='fl'>0</span>, <span class='va'>i</span><span class='op'>)</span></pre>
+<span class='fu'><a href='QFeatures-missing-data.html'>filterNA</a></span><span class='op'>(</span><span class='va'>object</span>, pNA <span class='op'>=</span> <span class='fl'>0</span>, <span class='va'>i</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -246,7 +249,7 @@ the assays is provided in each element's <code>DataFrame</code>.</p></li>
     </tr>
     <tr>
       <th>pNA</th>
-      <td><p><code><a href='https://rdrr.io/r/base/numeric.html'>numeric(1)</a></code> providing the maximim percentage of
+      <td><p><code>numeric(1)</code> providing the maximim percentage of
 missing values per feature (row) that is acceptable. Feature
 with higher percentages are removed. If 0 (default), features
 that contain any number of <code>NA</code> values are dropped.</p></td>
@@ -262,7 +265,7 @@ that contain any number of <code>NA</code> values are dropped.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>se_na2</span>
-</div><div class='output co'>#&gt; class: SummarizedExperiment 
+</div><div class='co'>#&gt; class: SummarizedExperiment 
 #&gt; dim: 689 16 
 #&gt; metadata(3): MSnbaseFiles MSnbaseProcessing MSnbaseVersion
 #&gt; assays(1): ''
@@ -271,8 +274,8 @@ that contain any number of <code>NA</code> values are dropped.</p></td>
 #&gt; colnames(16): M1F1A M1F4A ... M2F8B M2F11B
 #&gt; colData names(1): nNA</div><div class='input'>
 <span class='co'>## Summary if missing values</span>
-<span class='fu'>nNA</span><span class='op'>(</span><span class='va'>ft_na</span>, <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $nNA
+<span class='fu'><a href='QFeatures-missing-data.html'>nNA</a></span><span class='op'>(</span><span class='va'>ft_na</span>, <span class='fl'>1</span><span class='op'>)</span>
+</div><div class='co'>#&gt; $nNA
 #&gt; DataFrame with 1 row and 3 columns
 #&gt;         assay       nNA       pNA
 #&gt;   &lt;character&gt; &lt;integer&gt; &lt;numeric&gt;
@@ -296,19 +299,19 @@ that contain any number of <code>NA</code> values are dropped.</p></td>
 #&gt; 3          na           C         0         0
 #&gt; </div><div class='input'>
 <span class='co'>## Remove rows with missing values</span>
-<span class='fu'>assay</span><span class='op'>(</span><span class='fu'>filterNA</span><span class='op'>(</span><span class='va'>ft_na</span>, i <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   A B  C
+<span class='fu'>assay</span><span class='op'>(</span><span class='fu'><a href='QFeatures-missing-data.html'>filterNA</a></span><span class='op'>(</span><span class='va'>ft_na</span>, i <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='co'>#&gt;   A B  C
 #&gt; b 2 6 10</div><div class='input'>
 <span class='co'>## Replace NAs by zero and back</span>
 <span class='va'>ft_na</span> <span class='op'>&lt;-</span> <span class='fu'><a href='impute.html'>impute</a></span><span class='op'>(</span><span class='va'>ft_na</span>, i <span class='op'>=</span> <span class='fl'>1</span>, method <span class='op'>=</span> <span class='st'>"zero"</span><span class='op'>)</span>
 <span class='fu'>assay</span><span class='op'>(</span><span class='va'>ft_na</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   A B  C
+</div><div class='co'>#&gt;   A B  C
 #&gt; a 0 5  9
 #&gt; b 2 6 10
 #&gt; c 3 0 11
-#&gt; d 0 8 12</div><div class='input'><span class='va'>ft_na</span> <span class='op'>&lt;-</span> <span class='fu'>zeroIsNA</span><span class='op'>(</span><span class='va'>ft_na</span>, <span class='fl'>1</span><span class='op'>)</span>
+#&gt; d 0 8 12</div><div class='input'><span class='va'>ft_na</span> <span class='op'>&lt;-</span> <span class='fu'><a href='QFeatures-missing-data.html'>zeroIsNA</a></span><span class='op'>(</span><span class='va'>ft_na</span>, <span class='fl'>1</span><span class='op'>)</span>
 <span class='fu'>assay</span><span class='op'>(</span><span class='va'>ft_na</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;    A  B  C
+</div><div class='co'>#&gt;    A  B  C
 #&gt; a NA  5  9
 #&gt; b  2  6 10
 #&gt; c  3 NA 11
@@ -328,7 +331,7 @@ that contain any number of <code>NA</code> values are dropped.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>

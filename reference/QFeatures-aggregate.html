@@ -70,6 +70,9 @@ sample-level aggcounts." />
 
 
 
+<!-- dependencies from examples -->
+
+
   
 
   
@@ -154,7 +157,7 @@ will be named based on the unique <code>fcol</code> values.</p>
 aggregated <code>SummarizedExperiment</code> assay also contains a new
 <code>aggcounts</code> assay containing the aggregation counts matrix,
 i.e. the number of features that were aggregated, which can be
-accessed with the <code>aggcounts()</code> accessor.</p>
+accessed with the <code><a href='QFeatures-aggregate.html'>aggcounts()</a></code> accessor.</p>
 <p>The rowData of the aggregated <code>SummarizedExperiment</code> assay
 contains a <code>.n</code> variable that provides the number of features that
 were aggregated. This <code>.n</code> value is always &gt;= that the
@@ -162,7 +165,7 @@ sample-level <code>aggcounts</code>.</p>
     </div>
 
     <pre class="usage"><span class='co'># S4 method for QFeatures</span>
-<span class='fu'>aggregateFeatures</span><span class='op'>(</span>
+<span class='fu'><a href='QFeatures-aggregate.html'>aggregateFeatures</a></span><span class='op'>(</span>
   <span class='va'>object</span>,
   <span class='va'>i</span>,
   <span class='va'>fcol</span>,
@@ -172,17 +175,17 @@ sample-level <code>aggcounts</code>.</p>
 <span class='op'>)</span>
 
 <span class='co'># S4 method for SummarizedExperiment</span>
-<span class='fu'>aggregateFeatures</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>fcol</span>, fun <span class='op'>=</span> <span class='fu'>MsCoreUtils</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/MsCoreUtils/man/robustSummary.html'>robustSummary</a></span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='fu'><a href='QFeatures-aggregate.html'>aggregateFeatures</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>fcol</span>, fun <span class='op'>=</span> <span class='fu'>MsCoreUtils</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/MsCoreUtils/man/robustSummary.html'>robustSummary</a></span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for SummarizedExperiment</span>
-<span class='fu'>aggcounts</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'><a href='QFeatures-aggregate.html'>aggcounts</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>An instance of class <a href='QFeatures.html'>QFeatures</a> or SummarizedExperiment.</p></td>
+      <td><p>An instance of class <a href='QFeatures-class.html'>QFeatures</a> or SummarizedExperiment.</p></td>
     </tr>
     <tr>
       <th>i</th>
@@ -196,7 +199,7 @@ summarise the features.</p></td>
     </tr>
     <tr>
       <th>name</th>
-      <td><p>A <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> naming the new assay. Default is
+      <td><p>A <code>character(1)</code> naming the new assay. Default is
 <code>newAssay</code>. Note that the function will fail if there's
 already an assay with <code>name</code>.</p></td>
     </tr>
@@ -218,7 +221,7 @@ aggregation. See Details for examples.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Aggregation is performed by a function that takes a matrix as
-input and returns a vector of length equal to <code><a href='https://rdrr.io/r/base/nrow.html'>ncol(x)</a></code>. Examples
+input and returns a vector of length equal to <code>ncol(x)</code>. Examples
 thereof are</p><ul>
 <li><p><code><a href='https://rdrr.io/pkg/MsCoreUtils/man/medianPolish.html'>MsCoreUtils::medianPolish()</a></code> to fits an additive model (two way
 decomposition) using Tukey's median polish_ procedure using
@@ -253,11 +256,11 @@ genuinely missing value.</p></li>
 <li><p>When using robust summarisation, individual missing values are
 excluded prior to fitting the linear model by robust
 regression. To remove all values in the feature containing the
-missing values, use <code><a href='missing-data.html'>filterNA()</a></code>.</p></li>
+missing values, use <code><a href='QFeatures-missing-data.html'>filterNA()</a></code>.</p></li>
 </ul>
 
 <p>More generally, missing values often need dedicated handling such
-as filtering (see <code><a href='missing-data.html'>filterNA()</a></code>) or imputation (see <code><a href='impute.html'>impute()</a></code>).</p>
+as filtering (see <code><a href='QFeatures-missing-data.html'>filterNA()</a></code>) or imputation (see <code><a href='impute.html'>impute()</a></code>).</p>
     <h2 class="hasAnchor" id="missing-values-in-the-row-data"><a class="anchor" href="#missing-values-in-the-row-data"></a>Missing values in the row data</h2>
 
     
@@ -289,23 +292,23 @@ proteomics data processing pipeline.</p></div>
 <span class='co'>## ---------------------------------------</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>feat1</span><span class='op'>)</span>
 <span class='va'>feat1</span>
-</div><div class='output co'>#&gt; An instance of class QFeatures containing 1 assays:
+</div><div class='co'>#&gt; An instance of class QFeatures containing 1 assays:
 #&gt;  [1] psms: SummarizedExperiment with 10 rows and 2 columns </div><div class='input'>
 <span class='co'>## Aggregate PSMs into peptides</span>
-<span class='va'>feat1</span> <span class='op'>&lt;-</span> <span class='fu'>aggregateFeatures</span><span class='op'>(</span><span class='va'>feat1</span>, <span class='st'>"psms"</span>, <span class='st'>"Sequence"</span>, name <span class='op'>=</span> <span class='st'>"peptides"</span><span class='op'>)</span>
+<span class='va'>feat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='QFeatures-aggregate.html'>aggregateFeatures</a></span><span class='op'>(</span><span class='va'>feat1</span>, <span class='st'>"psms"</span>, <span class='st'>"Sequence"</span>, name <span class='op'>=</span> <span class='st'>"peptides"</span><span class='op'>)</span>
 <span class='va'>feat1</span>
-</div><div class='output co'>#&gt; An instance of class QFeatures containing 2 assays:
+</div><div class='co'>#&gt; An instance of class QFeatures containing 2 assays:
 #&gt;  [1] psms: SummarizedExperiment with 10 rows and 2 columns 
 #&gt;  [2] peptides: SummarizedExperiment with 3 rows and 2 columns </div><div class='input'>
 <span class='co'>## Aggregate peptides into proteins</span>
-<span class='va'>feat1</span> <span class='op'>&lt;-</span> <span class='fu'>aggregateFeatures</span><span class='op'>(</span><span class='va'>feat1</span>, <span class='st'>"peptides"</span>, <span class='st'>"Protein"</span>, name <span class='op'>=</span> <span class='st'>"proteins"</span><span class='op'>)</span>
+<span class='va'>feat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='QFeatures-aggregate.html'>aggregateFeatures</a></span><span class='op'>(</span><span class='va'>feat1</span>, <span class='st'>"peptides"</span>, <span class='st'>"Protein"</span>, name <span class='op'>=</span> <span class='st'>"proteins"</span><span class='op'>)</span>
 <span class='va'>feat1</span>
-</div><div class='output co'>#&gt; An instance of class QFeatures containing 3 assays:
+</div><div class='co'>#&gt; An instance of class QFeatures containing 3 assays:
 #&gt;  [1] psms: SummarizedExperiment with 10 rows and 2 columns 
 #&gt;  [2] peptides: SummarizedExperiment with 3 rows and 2 columns 
 #&gt;  [3] proteins: SummarizedExperiment with 2 rows and 2 columns </div><div class='input'>
 <span class='fu'>assay</span><span class='op'>(</span><span class='va'>feat1</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;       S1 S2
+</div><div class='co'>#&gt;       S1 S2
 #&gt; PSM1   1 11
 #&gt; PSM2   2 12
 #&gt; PSM3   3 13
@@ -316,18 +319,18 @@ proteomics data processing pipeline.</p></div>
 #&gt; PSM8   8 18
 #&gt; PSM9   9 19
 #&gt; PSM10 10 20</div><div class='input'><span class='fu'>assay</span><span class='op'>(</span><span class='va'>feat1</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;              S1   S2
+</div><div class='co'>#&gt;              S1   S2
 #&gt; ELGNDAYK    5.0 15.0
 #&gt; IAEESNFPFIK 8.5 18.5
-#&gt; SYGFNAAR    2.0 12.0</div><div class='input'><span class='fu'>aggcounts</span><span class='op'>(</span><span class='va'>feat1</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;             S1 S2
+#&gt; SYGFNAAR    2.0 12.0</div><div class='input'><span class='fu'><a href='QFeatures-aggregate.html'>aggcounts</a></span><span class='op'>(</span><span class='va'>feat1</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+</div><div class='co'>#&gt;             S1 S2
 #&gt; ELGNDAYK     3  3
 #&gt; IAEESNFPFIK  4  4
 #&gt; SYGFNAAR     3  3</div><div class='input'><span class='fu'>assay</span><span class='op'>(</span><span class='va'>feat1</span><span class='op'>[[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;        S1   S2
+</div><div class='co'>#&gt;        S1   S2
 #&gt; ProtA 3.5 13.5
-#&gt; ProtB 8.5 18.5</div><div class='input'><span class='fu'>aggcounts</span><span class='op'>(</span><span class='va'>feat1</span><span class='op'>[[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;       S1 S2
+#&gt; ProtB 8.5 18.5</div><div class='input'><span class='fu'><a href='QFeatures-aggregate.html'>aggcounts</a></span><span class='op'>(</span><span class='va'>feat1</span><span class='op'>[[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+</div><div class='co'>#&gt;       S1 S2
 #&gt; ProtA  2  2
 #&gt; ProtB  1  1</div><div class='input'>
 <span class='co'>## --------------------------------------------</span>
@@ -335,15 +338,15 @@ proteomics data processing pipeline.</p></div>
 <span class='co'>## --------------------------------------------</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ft_na</span><span class='op'>)</span>
 <span class='va'>ft_na</span>
-</div><div class='output co'>#&gt; An instance of class QFeatures containing 1 assays:
+</div><div class='co'>#&gt; An instance of class QFeatures containing 1 assays:
 #&gt;  [1] na: SummarizedExperiment with 4 rows and 3 columns </div><div class='input'>
 <span class='fu'>assay</span><span class='op'>(</span><span class='va'>ft_na</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;    A  B  C
+</div><div class='co'>#&gt;    A  B  C
 #&gt; a NA  5  9
 #&gt; b  2  6 10
 #&gt; c  3 NA 11
 #&gt; d NA  8 12</div><div class='input'><span class='fu'>rowData</span><span class='op'>(</span><span class='va'>ft_na</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; DataFrame with 4 rows and 2 columns
+</div><div class='co'>#&gt; DataFrame with 4 rows and 2 columns
 #&gt;           X           Y
 #&gt;   &lt;integer&gt; &lt;character&gt;
 #&gt; a         1           A
@@ -351,33 +354,33 @@ proteomics data processing pipeline.</p></div>
 #&gt; c         1           A
 #&gt; d         2           B</div><div class='input'>
 <span class='co'>## By default, missing values are propagated</span>
-<span class='va'>ft2</span> <span class='op'>&lt;-</span> <span class='fu'>aggregateFeatures</span><span class='op'>(</span><span class='va'>ft_na</span>, <span class='fl'>1</span>, fcol <span class='op'>=</span> <span class='st'>"X"</span>, fun <span class='op'>=</span> <span class='va'>colSums</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Your quantitative data contain missing values. Please read the relevant</span>
-#&gt; <span class='message'>section(s) in the aggregateFeatures manual page regarding the effects</span>
-#&gt; <span class='message'>of missing values on data aggregation.</span></div><div class='input'><span class='fu'>assay</span><span class='op'>(</span><span class='va'>ft2</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;    A  B  C
+<span class='va'>ft2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='QFeatures-aggregate.html'>aggregateFeatures</a></span><span class='op'>(</span><span class='va'>ft_na</span>, <span class='fl'>1</span>, fcol <span class='op'>=</span> <span class='st'>"X"</span>, fun <span class='op'>=</span> <span class='va'>colSums</span><span class='op'>)</span>
+</div><div class='co'>#&gt; Your quantitative data contain missing values. Please read the relevant
+#&gt; section(s) in the aggregateFeatures manual page regarding the effects
+#&gt; of missing values on data aggregation.</div><div class='input'><span class='fu'>assay</span><span class='op'>(</span><span class='va'>ft2</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+</div><div class='co'>#&gt;    A  B  C
 #&gt; 1 NA NA 20
-#&gt; 2 NA 14 22</div><div class='input'><span class='fu'>aggcounts</span><span class='op'>(</span><span class='va'>ft2</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   A B C
+#&gt; 2 NA 14 22</div><div class='input'><span class='fu'><a href='QFeatures-aggregate.html'>aggcounts</a></span><span class='op'>(</span><span class='va'>ft2</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+</div><div class='co'>#&gt;   A B C
 #&gt; 1 1 1 2
 #&gt; 2 1 2 2</div><div class='input'>
 <span class='co'>## The rowData .n variable tallies number of initial rows that</span>
 <span class='co'>## were aggregated (irrespective of NAs) for all the samples.</span>
 <span class='fu'>rowData</span><span class='op'>(</span><span class='va'>ft2</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; DataFrame with 2 rows and 3 columns
+</div><div class='co'>#&gt; DataFrame with 2 rows and 3 columns
 #&gt;           X           Y        .n
 #&gt;   &lt;integer&gt; &lt;character&gt; &lt;integer&gt;
 #&gt; 1         1           A         2
 #&gt; 2         2           B         2</div><div class='input'>
 <span class='co'>## Ignored when setting na.rm = TRUE</span>
-<span class='va'>ft3</span> <span class='op'>&lt;-</span> <span class='fu'>aggregateFeatures</span><span class='op'>(</span><span class='va'>ft_na</span>, <span class='fl'>1</span>, fcol <span class='op'>=</span> <span class='st'>"X"</span>, fun <span class='op'>=</span> <span class='va'>colSums</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Your quantitative data contain missing values. Please read the relevant</span>
-#&gt; <span class='message'>section(s) in the aggregateFeatures manual page regarding the effects</span>
-#&gt; <span class='message'>of missing values on data aggregation.</span></div><div class='input'><span class='fu'>assay</span><span class='op'>(</span><span class='va'>ft3</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   A  B  C
+<span class='va'>ft3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='QFeatures-aggregate.html'>aggregateFeatures</a></span><span class='op'>(</span><span class='va'>ft_na</span>, <span class='fl'>1</span>, fcol <span class='op'>=</span> <span class='st'>"X"</span>, fun <span class='op'>=</span> <span class='va'>colSums</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='co'>#&gt; Your quantitative data contain missing values. Please read the relevant
+#&gt; section(s) in the aggregateFeatures manual page regarding the effects
+#&gt; of missing values on data aggregation.</div><div class='input'><span class='fu'>assay</span><span class='op'>(</span><span class='va'>ft3</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+</div><div class='co'>#&gt;   A  B  C
 #&gt; 1 3  5 20
-#&gt; 2 2 14 22</div><div class='input'><span class='fu'>aggcounts</span><span class='op'>(</span><span class='va'>ft3</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   A B C
+#&gt; 2 2 14 22</div><div class='input'><span class='fu'><a href='QFeatures-aggregate.html'>aggcounts</a></span><span class='op'>(</span><span class='va'>ft3</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+</div><div class='co'>#&gt;   A B C
 #&gt; 1 1 1 2
 #&gt; 2 1 2 2</div><div class='input'>
 <span class='co'>## -----------------------------------------------</span>
@@ -386,7 +389,7 @@ proteomics data processing pipeline.</p></div>
 <span class='co'>## Row data results without any NAs, which includes the</span>
 <span class='co'>## Y variables</span>
 <span class='fu'>rowData</span><span class='op'>(</span><span class='va'>ft2</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; DataFrame with 2 rows and 3 columns
+</div><div class='co'>#&gt; DataFrame with 2 rows and 3 columns
 #&gt;           X           Y        .n
 #&gt;   &lt;integer&gt; &lt;character&gt; &lt;integer&gt;
 #&gt; 1         1           A         2
@@ -394,22 +397,22 @@ proteomics data processing pipeline.</p></div>
 <span class='co'>## Missing value in the Y feature variable</span>
 <span class='fu'>rowData</span><span class='op'>(</span><span class='va'>ft_na</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span>, <span class='st'>"Y"</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='cn'>NA</span>
 <span class='fu'>rowData</span><span class='op'>(</span><span class='va'>ft_na</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; DataFrame with 4 rows and 2 columns
+</div><div class='co'>#&gt; DataFrame with 4 rows and 2 columns
 #&gt;           X           Y
 #&gt;   &lt;integer&gt; &lt;character&gt;
 #&gt; a         1          NA
 #&gt; b         2           B
 #&gt; c         1           A
 #&gt; d         2           B</div><div class='input'>
-<span class='va'>ft3</span> <span class='op'>&lt;-</span> <span class='fu'>aggregateFeatures</span><span class='op'>(</span><span class='va'>ft_na</span>, <span class='fl'>1</span>, fcol <span class='op'>=</span> <span class='st'>"X"</span>, fun <span class='op'>=</span> <span class='va'>colSums</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Your quantitative and row data contain missing values. Please read the</span>
-#&gt; <span class='message'>relevant section(s) in the aggregateFeatures manual page regarding the</span>
-#&gt; <span class='message'>effects of missing values on data aggregation.</span></div><div class='input'><span class='co'>## The Y feature variable has been dropped!</span>
+<span class='va'>ft3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='QFeatures-aggregate.html'>aggregateFeatures</a></span><span class='op'>(</span><span class='va'>ft_na</span>, <span class='fl'>1</span>, fcol <span class='op'>=</span> <span class='st'>"X"</span>, fun <span class='op'>=</span> <span class='va'>colSums</span><span class='op'>)</span>
+</div><div class='co'>#&gt; Your quantitative and row data contain missing values. Please read the
+#&gt; relevant section(s) in the aggregateFeatures manual page regarding the
+#&gt; effects of missing values on data aggregation.</div><div class='input'><span class='co'>## The Y feature variable has been dropped!</span>
 <span class='fu'>assay</span><span class='op'>(</span><span class='va'>ft3</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;    A  B  C
+</div><div class='co'>#&gt;    A  B  C
 #&gt; 1 NA NA 20
 #&gt; 2 NA 14 22</div><div class='input'><span class='fu'>rowData</span><span class='op'>(</span><span class='va'>ft3</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; DataFrame with 2 rows and 2 columns
+</div><div class='co'>#&gt; DataFrame with 2 rows and 2 columns
 #&gt;           X        .n
 #&gt;   &lt;integer&gt; &lt;integer&gt;
 #&gt; 1         1         2
@@ -429,7 +432,7 @@ proteomics data processing pipeline.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
