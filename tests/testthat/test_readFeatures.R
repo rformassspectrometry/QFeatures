@@ -37,18 +37,22 @@ test_that("readSummarizedExperiment", {
     ft1 <- readSummarizedExperiment(x, ecol = 1:10)
     ft2 <- readSummarizedExperiment(f, ecol = 1:10)
     expect_equal(ft1, ft2)
-    ft1 <- readSummarizedExperiment(x, ecol = 1:10, fname = "Sequence")
-    ft2 <- readSummarizedExperiment(f, ecol = 1:10, fname = "Sequence")
-    expect_equal(ft1, ft2)
-    ft3 <- readSummarizedExperiment(f, ecol = 1:10, fname = 11)
-    expect_equal(ft1, ft3)
+    ft3 <- readSummarizedExperiment(x, ecol = 1:10, fname = "Sequence")
+    ft4 <- readSummarizedExperiment(f, ecol = 1:10, fname = "Sequence")
+    expect_equal(ft3, ft4)
+    ft5 <- readSummarizedExperiment(f, ecol = 1:10, fname = 11)
+    expect_equal(ft3, ft5)
     ## Read data with only 1 quantitation column
-    ft4 <- readSummarizedExperiment(f, ecol = 1, fname = 11)
+    ft5 <- readSummarizedExperiment(f, ecol = 1, fname = 11)
     ## Check column names
     ecol <- c("X126", "X127C", "X127N", "X128C", "X128N", "X129C",
               "X129N", "X130C", "X130N", "X131")
-    expect_identical(colnames(ft1), ecol)
-    expect_identical(colnames(ft4), ecol[1])
+    expect_identical(colnames(ft3), ecol)
+    expect_identical(colnames(ft5), ecol[1])
+    ## Provide ecol as logical 
+    ecol <- seq_along(x) %in% 1:10
+    expect_identical(ft1, readSummarizedExperiment(x, ecol = ecol))
+    
     ## Expect errors
     ecol <- LETTERS[1:10]
     expect_error(readSummarizedExperiment(x, ecol = ecol, name = "psms"))
