@@ -72,8 +72,6 @@ from PSM data." />
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -97,7 +95,7 @@ from PSM data." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
       </span>
     </div>
 
@@ -163,7 +161,7 @@ from assays, for example counting the number of unique proteins
 from PSM data.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>countUniqueFeatures</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span>, groupBy <span class='op'>=</span> <span class='cn'>NULL</span>, colDataName <span class='op'>=</span> <span class='st'>"count"</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>countUniqueFeatures</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>i</span>, groupBy <span class='op'>=</span> <span class='cn'>NULL</span>, colDataName <span class='op'>=</span> <span class='st'>"count"</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -199,20 +197,22 @@ will be stored. The name cannot already exist in the
     <p>An object of class <code>QFeatures</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"ft_na"</span><span class='op'>)</span>
-<span class='co'>## Count number of (non-missing) PSMs</span>
-<span class='va'>ft_na</span> <span class='op'>&lt;-</span> <span class='fu'>countUniqueFeatures</span><span class='op'>(</span><span class='va'>ft_na</span>, 
-                             i <span class='op'>=</span> <span class='st'>"na"</span>, 
-                             colDataName <span class='op'>=</span> <span class='st'>"counts"</span><span class='op'>)</span>
-<span class='va'>ft_na</span><span class='op'>$</span><span class='va'>counts</span>
-</div><div class='co'>#&gt; [1] 2 3 4</div><div class='input'><span class='co'>## Count number of unique rowData feature</span>
-<span class='va'>ft_na</span> <span class='op'>&lt;-</span> <span class='fu'>countUniqueFeatures</span><span class='op'>(</span><span class='va'>ft_na</span>, 
-                             i <span class='op'>=</span> <span class='st'>"na"</span>, 
-                             groupBy <span class='op'>=</span> <span class='st'>"Y"</span>,
-                             colDataName <span class='op'>=</span> <span class='st'>"Y_counts"</span><span class='op'>)</span>
-<span class='va'>ft_na</span><span class='op'>$</span><span class='va'>Y_counts</span>
-</div><div class='co'>#&gt; [1] 2 2 2</div><div class='input'>
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"ft_na"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'>## Count number of (non-missing) PSMs</span></span>
+<span class='r-in'><span class='va'>ft_na</span> <span class='op'>&lt;-</span> <span class='fu'>countUniqueFeatures</span><span class='op'>(</span><span class='va'>ft_na</span>, </span>
+<span class='r-in'>                             i <span class='op'>=</span> <span class='st'>"na"</span>, </span>
+<span class='r-in'>                             colDataName <span class='op'>=</span> <span class='st'>"counts"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>ft_na</span><span class='op'>$</span><span class='va'>counts</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2 3 4</span>
+<span class='r-in'><span class='co'>## Count number of unique rowData feature</span></span>
+<span class='r-in'><span class='va'>ft_na</span> <span class='op'>&lt;-</span> <span class='fu'>countUniqueFeatures</span><span class='op'>(</span><span class='va'>ft_na</span>, </span>
+<span class='r-in'>                             i <span class='op'>=</span> <span class='st'>"na"</span>, </span>
+<span class='r-in'>                             groupBy <span class='op'>=</span> <span class='st'>"Y"</span>,</span>
+<span class='r-in'>                             colDataName <span class='op'>=</span> <span class='st'>"Y_counts"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>ft_na</span><span class='op'>$</span><span class='va'>Y_counts</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2 2 2</span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
