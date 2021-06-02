@@ -16,6 +16,8 @@
 \alias{getRowData}
 \alias{names<-,QFeatures,character-method}
 \alias{longFormat}
+\alias{replaceRowDataCols}
+\alias{removeRowDataCols}
 \title{Quantitative MS QFeatures}
 \usage{
 \S4method{show}{QFeatures}(object)
@@ -39,6 +41,10 @@ rowDataNames(x)
 \S4method{names}{QFeatures,character}(x) <- value
 
 longFormat(object, colDataCols = NULL, rowDataCols = NULL, index = 1L)
+
+replaceRowDataCols(object, replacement)
+
+removeRowDataCols(object, i, rowDataCols)
 
 QFeatures(..., assayLinks = NULL)
 
@@ -74,13 +80,13 @@ isn't found in any \code{rowData} variable, a message is printed.}
 \item{rowDataCols}{A \code{character()} that selects column(s) in the
 \code{rowData}.}
 
-\item{replacement}{A named \code{list()} of same length as \code{i}. The
-names of the list are used to select the assays to modify. Each
-element of the list should contain a table of class \code{data.frame}
-or \code{DFrame}. The names in \code{rowDataCols} are used to select the
-columns in the replacement tables and to create the new column
-in the \code{rowData}. If instead of a table, the elements of the
-list are \code{NULL}, then the \code{rowDataCols} are removed.}
+\item{replacement}{A \code{list()} of same length as \code{i}. The elements
+of \code{value} must be named after \code{i}. Each element should
+contain the replacement values to insert in the rowData. If
+\code{length(r) > 1}, each element should be a table with the same
+rows as its corresponding assay and contain the \code{rowDataCols}
+variable(s). Set \code{replacement = NULL} to \strong{remove} the
+\code{rowDataCols}.}
 
 \item{value}{A character() with new name(s) for the assay(s) in \code{x}}
 
@@ -198,6 +204,20 @@ in \code{rowvars} in the \code{x} instance of class \code{QFeatures}.
 }
 }
 
+\section{Manipulating assays}{
+
+\itemize{
+\item The \code{replaceRowDataCols} function replaces one or more columns
+in the \code{rowData} of one or more assays. Note that if the column
+to replace does not exist, a new column will get added to the
+\code{rowData}.
+\item The \code{removeRowDataCols} function removes one or more columns
+in the \code{rowData} of one or more assays. If the column to remove
+does not exist in one of the assays, the \code{rowData} of that assay
+will stay unchanged.
+}
+}
+
 \examples{
 ## ------------------------
 ## An empty QFeatures object
@@ -253,6 +273,7 @@ selectRowData(fts1, rowvars = "Fa")
 ## QFeatures object from a data.frame
 ## or spreadsheet.
 ## -----------------------------------
+
 }
 \seealso{
 \itemize{

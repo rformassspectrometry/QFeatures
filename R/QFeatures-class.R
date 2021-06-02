@@ -92,7 +92,18 @@
 ##' - The `selectRowData(x, rowvars)` function can be used to
 ##'   select a limited number of `rowData` columns of interest named
 ##'   in `rowvars` in the `x` instance of class `QFeatures`. 
-##'   
+##' 
+##' @section Manipulating assays:
+##' 
+##' - The `replaceRowDataCols` function replaces one or more columns 
+##'   in the `rowData` of one or more assays. Note that if the column
+##'   to replace does not exist, a new column will get added to the
+##'   `rowData`. 
+##' - The `removeRowDataCols` function removes one or more columns 
+##'   in the `rowData` of one or more assays. If the column to remove
+##'   does not exist in one of the assays, the `rowData` of that assay
+##'   will stay unchanged. 
+##' 
 ##' @param i `character()`, `integer()`, `logical()` or `GRanges()`
 ##'     object for subsetting by rows.
 ##'
@@ -192,6 +203,7 @@
 ##' ## QFeatures object from a data.frame
 ##' ## or spreadsheet.
 ##' ## -----------------------------------
+##' 
 NULL
 
 
@@ -465,3 +477,61 @@ longFormat <- function(object,
     }
 }
 
+##' @rdname QFeatures-class
+##' 
+##' @param replacement A `list()` of same length as `i`. The elements
+##'     of `value` must be named after `i`. Each element should 
+##'     contain the replacement values to insert in the rowData. If 
+##'     `length(r) > 1`, each element should be a table with the same
+##'     rows as its corresponding assay and contain the `rowDataCols`
+##'     variable(s). Set `replacement = NULL` to **remove** the
+##'     `rowDataCols`. 
+##'
+##' @export
+replaceRowDataCols <- function(object, 
+                               replacement) {
+    ## Check arguments
+    stopifnot(inherits(object, "QFeatures"))
+    
+    el <- experiments(object)
+
+    ## If replacement is NULL, simply remove the columns
+    # Check the arguments
+    stopifnot(is.list(replacement))
+    stopifnot(all(names(replacement) %in% names(object)))
+    ## Perform the replacement
+    for (ii in names(replacement)) {
+        if (nrow(rowData(el[[ii]])) != nrow(replacement[[ii]]))
+            stop("'rowData' and 'replacement' don't have the same ",
+                 "number of rows for assay '", ii, "'")
+        rowData(el[[ii]])[, colnames(replacement[[ii]])] <- replacement[[ii]]
+    }
+    
+    ## Since the features or columns did not change, we can safely
+    ## bypass the MAE checks
+    BiocGenerics:::replaceSlots(object,
+                                ExperimentList = el,
+                                check = FALSE)
+}
+
+##' @rdname QFeatures-class
+##' 
+##' @export
+removeRowDataCols <- function(object, 
+                              i,
+                              rowDataCols) {
+    ## Check arguments
+    stopifnot(inherits(object, "QFeatures"))
+    stopifnot(is.character(rowDataCols))
+    if (missing(i)) i <- names(object)
+    
+    ## Remove the rowData column(s)
+    el <- experiments(object)
+    for (ii in i) rowData(el[[ii]])[, rowDataCols] <- NULL
+    
+    ## Since the features or columns did not change, we can safely
+    ## bypass the MAE checks
+    BiocGenerics:::replaceSlots(object,
+                                ExperimentList = el,
+                                check = FALSE)
+}
