@@ -137,11 +137,9 @@ hl
 ```
 
 Below, we see that we can extract an assay using its index or its
-name. The individual assays are stored as *SummerizedExperiment*
+name. The individual assays are stored as *SummarizedExperiment*
 object and further access its quantitative data and metadata using
 the `assay` and `rowData` functions
-
-
 
 ```{r subsetassay}
 hl[[1]]
@@ -190,6 +188,101 @@ hl$tag <- c("126", "127N", "127C", "128N", "128C", "129N", "129C",
 colData(hl)
 ```
 
+# Accessors
+
+The `QFeatures` package provides some utility functions that streamline
+the accession and manipulation of data. 
+
+The feature metadata, more generally referred to as `rowData` in the
+Bioconductor environment, is specific to each assay in a `QFeatures` 
+object. Therefore there are as many `rowData` tables as numbers of 
+assays. `rowDataNames` provides a list where each element contains the
+name of the `rowData` columns available in the corresponding assay. 
+
+```{r rowDataNames}
+rowDataNames(hl)
+```
+
+We saw above how to get the `rowData` from an assay, but we can also 
+extract the `rowData` for all assays by calling the function on the 
+`QFeautures` object directly. Similarly to `rowDataNames`, a list is 
+returned where each element contains the `rowData` available in the
+corresponding assay. 
+
+```{r rowData}
+rowData(hl)
+```
+
+Sometimes, we are interested in extracting only some feature metadata
+for only some assays in a single table. This is easily performed using
+the `getRowData` function. 
+
+```{r getRowData}
+getRowData(hl, i = c("peptides", "proteins"), 
+           rowDataCols = c("ProteinGroupAccessions", "markers", ".n"))
+```
+
+We can also modify the `rowData` using the `setRowData` function. It
+can be used in three ways: 
+
+- Add a column in the `rowData`, for instance we could include whether
+  a protein was identified using only 1 peptide (`.n == 1`) or 
+  multiple peptides. We therefore need to create a named list, where 
+  the name of the element tells which assay to add the new data and 
+  the content of the element provides a table with the data to add. We
+  call the new variable `singlePepID`.
+  
+```{r add_rowData}
+rd <- getRowData(hl, i = "proteins", rowDataCols = ".n")
+rd$singlePepID <- rd$.n == 1
+hl <- setRowData(hl, rowDataCols = "singlePepID", 
+                 replacement = list(proteins = rd))
+rowData(hl[["proteins"]])
+```
+
+- Replace a column in the rowData. If the column already exists, it is
+  replaced. 
+  
+```{r replace_rowData}
+rd$singlePepID <- NA
+hl <- setRowData(hl, rowDataCols = "singlePepID", 
+                 replacement = list(proteins = rd))
+rowData(hl[["proteins"]])
+```
+
+- Remove a column in the rowData by replacing by `NULL`
+
+```{r remove_rowData}
+hl <- setRowData(hl, rowDataCols = "singlePepID", 
+                 replacement = list(proteins = NULL))
+rowData(hl[["proteins"]])
+```
+
+The `QFeatures` package also provides the `longFormat` function that 
+converts a `QFeatures` object into a long table. Long tables are very
+useful when using `ggplot2` for data visualization. For instance, 
+suppose we want to visualize the quantititation data (present in the
+assays) with respect to the number of aggregated features (present in
+the `rowData` of the assays), for peptide and protein separately 
+(present in different assays) and for each acquisition tag separately
+(present in the `colData`). This can all be plotted at once in a few lines of 
+code.
+
+```{r}
+lf <- longFormat(hl[, , c("peptides", "proteins")],
+                 rowDataCols = ".n",
+                 colDataCols = "tag")
+library("ggplot2")
+ggplot(data.frame(lf)) +
+    aes(x = .n, 
+        y = value) +
+    geom_point() +
+    facet_grid(assay ~ tag)
+```
+
+`longFormat` allows to retrieve and combine all available data from a
+`Qfeatures` object. We will provide another more useful example below.
+
 # Subsetting
 
 
@@ -219,7 +312,6 @@ stat3_df <- data.frame(longFormat(stat3))
 stat3_df$assay <- factor(stat3_df$assay,
                         levels = c("psms", "peptides", "proteins"))
 
-library("ggplot2")
 ggplot(data = stat3_df,
        aes(x = colname,
            y = value,
