@@ -91,6 +91,92 @@ test_that("selectRowData", {
 })
 
 
+test_that("getRowData", {
+    data(feat2)
+    ## Get 1 variable from 1 assay
+    rd <- getRowData(feat2, 1, "Prot")
+    expect_true(inherits(rd, "DFrame"))
+    expect_identical(unique(rd$assay), names(feat2)[1])
+    expect_identical(colnames(rd), c("assay", "rowname", "Prot"))
+    expect_identical(nrow(rd), sum(dims(feat2)[1, 1]))
+    ## Get several variables from 1 assay
+    rd <- getRowData(feat2, 1, c("Prot", "x"))
+    expect_true(inherits(rd, "DFrame"))
+    expect_identical(unique(rd$assay), names(feat2)[1])
+    expect_identical(colnames(rd), c("assay", "rowname", "Prot", "x"))
+    expect_identical(nrow(rd), sum(dims(feat2)[1, 1]))
+    ## Get 1 variable from several assays
+    rd <- getRowData(feat2, 1:2, "Prot")
+    expect_true(inherits(rd, "DFrame"))
+    expect_identical(unique(rd$assay), names(feat2)[1:2])
+    expect_identical(colnames(rd), c("assay", "rowname", "Prot"))
+    expect_identical(nrow(rd), sum(dims(feat2)[1, 1:2]))
+    ## Get several variables from several assays
+    rd <- getRowData(feat2, 1:2, c("Prot", "x"))
+    expect_true(inherits(rd, "DFrame"))
+    expect_identical(unique(rd$assay), names(feat2)[1:2])
+    expect_identical(colnames(rd), c("assay", "rowname", "Prot", "x"))
+    expect_identical(nrow(rd), sum(dims(feat2)[1, 1:2]))
+    ## Get all common variable from all assays (missing rowDataCols)
+    rd <- getRowData(feat2, i = seq_along(feat2))
+    expect_true(inherits(rd, "DFrame"))
+    expect_identical(unique(rd$assay), names(feat2))
+    expect_identical(colnames(rd), c("assay", "rowname", "Prot", "x"))
+    expect_identical(nrow(rd), sum(dims(feat2)[1, ]))
+    ## Error: variable not present in one of the assays 
+    expect_error(getRowData(feat2, seq_along(feat2), "y"),
+                 regexp = "Some 'rowDataCols' are not found in the rowData")
+})
+
+
+test_that("setRowData", {
+    data(feat2)
+    ## Add rowData
+    ## In one assay
+    repl1 <- lapply(rowData(feat2), function(x) DataFrame(foo = rep("bar", nrow(x))))
+    feat3 <- setRowData(feat2, rowDataCols = "foo", replacement = repl1[1])
+    expect_identical(unique(getRowData(feat3, 1, "foo")$foo), "bar")
+    ## In more assay
+    feat3 <- setRowData(feat2, rowDataCols = "foo", replacement = repl1[1:2])
+    expect_identical(unique(getRowData(feat3, names(repl1[1:2]), "foo")$foo), "bar")
+    expect_identical(unique(getRowData(feat3, names(repl1[1:2]), "foo")$assay), names(repl1[1:2]))
+    ## More variables
+    repl2 <- lapply(repl1, function(x) cbind(x, foo2 = x$foo))
+    feat3 <- setRowData(feat2, rowDataCols = c("foo", "foo2"), replacement = repl2[1:2])
+    expect_true(all(any(rowDataNames(feat3)[1:2] == "foo2")))
+    ## Update rowData
+    repl3 <- lapply(repl2, function(x){
+        x$foo2 <- "bar2"
+        x
+    })
+    feat3 <- setRowData(feat3, rowDataCols = "foo2", replacement = repl3[1:2])
+    expect_identical(unique(getRowData(feat3, names(repl3[1:2]), "foo2")$foo2), "bar2")
+    ## Remove rowData
+    ## Remove multiple columns existing in some assay, but absent in others
+    repl4 <- lapply(rowData(feat2), function(x) NULL)
+    feat4 <- setRowData(feat3, rowDataCols = c("foo", "foo2"), replacement = repl4)
+    expect_identical(rowData(feat2), rowData(feat4))
+    ## Remove in one assay and add in another
+    repl4[[3]] <- repl3[[3]]
+    feat4 <- setRowData(feat3, rowDataCols = c("foo", "foo2"), replacement = repl4)
+    expect_identical(rowData(feat2)[1:2], rowData(feat4)[1:2])
+    expect_identical(unique(getRowData(feat4, names(repl4[3]), "foo2")$foo2), "bar2")
+    ## Error when replacement names point to an assay that is not in 
+    ## the QFeatures object
+    repl5 <- repl4
+    names(repl5) <- paste0("foo", length(repl5))
+    expect_error(setRowData(feat2, rowDataCols = c("foo", "foo2"), replacement = repl5),
+                 regexp = "replacement.*in.*object.* is not TRUE")
+    ## Error rowDataCols not in column names of replacement tables
+    expect_error(setRowData(feat2, rowDataCols = c("foo3"), replacement = repl3[1]),
+                 regexp = "invalid names")
+    ## Warning replacement table with wrong dimensions
+    repl6 <- repl3
+    repl6[[1]] <- repl6[[1]][1:7, ]
+    expect_warning(setRowData(feat2, rowDataCols = c("foo"), replacement = repl6[1]),
+                 regexp = "number of values to be replaced")
+})
+
 
 test_that("renaming", {
     data(feat1)

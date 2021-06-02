@@ -12,6 +12,8 @@
 \alias{rowDataNames}
 \alias{selectRowData}
 \alias{rowData,QFeatures-method}
+\alias{setRowData}
+\alias{getRowData}
 \alias{names<-,QFeatures,character-method}
 \alias{longFormat}
 \title{Quantitative MS QFeatures}
@@ -27,6 +29,10 @@
 \S4method{rowData}{QFeatures}(x, use.names = TRUE, ...)
 
 selectRowData(x, rowvars)
+
+setRowData(object, rowDataCols, replacement)
+
+getRowData(object, i, rowDataCols)
 
 rowDataNames(x)
 
@@ -65,13 +71,21 @@ variables (columns) to retain in any assay. All other
 variables will be dropped. In case an element in \code{rowvars}
 isn't found in any \code{rowData} variable, a message is printed.}
 
+\item{rowDataCols}{A \code{character()} that selects column(s) in the
+\code{rowData}.}
+
+\item{replacement}{A named \code{list()} of same length as \code{i}. The
+names of the list are used to select the assays to modify. Each
+element of the list should contain a table of class \code{data.frame}
+or \code{DFrame}. The names in \code{rowDataCols} are used to select the
+columns in the replacement tables and to create the new column
+in the \code{rowData}. If instead of a table, the elements of the
+list are \code{NULL}, then the \code{rowDataCols} are removed.}
+
 \item{value}{A character() with new name(s) for the assay(s) in \code{x}}
 
-\item{colDataCols}{A \code{character()}, \code{logical()}, or \code{numeric()}
-index for colData columns to be included.}
-
-\item{rowDataCols}{A \code{character()} index for colData columns to be
-included.}
+\item{colDataCols}{A \code{character()} that selects column(s) in the
+\code{colData}.}
 
 \item{index}{The assay indicator for \code{SummarizedExperiment}
 objects. A vector input is supported in the case that the
@@ -146,6 +160,14 @@ it in a long format \code{DataFrame}. Each quantitative value is
 reported on a separate line. \code{colData} and \code{rowData} data can
 also be added. This function is an extension of the \code{longFormat}
 function in the \link[MultiAssayExperiment:MultiAssayExperiment]{MultiAssayExperiment::MultiAssayExperiment}.
+\item The \code{getRowData} function extracts the \code{rowData} from one or more
+assays in a \code{QFeatures} object. The output can either be a list
+of \code{DFrame} tables (\code{bindRows = FLASE}) or the tables can be
+combined in a single \code{DFrame} table (\code{bindRows = FLASE}). On the
+other hand, the \code{setRowData} function modifies columns in the
+\code{rowData} from one or more assays in \code{QFeatures} object. This
+function can also be used to remove column in the rowData
+(see the vignette for some examples).
 }
 }
 
