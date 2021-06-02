@@ -60,12 +60,11 @@
 ##'   function in the [MultiAssayExperiment::MultiAssayExperiment].
 ##'
 ##' - The `getRowData` function extracts the `rowData` from one or more
-##'   assays in a `QFeatures` object. The output can either be a list 
-##'   of `DFrame` tables (`bindRows = FLASE`) or the tables can be 
-##'   combined in a single `DFrame` table (`bindRows = FLASE`). On the
+##'   assays in a `QFeatures` object. The output is a single `DFrame` 
+##'   table that contains the `rowData` for all selected assays. On the
 ##'   other hand, the `setRowData` function modifies columns in the 
 ##'   `rowData` from one or more assays in `QFeatures` object. This 
-##'   function can also be used to remove column in the rowData 
+##'   function can also be used to remove columns in the `rowData` 
 ##'   (see the vignette for some examples).
 ##' 
 ##' @section Adding assays:

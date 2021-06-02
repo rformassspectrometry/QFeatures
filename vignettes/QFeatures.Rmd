@@ -194,7 +194,7 @@ The `QFeatures` package provides some utility functions that streamline
 the accession and manipulation of data. 
 
 The feature metadata, more generally referred to as `rowData` in the
-Bioconductor environment, is specific to each assay in a `QFeatures` 
+Bioconductor ecosystem, is specific to each assay in a `QFeatures` 
 object. Therefore there are as many `rowData` tables as numbers of 
 assays. `rowDataNames` provides a list where each element contains the
 name of the `rowData` columns available in the corresponding assay. 
