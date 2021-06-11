@@ -74,14 +74,6 @@
 ##'   also be added. This function is an extension of the `longFormat` 
 ##'   function in the [MultiAssayExperiment::MultiAssayExperiment].
 ##'
-##' - The `getRowData` function extracts the `rowData` from one or more
-##'   assays in a `QFeatures` object. The output is a single `DFrame` 
-##'   table that contains the `rowData` for all selected assays. On the
-##'   other hand, the `setRowData` function modifies columns in the 
-##'   `rowData` from one or more assays in `QFeatures` object. This 
-##'   function can also be used to remove columns in the `rowData` 
-##'   (see the vignette for some examples).
-##' 
 ##' @section Adding assays:
 ##'
 ##' - The [aggregateFeatures()] function creates a new assay by

@@ -161,13 +161,6 @@ it in a long format \code{DataFrame}. Each quantitative value is
 reported on a separate line. \code{colData} and \code{rowData} data can
 also be added. This function is an extension of the \code{longFormat}
 function in the \link[MultiAssayExperiment:MultiAssayExperiment]{MultiAssayExperiment::MultiAssayExperiment}.
-\item The \code{getRowData} function extracts the \code{rowData} from one or more
-assays in a \code{QFeatures} object. The output is a single \code{DFrame}
-table that contains the \code{rowData} for all selected assays. On the
-other hand, the \code{setRowData} function modifies columns in the
-\code{rowData} from one or more assays in \code{QFeatures} object. This
-function can also be used to remove columns in the \code{rowData}
-(see the vignette for some examples).
 }
 }
 
