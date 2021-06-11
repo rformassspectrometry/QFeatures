@@ -49,10 +49,25 @@
 ##' - The `QFeatures` class extends the
 ##'   [MultiAssayExperiment::MultiAssayExperiment] class and inherits
 ##'   all its accessors and replacement methods.
+##' 
+##' - The `rowData` method returns a `DataFrameList` containing the 
+##'   `rowData` for each assay of the `QFeatures` object. On the other
+##'   hand, `rowData` can be modified using `rowData(x) <- value`, 
+##'   where `value` is a list of tables that can be coerced to `DFrame`
+##'   tables. The names of `value` point to the assays for 
+##'   which the `rowData` must be replaced. The column names of each 
+##'   table are used to replace the data in the existing `rowData`. If 
+##'   the column name does not exist, a new column is added to the 
+##'   `rowData`. 
 ##'
+##' - The `rbindRowData` functions returns a `DFrame` table that 
+##'   contains the row binded `rowData` tables from the selected 
+##'   assays. Only rowData variables that are common to all assays are
+##'   kept. 
+##'   
 ##' - The `rowDataNames` accessor returns a list with the `rowData`
 ##'   variable names.
-##'   
+##' 
 ##' - The `longFormat` accessor takes a `QFeatures` object and returns 
 ##'   it in a long format `DataFrame`. Each quantitative value is 
 ##'   reported on a separate line. `colData` and `rowData` data can 
@@ -90,18 +105,10 @@
 ##'
 ##' - The `selectRowData(x, rowvars)` function can be used to
 ##'   select a limited number of `rowData` columns of interest named
-##'   in `rowvars` in the `x` instance of class `QFeatures`. 
-##' 
-##' @section Manipulating assays:
-##' 
-##' - The `replaceRowDataCols` function replaces one or more columns 
-##'   in the `rowData` of one or more assays. Note that if the column
-##'   to replace does not exist, a new column will get added to the
-##'   `rowData`. 
-##' - The `removeRowDataCols` function removes one or more columns 
-##'   in the `rowData` of one or more assays. If the column to remove
-##'   does not exist in one of the assays, the `rowData` of that assay
-##'   will stay unchanged. 
+##'   in `rowvars` in the `x` instance of class `QFeatures`. All other
+##'   variables than `rowvars` will be dropped. In case an element in
+##'   `rowvars` isn't found in any `rowData` variable, a message is 
+##'   printed.
 ##' 
 ##' @param i `character()`, `integer()`, `logical()` or `GRanges()`
 ##'     object for subsetting by rows.
@@ -319,12 +326,63 @@ setMethod("rowData", "QFeatures",
           })
 
 ##' @rdname QFeatures-class
+##'     
+##' @export
+setReplaceMethod("rowData", c("QFeatures", "DataFrameList"),
+                 function(x, value) {
+                     i <- intersect(names(value), names(x))
+                     if (!length(i)) {
+                         warning("Could not find a common assay between ",
+                                 "'names(value)' and names(object)")
+                         return(x)
+                     } 
+                     el <- experiments(x)
+                     for (ii in i)
+                         rowData(el[[ii]])[, colnames(value[[ii]])] <- 
+                         value[[ii]]
+                     BiocGenerics:::replaceSlots(x,
+                                                 ExperimentList = el,
+                                                 check = FALSE)
+                 })
+setReplaceMethod("rowData", c("QFeatures", "ANY"),
+                 function(x, value) {
+                     value <- endoapply(value, as, "DataFrame")
+                     value <- as(value, "List")
+                     rowData(x) <- value
+                     x
+                 })
+                 
+##' @rdname QFeatures-class
+##' 
+##' @export
+rbindRowData <- function(object, i)  {
+    ## Extract the rowData and column names from the desired assay(s)
+    rdlist <- rowData(object)[i] 
+    rdNames <- rowDataNames(object)[i]
+    ## Get the common variables between the selected rowData
+    commonCols <- Reduce(intersect, rdNames)
+    if (!length(commonCols)) {
+        warning("No common columns between rowData tables were found.")
+        return(DataFrame())
+    }
+    ## Add assay and rowname to the rowData
+    rdlist <- lapply(names(rdlist), 
+                     function(x) cbind(assay = x, 
+                                       rowname = rownames(rdlist[[x]]),
+                                       rdlist[[x]][, commonCols]))
+    ## Row bind all tables in one DataFrame
+    rdlist <- do.call(rbind, rdlist)
+    rownames(rdlist) <- NULL
+    rdlist
+}
+
+
+
+##' @rdname QFeatures-class
 ##'
 ##' @param x An instance of class `QFeatures`.
 ##' @param rowvars A `character()` with the names of the `rowData`
-##'     variables (columns) to retain in any assay. All other
-##'     variables will be dropped. In case an element in `rowvars` 
-##'     isn't found in any `rowData` variable, a message is printed.
+##'     variables (columns) to retain in any assay. 
 ##'
 ##' @export
 selectRowData <- function(x, rowvars) {
@@ -339,60 +397,6 @@ selectRowData <- function(x, rowvars) {
         rowData(x[[i]]) <- rd[, colnames(rd) %in% rowvars]
     }
     x
-}
-
-
-
-##' @rdname QFeatures-class
-##'     
-##' @param replacement A named `list()` of same length as `i`. The 
-##'     names of the list are used to select the assays to modify. Each
-##'     element of the list should contain a table of class `data.frame`
-##'     or `DFrame`. The names in `rowDataCols` are used to select the
-##'     columns in the replacement tables and to create the new column 
-##'     in the `rowData`. If instead of a table, the elements of the 
-##'     list are `NULL`, then the `rowDataCols` are removed. 
-##'
-##' @export
-setRowData <- function(object, rowDataCols, replacement) {
-    stopifnot(inherits(object, "QFeatures"))
-    stopifnot(is.list(replacement))
-    stopifnot(all(names(replacement) %in% names(object)))
-    el <- experiments(object)
-    for (ii in names(replacement))
-        rowData(el[[ii]])[, rowDataCols] <- replacement[[ii]][, rowDataCols]
-    BiocGenerics:::replaceSlots(object,
-                                ExperimentList = el,
-                                check = FALSE)
-}
-
-##' @rdname QFeatures-class
-##' 
-##' @export
-getRowData <- function(object, i, rowDataCols)  {
-    ## Extract the rowData and column names from the desired assay(s)
-    rdlist <- rowData(object)[i] 
-    rdNames <- rowDataNames(object)[i]
-    ## Check the rowDataCols argument 
-    if (missing(rowDataCols)) {
-        rowDataCols <- Reduce(intersect, rdNames)
-        if (!length(rowDataCols)) 
-            stop("No common columns between rowData tables were found.")
-    }
-    ## Check that the selected columns exist in all rowData
-    for (ii in seq_along(rdNames)) {
-        if(!all(rowDataCols %in% rdNames[[ii]]))
-            stop("Some 'rowDataCols' are not found in the rowData.")
-    }
-    ## Subset the rowData
-    rdlist <- lapply(rdlist, function(x) x[, rowDataCols, drop = FALSE])
-    rdlist <- lapply(names(rdlist), 
-                     function(x) cbind(assay = x, 
-                                       rowname = rownames(rdlist[[x]]),
-                                       rdlist[[x]]))
-    rdlist <- do.call(rbind, rdlist)
-    rownames(rdlist) <- NULL
-    rdlist
 }
 
 
@@ -416,7 +420,8 @@ rowDataNames <- function(x) {
 
 ##' @rdname QFeatures-class
 ##'
-##' @param value A character() with new name(s) for the assay(s) in `x`
+##' @param value The values to use as a replacement. See the 
+##'     corresponding section in the documentation for more details. 
 ##'
 ##' @exportMethod names<-
 setReplaceMethod("names", c("QFeatures", "character"),
@@ -437,10 +442,8 @@ setReplaceMethod("names", c("QFeatures", "character"),
 
 ##' @rdname QFeatures-class
 ##'
-##' @param colDataCols A `character()` that selects column(s) in the 
+##' @param colvars A `character()` that selects column(s) in the 
 ##'     `colData`.
-##' @param rowDataCols A `character()` that selects column(s) in the
-##'     `rowData`.
 ##' @param index The assay indicator for `SummarizedExperiment` 
 ##'     objects. A vector input is supported in the case that the 
 ##'     `SummarizedExperiment` object(s) has more than one assay 
@@ -450,29 +453,29 @@ setReplaceMethod("names", c("QFeatures", "character"),
 ##' 
 ##' @export
 longFormat <- function(object, 
-                       colDataCols = NULL,
-                       rowDataCols = NULL, 
+                       colvars = NULL,
+                       rowvars = NULL, 
                        index = 1L) {
-    if (!is.null(rowDataCols)) {
+    if (!is.null(rowvars)) {
         rdNames <- rowDataNames(object)
         misNames <- sapply(rdNames, 
-                           function (x) any(!rowDataCols %in% x))
+                           function (x) any(!rowvars %in% x))
         ## Check that all required
         if (any(misNames))
-            stop("Some 'rowDataCols' not found in assay(s): ",
+            stop("Some 'rowvars' not found in assay(s): ",
                  paste0(names(misNames)[misNames], collapse = ", "))
-        ## Get long format table with quantification values and colDataCols
+        ## Get long format table with quantification values and colvars
         longDataFrame <- 
-            MultiAssayExperiment::longFormat(object, colDataCols, index)
+            MultiAssayExperiment::longFormat(object, colvars, index)
         ## Get the required rowData
         rds <- lapply(rowData(object),
-                      function(rd) rd[, rowDataCols, drop = FALSE])
+                      function(rd) rd[, rowvars, drop = FALSE])
         rds <- do.call(rbind, rds)
         ## Merge the rowData to the long table
         cbind(longDataFrame,
               rds[longDataFrame$rowname, , drop = FALSE])
     } else {
-        ## If rowDataCols is null, return the MAE longFormat output
-        MultiAssayExperiment::longFormat(object, colDataCols, index)
+        ## If rowvars is null, return the MAE longFormat output
+        MultiAssayExperiment::longFormat(object, colvars, index)
     }
 }
