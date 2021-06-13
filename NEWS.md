@@ -1,13 +1,25 @@
+# QFeatures 1.3.0
+
+## QFeatures 1.3.0
+
+- New devel version (Bioc 3.14)
+
+# QFeatures 1.2.0
+
+## QFeatures 1.2.0
+
+- New release version (Bioc 3.13)
+
 # QFeatures 1.1.0
 
 ## QFeatures 1.1.4
 
-- Added `replaceRowDataCols` and `removeRowDataCols`, two functions 
-  to streamline manipulation of rowData within a `QFeature` object. 
+- Added `replaceRowDataCols` and `removeRowDataCols`, two functions
+  to streamline manipulation of rowData within a `QFeature` object.
 
 ## QFeatures 1.1.3
 
-- Added `countUniqueFeatures`, a function to count the number of 
+- Added `countUniqueFeatures`, a function to count the number of
   unique features per sample.
 
 ## QFeatures 1.1.2
