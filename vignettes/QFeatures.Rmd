@@ -195,7 +195,7 @@ the accession and manipulation of the feature metadata.
 
 The feature metadata, more generally referred to as `rowData` in the
 Bioconductor ecosystem, is specific to each assay in a `QFeatures` 
-object. Therefore there are as many `rowData` tables as numbers of 
+object. Therefore there are as many `rowData` tables as there are 
 assays. `rowDataNames` provides a list where each element contains the
 name of the `rowData` columns available in the corresponding assay. 
 
@@ -224,7 +224,7 @@ rbindRowData(hl, i = c("peptides", "proteins"))
 
 We can also replace and add columns in the `rowData`.  This requires
 to provide a `List` where the names of the `List` point to the assay 
-to replace and the elements of the `List` contain a `DataFrame` with 
+to be updated and the elements of the `List` contain `DataFrame`s with 
 the replacement values. If the `DataFrame` contains a column that is 
 not present in the `rowData`, that column will get added to the 
 `rowData`. For instance, let's add a `rowData` variables with the mean
@@ -244,8 +244,8 @@ the list, we insert it back into the `rowData`.
 rowData(hl) <- List(proteins = dF)
 ```
 
-See here that the new variables are added to the `rowData` of the
-`proteins` assay. 
+As shown below, the new `mean` and `sd` variables have been added to the
+`rowData` of the `proteins` assay. 
 
 ```{r}
 rowData(hl)[["proteins"]]
@@ -257,7 +257,7 @@ naming the column name in the `DataFrame` after the column to replace.
 The `QFeatures` package also provides the `longFormat` function that 
 converts a `QFeatures` object into a long table. Long tables are very
 useful when using `ggplot2` for data visualization. For instance, 
-suppose we want to visualize the quantititation data (present in the
+suppose we want to visualize the quantitation data (present in the
 assays) with respect to the number of aggregated features (present in
 the `rowData` of the assays), for peptide and protein separately 
 (present in different assays) and for each acquisition tag separately
