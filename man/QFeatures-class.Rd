@@ -13,6 +13,7 @@
 \alias{selectRowData}
 \alias{rowData,QFeatures-method}
 \alias{rowData<-,QFeatures,DataFrameList-method}
+\alias{rowData<-,QFeatures,ANY-method}
 \alias{rbindRowData}
 \alias{names<-,QFeatures,character-method}
 \alias{longFormat}
@@ -29,6 +30,8 @@
 \S4method{rowData}{QFeatures}(x, use.names = TRUE, ...)
 
 \S4method{rowData}{QFeatures,DataFrameList}(x) <- value
+
+\S4method{rowData}{QFeatures,ANY}(x) <- value
 
 rbindRowData(object, i)
 
@@ -239,7 +242,7 @@ names(fts1) <- c("se1", "se2")
 fts1 <- addAssay(fts1, se1[1:2, ], name = "se3")
 
 ## Get the assays feature metadata
-rowData(fts1) 
+rowData(fts1)
 
 ## Keep only the Fa variable
 selectRowData(fts1, rowvars = "Fa")

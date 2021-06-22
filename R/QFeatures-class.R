@@ -49,29 +49,29 @@
 ##' - The `QFeatures` class extends the
 ##'   [MultiAssayExperiment::MultiAssayExperiment] class and inherits
 ##'   all its accessors and replacement methods.
-##' 
-##' - The `rowData` method returns a `DataFrameList` containing the 
-##'   `rowData` for each assay of the `QFeatures` object. On the other
-##'   hand, `rowData` can be modified using `rowData(x) <- value`, 
-##'   where `value` is a list of tables that can be coerced to `DFrame`
-##'   tables. The names of `value` point to the assays for 
-##'   which the `rowData` must be replaced. The column names of each 
-##'   table are used to replace the data in the existing `rowData`. If 
-##'   the column name does not exist, a new column is added to the 
-##'   `rowData`. 
 ##'
-##' - The `rbindRowData` functions returns a `DFrame` table that 
-##'   contains the row binded `rowData` tables from the selected 
+##' - The `rowData` method returns a `DataFrameList` containing the
+##'   `rowData` for each assay of the `QFeatures` object. On the other
+##'   hand, `rowData` can be modified using `rowData(x) <- value`,
+##'   where `value` is a list of tables that can be coerced to `DFrame`
+##'   tables. The names of `value` point to the assays for
+##'   which the `rowData` must be replaced. The column names of each
+##'   table are used to replace the data in the existing `rowData`. If
+##'   the column name does not exist, a new column is added to the
+##'   `rowData`.
+##'
+##' - The `rbindRowData` functions returns a `DFrame` table that
+##'   contains the row binded `rowData` tables from the selected
 ##'   assays. Only rowData variables that are common to all assays are
-##'   kept. 
-##'   
+##'   kept.
+##'
 ##' - The `rowDataNames` accessor returns a list with the `rowData`
 ##'   variable names.
-##' 
-##' - The `longFormat` accessor takes a `QFeatures` object and returns 
-##'   it in a long format `DataFrame`. Each quantitative value is 
-##'   reported on a separate line. `colData` and `rowData` data can 
-##'   also be added. This function is an extension of the `longFormat` 
+##'
+##' - The `longFormat` accessor takes a `QFeatures` object and returns
+##'   it in a long format `DataFrame`. Each quantitative value is
+##'   reported on a separate line. `colData` and `rowData` data can
+##'   also be added. This function is an extension of the `longFormat`
 ##'   function in the [MultiAssayExperiment::MultiAssayExperiment].
 ##'
 ##' @section Adding assays:
@@ -99,9 +99,9 @@
 ##'   select a limited number of `rowData` columns of interest named
 ##'   in `rowvars` in the `x` instance of class `QFeatures`. All other
 ##'   variables than `rowvars` will be dropped. In case an element in
-##'   `rowvars` isn't found in any `rowData` variable, a message is 
+##'   `rowvars` isn't found in any `rowData` variable, a message is
 ##'   printed.
-##' 
+##'
 ##' @param i `character()`, `integer()`, `logical()` or `GRanges()`
 ##'     object for subsetting by rows.
 ##'
@@ -189,19 +189,19 @@
 ##'
 ##' ## Add an assay
 ##' fts1 <- addAssay(fts1, se1[1:2, ], name = "se3")
-##' 
+##'
 ##' ## Get the assays feature metadata
-##' rowData(fts1) 
+##' rowData(fts1)
 ##'
 ##' ## Keep only the Fa variable
 ##' selectRowData(fts1, rowvars = "Fa")
-##' 
+##'
 ##' ## -----------------------------------
 ##' ## See ?readQFeatures to create a
 ##' ## QFeatures object from a data.frame
 ##' ## or spreadsheet.
 ##' ## -----------------------------------
-##' 
+##'
 NULL
 
 
@@ -307,18 +307,18 @@ setMethod("[", c("QFeatures", "character", "ANY", "ANY"),
           })
 
 ##' @rdname QFeatures-class
-##' 
+##'
 ##' @param use.names A `logical(1)` indicating whether the rownames of
 ##'     each assay should be propagated to the corresponding `rowData`.
-##' 
+##'
 setMethod("rowData", "QFeatures",
           function(x, use.names = TRUE, ...) {
-              List(lapply(experiments(x), function(xx) 
+              List(lapply(experiments(x), function(xx)
                   mcols(xx, use.names = use.names, ...)))
           })
 
 ##' @rdname QFeatures-class
-##'     
+##'
 ##' @export
 setReplaceMethod("rowData", c("QFeatures", "DataFrameList"),
                  function(x, value) {
@@ -327,15 +327,19 @@ setReplaceMethod("rowData", c("QFeatures", "DataFrameList"),
                          warning("Could not find a common assay between ",
                                  "'names(value)' and names(object)")
                          return(x)
-                     } 
+                     }
                      el <- experiments(x)
                      for (ii in i)
-                         rowData(el[[ii]])[, colnames(value[[ii]])] <- 
+                         rowData(el[[ii]])[, colnames(value[[ii]])] <-
                          value[[ii]]
                      BiocGenerics:::replaceSlots(x,
                                                  ExperimentList = el,
                                                  check = FALSE)
                  })
+
+##' @rdname QFeatures-class
+##'
+##' @export
 setReplaceMethod("rowData", c("QFeatures", "ANY"),
                  function(x, value) {
                      value <- endoapply(value, as, "DataFrame")
@@ -343,13 +347,13 @@ setReplaceMethod("rowData", c("QFeatures", "ANY"),
                      rowData(x) <- value
                      x
                  })
-                 
+
 ##' @rdname QFeatures-class
-##' 
+##'
 ##' @export
 rbindRowData <- function(object, i)  {
     ## Extract the rowData and column names from the desired assay(s)
-    rdlist <- rowData(object)[i] 
+    rdlist <- rowData(object)[i]
     rdNames <- rowDataNames(object)[i]
     ## Get the common variables between the selected rowData
     commonCols <- Reduce(intersect, rdNames)
@@ -358,8 +362,8 @@ rbindRowData <- function(object, i)  {
         return(DataFrame())
     }
     ## Add assay and rowname to the rowData
-    rdlist <- lapply(names(rdlist), 
-                     function(x) cbind(assay = x, 
+    rdlist <- lapply(names(rdlist),
+                     function(x) cbind(assay = x,
                                        rowname = rownames(rdlist[[x]]),
                                        rdlist[[x]][, commonCols]))
     ## Row bind all tables in one DataFrame
@@ -374,7 +378,7 @@ rbindRowData <- function(object, i)  {
 ##'
 ##' @param x An instance of class `QFeatures`.
 ##' @param rowvars A `character()` with the names of the `rowData`
-##'     variables (columns) to retain in any assay. 
+##'     variables (columns) to retain in any assay.
 ##'
 ##' @export
 selectRowData <- function(x, rowvars) {
@@ -412,8 +416,8 @@ rowDataNames <- function(x) {
 
 ##' @rdname QFeatures-class
 ##'
-##' @param value The values to use as a replacement. See the 
-##'     corresponding section in the documentation for more details. 
+##' @param value The values to use as a replacement. See the
+##'     corresponding section in the documentation for more details.
 ##'
 ##' @exportMethod names<-
 setReplaceMethod("names", c("QFeatures", "character"),
@@ -434,30 +438,30 @@ setReplaceMethod("names", c("QFeatures", "character"),
 
 ##' @rdname QFeatures-class
 ##'
-##' @param colvars A `character()` that selects column(s) in the 
+##' @param colvars A `character()` that selects column(s) in the
 ##'     `colData`.
-##' @param index The assay indicator for `SummarizedExperiment` 
-##'     objects. A vector input is supported in the case that the 
-##'     `SummarizedExperiment` object(s) has more than one assay 
+##' @param index The assay indicator for `SummarizedExperiment`
+##'     objects. A vector input is supported in the case that the
+##'     `SummarizedExperiment` object(s) has more than one assay
 ##'     (default `1L`)
-##' 
+##'
 ##' @importFrom MultiAssayExperiment longFormat
-##' 
+##'
 ##' @export
-longFormat <- function(object, 
+longFormat <- function(object,
                        colvars = NULL,
-                       rowvars = NULL, 
+                       rowvars = NULL,
                        index = 1L) {
     if (!is.null(rowvars)) {
         rdNames <- rowDataNames(object)
-        misNames <- sapply(rdNames, 
+        misNames <- sapply(rdNames,
                            function (x) any(!rowvars %in% x))
         ## Check that all required
         if (any(misNames))
             stop("Some 'rowvars' not found in assay(s): ",
                  paste0(names(misNames)[misNames], collapse = ", "))
         ## Get long format table with quantification values and colvars
-        longDataFrame <- 
+        longDataFrame <-
             MultiAssayExperiment::longFormat(object, colvars, index)
         ## Get the required rowData
         rds <- lapply(rowData(object),
