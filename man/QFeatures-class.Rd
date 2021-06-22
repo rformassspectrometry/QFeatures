@@ -12,10 +12,10 @@
 \alias{rowDataNames}
 \alias{selectRowData}
 \alias{rowData,QFeatures-method}
+\alias{rowData<-,QFeatures,DataFrameList-method}
+\alias{rbindRowData}
 \alias{names<-,QFeatures,character-method}
 \alias{longFormat}
-\alias{replaceRowDataCols}
-\alias{removeRowDataCols}
 \title{Quantitative MS QFeatures}
 \usage{
 \S4method{show}{QFeatures}(object)
@@ -28,17 +28,17 @@
 
 \S4method{rowData}{QFeatures}(x, use.names = TRUE, ...)
 
+\S4method{rowData}{QFeatures,DataFrameList}(x) <- value
+
+rbindRowData(object, i)
+
 selectRowData(x, rowvars)
 
 rowDataNames(x)
 
 \S4method{names}{QFeatures,character}(x) <- value
 
-longFormat(object, colDataCols = NULL, rowDataCols = NULL, index = 1L)
-
-replaceRowDataCols(object, replacement)
-
-removeRowDataCols(object, i, rowDataCols)
+longFormat(object, colvars = NULL, rowvars = NULL, index = 1L)
 
 QFeatures(..., assayLinks = NULL)
 
@@ -66,30 +66,19 @@ subsetting by assays}
 \item{use.names}{A \code{logical(1)} indicating whether the rownames of
 each assay should be propagated to the corresponding \code{rowData}.}
 
+\item{value}{The values to use as a replacement. See the
+corresponding section in the documentation for more details.}
+
 \item{rowvars}{A \code{character()} with the names of the \code{rowData}
-variables (columns) to retain in any assay. All other
-variables will be dropped. In case an element in \code{rowvars}
-isn't found in any \code{rowData} variable, a message is printed.}
+variables (columns) to retain in any assay.}
 
-\item{value}{A character() with new name(s) for the assay(s) in \code{x}}
-
-\item{colDataCols}{A \code{character()}, \code{logical()}, or \code{numeric()}
-index for colData columns to be included.}
-
-\item{rowDataCols}{A \code{character()} with column names of the rowData.}
+\item{colvars}{A \code{character()} that selects column(s) in the
+\code{colData}.}
 
 \item{index}{The assay indicator for \code{SummarizedExperiment}
 objects. A vector input is supported in the case that the
 \code{SummarizedExperiment} object(s) has more than one assay
 (default \code{1L})}
-
-\item{replacement}{A \code{list()} of same length as \code{i}. The elements
-of \code{value} must be named after \code{i}. Each element should
-contain the replacement values to insert in the rowData. If
-\code{length(r) > 1}, each element should be a table with the same
-rows as its corresponding assay and contain the \code{rowDataCols}
-variable(s). Set \code{replacement = NULL} to \strong{remove} the
-\code{rowDataCols}.}
 
 \item{assayLinks}{An optional \link{AssayLinks}.}
 
@@ -152,6 +141,19 @@ example.
 \item The \code{QFeatures} class extends the
 \link[MultiAssayExperiment:MultiAssayExperiment]{MultiAssayExperiment::MultiAssayExperiment} class and inherits
 all its accessors and replacement methods.
+\item The \code{rowData} method returns a \code{DataFrameList} containing the
+\code{rowData} for each assay of the \code{QFeatures} object. On the other
+hand, \code{rowData} can be modified using \code{rowData(x) <- value},
+where \code{value} is a list of tables that can be coerced to \code{DFrame}
+tables. The names of \code{value} point to the assays for
+which the \code{rowData} must be replaced. The column names of each
+table are used to replace the data in the existing \code{rowData}. If
+the column name does not exist, a new column is added to the
+\code{rowData}.
+\item The \code{rbindRowData} functions returns a \code{DFrame} table that
+contains the row binded \code{rowData} tables from the selected
+assays. Only rowData variables that are common to all assays are
+kept.
 \item The \code{rowDataNames} accessor returns a list with the \code{rowData}
 variable names.
 \item The \code{longFormat} accessor takes a \code{QFeatures} object and returns
@@ -185,21 +187,10 @@ be matched across different assays, taking the aggregation
 relation between assays.
 \item The \code{selectRowData(x, rowvars)} function can be used to
 select a limited number of \code{rowData} columns of interest named
-in \code{rowvars} in the \code{x} instance of class \code{QFeatures}.
-}
-}
-
-\section{Manipulating assays}{
-
-\itemize{
-\item The \code{replaceRowDataCols} function replaces one or more columns
-in the \code{rowData} of one or more assays. Note that if the column
-to replace does not exist, a new column will get added to the
-\code{rowData}.
-\item The \code{removeRowDataCols} function removes one or more columns
-in the \code{rowData} of one or more assays. If the column to remove
-does not exist in one of the assays, the \code{rowData} of that assay
-will stay unchanged.
+in \code{rowvars} in the \code{x} instance of class \code{QFeatures}. All other
+variables than \code{rowvars} will be dropped. In case an element in
+\code{rowvars} isn't found in any \code{rowData} variable, a message is
+printed.
 }
 }
 

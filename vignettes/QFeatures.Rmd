@@ -137,11 +137,9 @@ hl
 ```
 
 Below, we see that we can extract an assay using its index or its
-name. The individual assays are stored as *SummerizedExperiment*
+name. The individual assays are stored as *SummarizedExperiment*
 object and further access its quantitative data and metadata using
 the `assay` and `rowData` functions
-
-
 
 ```{r subsetassay}
 hl[[1]]
@@ -190,6 +188,98 @@ hl$tag <- c("126", "127N", "127C", "128N", "128C", "129N", "129C",
 colData(hl)
 ```
 
+# Manipulating feature metadata 
+
+The `QFeatures` package provides some utility functions that streamline
+the accession and manipulation of the feature metadata. 
+
+The feature metadata, more generally referred to as `rowData` in the
+Bioconductor ecosystem, is specific to each assay in a `QFeatures` 
+object. Therefore there are as many `rowData` tables as there are 
+assays. `rowDataNames` provides a list where each element contains the
+name of the `rowData` columns available in the corresponding assay. 
+
+```{r rowDataNames}
+rowDataNames(hl)
+```
+
+We saw above how to get the `rowData` from an assay, but we can also 
+extract the `rowData` for all assays by calling the function on the 
+`QFeautures` object directly. Similarly to `rowDataNames`, a list is 
+returned where each element contains the `rowData` available in the
+corresponding assay. 
+
+```{r rowData}
+rowData(hl)
+```
+
+In some cases, we are interested in extracting the `rowData` as a 
+single data table. This is easily performed using the `rbindRowData` 
+function. The function will automatically select the columns that are
+common to all selected assays. 
+
+```{r rbindRowData}
+rbindRowData(hl, i = c("peptides", "proteins"))
+```
+
+We can also replace and add columns in the `rowData`.  This requires
+to provide a `List` where the names of the `List` point to the assay 
+to be updated and the elements of the `List` contain `DataFrame`s with 
+the replacement values. If the `DataFrame` contains a column that is 
+not present in the `rowData`, that column will get added to the 
+`rowData`. For instance, let's add a `rowData` variables with the mean
+protein expression as well as the associated standard deviation. 
+First, we need to create the `DataFrame` with the mean expression. 
+  
+```{r}
+dF <- DataFrame(mean = rowSums(assay(hl[["proteins"]])),
+                sd = rowSds(assay(hl[["proteins"]])))
+```
+
+Then, we create the list and name the element `proteins` so that the 
+new data is added to the `rowData` of the `proteins` assay. To add 
+the list, we insert it back into the `rowData`. 
+
+```{r}
+rowData(hl) <- List(proteins = dF)
+```
+
+As shown below, the new `mean` and `sd` variables have been added to the
+`rowData` of the `proteins` assay. 
+
+```{r}
+rowData(hl)[["proteins"]]
+```
+
+Note that you can also replace an existing column in the `rowData` by
+naming the column name in the `DataFrame` after the column to replace.
+
+The `QFeatures` package also provides the `longFormat` function that 
+converts a `QFeatures` object into a long table. Long tables are very
+useful when using `ggplot2` for data visualization. For instance, 
+suppose we want to visualize the quantitation data (present in the
+assays) with respect to the number of aggregated features (present in
+the `rowData` of the assays), for peptide and protein separately 
+(present in different assays) and for each acquisition tag separately
+(present in the `colData`). This can all be plotted at once in a few lines of 
+code.
+
+```{r}
+lf <- longFormat(hl[, , c("peptides", "proteins")],
+                 rowvars = ".n",
+                 colvars = "tag")
+library("ggplot2")
+ggplot(data.frame(lf)) +
+    aes(x = .n, 
+        y = value) +
+    geom_point() +
+    facet_grid(assay ~ tag)
+```
+
+`longFormat` allows to retrieve and combine all available data from a
+`Qfeatures` object. We will provide another more useful example below.
+
+
 # Subsetting
 
 
@@ -219,7 +309,6 @@ stat3_df <- data.frame(longFormat(stat3))
 stat3_df$assay <- factor(stat3_df$assay,
                         levels = c("psms", "peptides", "proteins"))
 
-library("ggplot2")
 ggplot(data = stat3_df,
        aes(x = colname,
            y = value,

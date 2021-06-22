@@ -1,5 +1,14 @@
 # QFeatures 1.3.0
 
+## QFeatures 1.3.1
+
+- Added `rbindRowData`: a function to select variables in the `rowData`
+  and bind it in a single `DataFrame`
+- Added `rowData<-`: this new method replaces `replaceRowDataCols` to
+  offer a more standardize functionality. 
+- Added a new section in the `QFeatures` vignette to expand on how to 
+  manipulate the metadata within a `QFeatures` object
+
 ## QFeatures 1.3.0
 
 - New devel version (Bioc 3.14)

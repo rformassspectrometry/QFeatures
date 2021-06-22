@@ -67,6 +67,37 @@ test_that("RowData", {
 })
 
 
+test_that("RowData<-", {
+    data(feat2)
+    feat3 <- feat4 <- feat5 <- feat2
+    value <- rowData(feat2)
+    value[["assay1"]]$Prot <- letters[seq_len(nrow(value[["assay1"]]))]
+    value[["assay1"]] <- value[["assay1"]][, "Prot",  drop = FALSE]
+    value[["assay1"]]$foo <- rep("bar", nrow(value[["assay1"]]))
+    rowData(feat3) <- value[-3]
+    ## assay not in value are untouched
+    expect_identical(feat3[[2]], feat2[[2]])
+    ## replacing by untouched rowData leads to the same rowData
+    expect_identical(feat3[[3]], feat2[[3]])
+    ## rowvars in value and in rowData are replaced
+    expect_identical(rowData(feat3[[1]])$Prot, letters[seq_len(nrow(feat3[[1]]))])
+    ## rowvars in value but not in rowData are added
+    expect_true("foo" %in% colnames(rowData(feat3[[1]])))
+    expect_identical(rowData(feat3[[1]])$foo, rep("bar", nrow(feat3[[1]])))
+    ## rowvars in rowData but not in value are untouched
+    expect_identical(rowData(feat3[[1]])$x, rowData(feat2[[1]])$x)
+    ## The value is not a DataFrameList
+    value2 <- lapply(value, as.data.frame)
+    rowData(feat4) <- value2
+    expect_identical(feat3, feat4)
+    ## invalide value leads to warning
+    names(value) <- NULL
+    expect_warning(rowData(feat5) <-  value, 
+                   regexp = "Could not find a common assay")
+    expect_identical(feat5, feat2)
+})
+
+
 test_that("rowDataNames", {
     rdn <- rowDataNames(feat1)
     expect_identical(length(feat1), length(rdn))
@@ -90,6 +121,30 @@ test_that("selectRowData", {
     expect_identical(feat1, ft)
 })
 
+
+test_that("rbindRowData", {
+    data(feat2)
+    ## Rbind rowData from 1 assay
+    rd <- rbindRowData(feat2, 1)
+    expect_true(inherits(rd, "DFrame"))
+    expect_identical(unique(rd$assay), names(feat2)[1])
+    expect_identical(colnames(rd), c("assay", "rowname", 
+                                     colnames(rowData(feat2)[[1]])))
+    expect_identical(nrow(rd), sum(dims(feat2)[1, 1]))
+    ## Get all common variable from all assays
+    rd <- rbindRowData(feat2, seq_along(feat2))
+    expect_true(inherits(rd, "DFrame"))
+    expect_identical(unique(rd$assay), names(feat2))
+    expect_identical(colnames(rd), c("assay", "rowname", "Prot", "x"))
+    expect_identical(nrow(rd), sum(dims(feat2)[1, ]))
+    ## Warning no common variables 
+    a <- feat2[[1]]
+    rowData(a) <- DataFrame(foo = "bar")
+    feat3 <- addAssay(feat2, a, name = "assay4")
+    expect_warning(rd <- rbindRowData(feat3, seq_along(feat3)),
+                   regexp = "No common columns")
+    expect_identical(DataFrame(), rd)
+})
 
 
 test_that("renaming", {
@@ -126,8 +181,8 @@ test_that("assays must have unique rownames", {
 
 test_that("longFormat", {
     colData(feat2)$X <- 1:12
-    ## Select a single colDataCols and rowDataCols
-    lt <- longFormat(feat2, rowDataCols = "Prot", colDataCols = "X")
+    ## Select a single colvars and rowvars
+    lt <- longFormat(feat2, rowvars = "Prot", colvars = "X")
     ## Check dimensions
     expect_equal(nrow(lt),
                  sum(apply(dims(feat2), 2, prod)))
@@ -138,78 +193,22 @@ test_that("longFormat", {
                      unname(unlist(lapply(rowData(feat2), 
                                           ## Repeat 4x because 4 samples
                                           function(x) rep(x$Prot, 4)))))
-    ## Select a single colDataCols and no rowDataCols (make sure that 
+    ## Select a single colvars and no rowvars (make sure that 
     ## the implementation does not break the MAE implementation)
-    lt <- longFormat(feat2, colDataCols = "X")
+    lt <- longFormat(feat2, colvars = "X")
     expect_equal(nrow(lt),
                  sum(apply(dims(feat2), 2, prod)))
     expect_identical(ncol(lt),
                      5L+1L)
-    ## Select multiple rowDataCols
-    lt <- longFormat(feat2, rowDataCols = c("Prot", "x"))
+    ## Select multiple rowvars
+    lt <- longFormat(feat2, rowvars = c("Prot", "x"))
     expect_equal(nrow(lt),
                  sum(apply(dims(feat2), 2, prod)))
     expect_identical(ncol(lt),
                      5L+2L)
-    ## Test error: rowDataCols is missing in rowData
-    expect_error(longFormat(feat2, rowDataCols = "y"),
+    ## Test error: rowvars is missing in rowData
+    expect_error(longFormat(feat2, rowvars = "y"),
                  regexp = "not found")
 })
 
-test_that("replaceRowDataCols, add rowData column", {
-    data("feat2")
-    ## Test on 1 assay
-    repl <- data.frame(Foo = paste("bar", 1:nrow(feat2[[1]])))
-    ft <- replaceRowDataCols(feat2, list(assay1 = repl))
-    expect_identical(rowData(ft)[[1]], 
-                     cbind(rowData(feat2)[[1]], repl))
-    ## Test on more assays
-    repl <- lapply(names(feat2), function(i) DataFrame(Foo = paste("bar", 1:nrow(feat2[[i]]))))
-    names(repl) <- names(feat2)
-    ft <- replaceRowDataCols(feat2, repl)
-    for (i in names(ft))
-        expect_identical(rowData(ft)[[i]], 
-                         cbind(rowData(feat2)[[i]], repl[[i]]))
-    ## Add multiple column
-    repl <- lapply(names(feat2), function(i) DataFrame(Foo1 = paste("bar1", 1:nrow(feat2[[i]])),
-                                                       Foo2 = paste("bar2", 1:nrow(feat2[[i]]))))
-    names(repl) <- names(feat2)
-    ft <- replaceRowDataCols(feat2, repl)
-    for (i in names(ft))
-        expect_identical(rowData(ft)[[i]], 
-                         cbind(rowData(feat2)[[i]], repl[[i]]))
-    repl <- lapply(names(feat2), function(i) DataFrame(Prot = paste("prot", 1:nrow(feat2[[i]])),
-                                                       x = rnorm(nrow(feat2[[i]]))))
-    ## Replace multiple column
-    names(repl) <- names(feat2)
-    ft <- replaceRowDataCols(feat2, repl)
-    for (i in names(ft)) ## For each assay
-        for (col in colnames(repl[[i]])) ## for each column to replace
-            expect_identical(rowData(ft)[[i]][, col],
-                             repl[[i]][, col])
-    ## Expect error: replacement is not named correctly
-    names(repl) <- paste0("Foo_", names(feat2))
-    expect_error(replaceRowDataCols(feat2, repl), 
-                 regexp = "all.*names.*replacement.*object.*is not TRUE")
-    ## Expect error: replacement has wrong dimensions
-    repl[[3]] <- repl[[3]][1:2,]
-    names(repl) <- names(feat2)
-    expect_error(replaceRowDataCols(feat2, repl), 
-                 regexp = "don't have the same number of rows")
-})
-
-test_that("removeRowDataCols", {
-    data("feat2")
-    ## Test on 1 assay
-    ft <- removeRowDataCols(feat2, i = 1, rowDataCols = "Var")
-    expect_identical(rowData(ft)[[1]], 
-                     rowData(feat2)[[1]][, !grepl("Var", rowDataNames(feat2)[[1]])])
-    ## Test on all assays
-    ft <- removeRowDataCols(feat2, rowDataCols = "Var")
-    for (i in names(ft))
-        expect_identical(rowData(ft)[[i]], 
-                         rowData(feat2)[[i]][, !grepl("Var", rowDataNames(feat2)[[i]])])
-    ## When the column does not exist, the object stays unchanged
-    expect_identical(feat2, removeRowDataCols(feat2, rowDataCols = "Foo"))
-})
 
