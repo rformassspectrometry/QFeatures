@@ -2,7 +2,7 @@
 
 ## QFeatures 1.3.2
 
-- Nothing yet
+- Add logo to package
 
 ## QFeatures 1.3.1
 

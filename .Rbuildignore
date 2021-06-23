@@ -4,3 +4,4 @@
 .gitignore
 .travis.yml
 .Rbuildignore
+logo.png
