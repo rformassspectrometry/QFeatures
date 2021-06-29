@@ -36,7 +36,7 @@
     ## Set and remove row names
     rownames(res) <- res[[1]]
     res <- res[, -1]
-    as(res, cl)
+    as(res, cl[1])
 }
 
 .merge_by_rows <- function(x, y, ...) {
