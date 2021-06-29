@@ -3,6 +3,7 @@
 ## QFeatures 1.3.2
 
 - Add logo to package
+- Fix class coercion error (see #b9ce7f1e9)
 
 ## QFeatures 1.3.1
 
