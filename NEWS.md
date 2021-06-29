@@ -1,5 +1,9 @@
 # QFeatures 1.3.0
 
+## QFeatures 1.3.3
+
+- Nothing yet
+
 ## QFeatures 1.3.2
 
 - Add logo to package
