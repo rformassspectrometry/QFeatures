@@ -316,7 +316,7 @@ setMethod("show", "QFeatures",
     } else { ## If the AssayLink contains a single Hits object
         al@hits <- .pruneHits(hits = al@hits, 
                               parent = object[[al@from]], 
-                              sel = object[[al@name]])
+                              self = object[[al@name]])
     }
     al
 }
