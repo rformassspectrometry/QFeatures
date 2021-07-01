@@ -310,12 +310,9 @@ setMethod("show", "QFeatures",
     ## corresponding `Hits` must be adapted.
     if (inherits(al@hits, "List")) { ## If the AssayLink contains a 
         ## HitsList object, iterate through each `Hits` element.
-        al <- endoapply(al, function(x) {
-            x@hits <- .pruneHits(hits = x@hits, 
-                                  parent = object[[x@from]], 
-                                  sel = object[[x@name]])
-            x
-        }) 
+        al@hits <- mendoapply(function(hits, parent) {
+            .pruneHits(hits, parent, self = object[[al@name]])
+        }, hits = al@hits, parent = experiments(object)[al@from])
     } else { ## If the AssayLink contains a single Hits object
         al@hits <- .pruneHits(hits = al@hits, 
                               parent = object[[al@from]], 

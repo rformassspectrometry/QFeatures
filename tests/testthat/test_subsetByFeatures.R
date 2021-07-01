@@ -66,6 +66,7 @@ test_that("subsetByFeatures: full pipeline", {
     ## Subsetting "ProtA" will go through all assays as they all contains the
     ## "Protein" variable in the `rowData`
     ftsub <- subsetByFeature(fts, "ProtA")
+    expect_true(validObject(ftsub))
     expect_identical(ftsub, fts["ProtA", ])
     expect_identical(dims(ftsub),
                      matrix(c(6L, 2L, 4L, 2L, 6L, 4L, 2L, 4L, 1L, 4L, 2L, 4L, 1L, 4L),
