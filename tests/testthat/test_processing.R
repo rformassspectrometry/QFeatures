@@ -1,5 +1,6 @@
 data(feat1)
 
+
 test_that("function: logTransform", {
     se <- feat1[[1]]
     se_log <- logTransform(se)
@@ -54,6 +55,7 @@ test_that("function: normalize", {
                      dimnames(assay(feat_norm_sub, 2)))
 })
 
+
 test_that("function: all normalize methods", {
     data(hlpsms)
     fts <- readQFeatures(hlpsms, ecol = 1:10, name = "psms")
@@ -64,7 +66,6 @@ test_that("function: all normalize methods", {
         expect_identical(se_norm, feat_norm[["normAssay"]])
     }
 })
-
 
 
 test_that("function: sweep", {

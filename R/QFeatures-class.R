@@ -260,6 +260,81 @@ setMethod("show", "QFeatures",
               }
           })
 
+## Function that prunes a `Hits` object from an `AssayLink` object, 
+## making sure that the `Hits` object is still valid with respect to 
+## a parent assay and its corresponding assay (self). The validity is
+## ensured by removing missing features. 
+## 
+## @param hits A `Hits` object
+## @param parent A `SummarizedExperiment` object or any object that 
+##     inherits from it. This is the assay that `hits` links from.
+## @param self A `SummarizedExperiment` object or any object that 
+##     inherits from it. This is the assay that `hits` links to.
+## 
+.pruneHits <- function(hits, parent, self) {
+    ## Get the feature names in the parent and self assay
+    featnParent <- rownames(parent)
+    featnSelf <- rownames(self)
+    ## Check which links are still in parent and self
+    inParent <- mcols(hits)$names_from %in% featnParent
+    inSelf <- mcols(hits)$names_to %in% featnSelf
+    ## Remove lost feature links 
+    hits[inParent & inSelf, ]
+}
+
+## Function that prunes an `AssayLink` of a `QFeatures` object, 
+## making sure that the `AssayLink` object is still valid with respect
+## to a given `QFeatures` object.
+## 
+## @param al An `AssayLink` object
+## @param object A `QFeatures` object. `al` will be adapted so that it
+##     becomes valid when contained in `object`.
+## 
+.pruneAssayLink <- function(al, object) {
+    ## Identify lost assays that need to be pruned
+    lost <- !al@from %in% names(object)
+    ## Prune the links to assays in `@name`. When an assay is lost, 
+    ## the links to that assay are removed. 
+    if (all(lost)) { ## If all parent assays are lost, return an 
+        ## empty AssayLink
+        al <- AssayLink(name = al@name)
+        return(al)
+    } else if (any(lost)) { ## If some parents are lost (only in case 
+        ## of multiple parents), remove the link to the lost parent(s) 
+        ## (`@from`) and subset the corresponding `Hits` object(s)
+        al@from <- al@from[!lost]
+        al@hits <- al@hits[!lost]
+    }
+    ## Prune the links to features in `@hits`. Even when an assay is 
+    ## not lost, some of its features might be lost and the 
+    ## corresponding `Hits` must be adapted.
+    if (inherits(al@hits, "List")) { ## If the AssayLink contains a 
+        ## HitsList object, iterate through each `Hits` element.
+        al@hits <- mendoapply(function(hits, parent) {
+            .pruneHits(hits, parent, self = object[[al@name]])
+        }, hits = al@hits, parent = experiments(object)[al@from])
+    } else { ## If the AssayLink contains a single Hits object
+        al@hits <- .pruneHits(hits = al@hits, 
+                              parent = object[[al@from]], 
+                              self = object[[al@name]])
+    }
+    al
+}
+
+## Function that prunes the `AssayLinks` of a `QFeatures` object, 
+## making sure that the `AssayLinks` object is still valid after 
+## `QFeatures` subsetting
+## 
+## @param object A `QFeatures` object
+## 
+.pruneAssayLinks <- function(object) {
+    ## Subset the AssayLinks
+    object@assayLinks <- object@assayLinks[names(object)]
+    ## Removed lost links in each AssayLink object
+    object@assayLinks <- endoapply(object@assayLinks, 
+                                   .pruneAssayLink, object = object)
+    object
+}
 
 ##' @rdname QFeatures-class
 ##' @param x An instance of class `QFeatures`.
@@ -269,22 +344,11 @@ setMethod("[", c("QFeatures", "ANY", "ANY", "ANY"),
           function(x, i, j, ..., drop = TRUE) {
               ## Subset the assays
               ans <- callNextMethod(x, i, j, ..., drop)
-              ## Subset the AssayLinks
-              ans@assayLinks <- ans@assayLinks[names(ans)]
-              ## Removed lost links
-              allist <- lapply(ans@assayLinks, function(al) {
-                  lost <- !al@from %in% names(ans)
-                  if (any(lost)) {
-                      if (all(lost)) {
-                          al <- AssayLink(name = al@name)
-                      } else {
-                          al@from <- al@from[!lost]
-                          al@hits <- al@hits[!lost]
-                      }
-                  }
-                  al
-              })
-              ans@assayLinks <- do.call(AssayLinks, allist)
+              
+              ## Prune the AssayLinks so that the `QFeatures` object
+              ## remains valid
+              ans <- .pruneAssayLinks(ans)
+              
               ## Check new object
               if (validObject(ans))
                   return(ans)

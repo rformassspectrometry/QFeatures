@@ -71,6 +71,7 @@ Collate:
     'QFeatures-aggregation.R'
     'QFeatures-imputation.R'
     'QFeatures-join.R'
+    'QFeatures-validity.R'
     'SummarizedExperiment-methods.R'
     'subsetBy-methods.R'
     'data.R'
