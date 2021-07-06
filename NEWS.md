@@ -1,5 +1,9 @@
 # QFeatures 1.3.0
 
+## QFeatures 1.3.4
+
+- Nothing yet.
+
 ## QFeatures 1.3.3
 
 - Improved validity checks on `AssayLinks`
