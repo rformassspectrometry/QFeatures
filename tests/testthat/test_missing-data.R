@@ -155,15 +155,15 @@ test_that("nNA,SummarizedExperiment and nNA,QFeatures", {
 })
 
 test_that("filterNA,QFeatures and filterNA,SummarizedExperiment", {
-    se_na_filtered <- filterNA(se_na)
-    expect_error(filterNA(ft0))
-    ft_filtered <- filterNA(ft0, i = seq_along(ft0))
-    expect_equivalent(se_na_filtered, ft_filtered[[1]])
+    ## filterNA on SE
+    ## se_na contains 1 NA in 3 rows. Removing all rows with NA results
+    ## in an assay with 1 row and 3 colums
+    se_na_filtered <- filterNA(se_na, pNA = 0)
+    expect_identical(dim(se_na_filtered), c(1L, 3L))
     expect_identical(assay(se_na_filtered), m[2, , drop = FALSE])
-    se_na_filtered <- filterNA(se_na, pNA = 0.9)
-    ft_filtered <- filterNA(ft0, i = seq_along(ft0), pNA = 0.9)
-    expect_equivalent(se_na_filtered, ft_filtered[[1]])
-    expect_equivalent(se_na_filtered, ft0[[2]])
+    ## filterNA on QFeatures
+    ft_filtered <- filterNA(ft0, i = seq_along(ft0), pNA = 0)
+    expect_identical(se_na_filtered, ft_filtered[[1]])
 })
 
 test_that("aggregateFeatures with missing data", {
@@ -188,4 +188,8 @@ test_that("aggregateFeatures with missing data", {
                     .n = c(2L, 2L),
                     row.names = 1:2)
     expect_equivalent(rowData(ft_na[[2]]), rd)
+    ## Check filterNA on linked assays
+    expect_true(
+        validObject(filterNA(ft_na, i = seq_along(ft_na), pNA = 0.5))
+    )
 })

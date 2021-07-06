@@ -259,9 +259,10 @@ setMethod("filterNA", "SummarizedExperiment",
 ##' @rdname QFeatures-missing-data
 setMethod("filterNA", "QFeatures",
           function(object, pNA = 0, i) {
-              if (missing(i))
-                  stop("'i' not provided. You must specify which assay(s) to process.")
-              for (ii in i)
-                  object[[ii]] <- filterNA(object[[ii]], pNA)
-              object
+              if (!is.character(i)) i <- names(object)[i]
+              sel <- lapply(i, function(ii) {
+                  .row_for_filterNA(assay(object[[ii]]), pNA)
+              })
+              names(sel) <- i 
+              object[sel, ]
           })

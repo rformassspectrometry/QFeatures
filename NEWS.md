@@ -2,7 +2,7 @@
 
 ## QFeatures 1.3.4
 
-- Nothing yet.
+- Fixed bug that produced invalid AssayLinks when using filterNA.
 
 ## QFeatures 1.3.3
 
