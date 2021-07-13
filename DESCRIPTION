@@ -29,6 +29,7 @@ Imports:
    lazyeval,
    Biobase,
    MsCoreUtils (>= 1.1.2),
+   igraph
 Suggests:
    SingleCellExperiment,
    HDF5Array,
