@@ -102,6 +102,13 @@
 ##'   `rowvars` isn't found in any `rowData` variable, a message is
 ##'   printed.
 ##'
+##' @param object An instance of class [QFeatures].
+##' 
+##' @param x An instance of class [QFeatures].
+##' 
+##' @param y A single assay or a *named* list of assays. For `plot`, 
+##'     `y` is ignored. 
+##' 
 ##' @param i `character()`, `integer()`, `logical()` or `GRanges()`
 ##'     object for subsetting by rows.
 ##'
@@ -113,6 +120,9 @@
 ##'
 ##' @param drop logical (default `TRUE`) whether to drop empty assay
 ##'     elements in the `ExperimentList`.
+##'
+##' @param ... See `MultiAssayExperiment` for details. For `plot`, 
+##'     further arguments passed to `igraph::plot.igraph`.
 ##'
 ##'
 ##' @return See individual method description for the return value.
@@ -224,7 +234,7 @@ setClass("QFeatures",
 
 
 ##' @rdname QFeatures-class
-##' @param object An instance of class `QFeatures`.
+##' 
 ##' @exportMethod show
 setMethod("show", "QFeatures",
           function(object) {
@@ -259,6 +269,27 @@ setMethod("show", "QFeatures",
                               featdim[(n-2):n], sampdim[(n-2):n]), "\n")
               }
           })
+
+
+##' @rdname QFeatures-class
+##' 
+##' @import igraph
+##' 
+##' @exportMethod plot
+setMethod("plot", "QFeatures",
+          function (x, y, ...) {
+              graph <- make_graph(edges = character(0), 
+                                  isolates = names(x))
+              for (child in names(x)) {
+                  parents <- assayLink(x, child)@from
+                  for(parent in parents) {
+                      if (!is.na(parent))
+                          graph <- add_edges(graph, c(parent, child))
+                  }
+              }
+              plot.igraph(graph, ...)
+          })
+
 
 ## Function that prunes a `Hits` object from an `AssayLink` object, 
 ## making sure that the `Hits` object is still valid with respect to 
@@ -337,8 +368,9 @@ setMethod("show", "QFeatures",
 }
 
 ##' @rdname QFeatures-class
-##' @param x An instance of class `QFeatures`.
+##' 
 ##' @importFrom methods callNextMethod
+##' 
 ##' @exportMethod [
 setMethod("[", c("QFeatures", "ANY", "ANY", "ANY"),
           function(x, i, j, ..., drop = TRUE) {
@@ -440,7 +472,6 @@ rbindRowData <- function(object, i)  {
 
 ##' @rdname QFeatures-class
 ##'
-##' @param x An instance of class `QFeatures`.
 ##' @param rowvars A `character()` with the names of the `rowData`
 ##'     variables (columns) to retain in any assay.
 ##'
@@ -538,4 +569,35 @@ longFormat <- function(object,
         ## If rowvars is null, return the MAE longFormat output
         MultiAssayExperiment::longFormat(object, colvars, index)
     }
+}
+
+
+##' @param name A `character(1)` naming the single assay (default is
+##'     `"newAssay"`). Ignored if `y` is a list of assays.
+##' @param assayLinks An optional [AssayLinks].
+##'
+##' @md
+##'
+##' @rdname QFeatures-class
+##'
+##' @export
+addAssay <- function(x,
+                     y,
+                     name = "newAssay",
+                     assayLinks = AssayLinks(names = name)) {
+    stopifnot(inherits(x, "QFeatures"))
+    el0 <- x@ExperimentList@listData
+    if (is.list(y)) el1 <- y
+    else el1 <- structure(list(y), .Names = name[1])
+    el <- ExperimentList(c(el0, el1))
+    smap <- MultiAssayExperiment:::.sampleMapFromData(colData(x), el)
+    if (inherits(assayLinks, "AssayLink"))
+        assayLinks <- AssayLinks(assayLinks)
+    new("QFeatures",
+        ExperimentList = el,
+        colData = colData(x),
+        sampleMap = smap,
+        metadata = metadata(x),
+        assayLinks = append(x@assayLinks,
+                            assayLinks))
 }
