@@ -11,7 +11,7 @@
 \alias{[,QFeatures,character,ANY,ANY-method}
 \alias{rowDataNames}
 \alias{selectRowData}
-\alias{plot,QFeatures,ANY-method}
+\alias{plot.QFeatures}
 \alias{rowData,QFeatures-method}
 \alias{rowData<-,QFeatures,DataFrameList-method}
 \alias{rowData<-,QFeatures,ANY-method}
@@ -22,7 +22,7 @@
 \usage{
 \S4method{show}{QFeatures}(object)
 
-\S4method{plot}{QFeatures,ANY}(x, y, ...)
+\method{plot}{QFeatures}(x, interactive = FALSE, ...)
 
 \S4method{[}{QFeatures,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
 
@@ -55,11 +55,13 @@ QFeatures(..., assayLinks = NULL)
 
 \item{x}{An instance of class \link{QFeatures}.}
 
-\item{y}{A single assay or a \emph{named} list of assays. For \code{plot},
-\code{y} is ignored.}
+\item{interactive}{A \code{logical(1)}. If \code{TRUE}, an interactive graph
+is generated using \code{plotly}. Else, a static plot using \code{igraph}
+is generated. We recommend interactive exploration when the
+\code{QFeatures} object contains more than 50 assays.}
 
 \item{...}{See \code{MultiAssayExperiment} for details. For \code{plot},
-further arguments passed to \link[igraph:plot.igraph]{igraph::plot.igraph}.}
+further arguments passed to \code{igraph::plot.igraph}.}
 
 \item{i}{\code{character()}, \code{integer()}, \code{logical()} or \code{GRanges()}
 object for subsetting by rows.}
@@ -89,6 +91,8 @@ variables (columns) to retain in any assay.}
 objects. A vector input is supported in the case that the
 \code{SummarizedExperiment} object(s) has more than one assay
 (default \code{1L})}
+
+\item{y}{A single assay or a \emph{named} list of assays.}
 
 \item{name}{A \code{character(1)} naming the single assay (default is
 \code{"newAssay"}). Ignored if \code{y} is a list of assays.}
