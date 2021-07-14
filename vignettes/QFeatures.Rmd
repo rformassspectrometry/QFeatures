@@ -282,7 +282,7 @@ more details about data exploration from a `QFeatures` object.
 stat3_df <- data.frame(longFormat(stat3))
 stat3_df$assay <- factor(stat3_df$assay,
                         levels = c("psms", "peptides", "proteins"))
-
+library("ggplot2")
 ggplot(data = stat3_df,
        aes(x = colname,
            y = value,

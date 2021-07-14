@@ -25,7 +25,7 @@ data and read it as a `QFeautres` object. See the processing
 [vignette](https://rformassspectrometry.github.io/QFeatures/articles/Processing.html)
 for more details about data processing with `QFeatures`. 
 
-```{r read_data}
+```{r read_data, message = FALSE}
 library("QFeatures")
 data(hlpsms)
 hl <- readQFeatures(hlpsms, ecol = 1:10, name = "psms")
@@ -51,6 +51,25 @@ The dataset is now ready for data exploration.
 
 # Exploring the `QFeatures` hierarchy
 
+`QFeatures` objects can contain several assays as the data goes through
+the processing workflow. The `plot` function provides an overview of 
+all the assays present in the dataset, showing also the hierarchical 
+relationships between the assays as determined by the `AssayLinks`. 
+
+```{r plot, out.width="125px"}
+plot(hl)
+```
+
+Note that some datasets may contain many assays, for instance because
+the MS experiment consists of hundreds of batches. This can lead to an
+overcrowded plot. Therefore, you can also explore this hierarchy of 
+assays through an interactive plot, supported by the `plotly` package
+(@Sievert2020). You can use the viewer panel to zoom in and out and
+navigate across the tree(s). 
+
+```{r plot_interactive, eval = FALSE}
+plot(hl, interactive = TRUE)
+```
 
 
 # Basic data exploration
@@ -95,8 +114,8 @@ functions shown above. Note that `ggplot2` expects `data.frame` or
 encoded as `matrix` (or matrix-like objects, see 
 `?SummarizedExperiment`) and the `rowData` and `colData` are encoded 
 as `DataFrame`. This is easily circumvented by converting those 
-objects to `data.frame`s or `tibble`s. See here how we reproduce one 
-of the plots above using `ggplot2`. 
+objects to `data.frame`s or `tibble`s. See here how we reproduce the 
+plot above using `ggplot2`. 
 
 ```{r ggplot_rowData, message = FALSE}
 library("ggplot2")
@@ -116,7 +135,7 @@ Another useful package for quantitative data exploration is
 (@Gentleman:2004) and facilitates visualization of matrix objects as 
 heatmap. See here an example where we plot the protein data. 
 
-```{r, message = FALSE}
+```{r ComplexHeatmap, message = FALSE}
 library(ComplexHeatmap)
 Heatmap(matrix = assay(hl, "proteins"), 
         show_row_names = FALSE)
@@ -125,12 +144,15 @@ Heatmap(matrix = assay(hl, "proteins"),
 `ComplexHeatmap` also allows to add row and/or column annotations. 
 Let's add the predicted protein location as row annotation. 
 
-```{r}
+```{r ComplexHeatmap_annotations}
 ha <- rowAnnotation(markers = rowData(hl)[["proteins"]]$markers)
 Heatmap(matrix = assay(hl, "proteins"),
         show_row_names = FALSE,
         left_annotation = ha)
 ```
+
+More advanced usage of `ComplexHeatmap` is described in the package
+reference [book](https://jokergoo.github.io/ComplexHeatmap-reference/book/).
 
 # Advanced data exploration
 
@@ -147,7 +169,7 @@ to visualize the distribution of protein quantitation (present in the
 quantitation values coming from the same protein using lines. This can
 all be plotted at once in a few lines of code.
 
-```{r, fig.height = 7, fig.width = 9}
+```{r longFormat, fig.height = 7, fig.width = 9}
 lf <- longFormat(hl[, , "proteins"],
                  rowvars = "markers",
                  colvars = "tag")
