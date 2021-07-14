@@ -171,6 +171,14 @@ test_that("renaming", {
                  regexp = "is duplicated$")
 })
 
+test_that("plotting", {
+    data(feat2)
+    feat2 <- joinAssays(feat2, i = 1:3)
+    feat2 <- aggregateFeatures(feat2, 4, "Prot", name = "proteins")
+    ## expect_doppelganger creates a snapshot and compares to previous
+    vdiffr::expect_doppelganger("qFeatures-plot", plot(feat2))
+})
+
 test_that("assays must have unique rownames", {
     hlpsms <- hlpsms[1:10, ]
     ft1 <- readQFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence")
