@@ -54,8 +54,7 @@ Suggests:
    pcaMethods,
    impute,
    norm,
-   ComplexHeatmap,
-   vdiffr
+   ComplexHeatmap
 biocViews: Infrastructure, MassSpectrometry, Proteomics, Metabolomics
 License: Artistic-2.0
 Encoding: UTF-8

@@ -352,8 +352,10 @@ plot.QFeatures <- function (x, interactive = FALSE, ...) {
     rownames(coords) <- names(V(graph))
     ## Add an interleaved offset on the y coord for better rendering 
     ## when many assays have to be drawn
-    interleaved <- c(seq(1, 5, 2), seq(2, 6, 2))
-    offset <- rep_len(interleaved * 0.05 * max(coords[, 2]), 
+    interleaved <- c(seq(1, 5, 2), seq(2, 6, 2)) / 10
+    interleaved <- interleaved - mean(interleaved)
+    step <- diff(sort(unique(coords[, 2]))[1:2])
+    offset <- rep_len(interleaved * step, 
                        length.out = nrow(coords))
     coords[, 2] <- coords[, 2] + offset
     ## Perform plotting 
