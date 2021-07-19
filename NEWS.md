@@ -2,7 +2,7 @@
 
 ## QFeatures 1.3.5
 
-- Nothing yet.
+- Add plot,QFeatures and visualisation vignette.
 
 ## QFeatures 1.3.4
 
