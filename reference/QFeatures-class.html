@@ -134,6 +134,9 @@ sure that these match the class validity requirements." />
     <li>
       <a href="../articles/Processing.html">Processing quantitative proteomics data with QFeatures</a>
     </li>
+    <li>
+      <a href="../articles/Visualization.html">Data visualization from a QFeatures object</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -196,6 +199,9 @@ sure that these match the class validity requirements.</p>
     <div class="ref-usage sourceCode"><pre><code># S4 method for QFeatures
 show(object)
 
+# S3 method for QFeatures
+plot(x, interactive = FALSE, ...)
+
 # S4 method for QFeatures,ANY,ANY,ANY
 [(x, i, j, ..., drop = TRUE)
 
@@ -225,20 +231,32 @@ names(x) &lt;- value
 
 longFormat(object, colvars = NULL, rowvars = NULL, index = 1L)
 
-QFeatures(..., assayLinks = NULL)
+addAssay(x, y, name = "newAssay", assayLinks = AssayLinks(names = name))
 
-addAssay(x, y, name = "newAssay", assayLinks = AssayLinks(names = name))</code></pre></div>
+QFeatures(..., assayLinks = NULL)</code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>An instance of class <code>QFeatures</code>.</p></td>
+      <td><p>An instance of class QFeatures.</p></td>
     </tr>
     <tr>
       <th>x</th>
       <td><p>An instance of class QFeatures.</p></td>
+    </tr>
+    <tr>
+      <th>interactive</th>
+      <td><p>A <code>logical(1)</code>. If <code>TRUE</code>, an interactive graph
+is generated using <code>plotly</code>. Else, a static plot using <code>igraph</code>
+is generated. We recommend interactive exploration when the
+<code>QFeatures</code> object contains more than 50 assays.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>See <code>MultiAssayExperiment</code> for details. For <code>plot</code>,
+further arguments passed to <code><a href='https://rdrr.io/pkg/igraph/man/plot.igraph.html'>igraph::plot.igraph</a></code>.</p></td>
     </tr>
     <tr>
       <th>i</th>
@@ -249,10 +267,6 @@ object for subsetting by rows.</p></td>
       <th>j</th>
       <td><p><code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>, <code><a href='https://rdrr.io/r/base/logical.html'>logical()</a></code>, or <code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code> vector for
 subsetting by <code>colData</code> rows.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>See <code>MultiAssayExperiment</code> for details.</p></td>
     </tr>
     <tr>
       <th>drop</th>
@@ -292,10 +306,6 @@ objects. A vector input is supported in the case that the
 (default <code>1L</code>)</p></td>
     </tr>
     <tr>
-      <th>assayLinks</th>
-      <td><p>An optional <a href='AssayLinks.html'>AssayLinks</a>.</p></td>
-    </tr>
-    <tr>
       <th>y</th>
       <td><p>A single assay or a <em>named</em> list of assays.</p></td>
     </tr>
@@ -303,6 +313,10 @@ objects. A vector input is supported in the case that the
       <th>name</th>
       <td><p>A <code>character(1)</code> naming the single assay (default is
 <code>"newAssay"</code>). Ignored if <code>y</code> is a list of assays.</p></td>
+    </tr>
+    <tr>
+      <th>assayLinks</th>
+      <td><p>An optional <a href='AssayLinks.html'>AssayLinks</a> object.</p></td>
     </tr>
     </table>
 
