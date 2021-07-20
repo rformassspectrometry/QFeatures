@@ -317,6 +317,22 @@ setMethod("show", "QFeatures",
                    showlegend = FALSE)
 }
 
+## Add an offset on the y coord for better rendering 
+## when many assays have to be drawn
+.offsetNodes <- function(coords) {
+    lev <- coords[, 2]
+    nlev <- length(unique(lev))
+    step <- max(coords[, 2]) / (nlev - 1)
+    mar <- c(seq(1, 5, 2), seq(2, 6, 2)) / 10
+    for (i in unique(lev)) {
+        sel <- lev == i
+        mari <- mar[1:sum(sel)] - mean(mar[1:sum(sel)])
+        offset <- mari * step
+        coords[sel, 2] <- coords[sel, 2] + offset
+    }
+    coords
+}
+
 ##' @rdname QFeatures-class
 ##' 
 ##' @param interactive A `logical(1)`. If `TRUE`, an interactive graph
@@ -349,15 +365,8 @@ plot.QFeatures <- function (x, interactive = FALSE, ...) {
     }
     ## Tree layout
     coords <- layout_as_tree(graph, root = roots)
+    coords <- .offsetNodes(coords)
     rownames(coords) <- names(V(graph))
-    ## Add an interleaved offset on the y coord for better rendering 
-    ## when many assays have to be drawn
-    interleaved <- c(seq(1, 5, 2), seq(2, 6, 2)) / 10
-    interleaved <- interleaved - mean(interleaved)
-    step <- diff(sort(unique(coords[, 2]))[1:2])
-    offset <- rep_len(interleaved * step, 
-                       length.out = nrow(coords))
-    coords[, 2] <- coords[, 2] + offset
     ## Perform plotting 
     if (!interactive) {
         plot.igraph(graph, layout = coords, ...)

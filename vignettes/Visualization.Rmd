@@ -60,6 +60,16 @@ relationships between the assays as determined by the `AssayLinks`.
 plot(hl)
 ```
 
+This plot is rather simple with only three assays, but some processing
+workflows may involve more steps. The `feat3` example data illustrates
+the different possible relationships: one parent to one child, multiple
+parents to one child and one parent to multiple children.
+
+```{r plot2, out.width="400px"}
+data("feat3")
+plot(feat3)
+```
+
 Note that some datasets may contain many assays, for instance because
 the MS experiment consists of hundreds of batches. This can lead to an
 overcrowded plot. Therefore, you can also explore this hierarchy of 
