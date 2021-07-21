@@ -283,19 +283,21 @@ setMethod("show", "QFeatures",
     pl <- plotly::plot_ly()
     ## Add edges
     el <- get.edgelist(graph)
-    edge_coords <- sapply(1:nrow(el), function(i) {
-        edge_coord <- c(coords[el[i, 1], 1],
-                        coords[el[i, 1], 2],
-                        coords[el[i, 2], 1],
-                        coords[el[i, 2], 2])
-    })
-    pl <- plotly::add_segments(pl, 
-                               x = edge_coords[1, ],
-                               y = edge_coords[2, ],
-                               xend = edge_coords[3, ],
-                               yend = edge_coords[4, ],
-                               line = list(color = "grey", width = 0.3,
-                                           showarrow = TRUE))
+    if (nrow(el) > 0) {
+        edge_coords <- sapply(1:nrow(el), function(i) {
+            edge_coord <- c(coords[el[i, 1], 1],
+                            coords[el[i, 1], 2],
+                            coords[el[i, 2], 1],
+                            coords[el[i, 2], 2])
+        })
+        pl <- plotly::add_segments(pl, 
+                                   x = edge_coords[1, ],
+                                   y = edge_coords[2, ],
+                                   xend = edge_coords[3, ],
+                                   yend = edge_coords[4, ],
+                                   line = list(color = "grey", width = 0.3,
+                                               showarrow = TRUE))
+    }
     ## Add nodes
     pl <- plotly::add_markers(pl,
                               x = coords[, 1], y = coords[, 2], 
@@ -315,6 +317,26 @@ setMethod("show", "QFeatures",
                    xaxis = axis,
                    yaxis = axis,
                    showlegend = FALSE)
+}
+
+## Offset on the coordinates for better rendering when many assays 
+## have to be drawn
+.offsetNodes <- function(coords) {
+    lev <- coords[, 2]
+    nlev <- length(unique(lev))
+    step <- max(coords[, 2]) / max(1, nlev - 1)
+    mar <- c(seq(1, 5, 2), seq(2, 6, 2)) / 10
+    for (i in unique(lev)) {
+        sel <- lev == i
+        ## Center x
+        coords[sel, 1] <- coords[sel, 1] - mean(coords[sel, 1])
+        ## Offset y
+        mari <- rep(mar, length.out = sum(sel))
+        mari <- mari - mean(mari)
+        offset <- mari * step
+        coords[sel, 2] <- coords[sel, 2] + offset
+    }
+    coords
 }
 
 ##' @rdname QFeatures-class
@@ -349,15 +371,8 @@ plot.QFeatures <- function (x, interactive = FALSE, ...) {
     }
     ## Tree layout
     coords <- layout_as_tree(graph, root = roots)
+    coords <- .offsetNodes(coords)
     rownames(coords) <- names(V(graph))
-    ## Add an interleaved offset on the y coord for better rendering 
-    ## when many assays have to be drawn
-    interleaved <- c(seq(1, 5, 2), seq(2, 6, 2)) / 10
-    interleaved <- interleaved - mean(interleaved)
-    step <- diff(sort(unique(coords[, 2]))[1:2])
-    offset <- rep_len(interleaved * step, 
-                       length.out = nrow(coords))
-    coords[, 2] <- coords[, 2] + offset
     ## Perform plotting 
     if (!interactive) {
         plot.igraph(graph, layout = coords, ...)

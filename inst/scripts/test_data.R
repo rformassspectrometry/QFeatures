@@ -1,6 +1,6 @@
 library("QFeatures")
 
-set.seet(1)
+set.seed(1)
 
 ## ---------------------------------------------------------
 ## Creating psms as <double> rather than <integer>
@@ -73,3 +73,41 @@ el <- list(assay1 = se1, assay2 = se2, assay3 = se3)
 feat2 <- QFeatures(el)
 
 save(feat2, file = "../../data/feat2.rda", compress = "xz", compression_level = 9)
+
+## ---------------------------------------------------------
+## Test data for complex AssayLinks
+## ---------------------------------------------------------
+
+## The dataset is a nice example that tests QFeatures as it could 
+## routinely be used within a pipeline. Note that the 3 special cases 
+## of AssayLinks are present in this dataset:
+## * One to one link: link between 1 parent and 1 child with one to 
+##   one row mapping. E.g. "peptides" to "normpeptides"
+## * One parent to multiple children: link between 1 parents and 
+##   multiple children mapping. E.g. "peptides" to "normpeptides" and
+##   "proteins"
+## * Multiple parents to one child: link between multiple parents and 
+##   one child mapping. E.g. "psms1" and "psms2" to "psmsall"
+##
+## see the `plot(feat3)` for an overview of the relationships
+
+## Simulate a processing workflow of feat1
+## 1. Split PSM assay in 2 batches
+se1 <- feat1[["psms"]][1:7, ]
+colnames(se1) <- paste0("Sample", 1:2)
+se2 <- feat1[["psms"]][3:10, ]
+colnames(se2) <- paste0("Sample", 3:4)
+feat3 <- QFeatures(SimpleList(psms1 = se1,
+                              psms2 = se2))
+## 2. Process the PSM data
+feat3 <- joinAssays(feat3, c("psms1", "psms2"), name = "psmsall")
+feat3 <- aggregateFeatures(feat3, i = "psmsall", fcol = "Sequence",
+                           name = "peptides")
+feat3 <- aggregateFeatures(feat3, i = "peptides", fcol = "Protein",
+                           name = "proteins")
+feat3 <- normalize(feat3, i = "peptides", name = "normpeptides", 
+                   method = "sum")
+feat3 <- aggregateFeatures(feat3, i = "normpeptides", fcol = "Protein",
+                           name = "normproteins")
+
+save(feat3, file = "../../data/feat3.rda", compress = "xz", compression_level = 9)
