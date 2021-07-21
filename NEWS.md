@@ -2,7 +2,10 @@
 
 ## QFeatures 1.3.6
 
-- Nothing yet.
+- New `feat3` example data to demonstrate and test more complex AssayLinks
+  structure.
+- Improved the `plot,QFeautres` function to avoid cluttering of nodes.
+- Adapted the visualization vignette using `feat3`.
 
 ## QFeatures 1.3.5
 
