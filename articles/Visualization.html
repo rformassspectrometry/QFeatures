@@ -135,8 +135,13 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">hl</span><span class="op">)</span></code></pre></div>
 <p><img src="Visualization_files/figure-html/plot-1.png" width="700"></p>
-<p>Note that some datasets may contain many assays, for instance because the MS experiment consists of hundreds of batches. This can lead to an overcrowded plot. Therefore, you can also explore this hierarchy of assays through an interactive plot, supported by the <code>plotly</code> package (<span class="citation">Sievert (2020)</span>). You can use the viewer panel to zoom in and out and navigate across the tree(s).</p>
+<p>This plot is rather simple with only three assays, but some processing workflows may involve more steps. The <code>feat3</code> example data illustrates the different possible relationships: one parent to one child, multiple parents to one child and one parent to multiple children.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"feat3"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">feat3</span><span class="op">)</span></code></pre></div>
+<p><img src="Visualization_files/figure-html/plot2-1.png" width="400px"></p>
+<p>Note that some datasets may contain many assays, for instance because the MS experiment consists of hundreds of batches. This can lead to an overcrowded plot. Therefore, you can also explore this hierarchy of assays through an interactive plot, supported by the <code>plotly</code> package (<span class="citation">Sievert (2020)</span>). You can use the viewer panel to zoom in and out and navigate across the tree(s).</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">hl</span>, interactive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="basic-data-exploration" class="section level1">
@@ -146,19 +151,19 @@
 <ul>
 <li>Plot the intensities for the first protein. These data are available from the <code>proteins</code> assay.</li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">hl</span>, <span class="st">"proteins"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span></code></pre></div>
 <p><img src="Visualization_files/figure-html/plot_assay-1.png" width="700"></p>
 <ul>
 <li>Get the distribution of the number of peptides that were aggregated per protein. These data are available in the column <code>.n</code> from the protein <code>rowData</code>.</li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="fu">rowData</span><span class="op">(</span><span class="va">hl</span><span class="op">)</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">.n</span><span class="op">)</span></code></pre></div>
 <p><img src="Visualization_files/figure-html/hist_rowData-1.png" width="700"></p>
 <ul>
 <li>Get the count table of the different tags used for labeling the samples. These data are available in the column <code>tag</code> from the <code>colData</code>.</li>
 </ul>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">hl</span><span class="op">$</span><span class="va">tag</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ##  126 127C 127N 128C 128N 129C 129N 130C 130N  131 
@@ -169,7 +174,7 @@
 <a href="#using-ggplot2" class="anchor" aria-hidden="true"></a>Using <code>ggplot2</code>
 </h1>
 <p><code>ggplot2</code> is a powerful tool for data visualization in <code>R</code> and is part of the <code>tidyverse</code> package ecosystem (<span class="citation">Wickham et al. (2019)</span>). It produces elegant and publication-ready plots in a few lines of code. <code>ggplot2</code> can be used to explore <code>QFeatures</code> object, similarly to the base functions shown above. Note that <code>ggplot2</code> expects <code>data.frame</code> or <code>tibble</code> objects whereas the quantitative data in <code>QFeatures</code> are encoded as <code>matrix</code> (or matrix-like objects, see <code>?SummarizedExperiment</code>) and the <code>rowData</code> and <code>colData</code> are encoded as <code>DataFrame</code>. This is easily circumvented by converting those objects to <code>data.frame</code>s or <code>tibble</code>s. See here how we reproduce the plot above using <code>ggplot2</code>.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu">rowData</span><span class="op">(</span><span class="va">hl</span><span class="op">)</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">+</span>
@@ -178,13 +183,13 @@
 <p><img src="Visualization_files/figure-html/ggplot_rowData-1.png" width="700"></p>
 <p>We refer the reader to the <code>ggplot2</code> <a href="https://ggplot2.tidyverse.org/" class="external-link">package website</a> for more information about the wide variety of functions that the package offers and for tutorials and cheatsheets.</p>
 <p>Another useful package for quantitative data exploration is <code>ComplexHeatmap</code> (<span class="citation">Gu, Eils, and Schlesner (2016)</span>). It is part of the Bioconductor project (<span class="citation">Gentleman et al. (2004)</span>) and facilitates visualization of matrix objects as heatmap. See here an example where we plot the protein data.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jokergoo/ComplexHeatmap" class="external-link">ComplexHeatmap</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html" class="external-link">Heatmap</a></span><span class="op">(</span>matrix <span class="op">=</span> <span class="fu">assay</span><span class="op">(</span><span class="va">hl</span>, <span class="st">"proteins"</span><span class="op">)</span>,
         show_row_names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="Visualization_files/figure-html/ComplexHeatmap-1.png" width="700"></p>
 <p><code>ComplexHeatmap</code> also allows to add row and/or column annotations. Let’s add the predicted protein location as row annotation.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ha</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/rowAnnotation.html" class="external-link">rowAnnotation</a></span><span class="op">(</span>markers <span class="op">=</span> <span class="fu">rowData</span><span class="op">(</span><span class="va">hl</span><span class="op">)</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">markers</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html" class="external-link">Heatmap</a></span><span class="op">(</span>matrix <span class="op">=</span> <span class="fu">assay</span><span class="op">(</span><span class="va">hl</span>, <span class="st">"proteins"</span><span class="op">)</span>,
         show_row_names <span class="op">=</span> <span class="cn">FALSE</span>,
@@ -196,14 +201,14 @@
 <h1 class="hasAnchor">
 <a href="#advanced-data-exploration" class="anchor" aria-hidden="true"></a>Advanced data exploration</h1>
 <p>In this section, we show how to combine in a single table different pieces of information available in a <code>QFeatures</code> object, that are quantitation data, feature metadata and sample metadata. The <code>QFeatures</code> package provides the <code>longFormat</code> function that converts a <code>QFeatures</code> object into a long table. Long tables are very useful when using <code>ggplot2</code> for data visualization. For instance, suppose we want to visualize the distribution of protein quantitation (present in the <code>proteins</code> assay) with respect to the different acquisition tags (present in the <code>colData</code>) for each predicted cell location separately (present in the <code>rowData</code> of the assays). Furthermore, we link the quantitation values coming from the same protein using lines. This can all be plotted at once in a few lines of code.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-class.html">longFormat</a></span><span class="op">(</span><span class="va">hl</span><span class="op">[</span>, , <span class="st">"proteins"</span><span class="op">]</span>,
                  rowvars <span class="op">=</span> <span class="st">"markers"</span>,
                  colvars <span class="op">=</span> <span class="st">"tag"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: 'experiments' dropped; see 'metadata'</code></pre>
 <pre><code>## harmonizing input:
 ##   removing 20 sampleMap rows not in names(experiments)</code></pre>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">lf</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">tag</span>,
         y <span class="op">=</span> <span class="va">value</span>,
@@ -217,7 +222,7 @@
 <h1 class="hasAnchor">
 <a href="#interactive-data-exploration" class="anchor" aria-hidden="true"></a>Interactive data exploration</h1>
 <p>Finally, a simply <code>shiny</code> app allows to explore and visualise the respective assays of a <code>QFeatures</code> object.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/display.html">display</a></span><span class="op">(</span><span class="va">hl</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
 <img src="figs/display_hmap.png" alt="`QFeatures` interactive interface: heatmap of the peptide assay data." width="100%"><p class="caption">
@@ -285,7 +290,7 @@
 ## [43] RCurl_1.98-1.3          magrittr_2.0.1          GenomeInfoDbData_1.2.6 
 ## [46] Matrix_1.3-4            Rcpp_1.0.7              munsell_0.5.0          
 ## [49] fansi_0.5.0             MsCoreUtils_1.5.0       lifecycle_1.0.0        
-## [52] stringi_1.7.2           yaml_2.2.1              MASS_7.3-54            
+## [52] stringi_1.7.3           yaml_2.2.1              MASS_7.3-54            
 ## [55] zlibbioc_1.39.0         parallel_4.1.0          crayon_1.4.1           
 ## [58] lattice_0.20-44         circlize_0.4.13         magick_2.7.2           
 ## [61] knitr_1.33              pillar_1.6.1            igraph_1.2.6           
