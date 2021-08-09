@@ -1,5 +1,9 @@
 # QFeatures 1.3.0
 
+## QFeatures 1.3.7
+
+- Nothing yet
+
 ## QFeatures 1.3.6
 
 - New `feat3` example data to demonstrate and test more complex AssayLinks
