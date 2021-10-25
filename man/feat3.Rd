@@ -8,27 +8,30 @@
 An object of class \code{QFeatures} of length 7.
 }
 \source{
-The \code{pRolocdata} package: \url{http://bioconductor.org/packages/pRolocdata/}
+\code{feat3} was built from \code{feat1}. The source code is available in
+\href{https://github.com/rformassspectrometry/QFeatures/blob/master/inst/scripts/test_data.R}{\code{inst/scripts/test_data.R}}
 }
 \usage{
 feat3
 }
 \description{
-\code{feat3} is a small \code{QFeatures} object  dataset can be is an example that tests QFeatures as it could
-routinely be used within a pipeline. Note that the 3 special cases
-of AssayLinks are present in this dataset:
+\code{feat3} is a small \code{QFeatures} object that contains 7 assays:
+\code{psms1}, \code{psms2}, \code{psmsall}, \code{peptides}, \code{proteins},
+\code{normpeptides}, \code{normproteins}. The dataset contains example data
+that could be obtained after running a simple processing pipeline.
+You can use it to get your hands on manipulating \code{AssayLinks}
+since all 3 general cases are present:
 \itemize{
-\item One to one link: link between 1 parent and 1 child with one to
-one row mapping. E.g. "peptides" to "normpeptides"
-\item One parent to multiple children: link between 1 parents and
-multiple children mapping. E.g. "peptides" to "normpeptides" and
-"proteins"
-\item Multiple parents to one child: link between multiple parents and
-one child mapping. E.g. "psms1" and "psms2" to "psmsall"
+\item One parent to one child \code{AssayLink}: the relationship can either be
+one row to one row (e.g. "peptides" to "normpeptides") or
+multiple rows to one row (e.g. "peptides" to "proteins").
+\item One parent to multiple children \code{AssayLink}: for instance "peptides"
+to "normpeptides" and "proteins".
+\item Multiple parents to one child \code{AssayLink}: links the rows between
+multiple assays to a single assays where some rows in different
+parent assays may point to the same row in the child assay. E.g.
+"psms1" and "psms2" to "psmsall"
 }
-}
-\details{
-Run \code{plot(feat3)} for an overview of the relationships
 }
 \examples{
 
@@ -37,6 +40,6 @@ plot(feat3)
 
 }
 \seealso{
-See \link{feat1} for other example and test data sets.
+See \code{?feat1} for other example/test data sets.
 }
 \keyword{datasets}
