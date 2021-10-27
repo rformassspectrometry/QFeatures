@@ -1,5 +1,10 @@
 # QFeatures 1.5
 
+## QFeatures 1.5.1
+
+- Document the use of peptide/protein adjacency matrices in
+  `aggregateFeatures()` and new `adjacencyMatrix()` accessor.
+
 ## QFeatures 1.5.0
 
 - New devel version (Bioc 3.15)
