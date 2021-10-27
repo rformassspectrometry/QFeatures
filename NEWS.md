@@ -1,8 +1,10 @@
-# QFeatures 1.3.0
+# QFeatures 1.5
 
-## QFeatures 1.3.7
+## QFeatures 1.5.0
 
-- Nothing yet
+- New devel version (Bioc 3.15)
+
+# QFeatures 1.3
 
 ## QFeatures 1.3.6
 
