@@ -23,8 +23,10 @@
 ##' @param i The index or name of the assay which features will be
 ##'     aggregated the create the new assay.
 ##'
-##' @param fcol The feature variable of assay `i` defining how to
-##'     summarise the features.
+##' @param fcol A `character(1)` naming a rowdata variable (of assay
+##'     `i` in case of a `QFeatures`) defining how to aggregate the
+##'     features of the assay. This variable is either a `character`
+##'     of a (possibly sparse) matrix. See below for details.
 ##'
 ##' @param name A `character(1)` naming the new assay. Default is
 ##'     `newAssay`. Note that the function will fail if there's
@@ -103,11 +105,21 @@
 ##' nature of that column. In cases where an `NA` is present in an
 ##' otherwise variant column, the column would be dropped anyway.
 ##'
+##' @section Using an adjacency matrix:
+##'
+##' When considering non-unique peptides, i.e. peptides that map to
+##' multiple proteins, it is necessary to encode this ambiguity
+##' explicitly using a peptide-by-proteins adjacency matrix. This
+##' matrix is typically stored in the rowdata, is conventionally named
+##' `"adjacencyMatrix"` and can be retrieved with
+##' `adjacencyMatrix()`. It can be created manually (as illustrated
+##' below) or using [PSMatch::makeAdjacencyMatrix()].
+##'
 ##' @seealso The *QFeatures* vignette provides an extended example and
 ##'     the *Processing* vignette, for a complete quantitative
 ##'     proteomics data processing pipeline.
 ##'
-##' @aliases aggregateFeatures aggregateFeatures,QFeatures-method aggcounts aggcounts,SummarizedExperiment
+##' @aliases aggregateFeatures aggregateFeatures,QFeatures-method aggcounts aggcounts,SummarizedExperiment, adjacencyMatrix
 ##'
 ##' @name aggregateFeatures
 ##'
@@ -175,6 +187,29 @@
 ##' ## The Y feature variable has been dropped!
 ##' assay(ft3[[2]])
 ##' rowData(ft3[[2]])
+##'
+##' ## --------------------------------------------
+##' ## Using a peptide-by-proteins adjacency matrix
+##' ## --------------------------------------------
+##'
+##' ## Let's use assay peptides from object feat1 and
+##' ## define that peptide SYGFNAAR maps to proteins
+##' ## Prot A and B
+##'
+##' se <- feat1[["peptides"]]
+##' rowData(se)$Protein[3] <- c("ProtA;ProtB")
+##' rowData(se)
+##'
+##' ## Manual encoding of the adjacency matrix
+##' adj <- matrix(0, nrow = 3, ncol = 2,
+##'               dimnames = list(rownames(se),
+##'                               c("ProtA", "ProtB")))
+##' adj[1, 1] <- adj[2, 2] <- adj[3, 1:2] <- 1
+##' adj
+##'
+##' rowData(se)$adjacencyMatrix <- adj
+##' rowData(se)
+##' adjacencyMatrix(se)
 NULL
 
 ##' @exportMethod aggregateFeatures
@@ -257,4 +292,27 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
                        error = function(e) se)
 
     return(se)
+}
+
+##' @export
+##'
+##' @rdname aggregateFeatures
+##'
+##' @param x An instance of class `SummarizedExperiment` or a
+##'     `character`.
+##'
+##' @param adjName `character(1)` with the variable name containing
+##'     the adjacency matrix. Default is `"adjacencyMatrix"`.
+adjacencyMatrix <- function(x, i, adjName = "adjacencyMatrix") {
+    if (inherits(x, "SummarizedExperiment"))
+        return(.adjacencyMatrix(x, adjName))
+    stopifnot(inherits(x, "QFeatures"))
+    List(lapply(experiments(x)[i], .adjacencyMatrix,
+                adjName = adjName))
+}
+
+
+.adjacencyMatrix <- function(x, adjName = "adjacencyMatrix") {
+    stopifnot(adjName %in% names(rowData(x)))
+    rowData(x)[[adjName]]
 }

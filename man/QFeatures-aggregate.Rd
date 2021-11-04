@@ -5,7 +5,8 @@
 \alias{aggregateFeatures}
 \alias{aggregateFeatures,QFeatures-method}
 \alias{aggcounts}
-\alias{aggcounts,SummarizedExperiment}
+\alias{aggcounts,SummarizedExperiment,}
+\alias{adjacencyMatrix}
 \alias{aggregateFeatures,SummarizedExperiment-method}
 \alias{aggcounts,SummarizedExperiment-method}
 \title{Aggregate an assay's quantitative features}
@@ -29,8 +30,10 @@
 \item{i}{The index or name of the assay which features will be
 aggregated the create the new assay.}
 
-\item{fcol}{The feature variable of assay \code{i} defining how to
-summarise the features.}
+\item{fcol}{A \code{character(1)} naming a rowdata variable (of assay
+\code{i} in case of a \code{QFeatures}) defining how to aggregate the
+features of the assay. This variable is either a \code{character}
+of a (possibly sparse) matrix. See below for details.}
 
 \item{name}{A \code{character(1)} naming the new assay. Default is
 \code{newAssay}. Note that the function will fail if there's
@@ -125,6 +128,18 @@ nature of that column. In cases where an \code{NA} is present in an
 otherwise variant column, the column would be dropped anyway.
 }
 
+\section{Using an adjacency matrix}{
+
+
+When considering non-unique peptides, i.e. peptides that map to
+multiple proteins, it is necessary to encode this ambiguity
+explicitly using a peptide-by-proteins adjacency matrix. This
+matrix is typically stored in the rowdata, is conventionally named
+\code{"adjacencyMatrix"} and can be retrieved with
+\code{adjacencyMatrix()}. It can be created manually (as illustrated
+below) or using \code{\link[PSMatch:makeAdjacencyMatrix]{PSMatch::makeAdjacencyMatrix()}}.
+}
+
 \examples{
 
 ## ---------------------------------------
@@ -185,6 +200,29 @@ ft3 <- aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums)
 ## The Y feature variable has been dropped!
 assay(ft3[[2]])
 rowData(ft3[[2]])
+
+## --------------------------------------------
+## Using a peptide-by-proteins adjacency matrix
+## --------------------------------------------
+
+## Let's use assay peptides from object feat1 and
+## define that peptide SYGFNAAR maps to proteins
+## Prot A and B
+
+se <- feat1[["peptides"]]
+rowData(se)$Protein[3] <- c("ProtA;ProtB")
+rowData(se)
+
+## Manual encoding of the adjacency matrix
+adj <- matrix(0, nrow = 3, ncol = 2,
+              dimnames = list(rownames(se),
+                              c("ProtA", "ProtB")))
+adj[1, 1] <- adj[2, 2] <- adj[3, 1:2] <- 1
+adj
+
+rowData(se)$adjacencyMatrix <- adj
+rowData(se)
+adjacencyMatrix(se)
 }
 \seealso{
 The \emph{QFeatures} vignette provides an extended example and
