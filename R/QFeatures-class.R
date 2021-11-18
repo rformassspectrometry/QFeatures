@@ -696,3 +696,28 @@ addAssay <- function(x,
         assayLinks = append(x@assayLinks,
                             assayLinks))
 }
+
+
+##' @param verbose logical (default FALSE) whether to print extra messages
+##' 
+##' @rdname QFeatures-class
+##' 
+##' @exportMethod updateObject
+##' 
+setMethod("updateObject", "QFeatures",
+          function(object, ..., verbose=FALSE)
+          {
+              if (verbose)
+                  message("updateObject(object = 'QFeatures')")
+              ## Store slots that are specific to QFeatures
+              al <- object@assayLinks
+              ## Convert to a MAE and call it's update method
+              object <- as(object, "MultiAssayExperiment")
+              object <- callNextMethod()
+              ## Convert back to QFeatures and add the specific slots
+              object <- as(object, "QFeatures")
+              object@assayLinks <- al
+              object
+          }
+)
+
