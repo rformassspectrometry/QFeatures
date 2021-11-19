@@ -705,19 +705,26 @@ addAssay <- function(x,
 ##' @exportMethod updateObject
 ##' 
 setMethod("updateObject", "QFeatures",
-          function(object, ..., verbose=FALSE)
+          function(object, ..., verbose = FALSE)
           {
               if (verbose)
                   message("updateObject(object = 'QFeatures')")
               ## Store slots that are specific to QFeatures
               al <- object@assayLinks
-              ## Convert to a MAE and call it's update method
-              object <- as(object, "MultiAssayExperiment")
-              object <- callNextMethod()
-              ## Convert back to QFeatures and add the specific slots
-              object <- as(object, "QFeatures")
-              object@assayLinks <- al
-              object
+              ## Update the MAE slots
+              ## We use updateObjectFromSlots to update only MAE slots.
+              ## Note that the function throws a warning when slots are 
+              ## dropped ("version" and "assayLinks" in this case). 
+              ans <- suppressWarnings(updateObjectFromSlots(
+                  object, objclass = "MultiAssayExperiment"
+              ))
+              ## Create the updated QFeatures object
+              new("QFeatures",
+                  ExperimentList = experiments(ans),
+                  colData = colData(ans),
+                  sampleMap = sampleMap(ans),
+                  metadata = metadata(ans),
+                  assayLinks = al)
           }
 )
 
