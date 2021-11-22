@@ -34,6 +34,14 @@ test_that("Manual QFeatures", {
     ## expect_equivalent(feat1, feat2)
 })
 
+test_that("updateObject", {
+    data(feat3)
+    ## Applying updateObject on feat3 should lead to the same object
+    expect_identical(feat3, updateObject(feat3))
+    ## Check verbose
+    expect_message(updateObject(feat3, verbose = TRUE), 
+                   regexp = "updateObject.*QFeatures")
+})
 
 test_that("addAssay", {
     data(feat1)

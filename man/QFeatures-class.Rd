@@ -18,6 +18,7 @@
 \alias{rbindRowData}
 \alias{names<-,QFeatures,character-method}
 \alias{longFormat}
+\alias{updateObject,QFeatures-method}
 \title{Quantitative MS QFeatures}
 \usage{
 \S4method{show}{QFeatures}(object)
@@ -47,6 +48,8 @@ rowDataNames(x)
 longFormat(object, colvars = NULL, rowvars = NULL, index = 1L)
 
 addAssay(x, y, name = "newAssay", assayLinks = AssayLinks(names = name))
+
+\S4method{updateObject}{QFeatures}(object, ..., verbose = FALSE)
 
 QFeatures(..., assayLinks = NULL)
 }
@@ -98,6 +101,8 @@ objects. A vector input is supported in the case that the
 \code{"newAssay"}). Ignored if \code{y} is a list of assays.}
 
 \item{assayLinks}{An optional \link{AssayLinks} object.}
+
+\item{verbose}{logical (default FALSE) whether to print extra messages}
 }
 \value{
 See individual method description for the return value.

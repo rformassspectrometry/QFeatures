@@ -10,6 +10,8 @@
 \alias{show,AssayLink-method}
 \alias{[,AssayLink,character-method}
 \alias{[,AssayLinks,character-method}
+\alias{updateObject,AssayLinks-method}
+\alias{updateObject,AssayLink-method}
 \alias{assayLink}
 \alias{assayLinks}
 \alias{[,AssayLink,character,ANY,ANY-method}
@@ -19,6 +21,10 @@
 \title{Links between Assays}
 \usage{
 \S4method{show}{AssayLink}(object)
+
+\S4method{updateObject}{AssayLinks}(object, ..., verbose = FALSE)
+
+\S4method{updateObject}{AssayLink}(object, ..., verbose = FALSE)
 
 AssayLink(name, from = NA_character_, fcol = NA_character_, hits = Hits())
 
@@ -39,6 +45,10 @@ addAssayLinkOneToOne(object, from, to)
 \arguments{
 \item{object}{An \code{AssayLink} object to show.}
 
+\item{...}{A set of \code{AssayLink} objects or a list thereof.}
+
+\item{verbose}{logical (default FALSE) whether to print extra messages}
+
 \item{name}{A mandatory name of the assay(s).}
 
 \item{from}{A \code{character()} or \code{integer()} indicating which
@@ -50,8 +60,6 @@ generate the current assay (used in
 
 \item{hits}{An object of class \link[S4Vectors:Hits-class]{S4Vectors::Hits} matching the
 features of two assays.}
-
-\item{...}{A set of \code{AssayLink} objects or a list thereof.}
 
 \item{names}{A \code{character()} of \code{AssayLink} names. If provided,
 \code{...} are ignored, and \code{names} is used to create an

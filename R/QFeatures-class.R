@@ -324,8 +324,11 @@ setMethod("show", "QFeatures",
 .offsetNodes <- function(coords) {
     lev <- coords[, 2]
     nlev <- length(unique(lev))
-    step <- max(coords[, 2]) / max(1, nlev - 1)
-    mar <- c(seq(1, 5, 2), seq(2, 6, 2)) / 10
+    ## Compute the step between levels, if only a single level the step=1
+    step <- ifelse(nlev > 1, max(coords[, 2]) / (nlev - 1), 1)
+    ## Custom margin between nodes so that the nodes are interleaved
+    ## (pattern repeats every 6 node)
+    mar <- c(1, 3, 5, 2, 4, 6) / 10
     for (i in unique(lev)) {
         sel <- lev == i
         ## Center x
@@ -693,3 +696,24 @@ addAssay <- function(x,
         assayLinks = append(x@assayLinks,
                             assayLinks))
 }
+
+
+##' @param verbose logical (default FALSE) whether to print extra messages
+##' 
+##' @rdname QFeatures-class
+##' 
+##' @exportMethod updateObject
+##' 
+setMethod("updateObject", "QFeatures",
+          function(object, ..., verbose = FALSE)
+          {
+              if (verbose)
+                  message("updateObject(object = 'QFeatures')")
+              ## Update slots that are specific to QFeatures
+              object@assayLinks <- updateObject(object@assayLinks, ..., 
+                                                verbose = verbose)
+              ## Update MAE slots
+              callNextMethod()
+          }
+)
+
