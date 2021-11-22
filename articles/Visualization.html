@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.2</span>
       </span>
     </div>
 
@@ -117,25 +117,13 @@
 <p>We then aggregate the psms to peptides, and the peptodes to proteins.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">hl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-aggregate.html">aggregateFeatures</a></span><span class="op">(</span><span class="va">hl</span>, <span class="st">"psms"</span>, <span class="st">"Sequence"</span>, name <span class="op">=</span> <span class="st">"peptides"</span>, fun <span class="op">=</span> <span class="va">colMeans</span><span class="op">)</span></code></pre></div>
-<pre><code>## Your row data contain missing values. Please read the relevant
-## section(s) in the aggregateFeatures manual page regarding the effects
-## of missing values on data aggregation.</code></pre>
-<pre><code>## Warning: The dim() method for DataFrameList objects is deprecated. Please use
-##   dims() on these objects instead.</code></pre>
-<pre><code>## Warning: The nrow() method for DataFrameList objects is deprecated. Please use
-##   nrows() on these objects instead.</code></pre>
-<pre><code>## Warning: The ncol() method for CompressedSplitDataFrameList objects is
-##   deprecated. Please use ncols() on these objects instead.</code></pre>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<pre><code><span class="co">## Your row data contain missing values. Please read the relevant</span>
+<span class="co">## section(s) in the aggregateFeatures manual page regarding the effects</span>
+<span class="co">## of missing values on data aggregation.</span></code></pre>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">hl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-aggregate.html">aggregateFeatures</a></span><span class="op">(</span><span class="va">hl</span>, <span class="st">"peptides"</span>, <span class="st">"ProteinGroupAccessions"</span>, name <span class="op">=</span> <span class="st">"proteins"</span>, fun <span class="op">=</span> <span class="va">colMeans</span><span class="op">)</span></code></pre></div>
-<pre><code>## Warning: The dim() method for DataFrameList objects is deprecated. Please use
-##   dims() on these objects instead.</code></pre>
-<pre><code>## Warning: The nrow() method for DataFrameList objects is deprecated. Please use
-##   nrows() on these objects instead.</code></pre>
-<pre><code>## Warning: The ncol() method for CompressedSplitDataFrameList objects is
-##   deprecated. Please use ncols() on these objects instead.</code></pre>
 <p>We also add the TMT tags that were used to multiplex the samples. The data is added to the <code>colData</code> of the <code>QFeatures</code> object and will allow us to demonstrate how to plot data from the <code>colData</code>.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">hl</span><span class="op">$</span><span class="va">tag</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"126"</span>, <span class="st">"127N"</span>, <span class="st">"127C"</span>, <span class="st">"128N"</span>, <span class="st">"128C"</span>, <span class="st">"129N"</span>, <span class="st">"129C"</span>,
             <span class="st">"130N"</span>, <span class="st">"130C"</span>, <span class="st">"131"</span><span class="op">)</span></code></pre></div>
 <p>The dataset is now ready for data exploration.</p>
@@ -144,16 +132,16 @@
 <h1 id="exploring-the-qfeatures-hierarchy">Exploring the <code>QFeatures</code> hierarchy<a class="anchor" aria-label="anchor" href="#exploring-the-qfeatures-hierarchy"></a>
 </h1>
 <p><code>QFeatures</code> objects can contain several assays as the data goes through the processing workflow. The <code>plot</code> function provides an overview of all the assays present in the dataset, showing also the hierarchical relationships between the assays as determined by the <code>AssayLinks</code>.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">hl</span><span class="op">)</span></code></pre></div>
 <p><img src="Visualization_files/figure-html/plot-1.png" width="700"></p>
 <p>This plot is rather simple with only three assays, but some processing workflows may involve more steps. The <code>feat3</code> example data illustrates the different possible relationships: one parent to one child, multiple parents to one child and one parent to multiple children.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"feat3"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">feat3</span><span class="op">)</span></code></pre></div>
 <p><img src="Visualization_files/figure-html/plot2-1.png" width="400px"></p>
 <p>Note that some datasets may contain many assays, for instance because the MS experiment consists of hundreds of batches. This can lead to an overcrowded plot. Therefore, you can also explore this hierarchy of assays through an interactive plot, supported by the <code>plotly</code> package (<span class="citation">Sievert (2020)</span>). You can use the viewer panel to zoom in and out and navigate across the tree(s).</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">hl</span>, interactive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
 <div class="section level1">
@@ -163,29 +151,29 @@
 <ul>
 <li>Plot the intensities for the first protein. These data are available from the <code>proteins</code> assay.</li>
 </ul>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">hl</span>, <span class="st">"proteins"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span></code></pre></div>
 <p><img src="Visualization_files/figure-html/plot_assay-1.png" width="700"></p>
 <ul>
 <li>Get the distribution of the number of peptides that were aggregated per protein. These data are available in the column <code>.n</code> from the protein <code>rowData</code>.</li>
 </ul>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="fu">rowData</span><span class="op">(</span><span class="va">hl</span><span class="op">)</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">.n</span><span class="op">)</span></code></pre></div>
 <p><img src="Visualization_files/figure-html/hist_rowData-1.png" width="700"></p>
 <ul>
 <li>Get the count table of the different tags used for labeling the samples. These data are available in the column <code>tag</code> from the <code>colData</code>.</li>
 </ul>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">hl</span><span class="op">$</span><span class="va">tag</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-##  126 127C 127N 128C 128N 129C 129N 130C 130N  131 
-##    1    1    1    1    1    1    1    1    1    1</code></pre>
+<pre><code><span class="co">## </span>
+<span class="co">##  126 127C 127N 128C 128N 129C 129N 130C 130N  131 </span>
+<span class="co">##    1    1    1    1    1    1    1    1    1    1</span></code></pre>
 </div>
 <div class="section level1">
 <h1 id="using-ggplot2">Using <code>ggplot2</code><a class="anchor" aria-label="anchor" href="#using-ggplot2"></a>
 </h1>
 <p><code>ggplot2</code> is a powerful tool for data visualization in <code>R</code> and is part of the <code>tidyverse</code> package ecosystem (<span class="citation">Wickham et al. (2019)</span>). It produces elegant and publication-ready plots in a few lines of code. <code>ggplot2</code> can be used to explore <code>QFeatures</code> object, similarly to the base functions shown above. Note that <code>ggplot2</code> expects <code>data.frame</code> or <code>tibble</code> objects whereas the quantitative data in <code>QFeatures</code> are encoded as <code>matrix</code> (or matrix-like objects, see <code>?SummarizedExperiment</code>) and the <code>rowData</code> and <code>colData</code> are encoded as <code>DataFrame</code>. This is easily circumvented by converting those objects to <code>data.frame</code>s or <code>tibble</code>s. See here how we reproduce the plot above using <code>ggplot2</code>.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu">rowData</span><span class="op">(</span><span class="va">hl</span><span class="op">)</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">+</span>
@@ -194,13 +182,13 @@
 <p><img src="Visualization_files/figure-html/ggplot_rowData-1.png" width="700"></p>
 <p>We refer the reader to the <code>ggplot2</code> <a href="https://ggplot2.tidyverse.org/" class="external-link">package website</a> for more information about the wide variety of functions that the package offers and for tutorials and cheatsheets.</p>
 <p>Another useful package for quantitative data exploration is <code>ComplexHeatmap</code> (<span class="citation">Gu, Eils, and Schlesner (2016)</span>). It is part of the Bioconductor project (<span class="citation">Gentleman et al. (2004)</span>) and facilitates visualization of matrix objects as heatmap. See here an example where we plot the protein data.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jokergoo/ComplexHeatmap" class="external-link">ComplexHeatmap</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html" class="external-link">Heatmap</a></span><span class="op">(</span>matrix <span class="op">=</span> <span class="fu">assay</span><span class="op">(</span><span class="va">hl</span>, <span class="st">"proteins"</span><span class="op">)</span>,
         show_row_names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="Visualization_files/figure-html/ComplexHeatmap-1.png" width="700"></p>
 <p><code>ComplexHeatmap</code> also allows to add row and/or column annotations. Let’s add the predicted protein location as row annotation.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ha</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/rowAnnotation.html" class="external-link">rowAnnotation</a></span><span class="op">(</span>markers <span class="op">=</span> <span class="fu">rowData</span><span class="op">(</span><span class="va">hl</span><span class="op">)</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">markers</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html" class="external-link">Heatmap</a></span><span class="op">(</span>matrix <span class="op">=</span> <span class="fu">assay</span><span class="op">(</span><span class="va">hl</span>, <span class="st">"proteins"</span><span class="op">)</span>,
         show_row_names <span class="op">=</span> <span class="cn">FALSE</span>,
@@ -212,14 +200,14 @@
 <h1 id="advanced-data-exploration">Advanced data exploration<a class="anchor" aria-label="anchor" href="#advanced-data-exploration"></a>
 </h1>
 <p>In this section, we show how to combine in a single table different pieces of information available in a <code>QFeatures</code> object, that are quantitation data, feature metadata and sample metadata. The <code>QFeatures</code> package provides the <code>longFormat</code> function that converts a <code>QFeatures</code> object into a long table. Long tables are very useful when using <code>ggplot2</code> for data visualization. For instance, suppose we want to visualize the distribution of protein quantitation (present in the <code>proteins</code> assay) with respect to the different acquisition tags (present in the <code>colData</code>) for each predicted cell location separately (present in the <code>rowData</code> of the assays). Furthermore, we link the quantitation values coming from the same protein using lines. This can all be plotted at once in a few lines of code.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-class.html">longFormat</a></span><span class="op">(</span><span class="va">hl</span><span class="op">[</span>, , <span class="st">"proteins"</span><span class="op">]</span>,
                  rowvars <span class="op">=</span> <span class="st">"markers"</span>,
                  colvars <span class="op">=</span> <span class="st">"tag"</span><span class="op">)</span></code></pre></div>
-<pre><code>## Warning: 'experiments' dropped; see 'metadata'</code></pre>
-<pre><code>## harmonizing input:
-##   removing 20 sampleMap rows not in names(experiments)</code></pre>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<pre><code><span class="co">## Warning: 'experiments' dropped; see 'metadata'</span></code></pre>
+<pre><code><span class="co">## harmonizing input:</span>
+<span class="co">##   removing 20 sampleMap rows not in names(experiments)</span></code></pre>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">lf</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">tag</span>,
         y <span class="op">=</span> <span class="va">value</span>,
@@ -233,7 +221,7 @@
 <h1 id="interactive-data-exploration">Interactive data exploration<a class="anchor" aria-label="anchor" href="#interactive-data-exploration"></a>
 </h1>
 <p>Finally, a simply <code>shiny</code> app allows to explore and visualise the respective assays of a <code>QFeatures</code> object.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/display.html">display</a></span><span class="op">(</span><span class="va">hl</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
 <img src="figs/display_hmap.png" alt="`QFeatures` interactive interface: heatmap of the peptide assay data." width="100%"><p class="caption">
@@ -255,63 +243,63 @@
 <div class="section level1 unnumbered">
 <h1 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h1>
-<pre><code>## R version 4.1.1 (2021-08-10)
-## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.3 LTS
-## 
-## Matrix products: default
-## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so
-## 
-## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=C             
-##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
-## 
-## attached base packages:
-## [1] grid      stats4    stats     graphics  grDevices utils     datasets 
-## [8] methods   base     
-## 
-## other attached packages:
-##  [1] ComplexHeatmap_2.9.4         ggplot2_3.3.5               
-##  [3] QFeatures_1.5.1              MultiAssayExperiment_1.19.16
-##  [5] SummarizedExperiment_1.23.5  Biobase_2.53.0              
-##  [7] GenomicRanges_1.45.0         GenomeInfoDb_1.29.10        
-##  [9] IRanges_2.27.2               S4Vectors_0.31.5            
-## [11] BiocGenerics_0.39.2          MatrixGenerics_1.5.4        
-## [13] matrixStats_0.61.0           BiocStyle_2.21.4            
-## 
-## loaded via a namespace (and not attached):
-##  [1] ProtGenerics_1.25.1      bitops_1.0-7             fs_1.5.0                
-##  [4] doParallel_1.0.16        RColorBrewer_1.1-2       rprojroot_2.0.2         
-##  [7] tools_4.1.1              bslib_0.3.1              utf8_1.2.2              
-## [10] R6_2.5.1                 lazyeval_0.2.2           colorspace_2.0-2        
-## [13] GetoptLong_1.0.5         withr_2.4.2              tidyselect_1.1.1        
-## [16] compiler_4.1.1           textshaping_0.3.6        cli_3.0.1               
-## [19] desc_1.4.0               DelayedArray_0.19.4      labeling_0.4.2          
-## [22] bookdown_0.24            sass_0.4.0               scales_1.1.1            
-## [25] pkgdown_1.9000.9000.9000 systemfonts_1.0.3        stringr_1.4.0           
-## [28] digest_0.6.28            rmarkdown_2.11           XVector_0.33.0          
-## [31] pkgconfig_2.0.3          htmltools_0.5.2          fastmap_1.1.0           
-## [34] highr_0.9                rlang_0.99.0.9000        GlobalOptions_0.1.2     
-## [37] shape_1.4.6              jquerylib_0.1.4          farver_2.1.0            
-## [40] generics_0.1.1           jsonlite_1.7.2           dplyr_1.0.7             
-## [43] RCurl_1.98-1.5           magrittr_2.0.1           GenomeInfoDbData_1.2.7  
-## [46] Matrix_1.3-4             Rcpp_1.0.7               munsell_0.5.0           
-## [49] fansi_0.5.0              MsCoreUtils_1.5.0        lifecycle_1.0.1         
-## [52] stringi_1.7.5            yaml_2.2.1               MASS_7.3-54             
-## [55] zlibbioc_1.39.0          parallel_4.1.1           crayon_1.4.1            
-## [58] lattice_0.20-45          circlize_0.4.13          magick_2.7.3            
-## [61] knitr_1.36               pillar_1.6.4             igraph_1.2.7            
-## [64] rjson_0.2.20             codetools_0.2-18         glue_1.4.2              
-## [67] evaluate_0.14            BiocManager_1.30.16      vctrs_0.3.8             
-## [70] png_0.1-7                foreach_1.5.1            gtable_0.3.0            
-## [73] purrr_0.3.4              clue_0.3-60              cachem_1.0.6            
-## [76] xfun_0.27                AnnotationFilter_1.17.1  ragg_1.1.3              
-## [79] tibble_3.1.5             iterators_1.0.13         memoise_2.0.0           
-## [82] cluster_2.1.2            ellipsis_0.3.2</code></pre>
+<pre><code><span class="co">## R Under development (unstable) (2021-11-16 r81199)</span>
+<span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
+<span class="co">## Running under: Ubuntu 20.04.3 LTS</span>
+<span class="co">## </span>
+<span class="co">## Matrix products: default</span>
+<span class="co">## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so</span>
+<span class="co">## </span>
+<span class="co">## locale:</span>
+<span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span>
+<span class="co">##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span>
+<span class="co">##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=C             </span>
+<span class="co">##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span>
+<span class="co">##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span>
+<span class="co">## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span>
+<span class="co">## </span>
+<span class="co">## attached base packages:</span>
+<span class="co">## [1] grid      stats4    stats     graphics  grDevices utils     datasets </span>
+<span class="co">## [8] methods   base     </span>
+<span class="co">## </span>
+<span class="co">## other attached packages:</span>
+<span class="co">##  [1] ComplexHeatmap_2.11.0       ggplot2_3.3.5              </span>
+<span class="co">##  [3] QFeatures_1.5.2             MultiAssayExperiment_1.21.3</span>
+<span class="co">##  [5] SummarizedExperiment_1.25.2 Biobase_2.55.0             </span>
+<span class="co">##  [7] GenomicRanges_1.47.5        GenomeInfoDb_1.31.1        </span>
+<span class="co">##  [9] IRanges_2.29.1              S4Vectors_0.33.4           </span>
+<span class="co">## [11] BiocGenerics_0.41.2         MatrixGenerics_1.7.0       </span>
+<span class="co">## [13] matrixStats_0.61.0          BiocStyle_2.23.0           </span>
+<span class="co">## </span>
+<span class="co">## loaded via a namespace (and not attached):</span>
+<span class="co">##  [1] ProtGenerics_1.27.0      bitops_1.0-7             fs_1.5.0                </span>
+<span class="co">##  [4] doParallel_1.0.16        RColorBrewer_1.1-2       rprojroot_2.0.2         </span>
+<span class="co">##  [7] tools_4.2.0              bslib_0.3.1              utf8_1.2.2              </span>
+<span class="co">## [10] R6_2.5.1                 lazyeval_0.2.2           colorspace_2.0-2        </span>
+<span class="co">## [13] GetoptLong_1.0.5         withr_2.4.2              tidyselect_1.1.1        </span>
+<span class="co">## [16] compiler_4.2.0           textshaping_0.3.6        desc_1.4.0              </span>
+<span class="co">## [19] DelayedArray_0.21.2      labeling_0.4.2           bookdown_0.24           </span>
+<span class="co">## [22] sass_0.4.0               scales_1.1.1             pkgdown_1.9000.9000.9000</span>
+<span class="co">## [25] systemfonts_1.0.3        stringr_1.4.0            digest_0.6.28           </span>
+<span class="co">## [28] rmarkdown_2.11           XVector_0.35.0           pkgconfig_2.0.3         </span>
+<span class="co">## [31] htmltools_0.5.2          fastmap_1.1.0            highr_0.9               </span>
+<span class="co">## [34] rlang_0.4.12             GlobalOptions_0.1.2      shape_1.4.6             </span>
+<span class="co">## [37] jquerylib_0.1.4          farver_2.1.0             generics_0.1.1          </span>
+<span class="co">## [40] jsonlite_1.7.2           dplyr_1.0.7              RCurl_1.98-1.5          </span>
+<span class="co">## [43] magrittr_2.0.1           GenomeInfoDbData_1.2.7   Matrix_1.3-4            </span>
+<span class="co">## [46] Rcpp_1.0.7               munsell_0.5.0            fansi_0.5.0             </span>
+<span class="co">## [49] MsCoreUtils_1.7.0        lifecycle_1.0.1          stringi_1.7.5           </span>
+<span class="co">## [52] yaml_2.2.1               MASS_7.3-54              zlibbioc_1.41.0         </span>
+<span class="co">## [55] parallel_4.2.0           crayon_1.4.2             lattice_0.20-45         </span>
+<span class="co">## [58] circlize_0.4.13          magick_2.7.3             knitr_1.36              </span>
+<span class="co">## [61] pillar_1.6.4             igraph_1.2.8             rjson_0.2.20            </span>
+<span class="co">## [64] codetools_0.2-18         glue_1.5.0               evaluate_0.14           </span>
+<span class="co">## [67] BiocManager_1.30.16      vctrs_0.3.8              png_0.1-7               </span>
+<span class="co">## [70] foreach_1.5.1            gtable_0.3.0             purrr_0.3.4             </span>
+<span class="co">## [73] clue_0.3-60              cachem_1.0.6             xfun_0.28               </span>
+<span class="co">## [76] AnnotationFilter_1.19.0  ragg_1.2.0               tibble_3.1.6            </span>
+<span class="co">## [79] iterators_1.0.13         memoise_2.0.0            cluster_2.1.2           </span>
+<span class="co">## [82] ellipsis_0.3.2</span></code></pre>
 </div>
 <div class="section level1 unnumbered">
 <h1 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

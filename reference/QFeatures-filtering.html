@@ -21,7 +21,7 @@ filters can be provided as instances of class AnnotationFilter
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.2</span>
       </span>
     </div>
 
@@ -179,12 +179,6 @@ vignette provides an extended example.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ## Aggregate PSMs into peptides</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; feat1 &lt;- aggregateFeatures(feat1, "psms", "Sequence", name = "peptides")</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The dim() method for DataFrameList objects is deprecated. Please use</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   dims() on these objects instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The nrow() method for DataFrameList objects is deprecated. Please use</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   nrows() on these objects instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The ncol() method for CompressedSplitDataFrameList objects is</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   deprecated. Please use ncols() on these objects instead.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; feat1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 2 assays:</span>
@@ -193,12 +187,6 @@ vignette provides an extended example.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ## Aggregate peptides into proteins</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; feat1 &lt;- aggregateFeatures(feat1, "peptides", "Protein", name = "proteins")</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The dim() method for DataFrameList objects is deprecated. Please use</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   dims() on these objects instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The nrow() method for DataFrameList objects is deprecated. Please use</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   nrows() on these objects instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The ncol() method for CompressedSplitDataFrameList objects is</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   deprecated. Please use ncols() on these objects instead.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; feat1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 3 assays:</span>
@@ -271,12 +259,6 @@ vignette provides an extended example.</p></div>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Your quantitative data contain missing values. Please read the relevant</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> section(s) in the aggregateFeatures manual page regarding the effects</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> of missing values on data aggregation.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The dim() method for DataFrameList objects is deprecated. Please use</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   dims() on these objects instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The nrow() method for DataFrameList objects is deprecated. Please use</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   nrows() on these objects instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The ncol() method for CompressedSplitDataFrameList objects is</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   deprecated. Please use ncols() on these objects instead.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; assay(ft2[[2]])</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    A  B  C</span>
@@ -302,12 +284,6 @@ vignette provides an extended example.</p></div>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Your quantitative data contain missing values. Please read the relevant</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> section(s) in the aggregateFeatures manual page regarding the effects</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> of missing values on data aggregation.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The dim() method for DataFrameList objects is deprecated. Please use</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   dims() on these objects instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The nrow() method for DataFrameList objects is deprecated. Please use</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   nrows() on these objects instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The ncol() method for CompressedSplitDataFrameList objects is</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   deprecated. Please use ncols() on these objects instead.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; assay(ft3[[2]])</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   A  B  C</span>
@@ -347,12 +323,6 @@ vignette provides an extended example.</p></div>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Your quantitative and row data contain missing values. Please read the</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> relevant section(s) in the aggregateFeatures manual page regarding the</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> effects of missing values on data aggregation.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The dim() method for DataFrameList objects is deprecated. Please use</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   dims() on these objects instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The nrow() method for DataFrameList objects is deprecated. Please use</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   nrows() on these objects instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The ncol() method for CompressedSplitDataFrameList objects is</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   deprecated. Please use ncols() on these objects instead.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ## The Y feature variable has been dropped!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; assay(ft3[[2]])</span>

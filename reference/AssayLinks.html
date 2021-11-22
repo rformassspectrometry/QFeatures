@@ -19,7 +19,7 @@ instances."><meta property="og:image" content="/logo.png"><!-- mathjax --><scrip
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.2</span>
       </span>
     </div>
 
@@ -75,6 +75,12 @@ instances.</p>
     <div class="ref-usage sourceCode"><pre><code># S4 method for AssayLink
 show(object)
 
+# S4 method for AssayLinks
+updateObject(object, ..., verbose = FALSE)
+
+# S4 method for AssayLink
+updateObject(object, ..., verbose = FALSE)
+
 AssayLink(name, from = NA_character_, fcol = NA_character_, hits = Hits())
 
 AssayLinks(..., names = NULL)
@@ -98,6 +104,10 @@ addAssayLinkOneToOne(object, from, to)</code></pre></div>
     <h2>Arguments</h2>
     <dl><dt>object</dt>
 <dd><p>An <code>AssayLink</code> object to show.</p></dd>
+<dt>...</dt>
+<dd><p>A set of <code>AssayLink</code> objects or a list thereof.</p></dd>
+<dt>verbose</dt>
+<dd><p>logical (default FALSE) whether to print extra messages</p></dd>
 <dt>name</dt>
 <dd><p>A mandatory name of the assay(s).</p></dd>
 <dt>from</dt>
@@ -110,8 +120,6 @@ generate the current assay (used in
 <dt>hits</dt>
 <dd><p>An object of class <a href="https://rdrr.io/pkg/S4Vectors/man/Hits-class.html" class="external-link">S4Vectors::Hits</a> matching the
 features of two assays.</p></dd>
-<dt>...</dt>
-<dd><p>A set of <code>AssayLink</code> objects or a list thereof.</p></dd>
 <dt>names</dt>
 <dd><p>A <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> of <code>AssayLink</code> names. If provided,
 <code>...</code> are ignored, and <code>names</code> is used to create an

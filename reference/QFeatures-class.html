@@ -41,7 +41,7 @@ sure that these match the class validity requirements."><meta property="og:image
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.2</span>
       </span>
     </div>
 
@@ -153,6 +153,9 @@ longFormat(object, colvars = NULL, rowvars = NULL, index = 1L)
 
 addAssay(x, y, name = "newAssay", assayLinks = AssayLinks(names = name))
 
+# S4 method for QFeatures
+updateObject(object, ..., verbose = FALSE)
+
 QFeatures(..., assayLinks = NULL)</code></pre></div>
 
     <div id="ref-sections">
@@ -206,6 +209,8 @@ objects. A vector input is supported in the case that the
 <code>"newAssay"</code>). Ignored if <code>y</code> is a list of assays.</p></dd>
 <dt>assayLinks</dt>
 <dd><p>An optional <a href="AssayLinks.html">AssayLinks</a> object.</p></dd>
+<dt>verbose</dt>
+<dd><p>logical (default FALSE) whether to print extra messages</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
