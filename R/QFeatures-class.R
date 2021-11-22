@@ -709,22 +709,11 @@ setMethod("updateObject", "QFeatures",
           {
               if (verbose)
                   message("updateObject(object = 'QFeatures')")
-              ## Store slots that are specific to QFeatures
-              al <- object@assayLinks
-              ## Update the MAE slots
-              ## We use updateObjectFromSlots to update only MAE slots.
-              ## Note that the function throws a warning when slots are 
-              ## dropped ("version" and "assayLinks" in this case). 
-              ans <- suppressWarnings(updateObjectFromSlots(
-                  object, objclass = "MultiAssayExperiment"
-              ))
-              ## Create the updated QFeatures object
-              new("QFeatures",
-                  ExperimentList = experiments(ans),
-                  colData = colData(ans),
-                  sampleMap = sampleMap(ans),
-                  metadata = metadata(ans),
-                  assayLinks = al)
+              ## Update slots that are specific to QFeatures
+              object@assayLinks <- updateObject(object@assayLinks, ..., 
+                                                verbose = verbose)
+              ## Update MAE slots
+              callNextMethod()
           }
 )
 

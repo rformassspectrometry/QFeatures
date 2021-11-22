@@ -37,6 +37,30 @@ test_that("Subset AssayLinks", {
     expect_identical(paste0("PSM", 4:6), unique(elementMetadata(als[["peptides"]]@hits)$names_from))
 })
 
+test_that("updateObject", {
+    data(feat3)
+    ## Test for AssayLinks
+    ## Applying updateObject on feat3's AssayLinks should lead to the
+    ## same object
+    expect_identical(feat3@assayLinks, updateObject(feat3@assayLinks))
+    ## Test for AssayLink
+    ## Applying updateObject on feat3's first (empty) AssayLink should
+    ## lead to the same object
+    expect_identical(feat3@assayLinks[[1]], updateObject(feat3@assayLinks[[1]]))
+    ## Applying updateObject on feat3's fourth (single linked assay)
+    ## AssayLink should lead to the same object
+    expect_identical(feat3@assayLinks[[4]], updateObject(feat3@assayLinks[[4]]))
+    ## Applying updateObject on feat3's third (multiple linked assays)
+    ## AssayLink should lead to the same object
+    expect_identical(feat3@assayLinks[[3]], updateObject(feat3@assayLinks[[3]]))
+    ## Check verbose
+    expect_message(updateObject(feat3@assayLinks, verbose = TRUE), 
+                   regexp = "updateObject.*'AssayLinks'")
+    expect_message(updateObject(feat3@assayLinks[[1]], verbose = TRUE), 
+                   regexp = "updateObject.*'AssayLink'")
+})
+
+
 test_that(".getHits", {
     ## Test one to one matching, same ordering
     hits <- .get_Hits(rdFrom = DataFrame(A = 1:10, row.names = letters[1:10]),
