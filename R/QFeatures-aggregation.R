@@ -280,17 +280,27 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
                                                          simplify = TRUE,
                                                          drop = TRUE,
                                                          count = TRUE)
+        se <- SummarizedExperiment(assays = SimpleList(assay = aggregated_assay,
+                                                       aggcounts = aggcount_assay),
+                                   colData = colData(object),
+                                   rowData = aggregated_rowdata[rownames(aggregated_assay), ])
     } else if (is.matrix(groupBy) | is(groupBy, "Matrix")) {
         aggregated_assay <- aggregate_by_matrix(m, groupBy, fun, ...)
-
-        ## How to reduce rowData in such cases?
-
-        stop("Aggregate  by matrix")
-
+        ## Remove the adjacency matrix that should be dropped anyway
+        rd[[fcol]] <- NULL
+        ## Temp variable for unfolding and reducing - removed later
+        rd[["._vec_"]] <- PSMatch::makePeptideProteinVector(groupBy)
+        rd <- unfoldDataFrame(rd, "._vec_")
+        aggregated_rowdata <- reduceDataFrame(rd, rd[["._vec_"]], drop = TRUE)
+        aggregated_rowdata[["._vec_"]] <- NULL
+        ## Count the number of peptides per protein
+        .n <- apply(groupBy != 0, 2, sum)
+        aggregated_rowdata[[".n"]] <- .n[rownames(aggregated_rowdata)]
+        se <- SummarizedExperiment(assays = SimpleList(assay = aggregated_assay),
+                                   colData = colData(object),
+                                   rowData = aggregated_rowdata[rownames(aggregated_assay), ])
     } else stop("'fcol' must refer to a vector or a matrix.")
-    se <- SummarizedExperiment(assays = SimpleList(assay = aggregated_assay,
-                                                   aggcounts = aggcount_assay),
-                               rowData = aggregated_rowdata[rownames(aggregated_assay), ])
+
     ## If the input objects weren't SummarizedExperiments, then try to
     ## convert the merged assay into that class. If the conversion
     ## fails, keep the SummarizedExperiment, otherwise use the
@@ -298,7 +308,6 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
     if (.class != "SummarizedExperiment")
         se <- tryCatch(as(se, .class),
                        error = function(e) se)
-
     return(se)
 }
 
