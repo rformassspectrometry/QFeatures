@@ -130,6 +130,43 @@ setMethod("show", "AssayLink",
                   "]\n", sep = "")
           })
 
+##' @rdname AssayLinks
+##' 
+##' @param verbose logical (default FALSE) whether to print extra messages
+##' 
+##' @exportMethod updateObject
+##' 
+setMethod("updateObject", "AssayLinks",
+          function(object, ..., verbose = FALSE)
+          {
+              if (verbose)
+                  message("updateObject(object = 'AssayLinks')")
+              ## Update each AssayLink in the AssayLinks
+              endoapply(object, updateObject)
+          }
+)
+
+##' @rdname AssayLinks
+##' 
+##' @exportMethod updateObject
+##' 
+setMethod("updateObject", "AssayLink",
+          function(object, ..., verbose = FALSE)
+          {
+              if (verbose)
+                  message("updateObject(object = 'AssayLink')")
+              BiocGenerics:::replaceSlots(
+                  object,
+                  ## Call the generic updateObject()
+                  hits = updateObject(object@hits),
+                  check = FALSE
+              )
+          }
+)
+
+
+
+
 ## --------------
 ## Constructors
 ## --------------

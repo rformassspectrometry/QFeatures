@@ -1,5 +1,10 @@
 # QFeatures 1.5
 
+
+## QFeatures 1.5.2
+
+- fix: implemented an `updateObject()` method for `QFeatures` objects.
+
 ## QFeatures 1.5.1
 
 - Document the use of peptide/protein adjacency matrices in
