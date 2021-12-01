@@ -273,13 +273,21 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
         message(paste(strwrap(msg), collapse = "\n"))
     }
 
-    aggregated_assay <- aggregate_by_vector(m, groupBy, fun, ...)
-    aggcount_assay <- aggregate_by_vector(m, groupBy, colCounts)
-    aggregated_rowdata <- QFeatures::reduceDataFrame(rd, rd[[fcol]],
-                                                     simplify = TRUE,
-                                                     drop = TRUE,
-                                                     count = TRUE)
+    if (is.vector(groupBy)) {
+        aggregated_assay <- aggregate_by_vector(m, groupBy, fun, ...)
+        aggcount_assay <- aggregate_by_vector(m, groupBy, colCounts)
+        aggregated_rowdata <- QFeatures::reduceDataFrame(rd, rd[[fcol]],
+                                                         simplify = TRUE,
+                                                         drop = TRUE,
+                                                         count = TRUE)
+    } else if (is.matrix(groupBy) | is(groupBy, "Matrix")) {
+        aggregated_assay <- aggregate_by_matrix(m, groupBy, fun, ...)
 
+        ## How to reduce rowData in such cases?
+
+        stop("Aggregate  by matrix")
+
+    } else stop("'fcol' must refer to a vector or a matrix.")
     se <- SummarizedExperiment(assays = SimpleList(assay = aggregated_assay,
                                                    aggcounts = aggcount_assay),
                                rowData = aggregated_rowdata[rownames(aggregated_assay), ])

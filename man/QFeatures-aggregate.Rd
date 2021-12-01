@@ -137,7 +137,7 @@ explicitly using a peptide-by-proteins adjacency matrix. This
 matrix is typically stored in the rowdata, is conventionally named
 \code{"adjacencyMatrix"} and can be retrieved with
 \code{adjacencyMatrix()}. It can be created manually (as illustrated
-below) or using \code{\link[PSMatch:makeAdjacencyMatrix]{PSMatch::makeAdjacencyMatrix()}}.
+below) or using \code{\link[PSMatch:adjacencyMatrix]{PSMatch::makeAdjacencyMatrix()}}.
 }
 
 \examples{
