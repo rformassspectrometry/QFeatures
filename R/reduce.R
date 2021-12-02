@@ -239,6 +239,8 @@ expandDataFrame <- function(x, k = NULL) {
 ##'
 ##' @author Laurent Gatto
 ##'
+##' @export
+##'
 ##' @examples
 ##'
 ##' (x0 <- DataFrame(X = 1:2, Y = c("a;b", "c")))

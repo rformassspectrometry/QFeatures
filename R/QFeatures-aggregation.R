@@ -125,7 +125,7 @@
 ##'
 ##' @rdname QFeatures-aggregate
 ##'
-##' @importFrom MsCoreUtils aggregate_by_vector robustSummary colCounts
+##' @importFrom MsCoreUtils aggregate_by_vector aggregate_by_matrix robustSummary colCounts
 ##'
 ##' @examples
 ##'
@@ -246,6 +246,16 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
 
 
 .aggregateQFeatures <- function(object, fcol, fun, ...) {
+    ## Copied from the PSMatch package, given that it is not available
+    ## on Bioconductor yet.
+    .makePeptideProteinVector <- function(m, collapse = ";") {
+        stopifnot(is.matrix(m) | inherits(m, "Matrix"))
+        vec <- rep(NA_character_, nrow(m))
+        for (i in seq_len(nrow(m)))
+            vec[i] <- paste(names(which(m[i, ] != 0)), collapse = collapse)
+        names(vec) <- rownames(m)
+        vec
+    }
     if (missing(fcol))
         stop("'fcol' is required.")
     m <- assay(object, 1)
@@ -289,7 +299,7 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
         ## Remove the adjacency matrix that should be dropped anyway
         rd[[fcol]] <- NULL
         ## Temp variable for unfolding and reducing - removed later
-        rd[["._vec_"]] <- PSMatch::makePeptideProteinVector(groupBy)
+        rd[["._vec_"]] <- .makePeptideProteinVector(groupBy)
         rd <- unfoldDataFrame(rd, "._vec_")
         aggregated_rowdata <- reduceDataFrame(rd, rd[["._vec_"]], drop = TRUE)
         aggregated_rowdata[["._vec_"]] <- NULL
