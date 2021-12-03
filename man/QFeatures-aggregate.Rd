@@ -33,7 +33,7 @@ aggregated the create the new assay.}
 \item{fcol}{A \code{character(1)} naming a rowdata variable (of assay
 \code{i} in case of a \code{QFeatures}) defining how to aggregate the
 features of the assay. This variable is either a \code{character}
-of a (possibly sparse) matrix. See below for details.}
+or a (possibly sparse) matrix. See below for details.}
 
 \item{name}{A \code{character(1)} naming the new assay. Default is
 \code{newAssay}. Note that the function will fail if there's
@@ -51,19 +51,20 @@ A \code{QFeatures} object with an additional assay or a
 \description{
 This function aggregates the quantitative features of an assay,
 applying a summarisation function (\code{fun}) to sets of features as
-defined by the \code{fcol} feature variable. The new assay's features
-will be named based on the unique \code{fcol} values.
-
-In addition to the results of the aggregation, the newly
-aggregated \code{SummarizedExperiment} assay also contains a new
-\code{aggcounts} assay containing the aggregation counts matrix,
-i.e. the number of features that were aggregated, which can be
-accessed with the \code{aggcounts()} accessor.
+defined by the \code{fcol} feature variable. The \code{fcol} variable points
+to a rowData variable that defines which features to use during
+aggregate. This variable can eigher be a vector (aggregation by
+vector) or an adjacency matrix (aggregation by matrix).
 
 The rowData of the aggregated \code{SummarizedExperiment} assay
 contains a \code{.n} variable that provides the number of features that
-were aggregated. This \code{.n} value is always >= that the
-sample-level \code{aggcounts}.
+were aggregated.
+
+When aggregating with a vector, the newly aggregated
+\code{SummarizedExperiment} assay also contains a new \code{aggcounts} assay
+containing the aggregation counts matrix, i.e. the number of
+features that were aggregated, which can be accessed with the
+\code{aggcounts()} accessor.
 }
 \details{
 Aggregation is performed by a function that takes a matrix as
@@ -76,9 +77,17 @@ decomposition) using Tukey's median polish_ procedure using
 \item \code{\link[MsCoreUtils:robustSummary]{MsCoreUtils::robustSummary()}} to calculate a robust aggregation
 using \code{\link[MASS:rlm]{MASS::rlm()}} (default);
 \item \code{\link[base:colSums]{base::colMeans()}} to use the mean of each column;
+\item \code{colMeansMat(x, MAT)} to aggregate feature by the calculating
+the mean of peptide intensities via an adjacency matrix. Shared
+peptides are re-used multiple times.
 \item \code{\link[matrixStats:rowMedians]{matrixStats::colMedians()}} to use the median of each column.
 \item \code{\link[base:colSums]{base::colSums()}} to use the sum of each column;
+\item \code{colSumsMat(x, MAT)} to aggregate feature by the summing the
+peptide intensities for each protein via an adjacency
+matrix. Shared peptides are re-used multiple times.
 }
+
+See \code{\link[MsCoreUtils:aggregate]{MsCoreUtils::aggregate_by_vector()}} for more aggregation functions.
 }
 \section{Missing quantitative values}{
 
@@ -132,12 +141,12 @@ otherwise variant column, the column would be dropped anyway.
 
 
 When considering non-unique peptides, i.e. peptides that map to
-multiple proteins, it is necessary to encode this ambiguity
+multiple proteins, it is convenient to encode this ambiguity
 explicitly using a peptide-by-proteins adjacency matrix. This
-matrix is typically stored in the rowdata, is conventionally named
-\code{"adjacencyMatrix"} and can be retrieved with
-\code{adjacencyMatrix()}. It can be created manually (as illustrated
-below) or using \code{\link[PSMatch:adjacencyMatrix]{PSMatch::makeAdjacencyMatrix()}}.
+matrix is typically stored in the rowdata and, when named
+\code{"adjacencyMatrix"}, can be retrieved with \code{adjacencyMatrix()}. It
+can be created manually (as illustrated below) or using
+\code{\link[PSMatch:adjacencyMatrix]{PSMatch::makeAdjacencyMatrix()}}.
 }
 
 \examples{
@@ -223,9 +232,19 @@ adj
 rowData(se)$adjacencyMatrix <- adj
 rowData(se)
 adjacencyMatrix(se)
+
+## aggregation using the adjacency matrix
+se2 <- aggregateFeatures(se, fcol = "adjacencyMatrix",
+                         fun = MsCoreUtils::colMeansMat)
+
+## peptide SYGFNAAR was taken into account in both ProtA and ProtB
+## aggregations.
+assay(se2)
 }
 \seealso{
 The \emph{QFeatures} vignette provides an extended example and
 the \emph{Processing} vignette, for a complete quantitative
-proteomics data processing pipeline.
+proteomics data processing pipeline. The
+\code{\link[MsCoreUtils:aggregate]{MsCoreUtils::aggregate_by_vector()}} manual page provides
+further details.
 }

@@ -4,19 +4,20 @@
 ##'
 ##' This function aggregates the quantitative features of an assay,
 ##' applying a summarisation function (`fun`) to sets of features as
-##' defined by the `fcol` feature variable. The new assay's features
-##' will be named based on the unique `fcol` values.
-##'
-##' In addition to the results of the aggregation, the newly
-##' aggregated `SummarizedExperiment` assay also contains a new
-##' `aggcounts` assay containing the aggregation counts matrix,
-##' i.e. the number of features that were aggregated, which can be
-##' accessed with the `aggcounts()` accessor.
+##' defined by the `fcol` feature variable. The `fcol` variable points
+##' to a rowData variable that defines which features to use during
+##' aggregate. This variable can eigher be a vector (aggregation by
+##' vector) or an adjacency matrix (aggregation by matrix).
 ##'
 ##' The rowData of the aggregated `SummarizedExperiment` assay
 ##' contains a `.n` variable that provides the number of features that
-##' were aggregated. This `.n` value is always >= that the
-##' sample-level `aggcounts`.
+##' were aggregated.
+##'
+##' When aggregating with a vector, the newly aggregated
+##' `SummarizedExperiment` assay also contains a new `aggcounts` assay
+##' containing the aggregation counts matrix, i.e. the number of
+##' features that were aggregated, which can be accessed with the
+##' `aggcounts()` accessor.
 ##'
 ##' @param object An instance of class [QFeatures] or [SummarizedExperiment].
 ##'
@@ -55,10 +56,19 @@
 ##'
 ##' - [base::colMeans()] to use the mean of each column;
 ##'
+##' - `colMeansMat(x, MAT)` to aggregate feature by the calculating
+##'    the mean of peptide intensities via an adjacency matrix. Shared
+##'    peptides are re-used multiple times.
+##'
 ##' - [matrixStats::colMedians()] to use the median of each column.
 ##'
 ##' - [base::colSums()] to use the sum of each column;
 ##'
+##' - `colSumsMat(x, MAT)` to aggregate feature by the summing the
+##'    peptide intensities for each protein via an adjacency
+##'    matrix. Shared peptides are re-used multiple times.
+##'
+##' See [MsCoreUtils::aggregate_by_vector()] for more aggregation functions.
 ##'
 ##' @section Missing quantitative values:
 ##'
@@ -108,16 +118,18 @@
 ##' @section Using an adjacency matrix:
 ##'
 ##' When considering non-unique peptides, i.e. peptides that map to
-##' multiple proteins, it is necessary to encode this ambiguity
+##' multiple proteins, it is convenient to encode this ambiguity
 ##' explicitly using a peptide-by-proteins adjacency matrix. This
-##' matrix is typically stored in the rowdata, is conventionally named
-##' `"adjacencyMatrix"` and can be retrieved with
-##' `adjacencyMatrix()`. It can be created manually (as illustrated
-##' below) or using [PSMatch::makeAdjacencyMatrix()].
+##' matrix is typically stored in the rowdata and, when named
+##' `"adjacencyMatrix"`, can be retrieved with `adjacencyMatrix()`. It
+##' can be created manually (as illustrated below) or using
+##' [PSMatch::makeAdjacencyMatrix()].
 ##'
 ##' @seealso The *QFeatures* vignette provides an extended example and
 ##'     the *Processing* vignette, for a complete quantitative
-##'     proteomics data processing pipeline.
+##'     proteomics data processing pipeline. The
+##'     [MsCoreUtils::aggregate_by_vector()] manual page provides
+##'     further details.
 ##'
 ##' @aliases aggregateFeatures aggregateFeatures,QFeatures-method aggcounts aggcounts,SummarizedExperiment, adjacencyMatrix
 ##'
@@ -210,6 +222,14 @@
 ##' rowData(se)$adjacencyMatrix <- adj
 ##' rowData(se)
 ##' adjacencyMatrix(se)
+##'
+##' ## aggregation using the adjacency matrix
+##' se2 <- aggregateFeatures(se, fcol = "adjacencyMatrix",
+##'                          fun = MsCoreUtils::colMeansMat)
+##'
+##' ## peptide SYGFNAAR was taken into account in both ProtA and ProtB
+##' ## aggregations.
+##' assay(se2)
 NULL
 
 ##' @exportMethod aggregateFeatures
