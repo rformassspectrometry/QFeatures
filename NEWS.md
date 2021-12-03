@@ -1,5 +1,8 @@
 # QFeatures 1.5
 
+## QFeatures 1.5.3
+
+- feat: aggregation by adjacency matrix
 
 ## QFeatures 1.5.2
 

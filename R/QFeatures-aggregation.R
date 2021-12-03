@@ -264,8 +264,8 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
         stop("'fcol' not found in the assay's rowData.")
     groupBy <- rd[[fcol]]
 
-    ## Store class of assay i in case it is not a Summarized experiment so that
-    ## the aggregated assay can be reverted to that class
+    ## Store class of assay i in case it is not a SummarizedExperiment
+    ## so that the aggregated assay can be reverted to that class
     .class <- class(object)
 
     ## Message about NA values is quant/row data
@@ -290,10 +290,8 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
                                                          simplify = TRUE,
                                                          drop = TRUE,
                                                          count = TRUE)
-        se <- SummarizedExperiment(assays = SimpleList(assay = aggregated_assay,
-                                                       aggcounts = aggcount_assay),
-                                   colData = colData(object),
-                                   rowData = aggregated_rowdata[rownames(aggregated_assay), ])
+        assays <- SimpleList(assay = aggregated_assay, aggcounts = aggcount_assay)
+        rowdata <- aggregated_rowdata[rownames(aggregated_assay), ]
     } else if (is.matrix(groupBy) | is(groupBy, "Matrix")) {
         aggregated_assay <- aggregate_by_matrix(m, groupBy, fun, ...)
         ## Remove the adjacency matrix that should be dropped anyway
@@ -306,10 +304,13 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
         ## Count the number of peptides per protein
         .n <- apply(groupBy != 0, 2, sum)
         aggregated_rowdata[[".n"]] <- .n[rownames(aggregated_rowdata)]
-        se <- SummarizedExperiment(assays = SimpleList(assay = aggregated_assay),
-                                   colData = colData(object),
-                                   rowData = aggregated_rowdata[rownames(aggregated_assay), ])
+
+        assays <- SimpleList(assay = aggregated_assay)
+        rowdata <- aggregated_rowdata[rownames(aggregated_assay), ]
     } else stop("'fcol' must refer to a vector or a matrix.")
+    se <- SummarizedExperiment(assays = assays,
+                               colData = colData(object),
+                               rowData = rowdata)
 
     ## If the input objects weren't SummarizedExperiments, then try to
     ## convert the merged assay into that class. If the conversion
