@@ -26,7 +26,7 @@
 ##' @param fcol A `character(1)` naming a rowdata variable (of assay
 ##'     `i` in case of a `QFeatures`) defining how to aggregate the
 ##'     features of the assay. This variable is either a `character`
-##'     of a (possibly sparse) matrix. See below for details.
+##'     or a (possibly sparse) matrix. See below for details.
 ##'
 ##' @param name A `character(1)` naming the new assay. Default is
 ##'     `newAssay`. Note that the function will fail if there's
