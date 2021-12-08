@@ -131,11 +131,11 @@ setMethod("show", "AssayLink",
           })
 
 ##' @rdname AssayLinks
-##' 
+##'
 ##' @param verbose logical (default FALSE) whether to print extra messages
-##' 
+##'
 ##' @exportMethod updateObject
-##' 
+##'
 setMethod("updateObject", "AssayLinks",
           function(object, ..., verbose = FALSE)
           {
@@ -147,9 +147,9 @@ setMethod("updateObject", "AssayLinks",
 )
 
 ##' @rdname AssayLinks
-##' 
+##'
 ##' @exportMethod updateObject
-##' 
+##'
 setMethod("updateObject", "AssayLink",
           function(object, ..., verbose = FALSE)
           {
@@ -350,8 +350,7 @@ setMethod("[", c("AssayLinks", "list"),
                       rdTo = rowData(object[[to]]),
                       varFrom[[ii]], varTo)
         })
-    } else
-        stop("'from' and 'varFrom' must have same length.")
+    } else stop("'from' and 'varFrom' must have same length.")
 
     ## Format the hits slot to the expected class ("ListorHits")
     if (length(hits) > 1) {

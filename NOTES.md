@@ -102,7 +102,7 @@ hlpsms <- hlpsms[1:5000, ] ## faster
 ft1 <- readQFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence")
 sum(rownames(ft1[[1]]) == "ANLPQSFQVDTSk")
 ft1 <- aggregateFeatures(ft1, "psms", fcol = "Sequence",
-						 name = "peptides", fun = colSums)
+                         name = "peptides", fun = colSums)
 sapply(rownames(ft1), anyDuplicated)
 ft1
 
@@ -178,10 +178,10 @@ Currently, we have
 
 - *One-to-one* Assay links produced by a processing function such as
   `logTransform` or with `addAssayLinkOneToOne`. These contain
-  `"OneToOne"` in the `fcol` slot (isseu 42).
+  `"OneToOne"` in the `fcol` slot (issue 42).
 
 - There will be a need for an assay link stemming from combining
-  assays (see above and issue 52).
+  assays (see below and issue 52).
 
 # Joining assays
 
