@@ -311,7 +311,7 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
                                                          drop = TRUE,
                                                          count = TRUE)
         assays <- SimpleList(assay = aggregated_assay, aggcounts = aggcount_assay)
-        rowdata <- aggregated_rowdata[rownames(aggregated_assay), ]
+        rowdata <- aggregated_rowdata[rownames(aggregated_assay), , drop = FALSE]
     } else if (is.matrix(groupBy) | is(groupBy, "Matrix")) {
         aggregated_assay <- aggregate_by_matrix(m, groupBy, fun, ...)
         ## Remove the adjacency matrix that should be dropped anyway
@@ -326,7 +326,7 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
         aggregated_rowdata[[".n"]] <- .n[rownames(aggregated_rowdata)]
 
         assays <- SimpleList(assay = aggregated_assay)
-        rowdata <- aggregated_rowdata[rownames(aggregated_assay), ]
+        rowdata <- aggregated_rowdata[rownames(aggregated_assay), , drop = FALSE]
     } else stop("'fcol' must refer to a vector or a matrix.")
     se <- SummarizedExperiment(assays = assays,
                                colData = colData(object),
