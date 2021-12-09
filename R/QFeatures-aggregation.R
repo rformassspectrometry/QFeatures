@@ -118,10 +118,10 @@
 ##' @section Using an adjacency matrix:
 ##'
 ##' When considering non-unique peptides explicitly, i.e. peptides
-##' that map to multiple proteins rather than a portein group, it is
-##' convenient to encode this ambiguity explicitly using a
+##' that map to multiple proteins rather than as a protein group, it
+##' is convenient to encode this ambiguity explicitly using a
 ##' peptide-by-proteins adjacency matrix. This matrix is typically
-##' stored in the rowdata and, when named `"adjacencyMatrix"`, can be
+##' stored in the rowdata and set/retrieved , when named `"adjacencyMatrix"`, can be
 ##' retrieved with `adjacencyMatrix()`. It can be created manually (as
 ##' illustrated below) or using `PSMatch::makeAdjacencyMatrix()`.
 ##'
@@ -361,6 +361,40 @@ adjacencyMatrix <- function(x, i, adjName = "adjacencyMatrix") {
                 adjName = adjName))
 }
 
+##' @export
+##'
+##' @rdname aggregateFeatures
+##'
+##' @param i Index or name of the assay the adjacency matrix will be
+##'     added to.
+##'
+##' @param value An adjacency matrix with row and column names. The
+##'     matrix will be coerced to compressed, column-oriented sparse
+##'     matrix (class `dgCMatrix`) as defined in the `Matrix` package,
+##'     as generaled by the [sparseMatrix()] constructor.
+##'
+"adjacencyMatrix<-" <- function(x, i, adjName = "adjacencyMatrix", value) {
+    if (is.null(colnames(value)) | is.null(rownames(value)))
+        stop("The matrix must have row and column names.")
+    ## Coerse the matrix to use a
+    value <- as(value, "sparseMatrix")
+    if (inherits(x, "SummarizedExperiment")) {
+        if (identical(rownames(value), rownames(x)))
+            stop("Row names of the SummarizedExperiment and the adjacency matrix must match.")
+        rowData(x)[[adjName]] <- value
+        return(x)
+    }
+    stopifnot(inherits(x, "QFeatures"))
+    if (length(i) != 1)
+        stop("'i' must be of length one. Repeat the call to add a matrix to multiple assays.")
+    if (is.numeric(i) && i > length(x))
+        stop("Subscript is out of bounds.")
+    if (is.character(i) && !(i %in% names(x)))
+        stop("Assay '", i, "' not found.")
+    se <- x[[i]]
+    x[[i]] <- adjacencyMatrix(se, adjName) <- value
+    return(x)
+}
 
 .adjacencyMatrix <- function(x, adjName = "adjacencyMatrix") {
     stopifnot(adjName %in% names(rowData(x)))
