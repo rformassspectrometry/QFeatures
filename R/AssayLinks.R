@@ -339,9 +339,7 @@ setMethod("[", c("AssayLinks", "list"),
                       "._rownames", "._rownames")
         })
         varFrom <- "._rownames"
-    } else if (length(varFrom) == 1 &&
-               (is.matrix(rowData(object[[from]])[[varFrom]]) ||
-                is(rowData(object[[from]])[[varFrom]], "Matrix"))) {
+    } else if (length(varFrom) == 1 && is(rowData(object[[from]])[[varFrom]], "Matrix")) {
         ## Aggregation using am adjacency matrix - must have a single
         ## varFrom that must point to a [M|m]atrix
         adj <- rowData(object[[from]])[[varFrom]]

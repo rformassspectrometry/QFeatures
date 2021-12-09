@@ -280,7 +280,7 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
     ## Copied from the PSMatch package, given that it is not available
     ## on Bioconductor yet.
     .makePeptideProteinVector <- function(m, collapse = ";") {
-        stopifnot(is.matrix(m) | inherits(m, "Matrix"))
+        stopifnot(inherits(m, "Matrix"))
         vec <- rep(NA_character_, nrow(m))
         for (i in seq_len(nrow(m)))
             vec[i] <- paste(names(which(m[i, ] != 0)), collapse = collapse)
@@ -323,7 +323,7 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
                                                          count = TRUE)
         assays <- SimpleList(assay = aggregated_assay, aggcounts = aggcount_assay)
         rowdata <- aggregated_rowdata[rownames(aggregated_assay), , drop = FALSE]
-    } else if (is.matrix(groupBy) | is(groupBy, "Matrix")) {
+    } else if (is(groupBy, "Matrix")) {
         aggregated_assay <- aggregate_by_matrix(m, groupBy, fun, ...)
         ## Remove the adjacency matrix that should be dropped anyway
         rd[[fcol]] <- NULL
@@ -338,7 +338,7 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
 
         assays <- SimpleList(assay = aggregated_assay)
         rowdata <- aggregated_rowdata[rownames(aggregated_assay), , drop = FALSE]
-    } else stop("'fcol' must refer to a vector or a matrix.")
+    } else stop("'fcol' must refer to a vector or a sparse matrix.")
     se <- SummarizedExperiment(assays = assays,
                                colData = colData(object),
                                rowData = rowdata)
