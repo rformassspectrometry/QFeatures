@@ -25,7 +25,7 @@
 ##'   in the [QFeatures] object and creates a link given a matching
 ##'   feature variable in each assay's `rowData`. `addAssayLink` also
 ##'   allows to link an assay from multiple parent assays (see
-##'   Examples).
+##'   examples below).
 ##' - `addAssayLinkOneToOne` links two assays contained in the
 ##'   [QFeatures] object. The parent assay and the child assay must
 ##'   have the same size and contain the same rownames (a different
@@ -163,9 +163,6 @@ setMethod("updateObject", "AssayLink",
               )
           }
 )
-
-
-
 
 ## --------------
 ## Constructors
@@ -324,10 +321,10 @@ setMethod("[", c("AssayLinks", "list"),
 ## an AssayLink object that links the parent assay*s* to the child assay given
 ## the relationship between the corresponding feature variables.
 .create_assay_link <- function(object,
-                               from,
-                               to,
-                               varFrom,
-                               varTo) {
+                               from, ## parent assay name(s)
+                               to,   ## child assay name
+                               varFrom, ## variable name(s) in parent assay(s)
+                               varTo) { ## variable name in child assay
     if (any(to %in% from))
         stop("Adding an AssayLink between an assay and itself is not allowed.")
     if (missing(varFrom) | missing(varTo)) {
@@ -342,6 +339,22 @@ setMethod("[", c("AssayLinks", "list"),
                       "._rownames", "._rownames")
         })
         varFrom <- "._rownames"
+    } else if (length(varFrom) == 1 &&
+               (is.matrix(rowData(object[[from]])[[varFrom]]) ||
+                is(rowData(object[[from]])[[varFrom]], "Matrix"))) {
+        ## Aggregation using am adjacency matrix - must have a single
+        ## varFrom that must point to a [M|m]atrix
+        adj <- rowData(object[[from]])[[varFrom]]
+        if (is(adj, "Matrix")) {
+            stopifnot(requireNamespace("Matrix"))
+            rs <- Matrix::rowSums(adj)
+        } else rs <- rowSums(adj)
+        i <- rep(seq_len(nrow(adj)), rs)
+        j <- unname(unlist(apply(adj, 1, function(i) which(i != 0))))
+        hits <- Hits(i, j, length(i), length(j))
+        elementMetadata(hits)$names_from <- rownames(adj)[i]
+        elementMetadata(hits)$names_to <- colnames(adj)[j]
+        elementMetadata(hits)$weigths <- adj[adj != 0]
     } else if (length(from) == length(varFrom)) {
         ## Create the list of hits between the child assay and the
         ## parent assays based on the supplied varFrom and varTo
@@ -350,7 +363,7 @@ setMethod("[", c("AssayLinks", "list"),
                       rdTo = rowData(object[[to]]),
                       varFrom[[ii]], varTo)
         })
-    } else stop("'from' and 'varFrom' must have same length.")
+    } else stop("'from' and 'varFrom' must have identical same lengths.")
 
     ## Format the hits slot to the expected class ("ListorHits")
     if (length(hits) > 1) {
@@ -360,7 +373,7 @@ setMethod("[", c("AssayLinks", "list"),
         hits <- hits[[1]]
     }
 
-    ## Return a multi-parent AssayLink
+    ## Return a (possibly multi-parent) AssayLink
     AssayLink(name = to,
               from = from,
               fcol = varFrom,

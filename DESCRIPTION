@@ -33,6 +33,7 @@ Imports:
    plotly
 Suggests:
    SingleCellExperiment,
+   Matrix,
    HDF5Array,
    msdata,
    ggplot2,
