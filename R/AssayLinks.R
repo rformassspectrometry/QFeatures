@@ -366,7 +366,7 @@ setMethod("[", c("AssayLinks", "list"),
                       rdTo = rowData(object[[to]]),
                       varFrom[[ii]], varTo)
         })
-    } else stop("'from' and 'varFrom' must have identical same lengths.")
+    } else stop("'from' and 'varFrom' must be of identical length.")
 
     ## Format the hits slot to the expected class ("ListorHits")
     if (length(hits) > 1) {
