@@ -50,21 +50,21 @@ A \code{QFeatures} object with an additional assay or a
 }
 \description{
 This function aggregates the quantitative features of an assay,
-applying a summarisation function (\code{fun}) to sets of features as
-defined by the \code{fcol} feature variable. The \code{fcol} variable points
-to a rowData variable that defines which features to use during
-aggregate. This variable can eigher be a vector (aggregation by
-vector) or an adjacency matrix (aggregation by matrix).
+applying a summarisation function (\code{fun}) to sets of features.
+The \code{fcol} variable name points to a rowData column that defines
+how to group the features during aggregate. This variable can
+eigher be a vector (we then refer to an \emph{aggregation by vector})
+or an adjacency matrix (\emph{aggregation by matrix}).
 
 The rowData of the aggregated \code{SummarizedExperiment} assay
-contains a \code{.n} variable that provides the number of features that
-were aggregated.
+contains a \code{.n} variable that provides the number of parent
+features that were aggregated.
 
 When aggregating with a vector, the newly aggregated
 \code{SummarizedExperiment} assay also contains a new \code{aggcounts} assay
 containing the aggregation counts matrix, i.e. the number of
-features that were aggregated, which can be accessed with the
-\code{aggcounts()} accessor.
+features that were aggregated for each sample, which can be
+accessed with the \code{aggcounts()} accessor.
 }
 \details{
 Aggregation is performed by a function that takes a matrix as
@@ -92,12 +92,12 @@ See \code{\link[MsCoreUtils:aggregate]{MsCoreUtils::aggregate_by_vector()}} for 
 \section{Missing quantitative values}{
 
 
-Missing quantitative values have different effect based on the
+Missing quantitative values have different effects based on the
 aggregation method employed:
 \itemize{
 \item The aggregation functions should be able to deal with missing
-values by either ignoring them, and propagating them. This is
-often done with an \code{na.rm} argument, that can be passed with
+values by either ignoring or propagating them. This is often
+done with an \code{na.rm} argument, that can be passed with
 \code{...}. For example, \code{rowSums}, \code{rowMeans}, \code{rowMedians},
 ... will ignore \code{NA} values with \code{na.rm = TRUE}, as illustrated
 below.
@@ -140,13 +140,13 @@ otherwise variant column, the column would be dropped anyway.
 \section{Using an adjacency matrix}{
 
 
-When considering non-unique peptides, i.e. peptides that map to
-multiple proteins, it is convenient to encode this ambiguity
-explicitly using a peptide-by-proteins adjacency matrix. This
-matrix is typically stored in the rowdata and, when named
-\code{"adjacencyMatrix"}, can be retrieved with \code{adjacencyMatrix()}. It
-can be created manually (as illustrated below) or using
-\code{\link[PSMatch:adjacencyMatrix]{PSMatch::makeAdjacencyMatrix()}}.
+When considering non-unique peptides explicitly, i.e. peptides
+that map to multiple proteins rather than a portein group, it is
+convenient to encode this ambiguity explicitly using a
+peptide-by-proteins adjacency matrix. This matrix is typically
+stored in the rowdata and, when named \code{"adjacencyMatrix"}, can be
+retrieved with \code{adjacencyMatrix()}. It can be created manually (as
+illustrated below) or using \code{PSMatch::makeAdjacencyMatrix()}.
 }
 
 \examples{
@@ -222,7 +222,9 @@ se <- feat1[["peptides"]]
 rowData(se)$Protein[3] <- c("ProtA;ProtB")
 rowData(se)
 
-## Manual encoding of the adjacency matrix
+## This can also be defined using anadjacency matrix, manual
+## encoding here. See PSMatch::makeAdjacencyMatrix() for a
+## function that does it automatically.
 adj <- matrix(0, nrow = 3, ncol = 2,
               dimnames = list(rownames(se),
                               c("ProtA", "ProtB")))
@@ -233,11 +235,11 @@ rowData(se)$adjacencyMatrix <- adj
 rowData(se)
 adjacencyMatrix(se)
 
-## aggregation using the adjacency matrix
+## Aggregation using the adjacency matrix
 se2 <- aggregateFeatures(se, fcol = "adjacencyMatrix",
                          fun = MsCoreUtils::colMeansMat)
 
-## peptide SYGFNAAR was taken into account in both ProtA and ProtB
+## Peptide SYGFNAAR was taken into account in both ProtA and ProtB
 ## aggregations.
 assay(se2)
 }

@@ -3,21 +3,21 @@
 ##' @description
 ##'
 ##' This function aggregates the quantitative features of an assay,
-##' applying a summarisation function (`fun`) to sets of features as
-##' defined by the `fcol` feature variable. The `fcol` variable points
-##' to a rowData variable that defines which features to use during
-##' aggregate. This variable can eigher be a vector (aggregation by
-##' vector) or an adjacency matrix (aggregation by matrix).
+##' applying a summarisation function (`fun`) to sets of features.
+##' The `fcol` variable name points to a rowData column that defines
+##' how to group the features during aggregate. This variable can
+##' eigher be a vector (we then refer to an *aggregation by vector*)
+##' or an adjacency matrix (*aggregation by matrix*).
 ##'
 ##' The rowData of the aggregated `SummarizedExperiment` assay
-##' contains a `.n` variable that provides the number of features that
-##' were aggregated.
+##' contains a `.n` variable that provides the number of parent
+##' features that were aggregated.
 ##'
 ##' When aggregating with a vector, the newly aggregated
 ##' `SummarizedExperiment` assay also contains a new `aggcounts` assay
 ##' containing the aggregation counts matrix, i.e. the number of
-##' features that were aggregated, which can be accessed with the
-##' `aggcounts()` accessor.
+##' features that were aggregated for each sample, which can be
+##' accessed with the `aggcounts()` accessor.
 ##'
 ##' @param object An instance of class [QFeatures] or [SummarizedExperiment].
 ##'
@@ -72,12 +72,12 @@
 ##'
 ##' @section Missing quantitative values:
 ##'
-##' Missing quantitative values have different effect based on the
+##' Missing quantitative values have different effects based on the
 ##' aggregation method employed:
 ##'
 ##' - The aggregation functions should be able to deal with missing
-##'   values by either ignoring them, and propagating them. This is
-##'   often done with an `na.rm` argument, that can be passed with
+##'   values by either ignoring or propagating them. This is often
+##'   done with an `na.rm` argument, that can be passed with
 ##'   `...`. For example, `rowSums`, `rowMeans`, `rowMedians`,
 ##'   ... will ignore `NA` values with `na.rm = TRUE`, as illustrated
 ##'   below.
@@ -117,13 +117,13 @@
 ##'
 ##' @section Using an adjacency matrix:
 ##'
-##' When considering non-unique peptides, i.e. peptides that map to
-##' multiple proteins, it is convenient to encode this ambiguity
-##' explicitly using a peptide-by-proteins adjacency matrix. This
-##' matrix is typically stored in the rowdata and, when named
-##' `"adjacencyMatrix"`, can be retrieved with `adjacencyMatrix()`. It
-##' can be created manually (as illustrated below) or using
-##' [PSMatch::makeAdjacencyMatrix()].
+##' When considering non-unique peptides explicitly, i.e. peptides
+##' that map to multiple proteins rather than a portein group, it is
+##' convenient to encode this ambiguity explicitly using a
+##' peptide-by-proteins adjacency matrix. This matrix is typically
+##' stored in the rowdata and, when named `"adjacencyMatrix"`, can be
+##' retrieved with `adjacencyMatrix()`. It can be created manually (as
+##' illustrated below) or using `PSMatch::makeAdjacencyMatrix()`.
 ##'
 ##' @seealso The *QFeatures* vignette provides an extended example and
 ##'     the *Processing* vignette, for a complete quantitative
@@ -212,7 +212,9 @@
 ##' rowData(se)$Protein[3] <- c("ProtA;ProtB")
 ##' rowData(se)
 ##'
-##' ## Manual encoding of the adjacency matrix
+##' ## This can also be defined using anadjacency matrix, manual
+##' ## encoding here. See PSMatch::makeAdjacencyMatrix() for a
+##' ## function that does it automatically.
 ##' adj <- matrix(0, nrow = 3, ncol = 2,
 ##'               dimnames = list(rownames(se),
 ##'                               c("ProtA", "ProtB")))
@@ -223,11 +225,11 @@
 ##' rowData(se)
 ##' adjacencyMatrix(se)
 ##'
-##' ## aggregation using the adjacency matrix
+##' ## Aggregation using the adjacency matrix
 ##' se2 <- aggregateFeatures(se, fcol = "adjacencyMatrix",
 ##'                          fun = MsCoreUtils::colMeansMat)
 ##'
-##' ## peptide SYGFNAAR was taken into account in both ProtA and ProtB
+##' ## Peptide SYGFNAAR was taken into account in both ProtA and ProtB
 ##' ## aggregations.
 ##' assay(se2)
 NULL
