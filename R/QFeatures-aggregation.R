@@ -120,9 +120,9 @@
 ##' When considering non-unique peptides explicitly, i.e. peptides
 ##' that map to multiple proteins rather than as a protein group, it
 ##' is convenient to encode this ambiguity explicitly using a
-##' peptide-by-proteins adjacency matrix. This matrix is typically
-##' stored in the rowdata and set/retrieved , when named `"adjacencyMatrix"`, can be
-##' retrieved with `adjacencyMatrix()`. It can be created manually (as
+##' peptide-by-proteins (sparse) adjacency matrix. This matrix is
+##' typically stored in the rowdata and set/retrieved with the
+##' [adjacencyMatrix()] function. It can be created manually (as
 ##' illustrated below) or using `PSMatch::makeAdjacencyMatrix()`.
 ##'
 ##' @seealso The *QFeatures* vignette provides an extended example and
@@ -221,7 +221,7 @@
 ##' adj[1, 1] <- adj[2, 2] <- adj[3, 1:2] <- 1
 ##' adj
 ##'
-##' rowData(se)$adjacencyMatrix <- adj
+##' adjacencyMatrix(se) <- adj
 ##' rowData(se)
 ##' adjacencyMatrix(se)
 ##'
@@ -232,6 +232,15 @@
 ##' ## Peptide SYGFNAAR was taken into account in both ProtA and ProtB
 ##' ## aggregations.
 ##' assay(se2)
+##'
+##'
+##' ## Aggregation by matrix on a QFeature object works as with a
+##' ## vector
+##' ft <- QFeatures(list(peps = se))
+##' ft <- aggregateFeatures(ft, "peps", "adjacencyMatrix", name = "protsByMat",
+##'                         fun = MsCoreUtils::colMeansMat)
+##' assay(ft[[2]])
+##' rowData(ft[[2]])
 NULL
 
 ##' @exportMethod aggregateFeatures
@@ -346,10 +355,10 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
 
 ##' @export
 ##'
-##' @rdname aggregateFeatures
+##' @rdname QFeatures-aggregate
 ##'
-##' @param x An instance of class `SummarizedExperiment` or a
-##'     `character`.
+##' @param x An instance of class `SummarizedExperiment` or
+##'     `QFeatures`.
 ##'
 ##' @param adjName `character(1)` with the variable name containing
 ##'     the adjacency matrix. Default is `"adjacencyMatrix"`.
@@ -363,23 +372,24 @@ adjacencyMatrix <- function(x, i, adjName = "adjacencyMatrix") {
 
 ##' @export
 ##'
-##' @rdname aggregateFeatures
+##' @rdname QFeatures-aggregate
 ##'
-##' @param i Index or name of the assay the adjacency matrix will be
-##'     added to.
+##' @param i When adding an adjacency matrix to an assay of a
+##'     `QFeatures` object, the index or name of the assay the
+##'     adjacency matrix will be added to. Ignored when `x` is an
+##'     `SummarizedExperiment`.
 ##'
 ##' @param value An adjacency matrix with row and column names. The
 ##'     matrix will be coerced to compressed, column-oriented sparse
 ##'     matrix (class `dgCMatrix`) as defined in the `Matrix` package,
 ##'     as generaled by the [sparseMatrix()] constructor.
-##'
 "adjacencyMatrix<-" <- function(x, i, adjName = "adjacencyMatrix", value) {
     if (is.null(colnames(value)) | is.null(rownames(value)))
         stop("The matrix must have row and column names.")
     ## Coerse the matrix to use a
     value <- as(value, "sparseMatrix")
     if (inherits(x, "SummarizedExperiment")) {
-        if (identical(rownames(value), rownames(x)))
+        if (!identical(rownames(value), rownames(x)))
             stop("Row names of the SummarizedExperiment and the adjacency matrix must match.")
         rowData(x)[[adjName]] <- value
         return(x)
@@ -398,5 +408,10 @@ adjacencyMatrix <- function(x, i, adjName = "adjacencyMatrix") {
 
 .adjacencyMatrix <- function(x, adjName = "adjacencyMatrix") {
     stopifnot(adjName %in% names(rowData(x)))
-    rowData(x)[[adjName]]
+    ans <- rowData(x)[[adjName]]
+    if (is.null(colnames(ans)) | is.null(rownames(ans)))
+        warning("The adjacency matrix should have row and column names.")
+    if (!is(ans, "sparseMatrix"))
+        warning("The adjacency matrix should ideally be sparse.")
+    ans
 }
