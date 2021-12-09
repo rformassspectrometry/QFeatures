@@ -357,7 +357,10 @@ setMethod("[", c("AssayLinks", "list"),
         elementMetadata(hits)$weigths <- adj[adj != 0]
     } else if (length(from) == length(varFrom)) {
         ## Create the list of hits between the child assay and the
-        ## parent assays based on the supplied varFrom and varTo
+        ## parent assays based on the supplied varFrom and
+        ## varTo. varTo should be of length 1 here, so testing it
+        ## here.
+        stopifnot(length(varTo) == 1)
         hits <- lapply(seq_along(from), function(ii) {
             .get_Hits(rdFrom = rowData(object[[from[ii]]]),
                       rdTo = rowData(object[[to]]),
