@@ -218,7 +218,11 @@ jobs:
           git clone https://github.com/bmbolstad/preprocessCore.git
           cd preprocessCore
           R CMD INSTALL --configure-args="--disable-threading"  .
-
+          
+      - name: Install MsCoreUtils from Github (to get version 1.7.2)
+        run: BiocManager::install("RforMassSpectrometry/MsCoreUtils")
+        shell: Rscript {0}
+        
       - name: Session info
         run: |
           options(width = 100)
