@@ -336,7 +336,7 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
         .n <- apply(groupBy != 0, 2, sum)
         aggregated_rowdata[[".n"]] <- .n[rownames(aggregated_rowdata)]
 
-        assays <- SimpleList(assay = aggregated_assay)
+        assays <- SimpleList(assay = as.matrix(aggregated_assay)) ## to discuss
         rowdata <- aggregated_rowdata[rownames(aggregated_assay), , drop = FALSE]
     } else stop("'fcol' must refer to a vector or a sparse matrix.")
     se <- SummarizedExperiment(assays = assays,
