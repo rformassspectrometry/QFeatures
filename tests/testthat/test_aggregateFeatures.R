@@ -158,6 +158,9 @@ test_that("aggregate by matrix and vector work (1)", {
     se1 <- aggregateFeatures(se, "Sequence", colSums)
     ## 1.2 aggregate PSMs to peptides by matrix
     rowData(se)$adjacencyMatrix <- adjSequence
+    expect_error(aggregateFeatures(se, "adjacencyMatrix", MsCoreUtils::colSumsMat),
+                 "'fcol' must refer to a vector or a sparse matrix")
+    adjacencyMatrix(se) <- adjSequence
     se2 <- aggregateFeatures(se, "adjacencyMatrix", MsCoreUtils::colSumsMat)
     ## order of rows isn't necessary the same
     rnms <- rownames(se1)
@@ -175,7 +178,7 @@ test_that("aggregate by matrix and vector work (1)", {
     ## 2.1 aggregate peptides to proteins by vector
     se3 <- aggregateFeatures(se1, "Protein", colSums)
     ## 2.2 aggregate peptides to proteins  by matrix
-    rowData(se2)$adjacencyMatrix <- adjProtein
+    adjacencyMatrix(se2) <- adjProtein
     se4 <- aggregateFeatures(se2, "adjacencyMatrix", MsCoreUtils::colSumsMat)
     ## order of rows isn't necessary the same
     rnms <- rownames(se3)
