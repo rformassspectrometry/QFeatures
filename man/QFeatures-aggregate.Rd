@@ -5,11 +5,11 @@
 \alias{aggregateFeatures}
 \alias{aggregateFeatures,QFeatures-method}
 \alias{aggcounts}
-\alias{aggcounts,SummarizedExperiment,}
-\alias{adjacencyMatrix}
+\alias{aggcounts,SummarizedExperiment-method}
+\alias{adjacencyMatrix,SummarizedExperiment-method}
+\alias{adjacencyMatrix,QFeatures-method}
 \alias{aggregateFeatures,SummarizedExperiment-method}
 \alias{adjacencyMatrix<-}
-\alias{aggcounts,SummarizedExperiment-method}
 \title{Aggregate an assay's quantitative features}
 \usage{
 \S4method{aggregateFeatures}{QFeatures}(
@@ -23,14 +23,15 @@
 
 \S4method{aggregateFeatures}{SummarizedExperiment}(object, fcol, fun = MsCoreUtils::robustSummary, ...)
 
-adjacencyMatrix(x, i, adjName = "adjacencyMatrix")
+\S4method{adjacencyMatrix}{QFeatures}(object, i, adjName = "adjacencyMatrix")
 
-adjacencyMatrix(x, i, adjName = "adjacencyMatrix") <- value
+adjacencyMatrix(object, i, adjName = "adjacencyMatrix") <- value
 
 \S4method{aggcounts}{SummarizedExperiment}(object, ...)
 }
 \arguments{
-\item{object}{An instance of class \link{QFeatures} or \link{SummarizedExperiment}.}
+\item{object}{An instance of class \code{SummarizedExperiment} or
+\code{QFeatures}.}
 
 \item{i}{When adding an adjacency matrix to an assay of a
 \code{QFeatures} object, the index or name of the assay the
@@ -50,9 +51,6 @@ already an assay with \code{name}.}
 aggregation. See Details for examples.}
 
 \item{...}{Additional parameters passed the \code{fun}.}
-
-\item{x}{An instance of class \code{SummarizedExperiment} or
-\code{QFeatures}.}
 
 \item{adjName}{\code{character(1)} with the variable name containing
 the adjacency matrix. Default is \code{"adjacencyMatrix"}.}

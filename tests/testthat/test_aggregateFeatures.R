@@ -161,6 +161,10 @@ test_that("aggregate by matrix and vector work (1)", {
     expect_error(aggregateFeatures(se, "adjacencyMatrix",
                                    MsCoreUtils::colSumsMat),
                  "'fcol' must refer to a vector or a sparse matrix")
+    ## Error when adjancencyMatrix already present
+    expect_error(adjacencyMatrix(se) <- adjSequence,
+                 "Found an existing variable adjacencyMatrix.")
+    rowData(se)[["adjacencyMatrix"]] <- NULL
     adjacencyMatrix(se) <- adjSequence
     se2 <- aggregateFeatures(se, "adjacencyMatrix", MsCoreUtils::colSumsMat)
     ## order of rows isn't necessary the same

@@ -131,7 +131,10 @@
 ##'     [MsCoreUtils::aggregate_by_vector()] manual page provides
 ##'     further details.
 ##'
-##' @aliases aggregateFeatures aggregateFeatures,QFeatures-method aggcounts aggcounts,SummarizedExperiment, adjacencyMatrix
+##' @aliases aggregateFeatures aggregateFeatures,QFeatures-method
+##'     aggcounts aggcounts,SummarizedExperiment-method
+##'     adjacencyMatrix,SummarizedExperiment-method
+##'     adjacencyMatrix,QFeatures-method
 ##'
 ##' @name aggregateFeatures
 ##'
@@ -355,20 +358,27 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
 
 ##' @export
 ##'
+##' @importFrom ProtGenerics adjacencyMatrix
+##'
 ##' @rdname QFeatures-aggregate
 ##'
-##' @param x An instance of class `SummarizedExperiment` or
+##' @param object An instance of class `SummarizedExperiment` or
 ##'     `QFeatures`.
 ##'
 ##' @param adjName `character(1)` with the variable name containing
 ##'     the adjacency matrix. Default is `"adjacencyMatrix"`.
-adjacencyMatrix <- function(x, i, adjName = "adjacencyMatrix") {
-    if (inherits(x, "SummarizedExperiment"))
-        return(.adjacencyMatrix(x, adjName))
-    stopifnot(inherits(x, "QFeatures"))
-    List(lapply(experiments(x)[i], .adjacencyMatrix,
-                adjName = adjName))
-}
+##'
+##' @param i The index or name of the assays to extract the advaceny
+##'     matrix from. All must have a rowdata variable named `adjName`.
+setMethod("adjacencyMatrix", "QFeatures",
+          function(object, i, adjName = "adjacencyMatrix")
+              List(lapply(experiments(object)[i],
+                          .adjacencyMatrix,
+                          adjName = adjName)))
+
+setMethod("adjacencyMatrix", "SummarizedExperiment",
+          function(object, adjName = "adjacencyMatrix")
+         .adjacencyMatrix(object, adjName))
 
 ##' @export
 ##'
@@ -383,27 +393,29 @@ adjacencyMatrix <- function(x, i, adjName = "adjacencyMatrix") {
 ##'     matrix will be coerced to compressed, column-oriented sparse
 ##'     matrix (class `dgCMatrix`) as defined in the `Matrix` package,
 ##'     as generaled by the [sparseMatrix()] constructor.
-"adjacencyMatrix<-" <- function(x, i, adjName = "adjacencyMatrix", value) {
+"adjacencyMatrix<-" <- function(object, i, adjName = "adjacencyMatrix", value) {
     if (is.null(colnames(value)) | is.null(rownames(value)))
         stop("The matrix must have row and column names.")
-    ## Coerse the matrix to use a
+    ## Coerse to a sparse matrix
     value <- as(value, "sparseMatrix")
-    if (inherits(x, "SummarizedExperiment")) {
-        if (!identical(rownames(value), rownames(x)))
+    if (inherits(object, "SummarizedExperiment")) {
+        if (!identical(rownames(value), rownames(object)))
             stop("Row names of the SummarizedExperiment and the adjacency matrix must match.")
-        rowData(x)[[adjName]] <- value
-        return(x)
+        if (adjName %in% colnames(rowData(object)))
+            stop("Found an existing variable ", adjName, ".")
+        rowData(object)[[adjName]] <- value
+        return(object)
     }
-    stopifnot(inherits(x, "QFeatures"))
+    stopifnot(inherits(object, "QFeatures"))
     if (length(i) != 1)
         stop("'i' must be of length one. Repeat the call to add a matrix to multiple assays.")
-    if (is.numeric(i) && i > length(x))
+    if (is.numeric(i) && i > length(object))
         stop("Subscript is out of bounds.")
-    if (is.character(i) && !(i %in% names(x)))
+    if (is.character(i) && !(i %in% names(object)))
         stop("Assay '", i, "' not found.")
-    se <- x[[i]]
-    x[[i]] <- adjacencyMatrix(se, adjName) <- value
-    return(x)
+    se <- object[[i]]
+    object[[i]] <- adjacencyMatrix(se, adjName) <- value
+    return(object)
 }
 
 .adjacencyMatrix <- function(x, adjName = "adjacencyMatrix") {

@@ -24,7 +24,7 @@ Imports:
    IRanges,
    SummarizedExperiment,
    BiocGenerics,
-   ProtGenerics (>= 1.19.3),
+   ProtGenerics (>= 1.27.1),
    AnnotationFilter,
    lazyeval,
    Biobase,
