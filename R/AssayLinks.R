@@ -349,7 +349,7 @@ setMethod("[", c("AssayLinks", "list"),
         } else rs <- rowSums(adj)
         i <- rep(seq_len(nrow(adj)), rs)
         j <- unname(unlist(apply(adj, 1, function(i) which(i != 0))))
-        hits <- Hits(i, j, length(i), length(j))
+        hits <- Hits(i, j, nrow(object[[from]]), nrow(object[[to]]))
         elementMetadata(hits)$names_from <- rownames(adj)[i]
         elementMetadata(hits)$names_to <- colnames(adj)[j]
         elementMetadata(hits)$weigths <- adj[adj != 0]
