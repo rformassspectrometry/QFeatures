@@ -432,7 +432,7 @@ validAdjacencyMatrix <- function(x) {
     if (is.null(colnames(x)) | is.null(rownames(x)))
         stop("The matrix must have row and column names.")
     if (any(Matrix::rowSums(x) == 0))
-        stop("rowSums() == 0 detected: peptides must belong to at least one proteins.")
+        stop("rowSums() == 0 detected: peptides must belong to at least one protein.")
     if (any(Matrix::colSums(x) == 0))
         stop("colSums() == 0 detected: proteins must be identified by at least one peptide.")
     TRUE
