@@ -25,7 +25,7 @@ See QFeatures for an example."><meta property="og:image" content="/logo.png"><!-
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.3</span>
       </span>
     </div>
 
@@ -293,7 +293,9 @@ assays and features.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IAEESNFPFIK IAEESNFPFI...         ProtB       unknown         4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SYGFNAAR         SYGFNAAR ProtA;Prot... Mitochondr...         3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ## Manual encoding of the adjacency matrix</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ## This can also be defined using anadjacency matrix, manual</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ## encoding here. See PSMatch::makeAdjacencyMatrix() for a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ## function that does it automatically.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; adj &lt;- matrix(0, nrow = 3, ncol = 2,</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF+               dimnames = list(rownames(se),</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF+                               c("ProtA", "ProtB")))</span>
@@ -306,21 +308,53 @@ assays and features.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IAEESNFPFIK     0     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SYGFNAAR        1     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; rowData(se)$adjacencyMatrix &lt;- adj</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; adjacencyMatrix(se) &lt;- adj</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; rowData(se)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 3 rows and 5 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  Sequence       Protein      location        .n adjacencyMatrix</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;character&gt;   &lt;character&gt;   &lt;character&gt; &lt;integer&gt;        &lt;matrix&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;character&gt;   &lt;character&gt;   &lt;character&gt; &lt;integer&gt;     &lt;dgCMatrix&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ELGNDAYK         ELGNDAYK         ProtA Mitochondr...         3             1:0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IAEESNFPFIK IAEESNFPFI...         ProtB       unknown         4             0:1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SYGFNAAR         SYGFNAAR ProtA;Prot... Mitochondr...         3             1:1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; adjacencyMatrix(se)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 x 2 sparse Matrix of class "dgCMatrix"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             ProtA ProtB</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ELGNDAYK        1     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> IAEESNFPFIK     0     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ELGNDAYK        1     .</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> IAEESNFPFIK     .     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SYGFNAAR        1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ## Aggregation using the adjacency matrix</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; se2 &lt;- aggregateFeatures(se, fcol = "adjacencyMatrix",</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF+                          fun = MsCoreUtils::colMeansMat)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ## Peptide SYGFNAAR was taken into account in both ProtA and ProtB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ## aggregations.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; assay(se2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         S1    S2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ProtA 3.50 13.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ProtB 5.25 15.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ## Aggregation by matrix on a QFeature object works as with a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ## vector</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ft &lt;- QFeatures(list(peps = se))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ft &lt;- aggregateFeatures(ft, "peps", "adjacencyMatrix", name = "protsByMat",</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF+                         fun = MsCoreUtils::colMeansMat)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> &lt;sparse&gt;[ &lt;logic&gt; ] : .M.sub.i.logical() maybe inefficient</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; assay(ft[[2]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         S1    S2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ProtA 3.50 13.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ProtB 5.25 15.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; rowData(ft[[2]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 2 rows and 1 column</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              .n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;integer&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ProtA         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ProtB         2</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## Retrieve protein 'ProtA' and its 2 peptides and 6 PSMs</span></span>
 <span class="r-in"><span class="va">feat1</span><span class="op">[</span><span class="st">"ProtA"</span>, , <span class="op">]</span></span>
@@ -342,7 +376,7 @@ assays and features.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
 </div>
 
       </footer></div>
