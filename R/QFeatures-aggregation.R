@@ -394,8 +394,7 @@ setMethod("adjacencyMatrix", "SummarizedExperiment",
 ##'     matrix (class `dgCMatrix`) as defined in the `Matrix` package,
 ##'     as generaled by the [sparseMatrix()] constructor.
 "adjacencyMatrix<-" <- function(object, i, adjName = "adjacencyMatrix", value) {
-    if (is.null(colnames(value)) | is.null(rownames(value)))
-        stop("The matrix must have row and column names.")
+    validAdjacencyMatrix(value)
     ## Coerse to a sparse matrix
     value <- as(value, "sparseMatrix")
     if (inherits(object, "SummarizedExperiment")) {
@@ -426,4 +425,15 @@ setMethod("adjacencyMatrix", "SummarizedExperiment",
     if (!is(ans, "sparseMatrix"))
         warning("The adjacency matrix should ideally be sparse.")
     ans
+}
+
+
+validAdjacencyMatrix <- function(x) {
+    if (is.null(colnames(x)) | is.null(rownames(x)))
+        stop("The matrix must have row and column names.")
+    if (any(Matrix::rowSums(x) == 0))
+        stop("rowSums() == 0 detected: peptides must belong to at least one proteins.")
+    if (any(Matrix::colSums(x) == 0))
+        stop("colSums() == 0 detected: proteins must be identified by at least one peptide.")
+    TRUE
 }
