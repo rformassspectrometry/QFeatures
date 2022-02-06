@@ -413,7 +413,8 @@ setMethod("adjacencyMatrix", "SummarizedExperiment",
     if (is.character(i) && !(i %in% names(object)))
         stop("Assay '", i, "' not found.")
     se <- object[[i]]
-    object[[i]] <- adjacencyMatrix(se, adjName) <- value
+    adjacencyMatrix(se, adjName = adjName) <- value
+    object[[i]] <- se
     return(object)
 }
 

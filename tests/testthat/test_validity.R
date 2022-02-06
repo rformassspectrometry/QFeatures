@@ -82,7 +82,7 @@ test_that(".validAssayLinks", {
 
 
 test_that("adjacencyMatrix validity", {
-    m <- sparseMatrix(1:3, 1:3, x = 1)
+    m <- Matrix::sparseMatrix(1:3, 1:3, x = 1)
     expect_error(validAdjacencyMatrix(m),
                  "The matrix must have row and column names.")
     rownames(m) <- paste0("p", 1:3)
