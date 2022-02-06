@@ -121,7 +121,7 @@ parent(s) \code{AssayLinks} or assay with index or name \code{i}.
 in the \link{QFeatures} object and creates a link given a matching
 feature variable in each assay's \code{rowData}. \code{addAssayLink} also
 allows to link an assay from multiple parent assays (see
-Examples).
+examples below).
 \item \code{addAssayLinkOneToOne} links two assays contained in the
 \link{QFeatures} object. The parent assay and the child assay must
 have the same size and contain the same rownames (a different

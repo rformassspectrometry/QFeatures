@@ -1,5 +1,11 @@
 # QFeatures 1.5
 
+## QFeatures 1.5.3
+
+- feat: aggregation by adjacency matrix
+- New `adjacencyMatrix,SummarizedExperiment` and
+  `adjacencyMatrix,QFeatures` methods using
+  `ProtGenerics::adjacencyMatrix` (available in version >= 1.27.1).
 
 ## QFeatures 1.5.2
 

@@ -54,9 +54,9 @@ test_that("updateObject", {
     ## AssayLink should lead to the same object
     expect_identical(feat3@assayLinks[[3]], updateObject(feat3@assayLinks[[3]]))
     ## Check verbose
-    expect_message(updateObject(feat3@assayLinks, verbose = TRUE), 
+    expect_message(updateObject(feat3@assayLinks, verbose = TRUE),
                    regexp = "updateObject.*'AssayLinks'")
-    expect_message(updateObject(feat3@assayLinks[[1]], verbose = TRUE), 
+    expect_message(updateObject(feat3@assayLinks[[1]], verbose = TRUE),
                    regexp = "updateObject.*'AssayLink'")
 })
 
@@ -139,7 +139,7 @@ test_that(".create_assay_link", {
     expect_error(.create_assay_link(feat1, from = "psms", to = "peptides",
                                     varFrom = c("Sequence", "Sequence"),
                                     varTo = "Sequence"),
-                 regexp = "must have same length")
+                 regexp = "must be of identical length")
 })
 
 

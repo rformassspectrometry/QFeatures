@@ -32,13 +32,13 @@ test_that(".validAssayLink", {
     ## Valid assay link with empty parent
     test <- feat3[letters[1:3], , ]
     expect_identical(.validAssayLink(test, 3), NULL)
-    
+
     ##-- Corrupt the @from slot --###
     ## Change @from slot in AssayLink to point to missing assay
     test@assayLinks[[1]]@from <- "foo"
     expect_error(.validAssayLink(test, 1),
                  regexp = "@from not valid")
-    
+
     ##-- Corrupt the @hits slot with 1 parent (Hits object) --###
     ## Add hits that links a root assay from a missing assay
     test <- feat3
@@ -57,7 +57,7 @@ test_that(".validAssayLink", {
     mcols(test@assayLinks[[5]]@hits)$names_to[[1]] <- "foo"
     expect_error(.validAssayLink(test, 5),
                  regexp = "point to missing features")
-    
+
     ##-- Corrupt the @hits slot with multiple parents (List object) --###
     ## Add hits that links an assay to a missing features
     test <- feat3
@@ -78,4 +78,24 @@ test_that(".validAssayLinks", {
     feat3@assayLinks <- feat3@assayLinks[rev(seq_along(feat3@assayLinks))]
     expect_error(.validAssayLinks(feat3),
                  "@names not valid")
+})
+
+
+test_that("adjacencyMatrix validity", {
+    m <- Matrix::sparseMatrix(1:3, 1:3, x = 1)
+    expect_error(validAdjacencyMatrix(m),
+                 "The matrix must have row and column names.")
+    rownames(m) <- paste0("p", 1:3)
+    colnames(m) <- paste0("P", 1:3)
+    expect_true(validAdjacencyMatrix(m))
+    m[3, 3] <- 0
+    m[2, 3] <- 1
+    expect_error(validAdjacencyMatrix(m),
+                 "rowSums() == 0 detected: peptides must belong to at least one protein.",
+                 fixed = TRUE)
+    m[2, 3] <- 0
+    m[3, 2] <- 1
+    expect_error(validAdjacencyMatrix(m),
+                 "colSums() == 0 detected: proteins must be identified by at least one peptide.",
+                 fixed = TRUE)
 })

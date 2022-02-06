@@ -200,7 +200,7 @@ jobs:
           message(paste('****', Sys.time(), 'pass number 2 at installing dependencies: any remaining dependencies ****'))
           deps <- remotes::dev_package_deps(dependencies = TRUE, repos = BiocManager::repositories())
           BiocManager::install(deps$package[deps$diff != 0])
-          
+
           ## For running the checks
           message(paste('****', Sys.time(), 'installing rcmdcheck and BiocCheck ****'))
           remotes::install_cran("rcmdcheck")
@@ -218,11 +218,15 @@ jobs:
           git clone https://github.com/bmbolstad/preprocessCore.git
           cd preprocessCore
           R CMD INSTALL --configure-args="--disable-threading"  .
-          
+
       - name: Install MsCoreUtils from Github (to get version 1.7.2)
         run: BiocManager::install("RforMassSpectrometry/MsCoreUtils")
         shell: Rscript {0}
-        
+
+      - name: Install ProtGenerics from Github (to get version 1.27.1)
+        run: BiocManager::install("RforMassSpectrometry/ProtGenerics")
+        shell: Rscript {0}
+
       - name: Session info
         run: |
           options(width = 100)
