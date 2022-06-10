@@ -339,9 +339,7 @@ setMethod("[", c("AssayLinks", "list"),
                       "._rownames", "._rownames")
         })
         varFrom <- "._rownames"
-    } else if (length(varFrom) == 1 &&
-               (is.matrix(rowData(object[[from]])[[varFrom]]) ||
-                is(rowData(object[[from]])[[varFrom]], "Matrix"))) {
+    } else if (length(varFrom) == 1 && is(rowData(object[[from]])[[varFrom]], "Matrix")) {
         ## Aggregation using am adjacency matrix - must have a single
         ## varFrom that must point to a [M|m]atrix
         adj <- rowData(object[[from]])[[varFrom]]
@@ -351,19 +349,22 @@ setMethod("[", c("AssayLinks", "list"),
         } else rs <- rowSums(adj)
         i <- rep(seq_len(nrow(adj)), rs)
         j <- unname(unlist(apply(adj, 1, function(i) which(i != 0))))
-        hits <- Hits(i, j, length(i), length(j))
+        hits <- Hits(i, j, nrow(object[[from]]), nrow(object[[to]]))
         elementMetadata(hits)$names_from <- rownames(adj)[i]
         elementMetadata(hits)$names_to <- colnames(adj)[j]
         elementMetadata(hits)$weigths <- adj[adj != 0]
     } else if (length(from) == length(varFrom)) {
         ## Create the list of hits between the child assay and the
-        ## parent assays based on the supplied varFrom and varTo
+        ## parent assays based on the supplied varFrom and
+        ## varTo. varTo should be of length 1 here, so testing it
+        ## here.
+        stopifnot(length(varTo) == 1)
         hits <- lapply(seq_along(from), function(ii) {
             .get_Hits(rdFrom = rowData(object[[from[ii]]]),
                       rdTo = rowData(object[[to]]),
                       varFrom[[ii]], varTo)
         })
-    } else stop("'from' and 'varFrom' must have identical same lengths.")
+    } else stop("'from' and 'varFrom' must be of identical length.")
 
     ## Format the hits slot to the expected class ("ListorHits")
     if (length(hits) > 1) {

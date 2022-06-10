@@ -24,11 +24,11 @@ Imports:
    IRanges,
    SummarizedExperiment,
    BiocGenerics,
-   ProtGenerics (>= 1.19.3),
+   ProtGenerics (>= 1.27.1),
    AnnotationFilter,
    lazyeval,
    Biobase,
-   MsCoreUtils (>= 1.1.2),
+   MsCoreUtils (>= 1.7.2),
    igraph,
    plotly
 Suggests:

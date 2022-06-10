@@ -152,12 +152,20 @@ test_that("aggregate by matrix and vector work (1)", {
           1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1),
         .Dim = c(10L, 3L),
         .Dimnames = list(
-            c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10"),
+            paste0("PSM", 1:10),
             c("SYGFNAAR", "ELGNDAYK", "IAEESNFPFIK")))
     ## 1.1 aggregate PSMs to peptides by vector
     se1 <- aggregateFeatures(se, "Sequence", colSums)
     ## 1.2 aggregate PSMs to peptides by matrix
     rowData(se)$adjacencyMatrix <- adjSequence
+    expect_error(aggregateFeatures(se, "adjacencyMatrix",
+                                   MsCoreUtils::colSumsMat),
+                 "'fcol' must refer to a vector or a sparse matrix")
+    ## Error when adjancencyMatrix already present
+    expect_error(adjacencyMatrix(se) <- adjSequence,
+                 "Found an existing variable adjacencyMatrix.")
+    rowData(se)[["adjacencyMatrix"]] <- NULL
+    adjacencyMatrix(se) <- adjSequence
     se2 <- aggregateFeatures(se, "adjacencyMatrix", MsCoreUtils::colSumsMat)
     ## order of rows isn't necessary the same
     rnms <- rownames(se1)
@@ -171,11 +179,12 @@ test_that("aggregate by matrix and vector work (1)", {
     adjProtein <- structure(
         c(1, 1, 0, 0, 0, 1),
         .Dim = 3:2,
-        .Dimnames = list(c("1", "2", "3"), c("ProtA", "ProtB")))
+        .Dimnames = list(c("SYGFNAAR", "ELGNDAYK", "IAEESNFPFIK"),
+                         c("ProtA", "ProtB")))
     ## 2.1 aggregate peptides to proteins by vector
     se3 <- aggregateFeatures(se1, "Protein", colSums)
-    ## 2.2 aggregate peptides to proteins  by matrix
-    rowData(se2)$adjacencyMatrix <- adjProtein
+    ## 2.2 aggregate peptides to proteins by matrix
+    adjacencyMatrix(se2) <- adjProtein
     se4 <- aggregateFeatures(se2, "adjacencyMatrix", MsCoreUtils::colSumsMat)
     ## order of rows isn't necessary the same
     rnms <- rownames(se3)
@@ -200,9 +209,9 @@ test_that("aggregate by matrix and vector work (2)", {
     adjProtein <- structure(
         c(1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0),
         .Dim = 4:3,
-        .Dimnames = list(c("1", "2", "3", "4"),
+        .Dimnames = list(c("ELGNDAYK", "IAEESNFPFIK", "PEPTIDE", "SYGFNAAR"),
                          c("ProtA", "ProtB", "ProtC")))
-    rowData(se)$adjacencyMatrix <- adjProtein
+    adjacencyMatrix(se) <- adjProtein
     se2 <- aggregateFeatures(se, "adjacencyMatrix", MsCoreUtils::colSumsMat)
     ## only ProtA is composed of unique peptides only - only protein
     ## with identical aggregation results

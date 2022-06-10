@@ -5,10 +5,11 @@
 \alias{aggregateFeatures}
 \alias{aggregateFeatures,QFeatures-method}
 \alias{aggcounts}
-\alias{aggcounts,SummarizedExperiment,}
-\alias{adjacencyMatrix}
-\alias{aggregateFeatures,SummarizedExperiment-method}
 \alias{aggcounts,SummarizedExperiment-method}
+\alias{adjacencyMatrix,SummarizedExperiment-method}
+\alias{adjacencyMatrix,QFeatures-method}
+\alias{aggregateFeatures,SummarizedExperiment-method}
+\alias{adjacencyMatrix<-}
 \title{Aggregate an assay's quantitative features}
 \usage{
 \S4method{aggregateFeatures}{QFeatures}(
@@ -22,13 +23,20 @@
 
 \S4method{aggregateFeatures}{SummarizedExperiment}(object, fcol, fun = MsCoreUtils::robustSummary, ...)
 
+\S4method{adjacencyMatrix}{QFeatures}(object, i, adjName = "adjacencyMatrix")
+
+adjacencyMatrix(object, i, adjName = "adjacencyMatrix") <- value
+
 \S4method{aggcounts}{SummarizedExperiment}(object, ...)
 }
 \arguments{
-\item{object}{An instance of class \link{QFeatures} or \link{SummarizedExperiment}.}
+\item{object}{An instance of class \code{SummarizedExperiment} or
+\code{QFeatures}.}
 
-\item{i}{The index or name of the assay which features will be
-aggregated the create the new assay.}
+\item{i}{When adding an adjacency matrix to an assay of a
+\code{QFeatures} object, the index or name of the assay the
+adjacency matrix will be added to. Ignored when \code{x} is an
+\code{SummarizedExperiment}.}
 
 \item{fcol}{A \code{character(1)} naming a rowdata variable (of assay
 \code{i} in case of a \code{QFeatures}) defining how to aggregate the
@@ -43,6 +51,14 @@ already an assay with \code{name}.}
 aggregation. See Details for examples.}
 
 \item{...}{Additional parameters passed the \code{fun}.}
+
+\item{adjName}{\code{character(1)} with the variable name containing
+the adjacency matrix. Default is \code{"adjacencyMatrix"}.}
+
+\item{value}{An adjacency matrix with row and column names. The
+matrix will be coerced to compressed, column-oriented sparse
+matrix (class \code{dgCMatrix}) as defined in the \code{Matrix} package,
+as generaled by the \code{\link[=sparseMatrix]{sparseMatrix()}} constructor.}
 }
 \value{
 A \code{QFeatures} object with an additional assay or a
@@ -141,11 +157,11 @@ otherwise variant column, the column would be dropped anyway.
 
 
 When considering non-unique peptides explicitly, i.e. peptides
-that map to multiple proteins rather than a portein group, it is
-convenient to encode this ambiguity explicitly using a
-peptide-by-proteins adjacency matrix. This matrix is typically
-stored in the rowdata and, when named \code{"adjacencyMatrix"}, can be
-retrieved with \code{adjacencyMatrix()}. It can be created manually (as
+that map to multiple proteins rather than as a protein group, it
+is convenient to encode this ambiguity explicitly using a
+peptide-by-proteins (sparse) adjacency matrix. This matrix is
+typically stored in the rowdata and set/retrieved with the
+\code{\link[=adjacencyMatrix]{adjacencyMatrix()}} function. It can be created manually (as
 illustrated below) or using \code{PSMatch::makeAdjacencyMatrix()}.
 }
 
@@ -231,7 +247,7 @@ adj <- matrix(0, nrow = 3, ncol = 2,
 adj[1, 1] <- adj[2, 2] <- adj[3, 1:2] <- 1
 adj
 
-rowData(se)$adjacencyMatrix <- adj
+adjacencyMatrix(se) <- adj
 rowData(se)
 adjacencyMatrix(se)
 
@@ -242,6 +258,15 @@ se2 <- aggregateFeatures(se, fcol = "adjacencyMatrix",
 ## Peptide SYGFNAAR was taken into account in both ProtA and ProtB
 ## aggregations.
 assay(se2)
+
+
+## Aggregation by matrix on a QFeature object works as with a
+## vector
+ft <- QFeatures(list(peps = se))
+ft <- aggregateFeatures(ft, "peps", "adjacencyMatrix", name = "protsByMat",
+                        fun = MsCoreUtils::colMeansMat)
+assay(ft[[2]])
+rowData(ft[[2]])
 }
 \seealso{
 The \emph{QFeatures} vignette provides an extended example and
