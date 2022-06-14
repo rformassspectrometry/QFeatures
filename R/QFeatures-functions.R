@@ -4,6 +4,8 @@
 
 ##' @title Count Unique Features
 ##' 
+##' @description
+##' 
 ##' This function counts the number of unique features per sample. A 
 ##' grouping structure can be provided to count higher level features
 ##' from assays, for example counting the number of unique proteins 
