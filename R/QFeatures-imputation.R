@@ -77,18 +77,23 @@ setMethod("impute", "SummarizedExperiment",
           })
 
 
-##' @param i Defines which element of the `QFeatures` instance to
-##'     impute. If missing, all assays will be imputed.
+##' @param i A `logical(1)` or a `character(1)` that defines which 
+##'     element of the `QFeatures` instance to impute. It cannot be
+##'      missing and must be of length one.
+##' @param name A `character(1)` naming the new assay name. Default
+##'     is `imputedAssay`.
 ##'
 ##' @export
 ##' @rdname impute
 setMethod("impute", "QFeatures",
-          function(object, method, ..., i) {
+          function(object, method, ..., i, name = "imputedAssay") {
               if (missing(i))
-                  i  <-  seq_len(length(object))
-              for (ii in i) {
-                  res <- impute_matrix(assay(object[[ii]]), method, ...)
-                  assay(object[[ii]]) <- res
-              }
-              object
+                  stop("Provide index or name of assay to be processed")
+              if (length(i) != 1)
+                  stop("Only one assay to be processed at a time")
+              if (is.numeric(i)) i <- names(object)[[i]]
+              object <- addAssay(object,
+                                 impute(object[[i]], method, ...),
+                                 name)
+              addAssayLinkOneToOne(object, from = i, to = name)
           })
