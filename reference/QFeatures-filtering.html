@@ -21,7 +21,7 @@ filters can be provided as instances of class AnnotationFilter
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.1</span>
       </span>
     </div>
 
@@ -33,7 +33,7 @@ filters can be provided as instances of class AnnotationFilter
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -91,10 +91,14 @@ filters can be provided as instances of class <code>AnnotationFilter</code>
     <dl><dt>field</dt>
 <dd><p><code>character(1)</code> refering to the name of the variable
 to apply the filter on.</p></dd>
+
+
 <dt>value</dt>
 <dd><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> or <code><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer()</a></code> value for the
 <code>CharacterVariableFilter</code> and <code>NumericVariableFilter</code> filters
 respectively.</p></dd>
+
+
 <dt>condition</dt>
 <dd><p><code>character(1)</code> defining the condition to be used in
 the filter. For <code>NumericVariableFilter</code>, one of <code>"=="</code>,
@@ -102,24 +106,37 @@ the filter. For <code>NumericVariableFilter</code>, one of <code>"=="</code>,
 <code>CharacterVariableFilter</code>, one of <code>"=="</code>, <code>"!="</code>,
 <code>"startsWith"</code>, <code>"endsWith"</code> or <code>"contains"</code>. Default
 condition is <code>"=="</code>.</p></dd>
+
+
 <dt>not</dt>
 <dd><p><code>logical(1)</code> indicating whether the filtering should be negated
 or not. <code>TRUE</code> indicates is negated (!). <code>FALSE</code> indicates not negated.
 Default <code>not</code> is <code>FALSE</code>, so no negation.</p></dd>
+
+
 <dt>object</dt>
 <dd><p>An instance of class <a href="QFeatures-class.html">QFeatures</a>.</p></dd>
+
+
 <dt>filter</dt>
 <dd><p>Either an instance of class AnnotationFilter or a
 formula.</p></dd>
+
+
 <dt>na.rm</dt>
 <dd><p><code>logical(1)</code> indicating whether missing values should
 be removed. Default is <code>FALSE</code>.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional parameters. Currently ignored.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An filtered <code>QFeature</code> object.</p>
+    
+
+<p>An filtered <code>QFeature</code> object.</p>
     </div>
     <div id="variable-filters">
     <h2>Variable filters</h2>
@@ -641,7 +658,7 @@ vignette provides an extended example.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

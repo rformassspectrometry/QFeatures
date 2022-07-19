@@ -18,7 +18,7 @@ QFeatures object."><meta property="og:image" content="/logo.png"><!-- mathjax --
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.1</span>
       </span>
     </div>
 
@@ -30,7 +30,7 @@ QFeatures object."><meta property="og:image" content="/logo.png"><!-- mathjax --
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -84,6 +84,8 @@ either a <code>character(1)</code> with the path to a text-based
 spreadsheet (comma-separated values by default, but see <code>...</code>)
 or an object that can be coerced to a <code>data.frame</code>. It is
 advised not to encode characters as factors.</p></dd>
+
+
 <dt>ecol</dt>
 <dd><p>A <code>numeric</code> indicating the indices of the columns to
 be used as expression values. Can also be a <code>character</code>
@@ -92,19 +94,28 @@ the column names are composed of special characters like <code>(</code>
 or <code>-</code> that will be converted to a <code>.</code> by the <code>read.csv</code>
 function. If <code>ecol</code> does not match, the error message will
 display the column names as seen by the <code>read.csv</code> function.</p></dd>
+
+
 <dt>fnames</dt>
 <dd><p>An optional <code>character(1)</code> or <code>numeric(1)</code>
 indicating the column to be used as feature names.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Further arguments that can be passed on to <code>read.csv</code>
 except <code>stringsAsFactors</code>, which is always <code>FALSE</code>.</p></dd>
+
+
 <dt>name</dt>
 <dd><p>An <code>character(1)</code> to name assay in the <code>QFeatures</code>
 object. If not set, <code>features</code> is used.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An instance of class <a href="QFeatures-class.html">QFeatures</a> or SummarizedExperiment.</p>
+    
+
+<p>An instance of class <a href="QFeatures-class.html">QFeatures</a> or SummarizedExperiment.</p>
     </div>
     <div id="functions">
     <h2>Functions</h2>
@@ -148,7 +159,7 @@ object. If not set, <code>features</code> is used.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

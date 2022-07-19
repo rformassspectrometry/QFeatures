@@ -19,7 +19,7 @@ instances."><meta property="og:image" content="/logo.png"><!-- mathjax --><scrip
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.1</span>
       </span>
     </div>
 
@@ -31,7 +31,7 @@ instances."><meta property="og:image" content="/logo.png"><!-- mathjax --><scrip
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -105,53 +105,86 @@ addAssayLinkOneToOne(object, from, to)</code></pre></div>
     <h2>Arguments</h2>
     <dl><dt>object</dt>
 <dd><p>An <code>AssayLink</code> object to show.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>A set of <code>AssayLink</code> objects or a list thereof.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>logical (default FALSE) whether to print extra messages</p></dd>
+
+
 <dt>name</dt>
 <dd><p>A mandatory name of the assay(s).</p></dd>
+
+
 <dt>from</dt>
 <dd><p>A <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> or <code><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer()</a></code> indicating which
 assay(s) to link from in <code>object</code></p></dd>
+
+
 <dt>fcol</dt>
 <dd><p>The feature variable of the parent assay used to
 generate the current assay (used in
 <code>aggregateFeatures</code>). <code>NA_character_</code>, if not applicable.</p></dd>
+
+
 <dt>hits</dt>
 <dd><p>An object of class <a href="https://rdrr.io/pkg/S4Vectors/man/Hits-class.html" class="external-link">S4Vectors::Hits</a> matching the
 features of two assays.</p></dd>
+
+
 <dt>names</dt>
 <dd><p>A <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> of <code>AssayLink</code> names. If provided,
 <code>...</code> are ignored, and <code>names</code> is used to create an
 <code>AssayLinks</code> object with <code>AssayLink</code> instances with names
 <code>names</code>.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>An instance of class <a href="QFeatures-class.html">QFeatures</a>.</p></dd>
+
+
 <dt>i</dt>
 <dd><p>The index or name of the assay whose <code>AssayLink</code> and
 parents <code>AssayLink</code> instances are to be returned. For <code>[</code>, the
 feature names to filter on.</p></dd>
+
+
 <dt>j</dt>
 <dd><p>ignored.</p></dd>
+
+
 <dt>drop</dt>
 <dd><p>ignored.</p></dd>
+
+
 <dt>to</dt>
 <dd><p>A <code>character(1)</code> or <code>integer(1)</code> indicating which assay
 to link to in <code>object</code></p></dd>
+
+
 <dt>varFrom</dt>
 <dd><p>A <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> indicating the feature variable(s)
 to use to match the <code>from</code> assay(s) to the <code>to</code>
 assay. <code>varFrom</code> must have the same length as <code>from</code> and is
 assumed to be ordered as <code>from</code>.</p></dd>
+
+
 <dt>varTo</dt>
 <dd><p>A <code>character(1)</code> indicating the feature variable to
 use to match the <code>to</code> assay to the <code>from</code> assay(s).</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>assayLink</code> returns an instance of class <code>AssayLink</code>.
-<code>assayLinks</code> returns an instance of class <code>AssayLinks</code>.</p>
+    
+
+<p><code>assayLink</code> returns an instance of class <code>AssayLink</code>.</p>
+
+
+<p><code>assayLinks</code> returns an instance of class <code>AssayLinks</code>.</p>
     </div>
     <div id="constructors">
     <h2>Constructors</h2>
@@ -273,7 +306,7 @@ names of the assays, instead of a supplied variable name in
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

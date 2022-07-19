@@ -41,7 +41,7 @@ sure that these match the class validity requirements."><meta property="og:image
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.1</span>
       </span>
     </div>
 
@@ -53,7 +53,7 @@ sure that these match the class validity requirements."><meta property="og:image
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -164,58 +164,93 @@ QFeatures(..., assayLinks = NULL)</code></pre></div>
     <h2>Arguments</h2>
     <dl><dt>object</dt>
 <dd><p>An instance of class QFeatures.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>An instance of class QFeatures.</p></dd>
+
+
 <dt>interactive</dt>
 <dd><p>A <code>logical(1)</code>. If <code>TRUE</code>, an interactive graph
 is generated using <code>plotly</code>. Else, a static plot using <code>igraph</code>
 is generated. We recommend interactive exploration when the
 <code>QFeatures</code> object contains more than 50 assays.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>See <code>MultiAssayExperiment</code> for details. For <code>plot</code>,
 further arguments passed to <code><a href="https://rdrr.io/pkg/igraph/man/plot.igraph.html" class="external-link">igraph::plot.igraph</a></code>.</p></dd>
+
+
 <dt>i</dt>
 <dd><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>, <code><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer()</a></code>, <code><a href="https://rdrr.io/r/base/logical.html" class="external-link">logical()</a></code> or <code>GRanges()</code>
 object for subsetting by rows.</p></dd>
+
+
 <dt>j</dt>
 <dd><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>, <code><a href="https://rdrr.io/r/base/logical.html" class="external-link">logical()</a></code>, or <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code> vector for
 subsetting by <code>colData</code> rows.</p></dd>
+
+
 <dt>drop</dt>
 <dd><p>logical (default <code>TRUE</code>) whether to drop empty assay
 elements in the <code>ExperimentList</code>.</p></dd>
+
+
 <dt>k</dt>
 <dd><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>, <code><a href="https://rdrr.io/r/base/logical.html" class="external-link">logical()</a></code>, or <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code> vector for
 subsetting by assays</p></dd>
+
+
 <dt>use.names</dt>
 <dd><p>A <code>logical(1)</code> indicating whether the rownames of
 each assay should be propagated to the corresponding <code>rowData</code>.</p></dd>
+
+
 <dt>value</dt>
 <dd><p>The values to use as a replacement. See the
 corresponding section in the documentation for more details.</p></dd>
+
+
 <dt>rowvars</dt>
 <dd><p>A <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> with the names of the <code>rowData</code>
 variables (columns) to retain in any assay.</p></dd>
+
+
 <dt>colvars</dt>
 <dd><p>A <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> that selects column(s) in the
 <code>colData</code>.</p></dd>
+
+
 <dt>index</dt>
 <dd><p>The assay indicator for <code>SummarizedExperiment</code>
 objects. A vector input is supported in the case that the
 <code>SummarizedExperiment</code> object(s) has more than one assay
 (default <code>1L</code>)</p></dd>
+
+
 <dt>y</dt>
 <dd><p>A single assay or a <em>named</em> list of assays.</p></dd>
+
+
 <dt>name</dt>
 <dd><p>A <code>character(1)</code> naming the single assay (default is
 <code>"newAssay"</code>). Ignored if <code>y</code> is a list of assays.</p></dd>
+
+
 <dt>assayLinks</dt>
 <dd><p>An optional <a href="AssayLinks.html">AssayLinks</a> object.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>logical (default FALSE) whether to print extra messages</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>See individual method description for the return value.</p>
+    
+
+<p>See individual method description for the return value.</p>
     </div>
     <div id="constructors">
     <h2>Constructors</h2>
@@ -419,7 +454,7 @@ processing methods using in quantitative proteomics.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

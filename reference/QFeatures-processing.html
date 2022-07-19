@@ -35,7 +35,7 @@ See the Processing vignette for examples.'><meta property="og:image" content="/l
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.1</span>
       </span>
     </div>
 
@@ -47,7 +47,7 @@ See the Processing vignette for examples.'><meta property="og:image" content="/l
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -140,54 +140,83 @@ sweeps out array summaries from <code>SummarizedExperiment</code> and
     <h2>Arguments</h2>
     <dl><dt>object</dt>
 <dd><p>An object of class <code>QFeatures</code> or <code>SummarizedExperiment</code>.</p></dd>
+
+
 <dt>base</dt>
 <dd><p><code>numeric(1)</code> providing the base with respect to which
 logarithms are computed. Defaults is 2.</p></dd>
+
+
 <dt>pc</dt>
 <dd><p><code>numeric(1)</code> with a pseudocount to add to the
 quantitative data. Useful when (true) 0 are present in the
 data. Default is 0 (no effect).</p></dd>
+
+
 <dt>i</dt>
 <dd><p>A numeric vector or a character vector giving the index or the
 name, respectively, of the assay(s) to be processed.</p></dd>
+
+
 <dt>name</dt>
 <dd><p>A <code>character(1)</code> naming the new assay name. Defaults
 are <code>logAssay</code> for <code>logTransform</code>, <code>scaledAssay</code> for
 <code>scaleTranform</code> and <code>normAssay</code> for <code>normalize</code>.</p></dd>
+
+
 <dt>center</dt>
 <dd><p><code>logical(1)</code> (default is <code>TRUE</code>) value or
 numeric-alike vector of length equal to the number of columns
 of <code>object</code>. See <code><a href="https://rdrr.io/r/base/scale.html" class="external-link">base::scale()</a></code> for details.</p></dd>
+
+
 <dt>scale</dt>
 <dd><p><code>logical(1)</code> (default is <code>TRUE</code>) or a numeric-alike
 vector of length equal to the number of columns of
 <code>object</code>. See <code><a href="https://rdrr.io/r/base/scale.html" class="external-link">base::scale()</a></code> for details.</p></dd>
+
+
 <dt>method</dt>
 <dd><p><code>character(1)</code> defining the normalisation method to
 apply. See Details.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional parameters passed to inner functions.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>An object of class <code>QFeatures</code> or <code>SummarizedExperiment</code>
 in <code>sweep</code>.</p></dd>
+
+
 <dt>MARGIN</dt>
 <dd><p>As in <code><a href="https://rdrr.io/r/base/sweep.html" class="external-link">base::sweep()</a></code>, a vector of indices giving the
 extent(s) of <code>x</code> which correspond to <code>STATS</code>.</p></dd>
+
+
 <dt>STATS</dt>
 <dd><p>As in <code><a href="https://rdrr.io/r/base/sweep.html" class="external-link">base::sweep()</a></code>, the summary statistic which is
 to be swept out.</p></dd>
+
+
 <dt>FUN</dt>
 <dd><p>As in <code><a href="https://rdrr.io/r/base/sweep.html" class="external-link">base::sweep()</a></code>, the function to be used to carry
 out the sweep.</p></dd>
+
+
 <dt>check.margin</dt>
 <dd><p>As in <code><a href="https://rdrr.io/r/base/sweep.html" class="external-link">base::sweep()</a></code>, a <code>logical</code>.  If <code>TRUE</code>
 (the default), warn if the length or dimensions of <code>STATS</code> do
 not match the specified dimensions of <code>x</code>.  Set to <code>FALSE</code> for
 a small speed gain when you know that dimensions match.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An processed object of the same class as <code>x</code> or <code>object</code>.</p>
+    
+
+<p>An processed object of the same class as <code>x</code> or <code>object</code>.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -238,7 +267,7 @@ arguments.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

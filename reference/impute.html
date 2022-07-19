@@ -24,7 +24,7 @@ the different imputation methods available and strategies."><meta property="og:i
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.1</span>
       </span>
     </div>
 
@@ -36,7 +36,7 @@ the different imputation methods available and strategies."><meta property="og:i
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -89,7 +89,7 @@ the different imputation methods available and strategies.</p>
 <span class="fu">impute</span><span class="op">(</span><span class="va">object</span>, <span class="va">method</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="co"># S4 method for QFeatures</span>
-<span class="fu">impute</span><span class="op">(</span><span class="va">object</span>, <span class="va">method</span>, <span class="va">...</span>, <span class="va">i</span><span class="op">)</span></code></pre></div>
+<span class="fu">impute</span><span class="op">(</span><span class="va">object</span>, <span class="va">method</span>, <span class="va">...</span>, <span class="va">i</span>, name <span class="op">=</span> <span class="st">"imputedAssay"</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="format">
@@ -101,16 +101,29 @@ the different imputation methods available and strategies.</p>
     <dl><dt>object</dt>
 <dd><p>A <code>SummarizedExperiment</code> or <code>QFeatures</code> object with
 missing values to be imputed.</p></dd>
+
+
 <dt>method</dt>
 <dd><p><code>character(1)</code> defining the imputation method. See
 <code>imputeMethods()</code> for available ones. See
 <code><a href="https://rdrr.io/pkg/MsCoreUtils/man/imputation.html" class="external-link">MsCoreUtils::impute_matrix()</a></code> for details.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional parameters passed to the inner imputation
 function. See <code><a href="https://rdrr.io/pkg/MsCoreUtils/man/imputation.html" class="external-link">MsCoreUtils::impute_matrix()</a></code> for details.</p></dd>
+
+
 <dt>i</dt>
-<dd><p>Defines which element of the <code>QFeatures</code> instance to
-impute. If missing, all assays will be imputed.</p></dd>
+<dd><p>A <code>logical(1)</code> or a <code>character(1)</code> that defines which
+element of the <code>QFeatures</code> instance to impute. It cannot be
+missing and must be of length one.</p></dd>
+
+
+<dt>name</dt>
+<dd><p>A <code>character(1)</code> naming the new assay name. Default
+is <code>imputedAssay</code>.</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
@@ -163,6 +176,10 @@ impute. If missing, all assays will be imputed.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: gmm</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: sandwich</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: norm</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> This package has some major limitations</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> (for example, it does not work reliably when</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> the number of variables exceeds 30),</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> and has been superseded by the norm2 package.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: pcaMethods</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘pcaMethods’</span>
@@ -179,7 +196,7 @@ impute. If missing, all assays will be imputed.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colnames(16): M1F1A M1F4A ... M2F8B M2F11B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colData names(1): nNA</span>
 <span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="http://www.stat.psu.edu/~jls/misoftwa.html#aut" class="external-link">"norm"</a></span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st">"norm"</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in">  <span class="fu">impute</span><span class="op">(</span><span class="va">se_na2</span>, method <span class="op">=</span> <span class="st">"MLE"</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Iterations of EM: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1...2...3...4...5...6...7...8...9...10...11...</span>
@@ -238,7 +255,7 @@ impute. If missing, all assays will be imputed.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

@@ -30,7 +30,7 @@ accessed with the aggcounts() accessor."><meta property="og:image" content="/log
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.1</span>
       </span>
     </div>
 
@@ -42,7 +42,7 @@ accessed with the aggcounts() accessor."><meta property="og:image" content="/log
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -122,37 +122,54 @@ accessed with the <code>aggcounts()</code> accessor.</p>
     <dl><dt>object</dt>
 <dd><p>An instance of class <code>SummarizedExperiment</code> or
 <code>QFeatures</code>.</p></dd>
+
+
 <dt>i</dt>
 <dd><p>When adding an adjacency matrix to an assay of a
 <code>QFeatures</code> object, the index or name of the assay the
 adjacency matrix will be added to. Ignored when <code>x</code> is an
 <code>SummarizedExperiment</code>.</p></dd>
+
+
 <dt>fcol</dt>
 <dd><p>A <code>character(1)</code> naming a rowdata variable (of assay
 <code>i</code> in case of a <code>QFeatures</code>) defining how to aggregate the
 features of the assay. This variable is either a <code>character</code>
 or a (possibly sparse) matrix. See below for details.</p></dd>
+
+
 <dt>name</dt>
 <dd><p>A <code>character(1)</code> naming the new assay. Default is
 <code>newAssay</code>. Note that the function will fail if there's
 already an assay with <code>name</code>.</p></dd>
+
+
 <dt>fun</dt>
 <dd><p>A function used for quantitative feature
 aggregation. See Details for examples.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional parameters passed the <code>fun</code>.</p></dd>
+
+
 <dt>adjName</dt>
 <dd><p><code>character(1)</code> with the variable name containing
 the adjacency matrix. Default is <code>"adjacencyMatrix"</code>.</p></dd>
+
+
 <dt>value</dt>
 <dd><p>An adjacency matrix with row and column names. The
 matrix will be coerced to compressed, column-oriented sparse
 matrix (class <code>dgCMatrix</code>) as defined in the <code>Matrix</code> package,
 as generaled by the <code>sparseMatrix()</code> constructor.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>QFeatures</code> object with an additional assay or a
+    
+
+<p>A <code>QFeatures</code> object with an additional assay or a
 <code>SummarizedExperiment</code> object (or subclass thereof).</p>
     </div>
     <div id="details">
@@ -486,7 +503,7 @@ further details.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>
