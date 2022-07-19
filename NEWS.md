@@ -4,6 +4,10 @@
 
 - refactor: imputation now adds a new assay instead of replacing values.
 
+## QFeatures 1.7.0
+
+- New Bioc devel version.
+
 # QFeatures 1.5
 
 ## QFeatures 1.5.3
