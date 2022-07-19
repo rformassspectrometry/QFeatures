@@ -1,8 +1,10 @@
-# QFeatures 1.5
+# QFeatures 1.7
 
-## QFeatures 1.5.4
+## QFeatures 1.7.1
 
 - refactor: imputation now adds a new assay instead of replacing values.
+
+# QFeatures 1.5
 
 ## QFeatures 1.5.3
 
