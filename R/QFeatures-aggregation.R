@@ -3,20 +3,21 @@
 ##' @description
 ##'
 ##' This function aggregates the quantitative features of an assay,
-##' applying a summarisation function (`fun`) to sets of features as
-##' defined by the `fcol` feature variable. The new assay's features
-##' will be named based on the unique `fcol` values.
-##'
-##' In addition to the results of the aggregation, the newly
-##' aggregated `SummarizedExperiment` assay also contains a new
-##' `aggcounts` assay containing the aggregation counts matrix,
-##' i.e. the number of features that were aggregated, which can be
-##' accessed with the `aggcounts()` accessor.
+##' applying a summarisation function (`fun`) to sets of features.
+##' The `fcol` variable name points to a rowData column that defines
+##' how to group the features during aggregate. This variable can
+##' eigher be a vector (we then refer to an *aggregation by vector*)
+##' or an adjacency matrix (*aggregation by matrix*).
 ##'
 ##' The rowData of the aggregated `SummarizedExperiment` assay
-##' contains a `.n` variable that provides the number of features that
-##' were aggregated. This `.n` value is always >= that the
-##' sample-level `aggcounts`.
+##' contains a `.n` variable that provides the number of parent
+##' features that were aggregated.
+##'
+##' When aggregating with a vector, the newly aggregated
+##' `SummarizedExperiment` assay also contains a new `aggcounts` assay
+##' containing the aggregation counts matrix, i.e. the number of
+##' features that were aggregated for each sample, which can be
+##' accessed with the `aggcounts()` accessor.
 ##'
 ##' @param object An instance of class [QFeatures] or [SummarizedExperiment].
 ##'
@@ -26,7 +27,7 @@
 ##' @param fcol A `character(1)` naming a rowdata variable (of assay
 ##'     `i` in case of a `QFeatures`) defining how to aggregate the
 ##'     features of the assay. This variable is either a `character`
-##'     of a (possibly sparse) matrix. See below for details.
+##'     or a (possibly sparse) matrix. See below for details.
 ##'
 ##' @param name A `character(1)` naming the new assay. Default is
 ##'     `newAssay`. Note that the function will fail if there's
@@ -55,19 +56,28 @@
 ##'
 ##' - [base::colMeans()] to use the mean of each column;
 ##'
+##' - `colMeansMat(x, MAT)` to aggregate feature by the calculating
+##'    the mean of peptide intensities via an adjacency matrix. Shared
+##'    peptides are re-used multiple times.
+##'
 ##' - [matrixStats::colMedians()] to use the median of each column.
 ##'
 ##' - [base::colSums()] to use the sum of each column;
 ##'
+##' - `colSumsMat(x, MAT)` to aggregate feature by the summing the
+##'    peptide intensities for each protein via an adjacency
+##'    matrix. Shared peptides are re-used multiple times.
+##'
+##' See [MsCoreUtils::aggregate_by_vector()] for more aggregation functions.
 ##'
 ##' @section Missing quantitative values:
 ##'
-##' Missing quantitative values have different effect based on the
+##' Missing quantitative values have different effects based on the
 ##' aggregation method employed:
 ##'
 ##' - The aggregation functions should be able to deal with missing
-##'   values by either ignoring them, and propagating them. This is
-##'   often done with an `na.rm` argument, that can be passed with
+##'   values by either ignoring or propagating them. This is often
+##'   done with an `na.rm` argument, that can be passed with
 ##'   `...`. For example, `rowSums`, `rowMeans`, `rowMedians`,
 ##'   ... will ignore `NA` values with `na.rm = TRUE`, as illustrated
 ##'   below.
@@ -107,25 +117,30 @@
 ##'
 ##' @section Using an adjacency matrix:
 ##'
-##' When considering non-unique peptides, i.e. peptides that map to
-##' multiple proteins, it is necessary to encode this ambiguity
-##' explicitly using a peptide-by-proteins adjacency matrix. This
-##' matrix is typically stored in the rowdata, is conventionally named
-##' `"adjacencyMatrix"` and can be retrieved with
-##' `adjacencyMatrix()`. It can be created manually (as illustrated
-##' below) or using [PSMatch::makeAdjacencyMatrix()].
+##' When considering non-unique peptides explicitly, i.e. peptides
+##' that map to multiple proteins rather than as a protein group, it
+##' is convenient to encode this ambiguity explicitly using a
+##' peptide-by-proteins (sparse) adjacency matrix. This matrix is
+##' typically stored in the rowdata and set/retrieved with the
+##' [adjacencyMatrix()] function. It can be created manually (as
+##' illustrated below) or using `PSMatch::makeAdjacencyMatrix()`.
 ##'
 ##' @seealso The *QFeatures* vignette provides an extended example and
 ##'     the *Processing* vignette, for a complete quantitative
-##'     proteomics data processing pipeline.
+##'     proteomics data processing pipeline. The
+##'     [MsCoreUtils::aggregate_by_vector()] manual page provides
+##'     further details.
 ##'
-##' @aliases aggregateFeatures aggregateFeatures,QFeatures-method aggcounts aggcounts,SummarizedExperiment, adjacencyMatrix
+##' @aliases aggregateFeatures aggregateFeatures,QFeatures-method
+##'     aggcounts aggcounts,SummarizedExperiment-method
+##'     adjacencyMatrix,SummarizedExperiment-method
+##'     adjacencyMatrix,QFeatures-method
 ##'
 ##' @name aggregateFeatures
 ##'
 ##' @rdname QFeatures-aggregate
 ##'
-##' @importFrom MsCoreUtils aggregate_by_vector robustSummary colCounts
+##' @importFrom MsCoreUtils aggregate_by_vector aggregate_by_matrix robustSummary colCounts
 ##'
 ##' @examples
 ##'
@@ -200,16 +215,35 @@
 ##' rowData(se)$Protein[3] <- c("ProtA;ProtB")
 ##' rowData(se)
 ##'
-##' ## Manual encoding of the adjacency matrix
+##' ## This can also be defined using anadjacency matrix, manual
+##' ## encoding here. See PSMatch::makeAdjacencyMatrix() for a
+##' ## function that does it automatically.
 ##' adj <- matrix(0, nrow = 3, ncol = 2,
 ##'               dimnames = list(rownames(se),
 ##'                               c("ProtA", "ProtB")))
 ##' adj[1, 1] <- adj[2, 2] <- adj[3, 1:2] <- 1
 ##' adj
 ##'
-##' rowData(se)$adjacencyMatrix <- adj
+##' adjacencyMatrix(se) <- adj
 ##' rowData(se)
 ##' adjacencyMatrix(se)
+##'
+##' ## Aggregation using the adjacency matrix
+##' se2 <- aggregateFeatures(se, fcol = "adjacencyMatrix",
+##'                          fun = MsCoreUtils::colMeansMat)
+##'
+##' ## Peptide SYGFNAAR was taken into account in both ProtA and ProtB
+##' ## aggregations.
+##' assay(se2)
+##'
+##'
+##' ## Aggregation by matrix on a QFeature object works as with a
+##' ## vector
+##' ft <- QFeatures(list(peps = se))
+##' ft <- aggregateFeatures(ft, "peps", "adjacencyMatrix", name = "protsByMat",
+##'                         fun = MsCoreUtils::colMeansMat)
+##' assay(ft[[2]])
+##' rowData(ft[[2]])
 NULL
 
 ##' @exportMethod aggregateFeatures
@@ -246,6 +280,16 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
 
 
 .aggregateQFeatures <- function(object, fcol, fun, ...) {
+    ## Copied from the PSMatch package, given that it is not available
+    ## on Bioconductor yet.
+    .makePeptideProteinVector <- function(m, collapse = ";") {
+        stopifnot(inherits(m, "Matrix"))
+        vec <- rep(NA_character_, nrow(m))
+        for (i in seq_len(nrow(m)))
+            vec[i] <- paste(names(which(m[i, ] != 0)), collapse = collapse)
+        names(vec) <- rownames(m)
+        vec
+    }
     if (missing(fcol))
         stop("'fcol' is required.")
     m <- assay(object, 1)
@@ -254,8 +298,8 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
         stop("'fcol' not found in the assay's rowData.")
     groupBy <- rd[[fcol]]
 
-    ## Store class of assay i in case it is not a Summarized experiment so that
-    ## the aggregated assay can be reverted to that class
+    ## Store class of assay i in case it is not a SummarizedExperiment
+    ## so that the aggregated assay can be reverted to that class
     .class <- class(object)
 
     ## Message about NA values is quant/row data
@@ -273,16 +317,35 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
         message(paste(strwrap(msg), collapse = "\n"))
     }
 
-    aggregated_assay <- aggregate_by_vector(m, groupBy, fun, ...)
-    aggcount_assay <- aggregate_by_vector(m, groupBy, colCounts)
-    aggregated_rowdata <- QFeatures::reduceDataFrame(rd, rd[[fcol]],
-                                                     simplify = TRUE,
-                                                     drop = TRUE,
-                                                     count = TRUE)
+    if (is.vector(groupBy)) {
+        aggregated_assay <- aggregate_by_vector(m, groupBy, fun, ...)
+        aggcount_assay <- aggregate_by_vector(m, groupBy, colCounts)
+        aggregated_rowdata <- QFeatures::reduceDataFrame(rd, rd[[fcol]],
+                                                         simplify = TRUE,
+                                                         drop = TRUE,
+                                                         count = TRUE)
+        assays <- SimpleList(assay = aggregated_assay, aggcounts = aggcount_assay)
+        rowdata <- aggregated_rowdata[rownames(aggregated_assay), , drop = FALSE]
+    } else if (is(groupBy, "Matrix")) {
+        aggregated_assay <- aggregate_by_matrix(m, groupBy, fun, ...)
+        ## Remove the adjacency matrix that should be dropped anyway
+        rd[[fcol]] <- NULL
+        ## Temp variable for unfolding and reducing - removed later
+        rd[["._vec_"]] <- .makePeptideProteinVector(groupBy)
+        rd <- unfoldDataFrame(rd, "._vec_")
+        aggregated_rowdata <- reduceDataFrame(rd, rd[["._vec_"]], drop = TRUE)
+        aggregated_rowdata[["._vec_"]] <- NULL
+        ## Count the number of peptides per protein
+        .n <- apply(groupBy != 0, 2, sum)
+        aggregated_rowdata[[".n"]] <- .n[rownames(aggregated_rowdata)]
 
-    se <- SummarizedExperiment(assays = SimpleList(assay = aggregated_assay,
-                                                   aggcounts = aggcount_assay),
-                               rowData = aggregated_rowdata[rownames(aggregated_assay), ])
+        assays <- SimpleList(assay = as.matrix(aggregated_assay)) ## to discuss
+        rowdata <- aggregated_rowdata[rownames(aggregated_assay), , drop = FALSE]
+    } else stop("'fcol' must refer to a vector or a sparse matrix.")
+    se <- SummarizedExperiment(assays = assays,
+                               colData = colData(object),
+                               rowData = rowdata)
+
     ## If the input objects weren't SummarizedExperiments, then try to
     ## convert the merged assay into that class. If the conversion
     ## fails, keep the SummarizedExperiment, otherwise use the
@@ -290,29 +353,88 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
     if (.class != "SummarizedExperiment")
         se <- tryCatch(as(se, .class),
                        error = function(e) se)
-
     return(se)
 }
 
 ##' @export
 ##'
-##' @rdname aggregateFeatures
+##' @importFrom ProtGenerics adjacencyMatrix
 ##'
-##' @param x An instance of class `SummarizedExperiment` or a
-##'     `character`.
+##' @rdname QFeatures-aggregate
+##'
+##' @param object An instance of class `SummarizedExperiment` or
+##'     `QFeatures`.
 ##'
 ##' @param adjName `character(1)` with the variable name containing
 ##'     the adjacency matrix. Default is `"adjacencyMatrix"`.
-adjacencyMatrix <- function(x, i, adjName = "adjacencyMatrix") {
-    if (inherits(x, "SummarizedExperiment"))
-        return(.adjacencyMatrix(x, adjName))
-    stopifnot(inherits(x, "QFeatures"))
-    List(lapply(experiments(x)[i], .adjacencyMatrix,
-                adjName = adjName))
-}
+##'
+##' @param i The index or name of the assays to extract the advaceny
+##'     matrix from. All must have a rowdata variable named `adjName`.
+setMethod("adjacencyMatrix", "QFeatures",
+          function(object, i, adjName = "adjacencyMatrix")
+              List(lapply(experiments(object)[i],
+                          .adjacencyMatrix,
+                          adjName = adjName)))
 
+setMethod("adjacencyMatrix", "SummarizedExperiment",
+          function(object, adjName = "adjacencyMatrix")
+         .adjacencyMatrix(object, adjName))
+
+##' @export
+##'
+##' @rdname QFeatures-aggregate
+##'
+##' @param i When adding an adjacency matrix to an assay of a
+##'     `QFeatures` object, the index or name of the assay the
+##'     adjacency matrix will be added to. Ignored when `x` is an
+##'     `SummarizedExperiment`.
+##'
+##' @param value An adjacency matrix with row and column names. The
+##'     matrix will be coerced to compressed, column-oriented sparse
+##'     matrix (class `dgCMatrix`) as defined in the `Matrix` package,
+##'     as generaled by the [sparseMatrix()] constructor.
+"adjacencyMatrix<-" <- function(object, i, adjName = "adjacencyMatrix", value) {
+    validAdjacencyMatrix(value)
+    ## Coerse to a sparse matrix
+    value <- as(value, "sparseMatrix")
+    if (inherits(object, "SummarizedExperiment")) {
+        if (!identical(rownames(value), rownames(object)))
+            stop("Row names of the SummarizedExperiment and the adjacency matrix must match.")
+        if (adjName %in% colnames(rowData(object)))
+            stop("Found an existing variable ", adjName, ".")
+        rowData(object)[[adjName]] <- value
+        return(object)
+    }
+    stopifnot(inherits(object, "QFeatures"))
+    if (length(i) != 1)
+        stop("'i' must be of length one. Repeat the call to add a matrix to multiple assays.")
+    if (is.numeric(i) && i > length(object))
+        stop("Subscript is out of bounds.")
+    if (is.character(i) && !(i %in% names(object)))
+        stop("Assay '", i, "' not found.")
+    se <- object[[i]]
+    adjacencyMatrix(se, adjName = adjName) <- value
+    object[[i]] <- se
+    return(object)
+}
 
 .adjacencyMatrix <- function(x, adjName = "adjacencyMatrix") {
     stopifnot(adjName %in% names(rowData(x)))
-    rowData(x)[[adjName]]
+    ans <- rowData(x)[[adjName]]
+    if (is.null(colnames(ans)) | is.null(rownames(ans)))
+        warning("The adjacency matrix should have row and column names.")
+    if (!is(ans, "sparseMatrix"))
+        warning("The adjacency matrix should ideally be sparse.")
+    ans
+}
+
+
+validAdjacencyMatrix <- function(x) {
+    if (is.null(colnames(x)) | is.null(rownames(x)))
+        stop("The matrix must have row and column names.")
+    if (any(Matrix::rowSums(x) == 0))
+        stop("rowSums() == 0 detected: peptides must belong to at least one protein.")
+    if (any(Matrix::colSums(x) == 0))
+        stop("colSums() == 0 detected: proteins must be identified by at least one peptide.")
+    TRUE
 }

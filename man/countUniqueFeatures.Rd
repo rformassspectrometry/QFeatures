@@ -2,12 +2,7 @@
 % Please edit documentation in R/QFeatures-functions.R
 \name{countUniqueFeatures}
 \alias{countUniqueFeatures}
-\title{Count Unique Features
-
-This function counts the number of unique features per sample. A
-grouping structure can be provided to count higher level features
-from assays, for example counting the number of unique proteins
-from PSM data.}
+\title{Count Unique Features}
 \usage{
 countUniqueFeatures(object, i, groupBy = NULL, colDataName = "count")
 }
@@ -32,8 +27,6 @@ will be stored. The name cannot already exist in the
 An object of class \code{QFeatures}.
 }
 \description{
-Count Unique Features
-
 This function counts the number of unique features per sample. A
 grouping structure can be provided to count higher level features
 from assays, for example counting the number of unique proteins

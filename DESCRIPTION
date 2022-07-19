@@ -1,6 +1,6 @@
 Package: QFeatures
 Title: Quantitative features for mass spectrometry data
-Version: 1.7.0
+Version: 1.7.1
 Authors@R: c(person("Laurent", "Gatto",
                     email = "laurent.gatto@uclouvain.be",
                     comment = c(ORCID = "0000-0002-1520-2268"),
@@ -24,15 +24,16 @@ Imports:
    IRanges,
    SummarizedExperiment,
    BiocGenerics,
-   ProtGenerics (>= 1.19.3),
+   ProtGenerics (>= 1.27.1),
    AnnotationFilter,
    lazyeval,
    Biobase,
-   MsCoreUtils (>= 1.1.2),
+   MsCoreUtils (>= 1.7.2),
    igraph,
    plotly
 Suggests:
    SingleCellExperiment,
+   Matrix,
    HDF5Array,
    msdata,
    ggplot2,
@@ -82,4 +83,4 @@ Collate:
     'utils.R'
     'display.R'
 Roxygen: list(markdown=TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0

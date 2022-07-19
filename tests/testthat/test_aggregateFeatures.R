@@ -138,3 +138,86 @@ test_that("aggregateFeatures,QFeatures: aggcounts", {
     ## .n variable
     expect_identical(rowData(se)$.n , c(2L, 2L))
 })
+
+
+test_that("aggregate by matrix and vector work (1)", {
+    ## only features that map uniquely, aggregation should thus be
+    ## identical whether we use a vector or an adjacency matrix
+    se <- feat1[[1]]
+    ## ----------------------------------------------------
+    ## (1) PSM to peptide aggregation
+    ## generated with PSMatch::makeAdjacencyMatrix(rowData(se)$Sequence)
+    adjSequence <- structure(
+        c(1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+          1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1),
+        .Dim = c(10L, 3L),
+        .Dimnames = list(
+            paste0("PSM", 1:10),
+            c("SYGFNAAR", "ELGNDAYK", "IAEESNFPFIK")))
+    ## 1.1 aggregate PSMs to peptides by vector
+    se1 <- aggregateFeatures(se, "Sequence", colSums)
+    ## 1.2 aggregate PSMs to peptides by matrix
+    rowData(se)$adjacencyMatrix <- adjSequence
+    expect_error(aggregateFeatures(se, "adjacencyMatrix",
+                                   MsCoreUtils::colSumsMat),
+                 "'fcol' must refer to a vector or a sparse matrix")
+    ## Error when adjancencyMatrix already present
+    expect_error(adjacencyMatrix(se) <- adjSequence,
+                 "Found an existing variable adjacencyMatrix.")
+    rowData(se)[["adjacencyMatrix"]] <- NULL
+    adjacencyMatrix(se) <- adjSequence
+    se2 <- aggregateFeatures(se, "adjacencyMatrix", MsCoreUtils::colSumsMat)
+    ## order of rows isn't necessary the same
+    rnms <- rownames(se1)
+    expect_identical(assay(se1)[rnms, ], assay(se2)[rnms, ])
+    expect_identical(colData(se1), colData(se2))
+    ## below not identical/equal because '.n' is named in se2
+    expect_equivalent(rowData(se1)[rnms, ], rowData(se2)[rnms, ])
+    ## ----------------------------------------------------
+    ## (2) Peptide to protein aggregation
+    ## generated with PSMatch::makeAdjacencyMatrix(rowData(se2)$Protein)
+    adjProtein <- structure(
+        c(1, 1, 0, 0, 0, 1),
+        .Dim = 3:2,
+        .Dimnames = list(c("SYGFNAAR", "ELGNDAYK", "IAEESNFPFIK"),
+                         c("ProtA", "ProtB")))
+    ## 2.1 aggregate peptides to proteins by vector
+    se3 <- aggregateFeatures(se1, "Protein", colSums)
+    ## 2.2 aggregate peptides to proteins by matrix
+    adjacencyMatrix(se2) <- adjProtein
+    se4 <- aggregateFeatures(se2, "adjacencyMatrix", MsCoreUtils::colSumsMat)
+    ## order of rows isn't necessary the same
+    rnms <- rownames(se3)
+    expect_identical(assay(se3)[rnms, ], assay(se4)[rnms, ])
+    expect_identical(colData(se3), colData(se4))
+    ## below not identical/equal because '.n' is named in se2
+    expect_equivalent(rowData(se3)[rnms, ], rowData(se4)[rnms, ])
+})
+
+
+test_that("aggregate by matrix and vector work (2)", {
+    ## Change last PSM/peptide to be shared among proteins B and C
+    se <- feat1[[1]]
+    rowData(se)[10, "Sequence"] <- "PEPTIDE"
+    rowData(se)[10, "Protein"] <- "ProtB;ProtC"
+    ## prepare data
+    se <- aggregateFeatures(se, "Sequence", colSums)
+    ## -----------------------------------------------------
+    ## aggregate peptides to proteins by vector
+    se1 <- aggregateFeatures(se, "Protein", colSums)
+    ## generated with PSMatch::makeAdjacencyMatrix(rowData(se)$Protein)
+    adjProtein <- structure(
+        c(1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0),
+        .Dim = 4:3,
+        .Dimnames = list(c("ELGNDAYK", "IAEESNFPFIK", "PEPTIDE", "SYGFNAAR"),
+                         c("ProtA", "ProtB", "ProtC")))
+    adjacencyMatrix(se) <- adjProtein
+    se2 <- aggregateFeatures(se, "adjacencyMatrix", MsCoreUtils::colSumsMat)
+    ## only ProtA is composed of unique peptides only - only protein
+    ## with identical aggregation results
+    expect_identical(assay(se1)["ProtA", ], assay(se2)["ProtA", ])
+    expect_identical(colData(se1), colData(se2))
+    k <- intersect(names(rowData(se1)), names(rowData(se2)))
+    ## below not identical/equal because '.n' is named in se2
+    expect_equivalent(rowData(se1)["ProtA", k], rowData(se2)["ProtA", k])
+})
