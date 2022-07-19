@@ -1,5 +1,9 @@
 # QFeatures 1.5
 
+## QFeatures 1.5.4
+
+- refactor: imputation now adds a new assay instead of replacing values.
+
 ## QFeatures 1.5.3
 
 - feat: aggregation by adjacency matrix

@@ -1,6 +1,7 @@
 data(se_na2)
 x <- assay(se_na2)
 randna  <-  rowData(se_na2)$randna
+ft <- QFeatures(list(se_na2 = se_na2), colData = colData(se_na2))
 
 test_that("impute: mandatory method", {
     data(se_na2)
@@ -32,11 +33,21 @@ test_that("impute,SummarizedExperiment", {
     expect_identical(x_imp, assay(se_imp))
 })
 
+test_that("impute,QFeatures: test errors", {
+    ## i is mandatory
+    expect_error(impute(ft, method = "zero"), 
+                 regexp = "Provide index")
+    ## Only one sample can be imputed at once
+    expect_error(impute(ft, i = 1:2, method = "zero"), 
+                 regexp = "one assay")
+})
+
 test_that("impute,QFeatures", {
-    data(se_na2)
-    ft <- QFeatures(list(se_na2 = se_na2), colData = colData(se_na2))
-    x <- assay(se_na2)
-    ft_imp <- impute(ft, method = "MinDet")
+    ## Check imputation
+    ft_imp <- impute(ft, i = "se_na2", method = "MinDet")
     x_imp <- MsCoreUtils::impute_matrix(x, method = "MinDet")
-    expect_identical(x_imp, assay(ft_imp[[1]]))
+    ## Check the new assay was correctly imputed
+    expect_identical(x_imp, assay(ft_imp[["imputedAssay"]]))
+    ## Check the assay was added
+    expect_true(length(ft_imp) == (length(ft) + 1))
 })

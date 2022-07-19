@@ -14,7 +14,7 @@ impute
 
 \S4method{impute}{SummarizedExperiment}(object, method, ...)
 
-\S4method{impute}{QFeatures}(object, method, ..., i)
+\S4method{impute}{QFeatures}(object, method, ..., i, name = "imputedAssay")
 }
 \arguments{
 \item{object}{A \code{SummarizedExperiment} or \code{QFeatures} object with
@@ -27,8 +27,12 @@ missing values to be imputed.}
 \item{...}{Additional parameters passed to the inner imputation
 function. See \code{\link[MsCoreUtils:imputation]{MsCoreUtils::impute_matrix()}} for details.}
 
-\item{i}{Defines which element of the \code{QFeatures} instance to
-impute. If missing, all assays will be imputed.}
+\item{i}{A \code{logical(1)} or a \code{character(1)} that defines which
+element of the \code{QFeatures} instance to impute. It cannot be
+missing and must be of length one.}
+
+\item{name}{A \code{character(1)} naming the new assay name. Default
+is \code{imputedAssay}.}
 }
 \description{
 The \code{impute} method performs data imputation on \code{QFeatures} and
