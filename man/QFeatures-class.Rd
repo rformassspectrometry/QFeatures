@@ -47,7 +47,7 @@ rowDataNames(x)
 
 longFormat(object, colvars = NULL, rowvars = NULL, index = 1L)
 
-addAssay(x, y, name = "newAssay", assayLinks = AssayLinks(names = name))
+addAssay(x, y, name, assayLinks, dropColData = TRUE)
 
 \S4method{updateObject}{QFeatures}(object, ..., verbose = FALSE)
 
@@ -97,10 +97,13 @@ objects. A vector input is supported in the case that the
 
 \item{y}{A single assay or a \emph{named} list of assays.}
 
-\item{name}{A \code{character(1)} naming the single assay (default is
-\code{"newAssay"}). Ignored if \code{y} is a list of assays.}
+\item{name}{A \code{character(1)} naming the single assay. Ignored if
+\code{y} is a list of assays.}
 
 \item{assayLinks}{An optional \link{AssayLinks} object.}
+
+\item{dropColData}{A \code{logical(1)} indicating whether the \code{colData}
+in \code{y} are removed. Defaults to removing the \code{colData}.}
 
 \item{verbose}{logical (default FALSE) whether to print extra messages}
 }
