@@ -35,7 +35,7 @@
                  sort = FALSE)
     ## Set and remove row names
     rownames(res) <- res[[1]]
-    res <- res[, -1]
+    res <- res[, -1, drop = FALSE]
     as(res, cl[1])
 }
 
@@ -153,7 +153,7 @@ joinAssays <- function(x,
     if (name %in% names(x))
         stop("Assay with name '", name, "' already exists.")
     joined_se <- mergeSElist(as.list(experiments(x)[i]))
-    x <- addAssay(x, joined_se, name = name)
+    x <- addAssay(x, joined_se, name = name, dropColData = FALSE)
     ## Add the multi-parent AssayLinks
     if (is.numeric(i)) i <- names(x)[i]
     al <- .create_assay_link(x, from = i, to = name)

@@ -43,13 +43,217 @@ test_that("updateObject", {
                    regexp = "updateObject.*QFeatures")
 })
 
-test_that("addAssay", {
+test_that("addAssay: test correct use", {
     data(feat1)
-    assay2 <- feat1[[1]]
-    feat1 <- addAssay(feat1, assay2, name = "psms2")
-    expect_identical(names(feat1), c("psms", "psms2"))
-    expect_identical(feat1[[1]], feat1[[2]])
+    ## Scenario 1: add an assay with same dimnames
+    assay1 <- feat1[[1]]
+    featS1 <- addAssay(feat1, y = assay1, name = "assay1")
+    ## Check a new assay was added
+    expect_identical(names(featS1), c("psms", "assay1"))
+    ## Check the new assay contains the expected object
+    expect_identical(featS1[[1]], featS1[[2]])
+    ## Check the colData is unchanged
+    expect_identical(colData(feat1), colData(featS1))
+    ## Check the sampleMap is adapted correctly
+    expect_identical(sampleMap(featS1), 
+                     rbind(sampleMap(feat1),
+                           DataFrame(assay = rep("assay1", 2),
+                                     primary = colnames(assay1),
+                                     colname = colnames(assay1))))
+    ## Check an AssayLinks object associated to the new assay is added
+    expect_identical(names(featS1), names(featS1@assayLinks))
+    
+    ## Scenario 2: add an assay with a subset of the dimnames
+    assay2 <- feat1[[1]][1:5, 1]
+    featS2 <- addAssay(feat1, y = assay2, name = "assay2")
+    ## Check a new assay was added
+    expect_identical(names(featS2), c("psms", "assay2"))
+    ## Check the new assay contains the expected object
+    expect_identical(featS2[[1]][1:5, 1], featS2[[2]])
+    ## Check the colData is unchanged
+    expect_identical(colData(feat1), colData(featS2))
+    ## Check the sampleMap is adapted correctly
+    expect_identical(sampleMap(featS2), 
+                     rbind(sampleMap(feat1),
+                           DataFrame(assay = "assay2",
+                                     primary = colnames(assay2),
+                                     colname = colnames(assay2))))
+    ## Check an AssayLinks object associated to the new assay is added
+    expect_identical(names(featS2), names(featS2@assayLinks))
+    
+    ## Scenario 3: add 2 assays with same dimnames
+    assay3 <- feat1[[1]]
+    el <- List(assayA = assay3, assayB = assay3)
+    featS3 <- addAssay(feat1, el)
+    ## Check the 2 assays were added and name is ignored
+    expect_identical(names(featS3), c("psms", "assayA", "assayB"))
+    ## Check the new assay contains the expected quantitative data.
+    expect_identical(unname(assay(featS3[[1]])), 
+                     unname(assay(featS3[[2]]))) 
+    ## Check the colData is adapted correctly
+    expect_identical(colData(feat1), colData(featS3))
+    ## Check the sampleMap is adapted correctly
+    expect_identical(sampleMap(featS3), 
+                     rbind(sampleMap(feat1),
+                           DataFrame(assay = rep(names(el), each = 2),
+                                     primary = colnames(assay3),
+                                     colname = colnames(assay3))))
+    ## Check an AssayLinks object associated to the new assay is added
+    expect_identical(names(featS2), names(featS2@assayLinks))
+    
+    ## Scenario 4: add 2 assays with different dimnames, one with colData
+    ## the other without
+    assay4 <- feat1[[1]]
+    ## change row and sample names
+    colnames(assay4) <- paste("foo", 1:ncol(assay4))
+    rownames(assay4) <- paste("bar", 1:nrow(assay4))
+    ## Add colData to one of the assays
+    assay5 <- assay4
+    colData(assay5)$foobar <- 1:2
+    el <- List(assayA = assay4, assayB = assay5)
+    featS4 <- addAssay(feat1, el)
+    ## Check the colData is adapted correctly
+    expect_identical(colData(featS4), 
+                     rbind(cbind(colData(feat1), foobar = NA),
+                           DataFrame(foobar = 1:2, Group = NA,
+                                     row.names = colnames(assay5))))
+    ## Check the sampleMap is adapted correctly
+    expect_identical(sampleMap(featS4), 
+                     rbind(sampleMap(feat1),
+                           DataFrame(assay = rep(names(el), each = 2),
+                                     primary = colnames(assay4),
+                                     colname = colnames(assay4))))
+    ## Test keeping the coldata
+    featS4 <- addAssay(feat1, el, dropColData = FALSE)
+    expect_true(!isEmpty(colData(featS4[["assayB"]])))
+    
+    ## Scenario 5: add an assay with assayLinks
+    assay5 <- feat1[[1]]
+    seq <- rowData(assay5)$Sequence
+    al <- AssayLink("assay5", "psms", fcol = ".rows", 
+                    hits = findMatches(seq, seq))
+    featS5 <- addAssay(feat1, y = assay5, name = "assay5", 
+                       assayLinks = al)
+    ## Check the AssayLinks object associated to the new assay is added
+    expect_identical(names(featS5), names(featS5@assayLinks))
+    expect_identical(featS5@assayLinks[[2]], al)
 })
+
+test_that("addAssay: test colData transfer", {
+    data("feat1")
+    ## Scenario 1: no colData in QFeatures, no colData in assay
+    s1 <- feat1
+    colData(s1)$Group <- NULL
+    s1 <- addAssay(s1, s1[[1]], name = "assay1")
+    expect_true(isEmpty(colData(s1)))
+    ## Scenario 2: colData in QFeatures, no colData in assay
+    s2 <- feat1
+    s2 <- addAssay(s2, s2[[1]], name = "assay2")
+    expect_identical(colData(s2), colData(feat1))
+    ## Scenario 3: no colData in QFeatures, colData in assay
+    s3 <- feat1
+    colData(s3[[1]]) <- colData(s3)
+    colData(s3)$Group <- NULL
+    ## Remove colData from assay (default)
+    s3 <- addAssay(s3, s3[[1]], name = "assay3")
+    expect_identical(colData(s3), colData(feat1))
+    expect_true(isEmpty(colData(s3[["assay3"]])))
+    ## Do not remove colData from assay (default)
+    s3 <- addAssay(s3, s3[[1]], name = "assay3noColData", dropColData = FALSE)
+    expect_identical(colData(s3), colData(feat1))
+    expect_identical(colData(s3), colData(s3[["assay3noColData"]]))
+    ## Scenario 4: colData in QFeatures, colData in assay with different 
+    ## samples and different colData variables
+    s4 <- feat1
+    se <- s4[[1]]
+    colnames(se) <- paste0("foo", 1:ncol(se))
+    se$bar <- letters[1:ncol(se)]
+    s4 <- addAssay(s4, se, name = "assay4")
+    expect_identical(colData(s4), 
+                     DataFrame(Group = c(1:2, NA, NA),
+                               bar = c(NA, NA, "a", "b"),
+                               row.names = c("S1", "S2", "foo1", "foo2")))
+    ## Scenario 5: colData in QFeatures, colData in assay with same 
+    ## samples and different colData variables
+    s5 <- feat1
+    se <- s5[[1]]
+    se$bar <- letters[1:ncol(se)]
+    s5 <- addAssay(s5, se, name = "assay5")
+    expect_identical(colData(s5), 
+                     DataFrame(Group = c(1:2),
+                               bar = c("a", "b"),
+                               row.names = c("S1", "S2")))
+    ## Scenario 6: colData in QFeatures, colData in assay with different 
+    ## samples and same colData variables
+    s6 <- feat1
+    se <- s6[[1]]
+    colnames(se) <- paste0("foo", 1:ncol(se))
+    se$Group <- 1:2
+    s6 <- addAssay(s6, se, name = "assay6")
+    expect_identical(colData(s6), 
+                     DataFrame(Group = rep(1:2, 2),
+                               row.names = c("S1", "S2", "foo1", "foo2")))
+    ## Scenario 7: colData in QFeatures, colData in assay with same 
+    ## samples and same colData variables
+    s7 <- feat1
+    se <- s7[[1]]
+    se$Group <- 3:4
+    s7 <- addAssay(s7, se, name = "assay7")
+    expect_identical(colData(s7), 
+                     DataFrame(Group = 3:4,
+                               row.names = c("S1", "S2")))
+})
+    
+
+test_that("addAssay: test errors/warnings", {
+    data(feat1)
+    ## x is not a QFeatures
+    expect_error(addAssay(feat1[[1]], y = feat1[[1]], name = "assay1"), 
+                 regexp = "inherits.*QFeatures")
+    ## y is corrupt
+    corrupt <- feat1[[1]]
+    corrupt@assays@data@listData[[1]] <- matrix()
+    expect_error(addAssay(feat1, y = corrupt, name = "assay1"), 
+                 regexp = "invalid.*SummarizedExperiment")
+    ## name is ignored when y is provided as a list
+    lse <- List(A = feat1[[1]], B = feat1[[1]])
+    expect_warning(addAssay(feat1, y = lse, name = "foo"), 
+                   regexp = "'name' is ignored")
+    ## List of assays is unnamed
+    ulse <- List(feat1[[1]], feat1[[1]])
+    expect_error(addAssay(feat1, y = ulse), 
+                 regexp = "named List")
+    ## List must have unique names
+    names(lse)[[2]] <- "A"
+    expect_error(addAssay(feat1, y = lse), 
+                 regexp = "names must be unique")
+    ## Assay name already present in QFeatures
+    names(lse)[[2]] <- "psms"
+    expect_error(addAssay(feat1, y = lse), 
+                 regexp = "already present")
+    expect_error(addAssay(feat1, y = feat1[[1]], name = "psms"), 
+                 regexp = "already present")
+    ## One of the assays is not an SE
+    lse <- List(A = feat1[[1]], B = matrix())
+    expect_error(addAssay(feat1, y = lse), 
+                 regexp = "inherit.*SummarizedExperiment")
+    ## AssayLink is not associated to the assay
+    expect_error(addAssay(feat1, y = feat1[[1]], name = "foo",
+                          assayLinks = AssayLinks(names = "bar")), 
+                 regexp = "assayLinks.*named after the assay")
+})
+# test_that("removeAssay", {
+#     
+# })
+# 
+# test_that("updateAssay", {
+#     
+# })
+# 
+# test_that("[[<-", {
+#     
+# })
+
 
 test_that("[,QFeatures", {
     data(feat1)
