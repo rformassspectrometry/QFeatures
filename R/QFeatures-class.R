@@ -667,9 +667,11 @@ longFormat <- function(object,
 }
 
 
-##' @param name A `character(1)` naming the single assay (default is
-##'     `"newAssay"`). Ignored if `y` is a list of assays.
+##' @param name A `character(1)` naming the single assay. Ignored if 
+##'     `y` is a list of assays.
 ##' @param assayLinks An optional [AssayLinks].
+##' @param dropColData A `logical(1)` indicating whether the `colData`
+##'     in `y` are removed. Defaults to removing the `colData`. 
 ##'
 ##' @md
 ##'
@@ -678,25 +680,132 @@ longFormat <- function(object,
 ##' @export
 addAssay <- function(x,
                      y,
-                     name = "newAssay",
-                     assayLinks = AssayLinks(names = name)) {
+                     name,
+                     assayLinks,
+                     dropColData = TRUE) {
+    ## Check arguments
     stopifnot(inherits(x, "QFeatures"))
-    el0 <- x@ExperimentList@listData
-    if (is.list(y)) el1 <- y
-    else el1 <- structure(list(y), .Names = name[1])
-    el <- ExperimentList(c(el0, el1))
-    smap <- MultiAssayExperiment:::.sampleMapFromData(colData(x), el)
-    if (inherits(assayLinks, "AssayLink"))
-        assayLinks <- AssayLinks(assayLinks)
-    new("QFeatures",
+    stopifnot(validObject(y))
+    ## Convert y to a list, if not already a list and check content
+    if (!is.list(y) && !inherits(y, "List")) {
+        y <- structure(list(y), .Names = name[1])
+    } else {
+        if (!missing(name))
+            warning("'y' is provided as a list, 'name' is ignored.")
+        if (length(names(y)) != length(y))
+            stop("When 'y' is a list, it must be a named List.")
+    }
+    if (any(duplicated(names(y)))) 
+        stop("Replacement names must be unique.")
+    if (any(names(y) %in% names(x)))
+        stop("One or more assay names are already present in the object.")
+    if (!all(sapply(y, inherits, "SummarizedExperiment"))) 
+        stop("The replacement object(s) should inherit from SummarizedExperiment.")
+    ## Check (or create) assayLinks
+    if (!missing(assayLinks)) {
+        if (inherits(assayLinks, "AssayLink"))
+            assayLinks <- AssayLinks(assayLinks)
+        if (!identical(sort(names(assayLinks)), sort(names(y))))
+            stop("'assayLinks' must be named after the assay(s) in 'y'.")
+    } else {
+        assayLinks <- AssayLinks(names = names(y))
+    }
+    
+    ## Update the colData
+    cd <- .updateColData(colData(x), y)
+    ## If required, remove colData columns from the new assay(s)
+    if (dropColData) {
+        for (ii in names(y)) {
+            colData(y[[ii]]) <- NULL
+        }
+    }
+    
+    ## Add the assay to the ExperimentList
+    ## NOTE: we replace using the `@` slot. Although not recommended, 
+    ## this bypasses the checks of all the elements (using 
+    ## `validObject`) in the ExperimentList as this is already 
+    ## performed when building the QFeatures object. This leads to a 
+    ## reduction in computational time. 
+    el <- experiments(x)
+    for(ii in names(y)) {
+        el@listData[[ii]] <- y[[ii]]
+    }
+    
+    ## Update the sampleMap
+    smap <- .sampleMapFromData(cd, el)
+    
+    ## Update the AssayLinks
+    al <- append(x@assayLinks, assayLinks)
+    
+    ## Update the QFeatures object with all the updated parts
+    BiocGenerics:::replaceSlots(
+        object = x,
         ExperimentList = el,
-        colData = colData(x),
+        colData = cd,
         sampleMap = smap,
-        metadata = metadata(x),
-        assayLinks = append(x@assayLinks,
-                            assayLinks))
+        assayLinks = al,
+        check = FALSE
+    )
 }
 
+## Internal function that will add rows and eventually columns in the
+## colData based on a new SummarizedExperiment object
+## 
+## @param cd A DFrame object containing the colData information to update
+## @param y A SummarizedExperiment object for which the colData must
+##     be adapted
+## 
+## The function returns the updated colData.
+## 
+.updateColData <- function(cd, y) {
+    ## For each replacement assay
+    for (ii in seq_along(y)) {
+        yy<- y[[ii]]
+        ## Add new samples names to cd and fill with NA
+        newSamples <- setdiff(colnames(yy), rownames(cd))
+        cd[newSamples, ] <- NA
+        ## If coldata is available, add it to cd
+        if (ncol(colData(yy)) != 0) {
+            cd[rownames(colData(yy)), colnames(colData(yy))] <- colData(yy)
+        }
+    }
+    cd
+}
+
+## Internal function that creates a valid sampleMap based on 
+## the colData and ExperimentList contents. 
+## 
+## @param colData The colData of a QFeatures object
+## @param experiments The ExperimentList of a QFeatures object
+## 
+## The function returns the corresponding valid sampleMap as a DFrame
+## 
+## Taken from MultiAssayExperiment:::.sampleMapFromData:
+## I noted that the first line `colnames(experiments)` leads to a big
+## overhead. I simply replaced it with `lapply(experiments, colnames)`
+.sampleMapFromData <- function (colData, experiments) {
+    samps <- lapply(experiments, colnames) ## I only changed this line
+    assay <- factor(rep(names(samps), lengths(samps)), levels = names(samps))
+    colname <- unlist(samps, use.names = FALSE)
+    matches <- match(colname, rownames(colData))
+    if (length(matches) && all(is.na(matches))) 
+        stop("No way to map colData to ExperimentList")
+    else if (!length(matches) && !isEmpty(experiments)) 
+        warning("colData rownames and ExperimentList colnames are empty")
+    primary <- rownames(colData)[matches]
+    autoMap <- S4Vectors::DataFrame(assay = assay, primary = primary, 
+                                    colname = colname)
+    missingPrimary <- is.na(autoMap[["primary"]])
+    if (nrow(autoMap) && any(missingPrimary)) {
+        notFound <- autoMap[missingPrimary, ]
+        warning("Data dropped from ExperimentList (element - column):", 
+                Biobase::selectSome(paste("\n", notFound[["assay"]], 
+                                          "-", notFound[["colname"]]), ), "\nUnable to map to rows of colData", 
+                call. = FALSE)
+        autoMap <- autoMap[!missingPrimary, ]
+    }
+    autoMap
+}
 
 ##' @param verbose logical (default FALSE) whether to print extra messages
 ##' 
