@@ -49,7 +49,7 @@
 ##' - The `QFeatures` class extends the
 ##'   [MultiAssayExperiment::MultiAssayExperiment] class and inherits
 ##'   all its accessors and replacement methods.
-##'
+##'   
 ##' - The `rowData` method returns a `DataFrameList` containing the
 ##'   `rowData` for each assay of the `QFeatures` object. On the other
 ##'   hand, `rowData` can be modified using `rowData(x) <- value`,
@@ -62,8 +62,9 @@
 ##'
 ##' - The `rbindRowData` functions returns a `DFrame` table that
 ##'   contains the row binded `rowData` tables from the selected
-##'   assays. Only rowData variables that are common to all assays are
-##'   kept.
+##'   assays. In this context, `i` is a `character()`, `integer()` or
+##'   `logical()` object for subsetting assays. Only rowData variables
+##'   that are common to all assays are kept.
 ##'
 ##' - The `rowDataNames` accessor returns a list with the `rowData`
 ##'   variable names.
@@ -73,22 +74,28 @@
 ##'   reported on a separate line. `colData` and `rowData` data can
 ##'   also be added. This function is an extension of the `longFormat`
 ##'   function in the [MultiAssayExperiment::MultiAssayExperiment].
-##'
+##' 
 ##' @section Adding assays:
 ##'
 ##' - The [aggregateFeatures()] function creates a new assay by
 ##'   aggregating features of an existing assay.
 ##'
-##' - `addAssay(x, y, name, assayLinks)`: Adds a new assay (or
-##'   list of assays) `y` to the `QFeatures` instance `x`. `name`
-##'   is a `character(1)` naming the single assay (default is
-##'   `"newAssay"`), and is ignored if `y` is a list of
-##'   assays. `assayLinks` is an optional [AssayLinks].
+##' - `addAssay(x, y, name, assayLinks, dropColData)`: Adds one or more
+##'   new assay(s) `y` to the `QFeatures` instance `x`. `name`
+##'   is a `character(1)` naming the assay if only one assay is 
+##'   provided, and is ignored if `y` is a list of assays. `assayLinks`
+##'   is an optional [AssayLinks]. The `colData` present in `y` is 
+##'   automatically transferred to `colData(x)` by matching sample
+##'   names, that is `colnames(y)`. If the samples are not present in
+##'   `x` the rows of `colData(x)` are extended to account for the 
+##'   new samples.
 ##'
 ##' @section Subsetting:
 ##'
-##' - QFeatures object can be subset using the `x[i, j, k, drop =
-##'   TRUE]` paradigm. See the argument descriptions for details.
+##' - QFeatures object can be subset using the `x[i, j, k, drop = TRUE]`
+##'   paradigm. In this context, `i` is a `character()`, `integer()`, 
+##'   `logical()` or `GRanges()` object for subsetting by rows. See 
+##'   the argument descriptions for details on the remaining arguments.
 ##'
 ##' - The [subsetByFeature()] function can be used to subset a
 ##'   `QFeatures` object using one or multiple feature names that will
@@ -106,16 +113,17 @@
 ##'
 ##' @param x An instance of class [QFeatures].
 ##'
-##' @param y A single assay or a *named* list of assays.
-##'
-##' @param i `character()`, `integer()`, `logical()` or `GRanges()`
-##'     object for subsetting by rows.
+##' @param i An indexing vector. See the corresponding section in the
+##'     documentation for more details.
 ##'
 ##' @param j `character()`, `logical()`, or `numeric()` vector for
 ##'     subsetting by `colData` rows.
 ##'
 ##' @param k `character()`, `logical()`, or `numeric()` vector for
 ##'     subsetting by assays
+##'
+##' @param value The values to use as a replacement. See the
+##'     corresponding section in the documentation for more details.
 ##'
 ##' @param drop logical (default `TRUE`) whether to drop empty assay
 ##'     elements in the `ExperimentList`.
@@ -124,7 +132,6 @@
 ##'     further arguments passed to `igraph::plot.igraph`.
 ##'
 ##'
-##' @return See individual method description for the return value.
 ##'
 ##' @seealso
 ##'
@@ -606,9 +613,6 @@ rowDataNames <- function(x) {
 
 ##' @rdname QFeatures-class
 ##'
-##' @param value The values to use as a replacement. See the
-##'     corresponding section in the documentation for more details.
-##'
 ##' @exportMethod names<-
 setReplaceMethod("names", c("QFeatures", "character"),
                  function(x, value) {
@@ -630,7 +634,7 @@ setReplaceMethod("names", c("QFeatures", "character"),
 ##'
 ##' @param colvars A `character()` that selects column(s) in the
 ##'     `colData`.
-##' @param index The assay indicator for `SummarizedExperiment`
+##' @param index The assay indicator within a `SummarizedExperiment`
 ##'     objects. A vector input is supported in the case that the
 ##'     `SummarizedExperiment` object(s) has more than one assay
 ##'     (default `1L`)
@@ -667,9 +671,18 @@ longFormat <- function(object,
 }
 
 
+##' @param y An object that inherits from `SummarizedExperiment` or a
+##'     *named* list of assays. When `y` is a list, each element must
+##'     inherit from a `SummarizedExperiment` and the names of the 
+##'     list are used as the names of the assays to add. Hence, the 
+##'     list names must be unique and cannot overlap with the names of
+##'     the assays already present in `x`.
+##' 
 ##' @param name A `character(1)` naming the single assay. Ignored if 
 ##'     `y` is a list of assays.
+##'     
 ##' @param assayLinks An optional [AssayLinks].
+##' 
 ##' @param dropColData A `logical(1)` indicating whether the `colData`
 ##'     in `y` are removed. Defaults to removing the `colData`. 
 ##'

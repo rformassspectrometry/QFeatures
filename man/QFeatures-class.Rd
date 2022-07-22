@@ -66,8 +66,8 @@ is generated. We recommend interactive exploration when the
 \item{...}{See \code{MultiAssayExperiment} for details. For \code{plot},
 further arguments passed to \code{igraph::plot.igraph}.}
 
-\item{i}{\code{character()}, \code{integer()}, \code{logical()} or \code{GRanges()}
-object for subsetting by rows.}
+\item{i}{An indexing vector. See the corresponding section in the
+documentation for more details.}
 
 \item{j}{\code{character()}, \code{logical()}, or \code{numeric()} vector for
 subsetting by \code{colData} rows.}
@@ -90,12 +90,17 @@ variables (columns) to retain in any assay.}
 \item{colvars}{A \code{character()} that selects column(s) in the
 \code{colData}.}
 
-\item{index}{The assay indicator for \code{SummarizedExperiment}
+\item{index}{The assay indicator within a \code{SummarizedExperiment}
 objects. A vector input is supported in the case that the
 \code{SummarizedExperiment} object(s) has more than one assay
 (default \code{1L})}
 
-\item{y}{A single assay or a \emph{named} list of assays.}
+\item{y}{An object that inherits from \code{SummarizedExperiment} or a
+\emph{named} list of assays. When \code{y} is a list, each element must
+inherit from a \code{SummarizedExperiment} and the names of the
+list are used as the names of the assays to add. Hence, the
+list names must be unique and cannot overlap with the names of
+the assays already present in \code{x}.}
 
 \item{name}{A \code{character(1)} naming the single assay. Ignored if
 \code{y} is a list of assays.}
@@ -106,9 +111,6 @@ objects. A vector input is supported in the case that the
 in \code{y} are removed. Defaults to removing the \code{colData}.}
 
 \item{verbose}{logical (default FALSE) whether to print extra messages}
-}
-\value{
-See individual method description for the return value.
 }
 \description{
 Conceptually, a \code{QFeatures} object holds a set of \emph{assays}, each
@@ -172,8 +174,9 @@ the column name does not exist, a new column is added to the
 \code{rowData}.
 \item The \code{rbindRowData} functions returns a \code{DFrame} table that
 contains the row binded \code{rowData} tables from the selected
-assays. Only rowData variables that are common to all assays are
-kept.
+assays. In this context, \code{i} is a \code{character()}, \code{integer()} or
+\code{logical()} object for subsetting assays. Only rowData variables
+that are common to all assays are kept.
 \item The \code{rowDataNames} accessor returns a list with the \code{rowData}
 variable names.
 \item The \code{longFormat} accessor takes a \code{QFeatures} object and returns
@@ -189,18 +192,25 @@ function in the \link[MultiAssayExperiment:MultiAssayExperiment]{MultiAssayExper
 \itemize{
 \item The \code{\link[=aggregateFeatures]{aggregateFeatures()}} function creates a new assay by
 aggregating features of an existing assay.
-\item \code{addAssay(x, y, name, assayLinks)}: Adds a new assay (or
-list of assays) \code{y} to the \code{QFeatures} instance \code{x}. \code{name}
-is a \code{character(1)} naming the single assay (default is
-\code{"newAssay"}), and is ignored if \code{y} is a list of
-assays. \code{assayLinks} is an optional \link{AssayLinks}.
+\item \code{addAssay(x, y, name, assayLinks, dropColData)}: Adds one or more
+new assay(s) \code{y} to the \code{QFeatures} instance \code{x}. \code{name}
+is a \code{character(1)} naming the assay if only one assay is
+provided, and is ignored if \code{y} is a list of assays. \code{assayLinks}
+is an optional \link{AssayLinks}. The \code{colData} present in \code{y} is
+automatically transferred to \code{colData(x)} by matching sample
+names, that is \code{colnames(y)}. If the samples are not present in
+\code{x} the rows of \code{colData(x)} are extended to account for the
+new samples.
 }
 }
 
 \section{Subsetting}{
 
 \itemize{
-\item QFeatures object can be subset using the \code{x[i, j, k, drop = TRUE]} paradigm. See the argument descriptions for details.
+\item QFeatures object can be subset using the \code{x[i, j, k, drop = TRUE]}
+paradigm. In this context, \code{i} is a \code{character()}, \code{integer()},
+\code{logical()} or \code{GRanges()} object for subsetting by rows. See
+the argument descriptions for details on the remaining arguments.
 \item The \code{\link[=subsetByFeature]{subsetByFeature()}} function can be used to subset a
 \code{QFeatures} object using one or multiple feature names that will
 be matched across different assays, taking the aggregation
