@@ -75,7 +75,7 @@
 ##'   also be added. This function is an extension of the `longFormat`
 ##'   function in the [MultiAssayExperiment::MultiAssayExperiment].
 ##' 
-##' @section Adding assays:
+##' @section Adding, removing and replacing assays:
 ##'
 ##' - The [aggregateFeatures()] function creates a new assay by
 ##'   aggregating features of an existing assay.
@@ -88,8 +88,26 @@
 ##'   automatically transferred to `colData(x)` by matching sample
 ##'   names, that is `colnames(y)`. If the samples are not present in
 ##'   `x` the rows of `colData(x)` are extended to account for the 
-##'   new samples.
-##'
+##'   new samples. Use `dropColData` to control whether `colData(y)`
+##'   should be dropped or not after it has been transferred to
+##'   `colData(x)`. Defaults to removing the `colData`. 
+##' - `removeAssay(x, i)`: Removes one or more assay(s) from the
+##'   `QFeatures` instance `x`. In this context, `i` is a `character()`,
+##'   `integer()` or `logical()` that indicates which assay(s) must be
+##'   removed.
+##' - `replaceAssay(x, y, i, dropColData)`: Replaces one or more 
+##'   assay(s) from the `QFeatures` instance `x`. In this context, `i`
+##'    is a `character()`,`integer()` or `logical()` that indicates 
+##'    which assay(s) must be replaced. The feature links from or to 
+##'    any replaced assays are automatically removed, unless the 
+##'    replacement has the same dimension names (columns and row, order
+##'    agnostic). `dropColData` is used in the same way as in 
+##'    `addAssay()`, but defaults to keeping the `colData`.
+##' - `x[[i]] <- value`: a generic method for adding (when `i` is not
+##'   in `names(x)`), removing (when `value` is null) or replacing (when
+##'   `i` is in `names(x)`). Note that the arguments `j` and `...` from
+##'   the S4 replacement method signature are not allowed.
+##'  
 ##' @section Subsetting:
 ##'
 ##' - QFeatures object can be subset using the `x[i, j, k, drop = TRUE]`
@@ -684,7 +702,7 @@ longFormat <- function(object,
 ##' @param assayLinks An optional [AssayLinks].
 ##' 
 ##' @param dropColData A `logical(1)` indicating whether the `colData`
-##'     in `y` are removed. Defaults to removing the `colData`. 
+##'     in `y` are removed. 
 ##'
 ##' @md
 ##'
@@ -698,22 +716,8 @@ addAssay <- function(x,
                      dropColData = TRUE) {
     ## Check arguments
     stopifnot(inherits(x, "QFeatures"))
-    stopifnot(validObject(y))
-    ## Convert y to a list, if not already a list and check content
-    if (!is.list(y) && !inherits(y, "List")) {
-        y <- structure(list(y), .Names = name[1])
-    } else {
-        if (!missing(name))
-            warning("'y' is provided as a list, 'name' is ignored.")
-        if (length(names(y)) != length(y))
-            stop("When 'y' is a list, it must be a named List.")
-    }
-    if (any(duplicated(names(y)))) 
-        stop("Replacement names must be unique.")
-    if (any(names(y) %in% names(x)))
-        stop("One or more assay names are already present in the object.")
-    if (!all(sapply(y, inherits, "SummarizedExperiment"))) 
-        stop("The replacement object(s) should inherit from SummarizedExperiment.")
+    y <- .checkAssaysToInsert(y, x, name, replace = FALSE)
+    
     ## Check (or create) assayLinks
     if (!missing(assayLinks)) {
         if (inherits(assayLinks, "AssayLink"))
@@ -725,7 +729,7 @@ addAssay <- function(x,
     }
     
     ## Update the colData
-    cd <- .updateColData(colData(x), y)
+    cd <- .updateColData(x, y)
     ## If required, remove colData columns from the new assay(s)
     if (dropColData) {
         for (ii in names(y)) {
@@ -761,22 +765,180 @@ addAssay <- function(x,
     )
 }
 
+##' @md
+##'
+##' @rdname QFeatures-class
+##'
+##' @export
+removeAssay <- function(x, i) {
+    if (is.numeric(i) || is.logical(i))
+        i <- names(x)[i]
+    x[, , !names(x) %in% i]
+}
+
+##' @md
+##'
+##' @rdname QFeatures-class
+##'
+##' @export
+replaceAssay <- function(x, 
+                         y,
+                         i,
+                         dropColData = FALSE) {
+    ## Check arguments
+    stopifnot(inherits(x, "QFeatures"))
+    if (!missing(i) && (is.numeric(i) || is.logical(i)))
+        i <- names(x)[i]
+    y <- .checkAssaysToInsert(y, x, i, replace = TRUE)
+    
+    ## Update the colData
+    cd <- .updateColData(x, y)
+    ## If required, remove colData columns from the new assay(s)
+    if (dropColData) {
+        for (ii in names(y)) {
+            colData(y[[ii]]) <- NULL
+        }
+    }
+    ## Replace the assay to the ExperimentList
+    ## NOTE: we replace using the `@` slot. Although not recommended, 
+    ## this bypasses the checks of all the elements (using 
+    ## `validObject`) in the ExperimentList as this is already 
+    ## performed when building the QFeatures object. This leads to a 
+    ## reduction in computational time. 
+    el <- experiments(x)
+    for(ii in names(y)) {
+        el@listData[[ii]] <- y[[ii]]
+    }
+    
+    ## Update the sampleMap
+    smap <- .sampleMapFromData(cd, el)
+    
+    ## Update the AssayLinks
+    al <- x@assayLinks
+    allfrom <- lapply(al, function (x) x@from)
+    for (ii in names(y)) {
+        if (identical(sort(rownames(x[[ii]])),
+                      sort(rownames(y[[ii]]))) &&
+            identical(sort(colnames(x[[ii]])),
+                      sort(colnames(y[[ii]]))))
+            next()
+        
+        al[[ii]] <- AssayLink(ii)
+        repl <- names(allfrom)[sapply(allfrom, function(x) any(x %in% ii))]
+        for (jj in repl) {
+            if (inherits(al[[jj]]@hits, "List")) {
+                al[[jj]]@from <- al[[jj]]@from[al[[jj]]@from != ii]
+                al[[jj]]@hits <- al[[jj]]@hits[names(al[[jj]]@hits) != ii]
+                if (length(al[[jj]]@hits) == 1) 
+                    al[[jj]]@hits <- al[[jj]]@hits[[1]]
+            } else {
+                al[[jj]] <- AssayLink(jj)
+            }
+        }
+    }
+    if (!identical(al, x@assayLinks)) {
+        warning("Links between assays were lost/removed during ",
+                "replacement. See '?addAssayLink' to restore them ",
+                "manually. ")
+    }
+    
+    ## Update the QFeatures object with all the updated parts
+    BiocGenerics:::replaceSlots(
+        object = x,
+        ExperimentList = el,
+        colData = cd,
+        sampleMap = smap,
+        assayLinks = al,
+        check = FALSE
+    )
+}
+
+##' @rdname QFeatures-class
+##'
+##' @export
+setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"), 
+                 function(x, i, j, ..., value) {
+                     if (length(i) != 1)
+                         stop("'x[[i]] <- value' does not allow multiple ",
+                              "replacements. Consider using 'addAssay()', ",
+                              "'replaceAssay()' or 'removeAssay()' instead.")
+                     if (is.numeric(i) || is.logical(i))
+                         i <- names(x)[i]
+                     if (!missing(j) || length(list(...))) 
+                         stop("invalid replacement")
+                     if (i %in% names(x)) {
+                         if (is.null(value)) {
+                             return(removeAssay(x = x, i = i))
+                         } else {
+                             return(replaceAssay(x = x, y = value, i = i))
+                         }
+                     } else {
+                         return(addAssay(x = x, y = value, name = i))
+                     } 
+                 })
+
+.checkAssaysToInsert <- function(y, x, name, replace = FALSE) {
+    ## Convert y to a list, if not already a list and check content
+    if (!is.list(y) && !inherits(y, "List")) {
+        stopifnot(is.character(name))
+        y <- structure(list(y), .Names = name[1])
+    } else {
+        if (!missing(name))
+            warning("'y' is provided as a list, 'name' is ignored.")
+        if (length(names(y)) != length(y))
+            stop("When 'y' is a list, it must be a named List.")
+    }
+    ## Make sure the assays comply to the requirements
+    stopifnot(sapply(y, validObject))
+    if (any(duplicated(names(y)))) 
+        stop("Replacement names must be unique.")
+    if (!replace && any(names(y) %in% names(x)))
+        stop("One or more assay names are already present in 'x'. ",
+             "See 'replaceAssay()' if you want to replace assays.")
+    if (replace && !all(names(y) %in% names(x)))
+        stop("One or more assay names are not in 'x'. See ",
+             "'addAssay()' if you want to add assays.")
+    if (!all(sapply(y, inherits, "SummarizedExperiment"))) 
+        stop("The replacement object(s) should inherit from ",
+             "SummarizedExperiment.")
+    if (any(sapply(y, function(yy) any(duplicated(rownames(yy))))))
+        stop("The replacement object(s) should have unique row names.")
+    ## Return the valid y
+    y
+}
+
 ## Internal function that will add rows and eventually columns in the
 ## colData based on a new SummarizedExperiment object
 ## 
-## @param cd A DFrame object containing the colData information to update
+## @param x An instance of class [QFeatures].
 ## @param y A SummarizedExperiment object for which the colData must
 ##     be adapted
 ## 
 ## The function returns the updated colData.
 ## 
-.updateColData <- function(cd, y) {
+.updateColData <- function(x, y) {
+    cd <- colData(x)
+    ## Remove lost samples (in case of replacement)
+    if (any(names(y) %in% names(x))) {
+        cnOld <- cnNew <- colnames(x)
+        repl <- names(y)[names(y) %in% names(x)]
+        for (ii in repl) 
+            cnNew[[ii]] <- colnames(y[[ii]])
+        oldSamples <- setdiff(unique(unlist(cnOld)),
+                              unique(unlist(cnNew)))
+        if (length(oldSamples))
+            cd <- cd[!rownames(cd) %in% oldSamples, , drop = FALSE]
+    }
     ## For each replacement assay
-    for (ii in seq_along(y)) {
+    for (ii in names(y)) {
         yy<- y[[ii]]
         ## Add new samples names to cd and fill with NA
         newSamples <- setdiff(colnames(yy), rownames(cd))
-        cd[newSamples, ] <- NA
+        if (length(newSamples)) {
+            newCd <- DataFrame(row.names = newSamples)
+            newCd[, colnames(cd)] <- NA
+            cd <- rbind(cd, newCd)
+        }
         ## If coldata is available, add it to cd
         if (ncol(colData(yy)) != 0) {
             cd[rownames(colData(yy)), colnames(colData(yy))] <- colData(yy)
