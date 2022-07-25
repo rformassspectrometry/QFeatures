@@ -18,6 +18,9 @@
 \alias{rbindRowData}
 \alias{names<-,QFeatures,character-method}
 \alias{longFormat}
+\alias{removeAssay}
+\alias{replaceAssay}
+\alias{[[<-,QFeatures,ANY,ANY-method}
 \alias{updateObject,QFeatures-method}
 \title{Quantitative MS QFeatures}
 \usage{
@@ -48,6 +51,12 @@ rowDataNames(x)
 longFormat(object, colvars = NULL, rowvars = NULL, index = 1L)
 
 addAssay(x, y, name, assayLinks, dropColData = TRUE)
+
+removeAssay(x, i)
+
+replaceAssay(x, y, i, dropColData = FALSE)
+
+\S4method{[[}{QFeatures,ANY,ANY}(x, i, j, ...) <- value
 
 \S4method{updateObject}{QFeatures}(object, ..., verbose = FALSE)
 
@@ -108,7 +117,7 @@ the assays already present in \code{x}.}
 \item{assayLinks}{An optional \link{AssayLinks} object.}
 
 \item{dropColData}{A \code{logical(1)} indicating whether the \code{colData}
-in \code{y} are removed. Defaults to removing the \code{colData}.}
+in \code{y} are removed.}
 
 \item{verbose}{logical (default FALSE) whether to print extra messages}
 }
@@ -187,7 +196,7 @@ function in the \link[MultiAssayExperiment:MultiAssayExperiment]{MultiAssayExper
 }
 }
 
-\section{Adding assays}{
+\section{Adding, removing and replacing assays}{
 
 \itemize{
 \item The \code{\link[=aggregateFeatures]{aggregateFeatures()}} function creates a new assay by
@@ -200,7 +209,25 @@ is an optional \link{AssayLinks}. The \code{colData} present in \code{y} is
 automatically transferred to \code{colData(x)} by matching sample
 names, that is \code{colnames(y)}. If the samples are not present in
 \code{x} the rows of \code{colData(x)} are extended to account for the
-new samples.
+new samples. Use \code{dropColData} to control whether \code{colData(y)}
+should be dropped or not after it has been transferred to
+\code{colData(x)}. Defaults to removing the \code{colData}.
+\item \code{removeAssay(x, i)}: Removes one or more assay(s) from the
+\code{QFeatures} instance \code{x}. In this context, \code{i} is a \code{character()},
+\code{integer()} or \code{logical()} that indicates which assay(s) must be
+removed.
+\item \code{replaceAssay(x, y, i, dropColData)}: Replaces one or more
+assay(s) from the \code{QFeatures} instance \code{x}. In this context, \code{i}
+is a \code{character()},\code{integer()} or \code{logical()} that indicates
+which assay(s) must be replaced. The feature links from or to
+any replaced assays are automatically removed, unless the
+replacement has the same dimension names (columns and row, order
+agnostic). \code{dropColData} is used in the same way as in
+\code{addAssay()}, but defaults to keeping the \code{colData}.
+\item \code{x[[i]] <- value}: a generic method for adding (when \code{i} is not
+in \code{names(x)}), removing (when \code{value} is null) or replacing (when
+\code{i} is in \code{names(x)}). Note that the arguments \code{j} and \code{...} from
+the S4 replacement method signature are not allowed.
 }
 }
 
