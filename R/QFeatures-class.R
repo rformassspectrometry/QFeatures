@@ -749,7 +749,7 @@ addAssay <- function(x,
     }
     
     ## Update the sampleMap
-    smap <- .sampleMapFromData(cd, el)
+    smap <- MultiAssayExperiment:::.sampleMapFromData(cd, el)
     
     ## Update the AssayLinks
     al <- append(x@assayLinks, assayLinks)
@@ -811,7 +811,7 @@ replaceAssay <- function(x,
     }
     
     ## Update the sampleMap
-    smap <- .sampleMapFromData(cd, el)
+    smap <- MultiAssayExperiment:::.sampleMapFromData(cd, el)
     
     ## Update the AssayLinks
     al <- x@assayLinks
@@ -945,41 +945,6 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
         }
     }
     cd
-}
-
-## Internal function that creates a valid sampleMap based on 
-## the colData and ExperimentList contents. 
-## 
-## @param colData The colData of a QFeatures object
-## @param experiments The ExperimentList of a QFeatures object
-## 
-## The function returns the corresponding valid sampleMap as a DFrame
-## 
-## Taken from MultiAssayExperiment:::.sampleMapFromData:
-## I noted that the first line `colnames(experiments)` leads to a big
-## overhead. I simply replaced it with `lapply(experiments, colnames)`
-.sampleMapFromData <- function (colData, experiments) {
-    samps <- lapply(experiments, colnames) ## I only changed this line
-    assay <- factor(rep(names(samps), lengths(samps)), levels = names(samps))
-    colname <- unlist(samps, use.names = FALSE)
-    matches <- match(colname, rownames(colData))
-    if (length(matches) && all(is.na(matches))) 
-        stop("No way to map colData to ExperimentList")
-    else if (!length(matches) && !isEmpty(experiments)) 
-        warning("colData rownames and ExperimentList colnames are empty")
-    primary <- rownames(colData)[matches]
-    autoMap <- S4Vectors::DataFrame(assay = assay, primary = primary, 
-                                    colname = colname)
-    missingPrimary <- is.na(autoMap[["primary"]])
-    if (nrow(autoMap) && any(missingPrimary)) {
-        notFound <- autoMap[missingPrimary, ]
-        warning("Data dropped from ExperimentList (element - column):", 
-                Biobase::selectSome(paste("\n", notFound[["assay"]], 
-                                          "-", notFound[["colname"]]), ), "\nUnable to map to rows of colData", 
-                call. = FALSE)
-        autoMap <- autoMap[!missingPrimary, ]
-    }
-    autoMap
 }
 
 ##' @param verbose logical (default FALSE) whether to print extra messages
