@@ -640,8 +640,8 @@ setReplaceMethod("names", c("QFeatures", "character"),
                      for (i in seq_len(length(x))) {
                          al <- x@assayLinks[[i]]
                          al@name  <- unname(key_vals[key_vals[, 1] == al@name, 2])
-                         if (!is.na(al@from))
-                             al@from <- unname(key_vals[key_vals[, 1] == al@from, 2])
+                         if (!all(is.na(al@from)))
+                             al@from <- unname(key_vals[key_vals[, 1] %in% al@from, 2])
                          x@assayLinks[[i]] <- al
                      }
                      x
