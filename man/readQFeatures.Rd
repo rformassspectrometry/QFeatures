@@ -42,12 +42,12 @@ Convert tabular data from a spreadsheet or a \code{data.frame} into a
 }
 \section{Functions}{
 \itemize{
-\item \code{readQFeatures}: See description.
+\item \code{readQFeatures()}: See description.
 
-\item \code{readSummarizedExperiment}: Convert tabular data from a spreadsheet or a
+\item \code{readSummarizedExperiment()}: Convert tabular data from a spreadsheet or a
 \code{data.frame} into a \code{SummarizedExperiment} object.
-}}
 
+}}
 \examples{
 
 ## Load a data.frame with PSM-level data

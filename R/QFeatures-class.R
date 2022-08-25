@@ -80,7 +80,7 @@
 ##' - The [aggregateFeatures()] function creates a new assay by
 ##'   aggregating features of an existing assay.
 ##'
-##' - `addAssay(x, y, name, assayLinks, dropColData)`: Adds one or more
+##' - `addAssay(x, y, name, assayLinks)`: Adds one or more
 ##'   new assay(s) `y` to the `QFeatures` instance `x`. `name`
 ##'   is a `character(1)` naming the assay if only one assay is 
 ##'   provided, and is ignored if `y` is a list of assays. `assayLinks`
@@ -88,21 +88,18 @@
 ##'   automatically transferred to `colData(x)` by matching sample
 ##'   names, that is `colnames(y)`. If the samples are not present in
 ##'   `x` the rows of `colData(x)` are extended to account for the 
-##'   new samples. Use `dropColData` to control whether `colData(y)`
-##'   should be dropped or not after it has been transferred to
-##'   `colData(x)`. Defaults to removing the `colData`. 
+##'   new samples. 
 ##' - `removeAssay(x, i)`: Removes one or more assay(s) from the
 ##'   `QFeatures` instance `x`. In this context, `i` is a `character()`,
 ##'   `integer()` or `logical()` that indicates which assay(s) must be
 ##'   removed.
-##' - `replaceAssay(x, y, i, dropColData)`: Replaces one or more 
+##' - `replaceAssay(x, y, i)`: Replaces one or more 
 ##'   assay(s) from the `QFeatures` instance `x`. In this context, `i`
-##'    is a `character()`,`integer()` or `logical()` that indicates 
+##'    is a `character()`, `integer()` or `logical()` that indicates 
 ##'    which assay(s) must be replaced. The feature links from or to 
 ##'    any replaced assays are automatically removed, unless the 
 ##'    replacement has the same dimension names (columns and row, order
-##'    agnostic). `dropColData` is used in the same way as in 
-##'    `addAssay()`, but defaults to keeping the `colData`.
+##'    agnostic).
 ##' - `x[[i]] <- value`: a generic method for adding (when `i` is not
 ##'   in `names(x)`), removing (when `value` is null) or replacing (when
 ##'   `i` is in `names(x)`). Note that the arguments `j` and `...` from
@@ -701,9 +698,6 @@ longFormat <- function(object,
 ##'     
 ##' @param assayLinks An optional [AssayLinks].
 ##' 
-##' @param dropColData A `logical(1)` indicating whether the `colData`
-##'     in `y` are removed. 
-##'
 ##' @md
 ##'
 ##' @rdname QFeatures-class
@@ -712,8 +706,7 @@ longFormat <- function(object,
 addAssay <- function(x,
                      y,
                      name,
-                     assayLinks,
-                     dropColData = TRUE) {
+                     assayLinks) {
     ## Check arguments
     stopifnot(inherits(x, "QFeatures"))
     y <- .checkAssaysToInsert(y, x, name, replace = FALSE)
@@ -730,19 +723,14 @@ addAssay <- function(x,
     
     ## Update the colData
     cd <- .updateColData(x, y)
-    ## If required, remove colData columns from the new assay(s)
-    if (dropColData) {
-        for (ii in names(y)) {
-            colData(y[[ii]]) <- NULL
-        }
-    }
     
     ## Add the assay to the ExperimentList
     ## NOTE: we replace using the `@` slot. Although not recommended, 
     ## this bypasses the checks of all the elements (using 
     ## `validObject`) in the ExperimentList as this is already 
-    ## performed when building the QFeatures object. This leads to a 
-    ## reduction in computational time. 
+    ## performed when building the QFeatures object and `y` is checked
+    ## at the beginning of the function. This leads to a reduction in
+    ## computational time. 
     el <- experiments(x)
     for(ii in names(y)) {
         el@listData[[ii]] <- y[[ii]]
@@ -783,8 +771,7 @@ removeAssay <- function(x, i) {
 ##' @export
 replaceAssay <- function(x, 
                          y,
-                         i,
-                         dropColData = FALSE) {
+                         i) {
     ## Check arguments
     stopifnot(inherits(x, "QFeatures"))
     if (!missing(i) && (is.numeric(i) || is.logical(i)))
@@ -793,12 +780,7 @@ replaceAssay <- function(x,
     
     ## Update the colData
     cd <- .updateColData(x, y)
-    ## If required, remove colData columns from the new assay(s)
-    if (dropColData) {
-        for (ii in names(y)) {
-            colData(y[[ii]]) <- NULL
-        }
-    }
+    
     ## Replace the assay to the ExperimentList
     ## NOTE: we replace using the `@` slot. Although not recommended, 
     ## this bypasses the checks of all the elements (using 

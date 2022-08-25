@@ -170,7 +170,7 @@ test_that("addAssay", {
                                      primary = colnames(assay4),
                                      colname = colnames(assay4))))
     ## Test keeping the coldata
-    featS4 <- addAssay(feat1, el, dropColData = FALSE)
+    featS4 <- addAssay(feat1, el)
     expect_true(!isEmpty(colData(featS4[["assayB"]])))
     
     ## Scenario 5: add an assay with assayLinks
@@ -201,23 +201,11 @@ test_that("replaceAssay", {
     
     ## Scenario 1: Replace assay with colData and same samples.ColData is
     ## dropped
-    s1 <- replaceAssay(feat2, feat2[[1]], i = "assay2", dropColData = TRUE)
-    exptd <- feat2[[1]]
-    colData(exptd) <- colData(exptd)[, -(1:2)]
-    expect_identical(s1[["assay2"]], exptd)
-    ## test colData
-    exptd <- colData(feat2)
-    exptd[, colnames(colData(feat2[[1]]))] <- NA
-    exptd <- exptd[!rownames(exptd) %in% colnames(feat2[["assay2"]]), ]
-    exptd[colnames(feat2[[1]]),] <- colData(feat2[[1]])
-    expect_identical(exptd, colData(s1))
-    ## assayLinks should not change
-    expect_identical(s1@assayLinks, feat2@assayLinks)
+    ## Removed because colData is no longer dropped
     
     ## Scenario 2: Replace assay with colData and same samples.ColData
     ## is not dropped
-    s2 <- replaceAssay(feat2, feat2[[1]], i = "assay2", 
-                       dropColData = FALSE)
+    s2 <- replaceAssay(feat2, feat2[[1]], i = "assay2")
     expect_identical(s2[["assay2"]], feat2[[1]])
     
     ## Scenario 4: Replace assay that is parent and child of a single
@@ -425,14 +413,10 @@ test_that("add/replaceAssay: test colData transfer", {
     s3 <- feat1
     colData(s3[[1]]) <- colData(s3)
     colData(s3)$Group <- NULL
-    ## Remove colData from assay (default)
+    ## Do not remove colData from assay
     s3 <- addAssay(s3, s3[[1]], name = "assay3")
     expect_identical(colData(s3), colData(feat1))
-    expect_true(isEmpty(colData(s3[["assay3"]])))
-    ## Do not remove colData from assay (default)
-    s3 <- addAssay(s3, s3[[1]], name = "assay3noColData", dropColData = FALSE)
-    expect_identical(colData(s3), colData(feat1))
-    expect_identical(colData(s3), colData(s3[["assay3noColData"]]))
+    expect_identical(colData(s3), colData(s3[["assay3"]]))
     ## Scenario 4: colData in QFeatures, colData in assay with different 
     ## samples and different colData variables
     s4 <- feat1
