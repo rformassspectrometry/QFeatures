@@ -85,21 +85,25 @@
 ##'   is a `character(1)` naming the assay if only one assay is 
 ##'   provided, and is ignored if `y` is a list of assays. `assayLinks`
 ##'   is an optional [AssayLinks]. The `colData` present in `y` is 
-##'   automatically transferred to `colData(x)` by matching sample
+##'   automatically duplicated to `colData(x)` by matching sample
 ##'   names, that is `colnames(y)`. If the samples are not present in
 ##'   `x` the rows of `colData(x)` are extended to account for the 
-##'   new samples. 
+##'   new samples. Be aware that conflicting information between the
+##'   `colData` in `y` and the `colData` in `x` will result in an 
+##'   error.
 ##' - `removeAssay(x, i)`: Removes one or more assay(s) from the
 ##'   `QFeatures` instance `x`. In this context, `i` is a `character()`,
 ##'   `integer()` or `logical()` that indicates which assay(s) must be
 ##'   removed.
 ##' - `replaceAssay(x, y, i)`: Replaces one or more 
 ##'   assay(s) from the `QFeatures` instance `x`. In this context, `i`
-##'    is a `character()`, `integer()` or `logical()` that indicates 
-##'    which assay(s) must be replaced. The feature links from or to 
-##'    any replaced assays are automatically removed, unless the 
-##'    replacement has the same dimension names (columns and row, order
-##'    agnostic).
+##'   is a `character()`, `integer()` or `logical()` that indicates 
+##'   which assay(s) must be replaced. The feature links from or to 
+##'   any replaced assays are automatically removed, unless the 
+##'   replacement has the same dimension names (columns and row, order
+##'   agnostic). Be aware that conflicting information between the
+##'   `colData` in `y` and the `colData` in `x` will result in an 
+##'   error.
 ##' - `x[[i]] <- value`: a generic method for adding (when `i` is not
 ##'   in `names(x)`), removing (when `value` is null) or replacing (when
 ##'   `i` is in `names(x)`). Note that the arguments `j` and `...` from
@@ -900,6 +904,26 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
 ## 
 .updateColData <- function(x, y) {
     cd <- colData(x)
+    ## Make sure we do not override existing colData
+    err <- c()
+    for (i in names(y)) {
+        cdy <- colData(y[[i]])
+        rn <- intersect(rownames(cdy), rownames(cd))
+        cn <- intersect(colnames(cdy), colnames(cd))
+        if (length(rn) == 0 || length(cn) == 0) next()
+        for (ii in cn) {
+            ## We consider a problem when the overlaping colData 
+            ## column are  different and the QFeatures colData is not
+            ## all missing
+            if (!identical(cdy[rn, ii], cd[rn, ii]) &&
+                !all(is.na(cd[rn, ii]))) 
+                err <- c(err, paste0(ii, " (in ", i, ")"))
+        }
+    }
+    if (length(err) > 0) stop("Column(s) in the colData in y overlap ",
+                              "with the QFeatures colData. Problematic ",
+                              "column(s): ", paste(err, collapse = ", "))
+    
     ## Remove lost samples (in case of replacement)
     if (any(names(y) %in% names(x))) {
         cnOld <- cnNew <- colnames(x)

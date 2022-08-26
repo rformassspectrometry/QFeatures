@@ -199,12 +199,23 @@ test_that("replaceAssay", {
     expect_identical(charIndex, numIndex)
     expect_identical(charIndex, logIndex)
     
-    ## Scenario 1: Replace assay with colData and same samples.ColData is
-    ## dropped
-    ## Removed because colData is no longer dropped
+    ## Scenario 1: Replace an assay with itself should lead to an 
+    ## unmodified object
+    expect_identical(feat1, replaceAssay(feat1, feat1[[1]], 1))
+    ## But! when the colData in QFeatures is empty and the assays have
+    ## non empty colData, then the replacement updates the colData
+    s1 <- replaceAssay(feat2, experiments(feat2))
+    expect_false(identical(s1, feat2))
+    expect_identical(colData(s1), 
+                     rbind(colData(s1[[1]]),
+                           colData(s1[[2]]),
+                           cbind(colData(s1[[3]]), Var2 = NA)))
+    ## Check the colData is still the same in each assay
+    for (i in seq_along(experiments(s1))) {
+        expect_identical(colData(s1[[i]]), colData(feat2[[i]]))    
+    }
     
-    ## Scenario 2: Replace assay with colData and same samples.ColData
-    ## is not dropped
+    ## Scenario 2: Replace assay with colData and same samples.
     s2 <- replaceAssay(feat2, feat2[[1]], i = "assay2")
     expect_identical(s2[["assay2"]], feat2[[1]])
     
@@ -412,7 +423,6 @@ test_that("add/replaceAssay: test colData transfer", {
     ## Scenario 3: no colData in QFeatures, colData in assay
     s3 <- feat1
     colData(s3[[1]]) <- colData(s3)
-    colData(s3)$Group <- NULL
     ## Do not remove colData from assay
     s3 <- addAssay(s3, s3[[1]], name = "assay3")
     expect_identical(colData(s3), colData(feat1))
@@ -453,10 +463,8 @@ test_that("add/replaceAssay: test colData transfer", {
     s7 <- feat1
     se <- s7[[1]]
     se$Group <- 3:4
-    s7 <- addAssay(s7, se, name = "assay7")
-    expect_identical(colData(s7), 
-                     DataFrame(Group = 3:4,
-                               row.names = c("S1", "S2")))
+    expect_error(addAssay(s7, se, name = "assay7"),
+                 regexp = "colData in y overlap.*Group.*assay7")
     ## Scenario 8: colData in QFeatures, no colData in replacement
     ## assay
     s8 <- feat1
@@ -483,7 +491,6 @@ test_that("add/replaceAssay: test colData transfer", {
                      DataFrame(Group = as.logical(c(NA, NA)),
                                bar = c("a", "b"),
                                row.names = c("foo1", "foo2")))
-    
     ## Scenario 11: colData in QFeatures, colData in replacement assay
     ## different and common samples and different colData variables.
     ## Replacement adds new samples and removes old samples
@@ -496,6 +503,14 @@ test_that("add/replaceAssay: test colData transfer", {
                      DataFrame(Group = c(1L, NA),
                                bar = c("a", "b"),
                                row.names = c("S1", "foo")))
+    ## Scenario 12: colData in QFeatures, colData in assay with same 
+    ## samples and same colData variables, but NA in QFeatures
+    s12 <- feat1
+    se <- s12[[1]]
+    s12$Group <- NA
+    se$Group <- 1:2
+    s12 <- addAssay(s12, se, name = "assay7")
+    expect_identical(colData(s12), colData(feat1))
 })
 
 

@@ -203,10 +203,12 @@ new assay(s) \code{y} to the \code{QFeatures} instance \code{x}. \code{name}
 is a \code{character(1)} naming the assay if only one assay is
 provided, and is ignored if \code{y} is a list of assays. \code{assayLinks}
 is an optional \link{AssayLinks}. The \code{colData} present in \code{y} is
-automatically transferred to \code{colData(x)} by matching sample
+automatically duplicated to \code{colData(x)} by matching sample
 names, that is \code{colnames(y)}. If the samples are not present in
 \code{x} the rows of \code{colData(x)} are extended to account for the
-new samples.
+new samples. Be aware that conflicting information between the
+\code{colData} in \code{y} and the \code{colData} in \code{x} will result in an
+error.
 \item \code{removeAssay(x, i)}: Removes one or more assay(s) from the
 \code{QFeatures} instance \code{x}. In this context, \code{i} is a \code{character()},
 \code{integer()} or \code{logical()} that indicates which assay(s) must be
@@ -217,7 +219,9 @@ is a \code{character()}, \code{integer()} or \code{logical()} that indicates
 which assay(s) must be replaced. The feature links from or to
 any replaced assays are automatically removed, unless the
 replacement has the same dimension names (columns and row, order
-agnostic).
+agnostic). Be aware that conflicting information between the
+\code{colData} in \code{y} and the \code{colData} in \code{x} will result in an
+error.
 \item \code{x[[i]] <- value}: a generic method for adding (when \code{i} is not
 in \code{names(x)}), removing (when \code{value} is null) or replacing (when
 \code{i} is in \code{names(x)}). Note that the arguments \code{j} and \code{...} from
