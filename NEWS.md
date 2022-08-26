@@ -1,5 +1,14 @@
 # QFeatures 1.7
 
+## QFeatures 1.7.2
+
+- fix: improved `addAssay()`. The improvement solves issue #104, but 
+  also dramatically improve computational time. colData is automatically
+  transferred from the assay to the QFeatures object. 
+- feat: implemented `removeAssay()` and `replaceAssay()`. Together with
+  `addAssay()`, these functions are used to implement the replacement
+  method `[[<-` required to solve issue #57. 
+
 ## QFeatures 1.7.1
 
 - refactor: imputation now adds a new assay instead of replacing values.
