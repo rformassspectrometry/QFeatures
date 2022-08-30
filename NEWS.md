@@ -2,7 +2,8 @@
 
 ## QFeatures 1.7.4
 
-- feat: added nrows and ncols methods
+- feat: added nrows and ncols methods. Also added use.names argument 
+  (cf ?BiocGenerics::dims)
 
 ## QFeatures 1.7.3
 

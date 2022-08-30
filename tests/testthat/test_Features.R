@@ -87,12 +87,26 @@ test_that("dims,ncols,nrows", {
                               rep(2L, 2), rep(4L, 5)), 
                             nrow = 2, byrow = TRUE,
                             dimnames = list(NULL, names(feat3))))
+    ## Without use names
+    expect_identical(dims(feat3, use.names = FALSE),
+                     matrix(c(7L, 8L, 10L, 3L, 2L, 3L, 2L, 
+                              rep(2L, 2), rep(4L, 5)), 
+                            nrow = 2, byrow = TRUE))
+    
     ## Test nrows
     expect_identical(dims(feat3)[1, ],
                      nrows(feat3))
+    ## Without use names
+    expect_identical(dims(feat3, use.names = FALSE)[1, ],
+                     nrows(feat3, use.names = FALSE))
+    
     ## Test ncols
     expect_identical(dims(feat3)[2, ],
                      ncols(feat3))
+    ## Without use names
+    expect_identical(dims(feat3, use.names = FALSE)[2, ],
+                     ncols(feat3, use.names = FALSE))
+    
 })
 
 test_that("addAssay", {

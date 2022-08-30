@@ -516,22 +516,29 @@ setMethod("[", c("QFeatures", "character", "ANY", "ANY"),
           })
 
 ##' @rdname QFeatures-class
+##' 
+##' @param use.names A `logical(1)` indicating if the names on x 
+##'     should be propagated to the returned matrix or vector.
+##' 
 ##' @importFrom BiocGenerics dims
 ##' @exportMethod dims
 setMethod("dims", "QFeatures",
-          function(x) vapply(experiments(x), dim, integer(2)))
+          function(x, use.names = TRUE) 
+              vapply(experiments(x), dim, USE.NAMES = use.names, integer(2)))
 
 ##' @rdname QFeatures-class
 ##' @importFrom BiocGenerics nrows
 ##' @exportMethod nrows
 setMethod("nrows", "QFeatures",
-          function(x) vapply(experiments(x), nrow, integer(1)))
+          function(x, use.names = TRUE) 
+              vapply(experiments(x), nrow, USE.NAMES = use.names, integer(1)))
 
 ##' @rdname QFeatures-class
 ##' @importFrom BiocGenerics ncols
 ##' @exportMethod ncols
 setMethod("ncols", "QFeatures",
-          function(x) vapply(experiments(x), ncol, integer(1)))
+          function(x, use.names = TRUE) 
+              vapply(experiments(x), ncol, USE.NAMES = use.names, integer(1)))
 
 ##' @rdname QFeatures-class
 ##'

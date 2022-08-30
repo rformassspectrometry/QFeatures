@@ -34,11 +34,11 @@
 
 \S4method{[}{QFeatures,character,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
 
-\S4method{dims}{QFeatures}(x)
+\S4method{dims}{QFeatures}(x, use.names = TRUE)
 
-\S4method{nrows}{QFeatures}(x)
+\S4method{nrows}{QFeatures}(x, use.names = TRUE)
 
-\S4method{ncols}{QFeatures}(x)
+\S4method{ncols}{QFeatures}(x, use.names = TRUE)
 
 \S4method{rowData}{QFeatures}(x, use.names = TRUE, ...)
 
