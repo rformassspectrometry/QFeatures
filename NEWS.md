@@ -1,9 +1,13 @@
 # QFeatures 1.7
 
+## QFeatures 1.7.4
+
+- feat: added nrows and ncols methods
+
 ## QFeatures 1.7.3
 
-- docs: imporved docs for filterFeatures()
-- tests: imporved unit tests for filterFeatures()
+- docs: improved docs for filterFeatures()
+- tests: improved unit tests for filterFeatures()
 - feat: added a keep argument in filterFeatures() to control whether
   to keep or remove features for assays that do not contain the filter
   variable. Also added message printing for a better overview of which

@@ -12,6 +12,8 @@
 \alias{rowDataNames}
 \alias{selectRowData}
 \alias{plot.QFeatures}
+\alias{nrows,QFeatures-method}
+\alias{ncols,QFeatures-method}
 \alias{rowData,QFeatures-method}
 \alias{rowData<-,QFeatures,DataFrameList-method}
 \alias{rowData<-,QFeatures,ANY-method}
@@ -30,9 +32,13 @@
 
 \S4method{[}{QFeatures,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
 
+\S4method{[}{QFeatures,character,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
+
 \S4method{dims}{QFeatures}(x)
 
-\S4method{[}{QFeatures,character,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
+\S4method{nrows}{QFeatures}(x)
+
+\S4method{ncols}{QFeatures}(x)
 
 \S4method{rowData}{QFeatures}(x, use.names = TRUE, ...)
 

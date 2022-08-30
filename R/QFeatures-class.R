@@ -507,14 +507,6 @@ setMethod("[", c("QFeatures", "ANY", "ANY", "ANY"),
                   return(ans)
           })
 
-
-##' @rdname QFeatures-class
-##' @importFrom BiocGenerics dims
-##' @exportMethod dims
-setMethod("dims", "QFeatures",
-          function(x) vapply(experiments(x), dim, integer(2)))
-
-
 ##' @rdname QFeatures-class
 setMethod("[", c("QFeatures", "character", "ANY", "ANY"),
           function(x, i, j, k, ..., drop = TRUE) {
@@ -522,6 +514,24 @@ setMethod("[", c("QFeatures", "character", "ANY", "ANY"),
               if (missing(k)) k <- TRUE
               subsetByFeature(x, i)[, j, k]
           })
+
+##' @rdname QFeatures-class
+##' @importFrom BiocGenerics dims
+##' @exportMethod dims
+setMethod("dims", "QFeatures",
+          function(x) vapply(experiments(x), dim, integer(2)))
+
+##' @rdname QFeatures-class
+##' @importFrom BiocGenerics nrows
+##' @exportMethod nrows
+setMethod("nrows", "QFeatures",
+          function(x) vapply(experiments(x), nrow, integer(1)))
+
+##' @rdname QFeatures-class
+##' @importFrom BiocGenerics ncols
+##' @exportMethod ncols
+setMethod("ncols", "QFeatures",
+          function(x) vapply(experiments(x), ncol, integer(1)))
 
 ##' @rdname QFeatures-class
 ##'

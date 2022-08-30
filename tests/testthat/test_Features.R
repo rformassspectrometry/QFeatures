@@ -79,6 +79,22 @@ test_that("[[<-", {
     expect_identical(s3, addAssay(feat2, feat2[[1]], name = "foo"))
 })
 
+test_that("dims,ncols,nrows", {
+    ## Test dims
+    data("feat3")
+    expect_identical(dims(feat3),
+                     matrix(c(7L, 8L, 10L, 3L, 2L, 3L, 2L, 
+                              rep(2L, 2), rep(4L, 5)), 
+                            nrow = 2, byrow = TRUE,
+                            dimnames = list(NULL, names(feat3))))
+    ## Test nrows
+    expect_identical(dims(feat3)[1, ],
+                     nrows(feat3))
+    ## Test ncols
+    expect_identical(dims(feat3)[2, ],
+                     ncols(feat3))
+})
+
 test_that("addAssay", {
     data(feat1)
     
