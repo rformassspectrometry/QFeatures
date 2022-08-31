@@ -1,7 +1,12 @@
 # QFeatures 1.7
 
+## QFeatures 1.7.5
+
+(Nothing yet)
+
 ## QFeatures 1.7.4
 
+- feat: added 'c' methods to combine QFeatures objects. 
 - feat: added nrows and ncols methods. Also added use.names argument 
   (cf ?BiocGenerics::dims)
 
