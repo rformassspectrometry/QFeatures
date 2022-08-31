@@ -515,6 +515,24 @@ setMethod("[", c("QFeatures", "character", "ANY", "ANY"),
               subsetByFeature(x, i)[, j, k]
           })
 
+
+##' @rdname QFeatures-class
+##'
+##' @name coerce-QFeatures
+##' 
+##' @aliases coerce,MultiAssayExperiment,QFeatures-method
+##'
+##' @exportMethod coerce
+##' 
+setAs("MultiAssayExperiment", "QFeatures", function(from) {
+    QFeatures(experiments = experiments(from),
+              colData = colData(from),
+              sampleMap = sampleMap(from),
+              metadata = metadata(from),
+              drops = from@drops,
+              assayLinks = AssayLinks(names = names(from)))
+})
+
 ##' @rdname QFeatures-class
 ##' 
 ##' @exportMethod c
@@ -531,8 +549,7 @@ setMethod("c", "QFeatures",
                        "inherit from SummarizedExperiment, List, or ",
                        "list. Consider using 'addAssay()' instead.")
               } else if (!all(sapply(args, inherits, "QFeatures"))) {
-                  stop("Trying to combine a QFeatures object with objects that ",
-                       "don't inherit from the QFeatures class")
+                  args <- lapply(args, as, "QFeatures")
               }
               if(length(names(args))) 
                   warning("Argument names are provided but will be ignored.")

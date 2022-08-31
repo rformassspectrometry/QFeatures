@@ -12,6 +12,8 @@
 \alias{rowDataNames}
 \alias{selectRowData}
 \alias{plot.QFeatures}
+\alias{coerce-QFeatures}
+\alias{coerce,MultiAssayExperiment,QFeatures-method}
 \alias{c,QFeatures-method}
 \alias{nrows,QFeatures-method}
 \alias{ncols,QFeatures-method}

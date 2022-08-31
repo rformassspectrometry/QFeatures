@@ -109,6 +109,16 @@ test_that("dims,ncols,nrows", {
     
 })
 
+test_that("coerce,MultiAssayExperiment,QFeatures-method", {
+    data("feat3")
+    mae <- as(feat3, "MultiAssayExperiment")
+    expect_true(validObject(mae))
+    qf <- as(mae, "QFeatures")
+    exp <- feat3
+    feat3@assayLinks <- AssayLinks(names = names(feat3))
+    expect_identical(qf, feat3)
+})
+    
 test_that("c,QFeatures-method", {
     data("feat3")
     
@@ -119,22 +129,28 @@ test_that("c,QFeatures-method", {
     expctd@assayLinks[[3]] <- AssayLink(names(feat3)[[3]]) ## this AssayLink will get lost
     expect_identical(c(qf1, qf2), expctd)
     
+    ## Combine 1 QF object and 1 MAE object
+    ## Note the AssayLinks are lost when converting to MAE
+    mae <- as(qf2, "MultiAssayExperiment")
+    expctd2 <- expctd
+    expctd2@assayLinks[names(qf2)] <- AssayLinks(names = names(qf2))
+    expect_identical(c(qf1, mae), expctd2)
+    
     ## Combine 3 QF objects
     suppressMessages(suppressWarnings(qf1 <- feat3[,, 1]))
     suppressMessages(suppressWarnings(qf2 <- feat3[,, 2]))
     suppressMessages(suppressWarnings(qf3 <- feat3[,, 3:7]))
     expect_identical(c(qf1, qf2, qf3), expctd)
     
-    ## Error: Combine 1 QF object and 1 MAE object
-    mae <- as(qf2, "MultiAssayExperiment")
-    expect_error(c(qf1, mae), 
-                 regexp = "don't inherit from the QFeatures class")
-    
-    ## Warning: Combine 1 QF object and 1 List object, or separate assays
+    ## Error: Combine 1 QF object and 1 List object, or separate assays
     expect_error(c(qf1, experiments(feat3)), 
                  regexp = "Consider using 'addAssay")
     expect_error(c(qf1, assay1 = feat3[[1]]), 
                  regexp = "Consider using 'addAssay")
+    ## Error: combine 1 QF object and 1 object other than QF, MAE, SE or List
+    expect_error(c(qf1, matrix()), 
+                 regexp = "coercing .matrix. to .QFeatures.")
+    
     ## Warning: providing names is ignored
     expect_warning(cmbnd <- c(qf1, object1 = qf2, object2 = qf3),
                    regexp = "will be ignored")
