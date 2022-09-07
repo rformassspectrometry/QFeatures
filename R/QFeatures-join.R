@@ -25,22 +25,24 @@
     res
 }
 
-##' @importFrom methods as
-.merge_2_by_rows <- function(x, y) {
-    ## Save class to coerce at the end
-    cl <- class(x)
-    res <- merge(x, y,
-                 by = 0,
-                 all.x = TRUE, all.y = TRUE,
-                 sort = FALSE)
-    ## Set and remove row names
-    rownames(res) <- res[[1]]
-    res <- res[, -1, drop = FALSE]
-    as(res, cl[1])
-}
 
-.merge_by_rows <- function(x, y, ...) {
-    Reduce(.merge_2_by_rows, list(x, y, ...))
+.merge_assays_by_rows <- function(l) {
+    cn <- unlist(lapply(l, colnames))
+    rn <- unique(unlist(lapply(l, rownames)))
+    
+    ## Check for duplicate column (sample) names
+    if (any(duplicated(cn))) 
+        stop("Merging assays with columns in common is not allowed.")
+    
+    res <- matrix(NA, ncol = length(cn), nrow = length(rn), 
+                  dimnames = list(rn, cn))
+    for (i in seq_along(l)) {
+        x <- l[[i]]
+        res[rownames(x), colnames(x)] <- as.matrix(x) 
+        ## as.matrix in case x is an HDF5Array, note x (and res) are
+        ## realized in memory. 
+    }
+    res
 }
 
 
@@ -54,7 +56,7 @@ mergeSElist <- function(x) {
     if (length(x_classes) != 1)
         stop("Can't join assays from different classes.", call. = FALSE)
     joined_mcols <- Reduce(.merge_2_by_cols, lapply(x, rowData))
-    joined_assay <- Reduce(.merge_2_by_rows, lapply(x, assay))
+    joined_assay <- .merge_assays_by_rows(lapply(x, assay))
     joined_coldata <- Reduce(.merge_2_by_cols, lapply(x, colData))
     res <- SummarizedExperiment(joined_assay[rownames(joined_mcols), ],
                                 joined_mcols,
@@ -152,10 +154,9 @@ joinAssays <- function(x,
               "Need at least 2 assays to join" = length(i) >= 2)
     if (name %in% names(x))
         stop("Assay with name '", name, "' already exists.")
-    joined_se <- mergeSElist(as.list(experiments(x)[i]))
+    ## Join assays and add to x
+    joined_se <- mergeSElist(experiments(x)[i])
     x <- addAssay(x, joined_se, name = name)
     ## Add the multi-parent AssayLinks
-    if (is.numeric(i)) i <- names(x)[i]
-    al <- .create_assay_link(x, from = i, to = name)
-    .update_assay_links(x, al)
+    addAssayLink(x, from = i, to = name)
 }

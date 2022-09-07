@@ -174,9 +174,7 @@ setMethod("zeroIsNA", c("QFeatures", "integer"),
               el <- experiments(object)
               for (ii in i)
                   el[[ii]] <- zeroIsNA(el[[ii]])
-              BiocGenerics:::replaceSlots(object,
-                                          ExperimentList = el,
-                                          check = TRUE)
+              replaceAssay(object, el)
           })
 
 ##' @rdname QFeatures-missing-data
@@ -206,9 +204,7 @@ setMethod("infIsNA", c("QFeatures", "integer"),
               el <- experiments(object)
               for (ii in i)
                   el[[ii]] <- infIsNA(el[[ii]])
-              BiocGenerics:::replaceSlots(object,
-                                          ExperimentList = el,
-                                          check = TRUE)
+              replaceAssay(object, el)
           })
 
 ##' @rdname QFeatures-missing-data
