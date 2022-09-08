@@ -5,7 +5,8 @@ author:
 package: QFeatures
 abstract: >
   This vignette describes how to visualize quantitative mass
-  spectrometry data contained in a QFeatures object.
+  spectrometry data contained in a QFeatures object. This vignette
+  is distributed under a CC BY-SA license.
 output:
   BiocStyle::html_document:
     toc_float: true

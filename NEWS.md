@@ -1,5 +1,9 @@
 # QFeatures 1.7
 
+## QFeatures 1.7.2
+
+- Add CC-BY-SA license for vignettes.
+
 ## QFeatures 1.7.1
 
 - refactor: imputation now adds a new assay instead of replacing values.
