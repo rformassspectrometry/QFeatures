@@ -1,19 +1,12 @@
 # QFeatures 1.7
 
-## QFeatures 1.7.5
-
-(Nothing yet)
-
-## QFeatures 1.7.4
+## QFeatures 1.7.3
 
 - feat: added 'c' methods to combine QFeatures objects. 
 - feat: added nrows and ncols methods. Also added use.names argument 
   (cf ?BiocGenerics::dims)
-
-## QFeatures 1.7.3
-
-- docs: improved docs for filterFeatures()
-- tests: improved unit tests for filterFeatures()
+- docs: imporved docs for filterFeatures()
+- tests: imporved unit tests for filterFeatures()
 - feat: added a keep argument in filterFeatures() to control whether
   to keep or remove features for assays that do not contain the filter
   variable. Also added message printing for a better overview of which
