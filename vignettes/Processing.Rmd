@@ -8,7 +8,8 @@ abstract: >
   spectrometry data with QFeatures: cleaning up unneeded feature
   variables, adding an experimental design, filtering out contaminants
   and reverse hits, managing missing values, log-transforming,
-  normalising and aggregating data.
+  normalising and aggregating data. This vignette is distributed under
+  a CC BY-SA license.
 output:
   BiocStyle::html_document:
     toc_float: true
@@ -151,29 +152,29 @@ percent of missing values), we could have set `pNA` to 0.9.
 
 # Counting unique features
 
-Counting the number of unique features across samples can be used for 
+Counting the number of unique features across samples can be used for
 quality control or for assessing the identification efficiency between
 different conditions or experimental set-ups. `countUniqueFeatures`
 can be used to count the number of features that are contained in each
-sample of an assay from a `QFeatures` object. For instance, we can 
-count the number of (non-missing) peptides per sample from the 
+sample of an assay from a `QFeatures` object. For instance, we can
+count the number of (non-missing) peptides per sample from the
 `peptides` assay. Note that the counts are automatically stored in the
 `colData` of `cptac`, under `peptide_counts`:
 
 
 ```{r count_peptides}
-cptac <- countUniqueFeatures(cptac, 
-                             i = "peptides", 
+cptac <- countUniqueFeatures(cptac,
+                             i = "peptides",
                              colDataName = "peptide_counts")
 colData(cptac)
 ```
 
-We can also count the number of unique proteins. We therefore need to 
-tell `countUniqueFeatures` that we need to group by protein (the 
+We can also count the number of unique proteins. We therefore need to
+tell `countUniqueFeatures` that we need to group by protein (the
 protein name is stored in the `rowData` under `Proteins`):
 
 ```{r count_proteins}
-cptac <- countUniqueFeatures(cptac, 
+cptac <- countUniqueFeatures(cptac,
                              i = "peptides",
                              groupBy = "Proteins",
                              colDataName = "protein_counts")

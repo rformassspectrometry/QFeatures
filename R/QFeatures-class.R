@@ -84,26 +84,25 @@
 ##'   new assay(s) `y` to the `QFeatures` instance `x`. `name`
 ##'   is a `character(1)` naming the assay if only one assay is 
 ##'   provided, and is ignored if `y` is a list of assays. `assayLinks`
-##'   is an optional [AssayLinks]. The `colData` present in `y` is 
-##'   automatically duplicated to `colData(x)` by matching sample
+##'   is an optional [AssayLinks]. The `colData(y)` is 
+##'   automatically added to `colData(x)` by matching sample
 ##'   names, that is `colnames(y)`. If the samples are not present in
-##'   `x` the rows of `colData(x)` are extended to account for the 
+##'   `x`, the rows of `colData(x)` are extended to account for the 
 ##'   new samples. Be aware that conflicting information between the
-##'   `colData` in `y` and the `colData` in `x` will result in an 
+##'   `colData(y)` and the `colData(x)` will result in an 
 ##'   error.
 ##' - `removeAssay(x, i)`: Removes one or more assay(s) from the
 ##'   `QFeatures` instance `x`. In this context, `i` is a `character()`,
-##'   `integer()` or `logical()` that indicates which assay(s) must be
-##'   removed.
+##'   `integer()` or `logical()` that indicates which assay(s) to
+##'   remove.
 ##' - `replaceAssay(x, y, i)`: Replaces one or more 
 ##'   assay(s) from the `QFeatures` instance `x`. In this context, `i`
 ##'   is a `character()`, `integer()` or `logical()` that indicates 
-##'   which assay(s) must be replaced. The feature links from or to 
+##'   which assay(s) to replace. The `AssayLinks` from or to 
 ##'   any replaced assays are automatically removed, unless the 
 ##'   replacement has the same dimension names (columns and row, order
-##'   agnostic). Be aware that conflicting information between the
-##'   `colData` in `y` and the `colData` in `x` will result in an 
-##'   error.
+##'   agnostic). Be aware that conflicting information between
+##'   `colData(y)` and `colData(x)` will result in an error.
 ##' - `x[[i]] <- value`: a generic method for adding (when `i` is not
 ##'   in `names(x)`), removing (when `value` is null) or replacing (when
 ##'   `i` is in `names(x)`). Note that the arguments `j` and `...` from
@@ -828,7 +827,7 @@ addAssay <- function(x,
     ## at the beginning of the function. This leads to a reduction in
     ## computational time. 
     el <- experiments(x)
-    for(ii in names(y)) {
+    for (ii in names(y)) {
         el@listData[[ii]] <- y[[ii]]
     }
     
@@ -884,7 +883,7 @@ replaceAssay <- function(x,
     ## performed when building the QFeatures object. This leads to a 
     ## reduction in computational time. 
     el <- experiments(x)
-    for(ii in names(y)) {
+    for (ii in names(y)) {
         el@listData[[ii]] <- y[[ii]]
     }
     

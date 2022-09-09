@@ -21,12 +21,15 @@
 
 ## QFeatures 1.7.2
 
-- fix: improved `addAssay()`. The improvement solves issue #104, but 
-  also dramatically improve computational time. colData is automatically
-  transferred from the assay to the QFeatures object. 
+- fix: fixed `addAssay()` to solve issue #104.
+- refactor: refactored `addAssay()` and dramatically improved the usage
+  of computational resources. 
+- feat: colData is automatically transferred from the assay to the 
+  QFeatures object. 
 - feat: implemented `removeAssay()` and `replaceAssay()`. Together with
   `addAssay()`, these functions are used to implement the replacement
   method `[[<-` required to solve issue #57. 
+- Add CC-BY-SA license for vignettes.
 
 ## QFeatures 1.7.1
 
