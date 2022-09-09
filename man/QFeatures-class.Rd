@@ -110,7 +110,7 @@ variables (columns) to retain in any assay.}
 \item{colvars}{A \code{character()} that selects column(s) in the
 \code{colData}.}
 
-\item{index}{The assay indicator within a \code{SummarizedExperiment}
+\item{index}{The assay indicator within \code{SummarizedExperiment}
 objects. A vector input is supported in the case that the
 \code{SummarizedExperiment} object(s) has more than one assay
 (default \code{1L})}

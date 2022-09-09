@@ -48,8 +48,8 @@ be removed. Default is \code{FALSE}.}
 
 \item{keep}{\code{logical(1)} indicating whether to keep the features
 of assays for which at least one of the filtering variables are
-missing in the rowData. When FALSE (default), all such assay
-will contain 0 features; when TRUE, the assays are untouched.}
+missing in the rowData. When \code{FALSE} (default), all such assay
+will contain 0 features; when \code{TRUE}, the assays are untouched.}
 
 \item{...}{Additional parameters. Currently ignored.}
 }
@@ -71,9 +71,9 @@ object and apply the filtering on the corresponding \code{rowData}.
 Features that do not pass the filter condition are removed from
 the assay. In some cases, one may want to filter for a variable
 present in some assay, but not in other. There are two options:
-either provide \code{"keep = FALSE"} to remove all features for those
-assays, or provide \code{"keep = TRUE"} to ignore filtering for those
-assays.
+either provide \code{keep = FALSE} to remove all features for those
+assays (and thus leaving an empty assay), or provide \code{keep = TRUE}
+to ignore filtering for those assays.
 
 Because features in a \code{QFeatures} object are linked between different
 assays with \code{AssayLinks}, the links are automatically updated.
