@@ -7,7 +7,8 @@ abstract: >
  This vignette describes the functionality implemented in the QFeatures
  package. QFeatures provides infrastructure to manage and process
  quantitative features for high-throughput mass spectrometry assays,
- including proteomics and metabolomics.
+ including proteomics and metabolomics. This vignette is distributed under
+ a CC BY-SA license.
 output:
   BiocStyle::html_document:
     toc_float: true
@@ -188,64 +189,64 @@ hl$tag <- c("126", "127N", "127C", "128N", "128C", "129N", "129C",
 colData(hl)
 ```
 
-# Manipulating feature metadata 
+# Manipulating feature metadata
 
 The `QFeatures` package provides some utility functions that streamline
-the accession and manipulation of the feature metadata. 
+the accession and manipulation of the feature metadata.
 
 The feature metadata, more generally referred to as `rowData` in the
-Bioconductor ecosystem, is specific to each assay in a `QFeatures` 
-object. Therefore there are as many `rowData` tables as there are 
+Bioconductor ecosystem, is specific to each assay in a `QFeatures`
+object. Therefore there are as many `rowData` tables as there are
 assays. `rowDataNames` provides a list where each element contains the
-name of the `rowData` columns available in the corresponding assay. 
+name of the `rowData` columns available in the corresponding assay.
 
 ```{r rowDataNames}
 rowDataNames(hl)
 ```
 
-We saw above how to get the `rowData` from an assay, but we can also 
-extract the `rowData` for all assays by calling the function on the 
-`QFeautures` object directly. Similarly to `rowDataNames`, a list is 
+We saw above how to get the `rowData` from an assay, but we can also
+extract the `rowData` for all assays by calling the function on the
+`QFeautures` object directly. Similarly to `rowDataNames`, a list is
 returned where each element contains the `rowData` available in the
-corresponding assay. 
+corresponding assay.
 
 ```{r rowData}
 rowData(hl)
 ```
 
-In some cases, we are interested in extracting the `rowData` as a 
-single data table. This is easily performed using the `rbindRowData` 
+In some cases, we are interested in extracting the `rowData` as a
+single data table. This is easily performed using the `rbindRowData`
 function. The function will automatically select the columns that are
-common to all selected assays. 
+common to all selected assays.
 
 ```{r rbindRowData}
 rbindRowData(hl, i = c("peptides", "proteins"))
 ```
 
 We can also replace and add columns in the `rowData`.  This requires
-to provide a `List` where the names of the `List` point to the assay 
-to be updated and the elements of the `List` contain `DataFrame`s with 
-the replacement values. If the `DataFrame` contains a column that is 
-not present in the `rowData`, that column will get added to the 
+to provide a `List` where the names of the `List` point to the assay
+to be updated and the elements of the `List` contain `DataFrame`s with
+the replacement values. If the `DataFrame` contains a column that is
+not present in the `rowData`, that column will get added to the
 `rowData`. For instance, let's add a `rowData` variables with the mean
-protein expression as well as the associated standard deviation. 
-First, we need to create the `DataFrame` with the mean expression. 
-  
+protein expression as well as the associated standard deviation.
+First, we need to create the `DataFrame` with the mean expression.
+
 ```{r}
 dF <- DataFrame(mean = rowSums(assay(hl[["proteins"]])),
                 sd = rowSds(assay(hl[["proteins"]])))
 ```
 
-Then, we create the list and name the element `proteins` so that the 
-new data is added to the `rowData` of the `proteins` assay. To add 
-the list, we insert it back into the `rowData`. 
+Then, we create the list and name the element `proteins` so that the
+new data is added to the `rowData` of the `proteins` assay. To add
+the list, we insert it back into the `rowData`.
 
 ```{r}
 rowData(hl) <- List(proteins = dF)
 ```
 
 As shown below, the new `mean` and `sd` variables have been added to the
-`rowData` of the `proteins` assay. 
+`rowData` of the `proteins` assay.
 
 ```{r}
 rowData(hl)[["proteins"]]
@@ -276,7 +277,7 @@ stat3
 
 We can easily visualise this new *QFeatures* object using `ggplot2`
 once converted into a `data.frame`. See the visualization vignette for
-more details about data exploration from a `QFeatures` object. 
+more details about data exploration from a `QFeatures` object.
 
 ```{r plotstat3}
 stat3_df <- data.frame(longFormat(stat3))

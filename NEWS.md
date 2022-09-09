@@ -10,6 +10,7 @@
 - feat: implemented `removeAssay()` and `replaceAssay()`. Together with
   `addAssay()`, these functions are used to implement the replacement
   method `[[<-` required to solve issue #57. 
+- Add CC-BY-SA license for vignettes.
 
 ## QFeatures 1.7.1
 
