@@ -652,8 +652,8 @@ setReplaceMethod("names", c("QFeatures", "character"),
 ##'
 ##' @param colvars A `character()` that selects column(s) in the
 ##'     `colData`.
-##' @param index The assay indicator within a `SummarizedExperiment`
-##'     objects. A vector input is supported in the case that the
+##' @param index The assay indicator within each `SummarizedExperiment`
+##'     object. A vector input is supported in the case that the
 ##'     `SummarizedExperiment` object(s) has more than one assay
 ##'     (default `1L`)
 ##'
