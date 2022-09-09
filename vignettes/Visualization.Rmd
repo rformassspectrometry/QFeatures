@@ -20,9 +20,9 @@ vignette: >
 
 # Preparing the data
 
-To demonstrate the data visualization of a `QFeatures`, we first
-perform a quick processing of the `hlpsms` example data. We load the
-data and read it as a `QFeautres` object. See the processing
+To demonstrate the data visualization of `QFeatures`, we first perform
+a quick processing of the `hlpsms` example data. We load the data and
+read it as a `QFeautres` object. See the processing
 [vignette](https://rformassspectrometry.github.io/QFeatures/articles/Processing.html)
 for more details about data processing with `QFeatures`.
 
@@ -81,7 +81,6 @@ navigate across the tree(s).
 ```{r plot_interactive, eval = FALSE}
 plot(hl, interactive = TRUE)
 ```
-
 
 # Basic data exploration
 

@@ -13,13 +13,18 @@
 src="https://raw.githubusercontent.com/rformassspectrometry/stickers/master/QFeatures/QFeatures.png"
 height="150">
 
+### What is QFeatures?
+
 `QFeatures` is a [Bioconductor
 package](http://bioconductor.org/packages/QFeatures) that provides
 infrastructure enabling the management and processing of quantitative
 features for high-throughput mass spectrometry assays. It provides a
-familiar Bioconductor user experience to manages quantitative data
-across different assay levels (such as peptide spectrum matches,
-peptides and proteins) in a coherent and tractable format.
+familiar Bioconductor user experience to manage quantitative data
+across different assay levels (such as precursors, peptide spectrum
+matches, peptides and proteins or protein groups) in a coherent and
+tractable format.
+
+### Getting started
 
 The `QFeatures` class is used to manage and process quantitative
 features for high-throughput mass spectrometry assays. See the
@@ -27,7 +32,11 @@ features for high-throughput mass spectrometry assays. See the
 introduction](https://rformassspectrometry.github.io/QFeatures/articles/QFeatures.html)
 to get started and the [Processing quantitative proteomics data with
 QFeatures](https://rformassspectrometry.github.io/QFeatures/articles/Processing.html)
-vignette for a real-life application.
+vignette for a real-life application. Visualisation of quantitative
+mass spectrometry data contained in a `QFeatures` object is
+illustrated in the [Data
+visualisation](https://rformassspectrometry.github.io/QFeatures/articles/Visualization.html)
+vignette.
 
 ### License
 
