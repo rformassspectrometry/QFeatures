@@ -641,6 +641,12 @@ test_that("renaming", {
                  regexp = "must be a character")
     expect_error(names(feat2) <- letters[c(1,2,2)],
                  regexp = "is duplicated$")
+    ## Test with assays that have multiple parents
+    data("feat3")
+    newnames <- paste0("foo", seq_along(feat3))
+    names(feat3) <- newnames
+    expect_true(validObject(feat3))
+    expect_identical(names(feat3),  newnames)
 })
 
 ## This does not seem to work when runing R CMD check...
