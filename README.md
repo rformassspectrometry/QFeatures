@@ -35,4 +35,4 @@ The `QFeatures` code is provided under a permissive [Artistic 2.0
 license](https://opensource.org/licenses/Artistic-2.0). The
 documentation, including the manual pages and the vignettes, are
 distributed under a [CC BY-SA
-license](https://creativecommons.org/licenses/by-sa/2.0/).
+license](https://creativecommons.org/licenses/by-sa/4.0/).
