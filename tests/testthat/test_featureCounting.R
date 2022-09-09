@@ -21,9 +21,9 @@ test_that("function: countUniqueFeatures", {
                                      colDataName = "foo"),
                  regexp = "'foo' is already present in the colData.")
     ## The same sample is supplied twice
-    ft_na <- addAssay(ft_na, ft_na[[1]][, 1, drop = FALSE])
+    ft_na <- addAssay(ft_na, ft_na[[1]][, 1, drop = FALSE], name = "na2")
     expect_error(countUniqueFeatures(ft_na,
-                                     i = c("na", "newAssay")),
+                                     i = c("na", "na2")),
                  regexp = "The same sample is present in multiple assays.")
     
 })

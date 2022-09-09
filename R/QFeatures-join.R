@@ -35,7 +35,7 @@
                  sort = FALSE)
     ## Set and remove row names
     rownames(res) <- res[[1]]
-    res <- res[, -1]
+    res <- res[, -1, drop = FALSE]
     as(res, cl[1])
 }
 

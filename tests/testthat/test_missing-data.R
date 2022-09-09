@@ -144,7 +144,7 @@ test_that("infIsNA,QFeatures", {
 
 test_that("nNA,SummarizedExperiment and nNA,QFeatures", {
     ## Add an assay with different dimensions (cf issue 118)
-    ft0 <- addAssay(ft0, ft0[[1]][1:2, 1:2])
+    ft0 <- addAssay(ft0, ft0[[1]][1:2, 1:2], name = "subset1")
     ## Method vs internal function
     expect_identical(nNA(se_na), QFeatures:::.nNA(se_na))
     expect_identical(nNA(ft0, 1:4), QFeatures:::.nNAi(ft0, 1:4))
