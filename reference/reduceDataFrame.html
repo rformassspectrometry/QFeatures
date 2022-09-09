@@ -26,7 +26,7 @@ DataFrame to be expanded back, it must not to be simplified."><meta property="og
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.2</span>
       </span>
     </div>
 
@@ -87,9 +87,9 @@ defined by a vector.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">x</span>, <span class="va">k</span>, count <span class="op">=</span> <span class="cn">FALSE</span>, simplify <span class="op">=</span> <span class="cn">TRUE</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu">expandDataFrame</span><span class="op">(</span><span class="va">x</span>, k <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">x</span>, <span class="va">k</span>, count <span class="op">=</span> <span class="cn">FALSE</span>, simplify <span class="op">=</span> <span class="cn">TRUE</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">expandDataFrame</span><span class="op">(</span><span class="va">x</span>, k <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -145,126 +145,126 @@ level functions that rely on reduction of <code>DataFrame</code> objects.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.org/packages/IRanges" class="external-link">"IRanges"</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">k</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">1e3</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html" class="external-link">DataFrame</a></span><span class="op">(</span>k <span class="op">=</span> <span class="va">k</span>,</span>
-<span class="r-in">                x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">k</span><span class="op">)</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>,</span>
-<span class="r-in">                y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">k</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">                z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">LETTERS</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">k</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span class="r-in">                ir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html" class="external-link">IRanges</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">k</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
-<span class="r-in">                r <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Rle-class.html" class="external-link">Rle</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">k</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">                invar <span class="op">=</span> <span class="va">k</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">df</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.org/packages/IRanges" class="external-link">"IRanges"</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">k</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">1e3</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html" class="external-link">DataFrame</a></span><span class="op">(</span>k <span class="op">=</span> <span class="va">k</span>,</span></span>
+<span class="r-in"><span>                x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">k</span><span class="op">)</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">k</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">LETTERS</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">k</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                ir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html" class="external-link">IRanges</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">k</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                r <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Rle-class.html" class="external-link">Rle</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">k</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                invar <span class="op">=</span> <span class="va">k</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 1000 rows and 7 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              k         x         y           z        ir     r     invar</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;integer&gt; &lt;numeric&gt; &lt;integer&gt; &lt;character&gt; &lt;IRanges&gt; &lt;Rle&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           99     -0.85         1           V      1-10     5       100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2           79     -2.03         2           U      2-11     4        80</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3           58     -0.33         3           V      3-12     1        59</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4           58     -0.85         4           T      4-13     3        59</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5           56     -1.37         5           L      5-14     4        57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           39      0.38         1           B      1-10     3        40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2           52      0.90         2           I      2-11     1        53</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           63      0.82         3           E      3-12     2        64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4           55     -1.89         4           V      4-13     4        56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5           75      1.02         5           Y      5-14     5        76</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ...        ...       ...       ...         ...       ...   ...       ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 996         84     -1.51       996           E  996-1005     1        85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 997         35     -1.14       997           I  997-1006     5        36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 998         24     -1.63       998           U  998-1007     1        25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 999         22     -1.28       999           S  999-1008     2        23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1000        18     -0.37      1000           B 1000-1009     1        19</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Shinks the DataFrame</span></span>
-<span class="r-in"><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">df</span>, <span class="va">df</span><span class="op">$</span><span class="va">k</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">df2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 996         64     -1.06       996           U  996-1005     1        65</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 997         40     -0.47       997           E  997-1006     2        41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 998         35     -0.30       998           L  998-1007     5        36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 999         53      0.51       999           O  999-1008     2        54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1000        81      0.62      1000           L 1000-1009     3        82</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Shinks the DataFrame</span></span></span>
+<span class="r-in"><span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">df</span>, <span class="va">df</span><span class="op">$</span><span class="va">k</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df2</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 100 rows and 7 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             k                     x               y               z</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;integer&gt;         &lt;NumericList&gt;   &lt;IntegerList&gt; &lt;CharacterList&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           1  1.25,-1.38,-1.99,... 290,399,403,...       Q,V,V,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2           2 -0.55,-1.18, 0.14,...   61,71,182,...       D,E,J,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3           3    0.82,1.56,0.45,...   17,47,223,...       N,J,T,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4           4  0.90,-1.15, 0.28,...  63,323,420,...       K,A,V,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5           5 -1.88, 0.37,-0.06,...   36,98,113,...       K,O,R,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           1  0.89,-0.71,-0.55,...  95,187,219,...       I,O,H,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2           2  0.14, 0.91,-1.41,... 653,787,930,...       M,C,L,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           3  2.26, 0.81,-1.18,... 116,118,237,...       T,M,Y,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4           4 -2.33, 0.02,-0.03,...   71,73,174,...       F,Z,N,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5           5  1.15,-1.41,-0.48,...    7,92,111,...       K,A,B,...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ...       ...                   ...             ...             ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 96         96  1.20,-0.01, 1.65,... 124,234,285,...       T,M,K,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 97         97  0.50, 0.89,-0.38,...  87,104,162,...       I,Y,U,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 98         98 -0.38, 2.09,-0.52,... 378,433,604,...       N,G,B,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 99         99 -0.85,-0.55, 1.26,...   1,364,453,...       V,Y,D,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100       100    0.52,0.22,1.67,...  83,201,207,...       D,W,C,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96         96  0.80,-0.65,-0.34,... 271,288,409,...       L,U,U,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97         97  0.11, 0.59,-0.58,...   8,102,465,...       M,T,Y,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98         98 -0.83, 0.72, 0.09,... 277,423,568,...       L,C,F,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99         99 -1.25, 0.45, 0.13,... 265,313,320,...       W,I,X,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100       100    1.15,1.45,0.17,... 183,334,540,...       W,U,X,...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                              ir         r     invar</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;IRangesList&gt; &lt;RleList&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   290-299,399-408,403-412,... 4,1,5,...         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       61-70,71-80,182-191,... 1,5,3,...         3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3       17-26,47-56,223-232,... 1,4,1,...         4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     63-72,323-332,420-429,... 3,1,4,...         5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      36-45,98-107,113-122,... 5,4,3,...         6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    95-104,187-196,219-228,... 2,2,1,...         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   653-662,787-796,930-939,... 3,1,3,...         3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   116-125,118-127,237-246,... 1,2,1,...         4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       71-80,73-82,174-183,... 5,1,3,...         5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       7-16,92-101,111-120,... 4,3,2,...         6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ...                         ...       ...       ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 96  124-133,234-243,285-294,... 5,5,4,...        97</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 97    87-96,104-113,162-171,... 3,2,5,...        98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 98  378-387,433-442,604-613,... 1,3,2,...        99</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 99     1-10,364-373,453-462,... 5,5,2,...       100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100   83-92,201-210,207-216,... 3,4,3,...       101</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## With a tally of the number of members in each group</span></span>
-<span class="r-in"><span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">df</span>, <span class="va">df</span><span class="op">$</span><span class="va">k</span>, count <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96  271-280,288-297,409-418,... 4,2,2,...        97</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97     8-17,102-111,465-474,... 2,5,4,...        98</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98  277-286,423-432,568-577,... 2,1,2,...        99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99  265-274,313-322,320-329,... 5,2,3,...       100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100 183-192,334-343,540-549,... 4,1,1,...       101</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## With a tally of the number of members in each group</span></span></span>
+<span class="r-in"><span><span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">df</span>, <span class="va">df</span><span class="op">$</span><span class="va">k</span>, count <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 100 rows and 8 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             k                     x               y               z</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;integer&gt;         &lt;NumericList&gt;   &lt;IntegerList&gt; &lt;CharacterList&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           1  1.25,-1.38,-1.99,... 290,399,403,...       Q,V,V,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2           2 -0.55,-1.18, 0.14,...   61,71,182,...       D,E,J,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3           3    0.82,1.56,0.45,...   17,47,223,...       N,J,T,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4           4  0.90,-1.15, 0.28,...  63,323,420,...       K,A,V,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5           5 -1.88, 0.37,-0.06,...   36,98,113,...       K,O,R,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           1  0.89,-0.71,-0.55,...  95,187,219,...       I,O,H,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2           2  0.14, 0.91,-1.41,... 653,787,930,...       M,C,L,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           3  2.26, 0.81,-1.18,... 116,118,237,...       T,M,Y,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4           4 -2.33, 0.02,-0.03,...   71,73,174,...       F,Z,N,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5           5  1.15,-1.41,-0.48,...    7,92,111,...       K,A,B,...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ...       ...                   ...             ...             ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 96         96  1.20,-0.01, 1.65,... 124,234,285,...       T,M,K,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 97         97  0.50, 0.89,-0.38,...  87,104,162,...       I,Y,U,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 98         98 -0.38, 2.09,-0.52,... 378,433,604,...       N,G,B,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 99         99 -0.85,-0.55, 1.26,...   1,364,453,...       V,Y,D,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100       100    0.52,0.22,1.67,...  83,201,207,...       D,W,C,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96         96  0.80,-0.65,-0.34,... 271,288,409,...       L,U,U,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97         97  0.11, 0.59,-0.58,...   8,102,465,...       M,T,Y,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98         98 -0.83, 0.72, 0.09,... 277,423,568,...       L,C,F,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99         99 -1.25, 0.45, 0.13,... 265,313,320,...       W,I,X,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100       100    1.15,1.45,0.17,... 183,334,540,...       W,U,X,...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                              ir         r     invar        .n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;IRangesList&gt; &lt;RleList&gt; &lt;numeric&gt; &lt;integer&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   290-299,399-408,403-412,... 4,1,5,...         2         9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       61-70,71-80,182-191,... 1,5,3,...         3         7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3       17-26,47-56,223-232,... 1,4,1,...         4        18</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     63-72,323-332,420-429,... 3,1,4,...         5         7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      36-45,98-107,113-122,... 5,4,3,...         6        15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    95-104,187-196,219-228,... 2,2,1,...         2         7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   653-662,787-796,930-939,... 3,1,3,...         3         4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   116-125,118-127,237-246,... 1,2,1,...         4         8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       71-80,73-82,174-183,... 5,1,3,...         5        15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       7-16,92-101,111-120,... 4,3,2,...         6        13</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ...                         ...       ...       ...       ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 96  124-133,234-243,285-294,... 5,5,4,...        97        13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 97    87-96,104-113,162-171,... 3,2,5,...        98         6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 98  378-387,433-442,604-613,... 1,3,2,...        99         5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 99     1-10,364-373,453-462,... 5,5,2,...       100         8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100   83-92,201-210,207-216,... 3,4,3,...       101        14</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Much faster, but more crowded result</span></span>
-<span class="r-in"><span class="va">df3</span> <span class="op">&lt;-</span> <span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">df</span>, <span class="va">df</span><span class="op">$</span><span class="va">k</span>, simplify <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">df3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96  271-280,288-297,409-418,... 4,2,2,...        97        10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97     8-17,102-111,465-474,... 2,5,4,...        98         7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98  277-286,423-432,568-577,... 2,1,2,...        99         7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99  265-274,313-322,320-329,... 5,2,3,...       100        12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100 183-192,334-343,540-549,... 4,1,1,...       101         7</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Much faster, but more crowded result</span></span></span>
+<span class="r-in"><span><span class="va">df3</span> <span class="op">&lt;-</span> <span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">df</span>, <span class="va">df</span><span class="op">$</span><span class="va">k</span>, simplify <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df3</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 100 rows and 7 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   k                     x               y               z</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;IntegerList&gt;         &lt;NumericList&gt;   &lt;IntegerList&gt; &lt;CharacterList&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         1,1,1,...  1.25,-1.38,-1.99,... 290,399,403,...       Q,V,V,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2         2,2,2,... -0.55,-1.18, 0.14,...   61,71,182,...       D,E,J,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3         3,3,3,...    0.82,1.56,0.45,...   17,47,223,...       N,J,T,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4         4,4,4,...  0.90,-1.15, 0.28,...  63,323,420,...       K,A,V,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5         5,5,5,... -1.88, 0.37,-0.06,...   36,98,113,...       K,O,R,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         1,1,1,...  0.89,-0.71,-0.55,...  95,187,219,...       I,O,H,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2         2,2,2,...  0.14, 0.91,-1.41,... 653,787,930,...       M,C,L,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3         3,3,3,...  2.26, 0.81,-1.18,... 116,118,237,...       T,M,Y,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4         4,4,4,... -2.33, 0.02,-0.03,...   71,73,174,...       F,Z,N,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5         5,5,5,...  1.15,-1.41,-0.48,...    7,92,111,...       K,A,B,...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ...             ...                   ...             ...             ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 96     96,96,96,...  1.20,-0.01, 1.65,... 124,234,285,...       T,M,K,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 97     97,97,97,...  0.50, 0.89,-0.38,...  87,104,162,...       I,Y,U,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 98     98,98,98,... -0.38, 2.09,-0.52,... 378,433,604,...       N,G,B,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 99     99,99,99,... -0.85,-0.55, 1.26,...   1,364,453,...       V,Y,D,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100 100,100,100,...    0.52,0.22,1.67,...  83,201,207,...       D,W,C,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96     96,96,96,...  0.80,-0.65,-0.34,... 271,288,409,...       L,U,U,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97     97,97,97,...  0.11, 0.59,-0.58,...   8,102,465,...       M,T,Y,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98     98,98,98,... -0.83, 0.72, 0.09,... 277,423,568,...       L,C,F,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99     99,99,99,... -1.25, 0.45, 0.13,... 265,313,320,...       W,I,X,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100 100,100,100,...    1.15,1.45,0.17,... 183,334,540,...       W,U,X,...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                              ir         r           invar</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;IRangesList&gt; &lt;RleList&gt;   &lt;NumericList&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   290-299,399-408,403-412,... 4,1,5,...       2,2,2,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       61-70,71-80,182-191,... 1,5,3,...       3,3,3,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3       17-26,47-56,223-232,... 1,4,1,...       4,4,4,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     63-72,323-332,420-429,... 3,1,4,...       5,5,5,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      36-45,98-107,113-122,... 5,4,3,...       6,6,6,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    95-104,187-196,219-228,... 2,2,1,...       2,2,2,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   653-662,787-796,930-939,... 3,1,3,...       3,3,3,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   116-125,118-127,237-246,... 1,2,1,...       4,4,4,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       71-80,73-82,174-183,... 5,1,3,...       5,5,5,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       7-16,92-101,111-120,... 4,3,2,...       6,6,6,...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ...                         ...       ...             ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 96  124-133,234-243,285-294,... 5,5,4,...    97,97,97,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 97    87-96,104-113,162-171,... 3,2,5,...    98,98,98,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 98  378-387,433-442,604-613,... 1,3,2,...    99,99,99,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 99     1-10,364-373,453-462,... 5,5,2,... 100,100,100,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100   83-92,201-210,207-216,... 3,4,3,... 101,101,101,...</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Drop all non-invariant columns</span></span>
-<span class="r-in"><span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">df</span>, <span class="va">df</span><span class="op">$</span><span class="va">k</span>, drop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96  271-280,288-297,409-418,... 4,2,2,...    97,97,97,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97     8-17,102-111,465-474,... 2,5,4,...    98,98,98,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98  277-286,423-432,568-577,... 2,1,2,...    99,99,99,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99  265-274,313-322,320-329,... 5,2,3,... 100,100,100,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100 183-192,334-343,540-549,... 4,1,1,... 101,101,101,...</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Drop all non-invariant columns</span></span></span>
+<span class="r-in"><span><span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">df</span>, <span class="va">df</span><span class="op">$</span><span class="va">k</span>, drop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 100 rows and 2 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             k     invar</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;integer&gt; &lt;numeric&gt;</span>
@@ -279,13 +279,13 @@ level functions that rely on reduction of <code>DataFrame</code> objects.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 98         98        99</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 99         99       100</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 100       100       101</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Missing values</span></span>
-<span class="r-in"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html" class="external-link">DataFrame</a></span><span class="op">(</span>k <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
-<span class="r-in">               x <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">9</span><span class="op">]</span>,</span>
-<span class="r-in">               y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
-<span class="r-in">               y2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">d</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Missing values</span></span></span>
+<span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html" class="external-link">DataFrame</a></span><span class="op">(</span>k <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>               x <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">9</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>               y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>               y2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">d</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 9 rows and 4 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           k           x           y          y2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;integer&gt; &lt;character&gt; &lt;character&gt; &lt;character&gt;</span>
@@ -298,27 +298,27 @@ level functions that rely on reduction of <code>DataFrame</code> objects.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7         3           g           c           c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8         3           h           c           c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9         3           i           c           c</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## y is invariant and can be simplified</span></span>
-<span class="r-in"><span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">d</span>, <span class="va">d</span><span class="op">$</span><span class="va">k</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## y is invariant and can be simplified</span></span></span>
+<span class="r-in"><span><span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">d</span>, <span class="va">d</span><span class="op">$</span><span class="va">k</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 3 rows and 4 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           k               x           y          y2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;integer&gt; &lt;CharacterList&gt; &lt;character&gt; &lt;character&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1         1           a,b,c           a           a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2         2           d,e,f           b           b</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3         3           g,h,i           c           c</span>
-<span class="r-in"><span class="co">## y isn't not dropped</span></span>
-<span class="r-in"><span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">d</span>, <span class="va">d</span><span class="op">$</span><span class="va">k</span>, drop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## y isn't not dropped</span></span></span>
+<span class="r-in"><span><span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">d</span>, <span class="va">d</span><span class="op">$</span><span class="va">k</span>, drop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 3 rows and 3 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           k           y          y2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;integer&gt; &lt;character&gt; &lt;character&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1         1           a           a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2         2           b           b</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3         3           c           c</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## BUT with a missing value</span></span>
-<span class="r-in"><span class="va">d</span><span class="op">[</span><span class="fl">1</span>, <span class="st">"y"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
-<span class="r-in"><span class="va">d</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## BUT with a missing value</span></span></span>
+<span class="r-in"><span><span class="va">d</span><span class="op">[</span><span class="fl">1</span>, <span class="st">"y"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span></span>
+<span class="r-in"><span><span class="va">d</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 9 rows and 4 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           k           x           y          y2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;integer&gt; &lt;character&gt; &lt;character&gt; &lt;character&gt;</span>
@@ -331,17 +331,17 @@ level functions that rely on reduction of <code>DataFrame</code> objects.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7         3           g           c           c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8         3           h           c           c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9         3           i           c           c</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## y isn't invariant/simplified anymore</span></span>
-<span class="r-in"><span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">d</span>, <span class="va">d</span><span class="op">$</span><span class="va">k</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## y isn't invariant/simplified anymore</span></span></span>
+<span class="r-in"><span><span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">d</span>, <span class="va">d</span><span class="op">$</span><span class="va">k</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 3 rows and 4 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           k               x               y          y2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;integer&gt; &lt;CharacterList&gt; &lt;CharacterList&gt; &lt;character&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1         1           a,b,c          NA,a,a           a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2         2           d,e,f           b,b,b           b</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3         3           g,h,i           c,c,c           c</span>
-<span class="r-in"><span class="co">## y now gets dropped</span></span>
-<span class="r-in"><span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">d</span>, <span class="va">d</span><span class="op">$</span><span class="va">k</span>, drop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## y now gets dropped</span></span></span>
+<span class="r-in"><span><span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">d</span>, <span class="va">d</span><span class="op">$</span><span class="va">k</span>, drop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 3 rows and 2 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           k          y2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;integer&gt; &lt;character&gt;</span>

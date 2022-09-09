@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.2</span>
       </span>
     </div>
 
@@ -109,7 +109,8 @@ Gatto</h4>
       spectrometry data with QFeatures: cleaning up unneeded feature
       variables, adding an experimental design, filtering out
       contaminants and reverse hits, managing missing values,
-      log-transforming, normalising and aggregating data.</p>
+      log-transforming, normalising and aggregating data. This vignette
+      is distributed under a CC BY-SA license.</p>
     </div>
     
 <script type="text/javascript">
@@ -131,52 +132,52 @@ conditions A and B <span class="citation">(Paulovich et al.
 2010)</span>. The peptide-level data, as processed by MaxQuant <span class="citation">(Cox and Mann 2008)</span> is available in the
 <code>msdata</code> package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/path.html" class="external-link">basename</a></span><span class="op">(</span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu">msdata</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/msdata/man/proteomics.html" class="external-link">quant</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"cptac"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] "cptac_a_b_peptides.txt"</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/path.html" class="external-link">basename</a></span><span class="op">(</span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu">msdata</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/msdata/man/proteomics.html" class="external-link">quant</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"cptac"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "cptac_a_b_peptides.txt"</span></span></code></pre>
 <p>From the names of the columns, we see that the quantitative columns,
 starting with <code>"Intensity."</code> (note the dot!) are at positions
 56 to 61.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.delim</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##  [1] "Sequence"                 "N.term.cleavage.window"  </span>
-<span class="co">##  [3] "C.term.cleavage.window"   "Amino.acid.before"       </span>
-<span class="co">##  [5] "First.amino.acid"         "Second.amino.acid"       </span>
-<span class="co">##  [7] "Second.last.amino.acid"   "Last.amino.acid"         </span>
-<span class="co">##  [9] "Amino.acid.after"         "A.Count"                 </span>
-<span class="co">## [11] "R.Count"                  "N.Count"                 </span>
-<span class="co">## [13] "D.Count"                  "C.Count"                 </span>
-<span class="co">## [15] "Q.Count"                  "E.Count"                 </span>
-<span class="co">## [17] "G.Count"                  "H.Count"                 </span>
-<span class="co">## [19] "I.Count"                  "L.Count"                 </span>
-<span class="co">## [21] "K.Count"                  "M.Count"                 </span>
-<span class="co">## [23] "F.Count"                  "P.Count"                 </span>
-<span class="co">## [25] "S.Count"                  "T.Count"                 </span>
-<span class="co">## [27] "W.Count"                  "Y.Count"                 </span>
-<span class="co">## [29] "V.Count"                  "U.Count"                 </span>
-<span class="co">## [31] "Length"                   "Missed.cleavages"        </span>
-<span class="co">## [33] "Mass"                     "Proteins"                </span>
-<span class="co">## [35] "Leading.razor.protein"    "Start.position"          </span>
-<span class="co">## [37] "End.position"             "Unique..Groups."         </span>
-<span class="co">## [39] "Unique..Proteins."        "Charges"                 </span>
-<span class="co">## [41] "PEP"                      "Score"                   </span>
-<span class="co">## [43] "Identification.type.6A_7" "Identification.type.6A_8"</span>
-<span class="co">## [45] "Identification.type.6A_9" "Identification.type.6B_7"</span>
-<span class="co">## [47] "Identification.type.6B_8" "Identification.type.6B_9"</span>
-<span class="co">## [49] "Experiment.6A_7"          "Experiment.6A_8"         </span>
-<span class="co">## [51] "Experiment.6A_9"          "Experiment.6B_7"         </span>
-<span class="co">## [53] "Experiment.6B_8"          "Experiment.6B_9"         </span>
-<span class="co">## [55] "Intensity"                "Intensity.6A_7"          </span>
-<span class="co">## [57] "Intensity.6A_8"           "Intensity.6A_9"          </span>
-<span class="co">## [59] "Intensity.6B_7"           "Intensity.6B_8"          </span>
-<span class="co">## [61] "Intensity.6B_9"           "Reverse"                 </span>
-<span class="co">## [63] "Potential.contaminant"    "id"                      </span>
-<span class="co">## [65] "Protein.group.IDs"        "Mod..peptide.IDs"        </span>
-<span class="co">## [67] "Evidence.IDs"             "MS.MS.IDs"               </span>
-<span class="co">## [69] "Best.MS.MS"               "Oxidation..M..site.IDs"  </span>
-<span class="co">## [71] "MS.MS.Count"</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.delim</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##  [1] "Sequence"                 "N.term.cleavage.window"  </span></span>
+<span><span class="co">##  [3] "C.term.cleavage.window"   "Amino.acid.before"       </span></span>
+<span><span class="co">##  [5] "First.amino.acid"         "Second.amino.acid"       </span></span>
+<span><span class="co">##  [7] "Second.last.amino.acid"   "Last.amino.acid"         </span></span>
+<span><span class="co">##  [9] "Amino.acid.after"         "A.Count"                 </span></span>
+<span><span class="co">## [11] "R.Count"                  "N.Count"                 </span></span>
+<span><span class="co">## [13] "D.Count"                  "C.Count"                 </span></span>
+<span><span class="co">## [15] "Q.Count"                  "E.Count"                 </span></span>
+<span><span class="co">## [17] "G.Count"                  "H.Count"                 </span></span>
+<span><span class="co">## [19] "I.Count"                  "L.Count"                 </span></span>
+<span><span class="co">## [21] "K.Count"                  "M.Count"                 </span></span>
+<span><span class="co">## [23] "F.Count"                  "P.Count"                 </span></span>
+<span><span class="co">## [25] "S.Count"                  "T.Count"                 </span></span>
+<span><span class="co">## [27] "W.Count"                  "Y.Count"                 </span></span>
+<span><span class="co">## [29] "V.Count"                  "U.Count"                 </span></span>
+<span><span class="co">## [31] "Length"                   "Missed.cleavages"        </span></span>
+<span><span class="co">## [33] "Mass"                     "Proteins"                </span></span>
+<span><span class="co">## [35] "Leading.razor.protein"    "Start.position"          </span></span>
+<span><span class="co">## [37] "End.position"             "Unique..Groups."         </span></span>
+<span><span class="co">## [39] "Unique..Proteins."        "Charges"                 </span></span>
+<span><span class="co">## [41] "PEP"                      "Score"                   </span></span>
+<span><span class="co">## [43] "Identification.type.6A_7" "Identification.type.6A_8"</span></span>
+<span><span class="co">## [45] "Identification.type.6A_9" "Identification.type.6B_7"</span></span>
+<span><span class="co">## [47] "Identification.type.6B_8" "Identification.type.6B_9"</span></span>
+<span><span class="co">## [49] "Experiment.6A_7"          "Experiment.6A_8"         </span></span>
+<span><span class="co">## [51] "Experiment.6A_9"          "Experiment.6B_7"         </span></span>
+<span><span class="co">## [53] "Experiment.6B_8"          "Experiment.6B_9"         </span></span>
+<span><span class="co">## [55] "Intensity"                "Intensity.6A_7"          </span></span>
+<span><span class="co">## [57] "Intensity.6A_8"           "Intensity.6A_9"          </span></span>
+<span><span class="co">## [59] "Intensity.6B_7"           "Intensity.6B_8"          </span></span>
+<span><span class="co">## [61] "Intensity.6B_9"           "Reverse"                 </span></span>
+<span><span class="co">## [63] "Potential.contaminant"    "id"                      </span></span>
+<span><span class="co">## [65] "Protein.group.IDs"        "Mod..peptide.IDs"        </span></span>
+<span><span class="co">## [67] "Evidence.IDs"             "MS.MS.IDs"               </span></span>
+<span><span class="co">## [69] "Best.MS.MS"               "Oxidation..M..site.IDs"  </span></span>
+<span><span class="co">## [71] "MS.MS.Count"</span></span></code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="op">(</span><span class="va">i</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"Intensity\\."</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.delim</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 56 57 58 59 60 61</span></code></pre>
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">i</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"Intensity\\."</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.delim</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 56 57 58 59 60 61</span></span></code></pre>
 <p>We now read these data using the <code>readQFeatures</code> function.
 The peptide level expression data will be imported into R as an instance
 of class <code>QFeatures</code> named <code>cptac</code> with an assay
@@ -184,8 +185,8 @@ named <code>peptides</code>. We also use the <code>fnames</code>
 argument to set the row-names of the <code>peptides</code> assay to the
 peptide sequences.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/RforMassSpectrometry/QFeatures" class="external-link">"QFeatures"</a></span><span class="op">)</span>
-<span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readQFeatures.html">readQFeatures</a></span><span class="op">(</span><span class="va">f</span>, ecol <span class="op">=</span> <span class="va">i</span>, sep <span class="op">=</span> <span class="st">"\t"</span>, name <span class="op">=</span> <span class="st">"peptides"</span>, fnames <span class="op">=</span> <span class="st">"Sequence"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/RforMassSpectrometry/QFeatures" class="external-link">"QFeatures"</a></span><span class="op">)</span></span>
+<span><span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readQFeatures.html">readQFeatures</a></span><span class="op">(</span><span class="va">f</span>, ecol <span class="op">=</span> <span class="va">i</span>, sep <span class="op">=</span> <span class="st">"\t"</span>, name <span class="op">=</span> <span class="st">"peptides"</span>, fnames <span class="op">=</span> <span class="st">"Sequence"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="encoding-the-experimental-design">Encoding the experimental design<a class="anchor" aria-label="anchor" href="#encoding-the-experimental-design"></a>
@@ -193,35 +194,35 @@ peptide sequences.</p>
 <p>Below we update the sample (column) annotations to encode the two
 groups, 6A and 6B, and the original sample numbers.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cptac</span><span class="op">$</span><span class="va">group</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"6A"</span>, <span class="st">"6B"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
-<span class="va">cptac</span><span class="op">$</span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">7</span><span class="op">:</span><span class="fl">9</span>, <span class="fl">2</span><span class="op">)</span>
-<span class="fu">colData</span><span class="op">(</span><span class="va">cptac</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## DataFrame with 6 rows and 2 columns</span>
-<span class="co">##                      group    sample</span>
-<span class="co">##                &lt;character&gt; &lt;integer&gt;</span>
-<span class="co">## Intensity.6A_7          6A         7</span>
-<span class="co">## Intensity.6A_8          6A         8</span>
-<span class="co">## Intensity.6A_9          6A         9</span>
-<span class="co">## Intensity.6B_7          6B         7</span>
-<span class="co">## Intensity.6B_8          6B         8</span>
-<span class="co">## Intensity.6B_9          6B         9</span></code></pre>
+<code class="sourceCode R"><span><span class="va">cptac</span><span class="op">$</span><span class="va">group</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"6A"</span>, <span class="st">"6B"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="va">cptac</span><span class="op">$</span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">7</span><span class="op">:</span><span class="fl">9</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu">colData</span><span class="op">(</span><span class="va">cptac</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## DataFrame with 6 rows and 2 columns</span></span>
+<span><span class="co">##                      group    sample</span></span>
+<span><span class="co">##                &lt;character&gt; &lt;integer&gt;</span></span>
+<span><span class="co">## Intensity.6A_7          6A         7</span></span>
+<span><span class="co">## Intensity.6A_8          6A         8</span></span>
+<span><span class="co">## Intensity.6A_9          6A         9</span></span>
+<span><span class="co">## Intensity.6B_7          6B         7</span></span>
+<span><span class="co">## Intensity.6B_8          6B         8</span></span>
+<span><span class="co">## Intensity.6B_9          6B         9</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="filtering-out-contaminants-and-reverse-hits">Filtering out contaminants and reverse hits<a class="anchor" aria-label="anchor" href="#filtering-out-contaminants-and-reverse-hits"></a>
 </h2>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span><span class="op">(</span><span class="va">cptac</span>, <span class="op">~</span> <span class="va">Reverse</span> <span class="op">==</span> <span class="st">""</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## An instance of class QFeatures containing 1 assays:</span>
-<span class="co">##  [1] peptides: SummarizedExperiment with 11436 rows and 6 columns</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span><span class="op">(</span><span class="va">cptac</span>, <span class="op">~</span> <span class="va">Reverse</span> <span class="op">==</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## An instance of class QFeatures containing 1 assays:</span></span>
+<span><span class="co">##  [1] peptides: SummarizedExperiment with 11436 rows and 6 columns</span></span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span><span class="op">(</span><span class="va">cptac</span>, <span class="op">~</span> <span class="va">Potential.contaminant</span> <span class="op">==</span> <span class="st">""</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## An instance of class QFeatures containing 1 assays:</span>
-<span class="co">##  [1] peptides: SummarizedExperiment with 11385 rows and 6 columns</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span><span class="op">(</span><span class="va">cptac</span>, <span class="op">~</span> <span class="va">Potential.contaminant</span> <span class="op">==</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## An instance of class QFeatures containing 1 assays:</span></span>
+<span><span class="co">##  [1] peptides: SummarizedExperiment with 11385 rows and 6 columns</span></span></code></pre>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://magrittr.tidyverse.org" class="external-link">"magrittr"</a></span><span class="op">)</span>
-<span class="va">cptac</span> <span class="op">&lt;-</span> <span class="va">cptac</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-    <span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Reverse</span> <span class="op">==</span> <span class="st">""</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-    <span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Potential.contaminant</span> <span class="op">==</span> <span class="st">""</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://magrittr.tidyverse.org" class="external-link">"magrittr"</a></span><span class="op">)</span></span>
+<span><span class="va">cptac</span> <span class="op">&lt;-</span> <span class="va">cptac</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Reverse</span> <span class="op">==</span> <span class="st">""</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Potential.contaminant</span> <span class="op">==</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="removing-up-unneeded-feature-variables">Removing up unneeded feature variables<a class="anchor" aria-label="anchor" href="#removing-up-unneeded-feature-variables"></a>
@@ -230,19 +231,19 @@ groups, 6A and 6B, and the original sample numbers.</p>
 are returned by MaxQuant, but not necessarily necessary in the frame of
 a downstream statistical analysis.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/QFeatures-class.html">rowDataNames</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## CharacterList of length 1</span>
-<span class="co">## [["peptides"]] Sequence N.term.cleavage.window ... MS.MS.Count</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/QFeatures-class.html">rowDataNames</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## CharacterList of length 1</span></span>
+<span><span class="co">## [["peptides"]] Sequence N.term.cleavage.window ... MS.MS.Count</span></span></code></pre>
 <p>The only ones that we will be needing below are the peptides
 sequences and the protein identifiers. Below, we store these variables
 of interest and filter them using the <code>selectRowData</code>
 function.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rowvars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sequence"</span>, <span class="st">"Proteins"</span>, <span class="st">"Leading.razor.protein"</span><span class="op">)</span>
-<span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-class.html">selectRowData</a></span><span class="op">(</span><span class="va">cptac</span>, <span class="va">rowvars</span><span class="op">)</span>
-<span class="fu"><a href="../reference/QFeatures-class.html">rowDataNames</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## CharacterList of length 1</span>
-<span class="co">## [["peptides"]] Sequence Proteins Leading.razor.protein</span></code></pre>
+<code class="sourceCode R"><span><span class="va">rowvars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sequence"</span>, <span class="st">"Proteins"</span>, <span class="st">"Leading.razor.protein"</span><span class="op">)</span></span>
+<span><span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-class.html">selectRowData</a></span><span class="op">(</span><span class="va">cptac</span>, <span class="va">rowvars</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/QFeatures-class.html">rowDataNames</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## CharacterList of length 1</span></span>
+<span><span class="co">## [["peptides"]] Sequence Proteins Leading.razor.protein</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="managing-missing-values">Managing missing values<a class="anchor" aria-label="anchor" href="#managing-missing-values"></a>
@@ -253,40 +254,40 @@ presence across samples and features. But before being able to do so, we
 need to replace 0 by <code>NA</code>, given that MaxQuant encodes
 missing data with a 0 using the <code>zeroIsNA</code> function.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-missing-data.html">zeroIsNA</a></span><span class="op">(</span><span class="va">cptac</span>, i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="../reference/QFeatures-missing-data.html">nNA</a></span><span class="op">(</span><span class="va">cptac</span>, i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## $nNA</span>
-<span class="co">## DataFrame with 1 row and 3 columns</span>
-<span class="co">##         assay       nNA       pNA</span>
-<span class="co">##   &lt;character&gt; &lt;integer&gt; &lt;numeric&gt;</span>
-<span class="co">## 1    peptides     30609   44.9194</span>
-<span class="co">## </span>
-<span class="co">## $nNArows</span>
-<span class="co">## DataFrame with 11357 rows and 4 columns</span>
-<span class="co">##             assay          name       nNA       pNA</span>
-<span class="co">##       &lt;character&gt;   &lt;character&gt; &lt;integer&gt; &lt;numeric&gt;</span>
-<span class="co">## 1        peptides AAAAGAGGAG...         4   66.6667</span>
-<span class="co">## 2        peptides     AAAALAGGK         0    0.0000</span>
-<span class="co">## 3        peptides    AAAALAGGKK         0    0.0000</span>
-<span class="co">## 4        peptides AAADALSDLE...         0    0.0000</span>
-<span class="co">## 5        peptides AAADALSDLE...         0    0.0000</span>
-<span class="co">## ...           ...           ...       ...       ...</span>
-<span class="co">## 11353    peptides YYSIYDLGNN...         6  100.0000</span>
-<span class="co">## 11354    peptides YYTFNGPNYN...         3   50.0000</span>
-<span class="co">## 11355    peptides    YYTITEVATR         4   66.6667</span>
-<span class="co">## 11356    peptides YYTVFDRDNN...         6  100.0000</span>
-<span class="co">## 11357    peptides YYTVFDRDNN...         6  100.0000</span>
-<span class="co">## </span>
-<span class="co">## $nNAcols</span>
-<span class="co">## DataFrame with 6 rows and 4 columns</span>
-<span class="co">##         assay          name       nNA       pNA</span>
-<span class="co">##   &lt;character&gt;   &lt;character&gt; &lt;integer&gt; &lt;numeric&gt;</span>
-<span class="co">## 1    peptides Intensity....      4669   41.1112</span>
-<span class="co">## 2    peptides Intensity....      5388   47.4421</span>
-<span class="co">## 3    peptides Intensity....      5224   45.9981</span>
-<span class="co">## 4    peptides Intensity....      4651   40.9527</span>
-<span class="co">## 5    peptides Intensity....      5470   48.1641</span>
-<span class="co">## 6    peptides Intensity....      5207   45.8484</span></code></pre>
+<code class="sourceCode R"><span><span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-missing-data.html">zeroIsNA</a></span><span class="op">(</span><span class="va">cptac</span>, i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/QFeatures-missing-data.html">nNA</a></span><span class="op">(</span><span class="va">cptac</span>, i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## $nNA</span></span>
+<span><span class="co">## DataFrame with 1 row and 3 columns</span></span>
+<span><span class="co">##         assay       nNA       pNA</span></span>
+<span><span class="co">##   &lt;character&gt; &lt;integer&gt; &lt;numeric&gt;</span></span>
+<span><span class="co">## 1    peptides     30609   44.9194</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $nNArows</span></span>
+<span><span class="co">## DataFrame with 11357 rows and 4 columns</span></span>
+<span><span class="co">##             assay          name       nNA       pNA</span></span>
+<span><span class="co">##       &lt;character&gt;   &lt;character&gt; &lt;integer&gt; &lt;numeric&gt;</span></span>
+<span><span class="co">## 1        peptides AAAAGAGGAG...         4   66.6667</span></span>
+<span><span class="co">## 2        peptides     AAAALAGGK         0    0.0000</span></span>
+<span><span class="co">## 3        peptides    AAAALAGGKK         0    0.0000</span></span>
+<span><span class="co">## 4        peptides AAADALSDLE...         0    0.0000</span></span>
+<span><span class="co">## 5        peptides AAADALSDLE...         0    0.0000</span></span>
+<span><span class="co">## ...           ...           ...       ...       ...</span></span>
+<span><span class="co">## 11353    peptides YYSIYDLGNN...         6  100.0000</span></span>
+<span><span class="co">## 11354    peptides YYTFNGPNYN...         3   50.0000</span></span>
+<span><span class="co">## 11355    peptides    YYTITEVATR         4   66.6667</span></span>
+<span><span class="co">## 11356    peptides YYTVFDRDNN...         6  100.0000</span></span>
+<span><span class="co">## 11357    peptides YYTVFDRDNN...         6  100.0000</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $nNAcols</span></span>
+<span><span class="co">## DataFrame with 6 rows and 4 columns</span></span>
+<span><span class="co">##         assay          name       nNA       pNA</span></span>
+<span><span class="co">##   &lt;character&gt;   &lt;character&gt; &lt;integer&gt; &lt;numeric&gt;</span></span>
+<span><span class="co">## 1    peptides Intensity....      4669   41.1112</span></span>
+<span><span class="co">## 2    peptides Intensity....      5388   47.4421</span></span>
+<span><span class="co">## 3    peptides Intensity....      5224   45.9981</span></span>
+<span><span class="co">## 4    peptides Intensity....      4651   40.9527</span></span>
+<span><span class="co">## 5    peptides Intensity....      5470   48.1641</span></span>
+<span><span class="co">## 6    peptides Intensity....      5207   45.8484</span></span></code></pre>
 <p>The output of the <code>nNA</code> function tells us that</p>
 <ul>
 <li>there are currently close to 50% is missing values in the data;</li>
@@ -303,10 +304,10 @@ peptides happened to be absent in groups A and B. Below, we use
 more missing values by using <code>pNA = 0</code> (which also is the
 default value).</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-missing-data.html">filterNA</a></span><span class="op">(</span><span class="va">cptac</span>, i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">)</span>, pNA <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-<span class="va">cptac</span></code></pre></div>
-<pre><code><span class="co">## An instance of class QFeatures containing 1 assays:</span>
-<span class="co">##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns</span></code></pre>
+<code class="sourceCode R"><span><span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-missing-data.html">filterNA</a></span><span class="op">(</span><span class="va">cptac</span>, i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">)</span>, pNA <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">cptac</span></span></code></pre></div>
+<pre><code><span><span class="co">## An instance of class QFeatures containing 1 assays:</span></span>
+<span><span class="co">##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns</span></span></code></pre>
 <p>I we wanted to keep peptides that have up to 90% of missing values,
 corresponsing in this case to those that have only one value (i.e 5/6
 percent of missing values), we could have set <code>pNA</code> to
@@ -326,38 +327,38 @@ Note that the counts are automatically stored in the
 <code>colData</code> of <code>cptac</code>, under
 <code>peptide_counts</code>:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/countUniqueFeatures.html">countUniqueFeatures</a></span><span class="op">(</span><span class="va">cptac</span>, 
-                             i <span class="op">=</span> <span class="st">"peptides"</span>, 
-                             colDataName <span class="op">=</span> <span class="st">"peptide_counts"</span><span class="op">)</span>
-<span class="fu">colData</span><span class="op">(</span><span class="va">cptac</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## DataFrame with 6 rows and 3 columns</span>
-<span class="co">##                      group    sample peptide_counts</span>
-<span class="co">##                &lt;character&gt; &lt;integer&gt;      &lt;integer&gt;</span>
-<span class="co">## Intensity.6A_7          6A         7           4051</span>
-<span class="co">## Intensity.6A_8          6A         8           4051</span>
-<span class="co">## Intensity.6A_9          6A         9           4051</span>
-<span class="co">## Intensity.6B_7          6B         7           4051</span>
-<span class="co">## Intensity.6B_8          6B         8           4051</span>
-<span class="co">## Intensity.6B_9          6B         9           4051</span></code></pre>
+<code class="sourceCode R"><span><span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/countUniqueFeatures.html">countUniqueFeatures</a></span><span class="op">(</span><span class="va">cptac</span>,</span>
+<span>                             i <span class="op">=</span> <span class="st">"peptides"</span>,</span>
+<span>                             colDataName <span class="op">=</span> <span class="st">"peptide_counts"</span><span class="op">)</span></span>
+<span><span class="fu">colData</span><span class="op">(</span><span class="va">cptac</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## DataFrame with 6 rows and 3 columns</span></span>
+<span><span class="co">##                      group    sample peptide_counts</span></span>
+<span><span class="co">##                &lt;character&gt; &lt;integer&gt;      &lt;integer&gt;</span></span>
+<span><span class="co">## Intensity.6A_7          6A         7           4051</span></span>
+<span><span class="co">## Intensity.6A_8          6A         8           4051</span></span>
+<span><span class="co">## Intensity.6A_9          6A         9           4051</span></span>
+<span><span class="co">## Intensity.6B_7          6B         7           4051</span></span>
+<span><span class="co">## Intensity.6B_8          6B         8           4051</span></span>
+<span><span class="co">## Intensity.6B_9          6B         9           4051</span></span></code></pre>
 <p>We can also count the number of unique proteins. We therefore need to
 tell <code>countUniqueFeatures</code> that we need to group by protein
 (the protein name is stored in the <code>rowData</code> under
 <code>Proteins</code>):</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/countUniqueFeatures.html">countUniqueFeatures</a></span><span class="op">(</span><span class="va">cptac</span>, 
-                             i <span class="op">=</span> <span class="st">"peptides"</span>,
-                             groupBy <span class="op">=</span> <span class="st">"Proteins"</span>,
-                             colDataName <span class="op">=</span> <span class="st">"protein_counts"</span><span class="op">)</span>
-<span class="fu">colData</span><span class="op">(</span><span class="va">cptac</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## DataFrame with 6 rows and 4 columns</span>
-<span class="co">##                      group    sample peptide_counts protein_counts</span>
-<span class="co">##                &lt;character&gt; &lt;integer&gt;      &lt;integer&gt;      &lt;integer&gt;</span>
-<span class="co">## Intensity.6A_7          6A         7           4051           1125</span>
-<span class="co">## Intensity.6A_8          6A         8           4051           1125</span>
-<span class="co">## Intensity.6A_9          6A         9           4051           1125</span>
-<span class="co">## Intensity.6B_7          6B         7           4051           1125</span>
-<span class="co">## Intensity.6B_8          6B         8           4051           1125</span>
-<span class="co">## Intensity.6B_9          6B         9           4051           1125</span></code></pre>
+<code class="sourceCode R"><span><span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/countUniqueFeatures.html">countUniqueFeatures</a></span><span class="op">(</span><span class="va">cptac</span>,</span>
+<span>                             i <span class="op">=</span> <span class="st">"peptides"</span>,</span>
+<span>                             groupBy <span class="op">=</span> <span class="st">"Proteins"</span>,</span>
+<span>                             colDataName <span class="op">=</span> <span class="st">"protein_counts"</span><span class="op">)</span></span>
+<span><span class="fu">colData</span><span class="op">(</span><span class="va">cptac</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## DataFrame with 6 rows and 4 columns</span></span>
+<span><span class="co">##                      group    sample peptide_counts protein_counts</span></span>
+<span><span class="co">##                &lt;character&gt; &lt;integer&gt;      &lt;integer&gt;      &lt;integer&gt;</span></span>
+<span><span class="co">## Intensity.6A_7          6A         7           4051           1125</span></span>
+<span><span class="co">## Intensity.6A_8          6A         8           4051           1125</span></span>
+<span><span class="co">## Intensity.6A_9          6A         9           4051           1125</span></span>
+<span><span class="co">## Intensity.6B_7          6B         7           4051           1125</span></span>
+<span><span class="co">## Intensity.6B_8          6B         8           4051           1125</span></span>
+<span><span class="co">## Intensity.6B_9          6B         9           4051           1125</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="imputation">Imputation<a class="anchor" aria-label="anchor" href="#imputation"></a>
@@ -426,25 +427,25 @@ log2-transform our data. This time, instead of overwriting the peptides
 assay, we are going to create a new one to contain the log2-transformed
 data.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-class.html">addAssay</a></span><span class="op">(</span><span class="va">cptac</span>,
-                  <span class="fu"><a href="../reference/QFeatures-processing.html">logTransform</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,
-                  name <span class="op">=</span> <span class="st">"peptides_log"</span><span class="op">)</span>
-<span class="va">cptac</span></code></pre></div>
-<pre><code><span class="co">## An instance of class QFeatures containing 2 assays:</span>
-<span class="co">##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns </span>
-<span class="co">##  [2] peptides_log: SummarizedExperiment with 4051 rows and 6 columns</span></code></pre>
+<code class="sourceCode R"><span><span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-class.html">addAssay</a></span><span class="op">(</span><span class="va">cptac</span>,</span>
+<span>                  <span class="fu"><a href="../reference/QFeatures-processing.html">logTransform</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>                  name <span class="op">=</span> <span class="st">"peptides_log"</span><span class="op">)</span></span>
+<span><span class="va">cptac</span></span></code></pre></div>
+<pre><code><span><span class="co">## An instance of class QFeatures containing 2 assays:</span></span>
+<span><span class="co">##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns </span></span>
+<span><span class="co">##  [2] peptides_log: SummarizedExperiment with 4051 rows and 6 columns</span></span></code></pre>
 <p>The <code><a href="../reference/QFeatures-class.html">addAssay()</a></code> function is the general function that
 adds new assays to a <code>QFeatures</code> object. The step above could
 also be fun with the following syntax, that implicitly returns an
 updated <code>QFeatures</code> object.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/QFeatures-processing.html">logTransform</a></span><span class="op">(</span><span class="va">cptac</span>,
-             i <span class="op">=</span> <span class="st">"peptides"</span>,
-             name <span class="op">=</span> <span class="st">"log_peptides"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/QFeatures-processing.html">logTransform</a></span><span class="op">(</span><span class="va">cptac</span>,</span>
+<span>             i <span class="op">=</span> <span class="st">"peptides"</span>,</span>
+<span>             name <span class="op">=</span> <span class="st">"log_peptides"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html" class="external-link">plotDensities</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html" class="external-link">plotDensities</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html" class="external-link">plotDensities</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html" class="external-link">plotDensities</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="Processing_files/figure-html/unnamed-chunk-11-1.png" alt="Quantitative data in its original scale (left) and log2-transformed (right)." width="700"><p class="caption">
 Quantitative data in its original scale (left) and log2-transformed
@@ -461,25 +462,25 @@ the <code>method</code> argument; below, we use quantile normalisation,
 store the normalised data into a new experiment, and visualise the
 resulting data.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-class.html">addAssay</a></span><span class="op">(</span><span class="va">cptac</span>,
-                  <span class="fu"><a href="../reference/QFeatures-processing.html">normalize</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"peptides_log"</span><span class="op">]</span><span class="op">]</span>, method <span class="op">=</span> <span class="st">"center.median"</span><span class="op">)</span>,
-                  name <span class="op">=</span> <span class="st">"peptides_norm"</span><span class="op">)</span>
-<span class="va">cptac</span></code></pre></div>
-<pre><code><span class="co">## An instance of class QFeatures containing 3 assays:</span>
-<span class="co">##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns </span>
-<span class="co">##  [2] peptides_log: SummarizedExperiment with 4051 rows and 6 columns </span>
-<span class="co">##  [3] peptides_norm: SummarizedExperiment with 4051 rows and 6 columns</span></code></pre>
+<code class="sourceCode R"><span><span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-class.html">addAssay</a></span><span class="op">(</span><span class="va">cptac</span>,</span>
+<span>                  <span class="fu"><a href="../reference/QFeatures-processing.html">normalize</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"peptides_log"</span><span class="op">]</span><span class="op">]</span>, method <span class="op">=</span> <span class="st">"center.median"</span><span class="op">)</span>,</span>
+<span>                  name <span class="op">=</span> <span class="st">"peptides_norm"</span><span class="op">)</span></span>
+<span><span class="va">cptac</span></span></code></pre></div>
+<pre><code><span><span class="co">## An instance of class QFeatures containing 3 assays:</span></span>
+<span><span class="co">##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns </span></span>
+<span><span class="co">##  [2] peptides_log: SummarizedExperiment with 4051 rows and 6 columns </span></span>
+<span><span class="co">##  [3] peptides_norm: SummarizedExperiment with 4051 rows and 6 columns</span></span></code></pre>
 <p>As above, the <code><a href="../reference/QFeatures-processing.html">normalize()</a></code> function can also be firectly
 applied to the <code>QFeatures</code> object.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/QFeatures-processing.html">normalize</a></span><span class="op">(</span><span class="va">cptac</span>,
-          i <span class="op">=</span> <span class="st">"log_peptides"</span>,
-          name <span class="op">=</span> <span class="st">"lognorm_peptides"</span>,
-          method <span class="op">=</span> <span class="st">"center.median"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/QFeatures-processing.html">normalize</a></span><span class="op">(</span><span class="va">cptac</span>,</span>
+<span>          i <span class="op">=</span> <span class="st">"log_peptides"</span>,</span>
+<span>          name <span class="op">=</span> <span class="st">"lognorm_peptides"</span>,</span>
+<span>          method <span class="op">=</span> <span class="st">"center.median"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html" class="external-link">plotDensities</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"peptides_log"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html" class="external-link">plotDensities</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"peptides_norm"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html" class="external-link">plotDensities</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"peptides_log"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html" class="external-link">plotDensities</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"peptides_norm"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="Processing_files/figure-html/unnamed-chunk-14-1.png" alt="Distribution of log2 peptide intensities before (left) and after (right) median normalisation." width="700"><p class="caption">
 Distribution of log2 peptide intensities before (left) and after (right)
@@ -518,96 +519,96 @@ namely <code>robustSummary</code> <span class="citation">(Sticker et al.
 2019)</span>.</li>
 </ul>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-aggregate.html">aggregateFeatures</a></span><span class="op">(</span><span class="va">cptac</span>, i <span class="op">=</span> <span class="st">"peptides_norm"</span>, fcol <span class="op">=</span> <span class="st">"Proteins"</span>, name <span class="op">=</span> <span class="st">"proteins"</span><span class="op">)</span>
-<span class="va">cptac</span></code></pre></div>
-<pre><code><span class="co">## An instance of class QFeatures containing 4 assays:</span>
-<span class="co">##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns </span>
-<span class="co">##  [2] peptides_log: SummarizedExperiment with 4051 rows and 6 columns </span>
-<span class="co">##  [3] peptides_norm: SummarizedExperiment with 4051 rows and 6 columns </span>
-<span class="co">##  [4] proteins: SummarizedExperiment with 1125 rows and 6 columns</span></code></pre>
+<code class="sourceCode R"><span><span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-aggregate.html">aggregateFeatures</a></span><span class="op">(</span><span class="va">cptac</span>, i <span class="op">=</span> <span class="st">"peptides_norm"</span>, fcol <span class="op">=</span> <span class="st">"Proteins"</span>, name <span class="op">=</span> <span class="st">"proteins"</span><span class="op">)</span></span>
+<span><span class="va">cptac</span></span></code></pre></div>
+<pre><code><span><span class="co">## An instance of class QFeatures containing 4 assays:</span></span>
+<span><span class="co">##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns </span></span>
+<span><span class="co">##  [2] peptides_log: SummarizedExperiment with 4051 rows and 6 columns </span></span>
+<span><span class="co">##  [3] peptides_norm: SummarizedExperiment with 4051 rows and 6 columns </span></span>
+<span><span class="co">##  [4] proteins: SummarizedExperiment with 1125 rows and 6 columns</span></span></code></pre>
 <p>We obtain a final 1125 quantified proteins in the new
 <code>proteins</code> assay. Below, we display the quantitation data for
 the first 6 proteins and their respective variables. The latter shown
 that number of peptides that were using during the aggregation step
 (<code>.n</code> column).</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##                                      Intensity.6A_7 Intensity.6A_8</span>
-<span class="co">## P00918ups|CAH2_HUMAN_UPS                 -1.1215216      -1.379182</span>
-<span class="co">## P01008ups|ANT3_HUMAN_UPS;CON__P41361     -1.5422314      -2.248132</span>
-<span class="co">## P01127ups|PDGFB_HUMAN_UPS                -1.9097789      -1.459409</span>
-<span class="co">## P02144ups|MYG_HUMAN_UPS                  -1.5447867      -1.802439</span>
-<span class="co">## P02753ups|RETBP_HUMAN_UPS                -0.5570714      -1.565853</span>
-<span class="co">## P02787ups|TRFE_HUMAN_UPS                 -1.6165226      -1.387464</span>
-<span class="co">##                                      Intensity.6A_9 Intensity.6B_7</span>
-<span class="co">## P00918ups|CAH2_HUMAN_UPS                  -1.729731    -0.08402797</span>
-<span class="co">## P01008ups|ANT3_HUMAN_UPS;CON__P41361      -2.027588    -1.64110874</span>
-<span class="co">## P01127ups|PDGFB_HUMAN_UPS                 -1.526767    -0.16310747</span>
-<span class="co">## P02144ups|MYG_HUMAN_UPS                   -1.081029    -0.49570667</span>
-<span class="co">## P02753ups|RETBP_HUMAN_UPS                 -1.806130     0.03241792</span>
-<span class="co">## P02787ups|TRFE_HUMAN_UPS                  -2.014992    -0.22328799</span>
-<span class="co">##                                      Intensity.6B_8 Intensity.6B_9</span>
-<span class="co">## P00918ups|CAH2_HUMAN_UPS                  0.1874563     0.10613700</span>
-<span class="co">## P01008ups|ANT3_HUMAN_UPS;CON__P41361     -1.6201035    -1.88043072</span>
-<span class="co">## P01127ups|PDGFB_HUMAN_UPS                 0.4099189    -1.19416255</span>
-<span class="co">## P02144ups|MYG_HUMAN_UPS                   0.1929367    -0.06935162</span>
-<span class="co">## P02753ups|RETBP_HUMAN_UPS                -0.6263334    -0.20902837</span>
-<span class="co">## P02787ups|TRFE_HUMAN_UPS                  0.1491834    -0.20422237</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##                                      Intensity.6A_7 Intensity.6A_8</span></span>
+<span><span class="co">## P00918ups|CAH2_HUMAN_UPS                 -1.1215216      -1.379182</span></span>
+<span><span class="co">## P01008ups|ANT3_HUMAN_UPS;CON__P41361     -1.5422314      -2.248132</span></span>
+<span><span class="co">## P01127ups|PDGFB_HUMAN_UPS                -1.9097789      -1.459409</span></span>
+<span><span class="co">## P02144ups|MYG_HUMAN_UPS                  -1.5447867      -1.802439</span></span>
+<span><span class="co">## P02753ups|RETBP_HUMAN_UPS                -0.5570714      -1.565853</span></span>
+<span><span class="co">## P02787ups|TRFE_HUMAN_UPS                 -1.6165226      -1.387464</span></span>
+<span><span class="co">##                                      Intensity.6A_9 Intensity.6B_7</span></span>
+<span><span class="co">## P00918ups|CAH2_HUMAN_UPS                  -1.729731    -0.08402797</span></span>
+<span><span class="co">## P01008ups|ANT3_HUMAN_UPS;CON__P41361      -2.027588    -1.64110874</span></span>
+<span><span class="co">## P01127ups|PDGFB_HUMAN_UPS                 -1.526767    -0.16310747</span></span>
+<span><span class="co">## P02144ups|MYG_HUMAN_UPS                   -1.081029    -0.49570667</span></span>
+<span><span class="co">## P02753ups|RETBP_HUMAN_UPS                 -1.806130     0.03241792</span></span>
+<span><span class="co">## P02787ups|TRFE_HUMAN_UPS                  -2.014992    -0.22328799</span></span>
+<span><span class="co">##                                      Intensity.6B_8 Intensity.6B_9</span></span>
+<span><span class="co">## P00918ups|CAH2_HUMAN_UPS                  0.1874563     0.10613700</span></span>
+<span><span class="co">## P01008ups|ANT3_HUMAN_UPS;CON__P41361     -1.6201035    -1.88043072</span></span>
+<span><span class="co">## P01127ups|PDGFB_HUMAN_UPS                 0.4099189    -1.19416255</span></span>
+<span><span class="co">## P02144ups|MYG_HUMAN_UPS                   0.1929367    -0.06935162</span></span>
+<span><span class="co">## P02753ups|RETBP_HUMAN_UPS                -0.6263334    -0.20902837</span></span>
+<span><span class="co">## P02787ups|TRFE_HUMAN_UPS                  0.1491834    -0.20422237</span></span></code></pre>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">rowData</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## DataFrame with 1125 rows and 3 columns</span>
-<span class="co">##                                           Proteins Leading.razor.protein</span>
-<span class="co">##                                        &lt;character&gt;           &lt;character&gt;</span>
-<span class="co">## P00918ups|CAH2_HUMAN_UPS             P00918ups|...         P00918ups|...</span>
-<span class="co">## P01008ups|ANT3_HUMAN_UPS;CON__P41361 P01008ups|...         P01008ups|...</span>
-<span class="co">## P01127ups|PDGFB_HUMAN_UPS            P01127ups|...         P01127ups|...</span>
-<span class="co">## P02144ups|MYG_HUMAN_UPS              P02144ups|...         P02144ups|...</span>
-<span class="co">## P02753ups|RETBP_HUMAN_UPS            P02753ups|...         P02753ups|...</span>
-<span class="co">## ...                                            ...                   ...</span>
-<span class="co">## sp|Q99207|NOP14_YEAST                sp|Q99207|...         sp|Q99207|...</span>
-<span class="co">## sp|Q99216|PNO1_YEAST                 sp|Q99216|...         sp|Q99216|...</span>
-<span class="co">## sp|Q99257|MEX67_YEAST                sp|Q99257|...         sp|Q99257|...</span>
-<span class="co">## sp|Q99258|RIB3_YEAST                 sp|Q99258|...         sp|Q99258|...</span>
-<span class="co">## sp|Q99383|HRP1_YEAST                 sp|Q99383|...         sp|Q99383|...</span>
-<span class="co">##                                             .n</span>
-<span class="co">##                                      &lt;integer&gt;</span>
-<span class="co">## P00918ups|CAH2_HUMAN_UPS                     1</span>
-<span class="co">## P01008ups|ANT3_HUMAN_UPS;CON__P41361         1</span>
-<span class="co">## P01127ups|PDGFB_HUMAN_UPS                    1</span>
-<span class="co">## P02144ups|MYG_HUMAN_UPS                      1</span>
-<span class="co">## P02753ups|RETBP_HUMAN_UPS                    2</span>
-<span class="co">## ...                                        ...</span>
-<span class="co">## sp|Q99207|NOP14_YEAST                        1</span>
-<span class="co">## sp|Q99216|PNO1_YEAST                         1</span>
-<span class="co">## sp|Q99257|MEX67_YEAST                        2</span>
-<span class="co">## sp|Q99258|RIB3_YEAST                         2</span>
-<span class="co">## sp|Q99383|HRP1_YEAST                         2</span></code></pre>
+<code class="sourceCode R"><span><span class="fu">rowData</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## DataFrame with 1125 rows and 3 columns</span></span>
+<span><span class="co">##                                           Proteins Leading.razor.protein</span></span>
+<span><span class="co">##                                        &lt;character&gt;           &lt;character&gt;</span></span>
+<span><span class="co">## P00918ups|CAH2_HUMAN_UPS             P00918ups|...         P00918ups|...</span></span>
+<span><span class="co">## P01008ups|ANT3_HUMAN_UPS;CON__P41361 P01008ups|...         P01008ups|...</span></span>
+<span><span class="co">## P01127ups|PDGFB_HUMAN_UPS            P01127ups|...         P01127ups|...</span></span>
+<span><span class="co">## P02144ups|MYG_HUMAN_UPS              P02144ups|...         P02144ups|...</span></span>
+<span><span class="co">## P02753ups|RETBP_HUMAN_UPS            P02753ups|...         P02753ups|...</span></span>
+<span><span class="co">## ...                                            ...                   ...</span></span>
+<span><span class="co">## sp|Q99207|NOP14_YEAST                sp|Q99207|...         sp|Q99207|...</span></span>
+<span><span class="co">## sp|Q99216|PNO1_YEAST                 sp|Q99216|...         sp|Q99216|...</span></span>
+<span><span class="co">## sp|Q99257|MEX67_YEAST                sp|Q99257|...         sp|Q99257|...</span></span>
+<span><span class="co">## sp|Q99258|RIB3_YEAST                 sp|Q99258|...         sp|Q99258|...</span></span>
+<span><span class="co">## sp|Q99383|HRP1_YEAST                 sp|Q99383|...         sp|Q99383|...</span></span>
+<span><span class="co">##                                             .n</span></span>
+<span><span class="co">##                                      &lt;integer&gt;</span></span>
+<span><span class="co">## P00918ups|CAH2_HUMAN_UPS                     1</span></span>
+<span><span class="co">## P01008ups|ANT3_HUMAN_UPS;CON__P41361         1</span></span>
+<span><span class="co">## P01127ups|PDGFB_HUMAN_UPS                    1</span></span>
+<span><span class="co">## P02144ups|MYG_HUMAN_UPS                      1</span></span>
+<span><span class="co">## P02753ups|RETBP_HUMAN_UPS                    2</span></span>
+<span><span class="co">## ...                                        ...</span></span>
+<span><span class="co">## sp|Q99207|NOP14_YEAST                        1</span></span>
+<span><span class="co">## sp|Q99216|PNO1_YEAST                         1</span></span>
+<span><span class="co">## sp|Q99257|MEX67_YEAST                        2</span></span>
+<span><span class="co">## sp|Q99258|RIB3_YEAST                         2</span></span>
+<span><span class="co">## sp|Q99383|HRP1_YEAST                         2</span></span></code></pre>
 <p>We can get a quick overview of this <code>.n</code> variable by
 computing the table below, that shows us that we have 405 proteins that
 are based on a single peptides, 230 that are based on two, 119 that are
 based on three, … and a single protein that is the results of
 aggregating 44 peptides.</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu">rowData</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">$</span><span class="va">.n</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">##   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20 </span>
-<span class="co">## 405 230 119  84  64  53  37  29  24  24  13   9   4   3   3   7   3   1   1   1 </span>
-<span class="co">##  21  22  23  24  25  30  31  33  44 </span>
-<span class="co">##   1   2   2   1   1   1   1   1   1</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu">rowData</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">$</span><span class="va">.n</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20 </span></span>
+<span><span class="co">## 405 230 119  84  64  53  37  29  24  24  13   9   4   3   3   7   3   1   1   1 </span></span>
+<span><span class="co">##  21  22  23  24  25  30  31  33  44 </span></span>
+<span><span class="co">##   1   2   2   1   1   1   1   1   1</span></span></code></pre>
 <p>Let’s choose <code>P02787ups|TRFE_HUMAN_UPS</code> and visualise its
 expression pattern in the 2 groups at the protein and peptide level.</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://dplyr.tidyverse.org" class="external-link">"dplyr"</a></span><span class="op">)</span>
-<span class="fu"><a href="../reference/QFeatures-class.html">longFormat</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">[</span><span class="st">"P02787ups|TRFE_HUMAN_UPS"</span>, <span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-    <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="va">colname</span><span class="op">)</span>, <span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"Intensity\\."</span>, <span class="st">""</span>, <span class="va">colname</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">sample</span>, y <span class="op">=</span> <span class="va">value</span>, colour <span class="op">=</span> <span class="va">rowname</span>, shape <span class="op">=</span> <span class="va">group</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="op">~</span> <span class="va">assay</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## harmonizing input:</span>
-<span class="co">##   removing 12 sampleMap rows not in names(experiments)</span></code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://dplyr.tidyverse.org" class="external-link">"dplyr"</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/QFeatures-class.html">longFormat</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">[</span><span class="st">"P02787ups|TRFE_HUMAN_UPS"</span>, <span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="va">colname</span><span class="op">)</span>, <span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"Intensity\\."</span>, <span class="st">""</span>, <span class="va">colname</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">sample</span>, y <span class="op">=</span> <span class="va">value</span>, colour <span class="op">=</span> <span class="va">rowname</span>, shape <span class="op">=</span> <span class="va">group</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="op">~</span> <span class="va">assay</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## harmonizing input:</span></span>
+<span><span class="co">##   removing 12 sampleMap rows not in names(experiments)</span></span></code></pre>
 <div class="figure">
 <img src="Processing_files/figure-html/unnamed-chunk-18-1.png" alt="Expression intensities for the protein *P02787ups|TRFE_HUMAN_UPS* (right, green) and its peptides (left) in groups A (circles) and B (triangles)." width="700"><p class="caption">
 Expression intensities for the protein <em>P02787ups|TRFE_HUMAN_UPS</em>
@@ -637,62 +638,61 @@ proteomics data analysis</a> chapter of the WSBIM2122 course.</p></li>
 <div class="section level2">
 <h2 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<pre><code><span class="co">## R version 4.2.0 (2022-04-22)</span>
-<span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
-<span class="co">## Running under: Ubuntu 20.04.4 LTS</span>
-<span class="co">## </span>
-<span class="co">## Matrix products: default</span>
-<span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3</span>
-<span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/liblapack.so.3</span>
-<span class="co">## </span>
-<span class="co">## locale:</span>
-<span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span>
-<span class="co">##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span>
-<span class="co">##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span>
-<span class="co">##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span>
-<span class="co">##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span>
-<span class="co">## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span>
-<span class="co">## </span>
-<span class="co">## attached base packages:</span>
-<span class="co">## [1] stats4    stats     graphics  grDevices utils     datasets  methods  </span>
-<span class="co">## [8] base     </span>
-<span class="co">## </span>
-<span class="co">## other attached packages:</span>
-<span class="co">##  [1] gplots_3.1.3                magrittr_2.0.3             </span>
-<span class="co">##  [3] dplyr_1.0.9                 ggplot2_3.3.6              </span>
-<span class="co">##  [5] QFeatures_1.7.1             MultiAssayExperiment_1.23.2</span>
-<span class="co">##  [7] SummarizedExperiment_1.27.1 Biobase_2.57.1             </span>
-<span class="co">##  [9] GenomicRanges_1.49.0        GenomeInfoDb_1.33.3        </span>
-<span class="co">## [11] IRanges_2.31.0              S4Vectors_0.35.1           </span>
-<span class="co">## [13] BiocGenerics_0.43.0         MatrixGenerics_1.9.1       </span>
-<span class="co">## [15] matrixStats_0.62.0          BiocStyle_2.25.0           </span>
-<span class="co">## </span>
-<span class="co">## loaded via a namespace (and not attached):</span>
-<span class="co">##  [1] sass_0.4.1              jsonlite_1.8.0          gtools_3.9.2.2         </span>
-<span class="co">##  [4] bslib_0.3.1             highr_0.9               BiocManager_1.30.18    </span>
-<span class="co">##  [7] msdata_0.37.0           GenomeInfoDbData_1.2.8  yaml_2.3.5             </span>
-<span class="co">## [10] pillar_1.7.0            lattice_0.20-45         limma_3.53.4           </span>
-<span class="co">## [13] glue_1.6.2              digest_0.6.29           XVector_0.37.0         </span>
-<span class="co">## [16] colorspace_2.0-3        htmltools_0.5.2         Matrix_1.4-1           </span>
-<span class="co">## [19] pkgconfig_2.0.3         bookdown_0.27           zlibbioc_1.43.0        </span>
-<span class="co">## [22] purrr_0.3.4             scales_1.2.0            tibble_3.1.7           </span>
-<span class="co">## [25] farver_2.1.0            generics_0.1.2          AnnotationFilter_1.21.0</span>
-<span class="co">## [28] ellipsis_0.3.2          cachem_1.0.6            withr_2.5.0            </span>
-<span class="co">## [31] lazyeval_0.2.2          cli_3.3.0               crayon_1.5.1           </span>
-<span class="co">## [34] memoise_2.0.1           evaluate_0.15           fs_1.5.2               </span>
-<span class="co">## [37] fansi_1.0.3             MASS_7.3-57             textshaping_0.3.6      </span>
-<span class="co">## [40] tools_4.2.0             lifecycle_1.0.1         stringr_1.4.0          </span>
-<span class="co">## [43] munsell_0.5.0           cluster_2.1.3           DelayedArray_0.23.0    </span>
-<span class="co">## [46] compiler_4.2.0          pkgdown_2.0.6.9000      jquerylib_0.1.4        </span>
-<span class="co">## [49] caTools_1.18.2          systemfonts_1.0.4       rlang_1.0.3            </span>
-<span class="co">## [52] grid_4.2.0              RCurl_1.98-1.7          MsCoreUtils_1.9.0      </span>
-<span class="co">## [55] igraph_1.3.2            labeling_0.4.2          bitops_1.0-7           </span>
-<span class="co">## [58] rmarkdown_2.14          gtable_0.3.0            R6_2.5.1               </span>
-<span class="co">## [61] knitr_1.39              fastmap_1.1.0           utf8_1.2.2             </span>
-<span class="co">## [64] clue_0.3-61             rprojroot_2.0.3         ragg_1.2.2             </span>
-<span class="co">## [67] ProtGenerics_1.27.2     KernSmooth_2.23-20      desc_1.4.1             </span>
-<span class="co">## [70] stringi_1.7.6           vctrs_0.4.1             tidyselect_1.1.2       </span>
-<span class="co">## [73] xfun_0.31</span></code></pre>
+<pre><code><span><span class="co">## R version 4.2.1 (2022-06-23)</span></span>
+<span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
+<span><span class="co">## Running under: Ubuntu 20.04.5 LTS</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Matrix products: default</span></span>
+<span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3</span></span>
+<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/liblapack.so.3</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## locale:</span></span>
+<span><span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></span>
+<span><span class="co">##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span></span>
+<span><span class="co">##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span></span>
+<span><span class="co">##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span></span>
+<span><span class="co">##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></span>
+<span><span class="co">## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## attached base packages:</span></span>
+<span><span class="co">## [1] stats4    stats     graphics  grDevices utils     datasets  methods  </span></span>
+<span><span class="co">## [8] base     </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## other attached packages:</span></span>
+<span><span class="co">##  [1] gplots_3.1.3                magrittr_2.0.3             </span></span>
+<span><span class="co">##  [3] dplyr_1.0.10                ggplot2_3.3.6              </span></span>
+<span><span class="co">##  [5] QFeatures_1.7.2             MultiAssayExperiment_1.22.0</span></span>
+<span><span class="co">##  [7] SummarizedExperiment_1.26.1 Biobase_2.56.0             </span></span>
+<span><span class="co">##  [9] GenomicRanges_1.48.0        GenomeInfoDb_1.32.4        </span></span>
+<span><span class="co">## [11] IRanges_2.30.1              S4Vectors_0.34.0           </span></span>
+<span><span class="co">## [13] BiocGenerics_0.42.0         MatrixGenerics_1.8.1       </span></span>
+<span><span class="co">## [15] matrixStats_0.62.0          BiocStyle_2.24.0           </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## loaded via a namespace (and not attached):</span></span>
+<span><span class="co">##  [1] sass_0.4.2              jsonlite_1.8.0          gtools_3.9.3           </span></span>
+<span><span class="co">##  [4] bslib_0.4.0             highr_0.9               BiocManager_1.30.18    </span></span>
+<span><span class="co">##  [7] msdata_0.36.0           GenomeInfoDbData_1.2.8  yaml_2.3.5             </span></span>
+<span><span class="co">## [10] pillar_1.8.1            lattice_0.20-45         limma_3.52.2           </span></span>
+<span><span class="co">## [13] glue_1.6.2              digest_0.6.29           XVector_0.36.0         </span></span>
+<span><span class="co">## [16] colorspace_2.0-3        htmltools_0.5.3         Matrix_1.4-1           </span></span>
+<span><span class="co">## [19] pkgconfig_2.0.3         bookdown_0.28           zlibbioc_1.42.0        </span></span>
+<span><span class="co">## [22] purrr_0.3.4             scales_1.2.1            tibble_3.1.8           </span></span>
+<span><span class="co">## [25] farver_2.1.1            generics_0.1.3          AnnotationFilter_1.20.0</span></span>
+<span><span class="co">## [28] cachem_1.0.6            withr_2.5.0             lazyeval_0.2.2         </span></span>
+<span><span class="co">## [31] cli_3.3.0               memoise_2.0.1           evaluate_0.16          </span></span>
+<span><span class="co">## [34] fs_1.5.2                fansi_1.0.3             MASS_7.3-58.1          </span></span>
+<span><span class="co">## [37] textshaping_0.3.6       tools_4.2.1             lifecycle_1.0.1        </span></span>
+<span><span class="co">## [40] stringr_1.4.1           munsell_0.5.0           cluster_2.1.3          </span></span>
+<span><span class="co">## [43] DelayedArray_0.22.0     compiler_4.2.1          pkgdown_2.0.6.9000     </span></span>
+<span><span class="co">## [46] jquerylib_0.1.4         caTools_1.18.2          systemfonts_1.0.4      </span></span>
+<span><span class="co">## [49] rlang_1.0.5             grid_4.2.1              RCurl_1.98-1.8         </span></span>
+<span><span class="co">## [52] MsCoreUtils_1.9.1       igraph_1.3.4            labeling_0.4.2         </span></span>
+<span><span class="co">## [55] bitops_1.0-7            rmarkdown_2.16          gtable_0.3.1           </span></span>
+<span><span class="co">## [58] R6_2.5.1                knitr_1.40              fastmap_1.1.0          </span></span>
+<span><span class="co">## [61] utf8_1.2.2              clue_0.3-61             rprojroot_2.0.3        </span></span>
+<span><span class="co">## [64] ragg_1.2.2              ProtGenerics_1.27.2     KernSmooth_2.23-20     </span></span>
+<span><span class="co">## [67] desc_1.4.1              stringi_1.7.8           vctrs_0.4.1            </span></span>
+<span><span class="co">## [70] tidyselect_1.1.2        xfun_0.32</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

@@ -19,7 +19,7 @@ instances."><meta property="og:image" content="/logo.png"><!-- mathjax --><scrip
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.2</span>
       </span>
     </div>
 
@@ -222,76 +222,76 @@ names of the assays, instead of a supplied variable name in
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co">##-----------------------------</span></span>
-<span class="r-in"><span class="co">## Creating an AssayLink object</span></span>
-<span class="r-in"><span class="co">##-----------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">al1</span> <span class="op">&lt;-</span> <span class="fu">AssayLink</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"assay1"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">al1</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">##-----------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Creating an AssayLink object</span></span></span>
+<span class="r-in"><span><span class="co">##-----------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">al1</span> <span class="op">&lt;-</span> <span class="fu">AssayLink</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"assay1"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">al1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AssayLink for assay &lt;assay1&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [from:NA|fcol:NA|hits:0]</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">##------------------------------</span></span>
-<span class="r-in"><span class="co">## Creating an AssayLinks object</span></span>
-<span class="r-in"><span class="co">##------------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">AssayLinks</span><span class="op">(</span><span class="va">al1</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">##------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Creating an AssayLinks object</span></span></span>
+<span class="r-in"><span><span class="co">##------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">AssayLinks</span><span class="op">(</span><span class="va">al1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AssayLinks of length 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> names(1): assay1</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">al2</span> <span class="op">&lt;-</span> <span class="fu">AssayLinks</span><span class="op">(</span>names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Assay1"</span>, <span class="st">"Assay2"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">al2</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">al2</span> <span class="op">&lt;-</span> <span class="fu">AssayLinks</span><span class="op">(</span>names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Assay1"</span>, <span class="st">"Assay2"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">al2</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AssayLinks of length 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> names(2): Assay1 Assay2</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">##---------------------------------------</span></span>
-<span class="r-in"><span class="co">## Adding an AssayLink between two assays</span></span>
-<span class="r-in"><span class="co">##---------------------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## create a QFeatures object with 2 (identical) assays</span></span>
-<span class="r-in"><span class="co">## see also '?QFeatures'</span></span>
-<span class="r-in"><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu">SummarizedExperiment</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">2</span>,</span>
-<span class="r-in">                                  dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>,</span>
-<span class="r-in">                                                  <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">                           rowData <span class="op">=</span> <span class="fu">DataFrame</span><span class="op">(</span>ID <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ft</span> <span class="op">&lt;-</span> <span class="fu"><a href="QFeatures-class.html">QFeatures</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>assay1 <span class="op">=</span> <span class="va">se</span>, assay2 <span class="op">=</span> <span class="va">se</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## assay1 and assay2 are not linked</span></span>
-<span class="r-in"><span class="fu">assayLink</span><span class="op">(</span><span class="va">ft</span>, <span class="st">"assay2"</span><span class="op">)</span> <span class="co">## 'from' is NA</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">##---------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Adding an AssayLink between two assays</span></span></span>
+<span class="r-in"><span><span class="co">##---------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## create a QFeatures object with 2 (identical) assays</span></span></span>
+<span class="r-in"><span><span class="co">## see also '?QFeatures'</span></span></span>
+<span class="r-in"><span><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu">SummarizedExperiment</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>                                  dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>                                                  <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                           rowData <span class="op">=</span> <span class="fu">DataFrame</span><span class="op">(</span>ID <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ft</span> <span class="op">&lt;-</span> <span class="fu"><a href="QFeatures-class.html">QFeatures</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>assay1 <span class="op">=</span> <span class="va">se</span>, assay2 <span class="op">=</span> <span class="va">se</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## assay1 and assay2 are not linked</span></span></span>
+<span class="r-in"><span><span class="fu">assayLink</span><span class="op">(</span><span class="va">ft</span>, <span class="st">"assay2"</span><span class="op">)</span> <span class="co">## 'from' is NA</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AssayLink for assay &lt;assay2&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [from:NA|fcol:NA|hits:0]</span>
-<span class="r-in"><span class="fu">assayLink</span><span class="op">(</span><span class="va">ft</span>, <span class="st">"assay1"</span><span class="op">)</span> <span class="co">## 'from' is NA</span></span>
+<span class="r-in"><span><span class="fu">assayLink</span><span class="op">(</span><span class="va">ft</span>, <span class="st">"assay1"</span><span class="op">)</span> <span class="co">## 'from' is NA</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AssayLink for assay &lt;assay1&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [from:NA|fcol:NA|hits:0]</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Suppose assay2 was generated from assay1 and the feature variable</span></span>
-<span class="r-in"><span class="co">## 'ID' keeps track of the relationship between the two assays</span></span>
-<span class="r-in"><span class="va">ftLinked</span> <span class="op">&lt;-</span> <span class="fu">addAssayLink</span><span class="op">(</span><span class="va">ft</span>, from <span class="op">=</span> <span class="st">"assay1"</span>, to <span class="op">=</span> <span class="st">"assay2"</span>,</span>
-<span class="r-in">                         varFrom <span class="op">=</span> <span class="st">"ID"</span>, varTo <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">assayLink</span><span class="op">(</span><span class="va">ftLinked</span>, <span class="st">"assay2"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Suppose assay2 was generated from assay1 and the feature variable</span></span></span>
+<span class="r-in"><span><span class="co">## 'ID' keeps track of the relationship between the two assays</span></span></span>
+<span class="r-in"><span><span class="va">ftLinked</span> <span class="op">&lt;-</span> <span class="fu">addAssayLink</span><span class="op">(</span><span class="va">ft</span>, from <span class="op">=</span> <span class="st">"assay1"</span>, to <span class="op">=</span> <span class="st">"assay2"</span>,</span></span>
+<span class="r-in"><span>                         varFrom <span class="op">=</span> <span class="st">"ID"</span>, varTo <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">assayLink</span><span class="op">(</span><span class="va">ftLinked</span>, <span class="st">"assay2"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AssayLink for assay &lt;assay2&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [from:assay1|fcol:ID|hits:10]</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## For one-to-one relationships, you can also use</span></span>
-<span class="r-in"><span class="va">ftLinked</span> <span class="op">&lt;-</span> <span class="fu">addAssayLinkOneToOne</span><span class="op">(</span><span class="va">ft</span>, from <span class="op">=</span> <span class="st">"assay1"</span>, to <span class="op">=</span> <span class="st">"assay2"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">assayLink</span><span class="op">(</span><span class="va">ftLinked</span>, <span class="st">"assay2"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## For one-to-one relationships, you can also use</span></span></span>
+<span class="r-in"><span><span class="va">ftLinked</span> <span class="op">&lt;-</span> <span class="fu">addAssayLinkOneToOne</span><span class="op">(</span><span class="va">ft</span>, from <span class="op">=</span> <span class="st">"assay1"</span>, to <span class="op">=</span> <span class="st">"assay2"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">assayLink</span><span class="op">(</span><span class="va">ftLinked</span>, <span class="st">"assay2"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AssayLink for assay &lt;assay2&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [from:assay1|fcol:._oneToOne|hits:10]</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">##----------------------------------------</span></span>
-<span class="r-in"><span class="co">## Adding an AssayLink between more assays</span></span>
-<span class="r-in"><span class="co">##----------------------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## An assay can also be linked to multiple parent assays</span></span>
-<span class="r-in"><span class="co">## Create a QFeatures object with 2 parent assays and 1 child assay</span></span>
-<span class="r-in"><span class="va">ft</span> <span class="op">&lt;-</span> <span class="fu"><a href="QFeatures-class.html">QFeatures</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>parent1 <span class="op">=</span> <span class="va">se</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="op">]</span>, parent2 <span class="op">=</span> <span class="va">se</span><span class="op">[</span><span class="fl">4</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span>, child <span class="op">=</span> <span class="va">se</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ft</span> <span class="op">&lt;-</span> <span class="fu">addAssayLink</span><span class="op">(</span><span class="va">ft</span>, from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"parent1"</span>, <span class="st">"parent2"</span><span class="op">)</span>, to <span class="op">=</span> <span class="st">"child"</span>,</span>
-<span class="r-in">                   varFrom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ID"</span>, <span class="st">"ID"</span><span class="op">)</span>, varTo <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">assayLink</span><span class="op">(</span><span class="va">ft</span>, <span class="st">"child"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">##----------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Adding an AssayLink between more assays</span></span></span>
+<span class="r-in"><span><span class="co">##----------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## An assay can also be linked to multiple parent assays</span></span></span>
+<span class="r-in"><span><span class="co">## Create a QFeatures object with 2 parent assays and 1 child assay</span></span></span>
+<span class="r-in"><span><span class="va">ft</span> <span class="op">&lt;-</span> <span class="fu"><a href="QFeatures-class.html">QFeatures</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>parent1 <span class="op">=</span> <span class="va">se</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="op">]</span>, parent2 <span class="op">=</span> <span class="va">se</span><span class="op">[</span><span class="fl">4</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span>, child <span class="op">=</span> <span class="va">se</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ft</span> <span class="op">&lt;-</span> <span class="fu">addAssayLink</span><span class="op">(</span><span class="va">ft</span>, from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"parent1"</span>, <span class="st">"parent2"</span><span class="op">)</span>, to <span class="op">=</span> <span class="st">"child"</span>,</span></span>
+<span class="r-in"><span>                   varFrom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ID"</span>, <span class="st">"ID"</span><span class="op">)</span>, varTo <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">assayLink</span><span class="op">(</span><span class="va">ft</span>, <span class="st">"child"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AssayLink for assay &lt;child&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [from:parent1,parent2|fcol:ID,ID|hits:6,7]</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>

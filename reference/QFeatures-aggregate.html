@@ -30,7 +30,7 @@ accessed with the aggcounts() accessor."><meta property="og:image" content="/log
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.2</span>
       </span>
     </div>
 
@@ -95,26 +95,26 @@ accessed with the <code>aggcounts()</code> accessor.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S4 method for QFeatures</span>
-<span class="fu">aggregateFeatures</span><span class="op">(</span>
-  <span class="va">object</span>,
-  <span class="va">i</span>,
-  <span class="va">fcol</span>,
-  name <span class="op">=</span> <span class="st">"newAssay"</span>,
-  fun <span class="op">=</span> <span class="fu">MsCoreUtils</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/MsCoreUtils/man/robustSummary.html" class="external-link">robustSummary</a></span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for SummarizedExperiment</span>
-<span class="fu">aggregateFeatures</span><span class="op">(</span><span class="va">object</span>, <span class="va">fcol</span>, fun <span class="op">=</span> <span class="fu">MsCoreUtils</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/MsCoreUtils/man/robustSummary.html" class="external-link">robustSummary</a></span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for QFeatures</span>
-<span class="fu">adjacencyMatrix</span><span class="op">(</span><span class="va">object</span>, <span class="va">i</span>, adjName <span class="op">=</span> <span class="st">"adjacencyMatrix"</span><span class="op">)</span>
-
-<span class="fu">adjacencyMatrix</span><span class="op">(</span><span class="va">object</span>, <span class="va">i</span>, adjName <span class="op">=</span> <span class="st">"adjacencyMatrix"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S4 method for SummarizedExperiment</span>
-<span class="fu">aggcounts</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for QFeatures</span></span>
+<span><span class="fu">aggregateFeatures</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  <span class="va">i</span>,</span>
+<span>  <span class="va">fcol</span>,</span>
+<span>  name <span class="op">=</span> <span class="st">"newAssay"</span>,</span>
+<span>  fun <span class="op">=</span> <span class="fu">MsCoreUtils</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/MsCoreUtils/man/robustSummary.html" class="external-link">robustSummary</a></span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SummarizedExperiment</span></span>
+<span><span class="fu">aggregateFeatures</span><span class="op">(</span><span class="va">object</span>, <span class="va">fcol</span>, fun <span class="op">=</span> <span class="fu">MsCoreUtils</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/MsCoreUtils/man/robustSummary.html" class="external-link">robustSummary</a></span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for QFeatures</span></span>
+<span><span class="fu">adjacencyMatrix</span><span class="op">(</span><span class="va">object</span>, <span class="va">i</span>, adjName <span class="op">=</span> <span class="st">"adjacencyMatrix"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">adjacencyMatrix</span><span class="op">(</span><span class="va">object</span>, <span class="va">i</span>, adjName <span class="op">=</span> <span class="st">"adjacencyMatrix"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for SummarizedExperiment</span></span>
+<span><span class="fu">aggcounts</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -261,31 +261,31 @@ further details.</p></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co">## ---------------------------------------</span></span>
-<span class="r-in"><span class="co">## An example QFeatures with PSM-level data</span></span>
-<span class="r-in"><span class="co">## ---------------------------------------</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">feat1</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">feat1</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ---------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## An example QFeatures with PSM-level data</span></span></span>
+<span class="r-in"><span><span class="co">## ---------------------------------------</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">feat1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">feat1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 1 assays:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] psms: SummarizedExperiment with 10 rows and 2 columns </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Aggregate PSMs into peptides</span></span>
-<span class="r-in"><span class="va">feat1</span> <span class="op">&lt;-</span> <span class="fu">aggregateFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="st">"psms"</span>, <span class="st">"Sequence"</span>, name <span class="op">=</span> <span class="st">"peptides"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">feat1</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Aggregate PSMs into peptides</span></span></span>
+<span class="r-in"><span><span class="va">feat1</span> <span class="op">&lt;-</span> <span class="fu">aggregateFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="st">"psms"</span>, <span class="st">"Sequence"</span>, name <span class="op">=</span> <span class="st">"peptides"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">feat1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 2 assays:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] psms: SummarizedExperiment with 10 rows and 2 columns </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] peptides: SummarizedExperiment with 3 rows and 2 columns </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Aggregate peptides into proteins</span></span>
-<span class="r-in"><span class="va">feat1</span> <span class="op">&lt;-</span> <span class="fu">aggregateFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="st">"peptides"</span>, <span class="st">"Protein"</span>, name <span class="op">=</span> <span class="st">"proteins"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">feat1</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Aggregate peptides into proteins</span></span></span>
+<span class="r-in"><span><span class="va">feat1</span> <span class="op">&lt;-</span> <span class="fu">aggregateFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="st">"peptides"</span>, <span class="st">"Protein"</span>, name <span class="op">=</span> <span class="st">"proteins"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">feat1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 3 assays:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] psms: SummarizedExperiment with 10 rows and 2 columns </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] peptides: SummarizedExperiment with 3 rows and 2 columns </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [3] proteins: SummarizedExperiment with 2 rows and 2 columns </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">assay</span><span class="op">(</span><span class="va">feat1</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">assay</span><span class="op">(</span><span class="va">feat1</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       S1 S2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PSM1   1 11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PSM2   2 12</span>
@@ -297,40 +297,40 @@ further details.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PSM8   8 18</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PSM9   9 19</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PSM10 10 20</span>
-<span class="r-in"><span class="fu">assay</span><span class="op">(</span><span class="va">feat1</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">assay</span><span class="op">(</span><span class="va">feat1</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              S1   S2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ELGNDAYK    5.0 15.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IAEESNFPFIK 8.5 18.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SYGFNAAR    2.0 12.0</span>
-<span class="r-in"><span class="fu">aggcounts</span><span class="op">(</span><span class="va">feat1</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">aggcounts</span><span class="op">(</span><span class="va">feat1</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             S1 S2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ELGNDAYK     3  3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IAEESNFPFIK  4  4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SYGFNAAR     3  3</span>
-<span class="r-in"><span class="fu">assay</span><span class="op">(</span><span class="va">feat1</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">assay</span><span class="op">(</span><span class="va">feat1</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        S1   S2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ProtA 3.5 13.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ProtB 8.5 18.5</span>
-<span class="r-in"><span class="fu">aggcounts</span><span class="op">(</span><span class="va">feat1</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">aggcounts</span><span class="op">(</span><span class="va">feat1</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       S1 S2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ProtA  2  2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ProtB  1  1</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## --------------------------------------------</span></span>
-<span class="r-in"><span class="co">## Aggregation with missing quantitative values</span></span>
-<span class="r-in"><span class="co">## --------------------------------------------</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ft_na</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ft_na</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## --------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Aggregation with missing quantitative values</span></span></span>
+<span class="r-in"><span><span class="co">## --------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ft_na</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ft_na</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 1 assays:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] na: SummarizedExperiment with 4 rows and 3 columns </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">assay</span><span class="op">(</span><span class="va">ft_na</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">assay</span><span class="op">(</span><span class="va">ft_na</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    A  B  C</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a NA  5  9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> b  2  6 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> c  3 NA 11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> d NA  8 12</span>
-<span class="r-in"><span class="fu">rowData</span><span class="op">(</span><span class="va">ft_na</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">rowData</span><span class="op">(</span><span class="va">ft_na</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 2 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           X           Y</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;integer&gt; &lt;character&gt;</span>
@@ -338,59 +338,59 @@ further details.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> b         2           B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> c         1           A</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> d         2           B</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## By default, missing values are propagated</span></span>
-<span class="r-in"><span class="va">ft2</span> <span class="op">&lt;-</span> <span class="fu">aggregateFeatures</span><span class="op">(</span><span class="va">ft_na</span>, <span class="fl">1</span>, fcol <span class="op">=</span> <span class="st">"X"</span>, fun <span class="op">=</span> <span class="va">colSums</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## By default, missing values are propagated</span></span></span>
+<span class="r-in"><span><span class="va">ft2</span> <span class="op">&lt;-</span> <span class="fu">aggregateFeatures</span><span class="op">(</span><span class="va">ft_na</span>, <span class="fl">1</span>, fcol <span class="op">=</span> <span class="st">"X"</span>, fun <span class="op">=</span> <span class="va">colSums</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Your quantitative data contain missing values. Please read the relevant</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> section(s) in the aggregateFeatures manual page regarding the effects</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> of missing values on data aggregation.</span>
-<span class="r-in"><span class="fu">assay</span><span class="op">(</span><span class="va">ft2</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">assay</span><span class="op">(</span><span class="va">ft2</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    A  B  C</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 NA NA 20</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 NA 14 22</span>
-<span class="r-in"><span class="fu">aggcounts</span><span class="op">(</span><span class="va">ft2</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">aggcounts</span><span class="op">(</span><span class="va">ft2</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   A B C</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 1 1 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 1 2 2</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## The rowData .n variable tallies number of initial rows that</span></span>
-<span class="r-in"><span class="co">## were aggregated (irrespective of NAs) for all the samples.</span></span>
-<span class="r-in"><span class="fu">rowData</span><span class="op">(</span><span class="va">ft2</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## The rowData .n variable tallies number of initial rows that</span></span></span>
+<span class="r-in"><span><span class="co">## were aggregated (irrespective of NAs) for all the samples.</span></span></span>
+<span class="r-in"><span><span class="fu">rowData</span><span class="op">(</span><span class="va">ft2</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 2 rows and 3 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           X           Y        .n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;integer&gt; &lt;character&gt; &lt;integer&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1         1           A         2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2         2           B         2</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Ignored when setting na.rm = TRUE</span></span>
-<span class="r-in"><span class="va">ft3</span> <span class="op">&lt;-</span> <span class="fu">aggregateFeatures</span><span class="op">(</span><span class="va">ft_na</span>, <span class="fl">1</span>, fcol <span class="op">=</span> <span class="st">"X"</span>, fun <span class="op">=</span> <span class="va">colSums</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Ignored when setting na.rm = TRUE</span></span></span>
+<span class="r-in"><span><span class="va">ft3</span> <span class="op">&lt;-</span> <span class="fu">aggregateFeatures</span><span class="op">(</span><span class="va">ft_na</span>, <span class="fl">1</span>, fcol <span class="op">=</span> <span class="st">"X"</span>, fun <span class="op">=</span> <span class="va">colSums</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Your quantitative data contain missing values. Please read the relevant</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> section(s) in the aggregateFeatures manual page regarding the effects</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> of missing values on data aggregation.</span>
-<span class="r-in"><span class="fu">assay</span><span class="op">(</span><span class="va">ft3</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">assay</span><span class="op">(</span><span class="va">ft3</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   A  B  C</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 3  5 20</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 2 14 22</span>
-<span class="r-in"><span class="fu">aggcounts</span><span class="op">(</span><span class="va">ft3</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">aggcounts</span><span class="op">(</span><span class="va">ft3</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   A B C</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 1 1 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 1 2 2</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## -----------------------------------------------</span></span>
-<span class="r-in"><span class="co">## Aggregation with missing values in the row data</span></span>
-<span class="r-in"><span class="co">## -----------------------------------------------</span></span>
-<span class="r-in"><span class="co">## Row data results without any NAs, which includes the</span></span>
-<span class="r-in"><span class="co">## Y variables</span></span>
-<span class="r-in"><span class="fu">rowData</span><span class="op">(</span><span class="va">ft2</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## -----------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Aggregation with missing values in the row data</span></span></span>
+<span class="r-in"><span><span class="co">## -----------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Row data results without any NAs, which includes the</span></span></span>
+<span class="r-in"><span><span class="co">## Y variables</span></span></span>
+<span class="r-in"><span><span class="fu">rowData</span><span class="op">(</span><span class="va">ft2</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 2 rows and 3 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           X           Y        .n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;integer&gt; &lt;character&gt; &lt;integer&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1         1           A         2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2         2           B         2</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Missing value in the Y feature variable</span></span>
-<span class="r-in"><span class="fu">rowData</span><span class="op">(</span><span class="va">ft_na</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span>, <span class="st">"Y"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
-<span class="r-in"><span class="fu">rowData</span><span class="op">(</span><span class="va">ft_na</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Missing value in the Y feature variable</span></span></span>
+<span class="r-in"><span><span class="fu">rowData</span><span class="op">(</span><span class="va">ft_na</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span>, <span class="st">"Y"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span></span>
+<span class="r-in"><span><span class="fu">rowData</span><span class="op">(</span><span class="va">ft_na</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 2 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           X           Y</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;integer&gt; &lt;character&gt;</span>
@@ -398,92 +398,92 @@ further details.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> b         2           B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> c         1           A</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> d         2           B</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">ft3</span> <span class="op">&lt;-</span> <span class="fu">aggregateFeatures</span><span class="op">(</span><span class="va">ft_na</span>, <span class="fl">1</span>, fcol <span class="op">=</span> <span class="st">"X"</span>, fun <span class="op">=</span> <span class="va">colSums</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">ft3</span> <span class="op">&lt;-</span> <span class="fu">aggregateFeatures</span><span class="op">(</span><span class="va">ft_na</span>, <span class="fl">1</span>, fcol <span class="op">=</span> <span class="st">"X"</span>, fun <span class="op">=</span> <span class="va">colSums</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Your quantitative and row data contain missing values. Please read the</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> relevant section(s) in the aggregateFeatures manual page regarding the</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> effects of missing values on data aggregation.</span>
-<span class="r-in"><span class="co">## The Y feature variable has been dropped!</span></span>
-<span class="r-in"><span class="fu">assay</span><span class="op">(</span><span class="va">ft3</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## The Y feature variable has been dropped!</span></span></span>
+<span class="r-in"><span><span class="fu">assay</span><span class="op">(</span><span class="va">ft3</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    A  B  C</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 NA NA 20</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 NA 14 22</span>
-<span class="r-in"><span class="fu">rowData</span><span class="op">(</span><span class="va">ft3</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">rowData</span><span class="op">(</span><span class="va">ft3</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 2 rows and 2 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           X        .n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;integer&gt; &lt;integer&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1         1         2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2         2         2</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## --------------------------------------------</span></span>
-<span class="r-in"><span class="co">## Using a peptide-by-proteins adjacency matrix</span></span>
-<span class="r-in"><span class="co">## --------------------------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Let's use assay peptides from object feat1 and</span></span>
-<span class="r-in"><span class="co">## define that peptide SYGFNAAR maps to proteins</span></span>
-<span class="r-in"><span class="co">## Prot A and B</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">se</span> <span class="op">&lt;-</span> <span class="va">feat1</span><span class="op">[[</span><span class="st">"peptides"</span><span class="op">]</span><span class="op">]</span></span>
-<span class="r-in"><span class="fu">rowData</span><span class="op">(</span><span class="va">se</span><span class="op">)</span><span class="op">$</span><span class="va">Protein</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ProtA;ProtB"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">rowData</span><span class="op">(</span><span class="va">se</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## --------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Using a peptide-by-proteins adjacency matrix</span></span></span>
+<span class="r-in"><span><span class="co">## --------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Let's use assay peptides from object feat1 and</span></span></span>
+<span class="r-in"><span><span class="co">## define that peptide SYGFNAAR maps to proteins</span></span></span>
+<span class="r-in"><span><span class="co">## Prot A and B</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">se</span> <span class="op">&lt;-</span> <span class="va">feat1</span><span class="op">[[</span><span class="st">"peptides"</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu">rowData</span><span class="op">(</span><span class="va">se</span><span class="op">)</span><span class="op">$</span><span class="va">Protein</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ProtA;ProtB"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">rowData</span><span class="op">(</span><span class="va">se</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 3 rows and 4 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  Sequence       Protein      location        .n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;character&gt;   &lt;character&gt;   &lt;character&gt; &lt;integer&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ELGNDAYK         ELGNDAYK         ProtA Mitochondr...         3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IAEESNFPFIK IAEESNFPFI...         ProtB       unknown         4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SYGFNAAR         SYGFNAAR ProtA;Prot... Mitochondr...         3</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## This can also be defined using anadjacency matrix, manual</span></span>
-<span class="r-in"><span class="co">## encoding here. See PSMatch::makeAdjacencyMatrix() for a</span></span>
-<span class="r-in"><span class="co">## function that does it automatically.</span></span>
-<span class="r-in"><span class="va">adj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">2</span>,</span>
-<span class="r-in">              dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span>,</span>
-<span class="r-in">                              <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ProtA"</span>, <span class="st">"ProtB"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">adj</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">adj</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">adj</span><span class="op">[</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
-<span class="r-in"><span class="va">adj</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## This can also be defined using anadjacency matrix, manual</span></span></span>
+<span class="r-in"><span><span class="co">## encoding here. See PSMatch::makeAdjacencyMatrix() for a</span></span></span>
+<span class="r-in"><span><span class="co">## function that does it automatically.</span></span></span>
+<span class="r-in"><span><span class="va">adj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>              dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                              <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ProtA"</span>, <span class="st">"ProtB"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">adj</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">adj</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">adj</span><span class="op">[</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span><span class="va">adj</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             ProtA ProtB</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ELGNDAYK        1     0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IAEESNFPFIK     0     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SYGFNAAR        1     1</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">adjacencyMatrix</span><span class="op">(</span><span class="va">se</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">adj</span></span>
-<span class="r-in"><span class="fu">rowData</span><span class="op">(</span><span class="va">se</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">adjacencyMatrix</span><span class="op">(</span><span class="va">se</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">adj</span></span></span>
+<span class="r-in"><span><span class="fu">rowData</span><span class="op">(</span><span class="va">se</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 3 rows and 5 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  Sequence       Protein      location        .n adjacencyMatrix</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;character&gt;   &lt;character&gt;   &lt;character&gt; &lt;integer&gt;     &lt;dgCMatrix&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ELGNDAYK         ELGNDAYK         ProtA Mitochondr...         3             1:0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IAEESNFPFIK IAEESNFPFI...         ProtB       unknown         4             0:1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SYGFNAAR         SYGFNAAR ProtA;Prot... Mitochondr...         3             1:1</span>
-<span class="r-in"><span class="fu">adjacencyMatrix</span><span class="op">(</span><span class="va">se</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">adjacencyMatrix</span><span class="op">(</span><span class="va">se</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 x 2 sparse Matrix of class "dgCMatrix"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             ProtA ProtB</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ELGNDAYK        1     .</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IAEESNFPFIK     .     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SYGFNAAR        1     1</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Aggregation using the adjacency matrix</span></span>
-<span class="r-in"><span class="va">se2</span> <span class="op">&lt;-</span> <span class="fu">aggregateFeatures</span><span class="op">(</span><span class="va">se</span>, fcol <span class="op">=</span> <span class="st">"adjacencyMatrix"</span>,</span>
-<span class="r-in">                         fun <span class="op">=</span> <span class="fu">MsCoreUtils</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/MsCoreUtils/man/aggregate.html" class="external-link">colMeansMat</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Peptide SYGFNAAR was taken into account in both ProtA and ProtB</span></span>
-<span class="r-in"><span class="co">## aggregations.</span></span>
-<span class="r-in"><span class="fu">assay</span><span class="op">(</span><span class="va">se2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Aggregation using the adjacency matrix</span></span></span>
+<span class="r-in"><span><span class="va">se2</span> <span class="op">&lt;-</span> <span class="fu">aggregateFeatures</span><span class="op">(</span><span class="va">se</span>, fcol <span class="op">=</span> <span class="st">"adjacencyMatrix"</span>,</span></span>
+<span class="r-in"><span>                         fun <span class="op">=</span> <span class="fu">MsCoreUtils</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/MsCoreUtils/man/aggregate.html" class="external-link">colMeansMat</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Peptide SYGFNAAR was taken into account in both ProtA and ProtB</span></span></span>
+<span class="r-in"><span><span class="co">## aggregations.</span></span></span>
+<span class="r-in"><span><span class="fu">assay</span><span class="op">(</span><span class="va">se2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         S1    S2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ProtA 3.50 13.50</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ProtB 5.25 15.25</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Aggregation by matrix on a QFeature object works as with a</span></span>
-<span class="r-in"><span class="co">## vector</span></span>
-<span class="r-in"><span class="va">ft</span> <span class="op">&lt;-</span> <span class="fu"><a href="QFeatures-class.html">QFeatures</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>peps <span class="op">=</span> <span class="va">se</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ft</span> <span class="op">&lt;-</span> <span class="fu">aggregateFeatures</span><span class="op">(</span><span class="va">ft</span>, <span class="st">"peps"</span>, <span class="st">"adjacencyMatrix"</span>, name <span class="op">=</span> <span class="st">"protsByMat"</span>,</span>
-<span class="r-in">                        fun <span class="op">=</span> <span class="fu">MsCoreUtils</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/MsCoreUtils/man/aggregate.html" class="external-link">colMeansMat</a></span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Aggregation by matrix on a QFeature object works as with a</span></span></span>
+<span class="r-in"><span><span class="co">## vector</span></span></span>
+<span class="r-in"><span><span class="va">ft</span> <span class="op">&lt;-</span> <span class="fu"><a href="QFeatures-class.html">QFeatures</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>peps <span class="op">=</span> <span class="va">se</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ft</span> <span class="op">&lt;-</span> <span class="fu">aggregateFeatures</span><span class="op">(</span><span class="va">ft</span>, <span class="st">"peps"</span>, <span class="st">"adjacencyMatrix"</span>, name <span class="op">=</span> <span class="st">"protsByMat"</span>,</span></span>
+<span class="r-in"><span>                        fun <span class="op">=</span> <span class="fu">MsCoreUtils</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/MsCoreUtils/man/aggregate.html" class="external-link">colMeansMat</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> &lt;sparse&gt;[ &lt;logic&gt; ] : .M.sub.i.logical() maybe inefficient</span>
-<span class="r-in"><span class="fu">assay</span><span class="op">(</span><span class="va">ft</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">assay</span><span class="op">(</span><span class="va">ft</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         S1    S2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ProtA 3.50 13.50</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ProtB 5.25 15.25</span>
-<span class="r-in"><span class="fu">rowData</span><span class="op">(</span><span class="va">ft</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">rowData</span><span class="op">(</span><span class="va">ft</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 2 rows and 1 column</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              .n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;integer&gt;</span>

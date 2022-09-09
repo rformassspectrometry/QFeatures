@@ -24,7 +24,7 @@ the different imputation methods available and strategies."><meta property="og:i
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.2</span>
       </span>
     </div>
 
@@ -83,13 +83,13 @@ the different imputation methods available and strategies.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="va">impute</span>
-
-<span class="co"># S4 method for SummarizedExperiment</span>
-<span class="fu">impute</span><span class="op">(</span><span class="va">object</span>, <span class="va">method</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for QFeatures</span>
-<span class="fu">impute</span><span class="op">(</span><span class="va">object</span>, <span class="va">method</span>, <span class="va">...</span>, <span class="va">i</span>, name <span class="op">=</span> <span class="st">"imputedAssay"</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">impute</span></span>
+<span></span>
+<span><span class="co"># S4 method for SummarizedExperiment</span></span>
+<span><span class="fu">impute</span><span class="op">(</span><span class="va">object</span>, <span class="va">method</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for QFeatures</span></span>
+<span><span class="fu">impute</span><span class="op">(</span><span class="va">object</span>, <span class="va">method</span>, <span class="va">...</span>, <span class="va">i</span>, name <span class="op">=</span> <span class="st">"imputedAssay"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="format">
@@ -128,29 +128,29 @@ is <code>imputedAssay</code>.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">MsCoreUtils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MsCoreUtils/man/imputation.html" class="external-link">imputeMethods</a></span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">MsCoreUtils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MsCoreUtils/man/imputation.html" class="external-link">imputeMethods</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "bpca"    "knn"     "QRILC"   "MLE"     "MinDet"  "MinProb" "min"    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "zero"    "mixed"   "nbavg"   "with"    "none"   </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">se_na2</span><span class="op">)</span></span>
-<span class="r-in"><span class="co">## table of missing values along the rows (proteins)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu">rowData</span><span class="op">(</span><span class="va">se_na2</span><span class="op">)</span><span class="op">$</span><span class="va">nNA</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "zero"    "mixed"   "nbavg"   "with"    "RF"      "none"   </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">se_na2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## table of missing values along the rows (proteins)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu">rowData</span><span class="op">(</span><span class="va">se_na2</span><span class="op">)</span><span class="op">$</span><span class="va">nNA</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   0   1   2   3   4   8   9  10 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 301 247  91  13   2  23  10   2 </span>
-<span class="r-in"><span class="co">## table of missing values along the columns (samples)</span></span>
-<span class="r-in"><span class="fu">colData</span><span class="op">(</span><span class="va">se_na2</span><span class="op">)</span><span class="op">$</span><span class="va">nNA</span></span>
+<span class="r-in"><span><span class="co">## table of missing values along the columns (samples)</span></span></span>
+<span class="r-in"><span><span class="fu">colData</span><span class="op">(</span><span class="va">se_na2</span><span class="op">)</span><span class="op">$</span><span class="va">nNA</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 34 45 56 39 47 52 49 61 41 42 55 45 51 43 57 53</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## non-random missing values</span></span>
-<span class="r-in"><span class="va">notna</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="op">!</span><span class="fu">rowData</span><span class="op">(</span><span class="va">se_na2</span><span class="op">)</span><span class="op">$</span><span class="va">randna</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">notna</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## non-random missing values</span></span></span>
+<span class="r-in"><span><span class="va">notna</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="op">!</span><span class="fu">rowData</span><span class="op">(</span><span class="va">se_na2</span><span class="op">)</span><span class="op">$</span><span class="va">randna</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">notna</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 35</span>
-<span class="r-in"><span class="va">notna</span></span>
+<span class="r-in"><span><span class="va">notna</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]   6  20  79  88 130 187 227 231 238 264 275 317 324 363 373 382 409 437 445</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [20] 453 456 474 484 485 492 514 516 546 568 580 594 631 648 664 671</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">impute</span><span class="op">(</span><span class="va">se_na2</span>, method <span class="op">=</span> <span class="st">"min"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">impute</span><span class="op">(</span><span class="va">se_na2</span>, method <span class="op">=</span> <span class="st">"min"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class: SummarizedExperiment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dim: 689 16 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> metadata(3): MSnbaseFiles MSnbaseProcessing MSnbaseVersion</span>
@@ -159,11 +159,11 @@ is <code>imputedAssay</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> rowData names(2): nNA randna</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colnames(16): M1F1A M1F4A ... M2F8B M2F11B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colData names(1): nNA</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st">"imputeLCMD"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu">impute</span><span class="op">(</span><span class="va">se_na2</span>, method <span class="op">=</span> <span class="st">"QRILC"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="fu">impute</span><span class="op">(</span><span class="va">se_na2</span>, method <span class="op">=</span> <span class="st">"MinDet"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st">"imputeLCMD"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu">impute</span><span class="op">(</span><span class="va">se_na2</span>, method <span class="op">=</span> <span class="st">"QRILC"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">impute</span><span class="op">(</span><span class="va">se_na2</span>, method <span class="op">=</span> <span class="st">"MinDet"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: imputeLCMD</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: tmvtnorm</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: mvtnorm</span>
@@ -195,9 +195,9 @@ is <code>imputedAssay</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> rowData names(2): nNA randna</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colnames(16): M1F1A M1F4A ... M2F8B M2F11B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colData names(1): nNA</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st">"norm"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">  <span class="fu">impute</span><span class="op">(</span><span class="va">se_na2</span>, method <span class="op">=</span> <span class="st">"MLE"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st">"norm"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">impute</span><span class="op">(</span><span class="va">se_na2</span>, method <span class="op">=</span> <span class="st">"MLE"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Iterations of EM: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1...2...3...4...5...6...7...8...9...10...11...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class: SummarizedExperiment </span>
@@ -208,10 +208,10 @@ is <code>imputedAssay</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> rowData names(2): nNA randna</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colnames(16): M1F1A M1F4A ... M2F8B M2F11B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colData names(1): nNA</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">impute</span><span class="op">(</span><span class="va">se_na2</span>, method <span class="op">=</span> <span class="st">"mixed"</span>,</span>
-<span class="r-in">       randna <span class="op">=</span> <span class="fu">rowData</span><span class="op">(</span><span class="va">se_na2</span><span class="op">)</span><span class="op">$</span><span class="va">randna</span>,</span>
-<span class="r-in">       mar <span class="op">=</span> <span class="st">"knn"</span>, mnar <span class="op">=</span> <span class="st">"QRILC"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">impute</span><span class="op">(</span><span class="va">se_na2</span>, method <span class="op">=</span> <span class="st">"mixed"</span>,</span></span>
+<span class="r-in"><span>       randna <span class="op">=</span> <span class="fu">rowData</span><span class="op">(</span><span class="va">se_na2</span><span class="op">)</span><span class="op">$</span><span class="va">randna</span>,</span></span>
+<span class="r-in"><span>       mar <span class="op">=</span> <span class="st">"knn"</span>, mnar <span class="op">=</span> <span class="st">"QRILC"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class: SummarizedExperiment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dim: 689 16 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> metadata(3): MSnbaseFiles MSnbaseProcessing MSnbaseVersion</span>
@@ -220,21 +220,21 @@ is <code>imputedAssay</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> rowData names(2): nNA randna</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colnames(16): M1F1A M1F4A ... M2F8B M2F11B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colData names(1): nNA</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## neighbour averaging</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">se_na2</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span></span>
-<span class="r-in"><span class="fu">assay</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span> <span class="co">## min value</span></span>
-<span class="r-in"><span class="fu">assay</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span> <span class="co">## average</span></span>
-<span class="r-in"><span class="fu">assay</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span> <span class="co">## min value and average</span></span>
-<span class="r-in"><span class="co">## 4th row: no imputation</span></span>
-<span class="r-in"><span class="fu">assay</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## neighbour averaging</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">se_na2</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu">assay</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span> <span class="co">## min value</span></span></span>
+<span class="r-in"><span><span class="fu">assay</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span> <span class="co">## average</span></span></span>
+<span class="r-in"><span><span class="fu">assay</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span> <span class="co">## min value and average</span></span></span>
+<span class="r-in"><span><span class="co">## 4th row: no imputation</span></span></span>
+<span class="r-in"><span><span class="fu">assay</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              M1F1A    M1F4A   M1F7A  M1F11A    M1F2B    M1F5B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AT1G09210       NA 0.275500 0.21600 0.18525 0.465667 0.199667</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AT1G21750 0.332000 0.279667      NA 0.16600 0.451500 0.200375</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AT1G51760       NA       NA 0.16825 0.18825 0.459750 0.214500</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AT1G56340 0.336733       NA      NA      NA 0.487167 0.201833</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">assay</span><span class="op">(</span><span class="fu">impute</span><span class="op">(</span><span class="va">x</span>, <span class="st">"nbavg"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">assay</span><span class="op">(</span><span class="fu">impute</span><span class="op">(</span><span class="va">x</span>, <span class="st">"nbavg"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Assuming values are ordered.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              M1F1A    M1F4A     M1F7A  M1F11A    M1F2B    M1F5B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AT1G09210 0.166000 0.275500 0.2160000 0.18525 0.465667 0.199667</span>

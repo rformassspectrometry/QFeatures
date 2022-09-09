@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.2</span>
       </span>
     </div>
 
@@ -66,11 +66,19 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.7" id="qfeatures-17">QFeatures 1.7<a class="anchor" aria-label="anchor" href="#qfeatures-17"></a></h2>
 <div class="section level3">
-<h3 id="qfeatures-1-7">QFeatures 1.7.1<a class="anchor" aria-label="anchor" href="#qfeatures-1-7"></a></h3>
+<h3 id="qfeatures-1-7">QFeatures 1.7.2<a class="anchor" aria-label="anchor" href="#qfeatures-1-7"></a></h3>
+<ul><li>fix: fixed <code><a href="../reference/QFeatures-class.html">addAssay()</a></code> to solve issue <a href="https://github.com/RforMassSpectrometry/QFeatures/issues/104" class="external-link">#104</a>.</li>
+<li>refactor: refactored <code><a href="../reference/QFeatures-class.html">addAssay()</a></code> and dramatically improved the usage of computational resources.</li>
+<li>feat: colData is automatically transferred from the assay to the QFeatures object.</li>
+<li>feat: implemented <code><a href="../reference/QFeatures-class.html">removeAssay()</a></code> and <code><a href="../reference/QFeatures-class.html">replaceAssay()</a></code>. Together with <code><a href="../reference/QFeatures-class.html">addAssay()</a></code>, these functions are used to implement the replacement method <code>[[&lt;-</code> required to solve issue <a href="https://github.com/RforMassSpectrometry/QFeatures/issues/57" class="external-link">#57</a>.</li>
+<li>Add CC-BY-SA license for vignettes.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="qfeatures-1-7-1">QFeatures 1.7.1<a class="anchor" aria-label="anchor" href="#qfeatures-1-7-1"></a></h3>
 <ul><li>refactor: imputation now adds a new assay instead of replacing values.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="qfeatures-1-7-1">QFeatures 1.7.0<a class="anchor" aria-label="anchor" href="#qfeatures-1-7-1"></a></h3>
+<h3 id="qfeatures-1-7-2">QFeatures 1.7.0<a class="anchor" aria-label="anchor" href="#qfeatures-1-7-2"></a></h3>
 <ul><li>New Bioc devel version.</li>
 </ul></div>
 </div>
