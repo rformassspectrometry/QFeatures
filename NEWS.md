@@ -1,6 +1,6 @@
 # QFeatures 1.7
 
-## QFeatures 1.7.2
+## QFeatures 1.7.3
 
 - feat: added 'c' methods to combine QFeatures objects. 
 - feat: added nrows and ncols methods. Also added use.names argument 
