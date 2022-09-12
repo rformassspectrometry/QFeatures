@@ -1,34 +1,24 @@
 # QFeatures 1.7
 
-## QFeatures 1.7.5
-
-(Nothing yet)
-
-## QFeatures 1.7.4
+## QFeatures 1.7.2
 
 - feat: added 'c' methods to combine QFeatures objects. 
 - feat: added nrows and ncols methods. Also added use.names argument 
   (cf ?BiocGenerics::dims)
-
-## QFeatures 1.7.3
-
 - docs: improved docs for filterFeatures()
 - tests: improved unit tests for filterFeatures()
 - feat: added a keep argument in filterFeatures() to control whether
   to keep or remove features for assays that do not contain the filter
   variable. Also added message printing for a better overview of which
   variable were found.
-
-## QFeatures 1.7.2
-
 - fix: fixed `addAssay()` to solve issue #104.
 - refactor: refactored `addAssay()` and dramatically improved the usage
-  of computational resources. 
-- feat: colData is automatically transferred from the assay to the 
-  QFeatures object. 
+  of computational resources.
+- feat: colData is automatically transferred from the assay to the
+  QFeatures object.
 - feat: implemented `removeAssay()` and `replaceAssay()`. Together with
   `addAssay()`, these functions are used to implement the replacement
-  method `[[<-` required to solve issue #57. 
+  method `[[<-` required to solve issue #57.
 - Add CC-BY-SA license for vignettes.
 
 ## QFeatures 1.7.1
