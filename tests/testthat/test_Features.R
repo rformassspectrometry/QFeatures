@@ -129,13 +129,6 @@ test_that("c,QFeatures-method", {
     expctd@assayLinks[[3]] <- AssayLink(names(feat3)[[3]]) ## this AssayLink will get lost
     expect_identical(c(qf1, qf2), expctd)
     
-    ## Combine 1 QF object and 1 MAE object
-    ## Note the AssayLinks are lost when converting to MAE
-    mae <- as(qf2, "MultiAssayExperiment")
-    expctd2 <- expctd
-    expctd2@assayLinks[names(qf2)] <- AssayLinks(names = names(qf2))
-    expect_identical(c(qf1, mae), expctd2)
-    
     ## Combine 3 QF objects
     suppressMessages(suppressWarnings(qf1 <- feat3[,, 1]))
     suppressMessages(suppressWarnings(qf2 <- feat3[,, 2]))
@@ -147,6 +140,9 @@ test_that("c,QFeatures-method", {
                  regexp = "Consider using 'addAssay")
     expect_error(c(qf1, assay1 = feat3[[1]]), 
                  regexp = "Consider using 'addAssay")
+    ## Error: combine 1 QF object and 1 MAE object
+    mae <- as(qf2, "MultiAssayExperiment")
+    expect_error(c(qf1, mae), regexp = "with one or more MultiAssayExperiment")
     ## Error: combine 1 QF object and 1 object other than QF, MAE, SE or List
     expect_error(c(qf1, matrix()), 
                  regexp = "coercing .matrix. to .QFeatures.")

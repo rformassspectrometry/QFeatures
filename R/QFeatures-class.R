@@ -547,6 +547,11 @@ setMethod("c", "QFeatures",
                   stop("Trying to combine a QFeatures object with objects that ",
                        "inherit from SummarizedExperiment, List, or ",
                        "list. Consider using 'addAssay()' instead.")
+              } else if (any(sapply(args, class) == "MultiAssayExperiment")) {
+                  stop("Trying to combine a QFeatures object with one ",
+                       "or more MultiAssayExperiment objects. You must ",
+                       "first coerce these objects to QFeatures using ",
+                       "'as(object, \"QFeatures\")'.")
               } else if (!all(sapply(args, inherits, "QFeatures"))) {
                   args <- lapply(args, as, "QFeatures")
               }
@@ -563,10 +568,20 @@ setMethod("c", "QFeatures",
                         assayLinks = al)
           })
 
+## Internal function to combine the assays of x with the assays of each
+## element in y.
+## @param x A QFeatures object
+## @param y A list-like object where each element is expected to be a
+##     QFeatures
 .combineAssays <- function(x, y) {
     Reduce(c, lapply(y, experiments), init = experiments(x))
 }
 
+## Internal function to combine the colData of x with the colData of each
+## element in y.
+## @param x A QFeatures object
+## @param y A list-like object where each element is expected to be a
+##     QFeatures
 .combineColData <- function(x, y) {
     if (!length(y)) return(x)
     out <- colData(x)
@@ -585,6 +600,11 @@ setMethod("c", "QFeatures",
     out
 }
 
+## Internal function to combine the AssayLinks of x with the AssayLinks
+## of each element in y.
+## @param x A QFeatures object
+## @param y A list-like object where each element is expected to be a
+##     QFeatures
 .combineAssayLinks <- function(x, y) {
     Reduce(c, lapply(y, attr, "assayLinks"), init = x@assayLinks)
 }
