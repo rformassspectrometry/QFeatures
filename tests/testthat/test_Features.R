@@ -72,11 +72,116 @@ test_that("[[<-", {
     expect_warning(s2[[1]] <- NULL, regexp = "dropped")
     expect_identical(s2, expect_warning(removeAssay(feat2, i = 1),
                                         regexp = "dropped"))
-
+    
     ## Scenario 3: use [[<- for adding
     s3 <- feat2
     s3[["foo"]] <- s3[[1]]
     expect_identical(s3, addAssay(feat2, feat2[[1]], name = "foo"))
+})
+
+test_that("dims,ncols,nrows", {
+    ## Test dims
+    data("feat3")
+    expect_identical(dims(feat3),
+                     matrix(c(7L, 8L, 10L, 3L, 2L, 3L, 2L, 
+                              rep(2L, 2), rep(4L, 5)), 
+                            nrow = 2, byrow = TRUE,
+                            dimnames = list(NULL, names(feat3))))
+    ## Without use names
+    expect_identical(dims(feat3, use.names = FALSE),
+                     matrix(c(7L, 8L, 10L, 3L, 2L, 3L, 2L, 
+                              rep(2L, 2), rep(4L, 5)), 
+                            nrow = 2, byrow = TRUE))
+    
+    ## Test nrows
+    expect_identical(dims(feat3)[1, ],
+                     nrows(feat3))
+    ## Without use names
+    expect_identical(dims(feat3, use.names = FALSE)[1, ],
+                     nrows(feat3, use.names = FALSE))
+    
+    ## Test ncols
+    expect_identical(dims(feat3)[2, ],
+                     ncols(feat3))
+    ## Without use names
+    expect_identical(dims(feat3, use.names = FALSE)[2, ],
+                     ncols(feat3, use.names = FALSE))
+    
+})
+
+test_that("coerce,MultiAssayExperiment,QFeatures-method", {
+    data("feat3")
+    mae <- as(feat3, "MultiAssayExperiment")
+    expect_true(validObject(mae))
+    qf <- as(mae, "QFeatures")
+    exp <- feat3
+    feat3@assayLinks <- AssayLinks(names = names(feat3))
+    expect_identical(qf, feat3)
+})
+    
+test_that("c,QFeatures-method", {
+    data("feat3")
+    
+    ## Combine 2 QF objects
+    suppressMessages(suppressWarnings(qf1 <- feat3[,, 1:2]))
+    suppressMessages(suppressWarnings(qf2 <- feat3[,, 3:7]))
+    expctd <- feat3
+    expctd@assayLinks[[3]] <- AssayLink(names(feat3)[[3]]) ## this AssayLink will get lost
+    expect_identical(c(qf1, qf2), expctd)
+    
+    ## Combine 3 QF objects
+    suppressMessages(suppressWarnings(qf1 <- feat3[,, 1]))
+    suppressMessages(suppressWarnings(qf2 <- feat3[,, 2]))
+    suppressMessages(suppressWarnings(qf3 <- feat3[,, 3:7]))
+    expect_identical(c(qf1, qf2, qf3), expctd)
+    
+    ## Error: Combine 1 QF object and 1 List object, or separate assays
+    expect_error(c(qf1, experiments(feat3)), 
+                 regexp = "Consider using 'addAssay")
+    expect_error(c(qf1, assay1 = feat3[[1]]), 
+                 regexp = "Consider using 'addAssay")
+    ## Error: combine 1 QF object and 1 MAE object
+    mae <- as(qf2, "MultiAssayExperiment")
+    expect_error(c(qf1, mae), regexp = "with one or more MultiAssayExperiment")
+    ## Error: combine 1 QF object and 1 object other than QF, MAE, SE or List
+    expect_error(c(qf1, matrix()), 
+                 regexp = "coercing .matrix. to .QFeatures.")
+    
+    ## Warning: providing names is ignored
+    expect_warning(cmbnd <- c(qf1, object1 = qf2, object2 = qf3),
+                   regexp = "will be ignored")
+    expect_identical(cmbnd, expctd)
+    
+    ## Check special cases with colData (up to now there was no colData)
+    ## Same colData column in each object and same samples and same information
+    qf3 <- qf1
+    names(qf3) <- "psms3"
+    qf1$foo <- qf3$foo <- "bar1"
+    expect_identical(colData(c(qf1, qf3)),
+                     DataFrame(foo = rep("bar1", 2),
+                               row.names = paste0("Sample", 1:2)))
+    ## Same colData column in each object and same samples and same information
+    qf3$foo <- "bar2"
+    expect_error(c(qf1, qf3), regexp = "conflict.*foo .in argument 2")
+    ## Same colData column in each object and different samples
+    qf2$foo <- "bar2"
+    expect_identical(colData(c(qf1, qf2)),
+                     DataFrame(foo = c("bar1", "bar1", "bar2", "bar2"),
+                               row.names = paste0("Sample", 1:4)))
+    ## Different colData column in each object and same samples
+    qf3$foo <- NULL
+    qf3$foo2 <- "bar2"
+    expect_identical(colData(c(qf1, qf3)),
+                     DataFrame(foo = rep("bar1", 2),
+                               foo2 = rep("bar2", 2),
+                               row.names = paste0("Sample", 1:2)))
+    ## Different colData column in each object and different samples
+    qf2$foo <- NULL
+    qf2$foo2 <- "bar2"
+    expect_identical(colData(c(qf1, qf2)),
+                     DataFrame(foo = c("bar1", "bar1", NA, NA),
+                               foo2 = c(NA, NA, "bar2", "bar2"),
+                               row.names = paste0("Sample", 1:4)))
 })
 
 test_that("addAssay", {
@@ -464,7 +569,7 @@ test_that("add/replaceAssay: test colData transfer", {
     se <- s7[[1]]
     se$Group <- 3:4
     expect_error(addAssay(s7, se, name = "assay7"),
-                 regexp = "colData in y overlap.*Group.*assay7")
+                 regexp = "colData in y have conflict.*Group.*assay7")
     ## Scenario 8: colData in QFeatures, no colData in replacement
     ## assay
     s8 <- feat1

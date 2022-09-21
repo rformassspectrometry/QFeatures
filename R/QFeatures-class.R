@@ -335,7 +335,7 @@ setMethod("show", "QFeatures",
                            x = coords[, 1], y = coords[, 2],
                            hoverinfo = "text",
                            text = names(V(graph)))
-
+    
     ## Edit plot plot
     axis <- list(title = "", showgrid = FALSE, showticklabels = FALSE, zeroline = FALSE)
     plotly::layout(pl,
@@ -384,7 +384,7 @@ plot.QFeatures <- function (x, interactive = FALSE, ...) {
                 "'interactive = TRUE')")
     ## Create the network graph
     graph <- make_graph(edges = character(0),
-                                isolates = names(x))
+                        isolates = names(x))
     ## Add the edges = links between assays
     roots <- c()
     for (child in names(x)) {
@@ -496,23 +496,15 @@ setMethod("[", c("QFeatures", "ANY", "ANY", "ANY"),
           function(x, i, j, ..., drop = TRUE) {
               ## Subset the assays
               ans <- callNextMethod(x, i, j, ..., drop)
-
+              
               ## Prune the AssayLinks so that the `QFeatures` object
               ## remains valid
               ans <- .pruneAssayLinks(ans)
-
+              
               ## Check new object
               if (validObject(ans))
                   return(ans)
           })
-
-
-##' @rdname QFeatures-class
-##' @importFrom BiocGenerics dims
-##' @exportMethod dims
-setMethod("dims", "QFeatures",
-          function(x) vapply(experiments(x), dim, integer(2)))
-
 
 ##' @rdname QFeatures-class
 setMethod("[", c("QFeatures", "character", "ANY", "ANY"),
@@ -521,6 +513,126 @@ setMethod("[", c("QFeatures", "character", "ANY", "ANY"),
               if (missing(k)) k <- TRUE
               subsetByFeature(x, i)[, j, k]
           })
+
+
+##' @rdname QFeatures-class
+##'
+##' @name coerce-QFeatures
+##' 
+##' @aliases coerce,MultiAssayExperiment,QFeatures-method
+##'
+##' @exportMethod coerce
+##' 
+setAs("MultiAssayExperiment", "QFeatures", function(from) {
+    QFeatures(experiments = experiments(from),
+              colData = colData(from),
+              sampleMap = sampleMap(from),
+              metadata = metadata(from),
+              drops = from@drops,
+              assayLinks = AssayLinks(names = names(from)))
+})
+
+##' @rdname QFeatures-class
+##' 
+##' @exportMethod c
+setMethod("c", "QFeatures",
+          function(x, ...) {
+              ## Retrieve the assays to add
+              args <- list(...)
+              
+              ## Check arguments
+              if (any(sapply(args, inherits, "SummarizedExperiment")) ||
+                  any(sapply(args, inherits, "List")) ||
+                  any(sapply(args, is.list))) {
+                  stop("Trying to combine a QFeatures object with objects that ",
+                       "inherit from SummarizedExperiment, List, or ",
+                       "list. Consider using 'addAssay()' instead.")
+              } else if (any(sapply(args, class) == "MultiAssayExperiment")) {
+                  stop("Trying to combine a QFeatures object with one ",
+                       "or more MultiAssayExperiment objects. You must ",
+                       "first coerce these objects to QFeatures using ",
+                       "'as(object, \"QFeatures\")'.")
+              } else if (!all(sapply(args, inherits, "QFeatures"))) {
+                  args <- lapply(args, as, "QFeatures")
+              }
+              if(length(names(args))) 
+                  warning("Argument names are provided but will be ignored.")
+              
+              ## Combine the different slots
+              el <- .combineAssays(x, args)
+              cd <- .combineColData(x, args)
+              al <- .combineAssayLinks(x, args)
+              
+              QFeatures(experiments = el,
+                        colData = cd,
+                        assayLinks = al)
+          })
+
+## Internal function to combine the assays of x with the assays of each
+## element in y.
+## @param x A QFeatures object
+## @param y A list-like object where each element is expected to be a
+##     QFeatures
+.combineAssays <- function(x, y) {
+    Reduce(c, lapply(y, experiments), init = experiments(x))
+}
+
+## Internal function to combine the colData of x with the colData of each
+## element in y.
+## @param x A QFeatures object
+## @param y A list-like object where each element is expected to be a
+##     QFeatures
+.combineColData <- function(x, y) {
+    if (!length(y)) return(x)
+    out <- colData(x)
+    err <- c()
+    for (i in seq_along(y)) {
+        yy <- colData(y[[i]])
+        cn <- .checkDataConflict(out, yy)
+        if (length(cn)) 
+            err <- c(err, paste0(cn, " (in argument ", i + 1, ")"))
+        out <- .transferData(out, yy)
+    }
+    if (length(err)) stop("Column(s) in the colData have conflicting ",
+                          "information when combining the QFeatures ",
+                          "objects. Problematic column(s): ", 
+                          paste(err, collapse = ", "))
+    out
+}
+
+## Internal function to combine the AssayLinks of x with the AssayLinks
+## of each element in y.
+## @param x A QFeatures object
+## @param y A list-like object where each element is expected to be a
+##     QFeatures
+.combineAssayLinks <- function(x, y) {
+    Reduce(c, lapply(y, attr, "assayLinks"), init = x@assayLinks)
+}
+
+##' @rdname QFeatures-class
+##' 
+##' @param use.names A `logical(1)` indicating if the names on x 
+##'     should be propagated to the returned matrix or vector.
+##' 
+##' @importFrom BiocGenerics dims
+##' @exportMethod dims
+setMethod("dims", "QFeatures",
+          function(x, use.names = TRUE) 
+              vapply(experiments(x), dim, USE.NAMES = use.names, integer(2)))
+
+##' @rdname QFeatures-class
+##' @importFrom BiocGenerics nrows
+##' @exportMethod nrows
+setMethod("nrows", "QFeatures",
+          function(x, use.names = TRUE) 
+              vapply(experiments(x), nrow, USE.NAMES = use.names, integer(1)))
+
+##' @rdname QFeatures-class
+##' @importFrom BiocGenerics ncols
+##' @exportMethod ncols
+setMethod("ncols", "QFeatures",
+          function(x, use.names = TRUE) 
+              vapply(experiments(x), ncol, USE.NAMES = use.names, integer(1)))
 
 ##' @rdname QFeatures-class
 ##'
@@ -652,8 +764,8 @@ setReplaceMethod("names", c("QFeatures", "character"),
 ##'
 ##' @param colvars A `character()` that selects column(s) in the
 ##'     `colData`.
-##' @param index The assay indicator within a `SummarizedExperiment`
-##'     objects. A vector input is supported in the case that the
+##' @param index The assay indicator within each `SummarizedExperiment`
+##'     object. A vector input is supported in the case that the
 ##'     `SummarizedExperiment` object(s) has more than one assay
 ##'     (default `1L`)
 ##'
@@ -725,7 +837,7 @@ addAssay <- function(x,
     }
     
     ## Update the colData
-    cd <- .updateColData(x, y)
+    cd <- .updateColDataFromAssays(x, y)
     
     ## Add the assay to the ExperimentList
     ## NOTE: we replace using the `@` slot. Although not recommended, 
@@ -782,7 +894,7 @@ replaceAssay <- function(x,
     y <- .checkAssaysToInsert(y, x, i, replace = TRUE)
     
     ## Update the colData
-    cd <- .updateColData(x, y)
+    cd <- .updateColDataFromAssays(x, y)
     
     ## Replace the assay to the ExperimentList
     ## NOTE: we replace using the `@` slot. Although not recommended, 
@@ -896,31 +1008,23 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
 ## colData based on a new SummarizedExperiment object
 ## 
 ## @param x An instance of class [QFeatures].
-## @param y A SummarizedExperiment object for which the colData must
-##     be adapted
+## @param y A list of SummarizedExperiments containing the colData 
+##     that must be adapted
 ## 
 ## The function returns the updated colData.
 ## 
-.updateColData <- function(x, y) {
+.updateColDataFromAssays <- function(x, y) {
     cd <- colData(x)
     ## Make sure we do not override existing colData
     err <- c()
     for (i in names(y)) {
-        cdy <- colData(y[[i]])
-        rn <- intersect(rownames(cdy), rownames(cd))
-        cn <- intersect(colnames(cdy), colnames(cd))
-        if (length(rn) == 0 || length(cn) == 0) next()
-        for (ii in cn) {
-            ## We consider a problem when the overlaping colData 
-            ## column are  different and the QFeatures colData is not
-            ## all missing
-            if (!identical(cdy[rn, ii], cd[rn, ii]) &&
-                !all(is.na(cd[rn, ii]))) 
-                err <- c(err, paste0(ii, " (in ", i, ")"))
-        }
+        cn <- .checkDataConflict(cd, colData(y[[i]]))
+        if (length(cn))
+            err <- c(err, paste0(cn, " (in ", i, ")"))
     }
-    if (length(err) > 0) stop("Column(s) in the colData in y overlap ",
-                              "with the QFeatures colData. Problematic ",
+    if (length(err) > 0) stop("Column(s) in the colData in y have ",
+                              "conflicting information with the ",
+                              "QFeatures colData. Problematic ",
                               "column(s): ", paste(err, collapse = ", "))
     
     ## Remove lost samples (in case of replacement)
@@ -934,22 +1038,53 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
         if (length(oldSamples))
             cd <- cd[!rownames(cd) %in% oldSamples, , drop = FALSE]
     }
-    ## For each replacement assay
-    for (ii in names(y)) {
-        yy<- y[[ii]]
-        ## Add new samples names to cd and fill with NA
-        newSamples <- setdiff(colnames(yy), rownames(cd))
-        if (length(newSamples)) {
-            newCd <- DataFrame(row.names = newSamples)
-            newCd[, colnames(cd)] <- NA
-            cd <- rbind(cd, newCd)
-        }
-        ## If coldata is available, add it to cd
-        if (ncol(colData(yy)) != 0) {
-            cd[rownames(colData(yy)), colnames(colData(yy))] <- colData(yy)
-        }
+    ## Perform the actual colData transfer
+    for (i in names(y)) {
+        cd <- .transferData(cd, colData(y[[i]]))
     }
     cd
+}
+
+
+## Internal function that checks for data clashes between 2 tables
+## 
+## @param x and y are data tables (DataFrame or data.frame)
+## 
+## returns a character vector with problematic column names where a 
+## clash was identified. Returns an empty character vector if no problem.
+.checkDataConflict <- function (x, y) {
+    rn <- intersect(rownames(x), rownames(y))
+    cn <- intersect(colnames(x), colnames(y))
+    if (length(rn) == 0 || length(cn) == 0) return(character(0))
+    ## We consider a problem when:
+    isProbl <- sapply(cn, function (ii) {
+        ## i. the overlaping colData column are different
+        !identical(x[rn, ii], y[rn, ii]) &&
+            ## ii. the colData x is not all missing
+            !all(is.na(x[rn, ii]))
+    })
+    ## Return the problematic column names
+    cn[isProbl]
+}
+
+## Internal function the transfers the data of y into x taking new 
+## rows into account
+## @param x and y are data tables
+## 
+## returns a single table where y has been transfered into x
+.transferData <- function(x, y) {
+    ## Add new samples names to cd and fill with NA
+    newSamples <- setdiff(rownames(y), rownames(x))
+    if (length(newSamples)) {
+        newCd <- DataFrame(row.names = newSamples)
+        newCd[, colnames(x)] <- NA
+        x <- rbind(x, newCd)
+    }
+    ## If coldata is available, add it to cd
+    if (ncol(y) != 0) {
+        x[rownames(y), colnames(y)] <- y
+    }
+    x
 }
 
 ##' @param verbose logical (default FALSE) whether to print extra messages

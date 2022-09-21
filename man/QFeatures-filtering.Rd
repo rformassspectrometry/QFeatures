@@ -15,9 +15,9 @@
 \usage{
 VariableFilter(field, value, condition = "==", not = FALSE)
 
-\S4method{filterFeatures}{QFeatures,AnnotationFilter}(object, filter, na.rm = FALSE, ...)
+\S4method{filterFeatures}{QFeatures,AnnotationFilter}(object, filter, na.rm = FALSE, keep = FALSE, ...)
 
-\S4method{filterFeatures}{QFeatures,formula}(object, filter, na.rm = FALSE, ...)
+\S4method{filterFeatures}{QFeatures,formula}(object, filter, na.rm = FALSE, keep = FALSE, ...)
 }
 \arguments{
 \item{field}{\code{character(1)} refering to the name of the variable
@@ -46,6 +46,11 @@ formula.}
 \item{na.rm}{\code{logical(1)} indicating whether missing values should
 be removed. Default is \code{FALSE}.}
 
+\item{keep}{\code{logical(1)} indicating whether to keep the features
+of assays for which at least one of the filtering variables are
+missing in the rowData. When \code{FALSE} (default), all such assay
+will contain 0 features; when \code{TRUE}, the assays are untouched.}
+
 \item{...}{Additional parameters. Currently ignored.}
 }
 \value{
@@ -58,6 +63,30 @@ filter will be returned as a new object of class \code{QFeatures}. The
 filters can be provided as instances of class \code{AnnotationFilter}
 (see below) or as formulas.
 }
+\section{The filtering procedure}{
+
+
+\code{filterFeatures()} will go through each assay of the \code{QFeatures}
+object and apply the filtering on the corresponding \code{rowData}.
+Features that do not pass the filter condition are removed from
+the assay. In some cases, one may want to filter for a variable
+present in some assay, but not in other. There are two options:
+either provide \code{keep = FALSE} to remove all features for those
+assays (and thus leaving an empty assay), or provide \code{keep = TRUE}
+to ignore filtering for those assays.
+
+Because features in a \code{QFeatures} object are linked between different
+assays with \code{AssayLinks}, the links are automatically updated.
+However, note that the function doesn't propagate the filter to parent
+assays. For example, suppose a peptide assay with 4 peptides is
+linked to a protein assay with 2 proteins (2 peptides mapped per
+protein) and you apply \code{filterFeatures()}. All features pass the
+filter except for one protein. The peptides mapped to that protein
+will remain in the \code{QFeatures} object. If propagation of the
+filtering rules to parent assay is desired, you may want to use
+\code{x[i, , ]} instead (see the \emph{Subsetting} section in \code{?QFeature}).
+}
+
 \section{Variable filters}{
 
 
@@ -131,17 +160,22 @@ filterFeatures(feat1, ~ pval <= 0.03)
 filterFeatures(feat1, ~ !is.na(pval))
 
 ## ----------------------------------------------------------------
-## Negative control - filtering for an non-existing markers value
-## or a missing feature variable, returning empty results
+## Negative control - filtering for an non-existing markers value,
+## returning empty results.
 ## ----------------------------------------------------------------
 
 filterFeatures(feat1, VariableFilter("location", "not"))
 
 filterFeatures(feat1, ~ location == "not")
 
-filterFeatures(feat1, VariableFilter("foo", "bar"))
+## ----------------------------------------------------------------
+## Filtering for a  missing feature variable. The outcome is controled
+## by keep 
+## ----------------------------------------------------------------
 
-filterFeatures(feat1, ~ foo == "bar")
+filterFeatures(feat2, ~ y < 0)
+
+filterFeatures(feat2, ~ y < 0, keep = TRUE)
 
 ## ----------------------------------------------------------------
 ## Example with missing values
