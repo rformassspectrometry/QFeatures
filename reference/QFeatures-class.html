@@ -126,11 +126,20 @@ plot(x, interactive = FALSE, ...)
 # S4 method for QFeatures,ANY,ANY,ANY
 [(x, i, j, ..., drop = TRUE)
 
-# S4 method for QFeatures
-dims(x)
-
 # S4 method for QFeatures,character,ANY,ANY
 [(x, i, j, k, ..., drop = TRUE)
+
+# S4 method for QFeatures
+c(x, ...)
+
+# S4 method for QFeatures
+dims(x, use.names = TRUE)
+
+# S4 method for QFeatures
+nrows(x, use.names = TRUE)
+
+# S4 method for QFeatures
+ncols(x, use.names = TRUE)
 
 # S4 method for QFeatures
 rowData(x, use.names = TRUE, ...)
