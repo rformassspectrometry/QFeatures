@@ -1,9 +1,13 @@
 # QFeatures 1.7
 
+## QFeatures 1.7.3
+
+- Nothing yet.
+
 ## QFeatures 1.7.2
 
-- feat: added 'c' methods to combine QFeatures objects. 
-- feat: added nrows and ncols methods. Also added use.names argument 
+- feat: added 'c' methods to combine QFeatures objects.
+- feat: added nrows and ncols methods. Also added use.names argument
   (cf ?BiocGenerics::dims)
 - docs: improved docs for filterFeatures()
 - tests: improved unit tests for filterFeatures()
