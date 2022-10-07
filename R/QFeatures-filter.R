@@ -309,6 +309,8 @@ filterFeaturesWithFormula <- function(object, filter, na.rm, keep, ...) {
 
 ## Internal function that 
 .checkFilterVariables <- function(object, vars) {
+    ## Ignore variables from the user environment
+    vars <- vars[!vars %in% ls(envir = parent.frame(4))]
     ## Get in which assays each variable comes from
     out <- sapply(rowDataNames(object), function(rdn) vars %in% rdn)
     if (!is.array(out)) out <- t(out)

@@ -2,7 +2,7 @@
 
 ## QFeatures 1.7.3
 
-- Nothing yet.
+- fix: fixed filterFeatures when selection contains environment variables
 
 ## QFeatures 1.7.2
 
