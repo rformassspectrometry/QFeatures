@@ -309,6 +309,15 @@ filterFeaturesWithFormula <- function(object, filter, na.rm, keep, ...) {
 
 ## Internal function that 
 .checkFilterVariables <- function(object, vars) {
+    ## Ignore variables from the user environment. We search for 
+    ## variable in the 4th parent environment (may not always be 
+    ## .GlobalEnv). Here is a "traceback" counter:
+    ## 0 in .checkFilterVariables()
+    ## 1 in FilterFeaturesWithFormula()
+    ## 2 in .local()
+    ## 3 in filterFeatures()
+    ## 4 in environment the function was called
+    vars <- vars[!vars %in% ls(envir = parent.frame(4))]
     ## Get in which assays each variable comes from
     out <- sapply(rowDataNames(object), function(rdn) vars %in% rdn)
     if (!is.array(out)) out <- t(out)

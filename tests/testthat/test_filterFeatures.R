@@ -20,6 +20,19 @@ test_that("filterFeatures", {
     expect_equal(filter1, filter7)
     expect_identical(lengths(filter1), c(6L, 2L, 1L))
     
+    ## Test filter stored in variable
+    target <- "Mitochondrion"
+    filter8 <- expect_message(filterFeatures(feat1, ~  location == target))
+    filter9 <- expect_message(filterFeatures(feat1, VariableFilter("location", target)))
+    expect_equal(filter1, filter8)
+    expect_equal(filter8, filter9)
+    ## Test filter stored in variable within function
+    runfilter <- function() {
+        target2 <- "Mitochondrion"
+        expect_message(filterFeatures(feat1, ~  location == target2))
+    }
+    expect_equal(filter8, runfilter())
+    
     ## Test numerical filters
     filter1 <- expect_message(filterFeatures(feat1, VariableFilter("pval", 0.03, "<=")))
     filter2 <- expect_message(filterFeatures(feat1, ~ pval <= 0.03))
