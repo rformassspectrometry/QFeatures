@@ -1,3 +1,15 @@
+# QFeatures 1.9
+
+## QFeatures 1.9.0
+
+- New Bioconductor 3.17 (devel) release
+
+# QFeatures 1.8
+
+## QFeatures 1.8.0
+
+- New Bioconductor 3.16 (stable) release
+
 # QFeatures 1.7
 
 ## QFeatures 1.7.3
