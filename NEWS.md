@@ -1,5 +1,9 @@
 # QFeatures 1.9
 
+## QFeatures 1.9.1
+
+- fix: solved bug in selectRowData()
+
 ## QFeatures 1.9.0
 
 - New Bioconductor 3.17 (devel) release

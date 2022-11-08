@@ -717,7 +717,7 @@ selectRowData <- function(x, rowvars) {
         message(length(missingvars), " missing/mis-typed rowvars.")
     for (i in seq_len(length(x))) {
         rd <- rowData(x[[i]])
-        rowData(x[[i]]) <- rd[, colnames(rd) %in% rowvars]
+        rowData(x[[i]]) <- rd[, colnames(rd) %in% rowvars, drop = FALSE]
     }
     x
 }
