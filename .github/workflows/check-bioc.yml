@@ -219,7 +219,7 @@ jobs:
           cd preprocessCore
           R CMD INSTALL --configure-args="--disable-threading"  .
 
-      - name: Install MsCoreUtils from Github (to get version 1.7.2)
+      - name: Install MsCoreUtils from Github (to get version 1.10.11)
         run: BiocManager::install("RforMassSpectrometry/MsCoreUtils")
         shell: Rscript {0}
 
