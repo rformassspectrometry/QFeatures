@@ -129,8 +129,8 @@ is <code>imputedAssay</code>.</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">MsCoreUtils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MsCoreUtils/man/imputation.html" class="external-link">imputeMethods</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "bpca"    "knn"     "QRILC"   "MLE"     "MinDet"  "MinProb" "min"    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "zero"    "mixed"   "nbavg"   "with"    "RF"      "none"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "bpca"    "knn"     "QRILC"   "MLE"     "MLE2"    "MinDet"  "MinProb"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "min"     "zero"    "mixed"   "nbavg"   "with"    "RF"      "none"   </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">se_na2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">## table of missing values along the rows (proteins)</span></span></span>
@@ -187,6 +187,8 @@ is <code>imputedAssay</code>.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     loadings</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: impute</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Imputing along margin 2 (samples/columns).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Imputing along margin 2 (samples/columns).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class: SummarizedExperiment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dim: 689 16 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> metadata(3): MSnbaseFiles MSnbaseProcessing MSnbaseVersion</span>
@@ -198,8 +200,10 @@ is <code>imputedAssay</code>.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st">"norm"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu">impute</span><span class="op">(</span><span class="va">se_na2</span>, method <span class="op">=</span> <span class="st">"MLE"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Imputing along margin 2 (samples/columns).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NAs introduced by coercion to integer range</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Iterations of EM: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1...2...3...4...5...6...7...8...9...10...11...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1...2...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class: SummarizedExperiment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dim: 689 16 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> metadata(3): MSnbaseFiles MSnbaseProcessing MSnbaseVersion</span>
@@ -212,6 +216,8 @@ is <code>imputedAssay</code>.</p></dd>
 <span class="r-in"><span><span class="fu">impute</span><span class="op">(</span><span class="va">se_na2</span>, method <span class="op">=</span> <span class="st">"mixed"</span>,</span></span>
 <span class="r-in"><span>       randna <span class="op">=</span> <span class="fu">rowData</span><span class="op">(</span><span class="va">se_na2</span><span class="op">)</span><span class="op">$</span><span class="va">randna</span>,</span></span>
 <span class="r-in"><span>       mar <span class="op">=</span> <span class="st">"knn"</span>, mnar <span class="op">=</span> <span class="st">"QRILC"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Imputing along margin 1 (features/rows).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Imputing along margin 1 (features/rows).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class: SummarizedExperiment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dim: 689 16 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> metadata(3): MSnbaseFiles MSnbaseProcessing MSnbaseVersion</span>
@@ -236,6 +242,7 @@ is <code>imputedAssay</code>.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">assay</span><span class="op">(</span><span class="fu">impute</span><span class="op">(</span><span class="va">x</span>, <span class="st">"nbavg"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Assuming values are ordered.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Imputing along margin 1 (features/rows).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              M1F1A    M1F4A     M1F7A  M1F11A    M1F2B    M1F5B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AT1G09210 0.166000 0.275500 0.2160000 0.18525 0.465667 0.199667</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AT1G21750 0.332000 0.279667 0.2228335 0.16600 0.451500 0.200375</span>

@@ -246,8 +246,8 @@ object and further access its quantitative data and metadata using the
 <span><span class="co">## 5         1.70     25.56 Plasma mem...</span></span>
 <span><span class="co">## 6        -0.67     21.27 Nucleus - ...</span></span></code></pre>
 <p>For further details on how to manipulate such objects, refer to the
-<em><a href="https://bioconductor.org/packages/3.16/MultiAssayExperiment" class="external-link">MultiAssayExperiment</a></em>
-<span class="citation">(Ramos et al. 2017)</span> and <em><a href="https://bioconductor.org/packages/3.16/SummerizedExperiment" class="external-link">SummerizedExperiment</a></em>
+<em><a href="https://bioconductor.org/packages/3.17/MultiAssayExperiment" class="external-link">MultiAssayExperiment</a></em>
+<span class="citation">(Ramos et al. 2017)</span> and <em><a href="https://bioconductor.org/packages/3.17/SummerizedExperiment" class="external-link">SummerizedExperiment</a></em>
 <span class="citation">(Morgan et al. 2019)</span> packages.</p>
 <p>As illustrated in figure @ref(fig:featuresplot), an central
 characteristic of <code>QFeatures</code> objects is the aggregative
@@ -524,7 +524,7 @@ operator.</p>
 <p>QFeatures is assays can also be filtered based on variables in their
 respective row data slots using the <code>filterFeatures</code>
 function. The filters can be defined using the formula interface or
-using <code>AnnotationFilter</code> objects from the <em><a href="https://bioconductor.org/packages/3.16/AnnotationFilter" class="external-link">AnnotationFilter</a></em>
+using <code>AnnotationFilter</code> objects from the <em><a href="https://bioconductor.org/packages/3.17/AnnotationFilter" class="external-link">AnnotationFilter</a></em>
 package <span class="citation">(Morgan and Rainer 2019)</span>. In
 addition to the pre-defined filters (such as <code>SymbolFilter</code>,
 <code>ProteinIdFilter</code>, … that filter on gene symbol, protein
@@ -590,13 +590,13 @@ and that variable was dropped from the other assays.</p>
 <div class="section level2">
 <h2 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<pre><code><span><span class="co">## R version 4.2.1 (2022-06-23)</span></span>
+<pre><code><span><span class="co">## R Under development (unstable) (2022-11-17 r83363)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
-<span><span class="co">## Running under: Ubuntu 20.04.5 LTS</span></span>
+<span><span class="co">## Running under: Ubuntu 22.04.1 LTS</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
 <span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3</span></span>
-<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/liblapack.so.3</span></span>
+<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## locale:</span></span>
 <span><span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></span>
@@ -606,43 +606,46 @@ and that variable was dropped from the other assays.</p>
 <span><span class="co">##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></span>
 <span><span class="co">## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span></span>
 <span><span class="co">## </span></span>
+<span><span class="co">## time zone: UTC</span></span>
+<span><span class="co">## tzcode source: system (glibc)</span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">## attached base packages:</span></span>
 <span><span class="co">## [1] stats4    stats     graphics  grDevices utils     datasets  methods  </span></span>
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">##  [1] magrittr_2.0.3              ggplot2_3.3.6              </span></span>
-<span><span class="co">##  [3] QFeatures_1.9.0             MultiAssayExperiment_1.24.0</span></span>
-<span><span class="co">##  [5] SummarizedExperiment_1.28.0 Biobase_2.58.0             </span></span>
-<span><span class="co">##  [7] GenomicRanges_1.50.0        GenomeInfoDb_1.34.0        </span></span>
-<span><span class="co">##  [9] IRanges_2.32.0              S4Vectors_0.36.0           </span></span>
-<span><span class="co">## [11] BiocGenerics_0.44.0         MatrixGenerics_1.10.0      </span></span>
-<span><span class="co">## [13] matrixStats_0.62.0          BiocStyle_2.26.0           </span></span>
+<span><span class="co">##  [1] magrittr_2.0.3              ggplot2_3.4.0              </span></span>
+<span><span class="co">##  [3] QFeatures_1.9.0             MultiAssayExperiment_1.25.1</span></span>
+<span><span class="co">##  [5] SummarizedExperiment_1.29.1 Biobase_2.59.0             </span></span>
+<span><span class="co">##  [7] GenomicRanges_1.51.1        GenomeInfoDb_1.35.4        </span></span>
+<span><span class="co">##  [9] IRanges_2.33.0              S4Vectors_0.37.0           </span></span>
+<span><span class="co">## [11] BiocGenerics_0.45.0         MatrixGenerics_1.11.0      </span></span>
+<span><span class="co">## [13] matrixStats_0.63.0          BiocStyle_2.27.0           </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] lattice_0.20-45         utf8_1.2.2              rprojroot_2.0.3        </span></span>
-<span><span class="co">##  [4] digest_0.6.30           R6_2.5.1                evaluate_0.17          </span></span>
-<span><span class="co">##  [7] pillar_1.8.1            highr_0.9               zlibbioc_1.44.0        </span></span>
-<span><span class="co">## [10] rlang_1.0.6             lazyeval_0.2.2          jquerylib_0.1.4        </span></span>
-<span><span class="co">## [13] Matrix_1.5-1            rmarkdown_2.17          pkgdown_2.0.6.9000     </span></span>
-<span><span class="co">## [16] labeling_0.4.2          textshaping_0.3.6       desc_1.4.2             </span></span>
-<span><span class="co">## [19] stringr_1.4.1           ProtGenerics_1.29.1     igraph_1.3.5           </span></span>
-<span><span class="co">## [22] RCurl_1.98-1.9          munsell_0.5.0           DelayedArray_0.24.0    </span></span>
-<span><span class="co">## [25] compiler_4.2.1          xfun_0.34               pkgconfig_2.0.3        </span></span>
-<span><span class="co">## [28] systemfonts_1.0.4       htmltools_0.5.3         tidyselect_1.2.0       </span></span>
-<span><span class="co">## [31] tibble_3.1.8            GenomeInfoDbData_1.2.9  bookdown_0.29          </span></span>
-<span><span class="co">## [34] fansi_1.0.3             withr_2.5.0             dplyr_1.0.10           </span></span>
-<span><span class="co">## [37] MASS_7.3-58.1           bitops_1.0-7            grid_4.2.1             </span></span>
-<span><span class="co">## [40] jsonlite_1.8.3          gtable_0.3.1            lifecycle_1.0.3        </span></span>
-<span><span class="co">## [43] AnnotationFilter_1.22.0 MsCoreUtils_1.11.0      scales_1.2.1           </span></span>
-<span><span class="co">## [46] cli_3.4.1               stringi_1.7.8           cachem_1.0.6           </span></span>
-<span><span class="co">## [49] farver_2.1.1            XVector_0.38.0          fs_1.5.2               </span></span>
-<span><span class="co">## [52] bslib_0.4.1             generics_0.1.3          vctrs_0.5.0            </span></span>
-<span><span class="co">## [55] ragg_1.2.4              tools_4.2.1             glue_1.6.2             </span></span>
-<span><span class="co">## [58] purrr_0.3.5             fastmap_1.1.0           yaml_2.3.6             </span></span>
-<span><span class="co">## [61] clue_0.3-62             colorspace_2.0-3        cluster_2.1.4          </span></span>
-<span><span class="co">## [64] BiocManager_1.30.19     memoise_2.0.1           knitr_1.40             </span></span>
-<span><span class="co">## [67] BiocBaseUtils_1.0.0     sass_0.4.2</span></span></code></pre>
+<span><span class="co">##  [1] gtable_0.3.1            xfun_0.35               bslib_0.4.1            </span></span>
+<span><span class="co">##  [4] lattice_0.20-45         generics_0.1.3          vctrs_0.5.1            </span></span>
+<span><span class="co">##  [7] tools_4.3.0             bitops_1.0-7            fansi_1.0.3            </span></span>
+<span><span class="co">## [10] tibble_3.1.8            highr_0.9               cluster_2.1.4          </span></span>
+<span><span class="co">## [13] pkgconfig_2.0.3         BiocBaseUtils_1.1.0     Matrix_1.5-3           </span></span>
+<span><span class="co">## [16] desc_1.4.2              lifecycle_1.0.3         GenomeInfoDbData_1.2.9 </span></span>
+<span><span class="co">## [19] farver_2.1.1            compiler_4.3.0          stringr_1.4.1          </span></span>
+<span><span class="co">## [22] textshaping_0.3.6       munsell_0.5.0           clue_0.3-63            </span></span>
+<span><span class="co">## [25] htmltools_0.5.3         sass_0.4.2              RCurl_1.98-1.9         </span></span>
+<span><span class="co">## [28] yaml_2.3.6              lazyeval_0.2.2          pillar_1.8.1           </span></span>
+<span><span class="co">## [31] pkgdown_2.0.6.9000      jquerylib_0.1.4         MASS_7.3-58.1          </span></span>
+<span><span class="co">## [34] DelayedArray_0.25.0     cachem_1.0.6            tidyselect_1.2.0       </span></span>
+<span><span class="co">## [37] digest_0.6.30           stringi_1.7.8           dplyr_1.0.10           </span></span>
+<span><span class="co">## [40] purrr_0.3.5             bookdown_0.30           labeling_0.4.2         </span></span>
+<span><span class="co">## [43] rprojroot_2.0.3         fastmap_1.1.0           grid_4.3.0             </span></span>
+<span><span class="co">## [46] colorspace_2.0-3        cli_3.4.1               utf8_1.2.2             </span></span>
+<span><span class="co">## [49] withr_2.5.0             scales_1.2.1            rmarkdown_2.18         </span></span>
+<span><span class="co">## [52] XVector_0.39.0          igraph_1.3.5            ragg_1.2.4             </span></span>
+<span><span class="co">## [55] memoise_2.0.1           evaluate_0.18           knitr_1.41             </span></span>
+<span><span class="co">## [58] rlang_1.0.6             glue_1.6.2              BiocManager_1.30.19    </span></span>
+<span><span class="co">## [61] jsonlite_1.8.3          AnnotationFilter_1.23.0 R6_2.5.1               </span></span>
+<span><span class="co">## [64] systemfonts_1.0.4       fs_1.5.2                zlibbioc_1.45.0        </span></span>
+<span><span class="co">## [67] ProtGenerics_1.29.1     MsCoreUtils_1.11.1</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
