@@ -1,5 +1,9 @@
 # QFeatures 1.9
 
+## QFeatures 1.9.2
+
+- Nothing yet.
+
 ## QFeatures 1.9.1
 
 - fix: solved bug in selectRowData()
