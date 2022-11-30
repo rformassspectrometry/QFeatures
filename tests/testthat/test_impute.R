@@ -33,15 +33,6 @@ test_that("impute,SummarizedExperiment", {
     expect_identical(x_imp, assay(se_imp))
 })
 
-test_that("impute,QFeatures: test errors", {
-    ## i is mandatory
-    expect_error(impute(ft, method = "zero"), 
-                 regexp = "Provide index")
-    ## Only one sample can be imputed at once
-    expect_error(impute(ft, i = 1:2, method = "zero"), 
-                 regexp = "one assay")
-})
-
 test_that("impute,QFeatures", {
     ## Check imputation
     ft_imp <- impute(ft, i = "se_na2", method = "MinDet")
@@ -50,4 +41,17 @@ test_that("impute,QFeatures", {
     expect_identical(x_imp, assay(ft_imp[["imputedAssay"]]))
     ## Check the assay was added
     expect_true(length(ft_imp) == (length(ft) + 1))
+    ## Test imputation of multiples assays
+    ft2 <- addAssay(ft, ft[[1]], name = "se_na1")
+    ft2 <- impute(ft2, i = 1:2, name = paste0("impute", 1:2), 
+                  method = "zero")
+    expect_identical(ft2[["impute1"]], 
+                     ft2[["impute2"]])
+    expect_identical(ft2[["impute1"]], 
+                     impute(ft2[["se_na1"]], method = "zero"))
+    
+    ## Test errors
+    ## i is mandatory
+    expect_error(impute(ft, method = "zero"), 
+                 regexp = "missing, with no default")
 })
