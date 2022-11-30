@@ -50,7 +50,7 @@
 ## Internal function that compute the number and percent of missing 
 ## data for a QFeatures object
 .nNAi <- function(object, i) {
-    if (is.numeric(i)) i <- names(object)[i]
+    i <- .normIndex(object, i)
     ## Get number of missing data per assay 
     nNAassay <- do.call(rbind, lapply(i, function(ii)
         cbind(assay = ii, .nNAByAssay(object[[ii]])) ))

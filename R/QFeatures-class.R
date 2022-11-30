@@ -872,8 +872,7 @@ addAssay <- function(x,
 ##'
 ##' @export
 removeAssay <- function(x, i) {
-    if (is.numeric(i) || is.logical(i))
-        i <- names(x)[i]
+    i <- .normIndex(x, i)
     x[, , !names(x) %in% i]
 }
 
@@ -887,8 +886,7 @@ replaceAssay <- function(x,
                          i) {
     ## Check arguments
     stopifnot(inherits(x, "QFeatures"))
-    if (!missing(i) && (is.numeric(i) || is.logical(i)))
-        i <- names(x)[i]
+    if (!missing(i)) i <- .normIndex(x, i)
     y <- .checkAssaysToInsert(y, x, i, replace = TRUE)
     
     ## Update the colData
@@ -957,8 +955,7 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
                          stop("'x[[i]] <- value' does not allow multiple ",
                               "replacements. Consider using 'addAssay()', ",
                               "'replaceAssay()' or 'removeAssay()' instead.")
-                     if (is.numeric(i) || is.logical(i))
-                         i <- names(x)[i]
+                     i <- .normIndex(x, i, allowAbsent = TRUE)
                      if (!missing(j) || length(list(...))) 
                          stop("invalid replacement")
                      if (i %in% names(x)) {
@@ -971,6 +968,22 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
                          return(addAssay(x = x, y = value, name = i))
                      } 
                  })
+
+.normIndex <- function(object, i, allowAbsent = FALSE) {
+    if (is.logical(i) & length(i) != length(object))
+        stop("The assay index ('i') is logical but its does not ",
+             "match the number of assays in the QFeatures object.")
+    if (is.factor(i)) i <- as.character(i)
+    if (is.numeric(i) || is.logical(i))
+        i <- names(object)[i]
+    if (!length(i)) stop("No assay selected.")
+    if (any(oob <- is.na(i))) 
+        stop("'i' has out of bounds entries")
+    if (!allowAbsent & any(mis <- !i %in% names(object))) 
+        stop("The following assay(s) is/are not found:",
+             paste(i[mis], collapse = ","))
+    i
+}
 
 .checkAssaysToInsert <- function(y, x, name, replace = FALSE) {
     ## Convert y to a list, if not already a list and check content

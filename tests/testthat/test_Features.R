@@ -34,6 +34,48 @@ test_that("Manual QFeatures", {
     ## expect_equivalent(feat1, feat2)
 })
 
+
+test_that("Test indexing", {
+    data(feat2)
+    ## Test single indexing
+    ## With numeric
+    expect_identical(.normIndex(feat2, 1), "assay1")
+    ## With character
+    expect_identical(.normIndex(feat2, "assay1"), "assay1")
+    ## With factor
+    expect_identical(.normIndex(feat2, factor("assay1")), "assay1")
+    ## With logical
+    expect_identical(.normIndex(feat2, c(TRUE, FALSE, FALSE)), "assay1")
+    
+    ## Test multiple indexing
+    ## With numeric
+    expect_identical(.normIndex(feat2, 1:2), c("assay1", "assay2"))
+    ## With character
+    expect_identical(.normIndex(feat2, c("assay1", "assay2")), 
+                     c("assay1", "assay2"))
+    ## With factor
+    expect_identical(.normIndex(feat2, factor(c("assay1", "assay2"))), 
+                     c("assay1", "assay2"))
+    ## With logical
+    expect_identical(.normIndex(feat2, c(TRUE, TRUE, FALSE)), 
+                     c("assay1", "assay2"))
+    
+    ## Test wrong index
+    ## Missing
+    expect_error(.normIndex(feat2), 
+                 regexp = "missing, with no default")
+    ## Logical is too short
+    expect_error(.normIndex(feat2, TRUE), 
+                 regexp = "does not match the number")
+    ## Index out of bounds
+    expect_error(.normIndex(feat2, 4), regexp = "out of bounds")
+    ## Assay name is absent... 
+    expect_error(.normIndex(feat2, "foo"), 
+                 regexp = "not found.*foo")
+    ## ... unless requested
+    expect_identical(.normIndex(feat2, "foo", allowAbsent = TRUE),
+                     "foo")
+})
 test_that("updateObject", {
     data(feat3)
     ## Applying updateObject on feat3 should lead to the same object
@@ -55,11 +97,9 @@ test_that("[[<-", {
                  regexp = "invalid replacement")
     
     ## Check indexing
-    charIndex <- numIndex <- logIndex <- feat2
-    charIndex[[2]] <- charIndex[[1]]
+    charIndex <- numIndex <- feat2
+    charIndex[["assay2"]] <- charIndex[["assay1"]]
     numIndex[[2]] <- numIndex[[1]]
-    logIndex[[2]] <- logIndex[[1]]
-    expect_identical(charIndex, logIndex)
     expect_identical(charIndex, numIndex)
     
     ## Scenario 1: use [[<- for replacement

@@ -1,5 +1,29 @@
 data(feat1)
 
+test_that("function: .applyTransformation", {
+    data("feat2")
+    featlog <- .applyTransformation(feat2, i = 1:2, 
+                                    name = paste0("log", 1:2),
+                                    .FUN = logTransform)
+    ## Check the transformation is correctly applied
+    expect_identical(featlog[["log1"]],
+                     logTransform(featlog[[1]]))
+    expect_identical(featlog[["log2"]],
+                     logTransform(featlog[[2]]))
+    ## Check the AssayLinks are correct
+    expect_identical(featlog@assayLinks[["log1"]]@name, "log1")
+    expect_identical(featlog@assayLinks[["log1"]]@from, "assay1")
+    ## One-to-one mapping
+    expect_identical(featlog@assayLinks[["log1"]]@hits@from,
+                     featlog@assayLinks[["log1"]]@hits@to) 
+    
+    ## Test errors
+    ## i and name have different lengths
+    expect_error(.applyTransformation(feat1, i = 1, 
+                                      name = letters[1:2],
+                                      .FUN = logTransform),
+                 regexp = "length.name. is not TRUE")
+})
 
 test_that("function: logTransform", {
     se <- feat1[[1]]
@@ -79,4 +103,40 @@ test_that("function: sweep", {
     sfeat1 <- sweep(feat1, MARGIN = 2, STATS = cmeds, i = 1)
     expect_identical(names(sfeat1), c("psms", "sweptAssay"))
     expect_identical(e, assay(sfeat1[["sweptAssay"]]))
+})
+
+test_that("test transformation of multiple assays", {
+    data("feat2")
+    
+    ## logTransform
+    feat2_log <- logTransform(feat2, paste0("assay", 1:3), 
+                              paste0("log", 1:3))
+    for (i in 1:3) {
+        expect_identical(feat2_log[[paste0("log", i)]],
+                         logTransform(feat2_log[[paste0("assay", i)]]))
+    }
+    ## scaleTransform
+    feat2_scale <- scaleTransform(feat2, paste0("assay", 1:3), 
+                                  paste0("scale", 1:3))
+    for (i in 1:3) {
+        expect_identical(feat2_scale[[paste0("scale", i)]],
+                         scaleTransform(feat2_scale[[paste0("assay", i)]]))
+    }
+    ## normalize
+    feat2_norm <- normalize(feat2, paste0("assay", 1:3), 
+                            paste0("norm", 1:3), method = "center.median")
+    for (i in 1:3) {
+        expect_identical(feat2_norm[[paste0("norm", i)]],
+                         normalize(feat2_norm[[paste0("assay", i)]], 
+                                   method = "center.median"))
+    }
+    ## sweep
+    feat2_sweep <- sweep(feat2, i = paste0("assay", 1:3), 
+                         name = paste0("sweep", 1:3), 
+                         FUN = "-", MARGIN = 1, STATS = 1)
+    for (i in 1:3) {
+        expect_identical(feat2_sweep[[paste0("sweep", i)]],
+                         sweep(feat2_sweep[[paste0("assay", i)]], 
+                               FUN = "-", MARGIN = 1, STATS = 1))
+    }
 })

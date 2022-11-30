@@ -2,6 +2,7 @@
 
 ## QFeatures 1.9.2
 
+- feat: processing functions (normalize, scaleTransform, logTransform, sweep) can now take multiple assays
 - refactor: avoid validObject() when possible
 
 ## QFeatures 1.9.1

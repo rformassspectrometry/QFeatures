@@ -123,9 +123,38 @@
 NULL
 
 ## -------------------------------------------------------
-##   Transformations
+##   Internal
 ## -------------------------------------------------------
 
+## Internal function that applies a given function .FUN on one or more
+## assays given by i.
+## @param object A QFeatures object
+## @param i The index of one or multiple assays
+## @param name The name of the new assays to add. Must have the same
+##     length as i
+## @param .FUN A function or the name (character(1)) of a function 
+##     that takes an object that inherits from the 
+##     SummarizedExperiment class and returns an object of the same
+##     class.
+## @param ... Further argument passed to .FUN
+.applyTransformation <- function(object, i, name, .FUN, ...) {
+    ## Check arguments
+    i <- .normIndex(object, i)
+    stopifnot(length(i) == length(name))
+    if (is.character(.FUN)) .FUN <- get(.FUN)
+    ## Create and add new assays with the transformed data
+    for (j in seq_along(i)) {
+        from <- i[[j]]
+        to <- name[[j]]
+        object <- addAssay(object, .FUN(object[[from]], ...), to)
+        object <- addAssayLinkOneToOne(object, from = from, to = to)
+    }
+    object
+}
+
+## -------------------------------------------------------
+##   Transformations
+## -------------------------------------------------------
 
 ##' @exportMethod logTransform
 ##' @rdname QFeatures-processing
@@ -140,15 +169,8 @@ setMethod("logTransform",
 setMethod("logTransform",
           "QFeatures",
           function(object, i, name = "logAssay", base = 2, pc = 0) {
-              if (missing(i))
-                  stop("Provide index or name of assay to be processed")
-              if (length(i) != 1)
-                  stop("Only one assay to be processed at a time")
-              if (is.numeric(i)) i <- names(object)[[i]]
-              object <- addAssay(object,
-                                 logTransform(object[[i]], base, pc),
-                                 name)
-              addAssayLinkOneToOne(object, from = i, to = name)
+              .applyTransformation(object, i, name, logTransform, 
+                                   base = base, pc = pc)
           })
 
 ##' @exportMethod scaleTransform
@@ -165,15 +187,8 @@ setMethod("scaleTransform", "SummarizedExperiment",
 ##' @rdname QFeatures-processing
 setMethod("scaleTransform", "QFeatures",
           function(object, i, name = "scaledAssay", center = TRUE, scale = TRUE) {
-              if (missing(i))
-                  stop("Provide index or name of assay to be processed")
-              if (length(i) != 1)
-                  stop("Only one assay to be processed at a time")
-              if (is.numeric(i)) i <- names(object)[[i]]
-              object <- addAssay(object,
-                                 scaleTransform(object[[i]], center, scale),
-                                 name)
-              addAssayLinkOneToOne(object, from = i, to = name)
+              .applyTransformation(object, i, name, scaleTransform, 
+                                   center = center, scale = scale)
           })
 
 ## -------------------------------------------------------
@@ -199,15 +214,8 @@ setMethod("normalize", "SummarizedExperiment",
 ##' @rdname QFeatures-processing
 setMethod("normalize", "QFeatures",
           function(object, i, name = "normAssay", method, ...) {
-              if (missing(i))
-                  stop("Provide index or name of assay to be processed")
-              if (length(i) != 1)
-                  stop("Only one assay to be processed at a time")
-              if (is.numeric(i)) i <- names(object)[[i]]
-              object <- addAssay(object,
-                                 normalize(object[[i]], method, ...),
-                                 name)
-              addAssayLinkOneToOne(object, from = i, to = name)
+              .applyTransformation(object, i, name, normalize, 
+                                   method = method, ...)
           })
 
 
@@ -233,13 +241,8 @@ setMethod("sweep", "SummarizedExperiment",
 ##' @rdname QFeatures-processing
 setMethod("sweep", "QFeatures",
           function(x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ..., i, name = "sweptAssay") {
-              if (missing(i))
-                  stop("Provide index or name of assay to be processed")
-              if (length(i) != 1)
-                  stop("Only one assay to be processed at a time")
-              if (is.numeric(i)) i <- names(x)[[i]]
-              x <- addAssay(x,
-                            sweepSE(x[[i]], MARGIN, STATS, FUN, check.margin, ...),
-                            name)
-              addAssayLinkOneToOne(x, from = i, to = name)
+              .applyTransformation(x, i, name, sweep, 
+                                   MARGIN = MARGIN, STATS = STATS, 
+                                   FUN = FUN, 
+                                   check.margin = check.margin, ...)
           })
