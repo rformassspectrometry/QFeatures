@@ -2,8 +2,10 @@
 
 ## QFeatures 1.9.2
 
-- feat: imputation can now take multiple assays
-- feat: processing functions (normalize, scaleTransform, logTransform, sweep) can now take multiple assays
+- feat: aggregateFeatures() can now take multiple assays
+- feat: imputate() can now take multiple assays
+- feat: processing functions (normalize, scaleTransform, logTransform,
+  sweep) can now take multiple assays
 - refactor: avoid validObject() when possible
 
 ## QFeatures 1.9.1

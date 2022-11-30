@@ -253,22 +253,30 @@ setMethod("aggregateFeatures", "QFeatures",
                    fun = MsCoreUtils::robustSummary, ...) {
               if (isEmpty(object))
                   return(object)
-              if (name %in% names(object))
-                  stop("There's already an assay named '", name, "'.")
-              if (missing(i))
-                  i <- main_assay(object)
-              ## Create the aggregated assay
-              aggAssay <- .aggregateQFeatures(object[[i]], fcol, fun, ...)
-              ## Add the assay to the QFeatures object
-              object <- addAssay(object,
-                                 aggAssay,
-                                 name = name)
-              ## Link the input assay to the aggregated assay
-              addAssayLink(object,
-                           from = i,
-                           to  = name,
-                           varFrom = fcol,
-                           varTo = fcol)
+              ## Check arguments
+              if (any(present <- name %in% names(object)))
+                  stop("There's already one or more assays named: '",
+                       paste0(name[present], collapse = "', '"), "'.")
+              i <- .normIndex(object, i)
+              if (length(i) != length(name)) stop("'i' and 'name' must have same length")
+              if (length(fcol) == 1) fcol <- rep(fcol, length(i))
+              if (length(i) != length(fcol)) stop("'i' and 'fcol' must have same length")
+              ## Aggregate each assay
+              for (j in seq_along(i)) {
+                  from <- i[[j]]
+                  to <- name[[j]]
+                  by <- fcol[[j]]
+                  ## Create the aggregated assay
+                  aggAssay <- .aggregateQFeatures(object[[from]],
+                                                  by, fun, ...)
+                  ## Add the assay to the QFeatures object
+                  object <- addAssay(object, aggAssay, name = to)
+                  ## Link the input assay to the aggregated assay
+                  object <- addAssayLink(object, from = from,
+                                         to  = to, varFrom = by,
+                                         varTo = by)
+              }
+              object
           })
 
 
@@ -297,11 +305,11 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
     if (!fcol %in% names(rd))
         stop("'fcol' not found in the assay's rowData.")
     groupBy <- rd[[fcol]]
-
+    
     ## Store class of assay i in case it is not a SummarizedExperiment
     ## so that the aggregated assay can be reverted to that class
     .class <- class(object)
-
+    
     ## Message about NA values is quant/row data
     has_na <- character()
     if (anyNA(m))
@@ -316,7 +324,7 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
                      "effects of missing values on data aggregation.")
         message(paste(strwrap(msg), collapse = "\n"))
     }
-
+    
     if (is.vector(groupBy)) {
         aggregated_assay <- aggregate_by_vector(m, groupBy, fun, ...)
         aggcount_assay <- aggregate_by_vector(m, groupBy, colCounts)
@@ -338,14 +346,14 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
         ## Count the number of peptides per protein
         .n <- apply(groupBy != 0, 2, sum)
         aggregated_rowdata[[".n"]] <- .n[rownames(aggregated_rowdata)]
-
+        
         assays <- SimpleList(assay = as.matrix(aggregated_assay)) ## to discuss
         rowdata <- aggregated_rowdata[rownames(aggregated_assay), , drop = FALSE]
     } else stop("'fcol' must refer to a vector or a sparse matrix.")
     se <- SummarizedExperiment(assays = assays,
                                colData = colData(object),
                                rowData = rowdata)
-
+    
     ## If the input objects weren't SummarizedExperiments, then try to
     ## convert the merged assay into that class. If the conversion
     ## fails, keep the SummarizedExperiment, otherwise use the
@@ -378,7 +386,7 @@ setMethod("adjacencyMatrix", "QFeatures",
 
 setMethod("adjacencyMatrix", "SummarizedExperiment",
           function(object, adjName = "adjacencyMatrix")
-         .adjacencyMatrix(object, adjName))
+              .adjacencyMatrix(object, adjName))
 
 ##' @export
 ##'
