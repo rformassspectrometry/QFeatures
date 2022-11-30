@@ -484,6 +484,8 @@ plot.QFeatures <- function (x, interactive = FALSE, ...) {
     ## Removed lost links in each AssayLink object
     object@assayLinks <- endoapply(object@assayLinks,
                                    .pruneAssayLink, object = object)
+    ## Check new AssaLinks are valid 
+    .validAssayLinks(object)
     object
 }
 
@@ -499,11 +501,7 @@ setMethod("[", c("QFeatures", "ANY", "ANY", "ANY"),
               
               ## Prune the AssayLinks so that the `QFeatures` object
               ## remains valid
-              ans <- .pruneAssayLinks(ans)
-              
-              ## Check new object
-              if (validObject(ans))
-                  return(ans)
+              .pruneAssayLinks(ans)
           })
 
 ##' @rdname QFeatures-class
@@ -986,7 +984,7 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
             stop("When 'y' is a list, it must be a named List.")
     }
     ## Make sure the assays comply to the requirements
-    stopifnot(sapply(y, validObject))
+    sapply(y, validObject) ## throws an error if any assay is corrupt
     if (any(duplicated(names(y)))) 
         stop("Replacement names must be unique.")
     if (!replace && any(names(y) %in% names(x)))

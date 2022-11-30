@@ -195,6 +195,12 @@ test_that("addAssay", {
     expect_error(addAssay(feat1, y = feat1[[1]], name = "foo",
                           assayLinks = AssayLinks(names = "bar")), 
                  regexp = "assayLinks.*named after the assay")
+    ## Assay to add is corrupt
+    corruptAssay <- feat1[[1]]
+    corruptAssay@assays@data@listData[[1]] <- matrix(1)
+    expect_error(addAssay(feat1, y = corruptAssay, name = "foo",
+                          assayLinks = AssayLinks(names = "bar")),
+                 regexp = "invalid class .SummarizedExperiment")
     
     ## Scenario 1: add an assay with same dimnames
     assay1 <- feat1[[1]]

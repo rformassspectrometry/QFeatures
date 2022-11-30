@@ -404,9 +404,8 @@ setMethod("[", c("AssayLinks", "list"),
 
     ## Overwrite the AssayLink
     object@assayLinks@listData[[al@name]] <- al
-
-    if (validObject(object))
-        return(object)
+    .validAssayLinks(object)
+    object
 }
 
 ##' @rdname AssayLinks

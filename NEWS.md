@@ -1,5 +1,9 @@
 # QFeatures 1.9
 
+## QFeatures 1.9.2
+
+- refactor: avoid validObject() when possible
+
 ## QFeatures 1.9.1
 
 - fix: solved bug in selectRowData()
