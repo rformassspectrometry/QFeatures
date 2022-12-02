@@ -221,6 +221,9 @@ VariableFilter <- function(field,
 ##'
 ##' @param filter Either an instance of class [AnnotationFilter] or a
 ##'     formula.
+##'     
+##' @param i A numeric, logical or character vector pointing to the
+##'     assay(s) to be filtered.
 ##'
 ##' @param na.rm `logical(1)` indicating whether missing values should
 ##'     be removed. Default is `FALSE`.
