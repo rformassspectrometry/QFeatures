@@ -993,7 +993,7 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
     if (is.numeric(i) || is.logical(i))
         i <- names(object)[i]
     if (!length(i)) stop("No assay selected.")
-    if (any(oob <- is.na(i))) 
+    if (any(is.na(i))) 
         stop("'i' has out of bounds entries")
     if (!allowAbsent & any(mis <- !i %in% names(object))) 
         stop("The following assay(s) is/are not found:",
