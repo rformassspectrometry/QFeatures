@@ -29,7 +29,6 @@ BiocStyle::markdown()
 library("QFeatures")
 library("ggplot2")
 library("dplyr")
-library("magrittr")
 ```
 
 # Reading data as `QFeatures`
@@ -86,9 +85,8 @@ filterFeatures(cptac, ~ Potential.contaminant == "")
 ```
 
 ```{r}
-library("magrittr")
-cptac <- cptac %>%
-    filterFeatures(~ Reverse == "") %>%
+cptac <- cptac |>
+    filterFeatures(~ Reverse == "") |>
     filterFeatures(~ Potential.contaminant == "")
 ```
 
@@ -362,10 +360,10 @@ pattern in the 2 groups at the protein and peptide level.
 ```{r, message = TRUE, fig.cap = "Expression intensities for the protein *P02787ups|TRFE_HUMAN_UPS* (right, green) and its peptides (left) in groups A (circles) and B (triangles)."}
 library("ggplot2")
 library("dplyr")
-longFormat(cptac["P02787ups|TRFE_HUMAN_UPS", ]) %>%
-    as.data.frame() %>%
-    mutate(group = ifelse(grepl("A", colname), "A", "B")) %>%
-    mutate(sample = sub("Intensity\\.", "", colname)) %>%
+longFormat(cptac["P02787ups|TRFE_HUMAN_UPS", ]) |>
+    as.data.frame() |>
+    mutate(group = ifelse(grepl("A", colname), "A", "B")) |>
+    mutate(sample = sub("Intensity\\.", "", colname)) |>
     ggplot(aes(x = sample, y = value, colour = rowname, shape = group)) +
     geom_point() +
     facet_grid(~ assay)

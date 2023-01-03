@@ -142,6 +142,8 @@
 ##'
 ##' @importFrom MsCoreUtils aggregate_by_vector aggregate_by_matrix robustSummary colCounts
 ##'
+##' @importFrom methods as
+##'
 ##' @examples
 ##'
 ##' ## ---------------------------------------

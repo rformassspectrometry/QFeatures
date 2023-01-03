@@ -324,21 +324,20 @@ The subsetting by feature names is also available as a call to the
 `subsetByFeature` function, for use with the pipe operator.
 
 ```{r subsetByFeature}
-library(magrittr)
-hl %>%
+hl |>
     subsetByFeature("P42227-2")
 
-hl %>%
+hl |>
     subsetByFeature(c("P42227-2", "P42225"))
 ```
 
 and possibly
 
 ```{r subsetpipe, eval = FALSE}
-hl %>%
-    subsetByFeature("P42227-2") %>%
-    longFormat() %>%
-    as.data.frame %>%
+hl |>
+    subsetByFeature("P42227-2") |>
+    longFormat() |>
+    as.data.frame |>
     ggplot(aes(x = colname,
                y = value,
                group = rowname)) +
