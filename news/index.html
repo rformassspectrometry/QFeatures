@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.9.2</span>
       </span>
     </div>
 
@@ -66,11 +66,16 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.9" id="qfeatures-19">QFeatures 1.9<a class="anchor" aria-label="anchor" href="#qfeatures-19"></a></h2>
 <div class="section level3">
-<h3 id="qfeatures-1-9">QFeatures 1.9.1<a class="anchor" aria-label="anchor" href="#qfeatures-1-9"></a></h3>
-<ul><li>fix: solved bug in selectRowData()</li>
+<h3 id="qfeatures-1-9">QFeatures 1.9.2<a class="anchor" aria-label="anchor" href="#qfeatures-1-9"></a></h3>
+<ul><li>Use <code>|&gt;</code> rather than <code>%&gt;%</code>.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="qfeatures-1-9-1">QFeatures 1.9.0<a class="anchor" aria-label="anchor" href="#qfeatures-1-9-1"></a></h3>
+<h3 id="qfeatures-1-9-1">QFeatures 1.9.1<a class="anchor" aria-label="anchor" href="#qfeatures-1-9-1"></a></h3>
+<ul><li>fix: solved bug in <code><a href="../reference/QFeatures-class.html">selectRowData()</a></code>
+</li>
+</ul></div>
+<div class="section level3">
+<h3 id="qfeatures-1-9-2">QFeatures 1.9.0<a class="anchor" aria-label="anchor" href="#qfeatures-1-9-2"></a></h3>
 <ul><li>New Bioconductor 3.17 (devel) release</li>
 </ul></div>
 </div>
@@ -89,14 +94,16 @@
 </ul></div>
 <div class="section level3">
 <h3 id="qfeatures-1-7-1">QFeatures 1.7.2<a class="anchor" aria-label="anchor" href="#qfeatures-1-7-1"></a></h3>
-<ul><li>feat: added ‘c’ methods to combine QFeatures objects.</li>
-<li>feat: added nrows and ncols methods. Also added use.names argument (cf ?BiocGenerics::dims)</li>
-<li>docs: improved docs for filterFeatures()</li>
-<li>tests: improved unit tests for filterFeatures()</li>
-<li>feat: added a keep argument in filterFeatures() to control whether to keep or remove features for assays that do not contain the filter variable. Also added message printing for a better overview of which variable were found.</li>
+<ul><li>feat: added <code>c</code> methods to combine QFeatures objects.</li>
+<li>feat: added <code>nrows</code> and <code>ncols</code> methods. Also added use.names argument (cf ?BiocGenerics::dims)</li>
+<li>docs: improved docs for <code><a href="../reference/QFeatures-filtering.html">filterFeatures()</a></code>
+</li>
+<li>tests: improved unit tests for <code><a href="../reference/QFeatures-filtering.html">filterFeatures()</a></code>
+</li>
+<li>feat: added a keep argument in <code><a href="../reference/QFeatures-filtering.html">filterFeatures()</a></code> to control whether to keep or remove features for assays that do not contain the filter variable. Also added message printing for a better overview of which variable were found.</li>
 <li>fix: fixed <code><a href="../reference/QFeatures-class.html">addAssay()</a></code> to solve issue <a href="https://github.com/RforMassSpectrometry/QFeatures/issues/104" class="external-link">#104</a>.</li>
 <li>refactor: refactored <code><a href="../reference/QFeatures-class.html">addAssay()</a></code> and dramatically improved the usage of computational resources.</li>
-<li>feat: colData is automatically transferred from the assay to the QFeatures object.</li>
+<li>feat: <code>colData</code> is automatically transferred from the assay to the QFeatures object.</li>
 <li>feat: implemented <code><a href="../reference/QFeatures-class.html">removeAssay()</a></code> and <code><a href="../reference/QFeatures-class.html">replaceAssay()</a></code>. Together with <code><a href="../reference/QFeatures-class.html">addAssay()</a></code>, these functions are used to implement the replacement method <code>[[&lt;-</code> required to solve issue <a href="https://github.com/RforMassSpectrometry/QFeatures/issues/57" class="external-link">#57</a>.</li>
 <li>Add CC-BY-SA license for vignettes.</li>
 </ul></div>
@@ -240,7 +247,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer></div>

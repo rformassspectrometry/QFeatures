@@ -21,7 +21,7 @@ filters can be provided as instances of class AnnotationFilter
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.9.2</span>
       </span>
     </div>
 
@@ -588,7 +588,7 @@ vignette provides an extended example.</p></div>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ----------------------------------------------------------------</span></span></span>
 <span class="r-in"><span><span class="co">## Filtering for a  missing feature variable. The outcome is controled</span></span></span>
-<span class="r-in"><span><span class="co">## by keep </span></span></span>
+<span class="r-in"><span><span class="co">## by keep</span></span></span>
 <span class="r-in"><span><span class="co">## ----------------------------------------------------------------</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">feat2</span>, <span class="op">~</span> <span class="va">y</span> <span class="op">&lt;</span> <span class="fl">0</span><span class="op">)</span></span></span>
@@ -699,14 +699,8 @@ vignette provides an extended example.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] psms: SummarizedExperiment with 5 rows and 2 columns </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Using the pipe operator</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://magrittr.tidyverse.org" class="external-link">"magrittr"</a></span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘magrittr’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:GenomicRanges’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     subtract</span>
-<span class="r-in"><span><span class="va">feat1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>   <span class="fu">filterFeatures</span><span class="op">(</span> <span class="op">~</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">location</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">feat1</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>   <span class="fu">filterFeatures</span><span class="op">(</span> <span class="op">~</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">location</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>   <span class="fu">filterFeatures</span><span class="op">(</span> <span class="op">~</span> <span class="va">location</span> <span class="op">==</span> <span class="st">"Mitochondrion"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 1 out of 1 assay(s)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 1 out of 1 assay(s)</span>
@@ -726,7 +720,7 @@ vignette provides an extended example.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer></div>
