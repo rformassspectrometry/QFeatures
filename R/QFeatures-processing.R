@@ -128,14 +128,19 @@ NULL
 
 ## Internal function that applies a given function .FUN on one or more
 ## assays given by i.
+##
 ## @param object A QFeatures object
+##
 ## @param i The index of one or multiple assays
+##
 ## @param name The name of the new assays to add. Must have the same
 ##     length as i
-## @param .FUN A function or the name (character(1)) of a function 
-##     that takes an object that inherits from the 
+##
+## @param .FUN A function or the name (character(1)) of a function
+##     that takes an object that inherits from the
 ##     SummarizedExperiment class and returns an object of the same
 ##     class.
+##
 ## @param ... Further argument passed to .FUN
 .applyTransformation <- function(object, i, name, .FUN, ...) {
     ## Check arguments
@@ -169,7 +174,7 @@ setMethod("logTransform",
 setMethod("logTransform",
           "QFeatures",
           function(object, i, name = "logAssay", base = 2, pc = 0) {
-              .applyTransformation(object, i, name, logTransform, 
+              .applyTransformation(object, i, name, logTransform,
                                    base = base, pc = pc)
           })
 
@@ -187,7 +192,7 @@ setMethod("scaleTransform", "SummarizedExperiment",
 ##' @rdname QFeatures-processing
 setMethod("scaleTransform", "QFeatures",
           function(object, i, name = "scaledAssay", center = TRUE, scale = TRUE) {
-              .applyTransformation(object, i, name, scaleTransform, 
+              .applyTransformation(object, i, name, scaleTransform,
                                    center = center, scale = scale)
           })
 
@@ -214,7 +219,7 @@ setMethod("normalize", "SummarizedExperiment",
 ##' @rdname QFeatures-processing
 setMethod("normalize", "QFeatures",
           function(object, i, name = "normAssay", method, ...) {
-              .applyTransformation(object, i, name, normalize, 
+              .applyTransformation(object, i, name, normalize,
                                    method = method, ...)
           })
 
@@ -241,8 +246,8 @@ setMethod("sweep", "SummarizedExperiment",
 ##' @rdname QFeatures-processing
 setMethod("sweep", "QFeatures",
           function(x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ..., i, name = "sweptAssay") {
-              .applyTransformation(x, i, name, sweep, 
-                                   MARGIN = MARGIN, STATS = STATS, 
-                                   FUN = FUN, 
+              .applyTransformation(x, i, name, sweep,
+                                   MARGIN = MARGIN, STATS = STATS,
+                                   FUN = FUN,
                                    check.margin = check.margin, ...)
           })
