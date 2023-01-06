@@ -2,6 +2,11 @@
 
 ## QFeatures 1.9.2
 
+- feat: aggregateFeatures() can now take multiple assays
+- feat: impute() can now take multiple assays
+- feat: processing functions (normalize, scaleTransform, logTransform,
+  sweep) can now take multiple assays
+- refactor: avoid validObject() when possible
 - Use `|>` rather than `%>%`.
 
 ## QFeatures 1.9.1

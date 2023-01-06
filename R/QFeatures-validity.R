@@ -93,7 +93,7 @@
     assayn <- names(object)
     aln <- vapply(object@assayLinks, "slot", "name", 
                   FUN.VALUE = character(1))
-    if (!all(aln == assayn))
+    if (!identical(unname(aln), unname(assayn)))
         stop("@names not valid")
     
     ## An AssayLinks object is valid if all its AssayLink objects are

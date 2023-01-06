@@ -87,13 +87,7 @@ setMethod("impute", "SummarizedExperiment",
 ##' @rdname impute
 setMethod("impute", "QFeatures",
           function(object, method, ..., i, name = "imputedAssay") {
-              if (missing(i))
-                  stop("Provide index or name of assay to be processed")
-              if (length(i) != 1)
-                  stop("Only one assay to be processed at a time")
-              if (is.numeric(i)) i <- names(object)[[i]]
-              object <- addAssay(object,
-                                 impute(object[[i]], method, ...),
-                                 name)
-              addAssayLinkOneToOne(object, from = i, to = name)
+              .applyTransformation(object, i, name, impute,
+                                   method = method, ...)
+              
           })

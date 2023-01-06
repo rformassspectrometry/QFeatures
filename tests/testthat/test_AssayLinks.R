@@ -159,7 +159,7 @@ test_that(".update_assay_links", {
     ## `to` assay not present in Feaures object
     alWrong <- AssayLink("foo")
     expect_error(.update_assay_links(feat1, alWrong),
-                 regexp = "Assay links names are wrong")
+                 regexp = "@names not valid")
     ## `from`` assay not present in Feaures object
     alWrong <- AssayLink("peptides", "bar")
     expect_error(.update_assay_links(feat1, alWrong),

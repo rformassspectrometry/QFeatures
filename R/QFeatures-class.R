@@ -484,6 +484,8 @@ plot.QFeatures <- function (x, interactive = FALSE, ...) {
     ## Removed lost links in each AssayLink object
     object@assayLinks <- endoapply(object@assayLinks,
                                    .pruneAssayLink, object = object)
+    ## Check new AssaLinks are valid 
+    .validAssayLinks(object)
     object
 }
 
@@ -499,11 +501,7 @@ setMethod("[", c("QFeatures", "ANY", "ANY", "ANY"),
               
               ## Prune the AssayLinks so that the `QFeatures` object
               ## remains valid
-              ans <- .pruneAssayLinks(ans)
-              
-              ## Check new object
-              if (validObject(ans))
-                  return(ans)
+              .pruneAssayLinks(ans)
           })
 
 ##' @rdname QFeatures-class
@@ -874,8 +872,7 @@ addAssay <- function(x,
 ##'
 ##' @export
 removeAssay <- function(x, i) {
-    if (is.numeric(i) || is.logical(i))
-        i <- names(x)[i]
+    i <- .normIndex(x, i)
     x[, , !names(x) %in% i]
 }
 
@@ -889,8 +886,7 @@ replaceAssay <- function(x,
                          i) {
     ## Check arguments
     stopifnot(inherits(x, "QFeatures"))
-    if (!missing(i) && (is.numeric(i) || is.logical(i)))
-        i <- names(x)[i]
+    if (!missing(i)) i <- .normIndex(x, i)
     y <- .checkAssaysToInsert(y, x, i, replace = TRUE)
     
     ## Update the colData
@@ -959,8 +955,7 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
                          stop("'x[[i]] <- value' does not allow multiple ",
                               "replacements. Consider using 'addAssay()', ",
                               "'replaceAssay()' or 'removeAssay()' instead.")
-                     if (is.numeric(i) || is.logical(i))
-                         i <- names(x)[i]
+                     i <- .normIndex(x, i, allowAbsent = TRUE)
                      if (!missing(j) || length(list(...))) 
                          stop("invalid replacement")
                      if (i %in% names(x)) {
@@ -974,6 +969,38 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
                      } 
                  })
 
+## Internal function that normalize the assay indexing. In this 
+## context, normalization means that the returned assay index is a 
+## character() that complies to QFeatures assay selection. 
+## 
+## @param object A QFeatures object 
+## 
+## @param i A logical(), numeric(), factor() or character() that 
+##     selects an assay in object. When logical, the length of i must
+##     be identical to the number of assays in object.
+##     
+## @param allowAbsent A logical() indicating whether the i is allowed
+##     to be absent from object. This argument is only applicable when
+##     i is a character(). 
+##     
+## @return A character() with assay names present in object, or new
+##     assay names (when allowAbsent = FALSE). 
+.normIndex <- function(object, i, allowAbsent = FALSE) {
+    if (is.logical(i) & length(i) != length(object))
+        stop("The assay index ('i') is logical but its does not ",
+             "match the number of assays in the QFeatures object.")
+    if (is.factor(i)) i <- as.character(i)
+    if (is.numeric(i) || is.logical(i))
+        i <- names(object)[i]
+    if (!length(i)) stop("No assay selected.")
+    if (any(is.na(i))) 
+        stop("'i' has out of bounds entries")
+    if (!allowAbsent & any(mis <- !i %in% names(object))) 
+        stop("The following assay(s) is/are not found:",
+             paste(i[mis], collapse = ","))
+    i
+}
+
 .checkAssaysToInsert <- function(y, x, name, replace = FALSE) {
     ## Convert y to a list, if not already a list and check content
     if (!is.list(y) && !inherits(y, "List")) {
@@ -986,7 +1013,7 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
             stop("When 'y' is a list, it must be a named List.")
     }
     ## Make sure the assays comply to the requirements
-    stopifnot(sapply(y, validObject))
+    sapply(y, validObject) ## throws an error if any assay is corrupt
     if (any(duplicated(names(y)))) 
         stop("Replacement names must be unique.")
     if (!replace && any(names(y) %in% names(x)))

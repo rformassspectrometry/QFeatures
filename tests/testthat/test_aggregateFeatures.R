@@ -20,7 +20,7 @@ test_that("aggregateFeatures,SummarizedExperiment: errors and message", {
 
 test_that("aggregateFeatures,SummarizedExperiment with 'fun = sum'", {
     aggSE <- .aggregateQFeatures(se, fcol = "Sequence", fun = colSums)
-
+    
     ## checking quantiation data
     assay1 <- matrix(as.numeric(c(sum(1:3), sum(4:6), sum(7:10),
                                   sum(11:13), sum(14:16), sum(17:20))),
@@ -29,7 +29,7 @@ test_that("aggregateFeatures,SummarizedExperiment with 'fun = sum'", {
                                      c("S1", "S2")))
     assay1 <- assay1[levels(factor(rowData(feat1[[1]])$Sequence)), ]
     expect_identical(assay1, assay(aggSE))
-
+    
     ## checking rowData
     Sequence <- rownames(assay1)
     Protein <- c("ProtA", "ProtB", "ProtA")
@@ -45,8 +45,8 @@ test_that("aggregateFeatures,SummarizedExperiment with 'fun = sum'", {
 
 test_that("aggregateFeatures,SummarizedExperiment with 'fun = median'", {
     aggSE <- .aggregateQFeatures(se, fcol = "Sequence",
-                                fun = matrixStats::colMedians)
-
+                                 fun = matrixStats::colMedians)
+    
     ## checking quantiation data
     assay1 <- matrix(as.numeric(c(median(1:3), median(4:6), median(7:10),
                                   median(11:13), median(14:16), median(17:20))),
@@ -55,7 +55,7 @@ test_that("aggregateFeatures,SummarizedExperiment with 'fun = median'", {
                                      c("S1", "S2")))
     assay1 <- assay1[order(rownames(assay1)), ]
     expect_identical(assay1, assay(aggSE))
-
+    
     ## checking rowData
     Sequence <- rownames(assay1)
     Protein <- c("ProtA", "ProtB", "ProtA")
@@ -83,7 +83,7 @@ test_that("aggregateFeatures,SummarizedExperiment return class (issue 78)", {
 test_that("aggregateFeatures,QFeatures: empty and errors", {
     expect_identical(QFeatures(), aggregateFeatures(QFeatures()))
     expect_error(aggregateFeatures(feat1, name = "psms"),
-                 regexp = "There's already an assay named 'psms'")
+                 regexp = "one or more assays named: 'psms'")
 })
 
 test_that("aggregateFeatures,QFeatures: check links and subsetting", {
@@ -94,7 +94,7 @@ test_that("aggregateFeatures,QFeatures: check links and subsetting", {
     expect_identical(dims(feat1),
                      matrix(c(10L, 2L, 3L, 2L), ncol = 2,
                             dimnames = list(NULL, c("psms", "peptides"))))
-
+    
     ## Checking assayLinks
     alink <- feat1@assayLinks[[2]]
     expect_identical(alink@from, "psms")
@@ -109,7 +109,7 @@ test_that("aggregateFeatures,QFeatures: check links and subsetting", {
                   nRnode = 3L,
                   sort.by.query = TRUE)
     expect_identical(alink@hits, hits1)
-
+    
     ## Checking subsetting still works
     featsub <- feat1["IAEESNFPFIK", , ]
     expect_identical(dims(featsub),
@@ -220,4 +220,50 @@ test_that("aggregate by matrix and vector work (2)", {
     k <- intersect(names(rowData(se1)), names(rowData(se2)))
     ## below not identical/equal because '.n' is named in se2
     expect_equivalent(rowData(se1)["ProtA", k], rowData(se2)["ProtA", k])
+})
+
+test_that("aggregateFeatures,QFeatures: aggregate multiple assays", {
+    data("feat3")
+    expect_warning(feat3 <- feat3[, , 1:3],
+                   regexp = "experiments' dropped; see 'metadata")
+    ii <- names(feat3)
+    feat3aggr <- aggregateFeatures(feat3, i = ii,
+                                   fcol = rep("Protein", 3),
+                                   name = paste0("prots", 1:3),
+                                   fun = colSums)
+    ## Alternatively there is no need to repeat fcol 3x
+    expect_identical(feat3aggr,
+                     aggregateFeatures(feat3, i = ii, fcol = "Protein",
+                                       name = paste0("prots", 1:3),
+                                       fun = colSums))
+    ## Checking the aggregated assay is correctly added
+    expect_identical(dims(feat3aggr),
+                     matrix(c(7L, 8L, 10L, rep(2L, 3), rep(c(2L, 2L, 4L), 2)),
+                            nrow = 2, byrow = TRUE,
+                            dimnames = list(NULL, c(ii, paste0("prots", 1:3)))))
+    ## Checking subsetting still works
+    featsub <- feat3aggr["ProtA", , ]
+    expect_identical(dims(featsub),
+                     matrix(c(6L, 4L, 6L, rep(1L, 3), rep(c(2L, 2L, 4L), 2)),
+                            nrow = 2, byrow = TRUE,
+                            dimnames = list(NULL, c(ii, paste0("prots", 1:3)))))
+    ## The rowData should contain only the Sequence used for subsetting
+    expect_identical(unique(unlist(rownames(featsub)[4:6])),
+                     "ProtA")
+    ## Test errors
+    ## One assay is already present
+    expect_error(aggregateFeatures(feat3, i = ii, fcol = rep("Protein", 3),
+                                   name = paste0("psms", 1:3),
+                                   fun = colSums),
+                 regexp = "named: 'psms1', 'psms2'")
+    ## 'i' and 'name' must have same length
+    expect_error(aggregateFeatures(feat3, i = ii, fcol = rep("Protein", 3),
+                                   name = "prot1",
+                                   fun = colSums),
+                 regexp = "'i' and 'name' must have same length")
+    ## 'i' and 'fcol' must have same length
+    expect_error(aggregateFeatures(feat3, i = ii, fcol = rep("Protein", 4),
+                                   name = paste0("prot", 1:3),
+                                   fun = colSums),
+                 regexp = "'i' and 'fcol' must have same length")
 })
