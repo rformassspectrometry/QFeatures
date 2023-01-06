@@ -170,7 +170,7 @@ filterFeatures(feat1, ~ location == "not")
 
 ## ----------------------------------------------------------------
 ## Filtering for a  missing feature variable. The outcome is controled
-## by keep 
+## by keep
 ## ----------------------------------------------------------------
 
 filterFeatures(feat2, ~ y < 0)
@@ -203,9 +203,8 @@ rowData(filterFeatures(feat1, ~ location \%in\% c(NA, "Mitochondrion"))[[1]])
 filterFeatures(feat1, ~ !is.na(location) & location == "Mitochondrion")
 
 ## Using the pipe operator
-library("magrittr")
-feat1 \%>\%
-   filterFeatures( ~ !is.na(location)) \%>\%
+feat1 |>
+   filterFeatures( ~ !is.na(location)) |>
    filterFeatures( ~ location == "Mitochondrion")
 }
 \seealso{

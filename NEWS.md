@@ -7,10 +7,11 @@
 - feat: processing functions (normalize, scaleTransform, logTransform,
   sweep) can now take multiple assays
 - refactor: avoid validObject() when possible
+- Use `|>` rather than `%>%`.
 
 ## QFeatures 1.9.1
 
-- fix: solved bug in selectRowData()
+- fix: solved bug in `selectRowData()`
 
 ## QFeatures 1.9.0
 
@@ -30,19 +31,19 @@
 
 ## QFeatures 1.7.2
 
-- feat: added 'c' methods to combine QFeatures objects.
-- feat: added nrows and ncols methods. Also added use.names argument
+- feat: added `c` methods to combine QFeatures objects.
+- feat: added `nrows` and `ncols` methods. Also added use.names argument
   (cf ?BiocGenerics::dims)
-- docs: improved docs for filterFeatures()
-- tests: improved unit tests for filterFeatures()
-- feat: added a keep argument in filterFeatures() to control whether
+- docs: improved docs for `filterFeatures()`
+- tests: improved unit tests for `filterFeatures()`
+- feat: added a keep argument in `filterFeatures()` to control whether
   to keep or remove features for assays that do not contain the filter
   variable. Also added message printing for a better overview of which
   variable were found.
 - fix: fixed `addAssay()` to solve issue #104.
 - refactor: refactored `addAssay()` and dramatically improved the usage
   of computational resources.
-- feat: colData is automatically transferred from the assay to the
+- feat: `colData` is automatically transferred from the assay to the
   QFeatures object.
 - feat: implemented `removeAssay()` and `replaceAssay()`. Together with
   `addAssay()`, these functions are used to implement the replacement
