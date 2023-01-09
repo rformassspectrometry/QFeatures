@@ -40,7 +40,6 @@ Suggests:
    gplots,
    dplyr,
    limma,
-   magrittr,
    DT,
    shiny,
    shinydashboard,

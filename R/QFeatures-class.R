@@ -969,6 +969,22 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
                      } 
                  })
 
+## Internal function that normalize the assay indexing. In this 
+## context, normalization means that the returned assay index is a 
+## character() that complies to QFeatures assay selection. 
+## 
+## @param object A QFeatures object 
+## 
+## @param i A logical(), numeric(), factor() or character() that 
+##     selects an assay in object. When logical, the length of i must
+##     be identical to the number of assays in object.
+##     
+## @param allowAbsent A logical() indicating whether the i is allowed
+##     to be absent from object. This argument is only applicable when
+##     i is a character(). 
+##     
+## @return A character() with assay names present in object, or new
+##     assay names (when allowAbsent = FALSE). 
 .normIndex <- function(object, i, allowAbsent = FALSE) {
     if (is.logical(i) & length(i) != length(object))
         stop("The assay index ('i') is logical but its does not ",
@@ -977,7 +993,7 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
     if (is.numeric(i) || is.logical(i))
         i <- names(object)[i]
     if (!length(i)) stop("No assay selected.")
-    if (any(oob <- is.na(i))) 
+    if (any(is.na(i))) 
         stop("'i' has out of bounds entries")
     if (!allowAbsent & any(mis <- !i %in% names(object))) 
         stop("The following assay(s) is/are not found:",
