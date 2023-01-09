@@ -242,14 +242,15 @@ setMethod("filterFeatures",
           function(object, filter, i, na.rm = FALSE, 
                    keep = FALSE, ...)
               filterFeaturesWithAnnotationFilter(object, filter, i,
-
+                                                 na.rm, keep, ...))
 ##' @rdname QFeatures-filtering
 setMethod("filterFeatures",
           c("QFeatures", "formula"),
           function(object, filter, i, na.rm = FALSE, 
                    keep = FALSE, ...)
               filterFeaturesWithFormula(object, filter, i,
-                                        na.rm, keep, ...))
+                                        na.rm, keep, ...)
+          )
 
 ##' @importFrom BiocGenerics do.call
 filterFeaturesWithAnnotationFilter <- function(object, filter, i,
