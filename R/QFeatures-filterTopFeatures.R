@@ -81,7 +81,7 @@ setMethod("filterTopFeatures", "SummarizedExperiment",
                    fun = rowSums,
                    decreasing = TRUE,
                    ...) {
-              if (!fcol %in% names(rowData(object)))
+              if (missing(fcol) || !fcol %in% names(rowData(object)))
                   stop("'fcol' not found in the assay's rowData.")
               idx <- topIdx(assay(object, 1L),
                             rowData(object)[[fcol]],
