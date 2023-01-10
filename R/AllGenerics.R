@@ -5,6 +5,9 @@
 NULL
 
 
+setGeneric("filterTopFeatures",
+           function(object, ...) standardGeneric("filterTopFeatures"))
+
 setGeneric("filterFeatures",
            function(object, filter, ...) standardGeneric("filterFeatures"))
 
