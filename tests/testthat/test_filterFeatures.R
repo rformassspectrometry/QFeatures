@@ -77,7 +77,7 @@ test_that("filterFeatures with NAs", {
 
 test_that("filterFeatures with missing filter variables", {
     ## Prepare data
-    data(feat1)    
+    data(feat1)
     feat1 <- aggregateFeatures(feat1, 1, fcol = "Sequence", name = "peptides", fun = colMedians)
     feat1 <- aggregateFeatures(feat1, 2, fcol = "Protein", name = "proteins", fun = colMedians)
     
@@ -143,3 +143,86 @@ test_that("filterFeatures with missing filter variables", {
     expect_error(filterFeatures(feat1, ~ foo & bar),
                  regexp = "foo['][,] [']bar.*absent")
 })  
+
+test_that("filterFeatures on selected assays", {
+    data("feat2")
+    init <- dims(feat2)
+    ## - With VariableFilter
+    ## -- Filter on 1 selected assay
+    expect_message(
+        filt <- filterFeatures(feat2, VariableFilter("x", 0, "<"), i = 1),
+        regexp = "3 out of 3"
+    )
+    exp <- init
+    exp[1, 1] <- 2L
+    expect_identical(exp, dims(filt))
+    ## -- Filter on 2 selected assays
+    ## --- Both contain variable
+    expect_message(
+        filt <- filterFeatures(feat2, VariableFilter("x", 0, "<"), i = 1:2),
+        regexp = "3 out of 3"
+    )
+    exp <- init
+    exp[1, 1] <- 2L
+    exp[1, 2] <- 2L
+    expect_identical(exp, dims(filt))
+    ## --- One doesn't contain variable
+    ## ---- keep = FALSE
+    expect_message(
+        filt <- filterFeatures(feat2, VariableFilter("y", 0, "<"), 
+                               i = 1:2),
+        regexp = "2 out of 3"
+    )
+    exp <- init
+    exp[1, 1] <- 0L
+    exp[1, 2] <- 1L
+    expect_identical(exp, dims(filt))
+    ## ---- keep = TRUE
+    expect_message(
+        filt <- filterFeatures(feat2, VariableFilter("y", 0, "<"), 
+                               i = 1:2, keep = TRUE),
+        regexp = "2 out of 3"
+    )
+    exp <- init
+    exp[1, 2] <- 1L
+    expect_identical(exp, dims(filt))
+    
+    ## - With formulat
+    ## -- Filter on 1 selected assay
+    expect_message(
+        filt <- filterFeatures(feat2, ~ x < 0, i = 1),
+        regexp = "3 out of 3"
+    )
+    exp <- init
+    exp[1, 1] <- 2L
+    expect_identical(exp, dims(filt))
+    ## -- Filter on 2 selected assays
+    ## --- Both contain variable
+    expect_message(
+        filt <- filterFeatures(feat2, ~ x < 0, i = 1:2),
+        regexp = "3 out of 3"
+    )
+    exp <- init
+    exp[1, 1] <- 2L
+    exp[1, 2] <- 2L
+    expect_identical(exp, dims(filt))
+    ## --- One doesn't contain variable
+    ## ---- keep = FALSE
+    expect_message(
+        filt <- filterFeatures(feat2, ~ y < 0, i = 1:2),
+        regexp = "2 out of 3"
+    )
+    exp <- init
+    exp[1, 1] <- 0L
+    exp[1, 2] <- 1L
+    expect_identical(exp, dims(filt))
+    ## ---- keep = TRUE
+    expect_message(
+        filt <- filterFeatures(feat2,  ~ y < 0,
+                               i = 1:2, keep = TRUE),
+        regexp = "2 out of 3"
+    )
+    exp <- init
+    exp[1, 2] <- 1L
+    expect_identical(exp, dims(filt))
+})

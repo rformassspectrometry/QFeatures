@@ -2,6 +2,8 @@
 
 ## QFeatures 1.9.2
 
+- feat: filterFeatures() now allows to select assays to filter (i 
+  argument)
 - feat: aggregateFeatures() can now take multiple assays
 - feat: impute() can now take multiple assays
 - feat: processing functions (normalize, scaleTransform, logTransform,

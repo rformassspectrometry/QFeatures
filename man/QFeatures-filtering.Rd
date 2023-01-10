@@ -15,9 +15,9 @@
 \usage{
 VariableFilter(field, value, condition = "==", not = FALSE)
 
-\S4method{filterFeatures}{QFeatures,AnnotationFilter}(object, filter, na.rm = FALSE, keep = FALSE, ...)
+\S4method{filterFeatures}{QFeatures,AnnotationFilter}(object, filter, i, na.rm = FALSE, keep = FALSE, ...)
 
-\S4method{filterFeatures}{QFeatures,formula}(object, filter, na.rm = FALSE, keep = FALSE, ...)
+\S4method{filterFeatures}{QFeatures,formula}(object, filter, i, na.rm = FALSE, keep = FALSE, ...)
 }
 \arguments{
 \item{field}{\code{character(1)} refering to the name of the variable
@@ -42,6 +42,9 @@ Default \code{not} is \code{FALSE}, so no negation.}
 
 \item{filter}{Either an instance of class \link{AnnotationFilter} or a
 formula.}
+
+\item{i}{A numeric, logical or character vector pointing to the
+assay(s) to be filtered.}
 
 \item{na.rm}{\code{logical(1)} indicating whether missing values should
 be removed. Default is \code{FALSE}.}
