@@ -39,9 +39,6 @@ topIdx <- function(x, INDEX, n, fun,
 
 
 
-##' @param INDEX A `factor` in the sense that `as.factor(INDEX)`
-##'     defines how to group the rows of `x`.
-##'
 ##' @param n A positive `integer(1)` defining the number of top
 ##'     features to use. Typically 3L.
 ##'
@@ -59,6 +56,11 @@ topIdx <- function(x, INDEX, n, fun,
 ##' @param fcol A `character(1)` naming a rowdata variable (of assay
 ##'     `i` in case of a `QFeatures`) defining how to group the
 ##'     features of the assay to select the top `n` ones.
+##'
+##' @param name A `character()` naming the new filtered
+##'     assay(s). Default is to prepend `top` to the name of the
+##'     assay(s) to be filtered. Note that the function will fail if
+##'     there's already an assay with `name`.
 ##'
 ##' @rdname QFeatures-filtering
 ##'
@@ -87,30 +89,10 @@ setMethod("filterTopFeatures", "SummarizedExperiment",
               object[idx, ]
           })
 
+##' @rdname QFeatures-filtering
 setMethod("filterTopFeatures", "QFeatures",
           function(object, i, fcol, n = 3L,
-                   name = "newAssay",
-                   fun = rowSums,
-                   decreasing = TRUE,
-                   ...) {
-              if (isEmpty(object))
-                  return(object)
-              if (name %in% names(object))
-                  stop("There's already an assay named '", name, "'.")
-              if (missing(i))
-                  i <- QFeatures:::main_assay(object)
-              ## Create the top-filtered assay
-              topAssay <- filterTopFeatures(object[[i]], fcol, n,
-                                            fun, decreasing, ...)
-              ## Add the top-filtered assay to the QFeatures object
-              object <- addAssay(object,
-                                 topAssay,
-                                 name = name)
-              ## Link the input assay to the top-filtered assay
-              ## THIS IS NOT CORRECT
-              addAssayLink(object,
-                           from = i,
-                           to  = name,
-                           varFrom = fcol,
-                           varTo = fcol)
+                   name, fun = rowSums,
+                   decreasing = TRUE, ...) {
+              stop("TODO")
           })

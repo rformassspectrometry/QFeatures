@@ -11,11 +11,12 @@
 \alias{NumericVariableFilter}
 \alias{VariableFilter}
 \alias{filterTopFeatures}
-\alias{filterTopFeatures,QFeatures}
 \alias{filterTopFeatures,SummarizedExperiment}
+\alias{filterTopFeatures,QFeatures}
 \alias{CharacterVariableFilter-class}
 \alias{NumericVariableFilter-class}
 \alias{filterTopFeatures,SummarizedExperiment-method}
+\alias{filterTopFeatures,QFeatures-method}
 \title{Filter features}
 \usage{
 VariableFilter(field, value, condition = "==", not = FALSE)
@@ -25,6 +26,17 @@ VariableFilter(field, value, condition = "==", not = FALSE)
 \S4method{filterFeatures}{QFeatures,formula}(object, filter, i, na.rm = FALSE, keep = FALSE, ...)
 
 \S4method{filterTopFeatures}{SummarizedExperiment}(object, fcol, n = 3L, fun = rowSums, decreasing = TRUE, ...)
+
+\S4method{filterTopFeatures}{QFeatures}(
+  object,
+  i,
+  fcol,
+  n = 3L,
+  name,
+  fun = rowSums,
+  decreasing = TRUE,
+  ...
+)
 }
 \arguments{
 \item{field}{\code{character(1)} refering to the name of the variable
@@ -78,8 +90,10 @@ decreasing order (see \code{decreasing}). Default is \code{rowSums()}.}
 computed by \code{fun} need to be ordered in decreasing or
 increasing order. Default is \code{decreasing = TRUE}.}
 
-\item{INDEX}{A \code{factor} in the sense that \code{as.factor(INDEX)}
-defines how to group the rows of \code{x}.}
+\item{name}{A \code{character()} naming the new filtered
+assay(s). Default is to prepend \code{top} to the name of the
+assay(s) to be filtered. Note that the function will fail if
+there's already an assay with \code{name}.}
 }
 \value{
 An filtered \code{QFeature} or \code{SummarziedExperiment} object.

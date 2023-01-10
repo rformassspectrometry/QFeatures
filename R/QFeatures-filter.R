@@ -66,7 +66,7 @@
 ##'
 ##' @rdname QFeatures-filtering
 ##'
-##' @aliases filterFeatures filterFeatures,QFeatures,formula-method filterFeatures,QFeatures,AnnotationFilter-method CharacterVariableFilter NumericVariableFilter VariableFilter filterTopFeatures filterTopFeatures,QFeatures filterTopFeatures,SummarizedExperiment
+##' @aliases filterFeatures filterFeatures,QFeatures,formula-method filterFeatures,QFeatures,AnnotationFilter-method CharacterVariableFilter NumericVariableFilter VariableFilter filterTopFeatures filterTopFeatures,SummarizedExperiment filterTopFeatures,QFeatures
 ##'
 ##' @examples
 ##'
@@ -355,11 +355,14 @@ filterFeaturesWithFormula <- function(object, filter, i,
 ## well to inform the user how many assays contain the desired
 ## filtering variable, and which assays are ignored due to missing
 ## filtering variables.
+##
 ## @param rowdata A List of DataFrame objects reprensting the rowData
 ##     of a QFeatures object. Each element is related to an assay.
+##
 ## @param vars A character() with one or more variables name used for
 ##     later filtering. The function checks there presence. Variables
 ##     present in parent environment are ignored
+##
 ## @return A matrix where rows represent filter variables (excluding
 ##     variables found in the parent environment) and columns
 ##     represent assays. Each element is a logical indicating whether
@@ -404,12 +407,15 @@ filterFeaturesWithFormula <- function(object, filter, i,
 
 ## Internal function to keep the all rows for assays that contain no
 ## filter variable among their rowData.
+##
 ## @param x A list of logical(). Each element of the list represents
 ##     an assay and contains a vector of length equal to the number of
 ##     rows (features) of the associated assay. This vector contains
 ##     logicals indicating whether the corresponding row (feature) is
 ##     kept (TRUE) or removed (FALSE).
+##
 ## @param mat A matrix as return by .checkFilterVariables().
+##
 ## @return A modified version of x, where elements that contain a
 ##     vector with all FALSE were changed to all TRUE.
 .keepLostAssays <- function(x, mat) {
