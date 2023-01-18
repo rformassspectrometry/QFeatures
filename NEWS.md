@@ -2,7 +2,7 @@
 
 ## QFeatures 1.9.3
 
-- Nothing yet.
+- feat: new filterTopFeatures() for filter top N features.
 
 ## QFeatures 1.9.2
 
