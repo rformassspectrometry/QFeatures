@@ -77,7 +77,7 @@
 <p>There is one exception though. When aggregating features with <code><a href="reference/QFeatures-aggregate.html">aggregateFeatures()</a></code>, a second assay is added, named <code>aggcounts</code> that counts the number of features that were aggregate for each sample and each low-level features.</p>
 </div>
 <div class="section level1">
-<h1 id="how-to-add-new-assays">How to add new assays<a class="anchor" aria-label="anchor" href="#how-to-add-new-assays"></a></h1>
+<h1 id="how-to-add-new-assays-closed">How to add new assays (closed)<a class="anchor" aria-label="anchor" href="#how-to-add-new-assays-closed"></a></h1>
 <ol style="list-style-type: decimal"><li><p>Through aggregation with <code>aggregateFeatures</code>.</p></li>
 <li><p>Processing an SE.</p></li>
 </ol><p>This can/could be done explicitly with <code>addAssay</code></p>
@@ -159,7 +159,7 @@ colData names(0):</code></pre>
 <li><p>There will be a need for an assay link stemming from combining assays (see below and issue 52).</p></li>
 </ul></div>
 <div class="section level1">
-<h1 id="joining-assays">Joining assays<a class="anchor" aria-label="anchor" href="#joining-assays"></a></h1>
+<h1 id="joining-assays-closed">Joining assays (closed)<a class="anchor" aria-label="anchor" href="#joining-assays-closed"></a></h1>
 <p>To <em>combine</em> assays, we also need 1. relaxed <code>MatchedAssayExperiment</code> constrains (see #46) 2. assay links with multiple parent assays (see #52)</p>
 <p><code>combine,MSnSet,MSnSet</code> does two things, i.e. <code>rbind</code> and <code>cbind</code>. Here, we nedd (at least in a first instance) and have <code>cbind,SummarizedExperiment</code>.</p>
 <ul><li>do we need some constrains requiering identical rownames? <code>cbind,SummarizedExperiment</code> uses the mcols to check whether rows match.</li>
@@ -176,6 +176,13 @@ colData names(0):</code></pre>
 <p>Do we want a public <em>join</em> for SummarizedExperiments? Discuss with SE maintainers.</p>
 <p>Note: if we were to have assay from multiple fractions to be <em>rbind</em>ed, we could consider a <code>rbindAssays</code>, <code>mergeFractions</code>, <code>bindFractions</code>, …</p>
 </div>
+<div class="section level1">
+<h1 id="replacing-vs-adding-assays">Replacing vs adding assays<a class="anchor" aria-label="anchor" href="#replacing-vs-adding-assays"></a></h1>
+<p>Currently, assays are replaced with - filterNA() - filterFeatures() (and possibly others)</p>
+<p>Sometimes, we want to add, rather than replace, for example if we want to test/assess the effect of different filters. This could be defined by the <code>names</code> argument. If missing (default), the assays are replaced. If present and of same length than <code>i</code>, new assays are added.</p>
+<ul><li><p>When it comes to data processing, we could also have a <em>subset</em> argument, that would implicitly only process a subset of rows so as to avoid to explicitly store the subset/intermediate assay.</p></li>
+<li><p>A more radical change would be for <code><a href="reference/QFeatures-filtering.html">filterFeatures()</a></code> to add a rowData logical that defines the rows to be filtered.</p></li>
+</ul></div>
 
 
   </div>
