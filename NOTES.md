@@ -44,7 +44,7 @@ There is one exception though. When aggregating features with
 counts the number of features that were aggregate for each sample and
 each low-level features.
 
-# How to add new assays
+# How to add new assays (closed)
 
 1. Through aggregation with `aggregateFeatures`.
 
@@ -183,7 +183,7 @@ Currently, we have
 - There will be a need for an assay link stemming from combining
   assays (see below and issue 52).
 
-# Joining assays
+# Joining assays (closed)
 
 To *combine* assays, we also need
 1. relaxed `MatchedAssayExperiment` constrains (see #46)
@@ -230,3 +230,23 @@ maintainers.
 Note: if we were to have assay from multiple fractions to be
 *rbind*ed, we could consider a `rbindAssays`, `mergeFractions`,
 `bindFractions`, ...
+
+# Replacing vs adding assays
+
+Currently, assays are replaced with
+- filterNA()
+- filterFeatures()
+(and possibly others)
+
+Sometimes, we want to add, rather than replace, for example if we want
+to test/assess the effect of different filters. This could be defined
+by the `names` argument. If missing (default), the assays are
+replaced. If present and of same length than `i`, new assays are
+added.
+
+- When it comes to data processing, we could also have a *subset*
+  argument, that would implicitly only process a subset of rows so as
+  to avoid to explicitly store the subset/intermediate assay.
+
+- A more radical change would be for `filterFeatures()` to add a
+  rowData logical that defines the rows to be filtered.
