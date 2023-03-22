@@ -2,7 +2,7 @@
 
 ## QFeatures 1.9.3
 
-- Nothing yet.
+- Minor rephrasing in vignette and README.
 
 ## QFeatures 1.9.2
 
