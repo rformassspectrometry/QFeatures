@@ -5,10 +5,6 @@
 [![codecov.io](https://codecov.io/github/rformassspectrometry/QFeatures/coverage.svg?branch=master)](https://codecov.io/github/rformassspectrometry/QFeatures?branch=master)
 [![license](https://img.shields.io/badge/license-Artistic--2.0-brightgreen.svg)](https://opensource.org/licenses/Artistic-2.0)
 
-> Evolving `MSnSet` data towards `SummarizedExperiment`, but for MS
-> data.
-
-
 <img
 src="https://raw.githubusercontent.com/rformassspectrometry/stickers/master/QFeatures/QFeatures.png"
 height="150">
@@ -17,12 +13,19 @@ height="150">
 
 `QFeatures` is a [Bioconductor
 package](http://bioconductor.org/packages/QFeatures) that provides
-infrastructure enabling the management and processing of quantitative
-features for high-throughput mass spectrometry assays. It provides a
-familiar Bioconductor user experience to manage quantitative data
-across different assay levels (such as precursors, peptide spectrum
-matches, peptides and proteins or protein groups) in a coherent and
-tractable format.
+infrastructure to management and process quantitative features for
+high-throughput mass spectrometry assays. It provides a familiar
+Bioconductor user experience to manage quantitative data across
+different assay levels (such as precursors, peptide spectrum matches,
+peptides and proteins or protein groups) in a coherent and tractable
+format.
+
+If you are familiar with the `MSnbase` package, `QFeatures` could be
+summarised with:
+
+> Evolving `MSnSet` data towards `SummarizedExperiment`, but for MS
+> data.
+
 
 ### Getting started
 

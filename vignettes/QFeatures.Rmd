@@ -119,16 +119,16 @@ library("QFeatures")
 data(hlpsms)
 ```
 
-While `QFeatures` objects can be created manually (see `?QFeatures` for
-details), most users will probably possess quantitative data in a
+While `QFeatures` objects can be created manually (see `?QFeatures`
+for details), most users will probably possess quantitative data in a
 spreadsheet or a dataframe. In such cases, the easiest is to use the
 `readQFeatures` function to extract the quantitative data and metadata
 columns. Below, we load the `hlpsms` dataframe that contains data for
-`r ncol(hlpsms)` PSMs from the TMT-10plex *hyper*LOPIT spatial proteomics experiment
-from [@Christoforou:2016]. The `ecol` argument specifies that columns
-1 to 10 contain quantitation data, and that the assay should be named
-`psms` in the returned `QFeatures` object, to reflect the nature of the
-data.
+`r ncol(hlpsms)` PSMs from the TMT-10plex hyperLOPIT spatial
+proteomics experiment from [@Christoforou:2016]. The `ecol` argument
+specifies that columns 1 to 10 contain quantitation data, and that the
+assay should be named `psms` in the returned `QFeatures` object, to
+reflect the nature of the data.
 
 
 ```{r readQFeatures}
@@ -139,8 +139,8 @@ hl
 
 Below, we see that we can extract an assay using its index or its
 name. The individual assays are stored as *SummarizedExperiment*
-object and further access its quantitative data and metadata using
-the `assay` and `rowData` functions
+object and further access its quantitative data and metadata using the
+`assay` and `rowData` functions
 
 ```{r subsetassay}
 hl[[1]]
@@ -167,6 +167,7 @@ hl <- aggregateFeatures(hl, "psms", "Sequence", name = "peptides", fun = colMean
 hl
 hl[["peptides"]]
 ```
+
 Below, we repeat the aggregation operation by grouping peptides into
 proteins as defined by the *ProteinGroupAccessions* variable.
 
@@ -352,8 +353,9 @@ to reproduce the line plot.
 QFeatures is assays can also be filtered based on variables in their
 respective row data slots using the `filterFeatures` function. The
 filters can be defined using the formula interface or using
-`AnnotationFilter` objects from the `r BiocStyle::Biocpkg("AnnotationFilter")`
-package [@AnnotationFilter]. In addition to the pre-defined filters (such as
+`AnnotationFilter` objects from the `r
+BiocStyle::Biocpkg("AnnotationFilter")` package
+[@AnnotationFilter]. In addition to the pre-defined filters (such as
 `SymbolFilter`, `ProteinIdFilter`, ... that filter on gene symbol,
 protein identifier, ...), this package allows users to define
 arbitrary character or numeric filters using the `VariableFilter`.
