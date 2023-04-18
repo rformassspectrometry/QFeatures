@@ -265,6 +265,9 @@ in \code{rowvars} in the \code{x} instance of class \code{QFeatures}. All other
 variables than \code{rowvars} will be dropped. In case an element in
 \code{rowvars} isn't found in any \code{rowData} variable, a message is
 printed.
+\item The \code{dropEmptyAssays(object, dims)} function removes empty
+assays from a \code{QFeatures}. Empty assays are defined as having 0
+rows and/or 0 columns, as defined by the \code{dims} argument.
 }
 }
 
