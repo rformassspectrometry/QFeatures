@@ -1,5 +1,9 @@
 # QFeatures 1.9
 
+## QFeatures 1.9.4
+
+- New `dropEmptyAssays()` function (see issue #184).
+
 ## QFeatures 1.9.3
 
 - Minor rephrasing in vignette and README.

@@ -49,7 +49,7 @@
 ##' - The `QFeatures` class extends the
 ##'   [MultiAssayExperiment::MultiAssayExperiment] class and inherits
 ##'   all its accessors and replacement methods.
-##'   
+##'
 ##' - The `rowData` method returns a `DataFrameList` containing the
 ##'   `rowData` for each assay of the `QFeatures` object. On the other
 ##'   hand, `rowData` can be modified using `rowData(x) <- value`,
@@ -74,7 +74,7 @@
 ##'   reported on a separate line. `colData` and `rowData` data can
 ##'   also be added. This function is an extension of the `longFormat`
 ##'   function in the [MultiAssayExperiment::MultiAssayExperiment].
-##' 
+##'
 ##' @section Adding, removing and replacing assays:
 ##'
 ##' - The [aggregateFeatures()] function creates a new assay by
@@ -82,24 +82,24 @@
 ##'
 ##' - `addAssay(x, y, name, assayLinks)`: Adds one or more
 ##'   new assay(s) `y` to the `QFeatures` instance `x`. `name`
-##'   is a `character(1)` naming the assay if only one assay is 
+##'   is a `character(1)` naming the assay if only one assay is
 ##'   provided, and is ignored if `y` is a list of assays. `assayLinks`
-##'   is an optional [AssayLinks]. The `colData(y)` is 
+##'   is an optional [AssayLinks]. The `colData(y)` is
 ##'   automatically added to `colData(x)` by matching sample
 ##'   names, that is `colnames(y)`. If the samples are not present in
-##'   `x`, the rows of `colData(x)` are extended to account for the 
+##'   `x`, the rows of `colData(x)` are extended to account for the
 ##'   new samples. Be aware that conflicting information between the
-##'   `colData(y)` and the `colData(x)` will result in an 
+##'   `colData(y)` and the `colData(x)` will result in an
 ##'   error.
 ##' - `removeAssay(x, i)`: Removes one or more assay(s) from the
 ##'   `QFeatures` instance `x`. In this context, `i` is a `character()`,
 ##'   `integer()` or `logical()` that indicates which assay(s) to
 ##'   remove.
-##' - `replaceAssay(x, y, i)`: Replaces one or more 
+##' - `replaceAssay(x, y, i)`: Replaces one or more
 ##'   assay(s) from the `QFeatures` instance `x`. In this context, `i`
-##'   is a `character()`, `integer()` or `logical()` that indicates 
-##'   which assay(s) to replace. The `AssayLinks` from or to 
-##'   any replaced assays are automatically removed, unless the 
+##'   is a `character()`, `integer()` or `logical()` that indicates
+##'   which assay(s) to replace. The `AssayLinks` from or to
+##'   any replaced assays are automatically removed, unless the
 ##'   replacement has the same dimension names (columns and row, order
 ##'   agnostic). Be aware that conflicting information between
 ##'   `colData(y)` and `colData(x)` will result in an error.
@@ -107,12 +107,12 @@
 ##'   in `names(x)`), removing (when `value` is null) or replacing (when
 ##'   `i` is in `names(x)`). Note that the arguments `j` and `...` from
 ##'   the S4 replacement method signature are not allowed.
-##'  
+##'
 ##' @section Subsetting:
 ##'
 ##' - QFeatures object can be subset using the `x[i, j, k, drop = TRUE]`
-##'   paradigm. In this context, `i` is a `character()`, `integer()`, 
-##'   `logical()` or `GRanges()` object for subsetting by rows. See 
+##'   paradigm. In this context, `i` is a `character()`, `integer()`,
+##'   `logical()` or `GRanges()` object for subsetting by rows. See
 ##'   the argument descriptions for details on the remaining arguments.
 ##'
 ##' - The [subsetByFeature()] function can be used to subset a
@@ -335,7 +335,7 @@ setMethod("show", "QFeatures",
                            x = coords[, 1], y = coords[, 2],
                            hoverinfo = "text",
                            text = names(V(graph)))
-    
+
     ## Edit plot plot
     axis <- list(title = "", showgrid = FALSE, showticklabels = FALSE, zeroline = FALSE)
     plotly::layout(pl,
@@ -484,7 +484,7 @@ plot.QFeatures <- function (x, interactive = FALSE, ...) {
     ## Removed lost links in each AssayLink object
     object@assayLinks <- endoapply(object@assayLinks,
                                    .pruneAssayLink, object = object)
-    ## Check new AssaLinks are valid 
+    ## Check new AssaLinks are valid
     .validAssayLinks(object)
     object
 }
@@ -498,7 +498,7 @@ setMethod("[", c("QFeatures", "ANY", "ANY", "ANY"),
           function(x, i, j, ..., drop = TRUE) {
               ## Subset the assays
               ans <- callNextMethod(x, i, j, ..., drop)
-              
+
               ## Prune the AssayLinks so that the `QFeatures` object
               ## remains valid
               .pruneAssayLinks(ans)
@@ -516,11 +516,11 @@ setMethod("[", c("QFeatures", "character", "ANY", "ANY"),
 ##' @rdname QFeatures-class
 ##'
 ##' @name coerce-QFeatures
-##' 
+##'
 ##' @aliases coerce,MultiAssayExperiment,QFeatures-method
 ##'
 ##' @exportMethod coerce
-##' 
+##'
 setAs("MultiAssayExperiment", "QFeatures", function(from) {
     QFeatures(experiments = experiments(from),
               colData = colData(from),
@@ -531,13 +531,13 @@ setAs("MultiAssayExperiment", "QFeatures", function(from) {
 })
 
 ##' @rdname QFeatures-class
-##' 
+##'
 ##' @exportMethod c
 setMethod("c", "QFeatures",
           function(x, ...) {
               ## Retrieve the assays to add
               args <- list(...)
-              
+
               ## Check arguments
               if (any(sapply(args, inherits, "SummarizedExperiment")) ||
                   any(sapply(args, inherits, "List")) ||
@@ -553,14 +553,14 @@ setMethod("c", "QFeatures",
               } else if (!all(sapply(args, inherits, "QFeatures"))) {
                   args <- lapply(args, as, "QFeatures")
               }
-              if(length(names(args))) 
+              if(length(names(args)))
                   warning("Argument names are provided but will be ignored.")
-              
+
               ## Combine the different slots
               el <- .combineAssays(x, args)
               cd <- .combineColData(x, args)
               al <- .combineAssayLinks(x, args)
-              
+
               QFeatures(experiments = el,
                         colData = cd,
                         assayLinks = al)
@@ -587,13 +587,13 @@ setMethod("c", "QFeatures",
     for (i in seq_along(y)) {
         yy <- colData(y[[i]])
         cn <- .checkDataConflict(out, yy)
-        if (length(cn)) 
+        if (length(cn))
             err <- c(err, paste0(cn, " (in argument ", i + 1, ")"))
         out <- .transferData(out, yy)
     }
     if (length(err)) stop("Column(s) in the colData have conflicting ",
                           "information when combining the QFeatures ",
-                          "objects. Problematic column(s): ", 
+                          "objects. Problematic column(s): ",
                           paste(err, collapse = ", "))
     out
 }
@@ -608,28 +608,28 @@ setMethod("c", "QFeatures",
 }
 
 ##' @rdname QFeatures-class
-##' 
-##' @param use.names A `logical(1)` indicating if the names on x 
+##'
+##' @param use.names A `logical(1)` indicating if the names on x
 ##'     should be propagated to the returned matrix or vector.
-##' 
+##'
 ##' @importFrom BiocGenerics dims
 ##' @exportMethod dims
 setMethod("dims", "QFeatures",
-          function(x, use.names = TRUE) 
+          function(x, use.names = TRUE)
               vapply(experiments(x), dim, USE.NAMES = use.names, integer(2)))
 
 ##' @rdname QFeatures-class
 ##' @importFrom BiocGenerics nrows
 ##' @exportMethod nrows
 setMethod("nrows", "QFeatures",
-          function(x, use.names = TRUE) 
+          function(x, use.names = TRUE)
               vapply(experiments(x), nrow, USE.NAMES = use.names, integer(1)))
 
 ##' @rdname QFeatures-class
 ##' @importFrom BiocGenerics ncols
 ##' @exportMethod ncols
 setMethod("ncols", "QFeatures",
-          function(x, use.names = TRUE) 
+          function(x, use.names = TRUE)
               vapply(experiments(x), ncol, USE.NAMES = use.names, integer(1)))
 
 ##' @rdname QFeatures-class
@@ -801,16 +801,16 @@ longFormat <- function(object,
 
 ##' @param y An object that inherits from `SummarizedExperiment` or a
 ##'     *named* list of assays. When `y` is a list, each element must
-##'     inherit from a `SummarizedExperiment` and the names of the 
-##'     list are used as the names of the assays to add. Hence, the 
+##'     inherit from a `SummarizedExperiment` and the names of the
+##'     list are used as the names of the assays to add. Hence, the
 ##'     list names must be unique and cannot overlap with the names of
 ##'     the assays already present in `x`.
-##' 
-##' @param name A `character(1)` naming the single assay. Ignored if 
+##'
+##' @param name A `character(1)` naming the single assay. Ignored if
 ##'     `y` is a list of assays.
-##'     
+##'
 ##' @param assayLinks An optional [AssayLinks].
-##' 
+##'
 ##' @md
 ##'
 ##' @rdname QFeatures-class
@@ -823,7 +823,7 @@ addAssay <- function(x,
     ## Check arguments
     stopifnot(inherits(x, "QFeatures"))
     y <- .checkAssaysToInsert(y, x, name, replace = FALSE)
-    
+
     ## Check (or create) assayLinks
     if (!missing(assayLinks)) {
         if (inherits(assayLinks, "AssayLink"))
@@ -833,28 +833,28 @@ addAssay <- function(x,
     } else {
         assayLinks <- AssayLinks(names = names(y))
     }
-    
+
     ## Update the colData
     cd <- .updateColDataFromAssays(x, y)
-    
+
     ## Add the assay to the ExperimentList
-    ## NOTE: we replace using the `@` slot. Although not recommended, 
-    ## this bypasses the checks of all the elements (using 
-    ## `validObject`) in the ExperimentList as this is already 
+    ## NOTE: we replace using the `@` slot. Although not recommended,
+    ## this bypasses the checks of all the elements (using
+    ## `validObject`) in the ExperimentList as this is already
     ## performed when building the QFeatures object and `y` is checked
     ## at the beginning of the function. This leads to a reduction in
-    ## computational time. 
+    ## computational time.
     el <- experiments(x)
     for (ii in names(y)) {
         el@listData[[ii]] <- y[[ii]]
     }
-    
+
     ## Update the sampleMap
     smap <- MultiAssayExperiment:::.sampleMapFromData(cd, el)
-    
+
     ## Update the AssayLinks
     al <- append(x@assayLinks, assayLinks)
-    
+
     ## Update the QFeatures object with all the updated parts
     BiocGenerics:::replaceSlots(
         object = x,
@@ -881,31 +881,31 @@ removeAssay <- function(x, i) {
 ##' @rdname QFeatures-class
 ##'
 ##' @export
-replaceAssay <- function(x, 
+replaceAssay <- function(x,
                          y,
                          i) {
     ## Check arguments
     stopifnot(inherits(x, "QFeatures"))
     if (!missing(i)) i <- .normIndex(x, i)
     y <- .checkAssaysToInsert(y, x, i, replace = TRUE)
-    
+
     ## Update the colData
     cd <- .updateColDataFromAssays(x, y)
-    
+
     ## Replace the assay to the ExperimentList
-    ## NOTE: we replace using the `@` slot. Although not recommended, 
-    ## this bypasses the checks of all the elements (using 
-    ## `validObject`) in the ExperimentList as this is already 
-    ## performed when building the QFeatures object. This leads to a 
-    ## reduction in computational time. 
+    ## NOTE: we replace using the `@` slot. Although not recommended,
+    ## this bypasses the checks of all the elements (using
+    ## `validObject`) in the ExperimentList as this is already
+    ## performed when building the QFeatures object. This leads to a
+    ## reduction in computational time.
     el <- experiments(x)
     for (ii in names(y)) {
         el@listData[[ii]] <- y[[ii]]
     }
-    
+
     ## Update the sampleMap
     smap <- MultiAssayExperiment:::.sampleMapFromData(cd, el)
-    
+
     ## Update the AssayLinks
     al <- x@assayLinks
     allfrom <- lapply(al, function (x) x@from)
@@ -915,14 +915,14 @@ replaceAssay <- function(x,
             identical(sort(colnames(x[[ii]])),
                       sort(colnames(y[[ii]]))))
             next()
-        
+
         al[[ii]] <- AssayLink(ii)
         repl <- names(allfrom)[sapply(allfrom, function(x) any(x %in% ii))]
         for (jj in repl) {
             if (inherits(al[[jj]]@hits, "List")) {
                 al[[jj]]@from <- al[[jj]]@from[al[[jj]]@from != ii]
                 al[[jj]]@hits <- al[[jj]]@hits[names(al[[jj]]@hits) != ii]
-                if (length(al[[jj]]@hits) == 1) 
+                if (length(al[[jj]]@hits) == 1)
                     al[[jj]]@hits <- al[[jj]]@hits[[1]]
             } else {
                 al[[jj]] <- AssayLink(jj)
@@ -934,7 +934,7 @@ replaceAssay <- function(x,
                 "replacement. See '?addAssayLink' to restore them ",
                 "manually. ")
     }
-    
+
     ## Update the QFeatures object with all the updated parts
     BiocGenerics:::replaceSlots(
         object = x,
@@ -949,14 +949,14 @@ replaceAssay <- function(x,
 ##' @rdname QFeatures-class
 ##'
 ##' @export
-setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"), 
+setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
                  function(x, i, j, ..., value) {
                      if (length(i) != 1)
                          stop("'x[[i]] <- value' does not allow multiple ",
                               "replacements. Consider using 'addAssay()', ",
                               "'replaceAssay()' or 'removeAssay()' instead.")
                      i <- .normIndex(x, i, allowAbsent = TRUE)
-                     if (!missing(j) || length(list(...))) 
+                     if (!missing(j) || length(list(...)))
                          stop("invalid replacement")
                      if (i %in% names(x)) {
                          if (is.null(value)) {
@@ -966,25 +966,25 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
                          }
                      } else {
                          return(addAssay(x = x, y = value, name = i))
-                     } 
+                     }
                  })
 
-## Internal function that normalize the assay indexing. In this 
-## context, normalization means that the returned assay index is a 
-## character() that complies to QFeatures assay selection. 
-## 
-## @param object A QFeatures object 
-## 
-## @param i A logical(), numeric(), factor() or character() that 
+## Internal function that normalize the assay indexing. In this
+## context, normalization means that the returned assay index is a
+## character() that complies to QFeatures assay selection.
+##
+## @param object A QFeatures object
+##
+## @param i A logical(), numeric(), factor() or character() that
 ##     selects an assay in object. When logical, the length of i must
 ##     be identical to the number of assays in object.
-##     
+##
 ## @param allowAbsent A logical() indicating whether the i is allowed
 ##     to be absent from object. This argument is only applicable when
-##     i is a character(). 
-##     
+##     i is a character().
+##
 ## @return A character() with assay names present in object, or new
-##     assay names (when allowAbsent = FALSE). 
+##     assay names (when allowAbsent = FALSE).
 .normIndex <- function(object, i, allowAbsent = FALSE) {
     if (is.logical(i) & length(i) != length(object))
         stop("The assay index ('i') is logical but its does not ",
@@ -993,9 +993,9 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
     if (is.numeric(i) || is.logical(i))
         i <- names(object)[i]
     if (!length(i)) stop("No assay selected.")
-    if (any(is.na(i))) 
+    if (any(is.na(i)))
         stop("'i' has out of bounds entries")
-    if (!allowAbsent & any(mis <- !i %in% names(object))) 
+    if (!allowAbsent & any(mis <- !i %in% names(object)))
         stop("The following assay(s) is/are not found:",
              paste(i[mis], collapse = ","))
     i
@@ -1014,7 +1014,7 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
     }
     ## Make sure the assays comply to the requirements
     sapply(y, validObject) ## throws an error if any assay is corrupt
-    if (any(duplicated(names(y)))) 
+    if (any(duplicated(names(y))))
         stop("Replacement names must be unique.")
     if (!replace && any(names(y) %in% names(x)))
         stop("One or more assay names are already present in 'x'. ",
@@ -1022,7 +1022,7 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
     if (replace && !all(names(y) %in% names(x)))
         stop("One or more assay names are not in 'x'. See ",
              "'addAssay()' if you want to add assays.")
-    if (!all(sapply(y, inherits, "SummarizedExperiment"))) 
+    if (!all(sapply(y, inherits, "SummarizedExperiment")))
         stop("The replacement object(s) should inherit from ",
              "SummarizedExperiment.")
     if (any(sapply(y, function(yy) any(duplicated(rownames(yy))))))
@@ -1033,13 +1033,13 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
 
 ## Internal function that will add rows and eventually columns in the
 ## colData based on a new SummarizedExperiment object
-## 
+##
 ## @param x An instance of class [QFeatures].
-## @param y A list of SummarizedExperiments containing the colData 
+## @param y A list of SummarizedExperiments containing the colData
 ##     that must be adapted
-## 
+##
 ## The function returns the updated colData.
-## 
+##
 .updateColDataFromAssays <- function(x, y) {
     cd <- colData(x)
     ## Make sure we do not override existing colData
@@ -1053,12 +1053,12 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
                               "conflicting information with the ",
                               "QFeatures colData. Problematic ",
                               "column(s): ", paste(err, collapse = ", "))
-    
+
     ## Remove lost samples (in case of replacement)
     if (any(names(y) %in% names(x))) {
         cnOld <- cnNew <- colnames(x)
         repl <- names(y)[names(y) %in% names(x)]
-        for (ii in repl) 
+        for (ii in repl)
             cnNew[[ii]] <- colnames(y[[ii]])
         oldSamples <- setdiff(unique(unlist(cnOld)),
                               unique(unlist(cnNew)))
@@ -1074,10 +1074,10 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
 
 
 ## Internal function that checks for data clashes between 2 tables
-## 
+##
 ## @param x and y are data tables (DataFrame or data.frame)
-## 
-## returns a character vector with problematic column names where a 
+##
+## returns a character vector with problematic column names where a
 ## clash was identified. Returns an empty character vector if no problem.
 .checkDataConflict <- function (x, y) {
     rn <- intersect(rownames(x), rownames(y))
@@ -1094,10 +1094,10 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
     cn[isProbl]
 }
 
-## Internal function the transfers the data of y into x taking new 
+## Internal function the transfers the data of y into x taking new
 ## rows into account
 ## @param x and y are data tables
-## 
+##
 ## returns a single table where y has been transfered into x
 .transferData <- function(x, y) {
     ## Add new samples names to cd and fill with NA
@@ -1115,21 +1115,40 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
 }
 
 ##' @param verbose logical (default FALSE) whether to print extra messages
-##' 
+##'
 ##' @rdname QFeatures-class
-##' 
+##'
 ##' @exportMethod updateObject
-##' 
 setMethod("updateObject", "QFeatures",
           function(object, ..., verbose = FALSE)
           {
               if (verbose)
                   message("updateObject(object = 'QFeatures')")
               ## Update slots that are specific to QFeatures
-              object@assayLinks <- updateObject(object@assayLinks, ..., 
+              object@assayLinks <- updateObject(object@assayLinks, ...,
                                                 verbose = verbose)
               ## Update MAE slots
               callNextMethod()
           }
 )
 
+
+##' @param dims `numeric()` that defines the dimensions to consider to
+##'     drop empty assays. 1 for rows (i.e. assays without any
+##'     features) and 2 for columns (i.e. assays without any
+##'     samples). Default is `1:2`. Any value other that 1 and/or 2
+##'     will trigger an error.
+##'
+##' @rdname QFeatures-class
+##'
+##' @export
+dropEmptyAssays <- function(object, dims = 1:2) {
+    stopifnot(inherits(object, "QFeatures"))
+    if (!all(dims %in% 1:2))
+        stop("Argument 'dims' must be in '1:2'.")
+    if (1 %in% dims)
+        object <- object[, , nrows(object) > 0]
+    if (2 %in% dims)
+        object <- object[, , ncols(object) > 0]
+    object
+}

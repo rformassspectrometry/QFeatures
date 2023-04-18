@@ -27,6 +27,7 @@
 \alias{replaceAssay}
 \alias{[[<-,QFeatures,ANY,ANY-method}
 \alias{updateObject,QFeatures-method}
+\alias{dropEmptyAssays}
 \title{Quantitative MS QFeatures}
 \usage{
 \S4method{show}{QFeatures}(object)
@@ -70,6 +71,8 @@ replaceAssay(x, y, i)
 \S4method{[[}{QFeatures,ANY,ANY}(x, i, j, ...) <- value
 
 \S4method{updateObject}{QFeatures}(object, ..., verbose = FALSE)
+
+dropEmptyAssays(object, dims = 1:2)
 
 QFeatures(..., assayLinks = NULL)
 }
@@ -128,6 +131,12 @@ the assays already present in \code{x}.}
 \item{assayLinks}{An optional \link{AssayLinks} object.}
 
 \item{verbose}{logical (default FALSE) whether to print extra messages}
+
+\item{dims}{\code{numeric()} that defines the dimensions to consider to
+drop empty assays. 1 for rows (i.e. assays without any
+features) and 2 for columns (i.e. assays without any
+samples). Default is \code{1:2}. Any value other that 1 and/or 2
+will trigger an error.}
 }
 \description{
 Conceptually, a \code{QFeatures} object holds a set of \emph{assays}, each
