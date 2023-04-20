@@ -1157,5 +1157,6 @@ dropEmptyAssays <- function(object, dims = 1:2) {
         object <- object[, , nrows(object) > 0]
     if (2 %in% dims)
         object <- object[, , ncols(object) > 0]
+    if (!length(object)) return(QFeatures())
     object
 }
