@@ -91,10 +91,12 @@
 ##'   new samples. Be aware that conflicting information between the
 ##'   `colData(y)` and the `colData(x)` will result in an
 ##'   error.
+##'
 ##' - `removeAssay(x, i)`: Removes one or more assay(s) from the
 ##'   `QFeatures` instance `x`. In this context, `i` is a `character()`,
 ##'   `integer()` or `logical()` that indicates which assay(s) to
 ##'   remove.
+##'
 ##' - `replaceAssay(x, y, i)`: Replaces one or more
 ##'   assay(s) from the `QFeatures` instance `x`. In this context, `i`
 ##'   is a `character()`, `integer()` or `logical()` that indicates
@@ -103,6 +105,7 @@
 ##'   replacement has the same dimension names (columns and row, order
 ##'   agnostic). Be aware that conflicting information between
 ##'   `colData(y)` and `colData(x)` will result in an error.
+##'
 ##' - `x[[i]] <- value`: a generic method for adding (when `i` is not
 ##'   in `names(x)`), removing (when `value` is null) or replacing (when
 ##'   `i` is in `names(x)`). Note that the arguments `j` and `...` from
@@ -126,6 +129,10 @@
 ##'   variables than `rowvars` will be dropped. In case an element in
 ##'   `rowvars` isn't found in any `rowData` variable, a message is
 ##'   printed.
+##'
+##' - The `dropEmptyAssays(object, dims)` function removes empty
+##'   assays from a `QFeatures`. Empty assays are defined as having 0
+##'   rows and/or 0 columns, as defined by the `dims` argument.
 ##'
 ##' @param object An instance of class [QFeatures].
 ##'
@@ -1150,5 +1157,6 @@ dropEmptyAssays <- function(object, dims = 1:2) {
         object <- object[, , nrows(object) > 0]
     if (2 %in% dims)
         object <- object[, , ncols(object) > 0]
+    if (!length(object)) return(QFeatures())
     object
 }
