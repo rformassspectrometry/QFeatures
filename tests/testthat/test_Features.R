@@ -854,4 +854,81 @@ test_that("longFormat", {
                  regexp = "not found")
 })
 
-
+test_that("dropEmptyAssays", {
+    ## Object is not of class QFeatures = error
+    expect_error(
+        dropEmptyAssays(matrix()),
+        regexp = "QFeatures.*is not TRUE"
+    )
+    ## dims is out of bounds = error
+    expect_error(
+        dropEmptyAssays(QFeatures(), 1:3),
+        regexp = "in '1:2'"
+    )
+    expect_error(
+        dropEmptyAssays(QFeatures(), 3),
+        regexp = "in '1:2'"
+    )
+    ## Test on empty QFeatures
+    expect_identical(
+        dropEmptyAssays(QFeatures(), 1:2),
+        QFeatures()
+    )
+    ## Test on QFeatures with 1 non empty assays = no effecrt
+    data("feat1")
+    expect_identical(
+        dropEmptyAssays(feat1, 1:2),
+        feat1
+    )
+    ## Test on QFeatures with mulitple non empty assays (and assayLinks)
+    data("feat3")
+    expect_identical(
+        dropEmptyAssays(feat3, 1:2),
+        feat3
+    )
+    ## Test on QFeatures with 1 empty assay (no features)
+    qf <- feat3
+    expect_warning(
+        qf[[1]] <- qf[[1]][numeric(), ],
+        regexp = "Links between assays were lost"
+    )
+    test <- expect_warning(
+        dropEmptyAssays(qf, 1),
+        regexp = "'experiments' dropped"
+    )
+    exp <- suppressWarnings(qf[, , -1])
+    expect_identical(test, exp)
+    expect_identical(dropEmptyAssays(qf, 2), qf)
+    ## Test on QFeatures with all empty assays (no features)
+    qf <- feat1
+    qf[[1]] <- qf[[1]][numeric(), ]
+    test <- expect_warning(
+        dropEmptyAssays(qf, 1),
+        regexp = "'experiments' dropped"
+    )
+    expect_identical(test, QFeatures())
+    expect_identical(dropEmptyAssays(qf, 2), qf)
+    ## Test on QFeatures with 1 empty assay (no samples)
+    data("feat3")
+    qf <- feat3
+    expect_warning(
+        qf[[1]] <- qf[[1]][, numeric()],
+        regexp = "Links between assays were lost"
+    )
+    expect_identical(dropEmptyAssays(qf, 1), qf) 
+    test <- expect_warning(
+        dropEmptyAssays(qf, 2),
+        regexp = "'experiments' dropped"
+    )
+    exp <- suppressWarnings(qf[, , -1])
+    expect_identical(test, exp)
+    ## Test on QFeatures with all empty assays (no samples)
+    qf <- feat1
+    qf[[1]] <- qf[[1]][, numeric()]
+    expect_identical(dropEmptyAssays(qf, 1), qf)
+    test <- expect_warning(
+        dropEmptyAssays(qf, 2),
+        regexp = "'experiments' dropped"
+    )
+    expect_identical(test, QFeatures())
+})
