@@ -28,7 +28,7 @@ test_that("function: .nNAByAssay, .nNAByMargin, .nNA, and .nNAi", {
     ## The expected results are initialized after manual inspection
     expect_identical(nNAassay,
                      DataFrame(nNA = 3L,
-                               pNA = 3 / 12 * 100))
+                               pNA = 3 / 12))
 
     ## .nNAByMargin
     nNArows <- QFeatures:::.nNAByMargin(se_na, MARGIN = 1)
@@ -37,11 +37,11 @@ test_that("function: .nNAByAssay, .nNAByMargin, .nNA, and .nNAi", {
     expect_identical(nNArows,
                      DataFrame(name = rownames(se_na),
                                nNA = c(1L, 0L, 1L, 1L),
-                               pNA = c(1/3, 0, 1/3, 1/3) * 100))
+                               pNA = c(1/3, 0, 1/3, 1/3)))
     expect_identical(nNAcols,
                      DataFrame(name = colnames(se_na),
                                nNA = c(2L, 1L, 0L),
-                               pNA = c(1/2, 1/4, 0) * 100))
+                               pNA = c(1/2, 1/4, 0)))
 
     ## .nNA for SummarizedExperiemnt
     expect_identical(QFeatures:::.nNA(se_na),
@@ -54,11 +54,11 @@ test_that("function: .nNAByAssay, .nNAByMargin, .nNA, and .nNAi", {
     ## .nNAi for QFeatures
     ## The expected results are initialized after manual inspection
     nNAassay <- c(3L, 0L)
-    pNAassay <- nNAassay / 12 * 100
+    pNAassay <- nNAassay / 12
     nNArows <- c(1L, 0L, 1L, 1L, rep(0L, 4))
-    pNArows <- nNArows / 3 * 100
+    pNArows <- nNArows / 3
     nNAcols <- c(2L, 1L, 0L, rep(0L, 3))
-    pNAcols <- nNAcols / 4 * 100
+    pNAcols <- nNAcols / 4
     ## Test results
     n_na <- QFeatures:::.nNAi(ft0, 1:2)
     ## .nNAByAssay
@@ -101,6 +101,7 @@ test_that("function: .row_for_filterNA", {
                      c(a = TRUE, b = TRUE, c = TRUE, d = TRUE))
     expect_identical(QFeatures:::.row_for_filterNA(assay(se_na), pNA = .33),
                      QFeatures:::.row_for_filterNA(assay(se_na), pNA = 0))
+    ## pNA must be in [0, 1]
     expect_error(QFeatures:::.row_for_filterNA(assay(se_na), pNA = -1))
     expect_error(QFeatures:::.row_for_filterNA(assay(se_na), pNA = 2))
 })
