@@ -58,9 +58,9 @@
 
 \item{i}{One or more indices or names of the assay(s) to be processed.}
 
-\item{pNA}{\code{numeric(1)} providing the maximim percentage of
+\item{pNA}{\code{numeric(1)} providing the maximum proportion of
 missing values per feature (row) that is acceptable. Feature
-with higher percentages are removed. If 0 (default), features
+with higher proportions are removed. If 0 (default), features
 that contain any number of \code{NA} values are dropped.}
 }
 \value{
@@ -69,7 +69,7 @@ An instance of the same class as \code{object}.
 \description{
 This manual page describes the handling of missing values in
 \link{QFeatures} objects. In the following functions, if \code{object} is of
-class \code{QFeatures}, and optional assay index or name \code{i} can be
+class \code{QFeatures}, an optional assay index or name \code{i} can be
 specified to define the assay (by name of index) on which to
 operate.
 
@@ -83,23 +83,23 @@ intensity of 0.
 \code{NA}. This is necessary when third-party software divide
 expression data by zero values, for instance during custom
 normalization.
-\item \code{nNA(object, i)} return a list of missing value summaries. The
+\item \code{nNA(object, i)} returns a list of missing value summaries. The
 first element \code{nNA} gives a \code{DataFrame} with the number and the
-percentage of missing values for the whole assay; the second
-element \code{nNArows} provides a \code{DataFrame} of the number and the
-percentage of missing values for the features (rows) of the
+proportion of missing values for the whole assay; the second
+element \code{nNArows} provides a \code{DataFrame} with the number and the
+proportion of missing values for the features (rows) of the
 assay(s); the third element \code{nNAcols} provides the number and
-the percentage of missing values in each sample of the assay(s).
-When \code{object} has class \code{QFeatures} and additional column with
-the assays is provided in each element's \code{DataFrame}.
+the proportions of missing values in each sample of the
+assay(s).  When \code{object} has class \code{QFeatures} and additional
+column with the assays is provided in each element's
+\code{DataFrame}.
 \item \code{filterNA(object, pNA, i)} removes features (rows) that contain
-\code{pNA} percentage or more missing values.
+a proportion of more missing values of \code{pNA} or higher.
 }
 
 See the \emph{Processing} vignette for examples.
 }
 \examples{
-se_na2
 
 ## Summary if missing values
 nNA(ft_na, 1)
