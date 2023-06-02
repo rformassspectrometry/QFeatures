@@ -44,7 +44,7 @@ See the Processing vignette for examples."><meta property="og:image" content="/l
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.9.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.11.1</span>
       </span>
     </div>
 
@@ -209,24 +209,24 @@ that contain any number of <code>NA</code> values are dropped.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 1 row and 3 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         assay       nNA       pNA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;character&gt; &lt;integer&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          na         3        25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          na         3      0.25</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nNArows</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 4 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         assay        name       nNA       pNA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;character&gt; &lt;character&gt; &lt;integer&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          na           a         1   33.3333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2          na           b         0    0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          na           c         1   33.3333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4          na           d         1   33.3333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          na           a         1  0.333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          na           b         0  0.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          na           c         1  0.333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4          na           d         1  0.333333</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nNAcols</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 3 rows and 4 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         assay        name       nNA       pNA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;character&gt; &lt;character&gt; &lt;integer&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          na           A         2        50</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2          na           B         1        25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          na           C         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          na           A         2      0.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          na           B         1      0.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          na           C         0      0.00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Remove rows with missing values</span></span></span>
