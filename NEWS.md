@@ -1,3 +1,20 @@
+# QFeatures 1.11
+
+## QFeatures 1.11.1
+
+- Update `nNA()` and `filterNA()` and man pages to clarify percentages
+  and proportions (see #189).
+
+## QFeatures 1.11.0
+
+- New Bioconductor 3.18 (stable) release
+
+# QFeatures 1.10
+
+## QFeatures 1.10.0
+
+- New Bioconductor 3.17 (stable) release
+
 # QFeatures 1.9
 
 ## QFeatures 1.9.4

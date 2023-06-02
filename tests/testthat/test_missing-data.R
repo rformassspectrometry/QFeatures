@@ -29,7 +29,7 @@ test_that("function: .nNAByAssay, .nNAByMargin, .nNA, and .nNAi", {
     expect_identical(nNAassay,
                      DataFrame(nNA = 3L,
                                pNA = 3 / 12 * 100))
-    
+
     ## .nNAByMargin
     nNArows <- QFeatures:::.nNAByMargin(se_na, MARGIN = 1)
     nNAcols <- QFeatures:::.nNAByMargin(se_na, MARGIN = 2)
@@ -42,15 +42,15 @@ test_that("function: .nNAByAssay, .nNAByMargin, .nNA, and .nNAi", {
                      DataFrame(name = colnames(se_na),
                                nNA = c(2L, 1L, 0L),
                                pNA = c(1/2, 1/4, 0) * 100))
-    
+
     ## .nNA for SummarizedExperiemnt
     expect_identical(QFeatures:::.nNA(se_na),
-                     list(nNA = nNAassay, nNArows = nNArows, 
+                     list(nNA = nNAassay, nNArows = nNArows,
                           nNAcols =nNAcols))
     ## Expect only 0's (no missing data) for se_zero
-    expect_true(all(sapply(QFeatures:::.nNA(se_zero), 
+    expect_true(all(sapply(QFeatures:::.nNA(se_zero),
                            function(x) all(x[, "pNA"] == 0))))
-    
+
     ## .nNAi for QFeatures
     ## The expected results are initialized after manual inspection
     nNAassay <- c(3L, 0L)
@@ -59,7 +59,7 @@ test_that("function: .nNAByAssay, .nNAByMargin, .nNA, and .nNAi", {
     pNArows <- nNArows / 3 * 100
     nNAcols <- c(2L, 1L, 0L, rep(0L, 3))
     pNAcols <- nNAcols / 4 * 100
-    ## Test results 
+    ## Test results
     n_na <- QFeatures:::.nNAi(ft0, 1:2)
     ## .nNAByAssay
     expect_identical(n_na$nNA,
@@ -68,15 +68,15 @@ test_that("function: .nNAByAssay, .nNAByMargin, .nNA, and .nNAi", {
     ## .nNAByMargin by row
     expect_identical(n_na$nNArows,
                      DataFrame(assay = rep(names(ft0)[1:2], each = 4),
-                               name = unlist(rownames(ft0)[1:2], 
+                               name = unlist(rownames(ft0)[1:2],
                                              use.names = FALSE),
                                nNA = nNArows, pNA = pNArows))
     ## .nNAByMargin by column
     expect_identical(n_na$nNAcols,
                      DataFrame(assay = rep(names(ft0)[1:2], each = 3),
-                               name = unlist(colnames(ft0)[1:2], 
+                               name = unlist(colnames(ft0)[1:2],
                                              use.names = FALSE),
-                               nNA = nNAcols, 
+                               nNA = nNAcols,
                                pNA = pNAcols))
     ## Check .nNAi with character indexing
     expect_identical(n_na, QFeatures:::.nNAi(ft0, c("na", "zero")))
@@ -101,10 +101,8 @@ test_that("function: .row_for_filterNA", {
                      c(a = TRUE, b = TRUE, c = TRUE, d = TRUE))
     expect_identical(QFeatures:::.row_for_filterNA(assay(se_na), pNA = .33),
                      QFeatures:::.row_for_filterNA(assay(se_na), pNA = 0))
-    expect_identical(QFeatures:::.row_for_filterNA(assay(se_na), pNA = 0),
-                     QFeatures:::.row_for_filterNA(assay(se_na), pNA = -1))
-    expect_identical(QFeatures:::.row_for_filterNA(assay(se_na), pNA = 1),
-                     QFeatures:::.row_for_filterNA(assay(se_na), pNA = 2))
+    expect_error(QFeatures:::.row_for_filterNA(assay(se_na), pNA = -1))
+    expect_error(QFeatures:::.row_for_filterNA(assay(se_na), pNA = 2))
 })
 
 test_that("zeroIsNA,QFeatures", {

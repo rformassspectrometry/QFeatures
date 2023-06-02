@@ -1,7 +1,4 @@
-
-
 ###---- Internal functions ----####
-
 
 .zeroIsNA <- function(x) {
     sel <- assay(x) == 0
@@ -10,35 +7,35 @@
 }
 
 .infIsNA <- function(x) {
-    sel <- is.infinite(assay(x)) 
+    sel <- is.infinite(assay(x))
     assay(x)[sel] <- NA
     x
 }
 
-## Internal function that compute the number and percent of missing 
+## Internal function that compute the number and proportion of missing
 ## data from a SummarizedExperiment object
 .nNAByAssay <- function(object) {
     x <- assay(object)
     nNA <- sum(is.na(x))
-    pNA <- nNA / length(x) * 100
-    DataFrame(nNA = unname(nNA), 
+    pNA <- nNA / length(x)
+    DataFrame(nNA = unname(nNA),
               pNA = unname(pNA))
 }
 
-## Internal function that compute the number and percent of missing 
-## data for a given margin (features = 1 and sample = 2) from a 
+## Internal function that compute the number and proportion of missing
+## data for a given margin (features = 1 and sample = 2) from a
 ## SummarizedExperiment object
 .nNAByMargin <- function(object, MARGIN = 1) {
     x <- assay(object)
     nNA <- apply(is.na(x), MARGIN, sum)
     n <- ifelse(MARGIN == 1, ncol(x), nrow(x))
-    pNA <- nNA / n * 100
-    DataFrame(name = names(pNA), 
-              nNA = unname(nNA), 
+    pNA <- nNA / n
+    DataFrame(name = names(pNA),
+              nNA = unname(nNA),
               pNA = unname(pNA))
 }
 
-## Internal function that compute the number and percent of missing 
+## Internal function that compute the number and proportion of missing
 ## data for a SummarizedExperiment object
 .nNA <- function(x) {
     nNA <- .nNAByAssay(x)
@@ -47,17 +44,17 @@
     list(nNA = nNA, nNArows = nNA_rows, nNAcols = nNA_cols)
 }
 
-## Internal function that compute the number and percent of missing 
+## Internal function that compute the number and proportion of missing
 ## data for a QFeatures object
 .nNAi <- function(object, i) {
     i <- .normIndex(object, i)
-    ## Get number of missing data per assay 
+    ## Get number of missing data per assay
     nNAassay <- do.call(rbind, lapply(i, function(ii)
         cbind(assay = ii, .nNAByAssay(object[[ii]])) ))
     ## Get number of missing data per row
     nNArow <- do.call(rbind, lapply(i, function(ii)
         cbind(assay = ii, .nNAByMargin(object[[ii]], 1)) ))
-    ## Get number of missing data per column 
+    ## Get number of missing data per column
     nNAcol <- do.call(rbind, lapply(i, function(ii)
         cbind(assay = ii, .nNAByMargin(object[[ii]], 2)) ))
     ## Return as list
@@ -71,8 +68,8 @@
         stop(sQuote("pNA"), " must be numeric.")
     if (length(pNA) > 1)
         stop(sQuote("pNA"), " must be of length one.")
-    if (pNA > 1) pNA <- 1
-    if (pNA < 0) pNA <- 0
+    if (pNA < 0 | pNA > 1)
+        stop(sQuote("pNA"), " must be between 0 and 1.")
     k <- rowSums(is.na(x)) / ncol(x)
     k <= pNA
 }
@@ -87,7 +84,7 @@
 ##'
 ##' This manual page describes the handling of missing values in
 ##' [QFeatures] objects. In the following functions, if `object` is of
-##' class `QFeatures`, and optional assay index or name `i` can be
+##' class `QFeatures`, an optional assay index or name `i` can be
 ##' specified to define the assay (by name of index) on which to
 ##' operate.
 ##'
@@ -98,31 +95,32 @@
 ##'    features that weren't quantified should be assigned an
 ##'    intensity of 0.
 ##'
-##' - `infIsNA(object, i)` replaces all infinite values in `object` by 
-##'    `NA`. This is necessary when third-party software divide 
-##'    expression data by zero values, for instance during custom 
+##' - `infIsNA(object, i)` replaces all infinite values in `object` by
+##'    `NA`. This is necessary when third-party software divide
+##'    expression data by zero values, for instance during custom
 ##'    normalization.
 ##'
-##' - `nNA(object, i)` return a list of missing value summaries. The
+##' - `nNA(object, i)` returns a list of missing value summaries. The
 ##'   first element `nNA` gives a `DataFrame` with the number and the
-##'   percentage of missing values for the whole assay; the second 
-##'   element `nNArows` provides a `DataFrame` of the number and the 
-##'   percentage of missing values for the features (rows) of the 
-##'   assay(s); the third element `nNAcols` provides the number and 
-##'   the percentage of missing values in each sample of the assay(s).
-##'   When `object` has class `QFeatures` and additional column with 
-##'   the assays is provided in each element's `DataFrame`.
+##'   proportion of missing values for the whole assay; the second
+##'   element `nNArows` provides a `DataFrame` with the number and the
+##'   proportion of missing values for the features (rows) of the
+##'   assay(s); the third element `nNAcols` provides the number and
+##'   the proportions of missing values in each sample of the
+##'   assay(s).  When `object` has class `QFeatures` and additional
+##'   column with the assays is provided in each element's
+##'   `DataFrame`.
 ##'
 ##' - `filterNA(object, pNA, i)` removes features (rows) that contain
-##'   `pNA` percentage or more missing values.
+##'   a proportion of more missing values of `pNA` or higher.
 ##'
 ##' See the *Processing* vignette for examples.
 ##'
 ##' @param object An object of class `QFeatures` or `SummarizedExperiment`.
 ##'
-##' @param pNA `numeric(1)` providing the maximim percentage of
+##' @param pNA `numeric(1)` providing the maximum proportion of
 ##'     missing values per feature (row) that is acceptable. Feature
-##'     with higher percentages are removed. If 0 (default), features
+##'     with higher proportions are removed. If 0 (default), features
 ##'     that contain any number of `NA` values are dropped.
 ##'
 ##' @param i One or more indices or names of the assay(s) to be processed.
@@ -144,7 +142,6 @@
 ##' @seealso The `impute()` for `QFeautres` instances.
 ##'
 ##' @examples
-##' se_na2
 ##'
 ##' ## Summary if missing values
 ##' nNA(ft_na, 1)
@@ -259,6 +256,6 @@ setMethod("filterNA", "QFeatures",
               sel <- lapply(i, function(ii) {
                   .row_for_filterNA(assay(object[[ii]]), pNA)
               })
-              names(sel) <- i 
+              names(sel) <- i
               object[sel, ]
           })
