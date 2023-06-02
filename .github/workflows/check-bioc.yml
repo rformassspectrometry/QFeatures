@@ -212,6 +212,10 @@ jobs:
         run: BiocManager::install("magick")
         shell: Rscript {0}
 
+      - name: Manually install vsn
+        run: remotes::install_git("https://git.bioconductor.org/packages/vsn")
+        shell: Rscript {0}
+
       ## See https://github.com/Bioconductor/bioconductor_docker/issues/22
       - name: Manually install preprocessCore
         run: |
