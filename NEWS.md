@@ -1,5 +1,9 @@
 # QFeatures 1.11
 
+## QFeatures 1.11.2
+
+- Nothing yet.
+
 ## QFeatures 1.11.1
 
 - Update `nNA()` and `filterNA()` and man pages to clarify percentages
