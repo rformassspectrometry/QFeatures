@@ -225,7 +225,7 @@ test_that("aggregate by matrix and vector work (2)", {
 test_that("aggregateFeatures,QFeatures: aggregate multiple assays", {
     data("feat3")
     expect_warning(feat3 <- feat3[, , 1:3],
-                   regexp = "experiments' dropped; see 'metadata")
+                   regexp = "experiments' dropped; see 'drops")
     ii <- names(feat3)
     feat3aggr <- aggregateFeatures(feat3, i = ii,
                                    fcol = rep("Protein", 3),
