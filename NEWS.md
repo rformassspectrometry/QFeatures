@@ -1,5 +1,9 @@
 # QFeatures 1.11
 
+## QFeatures 1.11.3
+
+- Nothing yet.
+
 ## QFeatures 1.11.2
 
 - Update message to fix test upon recent changes in MAE.
