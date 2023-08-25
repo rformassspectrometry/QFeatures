@@ -670,13 +670,13 @@ test_that("[,QFeatures", {
     data(feat1)
     feat1 <- aggregateFeatures(feat1, "psms", "Sequence", "peptides")
     expect_true(expect_warning(validObject(feat1[, , "psms"]),
-                               regexp = "'experiments' dropped; see 'metadata'"))
+                               regexp = "'experiments' dropped; see 'drops"))
     expect_true(expect_warning(validObject(feat1[, , "peptides"]),
-                               regexp = "'experiments' dropped; see 'metadata'"))
+                               regexp = "'experiments' dropped; see 'drops"))
     expect_true(expect_warning(validObject(feat1[, , 1]),
-                               regexp = "'experiments' dropped; see 'metadata'"))
+                               regexp = "'experiments' dropped; see 'drops"))
     expect_true(expect_warning(validObject(feat1[, , 2]),
-                               regexp = "'experiments' dropped; see 'metadata'"))
+                               regexp = "'experiments' dropped; see 'drops"))
 })
 
 
