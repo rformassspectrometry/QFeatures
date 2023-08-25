@@ -10,7 +10,7 @@ test_that("QFeatures-validity", {
 test_that(".valid_QFeatures_indices", {
     ## Rename assay to insert mismatch between assayLinks names and
     ## QFeatures names
-    names(feat2@ExperimentList)[1] <- "foo"
+    names(feat2@assayLinks)[1] <- "foo"
     expect_error(validObject(feat2),
                  regexp = "Assay links names are wrong.")
 })
