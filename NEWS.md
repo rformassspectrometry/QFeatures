@@ -2,7 +2,7 @@
 
 ## QFeatures 1.11.2
 
-- Nothing yet.
+- Update message to fix test upon recent changes in MAE.
 
 ## QFeatures 1.11.1
 
