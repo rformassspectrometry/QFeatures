@@ -338,7 +338,7 @@ and possibly
 hl |>
     subsetByFeature("P42227-2") |>
     longFormat() |>
-    as.data.frame |>
+    as.data.frame() |>
     ggplot(aes(x = colname,
                y = value,
                group = rowname)) +
