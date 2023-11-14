@@ -1,3 +1,9 @@
+# QFeatures 1.13
+
+## QFeatures 1.13.1
+
+- Fix typo in vigette.
+
 # QFeatures 1.11
 
 ## QFeatures 1.11.2
