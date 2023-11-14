@@ -41,7 +41,7 @@ sure that these match the class validity requirements."><meta property="og:image
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.11.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.1</span>
       </span>
     </div>
 
@@ -98,9 +98,9 @@ assays are typically defined as <code>SummarizedExperiment</code> objects. In
 addition, a <code>QFeatures</code> object also uses a single <code>DataFrame</code> to
 annotate the samples (columns) represented in all the matrices.</p>
 <p>The <code>QFeatures</code> class extends the
-<a href="http://waldronlab.io/MultiAssayExperiment/reference/MultiAssayExperiment.html" class="external-link">MultiAssayExperiment::MultiAssayExperiment</a> and inherits all
+<a href="https://rdrr.io/pkg/MultiAssayExperiment/man/MultiAssayExperiment.html" class="external-link">MultiAssayExperiment::MultiAssayExperiment</a> and inherits all
 the functionality of the
-<a href="http://waldronlab.io/MultiAssayExperiment/reference/MultiAssayExperiment.html" class="external-link">MultiAssayExperiment::MultiAssayExperiment</a> class.</p>
+<a href="https://rdrr.io/pkg/MultiAssayExperiment/man/MultiAssayExperiment.html" class="external-link">MultiAssayExperiment::MultiAssayExperiment</a> class.</p>
 <p>A typical use case for such <code>QFeatures</code> object is to represent
 quantitative proteomics (or metabolomics) data, where different
 assays represent quantitation data at the PSM (the main assay),
@@ -284,7 +284,7 @@ will trigger an error.</p></dd>
 <ul><li><p><code>QFeatures(..., assayLinks)</code> allows the manual construction of
 objects. It is the user's responsability to make sure these
 comply. The arguments in <code>...</code> are those documented in
-<code><a href="http://waldronlab.io/MultiAssayExperiment/reference/MultiAssayExperiment.html" class="external-link">MultiAssayExperiment::MultiAssayExperiment()</a></code>. For details
+<code><a href="https://rdrr.io/pkg/MultiAssayExperiment/man/MultiAssayExperiment.html" class="external-link">MultiAssayExperiment::MultiAssayExperiment()</a></code>. For details
 about <code>assayLinks</code>, see <a href="AssayLinks.html">AssayLinks</a>. An example is shown below.</p></li>
 <li><p>The <code><a href="readQFeatures.html">readQFeatures()</a></code> function constructs a <code>QFeatures</code> object
 from text-based spreadsheet or a <code>data.frame</code> used to generate
@@ -296,7 +296,7 @@ example.</p></li>
     
 
 <ul><li><p>The <code>QFeatures</code> class extends the
-<a href="http://waldronlab.io/MultiAssayExperiment/reference/MultiAssayExperiment.html" class="external-link">MultiAssayExperiment::MultiAssayExperiment</a> class and inherits
+<a href="https://rdrr.io/pkg/MultiAssayExperiment/man/MultiAssayExperiment.html" class="external-link">MultiAssayExperiment::MultiAssayExperiment</a> class and inherits
 all its accessors and replacement methods.</p></li>
 <li><p>The <code>rowData</code> method returns a <code>DataFrameList</code> containing the
 <code>rowData</code> for each assay of the <code>QFeatures</code> object. On the other
@@ -318,7 +318,7 @@ variable names.</p></li>
 it in a long format <code>DataFrame</code>. Each quantitative value is
 reported on a separate line. <code>colData</code> and <code>rowData</code> data can
 also be added. This function is an extension of the <code>longFormat</code>
-function in the <a href="http://waldronlab.io/MultiAssayExperiment/reference/MultiAssayExperiment.html" class="external-link">MultiAssayExperiment::MultiAssayExperiment</a>.</p></li>
+function in the <a href="https://rdrr.io/pkg/MultiAssayExperiment/man/MultiAssayExperiment.html" class="external-link">MultiAssayExperiment::MultiAssayExperiment</a>.</p></li>
 </ul></div>
     <div id="adding-removing-and-replacing-assays">
     <h2>Adding, removing and replacing assays</h2>
