@@ -233,6 +233,11 @@ Note: if we were to have assay from multiple fractions to be
 
 # Replacing vs adding assays
 
+Issues
+[https://github.com/rformassspectrometry/QFeatures/issues/193](193)
+and
+[https://github.com/rformassspectrometry/QFeatures/issues/186](186).
+
 Currently, assays are replaced with
 - filterNA()
 - filterFeatures()
@@ -250,3 +255,65 @@ added.
 
 - A more radical change would be for `filterFeatures()` to add a
   rowData logical that defines the rows to be filtered.
+
+There are multiple ideas/discussion replated to QFeatures becoming
+very large (and slow). Rather than adding more assays, we could:
+- use logical for subsetting;
+- use multiple assays within a SingleCellExperiment (or SE), when the
+  dimensions remain identical (for exmple logTransform());
+- have a unique database to handle and manage all data (assays and
+  rowData).
+
+But we agree that the interface, for the user, should remain simple,
+i.e. different assays. For now, keep the same philosophy and create
+new assays for all operations, and start a reflexion for more in-depth
+refactoring.
+
+See also [HDF5 backend
+issue](https://github.com/rformassspectrometry/QFeatures/issues/171).
+
+# Devel roadmap
+
+## scp
+
+- scp data [import](https://github.com/UCLouvain-CBIO/scp/issues/48)
+  documentation. Current approach doesn't work well for LFQ. Add
+  documentation, and align scpGUIImport.
+- [Compute mertics per
+  cell](https://github.com/UCLouvain-CBIO/scp/issues/44) is clumsy/ad
+  hoc at the moment. We need a general function to iterates over
+  cells/features and store automatically in col/rowData. What is
+  computed defined by a user-defined function. For example
+  `*OverSample()` and `*OverFeatures()` and a more general
+  `computeMetric()`. These would added to `QFeatures` with specialised
+  metrics implemented in `scp`.
+- Merge scplainer into scp (issue
+  [45](https://github.com/UCLouvain-CBIO/scp/pull/45)): needs unit
+  tests
+- [Missing data
+  vignette/report](https://github.com/UCLouvain-CBIO/scp/issues/40):
+  unit tests coming soon
+- [readScpFromDIANN()](https://github.com/UCLouvain-CBIO/scp/issues/42)
+  needs unit test and some refactoring
+- [`divideByReference()`](https://github.com/UCLouvain-CBIO/scp/issues/34)
+  is a batch correction method, and should be moved to QFeatures, and
+  made accessible as part of a more general `batchCorrect()`
+  interface, that can also be used for combat and limma.
+
+## QFeatures
+
+- [All QFeatures functions should add
+  assays](https://github.com/rformassspectrometry/QFeatures/issues/193) -
+  see 'Replacing vs adding assays' above.
+- `filterNA()` on columns (see
+  [https://github.com/rformassspectrometry/QFeatures/issues/173](173)]. Or
+  should we use `computeMetricOverCells()` with metric `nNA`?
+- Small bugs: [nNA() on empty
+  assays](https://github.com/rformassspectrometry/QFeatures/issues/174)
+  and [longFormat(se,
+  rowvars)](https://github.com/rformassspectrometry/QFeatures/issues/196)
+  (eventhough the latter should probbaly use tidy versions).
+- Interest in
+  [pseudo-bulking](https://github.com/rformassspectrometry/QFeatures/issues/188),
+  which should work out-of-the-box, since the colData is unique for
+  all assaya (Chris to address during post-doc).
