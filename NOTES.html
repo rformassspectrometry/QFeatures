@@ -178,11 +178,40 @@ colData names(0):</code></pre>
 </div>
 <div class="section level1">
 <h1 id="replacing-vs-adding-assays">Replacing vs adding assays<a class="anchor" aria-label="anchor" href="#replacing-vs-adding-assays"></a></h1>
+<p>Issues <a href="193">https://github.com/rformassspectrometry/QFeatures/issues/193</a> and <a href="186">https://github.com/rformassspectrometry/QFeatures/issues/186</a>.</p>
 <p>Currently, assays are replaced with - filterNA() - filterFeatures() (and possibly others)</p>
 <p>Sometimes, we want to add, rather than replace, for example if we want to test/assess the effect of different filters. This could be defined by the <code>names</code> argument. If missing (default), the assays are replaced. If present and of same length than <code>i</code>, new assays are added.</p>
 <ul><li><p>When it comes to data processing, we could also have a <em>subset</em> argument, that would implicitly only process a subset of rows so as to avoid to explicitly store the subset/intermediate assay.</p></li>
 <li><p>A more radical change would be for <code><a href="reference/QFeatures-filtering.html">filterFeatures()</a></code> to add a rowData logical that defines the rows to be filtered.</p></li>
+</ul><p>There are multiple ideas/discussion replated to QFeatures becoming very large (and slow). Rather than adding more assays, we could: - use logical for subsetting; - use multiple assays within a SingleCellExperiment (or SE), when the dimensions remain identical (for exmple logTransform()); - have a unique database to handle and manage all data (assays and rowData).</p>
+<p>But we agree that the interface, for the user, should remain simple, i.e. different assays. For now, keep the same philosophy and create new assays for all operations, and start a reflexion for more in-depth refactoring.</p>
+<p>See also <a href="https://github.com/rformassspectrometry/QFeatures/issues/171" class="external-link">HDF5 backend issue</a>.</p>
+</div>
+<div class="section level1">
+<h1 id="devel-roadmap">Devel roadmap<a class="anchor" aria-label="anchor" href="#devel-roadmap"></a></h1>
+<div class="section level2">
+<h2 id="scp">scp<a class="anchor" aria-label="anchor" href="#scp"></a></h2>
+<ul><li>scp data <a href="https://github.com/UCLouvain-CBIO/scp/issues/48" class="external-link">import</a> documentation. Current approach doesn’t work well for LFQ. Add documentation, and align scpGUIImport.</li>
+<li>
+<a href="https://github.com/UCLouvain-CBIO/scp/issues/44" class="external-link">Compute mertics per cell</a> is clumsy/ad hoc at the moment. We need a general function to iterates over cells/features and store automatically in col/rowData. What is computed defined by a user-defined function. For example <code>*OverSample()</code> and <code>*OverFeatures()</code> and a more general <code>computeMetric()</code>. These would added to <code>QFeatures</code> with specialised metrics implemented in <code>scp</code>.</li>
+<li>Merge scplainer into scp (issue <a href="https://github.com/UCLouvain-CBIO/scp/pull/45" class="external-link">45</a>): needs unit tests</li>
+<li>
+<a href="https://github.com/UCLouvain-CBIO/scp/issues/40" class="external-link">Missing data vignette/report</a>: unit tests coming soon</li>
+<li>
+<a href="https://github.com/UCLouvain-CBIO/scp/issues/42" class="external-link">readScpFromDIANN()</a> needs unit test and some refactoring</li>
+<li>
+<a href="https://github.com/UCLouvain-CBIO/scp/issues/34" class="external-link"><code>divideByReference()</code></a> is a batch correction method, and should be moved to QFeatures, and made accessible as part of a more general <code>batchCorrect()</code> interface, that can also be used for combat and limma.</li>
 </ul></div>
+<div class="section level2">
+<h2 id="qfeatures">QFeatures<a class="anchor" aria-label="anchor" href="#qfeatures"></a></h2>
+<ul><li>
+<a href="https://github.com/rformassspectrometry/QFeatures/issues/193" class="external-link">All QFeatures functions should add assays</a> - see ‘Replacing vs adding assays’ above.</li>
+<li>
+<code><a href="reference/QFeatures-missing-data.html">filterNA()</a></code> on columns (see <a href="173">https://github.com/rformassspectrometry/QFeatures/issues/173</a>]. Or should we use <code>computeMetricOverCells()</code> with metric <code>nNA</code>?</li>
+<li>Small bugs: <a href="https://github.com/rformassspectrometry/QFeatures/issues/174" class="external-link">nNA() on empty assays</a> and <a href="https://github.com/rformassspectrometry/QFeatures/issues/196" class="external-link">longFormat(se, rowvars)</a> (eventhough the latter should probbaly use tidy versions).</li>
+<li>Interest in <a href="https://github.com/rformassspectrometry/QFeatures/issues/188" class="external-link">pseudo-bulking</a>, which should work out-of-the-box, since the colData is unique for all assaya (Chris to address during post-doc).</li>
+</ul></div>
+</div>
 
 
   </div>
