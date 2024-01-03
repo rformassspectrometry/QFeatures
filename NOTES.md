@@ -300,6 +300,11 @@ issue](https://github.com/rformassspectrometry/QFeatures/issues/171).
   made accessible as part of a more general `batchCorrect()`
   interface, that can also be used for combat and limma.
 
+## scpdata
+
+- Keep [adding new
+  datasets](https://github.com/UCLouvain-CBIO/scpdata/issues/15).
+
 ## QFeatures
 
 - [All QFeatures functions should add
