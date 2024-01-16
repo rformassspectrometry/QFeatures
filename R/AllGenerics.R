@@ -4,10 +4,6 @@
 ##' @rdname AllGenerics
 NULL
 
-
-setGeneric("filterFeatures",
-           function(object, filter, ...) standardGeneric("filterFeatures"))
-
 setGeneric("subsetByFeature",
            function(x, y, ...) standardGeneric("subsetByFeature"))
 

@@ -1,6 +1,6 @@
 Package: QFeatures
 Title: Quantitative features for mass spectrometry data
-Version: 1.13.1
+Version: 1.13.2
 Authors@R: c(person("Laurent", "Gatto",
                     email = "laurent.gatto@uclouvain.be",
                     comment = c(ORCID = "0000-0002-1520-2268"),
@@ -24,7 +24,7 @@ Imports:
    IRanges,
    SummarizedExperiment,
    BiocGenerics,
-   ProtGenerics (>= 1.27.1),
+   ProtGenerics (>= 1.35.1),
    AnnotationFilter,
    lazyeval,
    Biobase,
@@ -82,4 +82,4 @@ Collate:
     'utils.R'
     'display.R'
 Roxygen: list(markdown=TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.0
