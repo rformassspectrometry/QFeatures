@@ -1,5 +1,9 @@
 # QFeatures 1.13
 
+## QFeatures 1.13.2
+
+- Move the `filterFeatures` generic method to `ProtGenerics`.
+
 ## QFeatures 1.13.1
 
 - Fix typo in vigette.

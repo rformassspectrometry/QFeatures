@@ -236,6 +236,8 @@ VariableFilter <- function(field,
 ##'
 ##' @exportMethod filterFeatures
 ##'
+##' @importMethodsFrom ProtGenerics filterFeatures
+##' 
 ##' @rdname QFeatures-filtering
 setMethod("filterFeatures",
           c("QFeatures", "AnnotationFilter"),
