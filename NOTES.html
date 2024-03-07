@@ -216,6 +216,40 @@ colData names(0):</code></pre>
 <li>Interest in <a href="https://github.com/rformassspectrometry/QFeatures/issues/188" class="external-link">pseudo-bulking</a>, which should work out-of-the-box, since the colData is unique for all assaya (Chris to address during post-doc).</li>
 </ul></div>
 </div>
+<div class="section level1">
+<h1 id="tabular-input-issue-199">Tabular input (issue 199)<a class="anchor" aria-label="anchor" href="#tabular-input-issue-199"></a></h1>
+<ul><li>change readSCP() so that it produces SE. The only change required is to use readSummarizedExperiment() instead of readSingleCellExperiment().</li>
+<li>This new function can them be used by <code>readQFeaturesFromDIANN()</code> to generate a <code>QFeatures</code> object with SEs. <code>readSCPfromDIANN()</code> would then use that one, and convert elements to SCE objects.</li>
+</ul><p>My preference is to merge readQFeatures() and readSCP() to have both behaviours. The best might even to have methods that dispatch on two arguments, the first one containing a data.frame in both cases (could also be a character with a file name, at least in the simple, current readQFeatures() case), and either a data.frame (current readSCP()), or a vector (current readQFeatures()).</p>
+<pre><code><span><span class="kw">setGeneric</span><span class="op">(</span><span class="st">"readFOO"</span>,</span>
+<span>           <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span><span class="op">)</span></span>
+<span>               <span class="fu"><a href="https://rdrr.io/r/base/standardGeneric.html" class="external-link">standardGeneric</a></span><span class="op">(</span><span class="st">"readFOO"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">setMethod</span><span class="op">(</span><span class="st">"readFOO"</span>,</span>
+<span>          <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"data.frame"</span>, <span class="st">"data.frame"</span><span class="op">)</span>,</span>
+<span>          <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
+<span>              <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"two dfs"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">setMethod</span><span class="op">(</span><span class="st">"readFOO"</span>,</span>
+<span>          <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"data.frame"</span>, <span class="st">"vector"</span><span class="op">)</span>,</span>
+<span>          <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
+<span>              <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"one df and one vector"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">setMethod</span><span class="op">(</span><span class="st">"readFOO"</span>,</span>
+<span>          <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"character"</span>, <span class="st">"vector"</span><span class="op">)</span>,</span>
+<span>          <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
+<span>              <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"one character and one vector"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="fu">readFOO</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">readFOO</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">readFOO</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">readFOO</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">readFOO</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">readFOO</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+</div>
 
 
   </div>
