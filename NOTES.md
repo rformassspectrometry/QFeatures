@@ -322,3 +322,50 @@ issue](https://github.com/rformassspectrometry/QFeatures/issues/171).
   [pseudo-bulking](https://github.com/rformassspectrometry/QFeatures/issues/188),
   which should work out-of-the-box, since the colData is unique for
   all assaya (Chris to address during post-doc).
+
+# Tabular input (issue 199)
+
+- change readSCP() so that it produces SE. The only change required is
+  to use readSummarizedExperiment() instead of
+  readSingleCellExperiment().
+- This new function can them be used by `readQFeaturesFromDIANN()` to
+  generate a `QFeatures` object with SEs. `readSCPfromDIANN()` would
+  then use that one, and convert elements to SCE objects.
+
+My preference is to merge readQFeatures() and readSCP() to have
+both behaviours. The best might even to have methods that dispatch
+on two arguments, the first one containing a data.frame in both
+cases (could also be a character with a file name, at least in the
+simple, current readQFeatures() case), and either a data.frame
+(current readSCP()), or a vector (current readQFeatures()).
+
+```
+setGeneric("readFOO",
+           function(x, y, ...)
+               standardGeneric("readFOO"))
+
+setMethod("readFOO",
+          c("data.frame", "data.frame"),
+          function(x, y)
+              message("two dfs"))
+
+setMethod("readFOO",
+          c("data.frame", "vector"),
+          function(x, y)
+              message("one df and one vector"))
+
+setMethod("readFOO",
+          c("character", "vector"),
+          function(x, y)
+              message("one character and one vector"))
+
+
+readFOO(data.frame(), data.frame())
+
+readFOO(data.frame(), character())
+readFOO(data.frame(), numeric())
+readFOO(data.frame(), integer())
+readFOO(data.frame(), logical())
+
+readFOO(character(), character())
+```
