@@ -369,3 +369,22 @@ readFOO(data.frame(), logical())
 
 readFOO(character(), character())
 ```
+
+What annoys me though with this is the naming of the arguments. Often,
+the names in a generic function are generic, such as `object` or `x`
+and `y`. The problem is that the first argument refers to the actual
+data (either as a data.frame, or as the file that contains it), and
+the second one refers to either the vector `ecols` or the data.frame
+`colData`.
+
+- We could simplify this by only supporting a data.frame like object
+  for the first argument. That first argument is currently called
+  `table` (single-assay case) and `featureData` (multi-assay
+  case). This argument could be called `x` for generality, but given
+  that the second one should be more explicit than `y`(see next
+  point), `featureData` or `assayData` would also work.
+
+- The second argument is called `ecol` (single-assay case) and
+  `colData` (multi-assay case). Instead of calling it `y`, it could be
+  called `colAnnotation`, as it either annotates the columns to be
+  used to populate the assay, or the colData.
