@@ -249,7 +249,10 @@ colData names(0):</code></pre>
 <span><span class="fu">readFOO</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">readFOO</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre>
-</div>
+<p>What annoys me though with this is the naming of the arguments. Often, the names in a generic function are generic, such as <code>object</code> or <code>x</code> and <code>y</code>. The problem is that the first argument refers to the actual data (either as a data.frame, or as the file that contains it), and the second one refers to either the vector <code>ecols</code> or the data.frame <code>colData</code>.</p>
+<ul><li><p>We could simplify this by only supporting a data.frame like object for the first argument. That first argument is currently called <code>table</code> (single-assay case) and <code>featureData</code> (multi-assay case). This argument could be called <code>x</code> for generality, but given that the second one should be more explicit than <code>y</code>(see next point), <code>featureData</code> or <code>assayData</code> would also work.</p></li>
+<li><p>The second argument is called <code>ecol</code> (single-assay case) and <code>colData</code> (multi-assay case). Instead of calling it <code>y</code>, it could be called <code>colAnnotation</code>, as it either annotates the columns to be used to populate the assay, or the colData.</p></li>
+</ul></div>
 
 
   </div>
