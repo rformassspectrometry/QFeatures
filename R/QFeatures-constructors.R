@@ -398,7 +398,7 @@ QFeatures <- function(..., assayLinks = NULL) {
 ##'
 ##' @param ecol A `character(1)` indicating which column in
 ##'     `reportData` contains the quantitative information. Default is
-##'     `"MS1.Area"`.
+##'     `"Ms1.Area"`.
 ##'
 ##' @param multiplexing A `character(1)` indicating the type of
 ##'     multiplexing used in the experiment. Provide `"none"` if the
@@ -430,7 +430,7 @@ QFeatures <- function(..., assayLinks = NULL) {
 ##' ## fix file names
 ##' x[[1]] <- sub("^.+raw-data\\\\", "", x[[1]])
 ##' cd <- data.frame(File.Name = unique(x[[1]]))
-##' readQFeaturesFromDIANN(colData = cd, reportData = x, ecol = "Ms1.Area")
+##' readQFeaturesFromDIANN(colData = cd, reportData = x)
 readQFeaturesFromDIANN <- function(colData, reportData, extractedData = NULL,
                                    ecol = "Ms1.Area", multiplexing = "none",
                                    ...) {
