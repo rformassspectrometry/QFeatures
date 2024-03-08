@@ -30,9 +30,11 @@ Imports:
    Biobase,
    MsCoreUtils (>= 1.7.2),
    igraph,
-   plotly
+   plotly,
+   tidyr
 Suggests:
    SingleCellExperiment,
+   MsDataHub,
    Matrix,
    HDF5Array,
    msdata,

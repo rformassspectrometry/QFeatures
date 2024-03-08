@@ -24,7 +24,8 @@
   sep = "",
   removeEmptyCols = FALSE,
   fnames,
-  verbose = TRUE
+  verbose = TRUE,
+  ecol = NULL
 )
 
 readSummarizedExperiment(assayData, colAnnotation, fnames, ecol = NULL, ...)
@@ -132,7 +133,7 @@ the input table.
 }
 \examples{
 
-###################################
+######################################
 ## Single-set case.
 
 ## Load a data.frame with PSM-level data
@@ -142,8 +143,23 @@ hlpsms[1:10, c(1, 2, 10:11, 14, 17)]
 ## Create the QFeatures object
 qf1 <- readQFeatures(hlpsms, colAnnotation = 1:10, name = "psms")
 qf1
+colData(qf1)
 
-###################################
+######################################
+## Single-set case using a data.frame
+
+## All PSMs were acquired in the same acquisition
+hlpsms$file <- "File1"
+hlpsms[1:10, c(1, 2, 10:11, 14, 17, 29)]
+(colann <- data.frame(file = rep("File1", 10),
+                      Channel = names(hlpsms)[1:10]))
+
+qf2 <- readQFeatures(hlpsms, colAnnotation = colann,
+                     batchCol = "file", channelCol = "Channel")
+qf2
+colData(qf2)
+
+######################################
 ## Multi-set case.
 
 ## Let's simulate 3 different files/batches for that same input
@@ -154,13 +170,18 @@ hlpsms[1:10, c(1, 2, 10:11, 14, 17, 29)]
 (colann <- data.frame(file = rep(paste0("File", 1:3), each = 10),
                       Channel = rep(names(hlpsms)[1:10], 3)))
 
-qf2 <- readQFeatures(hlpsms, colAnnotation = colann,
+qf3 <- readQFeatures(hlpsms, colAnnotation = colann,
                      batchCol = "file", channelCol = "Channel")
-qf2
+qf3
+colData(qf3)
 }
 \seealso{
-The \code{QFeatures} (see \code{\link[=QFeatures]{QFeatures()}}) class to read about how to manipulate the
-resulting \code{QFeatures} object.
+\itemize{
+\item The \code{QFeatures} (see \code{\link[=QFeatures]{QFeatures()}}) class to read about how to
+manipulate the resulting \code{QFeatures} object.
+\item The \code{\link[=readQFeaturesfromDIANN]{readQFeaturesfromDIANN()}} function to import DIA-NN
+quantitative data.
+}
 }
 \author{
 Laurent Gatto, Christophe Vanderaa
