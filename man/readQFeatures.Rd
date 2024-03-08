@@ -3,64 +3,189 @@
 \name{readQFeatures}
 \alias{readQFeatures}
 \alias{readSummarizedExperiment}
+\alias{readQFeatures,data.frame,data.frame}
+\alias{readQFeatures,data.frame,vector}
+\alias{readQFeatures,missing,vector}
+\alias{readQFeatures,data.frame,missing-method}
+\alias{readQFeatures,data.frame,vector-method}
+\alias{readQFeatures,data.frame,data.frame-method}
 \title{QFeatures from tabular data}
 \usage{
-readQFeatures(table, ecol, fnames, ..., name = NULL)
+\S4method{readQFeatures}{data.frame,missing}(assayData, colAnnotation, fnames, name = NULL, ecol = NULL)
 
-readSummarizedExperiment(table, ecol, fnames, ...)
+\S4method{readQFeatures}{data.frame,vector}(assayData, colAnnotation, fnames, name = NULL)
+
+\S4method{readQFeatures}{data.frame,data.frame}(
+  assayData,
+  colAnnotation,
+  runCol,
+  channelCol,
+  suffix = NULL,
+  sep = "",
+  removeEmptyCols = FALSE,
+  fnames,
+  verbose = TRUE,
+  ecol = NULL
+)
+
+readSummarizedExperiment(assayData, colAnnotation, fnames, ecol = NULL, ...)
 }
 \arguments{
-\item{table}{File or object holding the quantitative data. Can be
-either a \code{character(1)} with the path to a text-based
-spreadsheet (comma-separated values by default, but see \code{...})
-or an object that can be coerced to a \code{data.frame}. It is
-advised not to encode characters as factors.}
+\item{assayData}{A \code{data.frame}, or any object that can be coerced
+to a \code{data.frame}, holding the quantitative assay. For
+\code{readSummarizedExperiment()}, this can also be a
+\code{character(1)} to a filename.}
 
-\item{ecol}{A \code{numeric} indicating the indices of the columns to
-be used as expression values. Can also be a \code{character}
-indicating the names of the columns. Caution must be taken if
-the column names are composed of special characters like \code{(}
-or \code{-} that will be converted to a \code{.} by the \code{read.csv}
-function. If \code{ecol} does not match, the error message will
-display the column names as seen by the \code{read.csv} function.}
+\item{colAnnotation}{The type of this parameter will define
+whether the resulting \code{QFeatures} object will contain a single
+or multiple sets.
 
-\item{fnames}{An optional \code{character(1)} or \code{numeric(1)}
-indicating the column to be used as feature names.}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{For the single-set case, a `numeric` indicating the indices of
+the columns to be used as expression values, or a `character`
+indicating the names of the columns, or a `logical` indicating
+the quantitative assay's columns.
 
-\item{...}{Further arguments that can be passed on to \code{read.csv}
-except \code{stringsAsFactors}, which is always \code{FALSE}.}
+For the multi-set case, a `data.frame` or any object that can
+be coerced to a `data.frame`. It is expected to contain all
+the sample annotations. Required fields are the acquisition
+batch (given by `runCol`) and the acquisition channel within
+the batch (e.g. TMT channel, given by
+`channelCol`). Additional fields (e.g. sample type,
+acquisition date,...) are allowed and will be stored as sample
+annotation and will be stored as sample metadata in the
+`QFeatures`'s colData slot.
+}\if{html}{\out{</div>}}}
 
-\item{name}{An \code{character(1)} to name assay in the \code{QFeatures}
-object. If not set, \code{features} is used.}
+\item{fnames}{For the single- and multi-set cases, an optional
+\code{character(1)} or \code{numeric(1)} indicating the column to be
+used as feature names. If missing, in the latter case, the
+rows are named PSM1, PSM2, PSM3, ... Note that rownames must
+be unique in \code{QFeatures} sets.}
+
+\item{name}{For the single-set case, an optional \code{character(1)} to
+name the set in the \code{QFeatures} object. If not set, \code{psms}
+is used.}
+
+\item{ecol}{Same as \code{colAnnotation} for the single-set
+case. Available for backwards compatibility. Default is
+\code{NULL}. If both \code{ecol} and \code{colAnnotation} are set, an error
+is thrown.}
+
+\item{runCol}{For the multi-set case, a \code{numeric(1)} or
+\code{character(1)} pointing to the column of \code{assayData} and
+\code{colAnnotation} that contain the batch names. Make sure that
+the column name in both table are either identical and
+syntactically valid (if you supply a \code{character}) or have the
+same index (if you supply a \code{numeric}). Note that characters
+can be converted to syntactically valid names using
+\code{make.names}}
+
+\item{channelCol}{For the multi-set case, a \code{numeric(1)} or
+\code{character(1)} pointing to the column of \code{colAnnotation} that
+contains the column names of the quantitative data in
+\code{assayData} (see example). Useful for multiplexed experiments
+such as mTRAQ or TMT.}
+
+\item{suffix}{For the multi-set case, a \code{character()} giving the
+suffix of the column names in each set. Sample/single-cell
+(column) names are automatically generated using: batch name +
+sep + suffix. Make sure suffix contains unique character
+elements. The length of the vector should equal the number of
+quantification channels.  If \code{NULL} (default), the suffix is
+derived from the the names of the quantification columns in
+\code{assayData}.}
+
+\item{sep}{A \code{character(1)} that is inserted between the set
+name and the \code{suffix} (see \code{suffix} argument for more
+details).}
+
+\item{removeEmptyCols}{A \code{logical(1)}. If true, the function will
+remove in each batch the columns that contain only missing
+values.}
+
+\item{verbose}{A \code{logical(1)} indicating whether the progress of
+the data reading and formatting should be printed to the
+console. Default is \code{TRUE}.}
+
+\item{...}{Further arguments that can be passed on to \code{\link[=read.csv]{read.csv()}}
+except \code{stringsAsFactors}, which is always \code{FALSE}. Only
+applicable to \code{readSummarizedExperiment()}.}
 }
 \value{
-An instance of class \link{QFeatures} or \link{SummarizedExperiment}.
+An instance of class \code{QFeatures} or
+\code{\link[SummarizedExperiment:RangedSummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}}. For the
+former, the quantitative sets of each run are stored in
+\code{\link[SummarizedExperiment:RangedSummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}} object.
 }
 \description{
-Convert tabular data from a spreadsheet or a \code{data.frame} into a
-\code{QFeatures} object.
-}
-\section{Functions}{
+These functions convert tabular data into dedicated data
+objets. The \code{\link[=readSummarizedExperiment]{readSummarizedExperiment()}} function takes a
+\code{data.frame} and converts it into a \link{SummarizedExperiment} object.
+The \code{\link[=readQFeatures]{readQFeatures()}} function takes a \code{data.frame} and converts
+it into a \code{QFeatures} object (see \code{\link[=QFeatures]{QFeatures()}} for details). Two
+use-cases exist here:
 \itemize{
-\item \code{readQFeatures()}: See description.
-
-\item \code{readSummarizedExperiment()}: Convert tabular data from a spreadsheet or a
-\code{data.frame} into a \code{SummarizedExperiment} object.
-
-}}
+\item The single-set case will generate a \code{QFeatures} object with a
+single \link{SummarizedExperiment} set containing all features of the
+input table.
+\item The multi-set case will generate a \code{QFeatures} object with
+multiple \link{SummarizedExperiment} sets, resulting from splitting
+the input table. This multi-set case should be used when the
+input table contains data for multiple runs/batches?
+}
+}
 \examples{
+
+######################################
+## Single-set case.
 
 ## Load a data.frame with PSM-level data
 data(hlpsms)
+hlpsms[1:10, c(1, 2, 10:11, 14, 17)]
 
 ## Create the QFeatures object
-fts2 <- readQFeatures(hlpsms, ecol = 1:10, name = "psms")
-fts2
+qf1 <- readQFeatures(hlpsms, colAnnotation = 1:10, name = "psms")
+qf1
+colData(qf1)
+
+######################################
+## Single-set case using a data.frame
+
+## All PSMs were acquired in the same acquisition
+hlpsms$file <- "File1"
+hlpsms[1:10, c(1, 2, 10:11, 14, 17, 29)]
+(colann <- data.frame(file = rep("File1", 10),
+                      Channel = names(hlpsms)[1:10]))
+
+qf2 <- readQFeatures(hlpsms, colAnnotation = colann,
+                     runCol = "file", channelCol = "Channel")
+qf2
+colData(qf2)
+
+######################################
+## Multi-set case.
+
+## Let's simulate 3 different files/batches for that same input
+## data.frame, and define a colAnnotation data.frame.
+
+hlpsms$file <- paste0("File", sample(1:3, nrow(hlpsms), replace = TRUE))
+hlpsms[1:10, c(1, 2, 10:11, 14, 17, 29)]
+(colann <- data.frame(file = rep(paste0("File", 1:3), each = 10),
+                      Channel = rep(names(hlpsms)[1:10], 3)))
+
+qf3 <- readQFeatures(hlpsms, colAnnotation = colann,
+                     runCol = "file", channelCol = "Channel")
+qf3
+colData(qf3)
 }
 \seealso{
-The \link{QFeatures} class for an example on how to use
-\code{readQFeatures} and how to further manipulate the resulting data.
+\itemize{
+\item The \code{QFeatures} (see \code{\link[=QFeatures]{QFeatures()}}) class to read about how to
+manipulate the resulting \code{QFeatures} object.
+\item The \code{\link[=readQFeaturesFromDIANN]{readQFeaturesFromDIANN()}} function to import DIA-NN
+quantitative data.
+}
 }
 \author{
-Laurent Gatto
+Laurent Gatto, Christophe Vanderaa
 }

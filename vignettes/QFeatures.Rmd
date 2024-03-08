@@ -133,7 +133,7 @@ reflect the nature of the data.
 
 ```{r readQFeatures}
 data(hlpsms)
-hl <- readQFeatures(hlpsms, ecol = 1:10, name = "psms")
+hl <- readQFeatures(hlpsms, colAnnotation = 1:10, name = "psms")
 hl
 ```
 

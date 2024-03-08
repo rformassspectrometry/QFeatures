@@ -4,6 +4,10 @@
 ##' @rdname AllGenerics
 NULL
 
+setGeneric("readQFeatures",
+           function(assayData, colAnnotation, ...)
+               standardGeneric("readQFeatures"))
+
 setGeneric("subsetByFeature",
            function(x, y, ...) standardGeneric("subsetByFeature"))
 
