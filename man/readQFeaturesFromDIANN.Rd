@@ -44,7 +44,7 @@ experiment is label-free (default). Available options are:
 }
 \value{
 An instance of class \code{QFeatures}. The expression data of
-each acquisition run is stored in a separate assay as a
+each acquisition run is stored in a separate set as a
 \code{SummarizedExperiment} object.
 \itemize{
 \item The \code{QFeatures} (see \code{\link[=QFeatures]{QFeatures()}}) class to read about how to

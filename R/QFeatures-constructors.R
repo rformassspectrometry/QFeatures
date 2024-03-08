@@ -407,7 +407,7 @@ QFeatures <- function(..., assayLinks = NULL) {
 ##' @param ... Further arguments passed to [readQFeatures()].
 ##'
 ##' @return An instance of class `QFeatures`. The expression data of
-##'     each acquisition run is stored in a separate assay as a
+##'     each acquisition run is stored in a separate set as a
 ##'     `SummarizedExperiment` object.
 ##'
 ##' - The `QFeatures` (see [QFeatures()]) class to read about how to
