@@ -31,7 +31,8 @@ Imports:
    MsCoreUtils (>= 1.7.2),
    igraph,
    plotly,
-   tidyr
+   tidyr,
+   tidyselect
 Suggests:
    SingleCellExperiment,
    MsDataHub,

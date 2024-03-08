@@ -419,6 +419,7 @@ QFeatures <- function(..., assayLinks = NULL) {
 ##' @author Laurent Gatto, Christophe Vanderaa
 ##'
 ##' @importFrom tidyr pivot_wider
+##' @importFrom tidyselect all_of
 ##'
 ##' @export
 ##'
