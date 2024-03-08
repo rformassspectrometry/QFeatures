@@ -48,8 +48,9 @@ starting with `"Intensity."` (note the dot!) are at positions 56 to
 61.
 
 ```{r cptac_cols}
-names(read.delim(f))
-(i <- grep("Intensity\\.", names(read.delim(f))))
+x <- read.delim(f)
+names(x)
+(i <- grep("Intensity\\.", names(x)))
 ```
 
 We now read these data using the `readQFeatures` function. The peptide
@@ -60,7 +61,8 @@ the peptide sequences.
 
 ```{r read_cptac}
 library("QFeatures")
-cptac <- readQFeatures(f, ecol = i, sep = "\t", name = "peptides", fnames = "Sequence")
+cptac <- readQFeatures(x, ecol = i, name = "peptides", fnames = "Sequence")
+cptac
 ```
 
 # Encoding the experimental design

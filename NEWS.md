@@ -1,5 +1,10 @@
 # QFeatures 1.13
 
+## QFeatures 1.13.3
+
+- `readQFeatures()` multi-set support (ported from `scp::readSCP()` -
+  see #199).
+
 ## QFeatures 1.13.2
 
 - Move the `filterFeatures` generic method to `ProtGenerics`.

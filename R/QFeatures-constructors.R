@@ -6,45 +6,50 @@
 ##' objets. The [readSummarizedExperiment()] function takes a
 ##' `data.frame` and converts it into a [SummarizedExperiment] object.
 ##' The [readQFeatures()] function takes a `data.frame` and converts
-##' it into a [QFeatures] object. Two use-cases exist here:
+##' it into a `QFeatures` object (see [QFeatures()] for details). Two
+##' use-cases exist here:
 ##'
-##' - The single-assay case will generate a [QFeatures] object with a
-##'   single [SummarizedExperiment] assay containing all features of
-##'   the input table.
+##' - The single-set case will generate a `QFeatures` object with a
+##'   single [SummarizedExperiment] set containing all features of the
+##'   input table.
 ##'
-##' - The multi-assay case will generate a [QFeatures] object with
-##'   multiple [SummarizedExperiment] assays, resulting from splitting
+##' - The multi-set case will generate a `QFeatures` object with
+##'   multiple [SummarizedExperiment] sets, resulting from splitting
 ##'   the input table.
 ##'
 ##' @param assayData A `data.frame`, or any object that can be coerced
-##'     to a `data.frame`, holding the quantitative assay.
+##'     to a `data.frame`, holding the quantitative assay. For
+##'     `readSummarizedExperiment()`, this can also be a
+##'     `character(1)` to a filename.
 ##'
-##' @param colAnnoation The type of this parameter will define whether
-##'     the resulting [QFeaures] object will contain a single or
-##'     multiple assays.
+##' @param colAnnotation The type of this parameter will define
+##'     whether the resulting `QFeaures` object will contain a single
+##'     or multiple sets.
 ##'
-##'     For the single-assay case, a `numeric` indicating the indices
-##'     of the columns to be used as expression values, or a
-##'     `character` indicating the names of the columns.
+##'     For the single-set case, a `numeric` indicating the indices of
+##'     the columns to be used as expression values, or a `character`
+##'     indicating the names of the columns.
 ##'
-##'     For the multi-assay case, a `data.frame` or any object that
-##'     can be coerced to a `data.frame`. It is expected to contain
-##'     all the sample meta information. Required fields are the
+##'     For the multi-set case, a `data.frame` or any object that can
+##'     be coerced to a `data.frame`. It is expected to contain all
+##'     the sample meta information. Required fields are the
 ##'     acquisition batch (given by `batchCol`) and the acquisition
 ##'     channel within the batch (e.g. TMT channel, given by
 ##'     `channelCol`). Additional fields (e.g. sample type,
 ##'     acquisition date,...) are allowed and will be stored as sample
 ##'     meta data.
 ##'
-##' @param fnames For the single-assay case, an optional
+##' @param fnames For the single- and multi-set cases, an optional
 ##'     `character(1)` or `numeric(1)` indicating the column to be
-##'     used as feature names.
+##'     used as feature names. If missing, in the latter case, the
+##'     rows are named PSM1, PSM2, PSM3, ... Note that rownames must
+##'     be unique in `QFeatures` sets.
 ##'
-##' @param name For the single-assay case, an optional `character(1)`
-##'     to name the assay in the `QFeatures` object. If not set,
-##'     `features` is used.
+##' @param name For the single-set case, an optional `character(1)` to
+##'     name the set in the `QFeatures` object. If not set, `psms`
+##'     is used.
 ##'
-##' @param batchCol For the multi-assay case, a `numeric(1)` or
+##' @param batchCol For the multi-set case, a `numeric(1)` or
 ##'     `character(1)` pointing to the column of `assayData` and
 ##'     `colAnnotation` that contain the batch names. Make sure that
 ##'     the column name in both table are either identical and
@@ -53,13 +58,13 @@
 ##'     can be converted to syntactically valid names using
 ##'     `make.names`
 ##'
-##' @param channelCol For the multi-assay case, a `numeric(1)` or
+##' @param channelCol For the multi-set case, a `numeric(1)` or
 ##'     `character(1)` pointing to the column of `colData` that
 ##'     contains the column names of the quantitative data in
-##'     `featureData` (see Example).
+##'     `assayData` (see Example).
 ##'
-##' @param suffix For the multi-assay case, a `character()` giving the
-##'     suffix of the column names in each assay. Sample/single-cell
+##' @param suffix For the multi-set case, a `character()` giving the
+##'     suffix of the column names in each set. Sample/single-cell
 ##'     (column) names are automatically generated using: batch name +
 ##'     sep + suffix. Make sure suffix contains unique character
 ##'     elements. The length of the vector should equal the number of
@@ -67,7 +72,7 @@
 ##'     derived from the the names of the quantification columns in
 ##'     `assayData`.
 ##'
-##' @param sep A `character(1)` that is inserted between the assay
+##' @param sep A `character(1)` that is inserted between the set
 ##'     name and the `suffix` (see `suffix` argument for more
 ##'     details).
 ##'
@@ -75,23 +80,28 @@
 ##'     remove in each batch the columns that contain only missing
 ##'     values.
 ##'
+##' @param ecol Same as `colAnnotation` for the single-set
+##'     case. Available for backwards compatibility. Default is
+##'     `NULL`. If both `ecol` and `colAnnotation` are set, an error
+##'     is thrown.
+##'
 ##' @param verbose A `logical(1)` indicating whether the progress of
 ##'     the data reading and formatting should be printed to the
 ##'     console. Default is `TRUE`.
 ##'
-##' @return An instance of class [QFeatures] or
-##'     [SummarizedExperiment]. For the former, the expression data of
-##'     each batch is stored in a separate assay as a
-##'     [SummarizedExperiment] object.
+##' @return An instance of class `QFeatures` or
+##'     [SummarizedExperiment::SummarizedExperiment()]. For the
+##'     former, the expression data of each batch is stored in a
+##'     separate set as a
+##'     [SummarizedExperiment::SummarizedExperiment()] object.
 ##'
 ##' @author Laurent Gatto, Christophe Vanderaa
 ##'
 ##' @importFrom methods new validObject
 ##' @import SummarizedExperiment
 ##'
-##' @seealso The [QFeatures] class for an example on how to use
-##'     `readQFeatures` and how to further manipulate the resulting
-##'     data.
+##' @seealso The `QFeatures` (see [QFeatures()]) class to read about how to manipulate the
+##'     resulting `QFeatures` object.
 ##'
 ##' @md
 ##'
@@ -100,47 +110,75 @@
 ##' @aliases readQFeatures
 ##' @aliases readQFeatures,data.frame,data.frame
 ##' @aliases readQFeatures,data.frame,vector
+##' @aliases readQFeatures,missing,vector
 ##' @export
 ##'
 ##' @examples
 ##'
 ##' ###################################
-##' ## Single-assay case.
+##' ## Single-set case.
 ##'
 ##' ## Load a data.frame with PSM-level data
 ##' data(hlpsms)
+##' hlpsms[1:10, c(1, 2, 10:11, 14, 17)]
 ##'
 ##' ## Create the QFeatures object
-##' fts2 <- readQFeatures(hlpsms, colAnnotation = 1:10, name = "psms")
-##' fts2
+##' qf1 <- readQFeatures(hlpsms, colAnnotation = 1:10, name = "psms")
+##' qf1
 ##'
 ##' ###################################
-##' ## Multi-assay case.
-##' ## See scp::readSCP()
+##' ## Multi-set case.
+##'
+##' ## Let's simulate 3 different files/batches for that same input
+##' ## data.frame, and define a colAnnotation data.frame.
+##'
+##' hlpsms$file <- paste0("File", sample(1:3, nrow(hlpsms), replace = TRUE))
+##' hlpsms[1:10, c(1, 2, 10:11, 14, 17, 29)]
+##' (colann <- data.frame(file = rep(paste0("File", 1:3), each = 10),
+##'                       Channel = rep(names(hlpsms)[1:10], 3)))
+##'
+##' qf2 <- readQFeatures(hlpsms, colAnnotation = colann,
+##'                      batchCol = "file", channelCol = "Channel")
+##' qf2
 NULL
 
-## Simple case, with a single table to populate one QFeatures
-## assay.
+## Simple case, with a single table to populate one QFeatures set
 
+##' @rdname readQFeatures
+##' @export
+setMethod("readQFeatures", c("data.frame", "missing"),
+          function(assayData, colAnnotation,
+                   fnames, name = NULL, ecol = NULL) {
+              if (is.null(ecol))
+                  stop("Please provide a 'colAnnotaion'.")
+              stopifnot(is.vector(ecol))
+              colAnnotation <- ecol
+              .readQFeatures1(assayData, colAnnotation,
+                              fnames, name)
+          })
+
+##' @rdname readQFeatures
 ##' @export
 setMethod("readQFeatures", c("data.frame", "vector"),
           function(assayData, colAnnotation,
                    fnames, name = NULL)
               .readQFeatures1(assayData, colAnnotation,
-                              fnames, name = NULL))
+                              fnames, name))
+
+
 
 ## Second case, with a single table to populate multiple QFeatures
-## assay. Only from a data.frame (not a file name), handled by
-## .readQFeatures2(). The second argument is the colData.
+## sets. Only from a data.frame, handled by .readQFeatures2().
 
+##' @rdname readQFeatures
 ##' @export
 setMethod("readQFeatures", c("data.frame", "data.frame"),
           function(assayData, colAnnotation,
                    batchCol, channelCol, suffix = NULL, sep = "",
-                   removeEmptyCols = FALSE, verbose = TRUE)
-              .readQFeatures2(featureData, colData, batchCol, channelCol,
+                   removeEmptyCols = FALSE, fnames, verbose = TRUE)
+              .readQFeatures2(assayData, colAnnotation, batchCol, channelCol,
                               suffix = NULL, sep = "", removeEmptyCols = FALSE,
-                              verbose = TRUE))
+                              fnames, verbose = TRUE))
 ##' @export
 ##'
 ##' @rdname readQFeatures
@@ -148,10 +186,19 @@ setMethod("readQFeatures", c("data.frame", "data.frame"),
 ##' @importFrom utils read.csv
 ##'
 ##' @param ... Further arguments that can be passed on to [read.csv()]
-##'     except `stringsAsFactors`, which is always `FALSE`.
+##'     except `stringsAsFactors`, which is always `FALSE`. Only
+##'     applicable to `readSummarizedExperiment()`.
 readSummarizedExperiment <- function(assayData, colAnnotation,
-                                     fnames, ...) {
-    ecol <- colAnnotation ## still use former arg name
+                                     fnames, ecol = NULL, ...) {
+    if (missing(colAnnotation)) {
+        if (is.null(ecol))
+            stop("Please provide a 'colAnnotaion'.")
+    } else {
+        ## There is a colAnnotation
+        if (!is.vector(colAnnotation))
+            stop("'colAnnotation', must be a vector.")
+        ecol <- colAnnotation
+    }
     if (is.data.frame(assayData)) xx <- assayData
     else {
         args <- list(...)
@@ -225,7 +272,7 @@ QFeatures <- function(..., assayLinks = NULL) {
     }
     cd <- DataFrame(row.names = colnames(se))
     if (is.null(name))
-        name <- "features"
+        name <- "psms"
     el <- structure(list(se), .Names = name[1])
     al <- AssayLinks(AssayLink(name = name[1]))
     ans <- MultiAssayExperiment(el, colData = cd)
@@ -240,14 +287,18 @@ QFeatures <- function(..., assayLinks = NULL) {
 .readQFeatures2 <- function(assayData, colAnnotation,
                             batchCol, channelCol, suffix = NULL,
                             sep = "", removeEmptyCols = FALSE,
-                            verbose = TRUE) {
+                            fnames, verbose = TRUE) {
+    if (missing(batchCol))
+        stop("Please provide a 'batchCol'.")
+    if (missing(channelCol))
+        stop("Please provide a 'channelCol'.")
     ## Check the batch column name
     if (!identical(make.names(batchCol), batchCol))
         stop("'batchCol' is not a syntactically valid column name. ",
              "See '?make.names' for converting the column names to ",
              "valid names, e.g. '", batchCol, "' -> '",
              make.names(batchCol), "'")
-    colData <- as.data.frame(colData)
+    colData <- as.data.frame(colAnnotation)
     ## Get the column contain the expression data
     ecol <- unique(colData[, channelCol])
     ## Get the sample suffix
@@ -255,10 +306,13 @@ QFeatures <- function(..., assayLinks = NULL) {
         suffix <- ecol
     ## Create the SummarizedExperiment object
     if (verbose) message("Loading data as a 'SummarizedExperiment' object")
-    se <- readSummarizedExperiment(assayData,
-                                   colAnnotation)
-    if (is.null(list(...)$row.names))
+    se <- readSummarizedExperiment(assayData, ecol)
+    if (missing(fnames)) {
         rownames(se) <- paste0("PSM", seq_len(nrow(se)))
+    } else {
+        stopifnot(fnames %in% names(rowData(se)))
+        rownames(se) <- rowData(se)[, fnames]
+    }
     ## Check the link between colData and se
     mis <- !rowData(se)[, batchCol] %in% colData[, batchCol]
     if (any(mis)) {

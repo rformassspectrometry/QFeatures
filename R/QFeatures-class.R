@@ -26,7 +26,7 @@
 ##' considered the main assay.
 ##'
 ##' The recommended way to create `QFeatures` objects is the use the
-##' `readQFeatures()` function, that creates an instance from tabular
+##' [readQFeatures()] function, that creates an instance from tabular
 ##' data. The `QFeatures` constructor can be used to create objects
 ##' from their bare parts.  It is the user's responsability to make
 ##' sure that these match the class validity requirements.
@@ -177,7 +177,10 @@
 ##'
 ##' @name QFeatures
 ##'
-##' @aliases QFeatures QFeatures-class class:QFeatures addAssay dims,QFeatures-method show,QFeatures-method [,QFeatures,ANY,ANY,ANY-method [,QFeatures,character,ANY,ANY-method
+##' @aliases QFeatures QFeatures-class class:QFeatures
+##' @aliases addAssay
+##' @aliases dims,QFeatures-method show,QFeatures-method
+##' @aliases [,QFeatures,ANY,ANY,ANY-method [,QFeatures,character,ANY,ANY-method
 ##'
 ##' @aliases rowDataNames selectRowData
 ##'
