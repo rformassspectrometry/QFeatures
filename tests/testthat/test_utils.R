@@ -1,4 +1,4 @@
-test_that(".splitSC", {
+test_that(".splitSE", {
     m <- matrix(1:100, ncol = 10,
                 dimnames = list(paste0("row", 1:10),
                                 paste0("col", 1:10)))

@@ -18,7 +18,7 @@
 \S4method{readQFeatures}{data.frame,data.frame}(
   assayData,
   colAnnotation,
-  batchCol,
+  runCol,
   channelCol,
   suffix = NULL,
   sep = "",
@@ -37,21 +37,23 @@ to a \code{data.frame}, holding the quantitative assay. For
 \code{character(1)} to a filename.}
 
 \item{colAnnotation}{The type of this parameter will define
-whether the resulting \code{QFeaures} object will contain a single
+whether the resulting \code{QFeatures} object will contain a single
 or multiple sets.
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{For the single-set case, a `numeric` indicating the indices of
 the columns to be used as expression values, or a `character`
-indicating the names of the columns.
+indicating the names of the columns, or a `logical` indicating
+the quantitative assay's columns.
 
 For the multi-set case, a `data.frame` or any object that can
 be coerced to a `data.frame`. It is expected to contain all
-the sample meta information. Required fields are the
-acquisition batch (given by `batchCol`) and the acquisition
-channel within the batch (e.g. TMT channel, given by
+the sample annotations. Required fields are the acquisition
+batch (given by `runCol`) and the acquisition channel within
+the batch (e.g. TMT channel, given by
 `channelCol`). Additional fields (e.g. sample type,
 acquisition date,...) are allowed and will be stored as sample
-meta data.
+annotation and will be stored as sample metadata in the
+`QFeatures`'s colData slot.
 }\if{html}{\out{</div>}}}
 
 \item{fnames}{For the single- and multi-set cases, an optional
@@ -69,7 +71,7 @@ case. Available for backwards compatibility. Default is
 \code{NULL}. If both \code{ecol} and \code{colAnnotation} are set, an error
 is thrown.}
 
-\item{batchCol}{For the multi-set case, a \code{numeric(1)} or
+\item{runCol}{For the multi-set case, a \code{numeric(1)} or
 \code{character(1)} pointing to the column of \code{assayData} and
 \code{colAnnotation} that contain the batch names. Make sure that
 the column name in both table are either identical and
@@ -79,9 +81,10 @@ can be converted to syntactically valid names using
 \code{make.names}}
 
 \item{channelCol}{For the multi-set case, a \code{numeric(1)} or
-\code{character(1)} pointing to the column of \code{colData} that
+\code{character(1)} pointing to the column of \code{colAnnotation} that
 contains the column names of the quantitative data in
-\code{assayData} (see Example).}
+\code{assayData} (see example). Useful for multiplexed experiments
+such as mTRAQ or TMT.}
 
 \item{suffix}{For the multi-set case, a \code{character()} giving the
 suffix of the column names in each set. Sample/single-cell
@@ -111,12 +114,11 @@ applicable to \code{readSummarizedExperiment()}.}
 \value{
 An instance of class \code{QFeatures} or
 \code{\link[SummarizedExperiment:RangedSummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}}. For the
-former, the expression data of each batch is stored in a
-separate set as a
+former, the quantitative sets of each run are stored in
 \code{\link[SummarizedExperiment:RangedSummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}} object.
 }
 \description{
-These functions convert tabular data into dedicate data
+These functions convert tabular data into dedicated data
 objets. The \code{\link[=readSummarizedExperiment]{readSummarizedExperiment()}} function takes a
 \code{data.frame} and converts it into a \link{SummarizedExperiment} object.
 The \code{\link[=readQFeatures]{readQFeatures()}} function takes a \code{data.frame} and converts
@@ -128,7 +130,8 @@ single \link{SummarizedExperiment} set containing all features of the
 input table.
 \item The multi-set case will generate a \code{QFeatures} object with
 multiple \link{SummarizedExperiment} sets, resulting from splitting
-the input table.
+the input table. This multi-set case should be used when the
+input table contains data for multiple runs/batches?
 }
 }
 \examples{
@@ -155,7 +158,7 @@ hlpsms[1:10, c(1, 2, 10:11, 14, 17, 29)]
                       Channel = names(hlpsms)[1:10]))
 
 qf2 <- readQFeatures(hlpsms, colAnnotation = colann,
-                     batchCol = "file", channelCol = "Channel")
+                     runCol = "file", channelCol = "Channel")
 qf2
 colData(qf2)
 
@@ -171,7 +174,7 @@ hlpsms[1:10, c(1, 2, 10:11, 14, 17, 29)]
                       Channel = rep(names(hlpsms)[1:10], 3)))
 
 qf3 <- readQFeatures(hlpsms, colAnnotation = colann,
-                     batchCol = "file", channelCol = "Channel")
+                     runCol = "file", channelCol = "Channel")
 qf3
 colData(qf3)
 }

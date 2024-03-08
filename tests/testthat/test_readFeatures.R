@@ -58,7 +58,7 @@ test_that("readSummarizedExperiment", {
     expect_error(readSummarizedExperiment(x, colAnnotation = ecol, name = "psms"))
     expect_error(readSummarizedExperiment(x, ecol = 1:10, name = "psms",
                                           fnames = "not_present"))
-    expect_error(readSummarizedExperiment(f, colAnnotation = 1:10, name = "psms",
+    expect_error(readSummarizedExperiment(x, colAnnotation = 1:10, name = "psms",
                                           fnames = "not_present"))
     expect_true(inherits(ft1, "SummarizedExperiment"))
 })
@@ -71,7 +71,7 @@ test_that("readQFeatures: correct use", {
     #####################################
     ## Multiple batches
     qf <- readQFeatures(x, colann,
-                        batchCol = "file",
+                        runCol = "file",
                         channelCol = "Channel")
     expect_identical(sort(names(qf)), sort(unique(x$file)))
     expect_true(all(dims(qf)[2, ] == 10L))
@@ -89,7 +89,7 @@ test_that("readQFeatures: correct use", {
         dplyr::filter(file == "File1")
     qf <- readQFeatures(onebatch,
                         colann,
-                        batchCol = "file",
+                        runCol = "file",
                         channelCol = "Channel")
     expect_identical(dims(qf)[1, ],
                      c("File1" = nrow(onebatch)))
@@ -98,7 +98,7 @@ test_that("readQFeatures: correct use", {
     #####################################
     ## Test remove empty columns
     qf <- readQFeatures(x, colann,
-                        batchCol = "file",
+                        runCol = "file",
                         channelCol = "Channel",
                         removeEmptyCols = TRUE)
     expect_identical(sort(names(qf)), sort(unique(x$file)))
@@ -107,7 +107,7 @@ test_that("readQFeatures: correct use", {
     #####################################
     ## Test suffix
     qf <- readQFeatures(x, colann,
-                        batchCol = "file",
+                        runCol = "file",
                         channelCol = "Channel",
                         suffix = paste0("_TMT", 1:10))
     expectedCols <- paste0(rep(unique(x$file), 10),
@@ -121,7 +121,7 @@ test_that("readQFeatures: correct use", {
     #####################################
     ## Test sep
     qf <- readQFeatures(x, colann,
-                        batchCol = "file",
+                        runCol = "file",
                         channelCol = "Channel",
                         suffix = paste0("TMT", 1:10),
                         sep = ".")
@@ -140,7 +140,7 @@ test_that("readQFeatures: warnings", {
     expect_warning(qf <- readQFeatures(x,
                                        dplyr::filter(colann,
                                                       file == "File1"),
-                                        batchCol = "file",
+                                        runCol = "file",
                                         channelCol = "Channel"),
                    regexp = "Missing metadata. The features are removed")
     expect_identical(names(qf), "File1")
@@ -151,14 +151,14 @@ test_that("readQFeatures: warnings", {
 test_that("readQFeatures: error", {
     ## Suffix has not correct size
     expect_error(qf <- readQFeatures(x, colann,
-                                     batchCol = "file",
+                                     runCol = "file",
                                      channelCol = "Channel",
                                      suffix = (1:2)),
                  regexp = "invalid rownames length")
     ## Suffix is not unique
     expect_error(expect_warning(
         qf <- readQFeatures(x, colann,
-                            batchCol = "file",
+                            runCol = "file",
                             channelCol = "Channel",
                             suffix = rep(1, 10)),
         regexp = "non-unique values"),

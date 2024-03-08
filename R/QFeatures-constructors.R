@@ -1,8 +1,8 @@
-#' @title QFeatures from tabular data
+##' @title QFeatures from tabular data
 ##'
 ##' @description
 ##'
-##' These functions convert tabular data into dedicate data
+##' These functions convert tabular data into dedicated data
 ##' objets. The [readSummarizedExperiment()] function takes a
 ##' `data.frame` and converts it into a [SummarizedExperiment] object.
 ##' The [readQFeatures()] function takes a `data.frame` and converts
@@ -15,7 +15,8 @@
 ##'
 ##' - The multi-set case will generate a `QFeatures` object with
 ##'   multiple [SummarizedExperiment] sets, resulting from splitting
-##'   the input table.
+##'   the input table. This multi-set case should be used when the
+##'   input table contains data for multiple runs/batches?
 ##'
 ##' @param assayData A `data.frame`, or any object that can be coerced
 ##'     to a `data.frame`, holding the quantitative assay. For
@@ -23,21 +24,23 @@
 ##'     `character(1)` to a filename.
 ##'
 ##' @param colAnnotation The type of this parameter will define
-##'     whether the resulting `QFeaures` object will contain a single
+##'     whether the resulting `QFeatures` object will contain a single
 ##'     or multiple sets.
 ##'
 ##'     For the single-set case, a `numeric` indicating the indices of
 ##'     the columns to be used as expression values, or a `character`
-##'     indicating the names of the columns.
+##'     indicating the names of the columns, or a `logical` indicating
+##'     the quantitative assay's columns.
 ##'
 ##'     For the multi-set case, a `data.frame` or any object that can
 ##'     be coerced to a `data.frame`. It is expected to contain all
-##'     the sample meta information. Required fields are the
-##'     acquisition batch (given by `batchCol`) and the acquisition
-##'     channel within the batch (e.g. TMT channel, given by
+##'     the sample annotations. Required fields are the acquisition
+##'     batch (given by `runCol`) and the acquisition channel within
+##'     the batch (e.g. TMT channel, given by
 ##'     `channelCol`). Additional fields (e.g. sample type,
 ##'     acquisition date,...) are allowed and will be stored as sample
-##'     meta data.
+##'     annotation and will be stored as sample metadata in the
+##'     `QFeatures`'s colData slot.
 ##'
 ##' @param fnames For the single- and multi-set cases, an optional
 ##'     `character(1)` or `numeric(1)` indicating the column to be
@@ -49,7 +52,7 @@
 ##'     name the set in the `QFeatures` object. If not set, `psms`
 ##'     is used.
 ##'
-##' @param batchCol For the multi-set case, a `numeric(1)` or
+##' @param runCol For the multi-set case, a `numeric(1)` or
 ##'     `character(1)` pointing to the column of `assayData` and
 ##'     `colAnnotation` that contain the batch names. Make sure that
 ##'     the column name in both table are either identical and
@@ -59,9 +62,10 @@
 ##'     `make.names`
 ##'
 ##' @param channelCol For the multi-set case, a `numeric(1)` or
-##'     `character(1)` pointing to the column of `colData` that
+##'     `character(1)` pointing to the column of `colAnnotation` that
 ##'     contains the column names of the quantitative data in
-##'     `assayData` (see Example).
+##'     `assayData` (see example). Useful for multiplexed experiments
+##'     such as mTRAQ or TMT.
 ##'
 ##' @param suffix For the multi-set case, a `character()` giving the
 ##'     suffix of the column names in each set. Sample/single-cell
@@ -91,8 +95,7 @@
 ##'
 ##' @return An instance of class `QFeatures` or
 ##'     [SummarizedExperiment::SummarizedExperiment()]. For the
-##'     former, the expression data of each batch is stored in a
-##'     separate set as a
+##'     former, the quantitative sets of each run are stored in
 ##'     [SummarizedExperiment::SummarizedExperiment()] object.
 ##'
 ##' @author Laurent Gatto, Christophe Vanderaa
@@ -142,7 +145,7 @@
 ##'                       Channel = names(hlpsms)[1:10]))
 ##'
 ##' qf2 <- readQFeatures(hlpsms, colAnnotation = colann,
-##'                      batchCol = "file", channelCol = "Channel")
+##'                      runCol = "file", channelCol = "Channel")
 ##' qf2
 ##' colData(qf2)
 ##'
@@ -158,12 +161,13 @@
 ##'                       Channel = rep(names(hlpsms)[1:10], 3)))
 ##'
 ##' qf3 <- readQFeatures(hlpsms, colAnnotation = colann,
-##'                      batchCol = "file", channelCol = "Channel")
+##'                      runCol = "file", channelCol = "Channel")
 ##' qf3
 ##' colData(qf3)
 NULL
 
-## Simple case, with a single table to populate one QFeatures set
+########################################################################
+## Single-set case, with a single table to populate one QFeatures set.
 
 ##' @rdname readQFeatures
 ##' @export
@@ -187,20 +191,20 @@ setMethod("readQFeatures", c("data.frame", "vector"),
                               fnames, name))
 
 
-
-## Second case, with a single table to populate multiple QFeatures
-## sets. Only from a data.frame, handled by .readQFeatures2().
+########################################################################
+## Multi-set case, with a single table to populate multiple QFeatures
+## sets.
 
 ##' @rdname readQFeatures
 ##' @export
 setMethod("readQFeatures", c("data.frame", "data.frame"),
           function(assayData, colAnnotation,
-                   batchCol, channelCol, suffix = NULL, sep = "",
+                   runCol, channelCol, suffix = NULL, sep = "",
                    removeEmptyCols = FALSE, fnames, verbose = TRUE,
                    ecol = NULL) {
               if (!is.null(ecol))
                   warning("Using 'colAnnotation' and ignoring 'ecol'.")
-              .readQFeatures2(assayData, colAnnotation, batchCol,
+              .readQFeatures2(assayData, colAnnotation, runCol,
                               channelCol, suffix, sep,
                               removeEmptyCols, fnames, verbose)
           })
@@ -310,22 +314,18 @@ QFeatures <- function(..., assayLinks = NULL) {
 }
 
 .readQFeatures2 <- function(assayData, colAnnotation,
-                            batchCol, channelCol, suffix = NULL,
+                            runCol, channelCol, suffix = NULL,
                             sep = "", removeEmptyCols = FALSE,
                             fnames, verbose = TRUE) {
-    if (missing(batchCol))
-        stop("Please provide a 'batchCol'.")
-    if (missing(channelCol))
-        stop("Please provide a 'channelCol'.")
     ## Check the batch column name
-    if (!identical(make.names(batchCol), batchCol))
-        stop("'batchCol' is not a syntactically valid column name. ",
+    if (!identical(make.names(runCol), runCol))
+        stop("'runCol' is not a syntactically valid column name. ",
              "See '?make.names' for converting the column names to ",
-             "valid names, e.g. '", batchCol, "' -> '",
-             make.names(batchCol), "'")
-    colData <- as.data.frame(colAnnotation)
+             "valid names, e.g. '", runCol, "' -> '",
+             make.names(runCol), "'")
+    colAnnotation <- as.data.frame(colAnnotation)
     ## Get the column contain the expression data
-    ecol <- unique(colData[, channelCol])
+    ecol <- unique(colAnnotation[, channelCol])
     ## Get the sample suffix
     if (is.null(suffix))
         suffix <- ecol
@@ -339,15 +339,15 @@ QFeatures <- function(..., assayLinks = NULL) {
         rownames(se) <- rowData(se)[, fnames]
     }
     ## Check the link between colData and se
-    mis <- !rowData(se)[, batchCol] %in% colData[, batchCol]
+    mis <- !rowData(se)[, runCol] %in% colAnnotation[, runCol]
     if (any(mis)) {
         warning("Missing metadata. The features are removed for ",
-                paste0(unique(rowData(se)[mis, batchCol]), collapse = ", "))
+                paste0(unique(rowData(se)[mis, runCol]), collapse = ", "))
         se <- se[!mis, ]
     }
     ## Split the SummarizedExperiment object by batch column
-    if (verbose) message("Splitting data based on '", batchCol, "'")
-    se <- .splitSE(se, f = batchCol)
+    if (verbose) message("Splitting data based on '", runCol, "'")
+    se <- .splitSE(se, f = runCol)
     ## Clean each element in the data list
     for (i in seq_along(se)) {
         ## Add unique sample identifiers
@@ -358,11 +358,11 @@ QFeatures <- function(..., assayLinks = NULL) {
             se[[i]] <- se[[i]][, sel]
         }
     }
-    if (verbose) message("Formatting sample metadata (colData)")
+    if (verbose) message("Formatting sample annotations (colData).")
     ## Create the colData
     cd <- DataFrame(row.names = unlist(lapply(se, colnames)))
-    rownames(colData) <- paste0(colData[, batchCol], sep, suffix)
-    cd <- cbind(cd, colData[rownames(cd), ])
+    rownames(colAnnotation) <- paste0(colAnnotation[, runCol], sep, suffix)
+    cd <- cbind(cd, colAnnotation[rownames(cd), ])
     ## Store the data as a QFeatures object
     if (verbose) message("Formatting data as a 'QFeatures' object")
     QFeatures(experiments = se, colData = cd)
@@ -377,16 +377,17 @@ QFeatures <- function(..., assayLinks = NULL) {
 ##' This function takes the output tables from DIA-NN and converts them
 ##' into a `QFeatures` object.
 ##'
-##' @param colData A `data.frame` or any object that can be coerced to
-##'     a `data.frame`. `colData` is expected to contains all the
-##'     sample annotations. We require the table to contain a column
-##'     called `File.Name` that links to the `File.Name` in the DIA-NN
-##'     report table. If `multiplexing = "mTRAQ"`, we require a second
-##'     column called `Label` that links the label to the sample (the
-##'     labels identified by DIA-NN can be retrieved from `Modified
-##'     Sequence` column in the report table).
+##' @param colAnnotation A `data.frame` or any object that can be
+##'     coerced to a `data.frame`. `colAnnotation` is expected to
+##'     contains all the sample annotations. We require the table to
+##'     contain a column called `File.Name` that links to the
+##'     `File.Name` in the DIA-NN report table. If `multiplexing =
+##'     "mTRAQ"`, we require a second column called `Label` that links
+##'     the label to the sample (the labels identified by DIA-NN can
+##'     be retrieved from `Modified Sequence` column in the report
+##'     table).
 ##'
-##' @param reportData A `data.frame` or any object that can be coerced
+##' @param assayData A `data.frame` or any object that can be coerced
 ##'     to a data.frame that contains the data from the `Report.tsv`
 ##'     file generated by DIA-NN.
 ##'
@@ -397,7 +398,7 @@ QFeatures <- function(..., assayLinks = NULL) {
 ##'     where DIA-NN was run using the `plexdia` module.
 ##'
 ##' @param ecol A `character(1)` indicating which column in
-##'     `reportData` contains the quantitative information. Default is
+##'     `assayData` contains the quantitative information. Default is
 ##'     `"Ms1.Area"`.
 ##'
 ##' @param multiplexing A `character(1)` indicating the type of
@@ -407,7 +408,7 @@ QFeatures <- function(..., assayLinks = NULL) {
 ##'
 ##' @param ... Further arguments passed to [readQFeatures()].
 ##'
-##' @return An instance of class `QFeatures`. The expression data of
+##' @return An instance of class `QFeatures`. The quantiative data of
 ##'     each acquisition run is stored in a separate set as a
 ##'     `SummarizedExperiment` object.
 ##'
@@ -430,21 +431,21 @@ QFeatures <- function(..., assayLinks = NULL) {
 ##' ## fix file names
 ##' x[[1]] <- sub("^.+raw-data\\\\", "", x[[1]])
 ##' cd <- data.frame(File.Name = unique(x[[1]]))
-##' readQFeaturesFromDIANN(colData = cd, reportData = x)
-readQFeaturesFromDIANN <- function(colData, reportData, extractedData = NULL,
+##' readQFeaturesFromDIANN(colAnnotation = cd, assayData = x)
+readQFeaturesFromDIANN <- function(colAnnotation, assayData, extractedData = NULL,
                                    ecol = "Ms1.Area", multiplexing = "none",
                                    ...) {
     suppArgs <- .checkDiannArguments(
-        colData, reportData, extractedData, ecol, multiplexing, ...
+        colAnnotation, assayData, extractedData, ecol, multiplexing, ...
     )
     if (multiplexing == "mTRAQ") {
-        reportData <- .formatMtraqReportData(reportData, colData, ecol)
+        assayData <- .formatMtraqReportData(assayData, colAnnotation, ecol)
     } else if (multiplexing == "none") {
-        colData$Label <- ecol
+        colAnnotation$Label <- ecol
     }
     allArgs <- c(suppArgs, list(
-        assayData = reportData, colAnnotation = colData,
-        batchCol = "File.Name", channelCol = "Label"
+        assayData = assayData, colAnnotation = colAnnotation,
+        runCol = "File.Name", channelCol = "Label"
     ))
     out <- do.call(readQFeatures, allArgs)
     if (!is.null(extractedData)) {
@@ -456,18 +457,18 @@ readQFeaturesFromDIANN <- function(colData, reportData, extractedData = NULL,
 ## Internal function that checks whether the provided arguments match
 ## the expected input that is generated by DIA-NN.
 ## Parameter description is the same as for `readSCPfromDIANN()`
-.checkDiannArguments <- function(colData, reportData, extractedData,
+.checkDiannArguments <- function(colAnnotation, assayData, extractedData,
                                  ecol, multiplexing, ...) {
     diannReportCols <- c("File.Name", "Precursor.Id", "Modified.Sequence")
-    if (!all(diannReportCols %in% colnames(reportData)))
-        stop("'reportData' is not an expected DIA-NN report table ",
+    if (!all(diannReportCols %in% colnames(assayData)))
+        stop("'assayData' is not an expected DIA-NN report table ",
              "output. This function expects the main output file as ",
              "described here: https://github.com/vdemichev/DiaNN#main-output-reference")
-    if (!ecol %in% colnames(reportData))
-        stop("'", ecol, "' not found in 'reportData'")
-    if (!"File.Name" %in% colnames(colData))
-        stop("'colData' must contain a column named 'File.Name' that provides ",
-             "a link to the 'File.Name' column in 'reportData'")
+    if (!ecol %in% colnames(assayData))
+        stop("'", ecol, "' not found in 'assayData'")
+    if (!"File.Name" %in% colnames(colAnnotation))
+        stop("'colAnnotation' must contain a column named 'File.Name' that provides ",
+             "a link to the 'File.Name' column in 'assayData'")
     if (multiplexing == "none" && !is.null(extractedData))
         stop("Providing 'extractedData' for label-free experiments ",
              "('multiplexed == \"none\"') is not expected. Raise an ",
@@ -498,42 +499,42 @@ readQFeaturesFromDIANN <- function(colData, reportData, extractedData = NULL,
 ## from the precursor ID, identifies constant columns within precursor
 ## and puts the quantification data for different mTRAQ labels in
 ## separate columns (wide format).
-.formatMtraqReportData <- function(reportData, colData, ecol) {
-    reportData$Label <-
-        sub("^.*[Q-](\\d).*$", "\\1", reportData$Modified.Sequence)
-    reportData$Precursor.Id <-
-        gsub("\\(mTRAQ.*?\\)", "(mTRAQ)", reportData$Precursor.Id)
-    .checkLabelsInColData(colData, reportData)
-    idCols <- .findPrecursorVariables(reportData)
+.formatMtraqReportData <- function(assayData, colAnnotation, ecol) {
+    assayData$Label <-
+        sub("^.*[Q-](\\d).*$", "\\1", assayData$Modified.Sequence)
+    assayData$Precursor.Id <-
+        gsub("\\(mTRAQ.*?\\)", "(mTRAQ)", assayData$Precursor.Id)
+    .checkLabelsInColData(colAnnotation, assayData)
+    idCols <- .findPrecursorVariables(assayData)
     pivot_wider(
-        reportData, id_cols = all_of(idCols),
+        assayData, id_cols = all_of(idCols),
         names_from = "Label", values_from = all_of(ecol)
     )
 }
 
 ## Internal function that identifies which variables in the report
 ## data are constant within each precursor (with each run).
-.findPrecursorVariables <- function(reportData) {
-    precIds <- paste0(reportData$Precursor.Id, reportData$File.Name)
+.findPrecursorVariables <- function(assayData) {
+    precIds <- paste0(assayData$Precursor.Id, assayData$File.Name)
     nUniqueIds <- length(unique(precIds))
-    nLevels <- sapply(colnames(reportData), function(x) {
-        nrow(unique(reportData[, c("Precursor.Id", "File.Name", x)]))
+    nLevels <- sapply(colnames(assayData), function(x) {
+        nrow(unique(assayData[, c("Precursor.Id", "File.Name", x)]))
     })
     names(nLevels)[nLevels == nUniqueIds]
 }
 
-## Internal function that ensures that the reportData and the colData
-## are correctly linked.
-.checkLabelsInColData <- function(colData, reportData) {
-    if (!"Label" %in% colnames(colData))
-        stop("'colData' must contain a column named 'Label' that ",
+## Internal function that ensures that the assayData and the
+## colAnnotation are correctly linked.
+.checkLabelsInColData <- function(colAnnotation, assayData) {
+    if (!"Label" %in% colnames(colAnnotation))
+        stop("'colAnnotation' must contain a column named 'Label' that ",
              "provides the mTRAQ reagent used to label the ",
              "samples and/or single cells.")
-    if (any(mis <- !colData$Label %in% reportData$Label)) {
-        stop("Some labels from 'colData$Label' were not found as",
+    if (any(mis <- !colAnnotation$Label %in% assayData$Label)) {
+        stop("Some labels from 'colAnnotation$Label' were not found as",
              "part of the mTRAQ labels found in ",
-             "'reportData$Modified.Sequence': ",
-             paste0(unique(colData$Label[mis]), collapse = ", "))
+             "'assayData$Modified.Sequence': ",
+             paste0(unique(colAnnotation$Label[mis]), collapse = ", "))
     }
     NULL
 }
@@ -542,7 +543,7 @@ readQFeaturesFromDIANN <- function(colData, reportData, extractedData = NULL,
 ## object. The functions first converts the extractedData to a
 ## SummarizedExperiment objects and subsets the SCE for the set of
 ## shared samples. The added assay is automatically linked (using
-## AssayLinks) to the reportData.
+## AssayLinks) to the assayData.
 ## Developer's note: the function assumes that DIA-NN creates sample
 ## names in the extracted data by appending the labels to the run
 ## names
@@ -572,7 +573,7 @@ readQFeaturesFromDIANN <- function(colData, reportData, extractedData = NULL,
 .keepSharedSamples <- function(extractedData, object) {
     cnames <- unique(unlist(colnames(object)))
     if (any(mis <- !cnames %in% colnames(extractedData)))
-        stop("Some columns present in reportData are not found in ",
+        stop("Some columns present in assayData are not found in ",
              "extracted data", paste0(cnames[mis], collapse = ", "),
              "\nAre you sure the two tables were generated from ",
              "the same experiment?")
