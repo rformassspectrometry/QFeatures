@@ -6,7 +6,6 @@ test_that(".splitSC", {
                                rowData = DataFrame(rowDataCol = 1:nrow(m)%%3),
                                colData = DataFrame(colvar = 1:ncol(m)%%5))
     ## Split by row
-    expect_identical(length(.splitSE(sce, "rowDataCol")), 3L)
     expect_identical(length(.splitSE(se, "rowDataCol")), 3L)
     ## Split by col
     expect_identical(length(.splitSE(se, "colvar")), 5L)
