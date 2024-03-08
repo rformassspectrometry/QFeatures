@@ -179,7 +179,7 @@ colData(qf3)
 \itemize{
 \item The \code{QFeatures} (see \code{\link[=QFeatures]{QFeatures()}}) class to read about how to
 manipulate the resulting \code{QFeatures} object.
-\item The \code{\link[=readQFeaturesfromDIANN]{readQFeaturesfromDIANN()}} function to import DIA-NN
+\item The \code{\link[=readQFeaturesFromDIANN]{readQFeaturesFromDIANN()}} function to import DIA-NN
 quantitative data.
 }
 }

@@ -105,7 +105,7 @@
 ##' - The `QFeatures` (see [QFeatures()]) class to read about how to
 ##'   manipulate the resulting `QFeatures` object.
 ##'
-##' - The [readQFeaturesfromDIANN()] function to import DIA-NN
+##' - The [readQFeaturesFromDIANN()] function to import DIA-NN
 ##'   quantitative data.
 ##'
 ##' @md
