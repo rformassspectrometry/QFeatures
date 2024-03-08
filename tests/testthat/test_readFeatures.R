@@ -97,10 +97,10 @@ test_that("readQFeatures: correct use", {
                      c("File1" = 10L))
     #####################################
     ## Test remove empty columns
-    qf <- readSCP(x, colann,
-                  batchCol = "file",
-                  channelCol = "Channel",
-                  removeEmptyCols = TRUE)
+    qf <- readQFeatures(x, colann,
+                        batchCol = "file",
+                        channelCol = "Channel",
+                        removeEmptyCols = TRUE)
     expect_identical(sort(names(qf)), sort(unique(x$file)))
     expect_true(all(dims(qf)[2, ] == rep(10, 3)))
     expect_true(sum(dims(qf)[1, ]) == nrow(x))
