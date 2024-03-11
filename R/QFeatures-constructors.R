@@ -166,48 +166,26 @@
 ##' colData(qf3)
 NULL
 
-########################################################################
-## Single-set case, with a single table to populate one QFeatures set.
-
-##' @rdname readQFeatures
 ##' @export
-setMethod("readQFeatures", c("data.frame", "missing"),
-          function(assayData, colAnnotation,
-                   fnames, name = NULL, ecol = NULL) {
-              if (is.null(ecol))
-                  stop("Please provide a 'colAnnotaion'.")
-              stopifnot(is.vector(ecol))
-              colAnnotation <- ecol
-              .readQFeatures1(assayData, colAnnotation,
-                              fnames, name)
-          })
+##'
+##' @rdname QFeatures-class
+##'
+##' @param assayLinks An optional [AssayLinks] object.
+QFeatures <- function(..., assayLinks = NULL) {
+    ans <- MultiAssayExperiment(...)
+    if (isEmpty(ans)) assayLinks <- AssayLinks()
+    else {
+        if (is.null(assayLinks))
+            assayLinks <- AssayLinks(names = names(ans))
+    }
+    new("QFeatures",
+        ExperimentList = ans@ExperimentList,
+        colData = ans@colData,
+        sampleMap = ans@sampleMap,
+        metadata = ans@metadata,
+        assayLinks = assayLinks)
+}
 
-##' @rdname readQFeatures
-##' @export
-setMethod("readQFeatures", c("data.frame", "vector"),
-          function(assayData, colAnnotation,
-                   fnames, name = NULL)
-              .readQFeatures1(assayData, colAnnotation,
-                              fnames, name))
-
-
-########################################################################
-## Multi-set case, with a single table to populate multiple QFeatures
-## sets.
-
-##' @rdname readQFeatures
-##' @export
-setMethod("readQFeatures", c("data.frame", "data.frame"),
-          function(assayData, colAnnotation,
-                   runCol, channelCol, suffix = NULL, sep = "",
-                   removeEmptyCols = FALSE, fnames, verbose = TRUE,
-                   ecol = NULL) {
-              if (!is.null(ecol))
-                  warning("Using 'colAnnotation' and ignoring 'ecol'.")
-              .readQFeatures2(assayData, colAnnotation, runCol,
-                              channelCol, suffix, sep,
-                              removeEmptyCols, fnames, verbose)
-          })
 ##' @export
 ##'
 ##' @rdname readQFeatures
@@ -221,7 +199,7 @@ readSummarizedExperiment <- function(assayData, colAnnotation,
                                      fnames, ecol = NULL, ...) {
     if (missing(colAnnotation)) {
         if (is.null(ecol))
-            stop("Please provide a 'colAnnotaion'.")
+            stop("Please provide a 'colAnnotation'.")
     } else {
         ## There is a colAnnotation
         if (!is.vector(colAnnotation))
@@ -269,26 +247,206 @@ readSummarizedExperiment <- function(assayData, colAnnotation,
     SummarizedExperiment(assay, rowData = fdata)
 }
 
-
-##' @export
-##'
-##' @rdname QFeatures-class
-##'
-##' @param assayLinks An optional [AssayLinks] object.
-QFeatures <- function(..., assayLinks = NULL) {
-    ans <- MultiAssayExperiment(...)
-    if (isEmpty(ans)) assayLinks <- AssayLinks()
-    else {
-        if (is.null(assayLinks))
-            assayLinks <- AssayLinks(names = names(ans))
+readQFeatures2 <- function(assayData,
+                           colAnnotation = NULL,
+                           runCol = NULL,
+                           quantCols = NULL,
+                           name = "psms",
+                           suffix = NULL,
+                           removeEmptyCols = FALSE,
+                           verbose = TRUE,
+                           ...) {
+    if (verbose) message("Checking arguments.")
+    assayData <- as.data.frame(assayData)
+    if (!is.null(colAnnotation))
+        colAnnotation <- as.data.frame(colAnnotation)
+    quantCols <- .checkQuantCols(assayData, colAnnotation, quantCols)
+    runs <- .checkRunCol(assayData, colAnnotation, runCol)
+    if (verbose) message("Loading data as a 'SummarizedExperiment' object.")
+    se <- readSummarizedExperiment(assayData, quantCols, ...)
+    rownames(se) <- make.unique(rownames(se))
+    if (length(runs)) {
+        if (verbose) message("Splitting data in runs.")
+        el <- .splitSE(se, runs)
+        el <- .createUniqueColnames(el, quantCols)
+    } else {
+        el <- structure(list(se), .Names = name[1])
     }
-    new("QFeatures",
-        ExperimentList = ans@ExperimentList,
-        colData = ans@colData,
-        sampleMap = ans@sampleMap,
-        metadata = ans@metadata,
-        assayLinks = assayLinks)
+    if (removeEmptyCols) el <- .removeEmptyColumns(el)
+    if (verbose) message("Formatting sample annotations (colData).")
+    colData <- .formatColData(el, colAnnotation)
+    if (verbose) message("Formatting data as a 'QFeatures' object.")
+    QFeatures(experiments = el, colData = colAnnotation)
 }
+
+.checkQuantCols <- function(assayData, colAnnotation, quantCols) {
+    if (!is.null(colAnnotation) && !"quantCols" %in% colnames(colAnnotation))
+        stop("'colAnnotation' must contain a column called 'quantCols'")
+    if (is.null(quantCols)) {
+        if (is.null(colAnnotation))
+            stop("'quantCols' and 'colAnnotation' cannot both be NULL.")
+        quantCols <- unique(colAnnotation$quantCols)
+    }
+    if (is.numeric(quantCols) || is.logical(quantCols))
+        quantCols <- colnames(assayData)[quantCols]
+    mis <- quantCols[!quantCols %in% colnames(assayData)]
+    if (!length(mis))
+        stop("Some column names in 'quantCols' are not found ",
+             "in 'assayData': ", paste0(mis, collapse = ", "), ".")
+    quantCols
+}
+
+.checkRunCol <- function(assayData, colAnnotation, runCol) {
+    if (is.null(runCol)) return(NULL)
+    if (!runCol %in% colnames(assayData))
+        stop("'", runCol, "' (provided as 'runCol') not found ",
+             "in 'assayData'.")
+    runs <- assayData[[runCol]]
+    if (!is.null(colAnnotation) &&
+        !"runCol" %in% colnames(colAnnotation)) {
+        stop("When 'runCol' is not NULL, 'colAnnotation' must ",
+             "contain a column called 'runCol'.")
+    }
+    mis <- !runs %in% colAnnotation$runCol
+    if (any(mis)) {
+        warning("Some runs are missing in 'colAnnot': ",
+                paste0(unique(runs[mis]), collapse = ", "))
+    }
+    assayData[[runCol]]
+}
+
+##' Split SummarizedExperiment into an ExperimentList
+##'
+##' The fonction creates an [ExperimentList] containing
+##' [SummarizedExperiment] objects from a [SummarizedExperiment]
+##' object (also works with [SingleCellExperiment] objects). `f` is
+##' used to split `x`` along the rows (`f`` was a feature variable
+##' name) or samples/columns (f was a phenotypic variable name). If f
+##' is passed as a factor, its length will be matched to nrow(x) or
+##' ncol(x) (in that order) to determine if x will be split along the
+##' features (rows) or sample (columns). Hence, the length of f must
+##' match exactly to either dimension.
+##'
+##' This function is not exported and was initially available as
+##' scp::.splitSCE().
+##'
+##' @param x a single [SummarizedExperiment] object
+##'
+##' @param f a factor or a character of length 1. In the latter case,
+##'     `f` will be matched to the row and column data variable names
+##'     (in that order). If a match is found, the respective variable
+##'     is extracted, converted to a factor if needed.
+##' @noRd
+.splitSE <- function(x, f) {
+    ## Check that f is a factor
+    if (is.character(f)) {
+        if (length(f) != 1)
+            stop("'f' must be of lenght one")
+        if (f %in% colnames(rowData(x))) {
+            f <- rowData(x)[, f]
+        }
+        else if (f %in% colnames(colData(x))) {
+            f <- colData(x)[, f]
+        }
+        else {
+            stop("'", f, "' not found in rowData or colData")
+        }
+        if (!is.factor(f))
+            f <- factor(f)
+    }
+    ## Check that the factor matches one of the dimensions
+    if (!length(f) %in% dim(x))
+        stop("length(f) not compatible with dim(x).")
+    if (length(f) == nrow(x)) { ## Split along rows
+        xl <- lapply(split(rownames(x), f = f), function(i) x[i, ])
+    } else { ## Split along columns
+        xl <- lapply(split(colnames(x), f = f), function(i) x[, i])
+    }
+    ## Convert list to an ExperimentList
+    do.call(ExperimentList, xl)
+}
+
+.createUniqueColnames <- function(el, quantCols) {
+    if (length(quantCols) == 1) {
+        suffix <- ""
+    } else {
+        suffix <- paste0("_", quantCols)
+    }
+    for (i in seq_along(el)) {
+        colnames(el[[i]]) <- paste0(names(el)[[i]], suffix)
+    }
+    el
+}
+
+.removeEmptyColumns <- function(el) {
+    for (i in seq_along(el)) {
+        sel <- colSums(is.na(assay(el[[i]]))) != nrow(el[[i]])
+        el[[i]] <- el[[i]][, sel]
+    }
+    el
+}
+
+.formatColData <- function(el, colAnnotation, runs, quantCols) {
+    sampleNames <- unlist(lapply(el, colnames))
+    if (is.null(colAnnotation))
+        return(DataFrame(row.names = unlist(lapply(se, colnames))))
+    if (!length(runs)) {
+        rownames(colAnnotation) <- colAnnotation$quantCols
+    } else {
+        if (length(quantCols) == 1) {
+            rownames(colAnnotation) <- colAnnotation$runCol
+        } else {
+            rownames(colAnnotation) <- paste0(colAnnotation$runCol, "_", colAnnotation$quantCols)
+        }
+    }
+    colData <- colAnnotation[sampleNames, , drop = FALSE]
+    rownames(colData) <- sampleNames ## clean NA in rownames
+    colData
+}
+
+
+########################################################################
+## Single-set case, with a single table to populate one QFeatures set.
+
+##' @rdname readQFeatures
+##' @export
+setMethod("readQFeatures", c("data.frame", "missing"),
+          function(assayData, colAnnotation,
+                   fnames, name = NULL, ecol = NULL) {
+              if (is.null(ecol))
+                  stop("Please provide a 'colAnnotaion'.")
+              stopifnot(is.vector(ecol))
+              colAnnotation <- ecol
+              .readQFeatures1(assayData, colAnnotation,
+                              fnames, name)
+          })
+
+##' @rdname readQFeatures
+##' @export
+setMethod("readQFeatures", c("data.frame", "vector"),
+          function(assayData, colAnnotation,
+                   fnames, name = NULL)
+              .readQFeatures1(assayData, colAnnotation,
+                              fnames, name))
+
+
+########################################################################
+## Multi-set case, with a single table to populate multiple QFeatures
+## sets.
+
+##' @rdname readQFeatures
+##' @export
+setMethod("readQFeatures", c("data.frame", "data.frame"),
+          function(assayData, colAnnotation,
+                   runCol, channelCol, suffix = NULL, sep = "",
+                   removeEmptyCols = FALSE, fnames, verbose = TRUE,
+                   ecol = NULL) {
+              if (!is.null(ecol))
+                  warning("Using 'colAnnotation' and ignoring 'ecol'.")
+              .readQFeatures2(assayData, colAnnotation, runCol,
+                              channelCol, suffix, sep,
+                              removeEmptyCols, fnames, verbose)
+          })
 
 
 .readQFeatures1 <- function(assayData, colAnnotation,
@@ -326,9 +484,6 @@ QFeatures <- function(..., assayLinks = NULL) {
     colAnnotation <- as.data.frame(colAnnotation)
     ## Get the column contain the expression data
     ecol <- unique(colAnnotation[, channelCol])
-    ## Get the sample suffix
-    if (is.null(suffix))
-        suffix <- ecol
     ## Create the SummarizedExperiment object
     if (verbose) message("Loading data as a 'SummarizedExperiment' object")
     se <- readSummarizedExperiment(assayData, ecol)
@@ -348,6 +503,9 @@ QFeatures <- function(..., assayLinks = NULL) {
     ## Split the SummarizedExperiment object by batch column
     if (verbose) message("Splitting data based on '", runCol, "'")
     se <- .splitSE(se, f = runCol)
+    ## Get the sample suffix
+    if (is.null(suffix))
+        suffix <- ecol
     ## Clean each element in the data list
     for (i in seq_along(se)) {
         ## Add unique sample identifiers
