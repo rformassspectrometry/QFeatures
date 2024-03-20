@@ -182,8 +182,10 @@ QFeatures <- function(..., assayLinks = NULL) {
 ##' @param ... Further arguments that can be passed on to [read.csv()]
 ##'     except `stringsAsFactors`, which is always `FALSE`. Only
 ##'     applicable to `readSummarizedExperiment()`.
-readSummarizedExperiment <- function(assayData, quantCols,
-                                     fnames, ecol = NULL, ...) {
+readSummarizedExperiment <- function(assayData,
+                                     quantCols = NULL,
+                                     fnames = NULL,
+                                     ecol = NULL, ...) {
     if (!is.null(ecol)) {
         warning("'ecol' is deprecated, use 'quantCols' in the future.")
         if (is.null(quantCols)) quantCols <- ecol
@@ -195,7 +197,7 @@ readSummarizedExperiment <- function(assayData, quantCols,
         args <- list(...)
         args$file <- assayData
         if ("rownames" %in% names(args)) {
-            if (missing(fnames)) fnames <- args$rownames
+            if (is.null(fnames)) fnames <- args$rownames
             args$rownames <- NULL
         }
         args$stringsAsFactors <- FALSE
@@ -297,6 +299,8 @@ readQFeatures <- function(assayData,
         !"runCol" %in% colnames(colAnnotation)) {
         stop("When 'runCol' is not NULL, 'colAnnotation' must ",
              "contain a column called 'runCol'.")
+    }
+    if (!is.null(colAnnotation)) {
         mis <- !runs %in% colAnnotation$runCol
         if (any(mis)) {
             warning("Some runs are missing in 'colAnnot': ",
