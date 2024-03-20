@@ -67,19 +67,6 @@
 ##'     `assayData` (see example). Useful for multiplexed experiments
 ##'     such as mTRAQ or TMT.
 ##'
-##' @param suffix For the multi-set case, a `character()` giving the
-##'     suffix of the column names in each set. Sample/single-cell
-##'     (column) names are automatically generated using: batch name +
-##'     sep + suffix. Make sure suffix contains unique character
-##'     elements. The length of the vector should equal the number of
-##'     quantification channels.  If `NULL` (default), the suffix is
-##'     derived from the the names of the quantification columns in
-##'     `assayData`.
-##'
-##' @param sep A `character(1)` that is inserted between the set
-##'     name and the `suffix` (see `suffix` argument for more
-##'     details).
-##'
 ##' @param removeEmptyCols A `logical(1)`. If true, the function will
 ##'     remove in each batch the columns that contain only missing
 ##'     values.
@@ -166,110 +153,6 @@
 ##' colData(qf3)
 NULL
 
-########################################################################
-## Single-set case, with a single table to populate one QFeatures set.
-
-##' @rdname readQFeatures
-##' @export
-setMethod("readQFeatures", c("data.frame", "missing"),
-          function(assayData, colAnnotation,
-                   fnames, name = NULL, ecol = NULL) {
-              if (is.null(ecol))
-                  stop("Please provide a 'colAnnotaion'.")
-              stopifnot(is.vector(ecol))
-              colAnnotation <- ecol
-              .readQFeatures1(assayData, colAnnotation,
-                              fnames, name)
-          })
-
-##' @rdname readQFeatures
-##' @export
-setMethod("readQFeatures", c("data.frame", "vector"),
-          function(assayData, colAnnotation,
-                   fnames, name = NULL)
-              .readQFeatures1(assayData, colAnnotation,
-                              fnames, name))
-
-
-########################################################################
-## Multi-set case, with a single table to populate multiple QFeatures
-## sets.
-
-##' @rdname readQFeatures
-##' @export
-setMethod("readQFeatures", c("data.frame", "data.frame"),
-          function(assayData, colAnnotation,
-                   runCol, channelCol, suffix = NULL, sep = "",
-                   removeEmptyCols = FALSE, fnames, verbose = TRUE,
-                   ecol = NULL) {
-              if (!is.null(ecol))
-                  warning("Using 'colAnnotation' and ignoring 'ecol'.")
-              .readQFeatures2(assayData, colAnnotation, runCol,
-                              channelCol, suffix, sep,
-                              removeEmptyCols, fnames, verbose)
-          })
-##' @export
-##'
-##' @rdname readQFeatures
-##'
-##' @importFrom utils read.csv
-##'
-##' @param ... Further arguments that can be passed on to [read.csv()]
-##'     except `stringsAsFactors`, which is always `FALSE`. Only
-##'     applicable to `readSummarizedExperiment()`.
-readSummarizedExperiment <- function(assayData, colAnnotation,
-                                     fnames, ecol = NULL, ...) {
-    if (missing(colAnnotation)) {
-        if (is.null(ecol))
-            stop("Please provide a 'colAnnotaion'.")
-    } else {
-        ## There is a colAnnotation
-        if (!is.vector(colAnnotation))
-            stop("'colAnnotation', must be a vector.")
-        ecol <- colAnnotation
-    }
-    if (is.data.frame(assayData)) xx <- assayData
-    else {
-        args <- list(...)
-        args$file <- assayData
-        if ("rownames" %in% names(args)) {
-            if (missing(fnames)) fnames <- args$rownames
-            args$rownames <- NULL
-        }
-        args$stringsAsFactors <- FALSE
-        xx <- do.call(read.csv, args)
-    }
-    if (is.character(ecol) || is.factor(ecol)) {
-        ecol0 <- ecol
-        ecol <- match(ecol0, colnames(xx))
-        if (any(is.na(ecol)))
-            stop("Column identifiers ",
-                 paste(ecol0[is.na(ecol)], collapse = ", "),
-                 " not recognised among\n",
-                 paste(colnames(xx), paste = ", "))
-    } else if (is.logical(ecol)) {
-        if (length(ecol) != length(xx))
-            stop("Length of 'colAnnotation' and 'assayData' do not match.")
-        ecol <- which(ecol)
-    }
-    assay <- as.matrix(xx[, ecol, drop = FALSE])
-    fdata <- DataFrame(xx[, -ecol, drop = FALSE])
-
-    if (!missing(fnames)) {
-        fnames <- fnames[1]
-        if (is.numeric(fnames))
-            fnames <- colnames(xx)[fnames]
-        if (is.na(match(fnames, colnames(xx))))
-            stop(fnames, " not found among\n",
-                 paste(colnames(xx), paste = ", "))
-        rownames(fdata) <- rownames(assay) <- fdata[, fnames]
-    } else {
-        rownames(fdata) <- rownames(assay) <- seq_len(nrow(assay))
-    }
-    SummarizedExperiment(assay, rowData = fdata)
-}
-
-
 ##' @export
 ##'
 ##' @rdname QFeatures-class
@@ -290,85 +173,227 @@ QFeatures <- function(..., assayLinks = NULL) {
         assayLinks = assayLinks)
 }
 
-
-.readQFeatures1 <- function(assayData, colAnnotation,
-                            fnames, name = NULL)  {
-    se <- readSummarizedExperiment(assayData, colAnnotation,
-                                   fnames)
-    if (anyDuplicated(rownames(se))) {
-        message("Making assay rownames unique.")
-        rownames(se) <- make.unique(rownames(se))
+##' @export
+##'
+##' @rdname readQFeatures
+##'
+##' @importFrom utils read.csv
+##'
+##' @param ... Further arguments that can be passed on to [read.csv()]
+##'     except `stringsAsFactors`, which is always `FALSE`. Only
+##'     applicable to `readSummarizedExperiment()`.
+readSummarizedExperiment <- function(assayData,
+                                     quantCols = NULL,
+                                     fnames = NULL,
+                                     ecol = NULL, ...) {
+    if (!is.null(ecol)) {
+        warning("'ecol' is deprecated, use 'quantCols' in the future.")
+        if (is.null(quantCols)) quantCols <- ecol
     }
-    cd <- DataFrame(row.names = colnames(se))
-    if (is.null(name))
-        name <- "psms"
-    el <- structure(list(se), .Names = name[1])
-    al <- AssayLinks(AssayLink(name = name[1]))
-    ans <- MultiAssayExperiment(el, colData = cd)
-    new("QFeatures",
-        ExperimentList = ans@ExperimentList,
-        colData = ans@colData,
-        sampleMap = ans@sampleMap,
-        metadata = ans@metadata,
-        assayLinks = al)
+    if (!is.vector(quantCols))
+        stop("'quantCols' must be a vector.")
+    if (is.data.frame(assayData)) xx <- assayData
+    else {
+        args <- list(...)
+        args$file <- assayData
+        if ("rownames" %in% names(args)) {
+            if (is.null(fnames)) fnames <- args$rownames
+            args$rownames <- NULL
+        }
+        args$stringsAsFactors <- FALSE
+        xx <- do.call(read.csv, args)
+    }
+    if (is.character(quantCols) || is.factor(quantCols)) {
+        mis <- !quantCols %in% colnames(xx)
+        if (any(mis))
+            stop("Column identifiers ",
+                 paste(quantCols[mis], collapse = ", "),
+                 " not recognised among\n",
+                 paste(colnames(xx), paste = ", "))
+        quantCols <- which(colnames(xx) %in% quantCols)
+    } else if (is.logical(quantCols)) {
+        if (length(quantCols) != length(xx))
+            stop("Length of 'quantCols' and 'assayData' do not match.")
+        quantCols <- which(quantCols)
+    }
+    assay <- as.matrix(xx[, quantCols, drop = FALSE])
+    fdata <- DataFrame(xx[, -quantCols, drop = FALSE])
+
+    if (!missing(fnames)) {
+        fnames <- fnames[1]
+        if (is.numeric(fnames))
+            fnames <- colnames(xx)[fnames]
+        if (is.na(match(fnames, colnames(xx))))
+            stop(fnames, " not found among\n",
+                 paste(colnames(xx), paste = ", "))
+        rownames(fdata) <- rownames(assay) <- fdata[, fnames]
+    } else {
+        rownames(fdata) <- rownames(assay) <- seq_len(nrow(assay))
+    }
+    SummarizedExperiment(assay, rowData = fdata)
 }
 
-.readQFeatures2 <- function(assayData, colAnnotation,
-                            runCol, channelCol, suffix = NULL,
-                            sep = "", removeEmptyCols = FALSE,
-                            fnames, verbose = TRUE) {
-    ## Check the batch column name
-    if (!identical(make.names(runCol), runCol))
-        stop("'runCol' is not a syntactically valid column name. ",
-             "See '?make.names' for converting the column names to ",
-             "valid names, e.g. '", runCol, "' -> '",
-             make.names(runCol), "'")
-    colAnnotation <- as.data.frame(colAnnotation)
-    ## Get the column contain the expression data
-    ecol <- unique(colAnnotation[, channelCol])
-    ## Get the sample suffix
-    if (is.null(suffix))
-        suffix <- ecol
-    ## Create the SummarizedExperiment object
-    if (verbose) message("Loading data as a 'SummarizedExperiment' object")
-    se <- readSummarizedExperiment(assayData, ecol)
-    if (missing(fnames)) {
-        rownames(se) <- paste0("PSM", seq_len(nrow(se)))
+readQFeatures <- function(assayData,
+                          quantCols = NULL,
+                          colAnnotation = NULL,
+                          runCol = NULL,
+                          name = "quants",
+                          removeEmptyCols = FALSE,
+                          verbose = TRUE,
+                          ...) {
+    if (verbose) message("Checking arguments.")
+    assayData <- as.data.frame(assayData)
+    if (!is.null(colAnnotation))
+        colAnnotation <- as.data.frame(colAnnotation)
+    quantCols <- .checkQuantCols(assayData, colAnnotation, quantCols)
+    runs <- .checkRunCol(assayData, colAnnotation, runCol)
+    if (verbose) message("Loading data as a 'SummarizedExperiment' object.")
+    se <- readSummarizedExperiment(assayData, quantCols, ...)
+    rownames(se) <- make.unique(rownames(se))
+    if (length(runs)) {
+        if (verbose) message("Splitting data in runs.")
+        el <- .splitSE(se, runs)
+        el <- .createUniqueColnames(el, quantCols)
     } else {
-        stopifnot(fnames %in% names(rowData(se)))
-        rownames(se) <- rowData(se)[, fnames]
+        el <- structure(list(se), .Names = name[1])
     }
-    ## Check the link between colData and se
-    mis <- !rowData(se)[, runCol] %in% colAnnotation[, runCol]
-    if (any(mis)) {
-        warning("Missing metadata. The features are removed for ",
-                paste0(unique(rowData(se)[mis, runCol]), collapse = ", "))
-        se <- se[!mis, ]
+    if (removeEmptyCols) el <- .removeEmptyColumns(el)
+    if (verbose) message("Formatting sample annotations (colData).")
+    colData <- .formatColData(el, colAnnotation, runs, quantCols)
+    if (verbose) message("Formatting data as a 'QFeatures' object.")
+    QFeatures(experiments = el, colData = colData)
+}
+
+.checkQuantCols <- function(assayData, colAnnotation, quantCols) {
+    if (!is.null(colAnnotation) &&
+        !"quantCols" %in% colnames(colAnnotation) &&
+        length(quantCols) > 1)
+        stop("'colAnnotation' must contain a column called 'quantCols'")
+    if (is.null(quantCols)) {
+        if (is.null(colAnnotation))
+            stop("'quantCols' and 'colAnnotation' cannot both be NULL.")
+        if (!"quantCols" %in% colnames(colAnnotation))
+            stop("When 'quantCols' is NULL, 'colAnnotation' must ",
+                 "contain a column called 'quantCols'.")
+        quantCols <- unique(colAnnotation$quantCols)
     }
-    ## Split the SummarizedExperiment object by batch column
-    if (verbose) message("Splitting data based on '", runCol, "'")
-    se <- .splitSE(se, f = runCol)
-    ## Clean each element in the data list
-    for (i in seq_along(se)) {
-        ## Add unique sample identifiers
-        colnames(se[[i]]) <- paste0(names(se)[[i]], sep, suffix)
-        ## Remove the columns that are all NA
-        if (removeEmptyCols) {
-            sel <- colSums(is.na(assay(se[[i]]))) != nrow(se[[i]])
-            se[[i]] <- se[[i]][, sel]
+    if (is.numeric(quantCols) || is.logical(quantCols))
+        quantCols <- colnames(assayData)[quantCols]
+    mis <- quantCols[!quantCols %in% colnames(assayData)]
+    if (length(mis))
+        stop("Some column names in 'quantCols' are not found ",
+             "in 'assayData': ", paste0(mis, collapse = ", "), ".")
+    quantCols
+}
+
+.checkRunCol <- function(assayData, colAnnotation, runCol) {
+    if (is.null(runCol)) return(NULL)
+    if (length(runCol) > 1)
+        stop("'runCol' is a vector. Please provide the name of a ",
+             "column in 'assayData'.")
+    if (!runCol %in% colnames(assayData))
+        stop("'", runCol, "' (provided as 'runCol') not found ",
+             "in 'assayData'.")
+    runs <- assayData[[runCol]]
+    if (!is.null(colAnnotation) &&
+        !"runCol" %in% colnames(colAnnotation)) {
+        stop("When 'runCol' is not NULL, 'colAnnotation' must ",
+             "contain a column called 'runCol'.")
+    }
+    if (!is.null(colAnnotation)) {
+        mis <- !runs %in% colAnnotation$runCol
+        if (any(mis)) {
+            warning("Some runs are missing in 'colAnnot': ",
+                    paste0(unique(runs[mis]), collapse = ", "))
         }
     }
-    if (verbose) message("Formatting sample annotations (colData).")
-    ## Create the colData
-    cd <- DataFrame(row.names = unlist(lapply(se, colnames)))
-    rownames(colAnnotation) <- paste0(colAnnotation[, runCol], sep, suffix)
-    cd <- cbind(cd, colAnnotation[rownames(cd), ])
-    ## Store the data as a QFeatures object
-    if (verbose) message("Formatting data as a 'QFeatures' object")
-    QFeatures(experiments = se, colData = cd)
+    assayData[[runCol]]
 }
 
+##' Split SummarizedExperiment into an ExperimentList
+##'
+##' The fonction creates an [ExperimentList] containing
+##' [SummarizedExperiment] objects from a [SummarizedExperiment]
+##' object (also works with [SingleCellExperiment] objects). `f` is
+##' used to split `x`` along the rows (`f`` was a feature variable
+##' name) or samples/columns (f was a phenotypic variable name). If f
+##' is passed as a factor, its length will be matched to nrow(x) or
+##' ncol(x) (in that order) to determine if x will be split along the
+##' features (rows) or sample (columns). Hence, the length of f must
+##' match exactly to either dimension.
+##'
+##' This function is not exported and was initially available as
+##' scp::.splitSCE().
+##'
+##' @param x a single [SummarizedExperiment] object
+##'
+##' @param f a factor or a character of length 1. In the latter case,
+##'     `f` will be matched to the row and column data variable names
+##'     (in that order). If a match is found, the respective variable
+##'     is extracted, converted to a factor if needed.
+##' @noRd
+.splitSE <- function(x, f) {
+    ## Check that f is a factor
+    if (length(f) == 1) {
+        if (f %in% colnames(rowData(x))) {
+            f <- rowData(x)[, f]
+        }
+        else if (f %in% colnames(colData(x))) {
+            f <- colData(x)[, f]
+        }
+        else {
+            stop("'", f, "' not found in rowData or colData")
+        }
+    }
+    ## Check that the factor matches one of the dimensions
+    if (!length(f) %in% dim(x))
+        stop("length(f) not compatible with dim(x).")
+    if (length(f) == nrow(x)) { ## Split along rows
+        xl <- lapply(split(rownames(x), f = f), function(i) x[i, ])
+    } else { ## Split along columns
+        xl <- lapply(split(colnames(x), f = f), function(i) x[, i])
+    }
+    ## Convert list to an ExperimentList
+    do.call(ExperimentList, xl)
+}
 
+.createUniqueColnames <- function(el, quantCols) {
+    if (length(quantCols) == 1) {
+        suffix <- ""
+    } else {
+        suffix <- paste0("_", quantCols)
+    }
+    for (i in seq_along(el)) {
+        colnames(el[[i]]) <- paste0(names(el)[[i]], suffix)
+    }
+    el
+}
+
+.removeEmptyColumns <- function(el) {
+    for (i in seq_along(el)) {
+        sel <- colSums(is.na(assay(el[[i]]))) != nrow(el[[i]])
+        el[[i]] <- el[[i]][, sel]
+    }
+    el
+}
+
+.formatColData <- function(el, colAnnotation, runs, quantCols) {
+    sampleNames <- unlist(lapply(el, colnames))
+    if (is.null(colAnnotation))
+        return(DataFrame(row.names = unlist(lapply(el, colnames))))
+    if (!length(runs)) {
+        rownames(colAnnotation) <- colAnnotation$quantCols
+    } else {
+        if (length(quantCols) == 1) {
+            rownames(colAnnotation) <- colAnnotation$runCol
+        } else {
+            rownames(colAnnotation) <- paste0(colAnnotation$runCol, "_", colAnnotation$quantCols)
+        }
+    }
+    colData <- colAnnotation[sampleNames, , drop = FALSE]
+    rownames(colData) <- sampleNames ## clean NA in rownames
+    colData
+}
 
 ##' @title  Read DIA-NN output as a QFeatures objects
 ##'
