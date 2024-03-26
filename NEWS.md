@@ -1,5 +1,9 @@
 # QFeatures 1.13
 
+## QFeatures 1.13.3
+
+- Fix `is.vector()` (see issue #203)
+
 ## QFeatures 1.13.2
 
 - Move the `filterFeatures` generic method to `ProtGenerics`.
