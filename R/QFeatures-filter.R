@@ -126,6 +126,7 @@
 ##' ## Filtering for a  missing feature variable. The outcome is controled
 ##' ## by keep
 ##' ## ----------------------------------------------------------------
+##' data(feat2)
 ##'
 ##' filterFeatures(feat2, ~ y < 0)
 ##'
@@ -220,7 +221,7 @@ VariableFilter <- function(field,
 ##'
 ##' @param filter Either an instance of class [AnnotationFilter] or a
 ##'     formula.
-##'     
+##'
 ##' @param i A numeric, logical or character vector pointing to the
 ##'     assay(s) to be filtered.
 ##'
@@ -237,18 +238,18 @@ VariableFilter <- function(field,
 ##' @exportMethod filterFeatures
 ##'
 ##' @importMethodsFrom ProtGenerics filterFeatures
-##' 
+##'
 ##' @rdname QFeatures-filtering
 setMethod("filterFeatures",
           c("QFeatures", "AnnotationFilter"),
-          function(object, filter, i, na.rm = FALSE, 
+          function(object, filter, i, na.rm = FALSE,
                    keep = FALSE, ...)
               filterFeaturesWithAnnotationFilter(object, filter, i,
                                                  na.rm, keep, ...))
 ##' @rdname QFeatures-filtering
 setMethod("filterFeatures",
           c("QFeatures", "formula"),
-          function(object, filter, i, na.rm = FALSE, 
+          function(object, filter, i, na.rm = FALSE,
                    keep = FALSE, ...)
               filterFeaturesWithFormula(object, filter, i,
                                         na.rm, keep, ...)
@@ -259,11 +260,11 @@ filterFeaturesWithAnnotationFilter <- function(object, filter, i,
                                                na.rm, keep, ...) {
     ## Check the index
     i <- if (missing(i)) names(object) else .normIndex(object, i)
-    
-    ## Check the filtering variables 
+
+    ## Check the filtering variables
     vars <- field(filter)
     isPresent <- .checkFilterVariables(rowData(object), vars)
-    
+
     ## Apply the filter
     sel <- lapply(experiments(object),
                   function(exp) {
@@ -291,21 +292,21 @@ filterFeaturesWithAnnotationFilter <- function(object, filter, i,
     for (ii in names(sel)[!names(sel) %in% i]) {
         sel[[ii]][] <- TRUE
     }
-    
+
     object[sel, , ]
 }
 
 
 ##' @importFrom lazyeval f_eval
-filterFeaturesWithFormula <- function(object, filter, i, 
+filterFeaturesWithFormula <- function(object, filter, i,
                                       na.rm, keep, ...) {
     ## Check the index
     i <- if (missing(i)) names(object) else .normIndex(object, i)
-    
-    ## Check the filtering variables 
+
+    ## Check the filtering variables
     vars <- all.vars(filter)
     isPresent <- .checkFilterVariables(rowData(object), vars)
-    
+
     ## Apply the filter
     sel <- lapply(experiments(object),
                   function(exp) {
@@ -322,38 +323,38 @@ filterFeaturesWithFormula <- function(object, filter, i,
 
     ## If required, keep lost assays
     if (keep) sel <- .keepLostAssays(sel, isPresent)
-    
+
     ## Reset the filter for assays not selected by i
     for (ii in names(sel)[!names(sel) %in% i]) {
         sel[[ii]][] <- TRUE
     }
-    
+
     object[sel, , ]
 }
 
 ## Internal function that checks whether the variables queries by the
 ## filter are available in a given a List of DataFrame objects, each
-## element representing the rowData associated to an assay in a 
+## element representing the rowData associated to an assay in a
 ## QFeatures object. If one or more variables are missing from across
 ## all assays, an error is thrown because no filtering can be applied.
-## The function will ignore variables that are stored in parent 
-## environments as these are used as filtering values rather than 
-## variables. The function prints the search result to the console as 
-## well to inform the user how many assays contain the desired 
-## filtering variable, and which assays are ignored due to missing 
+## The function will ignore variables that are stored in parent
+## environments as these are used as filtering values rather than
+## variables. The function prints the search result to the console as
+## well to inform the user how many assays contain the desired
+## filtering variable, and which assays are ignored due to missing
 ## filtering variables.
 ## @param rowdata A List of DataFrame objects reprensting the rowData
-##     of a QFeatures object. Each element is related to an assay. 
+##     of a QFeatures object. Each element is related to an assay.
 ## @param vars A character() with one or more variables name used for
 ##     later filtering. The function checks there presence. Variables
 ##     present in parent environment are ignored
 ## @return A matrix where rows represent filter variables (excluding
-##     variables found in the parent environment) and columns 
+##     variables found in the parent environment) and columns
 ##     represent assays. Each element is a logical indicating whether
 ##     a gien variable was found in the rowData associated to a given
-##     assay (TRUE) or not (FALSE). 
+##     assay (TRUE) or not (FALSE).
 .checkFilterVariables <- function(rowdata, vars) {
-    ## Ignore variables from the user environment. We search for 
+    ## Ignore variables from the user environment. We search for
     ## variables to omit from the check in the 4th parent environment
     ## (may not always be .GlobalEnv). Here is a "traceback" counter:
     ## 0 in .checkFilterVariables()
@@ -389,15 +390,15 @@ filterFeaturesWithFormula <- function(object, filter, i,
     out
 }
 
-## Internal function to keep the all rows for assays that contain no 
+## Internal function to keep the all rows for assays that contain no
 ## filter variable among their rowData.
-## @param x A list of logical(). Each element of the list represents 
+## @param x A list of logical(). Each element of the list represents
 ##     an assay and contains a vector of length equal to the number of
 ##     rows (features) of the associated assay. This vector contains
-##     logicals indicating whether the corresponding row (feature) is 
+##     logicals indicating whether the corresponding row (feature) is
 ##     kept (TRUE) or removed (FALSE).
 ## @param mat A matrix as return by .checkFilterVariables().
-## @return A modified version of x, where elements that contain a 
+## @return A modified version of x, where elements that contain a
 ##     vector with all FALSE were changed to all TRUE.
 .keepLostAssays <- function(x, mat) {
     ## Get assays that have at least one missing filter variable

@@ -46,31 +46,31 @@ test_that("Test indexing", {
     expect_identical(.normIndex(feat2, factor("assay1")), "assay1")
     ## With logical
     expect_identical(.normIndex(feat2, c(TRUE, FALSE, FALSE)), "assay1")
-    
+
     ## Test multiple indexing
     ## With numeric
     expect_identical(.normIndex(feat2, 1:2), c("assay1", "assay2"))
     ## With character
-    expect_identical(.normIndex(feat2, c("assay1", "assay2")), 
+    expect_identical(.normIndex(feat2, c("assay1", "assay2")),
                      c("assay1", "assay2"))
     ## With factor
-    expect_identical(.normIndex(feat2, factor(c("assay1", "assay2"))), 
+    expect_identical(.normIndex(feat2, factor(c("assay1", "assay2"))),
                      c("assay1", "assay2"))
     ## With logical
-    expect_identical(.normIndex(feat2, c(TRUE, TRUE, FALSE)), 
+    expect_identical(.normIndex(feat2, c(TRUE, TRUE, FALSE)),
                      c("assay1", "assay2"))
-    
+
     ## Test wrong index
     ## Missing
-    expect_error(.normIndex(feat2), 
+    expect_error(.normIndex(feat2),
                  regexp = "missing, with no default")
     ## Logical is too short
-    expect_error(.normIndex(feat2, TRUE), 
+    expect_error(.normIndex(feat2, TRUE),
                  regexp = "does not match the number")
     ## Index out of bounds
     expect_error(.normIndex(feat2, 4), regexp = "out of bounds")
-    ## Assay name is absent... 
-    expect_error(.normIndex(feat2, "foo"), 
+    ## Assay name is absent...
+    expect_error(.normIndex(feat2, "foo"),
                  regexp = "not found.*foo")
     ## ... unless requested
     expect_identical(.normIndex(feat2, "foo", allowAbsent = TRUE),
@@ -81,7 +81,7 @@ test_that("updateObject", {
     ## Applying updateObject on feat3 should lead to the same object
     expect_identical(feat3, updateObject(feat3))
     ## Check verbose
-    expect_message(updateObject(feat3, verbose = TRUE), 
+    expect_message(updateObject(feat3, verbose = TRUE),
                    regexp = "updateObject.*QFeatures")
 })
 
@@ -95,24 +95,24 @@ test_that("[[<-", {
                  regexp = "invalid replacement")
     expect_error(err[[1, foo = 1]] <- err[[1]],
                  regexp = "invalid replacement")
-    
+
     ## Check indexing
     charIndex <- numIndex <- feat2
     charIndex[["assay2"]] <- charIndex[["assay1"]]
     numIndex[[2]] <- numIndex[[1]]
     expect_identical(charIndex, numIndex)
-    
+
     ## Scenario 1: use [[<- for replacement
     s1 <- feat2
     s1[[2]] <- s1[[1]]
     expect_identical(s1, replaceAssay(feat2, feat2[[1]], i = 2))
-    
+
     ## Scenario 2: use [[<- for removal
     s2 <- feat2
     expect_warning(s2[[1]] <- NULL, regexp = "dropped")
     expect_identical(s2, expect_warning(removeAssay(feat2, i = 1),
                                         regexp = "dropped"))
-    
+
     ## Scenario 3: use [[<- for adding
     s3 <- feat2
     s3[["foo"]] <- s3[[1]]
@@ -123,30 +123,30 @@ test_that("dims,ncols,nrows", {
     ## Test dims
     data("feat3")
     expect_identical(dims(feat3),
-                     matrix(c(7L, 8L, 10L, 3L, 2L, 3L, 2L, 
-                              rep(2L, 2), rep(4L, 5)), 
+                     matrix(c(7L, 8L, 10L, 3L, 2L, 3L, 2L,
+                              rep(2L, 2), rep(4L, 5)),
                             nrow = 2, byrow = TRUE,
                             dimnames = list(NULL, names(feat3))))
     ## Without use names
     expect_identical(dims(feat3, use.names = FALSE),
-                     matrix(c(7L, 8L, 10L, 3L, 2L, 3L, 2L, 
-                              rep(2L, 2), rep(4L, 5)), 
+                     matrix(c(7L, 8L, 10L, 3L, 2L, 3L, 2L,
+                              rep(2L, 2), rep(4L, 5)),
                             nrow = 2, byrow = TRUE))
-    
+
     ## Test nrows
     expect_identical(dims(feat3)[1, ],
                      nrows(feat3))
     ## Without use names
     expect_identical(dims(feat3, use.names = FALSE)[1, ],
                      nrows(feat3, use.names = FALSE))
-    
+
     ## Test ncols
     expect_identical(dims(feat3)[2, ],
                      ncols(feat3))
     ## Without use names
     expect_identical(dims(feat3, use.names = FALSE)[2, ],
                      ncols(feat3, use.names = FALSE))
-    
+
 })
 
 test_that("coerce,MultiAssayExperiment,QFeatures-method", {
@@ -158,40 +158,40 @@ test_that("coerce,MultiAssayExperiment,QFeatures-method", {
     feat3@assayLinks <- AssayLinks(names = names(feat3))
     expect_identical(qf, feat3)
 })
-    
+
 test_that("c,QFeatures-method", {
     data("feat3")
-    
+
     ## Combine 2 QF objects
     suppressMessages(suppressWarnings(qf1 <- feat3[,, 1:2]))
     suppressMessages(suppressWarnings(qf2 <- feat3[,, 3:7]))
     expctd <- feat3
     expctd@assayLinks[[3]] <- AssayLink(names(feat3)[[3]]) ## this AssayLink will get lost
     expect_identical(c(qf1, qf2), expctd)
-    
+
     ## Combine 3 QF objects
     suppressMessages(suppressWarnings(qf1 <- feat3[,, 1]))
     suppressMessages(suppressWarnings(qf2 <- feat3[,, 2]))
     suppressMessages(suppressWarnings(qf3 <- feat3[,, 3:7]))
     expect_identical(c(qf1, qf2, qf3), expctd)
-    
+
     ## Error: Combine 1 QF object and 1 List object, or separate assays
-    expect_error(c(qf1, experiments(feat3)), 
+    expect_error(c(qf1, experiments(feat3)),
                  regexp = "Consider using 'addAssay")
-    expect_error(c(qf1, assay1 = feat3[[1]]), 
+    expect_error(c(qf1, assay1 = feat3[[1]]),
                  regexp = "Consider using 'addAssay")
     ## Error: combine 1 QF object and 1 MAE object
     mae <- as(qf2, "MultiAssayExperiment")
     expect_error(c(qf1, mae), regexp = "with one or more MultiAssayExperiment")
     ## Error: combine 1 QF object and 1 object other than QF, MAE, SE or List
-    expect_error(c(qf1, matrix()), 
+    expect_error(c(qf1, matrix()),
                  regexp = "coercing .matrix. to .QFeatures.")
-    
+
     ## Warning: providing names is ignored
     expect_warning(cmbnd <- c(qf1, object1 = qf2, object2 = qf3),
                    regexp = "will be ignored")
     expect_identical(cmbnd, expctd)
-    
+
     ## Check special cases with colData (up to now there was no colData)
     ## Same colData column in each object and same samples and same information
     qf3 <- qf1
@@ -226,14 +226,14 @@ test_that("c,QFeatures-method", {
 
 test_that("addAssay", {
     data(feat1)
-    
+
     ## Check errors
     ## x is not a QFeatures
-    expect_error(addAssay(feat1[[1]], y = feat1[[1]], name = "assay1"), 
+    expect_error(addAssay(feat1[[1]], y = feat1[[1]], name = "assay1"),
                  regexp = "inherits.*QFeatures")
     ## AssayLink is not associated to the assay
     expect_error(addAssay(feat1, y = feat1[[1]], name = "foo",
-                          assayLinks = AssayLinks(names = "bar")), 
+                          assayLinks = AssayLinks(names = "bar")),
                  regexp = "assayLinks.*named after the assay")
     ## Assay to add is corrupt
     corruptAssay <- feat1[[1]]
@@ -241,7 +241,7 @@ test_that("addAssay", {
     expect_error(addAssay(feat1, y = corruptAssay, name = "foo",
                           assayLinks = AssayLinks(names = "bar")),
                  regexp = "invalid class .SummarizedExperiment")
-    
+
     ## Scenario 1: add an assay with same dimnames
     assay1 <- feat1[[1]]
     featS1 <- addAssay(feat1, y = assay1, name = "assay1")
@@ -252,14 +252,14 @@ test_that("addAssay", {
     ## Check the colData is unchanged
     expect_identical(colData(feat1), colData(featS1))
     ## Check the sampleMap is adapted correctly
-    expect_identical(sampleMap(featS1), 
+    expect_identical(sampleMap(featS1),
                      rbind(sampleMap(feat1),
                            DataFrame(assay = rep("assay1", 2),
                                      primary = colnames(assay1),
                                      colname = colnames(assay1))))
     ## Check an AssayLinks object associated to the new assay is added
     expect_identical(names(featS1), names(featS1@assayLinks))
-    
+
     ## Scenario 2: add an assay with a subset of the dimnames
     assay2 <- feat1[[1]][1:5, 1]
     featS2 <- addAssay(feat1, y = assay2, name = "assay2")
@@ -270,14 +270,14 @@ test_that("addAssay", {
     ## Check the colData is unchanged
     expect_identical(colData(feat1), colData(featS2))
     ## Check the sampleMap is adapted correctly
-    expect_identical(sampleMap(featS2), 
+    expect_identical(sampleMap(featS2),
                      rbind(sampleMap(feat1),
                            DataFrame(assay = "assay2",
                                      primary = colnames(assay2),
                                      colname = colnames(assay2))))
     ## Check an AssayLinks object associated to the new assay is added
     expect_identical(names(featS2), names(featS2@assayLinks))
-    
+
     ## Scenario 3: add 2 assays with same dimnames
     assay3 <- feat1[[1]]
     el <- List(assayA = assay3, assayB = assay3)
@@ -285,19 +285,19 @@ test_that("addAssay", {
     ## Check the 2 assays were added and name is ignored
     expect_identical(names(featS3), c("psms", "assayA", "assayB"))
     ## Check the new assay contains the expected quantitative data.
-    expect_identical(unname(assay(featS3[[1]])), 
-                     unname(assay(featS3[[2]]))) 
+    expect_identical(unname(assay(featS3[[1]])),
+                     unname(assay(featS3[[2]])))
     ## Check the colData is adapted correctly
     expect_identical(colData(feat1), colData(featS3))
     ## Check the sampleMap is adapted correctly
-    expect_identical(sampleMap(featS3), 
+    expect_identical(sampleMap(featS3),
                      rbind(sampleMap(feat1),
                            DataFrame(assay = rep(names(el), each = 2),
                                      primary = colnames(assay3),
                                      colname = colnames(assay3))))
     ## Check an AssayLinks object associated to the new assay is added
     expect_identical(names(featS2), names(featS2@assayLinks))
-    
+
     ## Scenario 4: add 2 assays with different dimnames, one with colData
     ## the other without
     assay4 <- feat1[[1]]
@@ -310,12 +310,12 @@ test_that("addAssay", {
     el <- List(assayA = assay4, assayB = assay5)
     featS4 <- addAssay(feat1, el)
     ## Check the colData is adapted correctly
-    expect_identical(colData(featS4), 
+    expect_identical(colData(featS4),
                      rbind(cbind(colData(feat1), foobar = NA),
                            DataFrame(foobar = 1:2, Group = NA,
                                      row.names = colnames(assay5))))
     ## Check the sampleMap is adapted correctly
-    expect_identical(sampleMap(featS4), 
+    expect_identical(sampleMap(featS4),
                      rbind(sampleMap(feat1),
                            DataFrame(assay = rep(names(el), each = 2),
                                      primary = colnames(assay4),
@@ -323,13 +323,13 @@ test_that("addAssay", {
     ## Test keeping the coldata
     featS4 <- addAssay(feat1, el)
     expect_true(!isEmpty(colData(featS4[["assayB"]])))
-    
+
     ## Scenario 5: add an assay with assayLinks
     assay5 <- feat1[[1]]
     seq <- rowData(assay5)$Sequence
-    al <- AssayLink("assay5", "psms", fcol = ".rows", 
+    al <- AssayLink("assay5", "psms", fcol = ".rows",
                     hits = findMatches(seq, seq))
-    featS5 <- addAssay(feat1, y = assay5, name = "assay5", 
+    featS5 <- addAssay(feat1, y = assay5, name = "assay5",
                        assayLinks = al)
     ## Check the AssayLinks object associated to the new assay is added
     expect_identical(names(featS5), names(featS5@assayLinks))
@@ -338,10 +338,10 @@ test_that("addAssay", {
 
 test_that("replaceAssay", {
     data("feat2")
-    
+
     ## Check errors
     ## x is not a QFeatures
-    expect_error(replaceAssay(feat2[[1]], y = feat2[[1]], i = "psms1"), 
+    expect_error(replaceAssay(feat2[[1]], y = feat2[[1]], i = "psms1"),
                  regexp = "inherits.*QFeatures")
     ## Check indexing
     charIndex <- replaceAssay(feat2, feat2[[1]], i = "assay2")
@@ -349,108 +349,108 @@ test_that("replaceAssay", {
     logIndex <- replaceAssay(feat2, feat2[[1]], i = names(feat2) == "assay2")
     expect_identical(charIndex, numIndex)
     expect_identical(charIndex, logIndex)
-    
-    ## Scenario 1: Replace an assay with itself should lead to an 
+
+    ## Scenario 1: Replace an assay with itself should lead to an
     ## unmodified object
     expect_identical(feat1, replaceAssay(feat1, feat1[[1]], 1))
     ## But! when the colData in QFeatures is empty and the assays have
     ## non empty colData, then the replacement updates the colData
     s1 <- replaceAssay(feat2, experiments(feat2))
     expect_false(identical(s1, feat2))
-    expect_identical(colData(s1), 
+    expect_identical(colData(s1),
                      rbind(colData(s1[[1]]),
                            colData(s1[[2]]),
                            cbind(colData(s1[[3]]), Var2 = NA)))
     ## Check the colData is still the same in each assay
     for (i in seq_along(experiments(s1))) {
-        expect_identical(colData(s1[[i]]), colData(feat2[[i]]))    
+        expect_identical(colData(s1[[i]]), colData(feat2[[i]]))
     }
-    
+
     ## Scenario 2: Replace assay with colData and same samples.
     s2 <- replaceAssay(feat2, feat2[[1]], i = "assay2")
     expect_identical(s2[["assay2"]], feat2[[1]])
-    
+
     ## Scenario 4: Replace assay that is parent and child of a single
     ## assay
     data("feat3")
     expect_warning(s4 <- replaceAssay(feat3, feat3[["psms1"]],
                                       i = "normpeptides"),
                    regexp = "Links between assays were lost")
-    expect_identical(s4@assayLinks[["peptides"]], 
+    expect_identical(s4@assayLinks[["peptides"]],
                      feat3@assayLinks[["peptides"]])
-    expect_identical(s4@assayLinks[["normpeptides"]], 
+    expect_identical(s4@assayLinks[["normpeptides"]],
                      AssayLink("normpeptides"))
-    expect_identical(s4@assayLinks[["normproteins"]], 
+    expect_identical(s4@assayLinks[["normproteins"]],
                      AssayLink("normproteins"))
-    
+
     ## Scenario 5: Replace assay that is child of multiple assays
     expect_warning(s5 <- replaceAssay(feat3, feat3[["psms1"]],
                                       i = "psmsall"),
                    regexp = "Links between assays were lost")
-    expect_identical(s5@assayLinks[["psmsall"]], 
+    expect_identical(s5@assayLinks[["psmsall"]],
                      AssayLink("psmsall"))
-    expect_identical(s5@assayLinks[["psms1"]], 
+    expect_identical(s5@assayLinks[["psms1"]],
                      AssayLink("psms1"))
-    expect_identical(s5@assayLinks[["psms2"]], 
+    expect_identical(s5@assayLinks[["psms2"]],
                      AssayLink("psms2"))
-    expect_identical(s5@assayLinks[["peptides"]], 
+    expect_identical(s5@assayLinks[["peptides"]],
                      AssayLink("peptides"))
-    
+
     ## Scenario 6: Replace assay that is parent of multiple assays
     expect_warning(s6 <- replaceAssay(feat3, feat3[["psms1"]],
                                       i = "peptides"),
                    regexp = "Links between assays were lost")
-    expect_identical(s6@assayLinks[["psmsall"]], 
+    expect_identical(s6@assayLinks[["psmsall"]],
                      feat3@assayLinks[["psmsall"]])
-    expect_identical(s6@assayLinks[["peptides"]], 
+    expect_identical(s6@assayLinks[["peptides"]],
                      AssayLink("peptides"))
-    expect_identical(s6@assayLinks[["proteins"]], 
+    expect_identical(s6@assayLinks[["proteins"]],
                      AssayLink("proteins"))
-    expect_identical(s6@assayLinks[["normpeptides"]], 
+    expect_identical(s6@assayLinks[["normpeptides"]],
                      AssayLink("normpeptides"))
-    
+
     ## Scenario 7: Replace assay that is one of several parents, and
     ## is parent of no assays (hence no warning)
-    expect_warning(s7 <- replaceAssay(feat3, feat3[["psms1"]], 
+    expect_warning(s7 <- replaceAssay(feat3, feat3[["psms1"]],
                                       i = "psms2"),
                    regexp = "Links between assays were lost")
-    expect_identical(s7@assayLinks[["psms2"]], 
+    expect_identical(s7@assayLinks[["psms2"]],
                      feat3@assayLinks[["psms2"]])
-    expect_identical(s7@assayLinks[["psms1"]], 
+    expect_identical(s7@assayLinks[["psms1"]],
                      feat3@assayLinks[["psms1"]])
-    expect_identical(s7@assayLinks[["psmsall"]], 
+    expect_identical(s7@assayLinks[["psmsall"]],
                      QFeatures:::.create_assay_link(s7, from = "psms1",
                                                     to = "psmsall"))
-    
+
     ## Scenario 8: multiple replacements, scenario 6 + 7
-    el <- List(psms2 = feat3[["psms1"]], 
+    el <- List(psms2 = feat3[["psms1"]],
                peptides = feat3[["psms1"]])
     expect_warning(s8 <- replaceAssay(feat3, el),
                    regexp = "Links between assays were lost")
-    expect_identical(s8@assayLinks[["psms2"]], 
+    expect_identical(s8@assayLinks[["psms2"]],
                      AssayLink("psms2"))
-    expect_identical(s8@assayLinks[["psmsall"]], 
+    expect_identical(s8@assayLinks[["psmsall"]],
                      QFeatures:::.create_assay_link(s8, from = "psms1",
                                                     to = "psmsall"))
-    expect_identical(s8@assayLinks[["peptides"]], 
+    expect_identical(s8@assayLinks[["peptides"]],
                      AssayLink("peptides"))
-    expect_identical(s8@assayLinks[["proteins"]], 
+    expect_identical(s8@assayLinks[["proteins"]],
                      AssayLink("proteins"))
-    expect_identical(s8@assayLinks[["normpeptides"]], 
+    expect_identical(s8@assayLinks[["normpeptides"]],
                      AssayLink("normpeptides"))
-    
+
     ## Scenario 9: replace with a sample that has new column names
     se <- feat3[["psms1"]]
     colnames(se) <- cn <- paste0("foo", 1:ncol(se))
     expect_warning(s9 <- replaceAssay(feat3, se, i = "psms1"),
                    regexp = "Links between assays were lost")
     expect_identical(colnames(s9)[["psms1"]], cn)
-    
+
     ## Scenario 10: replace with a sample that removes column names
     s10 <- replaceAssay(feat2, feat2[[2]], i = "assay1")
     expect_identical(rownames(colData(s10)), paste0("S", 5:12))
     expect_identical(unique(unlist(colnames(s10))), paste0("S", 5:12))
-    
+
     ## Scenario 11: replacing a sample with the same dimnames doesn't
     ## remove feature links. More specifically, repacing an assay with
     ## itself should not change the QFeatures object
@@ -473,18 +473,18 @@ test_that("removeAssay", {
         regexp = "dropped")
     expect_identical(charIndex, numIndex)
     expect_identical(charIndex, logIndex)
-    
+
     ## Scenario 1: remove the only assay
     expect_warning(s1 <- removeAssay(feat1, i = "psms"),
                    regexp = "dropped")
     expect_true(isEmpty(s1))
-    
+
     ## Scenario 2: remove an assay that removes samples
     expect_warning(s2 <- removeAssay(feat2, i = "assay1"),
                    regexp = "dropped")
     expect_identical(unique(unlist(colnames(s2))), paste0("S", 5:12))
     expect_identical(rownames(colData(s2)), paste0("S", 5:12))
-    
+
     ## Scenario 3: remove an assay that doesn't remove samples
     expect_warning(s3 <- removeAssay(feat3, i = "psms1"),
                    regexp = "dropped")
@@ -492,40 +492,40 @@ test_that("removeAssay", {
                      colnames(feat3)[-1])
     expect_identical(rownames(colData(s3)),
                      paste0("Sample", 1:4))
-    
+
     ## Scenario 4: remove multiple assays
     expect_warning(s2 <- removeAssay(feat2, i = 1:2),
                    regexp = "dropped")
     expect_identical(colnames(s2), CharacterList(assay3 = paste0("S", 9:12)))
     expect_identical(rownames(colData(s2)), paste0("S", 9:12))
-    
+
     # Scenario 5: remove assay that is parent and child of a single assay
     expect_warning(s5 <- removeAssay(feat3, i = "normpeptides"),
                    regexp = "dropped")
     expect_false("normpeptides" %in% names(s5@assayLinks))
-    expect_identical(s5@assayLinks[["normproteins"]], 
+    expect_identical(s5@assayLinks[["normproteins"]],
                      AssayLink("normproteins"))
-    
+
     ## Scenario 6: remove assay that is child of multiple assays
     expect_warning(s6 <- removeAssay(feat3, i = "psmsall"),
                    regexp = "dropped")
     expect_false("psmsall" %in% names(s6@assayLinks))
-    expect_identical(s6@assayLinks[["psms1"]], 
+    expect_identical(s6@assayLinks[["psms1"]],
                      AssayLink("psms1"))
-    expect_identical(s6@assayLinks[["psms2"]], 
+    expect_identical(s6@assayLinks[["psms2"]],
                      AssayLink("psms2"))
-    expect_identical(s6@assayLinks[["peptides"]], 
+    expect_identical(s6@assayLinks[["peptides"]],
                      AssayLink("peptides"))
-    
+
     ## Scenario 7: remove assay that is parent of multiple assays
     expect_warning(s7 <- removeAssay(feat3, i = "peptides"),
                    regexp = "dropped")
     expect_false("peptides" %in% names(s7@assayLinks))
-    expect_identical(s7@assayLinks[["proteins"]], 
+    expect_identical(s7@assayLinks[["proteins"]],
                      AssayLink("proteins"))
-    expect_identical(s7@assayLinks[["normpeptides"]], 
+    expect_identical(s7@assayLinks[["normpeptides"]],
                      AssayLink("normpeptides"))
-})  
+})
 
 
 
@@ -533,7 +533,7 @@ test_that(".checkAssaysToInsert", {
     ## y is corrupt
     corrupt <- feat1[[1]]
     corrupt@assays@data@listData[[1]] <- matrix()
-    expect_error(.checkAssaysToInsert(corrupt, feat1, name = "assay1"), 
+    expect_error(.checkAssaysToInsert(corrupt, feat1, name = "assay1"),
                  regexp = "invalid.*SummarizedExperiment")
     ## name is ignored when y is provided as a list
     lse <- List(A = feat1[[1]], B = feat1[[1]])
@@ -545,19 +545,19 @@ test_that(".checkAssaysToInsert", {
                  regexp = "named List")
     ## List must have unique names
     names(lse)[[2]] <- "A"
-    expect_error(.checkAssaysToInsert(lse, feat1), 
+    expect_error(.checkAssaysToInsert(lse, feat1),
                  regexp = "names must be unique")
     ## Assay name already present in QFeatures
     names(lse)[[2]] <- "psms"
-    expect_error(.checkAssaysToInsert(lse, feat1), 
+    expect_error(.checkAssaysToInsert(lse, feat1),
                  regexp = "already present")
-    expect_error(.checkAssaysToInsert(feat1[[1]], feat1, name = "psms"), 
+    expect_error(.checkAssaysToInsert(feat1[[1]], feat1, name = "psms"),
                  regexp = "already present")
     ## One of the assays is not an SE
     lse <- List(A = feat1[[1]], B = matrix())
-    expect_error(.checkAssaysToInsert(lse, feat1), 
+    expect_error(.checkAssaysToInsert(lse, feat1),
                  regexp = "inherit.*SummarizedExperiment")
-    
+
 })
 
 test_that("add/replaceAssay: test colData transfer", {
@@ -578,38 +578,38 @@ test_that("add/replaceAssay: test colData transfer", {
     s3 <- addAssay(s3, s3[[1]], name = "assay3")
     expect_identical(colData(s3), colData(feat1))
     expect_identical(colData(s3), colData(s3[["assay3"]]))
-    ## Scenario 4: colData in QFeatures, colData in assay with different 
+    ## Scenario 4: colData in QFeatures, colData in assay with different
     ## samples and different colData variables
     s4 <- feat1
     se <- s4[[1]]
     colnames(se) <- paste0("foo", 1:ncol(se))
     se$bar <- letters[1:ncol(se)]
     s4 <- addAssay(s4, se, name = "assay4")
-    expect_identical(colData(s4), 
+    expect_identical(colData(s4),
                      DataFrame(Group = c(1:2, NA, NA),
                                bar = c(NA, NA, "a", "b"),
                                row.names = c("S1", "S2", "foo1", "foo2")))
-    ## Scenario 5: colData in QFeatures, colData in assay with same 
+    ## Scenario 5: colData in QFeatures, colData in assay with same
     ## samples and different colData variables
     s5 <- feat1
     se <- s5[[1]]
     se$bar <- letters[1:ncol(se)]
     s5 <- addAssay(s5, se, name = "assay5")
-    expect_identical(colData(s5), 
+    expect_identical(colData(s5),
                      DataFrame(Group = c(1:2),
                                bar = c("a", "b"),
                                row.names = c("S1", "S2")))
-    ## Scenario 6: colData in QFeatures, colData in assay with different 
+    ## Scenario 6: colData in QFeatures, colData in assay with different
     ## samples and same colData variables
     s6 <- feat1
     se <- s6[[1]]
     colnames(se) <- paste0("foo", 1:ncol(se))
     se$Group <- 1:2
     s6 <- addAssay(s6, se, name = "assay6")
-    expect_identical(colData(s6), 
+    expect_identical(colData(s6),
                      DataFrame(Group = rep(1:2, 2),
                                row.names = c("S1", "S2", "foo1", "foo2")))
-    ## Scenario 7: colData in QFeatures, colData in assay with same 
+    ## Scenario 7: colData in QFeatures, colData in assay with same
     ## samples and same colData variables
     s7 <- feat1
     se <- s7[[1]]
@@ -627,7 +627,7 @@ test_that("add/replaceAssay: test colData transfer", {
     se <- s9[[1]]
     se$bar <- letters[1:ncol(se)]
     s9 <- replaceAssay(s9, se, i = "psms")
-    expect_identical(colData(s9), 
+    expect_identical(colData(s9),
                      DataFrame(Group = c(1:2),
                                bar = c("a", "b"),
                                row.names = c("S1", "S2")))
@@ -638,7 +638,7 @@ test_that("add/replaceAssay: test colData transfer", {
     se$bar <- letters[1:ncol(se)]
     colnames(se) <- paste0("foo", 1:ncol(se))
     s10 <- replaceAssay(s10, se, i = "psms")
-    expect_identical(colData(s10), 
+    expect_identical(colData(s10),
                      DataFrame(Group = as.logical(c(NA, NA)),
                                bar = c("a", "b"),
                                row.names = c("foo1", "foo2")))
@@ -650,11 +650,11 @@ test_that("add/replaceAssay: test colData transfer", {
     se$bar <- letters[1:ncol(se)]
     colnames(se)[[2]] <- "foo"
     s11 <- replaceAssay(s11, se, i = "psms")
-    expect_identical(colData(s11), 
+    expect_identical(colData(s11),
                      DataFrame(Group = c(1L, NA),
                                bar = c("a", "b"),
                                row.names = c("S1", "foo")))
-    ## Scenario 12: colData in QFeatures, colData in assay with same 
+    ## Scenario 12: colData in QFeatures, colData in assay with same
     ## samples and same colData variables, but NA in QFeatures
     s12 <- feat1
     se <- s12[[1]]
@@ -715,7 +715,7 @@ test_that("RowData<-", {
     expect_identical(feat3, feat4)
     ## invalide value leads to warning
     names(value) <- NULL
-    expect_warning(rowData(feat5) <-  value, 
+    expect_warning(rowData(feat5) <-  value,
                    regexp = "Could not find a common assay")
     expect_identical(feat5, feat2)
 })
@@ -751,7 +751,7 @@ test_that("rbindRowData", {
     rd <- rbindRowData(feat2, 1)
     expect_true(inherits(rd, "DFrame"))
     expect_identical(unique(rd$assay), names(feat2)[1])
-    expect_identical(colnames(rd), c("assay", "rowname", 
+    expect_identical(colnames(rd), c("assay", "rowname",
                                      colnames(rowData(feat2)[[1]])))
     expect_identical(nrow(rd), sum(dims(feat2)[1, 1]))
     ## Get all common variable from all assays
@@ -760,7 +760,7 @@ test_that("rbindRowData", {
     expect_identical(unique(rd$assay), names(feat2))
     expect_identical(colnames(rd), c("assay", "rowname", "Prot", "x"))
     expect_identical(nrow(rd), sum(dims(feat2)[1, ]))
-    ## Warning no common variables 
+    ## Warning no common variables
     a <- feat2[[1]]
     rowData(a) <- DataFrame(foo = "bar")
     feat3 <- addAssay(feat2, a, name = "assay4")
@@ -806,13 +806,14 @@ test_that("renaming", {
 #     feat2 <- joinAssays(feat2, i = 1:3)
 #     feat2 <- aggregateFeatures(feat2, 4, "Prot", name = "proteins")
 #     ## Plot QFeautres with interactive = FALSE
-#     ## expect_doppelganger creates a snapshot and compares to a test 
+#     ## expect_doppelganger creates a snapshot and compares to a test
 #     ## snapshot in /_snaps/
 #     set.seed(1234)
 #     vdiffr::expect_doppelganger("qFeatures-plot", plot(feat2, interactive = FALSE))
 # })
 
 test_that("assays must have unique rownames", {
+    data(hlpsms)
     hlpsms <- hlpsms[1:10, ]
     ft1 <- readQFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence")
     ## Adapt in slots directly because our code doesn't allow anymore to run:
@@ -833,10 +834,10 @@ test_that("longFormat", {
                      5L+2L)
     ## Check content
     expect_identical(lt$Prot,
-                     unname(unlist(lapply(rowData(feat2), 
+                     unname(unlist(lapply(rowData(feat2),
                                           ## Repeat 4x because 4 samples
                                           function(x) rep(x$Prot, 4)))))
-    ## Select a single colvars and no rowvars (make sure that 
+    ## Select a single colvars and no rowvars (make sure that
     ## the implementation does not break the MAE implementation)
     lt <- longFormat(feat2, colvars = "X")
     expect_equal(nrow(lt),
@@ -915,7 +916,7 @@ test_that("dropEmptyAssays", {
         qf[[1]] <- qf[[1]][, numeric()],
         regexp = "Links between assays were lost"
     )
-    expect_identical(dropEmptyAssays(qf, 1), qf) 
+    expect_identical(dropEmptyAssays(qf, 1), qf)
     test <- expect_warning(
         dropEmptyAssays(qf, 2),
         regexp = "'experiments' dropped"

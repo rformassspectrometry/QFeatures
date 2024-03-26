@@ -175,6 +175,7 @@ filterFeatures(feat1, ~ location == "not")
 ## Filtering for a  missing feature variable. The outcome is controled
 ## by keep
 ## ----------------------------------------------------------------
+data(feat2)
 
 filterFeatures(feat2, ~ y < 0)
 
