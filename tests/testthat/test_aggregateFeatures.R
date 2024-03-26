@@ -7,6 +7,11 @@ test_that("aggregateFeatures,SummarizedExperiment: errors and message", {
     ## Error: fcol not present in rowData
     expect_error(.aggregateQFeatures(se, fcol = "missing_fcol"),
                  regexp = "'fcol' not found")
+    ## Error: fcol is a list
+    rowData(se)$lseq <- as.list(rowData(se)$Sequence)
+    expect_error(.aggregateQFeatures(se, fcol = "lseq", fun = colSums),
+                 "'fcol' must refer to an atomic vector or a sparse matrix")
+
     ## Aggregation with missing data creates message
     data("se_na2")
     ## Message: missing data in assay
@@ -20,7 +25,7 @@ test_that("aggregateFeatures,SummarizedExperiment: errors and message", {
 
 test_that("aggregateFeatures,SummarizedExperiment with 'fun = sum'", {
     aggSE <- .aggregateQFeatures(se, fcol = "Sequence", fun = colSums)
-    
+
     ## checking quantiation data
     assay1 <- matrix(as.numeric(c(sum(1:3), sum(4:6), sum(7:10),
                                   sum(11:13), sum(14:16), sum(17:20))),
@@ -29,7 +34,7 @@ test_that("aggregateFeatures,SummarizedExperiment with 'fun = sum'", {
                                      c("S1", "S2")))
     assay1 <- assay1[levels(factor(rowData(feat1[[1]])$Sequence)), ]
     expect_identical(assay1, assay(aggSE))
-    
+
     ## checking rowData
     Sequence <- rownames(assay1)
     Protein <- c("ProtA", "ProtB", "ProtA")
@@ -46,7 +51,7 @@ test_that("aggregateFeatures,SummarizedExperiment with 'fun = sum'", {
 test_that("aggregateFeatures,SummarizedExperiment with 'fun = median'", {
     aggSE <- .aggregateQFeatures(se, fcol = "Sequence",
                                  fun = matrixStats::colMedians)
-    
+
     ## checking quantiation data
     assay1 <- matrix(as.numeric(c(median(1:3), median(4:6), median(7:10),
                                   median(11:13), median(14:16), median(17:20))),
@@ -55,7 +60,7 @@ test_that("aggregateFeatures,SummarizedExperiment with 'fun = median'", {
                                      c("S1", "S2")))
     assay1 <- assay1[order(rownames(assay1)), ]
     expect_identical(assay1, assay(aggSE))
-    
+
     ## checking rowData
     Sequence <- rownames(assay1)
     Protein <- c("ProtA", "ProtB", "ProtA")
@@ -94,7 +99,7 @@ test_that("aggregateFeatures,QFeatures: check links and subsetting", {
     expect_identical(dims(feat1),
                      matrix(c(10L, 2L, 3L, 2L), ncol = 2,
                             dimnames = list(NULL, c("psms", "peptides"))))
-    
+
     ## Checking assayLinks
     alink <- feat1@assayLinks[[2]]
     expect_identical(alink@from, "psms")
@@ -109,7 +114,7 @@ test_that("aggregateFeatures,QFeatures: check links and subsetting", {
                   nRnode = 3L,
                   sort.by.query = TRUE)
     expect_identical(alink@hits, hits1)
-    
+
     ## Checking subsetting still works
     featsub <- feat1["IAEESNFPFIK", , ]
     expect_identical(dims(featsub),
@@ -140,7 +145,7 @@ test_that("aggregateFeatures,QFeatures: aggcounts", {
 })
 
 
-test_that("aggregate by matrix and vector work (1)", {
+test_that("aggregate by matrix and (atomic) vector work (1)", {
     ## only features that map uniquely, aggregation should thus be
     ## identical whether we use a vector or an adjacency matrix
     se <- feat1[[1]]
@@ -160,7 +165,7 @@ test_that("aggregate by matrix and vector work (1)", {
     rowData(se)$adjacencyMatrix <- adjSequence
     expect_error(aggregateFeatures(se, "adjacencyMatrix",
                                    MsCoreUtils::colSumsMat),
-                 "'fcol' must refer to a vector or a sparse matrix")
+                 "'fcol' must refer to an atomic vector or a sparse matrix")
     ## Error when adjancencyMatrix already present
     expect_error(adjacencyMatrix(se) <- adjSequence,
                  "Found an existing variable adjacencyMatrix.")
@@ -181,7 +186,7 @@ test_that("aggregate by matrix and vector work (1)", {
         .Dim = 3:2,
         .Dimnames = list(c("SYGFNAAR", "ELGNDAYK", "IAEESNFPFIK"),
                          c("ProtA", "ProtB")))
-    ## 2.1 aggregate peptides to proteins by vector
+    ## 2.1 aggregate peptides to proteins by (atomic) vector
     se3 <- aggregateFeatures(se1, "Protein", colSums)
     ## 2.2 aggregate peptides to proteins by matrix
     adjacencyMatrix(se2) <- adjProtein
@@ -195,7 +200,7 @@ test_that("aggregate by matrix and vector work (1)", {
 })
 
 
-test_that("aggregate by matrix and vector work (2)", {
+test_that("aggregate by matrix and (atomic) vector work (2)", {
     ## Change last PSM/peptide to be shared among proteins B and C
     se <- feat1[[1]]
     rowData(se)[10, "Sequence"] <- "PEPTIDE"
