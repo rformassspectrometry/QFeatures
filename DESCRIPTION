@@ -30,6 +30,7 @@ Imports:
    Biobase,
    MsCoreUtils (>= 1.7.2),
    igraph,
+   grDevices,
    plotly
 Suggests:
    SingleCellExperiment,
@@ -58,7 +59,6 @@ Suggests:
 biocViews: Infrastructure, MassSpectrometry, Proteomics, Metabolomics
 License: Artistic-2.0
 Encoding: UTF-8
-LazyData: true
 VignetteBuilder: knitr
 BugReports: https://github.com/RforMassSpectrometry/QFeatures/issues
 URL: https://github.com/RforMassSpectrometry/QFeatures
