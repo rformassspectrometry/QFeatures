@@ -100,6 +100,7 @@ a proportion of more missing values of \code{pNA} or higher.
 See the \emph{Processing} vignette for examples.
 }
 \examples{
+data(ft_na)
 
 ## Summary if missing values
 nNA(ft_na, 1)

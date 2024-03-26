@@ -142,6 +142,7 @@
 ##' @seealso The `impute()` for `QFeautres` instances.
 ##'
 ##' @examples
+##' data(ft_na)
 ##'
 ##' ## Summary if missing values
 ##' nNA(ft_na, 1)
