@@ -39,42 +39,31 @@
 ##'     the batch (e.g. TMT channel, given by
 ##'     `channelCol`). Additional fields (e.g. sample type,
 ##'     acquisition date,...) are allowed and will be stored as sample
-##'     annotation and will be stored as sample metadata in the
-##'     `QFeatures`'s colData slot.
+##'     metadata in the `QFeatures`'s colData slot.
 ##'
-##' @param fnames For the single- and multi-set cases, an optional
-##'     `character(1)` or `numeric(1)` indicating the column to be
-##'     used as feature names. If missing, in the latter case, the
-##'     rows are named PSM1, PSM2, PSM3, ... Note that rownames must
-##'     be unique in `QFeatures` sets.
-##'
-##' @param name For the single-set case, an optional `character(1)` to
-##'     name the set in the `QFeatures` object. If not set, `psms`
-##'     is used.
+##' @param quantCols A `numeric()`, `logical()` or `character()`
+##'     defining the columns of the `assayData` that contain the
+##'     quantitative data. Can also be defined in `colAnnotation`.
 ##'
 ##' @param runCol For the multi-set case, a `numeric(1)` or
 ##'     `character(1)` pointing to the column of `assayData` and
 ##'     `colAnnotation` that contain the batch names. Make sure that
-##'     the column name in both table are either identical and
+##'     the column name in both tables are either identical and
 ##'     syntactically valid (if you supply a `character`) or have the
 ##'     same index (if you supply a `numeric`). Note that characters
-##'     can be converted to syntactically valid names using
-##'     `make.names`
+##'     are converted to syntactically valid names using `make.names`
 ##'
-##' @param channelCol For the multi-set case, a `numeric(1)` or
-##'     `character(1)` pointing to the column of `colAnnotation` that
-##'     contains the column names of the quantitative data in
-##'     `assayData` (see example). Useful for multiplexed experiments
-##'     such as mTRAQ or TMT.
+##' @param fnames For the single- and multi-set cases, an optional
+##'     `character(1)` or `numeric(1)` indicating the column to be
+##'     used as feature names.  Note that rownames must be unique in
+##'     `QFeatures` sets.
+##'
+##' @param name For the single-set case, an optional `character(1)` to
+##'     name the set in the `QFeatures` object. Default is `quants`.
 ##'
 ##' @param removeEmptyCols A `logical(1)`. If true, the function will
 ##'     remove in each batch the columns that contain only missing
 ##'     values.
-##'
-##' @param ecol Same as `colAnnotation` for the single-set
-##'     case. Available for backwards compatibility. Default is
-##'     `NULL`. If both `ecol` and `colAnnotation` are set, an error
-##'     is thrown.
 ##'
 ##' @param verbose A `logical(1)` indicating whether the progress of
 ##'     the data reading and formatting should be printed to the
@@ -98,8 +87,6 @@
 ##' - The [readQFeaturesFromDIANN()] function to import DIA-NN
 ##'   quantitative data.
 ##'
-##' @md
-##'
 ##' @name readQFeatures
 ##' @aliases readSummarizedExperiment
 ##' @aliases readQFeatures
@@ -117,10 +104,9 @@
 ##' data(hlpsms)
 ##' hlpsms[1:10, c(1, 2, 10:11, 14, 17)]
 ##'
-##' ## Create the QFeatures object
-##' qf1 <- readQFeatures(hlpsms, colAnnotation = 1:10, name = "psms")
+##' ## Create a QFeatures object with a single psms set
+##' qf1 <- readQFeatures(hlpsms, quantCols = 1:10, name = "psms")
 ##' qf1
-##' colData(qf1)
 ##'
 ##' ######################################
 ##' ## Single-set case using a data.frame
@@ -129,10 +115,9 @@
 ##' hlpsms$file <- "File1"
 ##' hlpsms[1:10, c(1, 2, 10:11, 14, 17, 29)]
 ##' (colann <- data.frame(file = rep("File1", 10),
-##'                       Channel = names(hlpsms)[1:10]))
-##'
-##' qf2 <- readQFeatures(hlpsms, colAnnotation = colann,
-##'                      runCol = "file", channelCol = "Channel")
+##'                       var = rnorm(10),
+##'                       quantCols = names(hlpsms)[1:10]))
+##' qf2 <- readQFeatures(hlpsms, colAnnotation = colann)
 ##' qf2
 ##' colData(qf2)
 ##'
@@ -144,11 +129,10 @@
 ##'
 ##' hlpsms$file <- paste0("File", sample(1:3, nrow(hlpsms), replace = TRUE))
 ##' hlpsms[1:10, c(1, 2, 10:11, 14, 17, 29)]
-##' (colann <- data.frame(file = rep(paste0("File", 1:3), each = 10),
-##'                       Channel = rep(names(hlpsms)[1:10], 3)))
+##' (colann <- data.frame(runCol = rep(paste0("File", 1:3), each = 10),
+##'                       quantCols = names(hlpsms)[1:10]))
 ##'
-##' qf3 <- readQFeatures(hlpsms, colAnnotation = colann,
-##'                      runCol = "file", channelCol = "Channel")
+##' qf3 <- readQFeatures(hlpsms, colAnnotation = colann, runCol = "file")
 ##' qf3
 ##' colData(qf3)
 NULL
@@ -179,6 +163,10 @@ QFeatures <- function(..., assayLinks = NULL) {
 ##'
 ##' @importFrom utils read.csv
 ##'
+##' @param ecol Same as `quantCols` for the single-set case. Available
+##'     for backwards compatibility. Default is `NULL`. If both `ecol`
+##'     and `colAnnotation` are set, an error is thrown.
+##'
 ##' @param ... Further arguments that can be passed on to [read.csv()]
 ##'     except `stringsAsFactors`, which is always `FALSE`. Only
 ##'     applicable to `readSummarizedExperiment()`.
@@ -187,11 +175,11 @@ readSummarizedExperiment <- function(assayData,
                                      fnames = NULL,
                                      ecol = NULL, ...) {
     if (!is.null(ecol)) {
-        warning("'ecol' is deprecated, use 'quantCols' in the future.")
+        warning("'ecol' is deprecated, use 'quantCols' instead.")
         if (is.null(quantCols)) quantCols <- ecol
     }
-    if (!is.vector(quantCols))
-        stop("'quantCols' must be a vector.")
+    if (!is.vector(quantCols) || is.list(quantCols))
+        stop("'quantCols' must be an atomics vector.")
     if (is.data.frame(assayData)) xx <- assayData
     else {
         args <- list(...)
@@ -233,9 +221,14 @@ readSummarizedExperiment <- function(assayData,
     SummarizedExperiment(assay, rowData = fdata)
 }
 
+
+
+##' @export
+##'
+##' @rdname readQFeatures
 readQFeatures <- function(assayData,
-                          quantCols = NULL,
                           colAnnotation = NULL,
+                          quantCols = NULL,
                           runCol = NULL,
                           name = "quants",
                           removeEmptyCols = FALSE,
@@ -244,7 +237,7 @@ readQFeatures <- function(assayData,
     if (verbose) message("Checking arguments.")
     assayData <- as.data.frame(assayData)
     if (!is.null(colAnnotation))
-        colAnnotation <- as.data.frame(colAnnotation)
+        colAnnotation <- data.frame(colAnnotation)
     quantCols <- .checkQuantCols(assayData, colAnnotation, quantCols)
     runs <- .checkRunCol(assayData, colAnnotation, runCol)
     if (verbose) message("Loading data as a 'SummarizedExperiment' object.")
@@ -264,14 +257,23 @@ readQFeatures <- function(assayData,
     QFeatures(experiments = el, colData = colData)
 }
 
+## This function will check the quantitation variable inputs. At the
+## end, it will return a valid character quantCols, either as provided
+## directly by the user, or generated from colAnnotation.
 .checkQuantCols <- function(assayData, colAnnotation, quantCols) {
-    if (!is.null(colAnnotation) &&
-        !"quantCols" %in% colnames(colAnnotation) &&
-        length(quantCols) > 1)
-        stop("'colAnnotation' must contain a column called 'quantCols'")
+    ## Fail early if both a missing
+    if (is.null(colAnnotation) & is.null(quantCols))
+        stop("Provide one of 'colAnnotation' or 'quantCols', both mustn't be NULL.")
+    ## If we have a colAnnotation data.frame, it must contain a
+    ## quantCols column and no quantCols should be provided.
+    if (!is.null(colAnnotation)) {
+        if (!"quantCols" %in% colnames(colAnnotation) &&
+            length(quantCols) > 1)
+            stop("'colAnnotation' must contain a column called 'quantCols'")
+    }
     if (is.null(quantCols)) {
-        if (is.null(colAnnotation))
-            stop("'quantCols' and 'colAnnotation' cannot both be NULL.")
+        ## if (is.null(colAnnotation))
+        ##     stop("'quantCols' and 'colAnnotation' cannot both be NULL.")
         if (!"quantCols" %in% colnames(colAnnotation))
             stop("When 'quantCols' is NULL, 'colAnnotation' must ",
                  "contain a column called 'quantCols'.")
@@ -286,6 +288,9 @@ readQFeatures <- function(assayData,
     quantCols
 }
 
+
+## This function will check the batch/run variable inputs. At the end,
+## it will return a vector of runs/batches or NULL.
 .checkRunCol <- function(assayData, colAnnotation, runCol) {
     if (is.null(runCol)) return(NULL)
     if (length(runCol) > 1)
@@ -295,12 +300,10 @@ readQFeatures <- function(assayData,
         stop("'", runCol, "' (provided as 'runCol') not found ",
              "in 'assayData'.")
     runs <- assayData[[runCol]]
-    if (!is.null(colAnnotation) &&
-        !"runCol" %in% colnames(colAnnotation)) {
-        stop("When 'runCol' is not NULL, 'colAnnotation' must ",
-             "contain a column called 'runCol'.")
-    }
     if (!is.null(colAnnotation)) {
+        if (!"runCol" %in% colnames(colAnnotation))
+            stop("When 'runCol' is not NULL, 'colAnnotation' must ",
+                 "contain a column called 'runCol'.")
         mis <- !runs %in% colAnnotation$runCol
         if (any(mis)) {
             warning("Some runs are missing in 'colAnnot': ",
@@ -358,11 +361,8 @@ readQFeatures <- function(assayData,
 }
 
 .createUniqueColnames <- function(el, quantCols) {
-    if (length(quantCols) == 1) {
-        suffix <- ""
-    } else {
-        suffix <- paste0("_", quantCols)
-    }
+    if (length(quantCols) == 1)  suffix <- ""
+    else suffix <- paste0("_", quantCols)
     for (i in seq_along(el)) {
         colnames(el[[i]]) <- paste0(names(el)[[i]], suffix)
     }
@@ -377,12 +377,15 @@ readQFeatures <- function(assayData,
     el
 }
 
+## This function will create a colData from the different (possibly
+## missing, i.e. NULL) arguments
 .formatColData <- function(el, colAnnotation, runs, quantCols) {
-    sampleNames <- unlist(lapply(el, colnames))
+    sampleNames <- unlist(lapply(el, colnames), use.names = FALSE)
     if (is.null(colAnnotation))
-        return(DataFrame(row.names = unlist(lapply(el, colnames))))
+        return(DataFrame(row.names = sampleNames))
     if (!length(runs)) {
-        rownames(colAnnotation) <- colAnnotation$quantCols
+        ## rownames(colAnnotation) <- colAnnotation$quantCols
+        rownames(colAnnotation) <- sampleNames
     } else {
         if (length(quantCols) == 1) {
             rownames(colAnnotation) <- colAnnotation$runCol
@@ -402,6 +405,10 @@ readQFeatures <- function(assayData,
 ##' This function takes the output tables from DIA-NN and converts them
 ##' into a `QFeatures` object.
 ##'
+##' @param assayData A `data.frame` or any object that can be coerced
+##'     to a data.frame that contains the data from the `Report.tsv`
+##'     file generated by DIA-NN.
+##'
 ##' @param colAnnotation A `data.frame` or any object that can be
 ##'     coerced to a `data.frame`. `colAnnotation` is expected to
 ##'     contains all the sample annotations. We require the table to
@@ -412,17 +419,13 @@ readQFeatures <- function(assayData,
 ##'     be retrieved from `Modified Sequence` column in the report
 ##'     table).
 ##'
-##' @param assayData A `data.frame` or any object that can be coerced
-##'     to a data.frame that contains the data from the `Report.tsv`
-##'     file generated by DIA-NN.
-##'
 ##' @param extractedData A data.frame or any object that can be coerced
 ##'     to a data.frame that contains the data from the `*_ms1_extracted.tsv`
 ##'     file generated by DIA-NN. This argument is optional and is
 ##'     currently only applicable for mTRAQ multiplexed experiments
 ##'     where DIA-NN was run using the `plexdia` module.
 ##'
-##' @param ecol A `character(1)` indicating which column in
+##' @param quantCols A `character(1)` indicating which column in
 ##'     `assayData` contains the quantitative information. Default is
 ##'     `"Ms1.Area"`.
 ##'
@@ -452,13 +455,14 @@ readQFeatures <- function(assayData,
 ##'
 ##' @examples
 ##'
-##' x <- read.delim(MsDataHub::benchmarkingDIA.tsv())
+##' ## x <- read.delim(MsDataHub::benchmarkingDIA.tsv())
 ##' ## fix file names
-##' x[[1]] <- sub("^.+raw-data\\\\", "", x[[1]])
-##' cd <- data.frame(File.Name = unique(x[[1]]))
-##' readQFeaturesFromDIANN(colAnnotation = cd, assayData = x)
-readQFeaturesFromDIANN <- function(colAnnotation, assayData, extractedData = NULL,
-                                   ecol = "Ms1.Area", multiplexing = "none",
+##' ## x[[1]] <- sub("^.+raw-data\\\\", "", x[[1]])
+##' ## cd <- data.frame(File.Name = unique(x[[1]]))
+##' ## readQFeaturesFromDIANN(colAnnotation = cd, assayData = x)
+readQFeaturesFromDIANN <- function(assayData, colAnnotation, extractedData = NULL,
+                                   quantCols = "Ms1.Area", multiplexing = "none",
+                                   ecol = NULL,
                                    ...) {
     suppArgs <- .checkDiannArguments(
         colAnnotation, assayData, extractedData, ecol, multiplexing, ...
@@ -604,3 +608,11 @@ readQFeaturesFromDIANN <- function(colAnnotation, assayData, extractedData = NUL
              "the same experiment?")
     extractedData[, cnames]
 }
+
+
+
+## @param channelCol For the multi-set case, a `numeric(1)` or
+##     `character(1)` pointing to the column of `colAnnotation` that
+##     contains the column names of the quantitative data in
+##     `assayData` (see example). Useful for multiplexed experiments
+##     such as mTRAQ or TMT.

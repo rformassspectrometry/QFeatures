@@ -14,7 +14,7 @@ test_that(".splitSE", {
                  regexp = "not found")
     ## Error: cannot split using more than 1 variable
     expect_error(.splitSE(se, c("Raw.file", "protein")),
-                 regexp = "must be of lenght one")
+                 regexp = "not compatible with dim.")
     ## Error: factor is too short
     expect_error(.splitSE(se, factor(1:3)),
                  regexp = "not compatible with dim")
