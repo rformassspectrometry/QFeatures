@@ -218,37 +218,61 @@ colData names(0):</code></pre>
 </div>
 <div class="section level1">
 <h1 id="tabular-input-issue-199">Tabular input (issue 199)<a class="anchor" aria-label="anchor" href="#tabular-input-issue-199"></a></h1>
-<ul><li>change readSCP() so that it produces SE. The only change required is to use readSummarizedExperiment() instead of readSingleCellExperiment().</li>
-<li>This new function can them be used by <code>readQFeaturesFromDIANN()</code> to generate a <code>QFeatures</code> object with SEs. <code>readSCPfromDIANN()</code> would then use that one, and convert elements to SCE objects.</li>
-</ul><p>My preference is to merge readQFeatures() and readSCP() to have both behaviours. The best might even to have methods that dispatch on two arguments, the first one containing a data.frame in both cases (could also be a character with a file name, at least in the simple, current readQFeatures() case), and either a data.frame (current readSCP()), or a vector (current readQFeatures()).</p>
-<pre><code><span><span class="kw">setGeneric</span><span class="op">(</span><span class="st">"readFOO"</span>,</span>
-<span>           <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span><span class="op">)</span></span>
-<span>               <span class="fu"><a href="https://rdrr.io/r/base/standardGeneric.html" class="external-link">standardGeneric</a></span><span class="op">(</span><span class="st">"readFOO"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="kw">setMethod</span><span class="op">(</span><span class="st">"readFOO"</span>,</span>
-<span>          <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"data.frame"</span>, <span class="st">"data.frame"</span><span class="op">)</span>,</span>
-<span>          <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
-<span>              <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"two dfs"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="kw">setMethod</span><span class="op">(</span><span class="st">"readFOO"</span>,</span>
-<span>          <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"data.frame"</span>, <span class="st">"vector"</span><span class="op">)</span>,</span>
-<span>          <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
-<span>              <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"one df and one vector"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="kw">setMethod</span><span class="op">(</span><span class="st">"readFOO"</span>,</span>
-<span>          <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"character"</span>, <span class="st">"vector"</span><span class="op">)</span>,</span>
-<span>          <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
-<span>              <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"one character and one vector"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span></span>
-<span><span class="fu">readFOO</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">readFOO</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">readFOO</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">readFOO</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">readFOO</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">readFOO</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+<ol style="list-style-type: decimal"><li>Single-set case, multiplexed: requires <code>colAnnotation</code> only. Also LF with a re-ordered peptide/protein-level table (runs are missing in this case).</li>
+</ol><pre><code>|------+------------+-----------|
+| cols | Quant 1..N | more cols |
+|      |            |           |
+|      |            |           |
+|      |            |           |
+|------+------------+-----------|</code></pre>
+<ol start="2" style="list-style-type: decimal"><li>Multi-set case, multiplexed: requires <code>colAnnotation</code> and <code>runCol</code>.</li>
+</ol><pre><code>|-----+------+------------+-----------|
+| Run | cols | Quant 1..N | more cols |
+|   1 |      |            |           |
+|   1 |      |            |           |
+|-----+------+------------+-----------|
+|   2 |      |            |           |
+|-----+------+------------+-----------|</code></pre>
+<ol start="3" style="list-style-type: decimal"><li>Multi-set case, LF: requires <code>colAnnotation</code> and <code>runCol</code> with a optional <code>channelCol</code> (for plexDIA).</li>
+</ol><pre><code>|-----+------+---------+-----------+-------|
+| Run | cols | Quant 1 | more cols | multi |
+|   1 |      |         |           |       |
+|   1 |      |         |           |       |
+|-----+------+---------+-----------+-------|
+|   2 |      |         |           |       |
+|-----+------+---------+-----------+-------|</code></pre>
+<ol start="4" style="list-style-type: decimal"><li>Special case DIANN. A specialised function that parses the table to case 2.</li>
+</ol><p>Users can either use the arguments above or a <code>colAnnotation</code> data.frame (that will become the <code>colData</code>).</p>
+<p>Some issues, to be discussed:</p>
+<pre><code>&gt; readQFeatures(hlpsms, colAnnotation = 1:10, name = "psms")
+Checking arguments.
+Error in .checkQuantCols(assayData, colAnnotation, quantCols) :
+  When 'quantCols' is NULL, 'colAnnotation' must contain a column called 'quantCols'.</code></pre>
+<p>after fixing</p>
+<pre><code>&gt; colData(readQFeatures(hlpsms, colAnnotation = 1:10, name = "psms"))
+Checking arguments.
+Loading data as a 'SummarizedExperiment' object.
+Formatting sample annotations (colData).
+Formatting data as a 'QFeatures' object.
+DataFrame with 10 rows and 1 column
+      quantCols
+      &lt;integer&gt;
+X126         NA
+X127C        NA
+X127N        NA
+X128C        NA
+X128N        NA
+X129C        NA
+X129N        NA
+X130C        NA
+X130N        NA
+X131         NA</code></pre>
+<p>OK with more fixing</p>
+<pre><code><span><span class="va">i</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"X1"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">hlpsms</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## ERROR readQFeatures(hlpsms, colAnnotation = i, name = "psms")</span></span>
+<span><span class="fu"><a href="reference/readQFeatures.html">readQFeatures</a></span><span class="op">(</span><span class="va">hlpsms</span>, quantCols <span class="op">=</span> <span class="va">i</span>, name <span class="op">=</span> <span class="st">"psms"</span><span class="op">)</span> <span class="co">## OK</span></span></code></pre>
+<pre><code><span><span class="va">cd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>quantCols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">hlpsms</span><span class="op">)</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/readQFeatures.html">readQFeatures</a></span><span class="op">(</span><span class="va">hlpsms</span>, colAnnotation <span class="op">=</span> <span class="va">cd</span>, name <span class="op">=</span> <span class="st">"psms"</span><span class="op">)</span></span></code></pre>
 <p>What annoys me though with this is the naming of the arguments. Often, the names in a generic function are generic, such as <code>object</code> or <code>x</code> and <code>y</code>. The problem is that the first argument refers to the actual data (either as a data.frame, or as the file that contains it), and the second one refers to either the vector <code>ecols</code> or the data.frame <code>colData</code>.</p>
 <ul><li><p>We could simplify this by only supporting a data.frame like object for the first argument. That first argument is currently called <code>table</code> (single-assay case) and <code>featureData</code> (multi-assay case). This argument could be called <code>x</code> for generality, but given that the second one should be more explicit than <code>y</code>(see next point), <code>featureData</code> or <code>assayData</code> would also work.</p></li>
 <li><p>The second argument is called <code>ecol</code> (single-assay case) and <code>colData</code> (multi-assay case). Instead of calling it <code>y</code>, it could be called <code>colAnnotation</code>, as it either annotates the columns to be used to populate the assay, or the colData.</p></li>
