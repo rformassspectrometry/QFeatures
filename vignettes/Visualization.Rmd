@@ -29,7 +29,7 @@ for more details about data processing with `QFeatures`.
 ```{r read_data, message = FALSE}
 library("QFeatures")
 data(hlpsms)
-hl <- readQFeatures(hlpsms, colAnnotation = 1:10, name = "psms")
+hl <- readQFeatures(hlpsms, quantCols = 1:10, name = "psms")
 ```
 
 We then aggregate the psms to peptides, and the peptodes to proteins.

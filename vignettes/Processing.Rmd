@@ -61,7 +61,7 @@ the peptide sequences.
 
 ```{r read_cptac}
 library("QFeatures")
-cptac <- readQFeatures(x, colAnnotation = i, name = "peptides", fnames = "Sequence")
+cptac <- readQFeatures(x, quantCols = i, name = "peptides", fnames = "Sequence")
 cptac
 ```
 

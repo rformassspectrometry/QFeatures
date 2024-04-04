@@ -133,7 +133,7 @@ reflect the nature of the data.
 
 ```{r readQFeatures}
 data(hlpsms)
-hl <- readQFeatures(hlpsms, colAnnotation = 1:10, name = "psms")
+hl <- readQFeatures(hlpsms, quantCols = 1:10, name = "psms")
 hl
 ```
 
@@ -163,7 +163,8 @@ same peptide sequence. Below, the aggregation function is set, as an
 example, to the mean. The new assay is named *peptides*.
 
 ```{r aggregateFeatures1}
-hl <- aggregateFeatures(hl, "psms", "Sequence", name = "peptides", fun = colMeans)
+hl <- aggregateFeatures(hl, "psms", "Sequence",
+                        name = "peptides", fun = colMeans)
 hl
 hl[["peptides"]]
 ```
@@ -172,7 +173,8 @@ Below, we repeat the aggregation operation by grouping peptides into
 proteins as defined by the *ProteinGroupAccessions* variable.
 
 ```{r aggregateFeatures2}
-hl <- aggregateFeatures(hl, "peptides", "ProteinGroupAccessions", name = "proteins", fun = colMeans)
+hl <- aggregateFeatures(hl, "peptides", "ProteinGroupAccessions",
+                        name = "proteins", fun = colMeans)
 hl
 hl[["proteins"]]
 ```
