@@ -30,3 +30,4 @@
 ## FeatureSet, that contains all the feature variables.
 ##
 ## It might be useful to define some session-wide default rules?
+

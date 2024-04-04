@@ -31,9 +31,12 @@ Imports:
    MsCoreUtils (>= 1.7.2),
    igraph,
    grDevices,
-   plotly
+   plotly,
+   tidyr,
+   tidyselect
 Suggests:
    SingleCellExperiment,
+   MsDataHub,
    Matrix,
    HDF5Array,
    msdata,

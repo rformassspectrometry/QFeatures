@@ -163,7 +163,7 @@ highest number of features, PSMs in the example above) is
 considered the main assay.
 
 The recommended way to create \code{QFeatures} objects is the use the
-\code{readQFeatures()} function, that creates an instance from tabular
+\code{\link[=readQFeatures]{readQFeatures()}} function, that creates an instance from tabular
 data. The \code{QFeatures} constructor can be used to create objects
 from their bare parts.  It is the user's responsability to make
 sure that these match the class validity requirements.

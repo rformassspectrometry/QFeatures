@@ -325,49 +325,96 @@ issue](https://github.com/rformassspectrometry/QFeatures/issues/171).
 
 # Tabular input (issue 199)
 
-- change readSCP() so that it produces SE. The only change required is
-  to use readSummarizedExperiment() instead of
-  readSingleCellExperiment().
-- This new function can them be used by `readQFeaturesFromDIANN()` to
-  generate a `QFeatures` object with SEs. `readSCPfromDIANN()` would
-  then use that one, and convert elements to SCE objects.
-
-My preference is to merge readQFeatures() and readSCP() to have
-both behaviours. The best might even to have methods that dispatch
-on two arguments, the first one containing a data.frame in both
-cases (could also be a character with a file name, at least in the
-simple, current readQFeatures() case), and either a data.frame
-(current readSCP()), or a vector (current readQFeatures()).
+1. Single-set case, multiplexed: requires `colAnnotation` only. Also
+   LF with a re-ordered peptide/protein-level table (runs are missing
+   in this case).
 
 ```
-setGeneric("readFOO",
-           function(x, y, ...)
-               standardGeneric("readFOO"))
+|------+------------+-----------|
+| cols | Quant 1..N | more cols |
+|      |            |           |
+|      |            |           |
+|      |            |           |
+|------+------------+-----------|
+```
 
-setMethod("readFOO",
-          c("data.frame", "data.frame"),
-          function(x, y)
-              message("two dfs"))
+2. Multi-set case, multiplexed: requires `colAnnotation` and `runCol`.
 
-setMethod("readFOO",
-          c("data.frame", "vector"),
-          function(x, y)
-              message("one df and one vector"))
+```
+|-----+------+------------+-----------|
+| Run | cols | Quant 1..N | more cols |
+|   1 |      |            |           |
+|   1 |      |            |           |
+|-----+------+------------+-----------|
+|   2 |      |            |           |
+|-----+------+------------+-----------|
+```
 
-setMethod("readFOO",
-          c("character", "vector"),
-          function(x, y)
-              message("one character and one vector"))
+3. Multi-set case, LF: requires `colAnnotation` and `runCol` with a
+   optional `channelCol` (for plexDIA).
+
+```
+|-----+------+---------+-----------+-------|
+| Run | cols | Quant 1 | more cols | multi |
+|   1 |      |         |           |       |
+|   1 |      |         |           |       |
+|-----+------+---------+-----------+-------|
+|   2 |      |         |           |       |
+|-----+------+---------+-----------+-------|
+```
+
+4. Special case DIANN. A specialised function that parses the table to
+   case 2.
+
+Users can either use the arguments above or a `colAnnotation`
+data.frame (that will become the `colData`).
 
 
-readFOO(data.frame(), data.frame())
 
-readFOO(data.frame(), character())
-readFOO(data.frame(), numeric())
-readFOO(data.frame(), integer())
-readFOO(data.frame(), logical())
+Some issues, to be discussed:
 
-readFOO(character(), character())
+```
+> readQFeatures(hlpsms, colAnnotation = 1:10, name = "psms")
+Checking arguments.
+Error in .checkQuantCols(assayData, colAnnotation, quantCols) :
+  When 'quantCols' is NULL, 'colAnnotation' must contain a column called 'quantCols'.
+```
+
+after fixing
+
+```
+> colData(readQFeatures(hlpsms, colAnnotation = 1:10, name = "psms"))
+Checking arguments.
+Loading data as a 'SummarizedExperiment' object.
+Formatting sample annotations (colData).
+Formatting data as a 'QFeatures' object.
+DataFrame with 10 rows and 1 column
+      quantCols
+      <integer>
+X126         NA
+X127C        NA
+X127N        NA
+X128C        NA
+X128N        NA
+X129C        NA
+X129N        NA
+X130C        NA
+X130N        NA
+X131         NA
+```
+
+OK with more fixing
+
+
+```
+i <- grepl("X1", colnames(hlpsms))
+## ERROR readQFeatures(hlpsms, colAnnotation = i, name = "psms")
+readQFeatures(hlpsms, quantCols = i, name = "psms") ## OK
+```
+
+```
+cd <- data.frame(quantCols = names(hlpsms)[i])
+readQFeatures(hlpsms, colAnnotation = cd, name = "psms")
 ```
 
 What annoys me though with this is the naming of the arguments. Often,

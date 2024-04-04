@@ -3,64 +3,163 @@
 \name{readQFeatures}
 \alias{readQFeatures}
 \alias{readSummarizedExperiment}
+\alias{readQFeatures,data.frame,data.frame}
+\alias{readQFeatures,data.frame,vector}
+\alias{readQFeatures,missing,vector}
 \title{QFeatures from tabular data}
 \usage{
-readQFeatures(table, ecol, fnames, ..., name = NULL)
+readSummarizedExperiment(
+  assayData,
+  quantCols = NULL,
+  fnames = NULL,
+  ecol = NULL,
+  ...
+)
 
-readSummarizedExperiment(table, ecol, fnames, ...)
+readQFeatures(
+  assayData,
+  colAnnotation = NULL,
+  quantCols = NULL,
+  runCol = NULL,
+  name = "quants",
+  removeEmptyCols = FALSE,
+  verbose = TRUE,
+  ...
+)
 }
 \arguments{
-\item{table}{File or object holding the quantitative data. Can be
-either a \code{character(1)} with the path to a text-based
-spreadsheet (comma-separated values by default, but see \code{...})
-or an object that can be coerced to a \code{data.frame}. It is
-advised not to encode characters as factors.}
+\item{assayData}{A \code{data.frame}, or any object that can be coerced
+to a \code{data.frame}, holding the quantitative assay. For
+\code{readSummarizedExperiment()}, this can also be a
+\code{character(1)} to a filename.}
 
-\item{ecol}{A \code{numeric} indicating the indices of the columns to
-be used as expression values. Can also be a \code{character}
-indicating the names of the columns. Caution must be taken if
-the column names are composed of special characters like \code{(}
-or \code{-} that will be converted to a \code{.} by the \code{read.csv}
-function. If \code{ecol} does not match, the error message will
-display the column names as seen by the \code{read.csv} function.}
+\item{quantCols}{A \code{numeric()}, \code{logical()} or \code{character()}
+defining the columns of the \code{assayData} that contain the
+quantitative data. Can also be defined in \code{colAnnotation}.}
 
-\item{fnames}{An optional \code{character(1)} or \code{numeric(1)}
-indicating the column to be used as feature names.}
+\item{fnames}{For the single- and multi-set cases, an optional
+\code{character(1)} or \code{numeric(1)} indicating the column to be
+used as feature names.  Note that rownames must be unique in
+\code{QFeatures} sets.}
 
-\item{...}{Further arguments that can be passed on to \code{read.csv}
-except \code{stringsAsFactors}, which is always \code{FALSE}.}
+\item{ecol}{Same as \code{quantCols} for the single-set case. Available
+for backwards compatibility. Default is \code{NULL}. If both \code{ecol}
+and \code{colAnnotation} are set, an error is thrown.}
 
-\item{name}{An \code{character(1)} to name assay in the \code{QFeatures}
-object. If not set, \code{features} is used.}
+\item{...}{Further arguments that can be passed on to \code{\link[=read.csv]{read.csv()}}
+except \code{stringsAsFactors}, which is always \code{FALSE}. Only
+applicable to \code{readSummarizedExperiment()}.}
+
+\item{colAnnotation}{The type of this parameter will define
+whether the resulting \code{QFeatures} object will contain a single
+or multiple sets.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{For the single-set case, a `numeric` indicating the indices of
+the columns to be used as expression values, or a `character`
+indicating the names of the columns, or a `logical` indicating
+the quantitative assay's columns.
+
+For the multi-set case, a `data.frame` or any object that can
+be coerced to a `data.frame`. It is expected to contain all
+the sample annotations. Required fields are the acquisition
+batch (given by `runCol`) and the acquisition channel within
+the batch (e.g. TMT channel, given by
+`channelCol`). Additional fields (e.g. sample type,
+acquisition date,...) are allowed and will be stored as sample
+metadata in the `QFeatures`'s colData slot.
+}\if{html}{\out{</div>}}}
+
+\item{runCol}{For the multi-set case, a \code{numeric(1)} or
+\code{character(1)} pointing to the column of \code{assayData} and
+\code{colAnnotation} that contain the batch names. Make sure that
+the column name in both tables are either identical and
+syntactically valid (if you supply a \code{character}) or have the
+same index (if you supply a \code{numeric}). Note that characters
+are converted to syntactically valid names using \code{make.names}}
+
+\item{name}{For the single-set case, an optional \code{character(1)} to
+name the set in the \code{QFeatures} object. Default is \code{quants}.}
+
+\item{removeEmptyCols}{A \code{logical(1)}. If true, the function will
+remove in each batch the columns that contain only missing
+values.}
+
+\item{verbose}{A \code{logical(1)} indicating whether the progress of
+the data reading and formatting should be printed to the
+console. Default is \code{TRUE}.}
 }
 \value{
-An instance of class \link{QFeatures} or \link{SummarizedExperiment}.
+An instance of class \code{QFeatures} or
+\code{\link[SummarizedExperiment:RangedSummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}}. For the
+former, the quantitative sets of each run are stored in
+\code{\link[SummarizedExperiment:RangedSummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}} object.
 }
 \description{
-Convert tabular data from a spreadsheet or a \code{data.frame} into a
-\code{QFeatures} object.
-}
-\section{Functions}{
+These functions convert tabular data into dedicated data
+objets. The \code{\link[=readSummarizedExperiment]{readSummarizedExperiment()}} function takes a
+\code{data.frame} and converts it into a \link{SummarizedExperiment} object.
+The \code{\link[=readQFeatures]{readQFeatures()}} function takes a \code{data.frame} and converts
+it into a \code{QFeatures} object (see \code{\link[=QFeatures]{QFeatures()}} for details). Two
+use-cases exist here:
 \itemize{
-\item \code{readQFeatures()}: See description.
-
-\item \code{readSummarizedExperiment()}: Convert tabular data from a spreadsheet or a
-\code{data.frame} into a \code{SummarizedExperiment} object.
-
-}}
+\item The single-set case will generate a \code{QFeatures} object with a
+single \link{SummarizedExperiment} set containing all features of the
+input table.
+\item The multi-set case will generate a \code{QFeatures} object with
+multiple \link{SummarizedExperiment} sets, resulting from splitting
+the input table. This multi-set case should be used when the
+input table contains data for multiple runs/batches?
+}
+}
 \examples{
+
+######################################
+## Single-set case.
 
 ## Load a data.frame with PSM-level data
 data(hlpsms)
+hlpsms[1:10, c(1, 2, 10:11, 14, 17)]
 
-## Create the QFeatures object
-fts2 <- readQFeatures(hlpsms, ecol = 1:10, name = "psms")
-fts2
+## Create a QFeatures object with a single psms set
+qf1 <- readQFeatures(hlpsms, quantCols = 1:10, name = "psms")
+qf1
+
+######################################
+## Single-set case using a data.frame
+
+## All PSMs were acquired in the same acquisition
+hlpsms$file <- "File1"
+hlpsms[1:10, c(1, 2, 10:11, 14, 17, 29)]
+(colann <- data.frame(file = rep("File1", 10),
+                      var = rnorm(10),
+                      quantCols = names(hlpsms)[1:10]))
+qf2 <- readQFeatures(hlpsms, colAnnotation = colann)
+qf2
+colData(qf2)
+
+######################################
+## Multi-set case.
+
+## Let's simulate 3 different files/batches for that same input
+## data.frame, and define a colAnnotation data.frame.
+
+hlpsms$file <- paste0("File", sample(1:3, nrow(hlpsms), replace = TRUE))
+hlpsms[1:10, c(1, 2, 10:11, 14, 17, 29)]
+(colann <- data.frame(runCol = rep(paste0("File", 1:3), each = 10),
+                      quantCols = names(hlpsms)[1:10]))
+
+qf3 <- readQFeatures(hlpsms, colAnnotation = colann, runCol = "file")
+qf3
+colData(qf3)
 }
 \seealso{
-The \link{QFeatures} class for an example on how to use
-\code{readQFeatures} and how to further manipulate the resulting data.
+\itemize{
+\item The \code{QFeatures} (see \code{\link[=QFeatures]{QFeatures()}}) class to read about how to
+manipulate the resulting \code{QFeatures} object.
+\item The \code{\link[=readQFeaturesFromDIANN]{readQFeaturesFromDIANN()}} function to import DIA-NN
+quantitative data.
+}
 }
 \author{
-Laurent Gatto
+Laurent Gatto, Christophe Vanderaa
 }

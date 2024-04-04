@@ -3,6 +3,10 @@
 ## QFeatures 1.13.3
 
 - Fix `is.vector()` (see issue #203)
+- `readQFeatures()` multi-set support (ported from `scp::readSCP()` -
+  see issue #199).
+- new `readQFeaturesFromDIANN()` function to import DIA-NN report
+  files (ported from `scp::readSCPfromDIANN()` - see issue #199).
 
 ## QFeatures 1.13.2
 
