@@ -87,12 +87,6 @@ values.}
 \item{verbose}{A \code{logical(1)} indicating whether the progress of
 the data reading and formatting should be printed to the
 console. Default is \code{TRUE}.}
-
-\item{channelCol}{For the multi-set case, a \code{numeric(1)} or
-\code{character(1)} pointing to the column of \code{colAnnotation} that
-contains the column names of the quantitative data in
-\code{assayData} (see example). Useful for multiplexed experiments
-such as mTRAQ or TMT.}
 }
 \value{
 An instance of class \code{QFeatures} or

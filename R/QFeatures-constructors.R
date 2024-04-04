@@ -434,6 +434,10 @@ readQFeatures <- function(assayData,
 ##'     experiment is label-free (default). Alternative options are:
 ##'     `"mTRAQ"`.
 ##'
+##' @param ecol Same as `quantCols` for the single-set case. Available
+##'     for backwards compatibility. Default is `NULL`. If both `ecol`
+##'     and `colAnnotation` are set, an error is thrown.
+##'
 ##' @param ... Further arguments passed to [readQFeatures()].
 ##'
 ##' @return An instance of class `QFeatures`. The quantiative data of

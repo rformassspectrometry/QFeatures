@@ -10,6 +10,7 @@ readQFeaturesFromDIANN(
   extractedData = NULL,
   quantCols = "Ms1.Area",
   multiplexing = "none",
+  ecol = NULL,
   ...
 )
 }
@@ -41,6 +42,10 @@ where DIA-NN was run using the \code{plexdia} module.}
 multiplexing used in the experiment. Provide \code{"none"} if the
 experiment is label-free (default). Alternative options are:
 \code{"mTRAQ"}.}
+
+\item{ecol}{Same as \code{quantCols} for the single-set case. Available
+for backwards compatibility. Default is \code{NULL}. If both \code{ecol}
+and \code{colAnnotation} are set, an error is thrown.}
 
 \item{...}{Further arguments passed to \code{\link[=readQFeatures]{readQFeatures()}}.}
 }
