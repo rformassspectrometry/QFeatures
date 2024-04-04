@@ -5,6 +5,14 @@ colann <- data.frame(file = rep(paste0("File", 1:3), each = 10),
                      Channel = rep(names(x)[1:10], 3))
 
 
+test_that(".checkWarnEcol works", {
+    expect_identical(QFeatures:::.checkWarnEcol(NULL, NULL), NULL)
+    expect_identical(QFeatures:::.checkWarnEcol(1, NULL), 1)
+    expect_warning(res <- QFeatures:::.checkWarnEcol(NULL, 1),
+                   "'ecol' is deprecated, use 'quantCols' instead")
+    expect_identical(res, 1)
+})
+
 test_that(".checkQuantCols works", {
     expect_error(readQFeatures(x),
                  "Provide one of 'colAnnotation' or 'quantCols'")
