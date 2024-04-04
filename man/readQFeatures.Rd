@@ -24,6 +24,7 @@ readQFeatures(
   name = "quants",
   removeEmptyCols = FALSE,
   verbose = TRUE,
+  ecol = NULL,
   ...
 )
 }
@@ -65,8 +66,8 @@ the sample annotations. Required fields are the acquisition
 batch (given by `runCol`) and the acquisition channel within
 the batch (e.g. TMT channel, given by
 `channelCol`). Additional fields (e.g. sample type,
-acquisition date,...) are allowed and will be stored as sample
-metadata in the `QFeatures`'s colData slot.
+acquisition date, ...) are allowed and will be stored as
+sample metadata in the `QFeatures`'s colData slot.
 }\if{html}{\out{</div>}}}
 
 \item{runCol}{For the multi-set case, a \code{numeric(1)} or

@@ -38,8 +38,8 @@
 ##'     batch (given by `runCol`) and the acquisition channel within
 ##'     the batch (e.g. TMT channel, given by
 ##'     `channelCol`). Additional fields (e.g. sample type,
-##'     acquisition date,...) are allowed and will be stored as sample
-##'     metadata in the `QFeatures`'s colData slot.
+##'     acquisition date, ...) are allowed and will be stored as
+##'     sample metadata in the `QFeatures`'s colData slot.
 ##'
 ##' @param quantCols A `numeric()`, `logical()` or `character()`
 ##'     defining the columns of the `assayData` that contain the
@@ -68,6 +68,14 @@
 ##' @param verbose A `logical(1)` indicating whether the progress of
 ##'     the data reading and formatting should be printed to the
 ##'     console. Default is `TRUE`.
+##'
+##' @param ecol Same as `quantCols` for the single-set case. Available
+##'     for backwards compatibility. Default is `NULL`. If both `ecol`
+##'     and `colAnnotation` are set, an error is thrown.
+##'
+##' @param ... Additional parameters passed to
+##'     `readSummarizedExperiment()` by `readQFeatures()` and
+##'     [read.csv()] by `readSummarizedExperiment()`.
 ##'
 ##' @return An instance of class `QFeatures` or
 ##'     [SummarizedExperiment::SummarizedExperiment()]. For the
@@ -163,10 +171,6 @@ QFeatures <- function(..., assayLinks = NULL) {
 ##'
 ##' @importFrom utils read.csv
 ##'
-##' @param ecol Same as `quantCols` for the single-set case. Available
-##'     for backwards compatibility. Default is `NULL`. If both `ecol`
-##'     and `colAnnotation` are set, an error is thrown.
-##'
 ##' @param ... Further arguments that can be passed on to [read.csv()]
 ##'     except `stringsAsFactors`, which is always `FALSE`. Only
 ##'     applicable to `readSummarizedExperiment()`.
@@ -174,10 +178,7 @@ readSummarizedExperiment <- function(assayData,
                                      quantCols = NULL,
                                      fnames = NULL,
                                      ecol = NULL, ...) {
-    if (!is.null(ecol)) {
-        warning("'ecol' is deprecated, use 'quantCols' instead.")
-        if (is.null(quantCols)) quantCols <- ecol
-    }
+    quantCols <- .checkWarnEcol(quantCols, ecol)
     if (!is.vector(quantCols) || is.list(quantCols))
         stop("'quantCols' must be an atomics vector.")
     if (is.data.frame(assayData)) xx <- assayData
@@ -233,11 +234,13 @@ readQFeatures <- function(assayData,
                           name = "quants",
                           removeEmptyCols = FALSE,
                           verbose = TRUE,
+                          ecol = NULL,
                           ...) {
     if (verbose) message("Checking arguments.")
     assayData <- as.data.frame(assayData)
     if (!is.null(colAnnotation))
         colAnnotation <- data.frame(colAnnotation)
+    quantCols <- .checkWarnEcol(quantCols, ecol)
     quantCols <- .checkQuantCols(assayData, colAnnotation, quantCols)
     runs <- .checkRunCol(assayData, colAnnotation, runCol)
     if (verbose) message("Loading data as a 'SummarizedExperiment' object.")
@@ -255,6 +258,19 @@ readQFeatures <- function(assayData,
     colData <- .formatColData(el, colAnnotation, runs, quantCols)
     if (verbose) message("Formatting data as a 'QFeatures' object.")
     QFeatures(experiments = el, colData = colData)
+}
+
+
+## ecol will be deprecated next release. This function warns if ecol
+## is used (i.e. is not NULL), then sets quantCols with the value of
+## ecol if quantCols wasn't used.
+.checkWarnEcol <- function(quantCols, ecol) {
+    if (!is.null(ecol)) {
+        warning("'ecol' is deprecated, use 'quantCols' instead.")
+        if (is.null(quantCols))
+            quantCols <- ecol
+    }
+    quantCols
 }
 
 ## This function will check the quantitation variable inputs. At the

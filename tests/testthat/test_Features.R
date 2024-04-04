@@ -76,6 +76,7 @@ test_that("Test indexing", {
     expect_identical(.normIndex(feat2, "foo", allowAbsent = TRUE),
                      "foo")
 })
+
 test_that("updateObject", {
     data(feat3)
     ## Applying updateObject on feat3 should lead to the same object
@@ -815,7 +816,7 @@ test_that("renaming", {
 test_that("assays must have unique rownames", {
     data(hlpsms)
     hlpsms <- hlpsms[1:10, ]
-    ft1 <- readQFeatures(hlpsms, ecol = 1:10, name = "psms", fname = "Sequence")
+    ft1 <- readQFeatures(hlpsms, quantCol = 1:10, name = "psms", fname = "Sequence")
     ## Adapt in slots directly because our code doesn't allow anymore to run:
     # rownames(ft1[[1]][1:2]) <- rep("1", 2)
     rownames(ft1@ExperimentList@listData[[1]][1:2]) <- rep("1", 2)
