@@ -18,6 +18,43 @@
 ##'   the input table. This multi-set case should be used when the
 ##'   input table contains data for multiple runs/batches?
 ##'
+##'
+##' @details
+##'
+##' The single- and multi-set cases are defined by the parameters,
+##' whether passed by the `colAnnotation` data.frame and/or the
+##' `quantCols` and `runCol` arguments.
+##'
+##' In both cases, the quantitative data variables must be defined by
+##' the `quantCols` argument or `quantCols` variable in
+##' `colAnnotation` (see single-set cases in the example). These cases
+##' can be presented schematically by
+##'
+##' ```
+##' |------+----------------+-----------|
+##' | cols | quantCols 1..N | more cols |
+##' | .    | ...            | ...       |
+##' | .    | ...            | ...       |
+##' | .    | ...            | ...       |
+##' |------+----------------+-----------|
+##' ```
+##'
+##' The `runCol` argument is required to import multi-set data,
+##'
+##' |--------+------+----------------+-----------|
+##' | runCol | cols | quantCols 1..N | more cols |
+##' |   1    | .    | ...            | ...       |
+##' |   1    | .    | ...            | ...       |
+##' |--------+------+----------------+-----------|
+##' |   2    | .    | ...            | ...       |
+##' |--------+------+----------------+-----------|
+##' ```
+##'
+##'
+##'
+##'
+##'
+##'
 ##' @param assayData A `data.frame`, or any object that can be coerced
 ##'     to a `data.frame`, holding the quantitative assay. For
 ##'     `readSummarizedExperiment()`, this can also be a

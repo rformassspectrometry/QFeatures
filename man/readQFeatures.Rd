@@ -112,6 +112,27 @@ the input table. This multi-set case should be used when the
 input table contains data for multiple runs/batches?
 }
 }
+\details{
+The single- and multi-set cases are defined by the parameters,
+whether passed by the \code{colAnnotation} data.frame and/or the
+\code{quantCols} and \code{runCol} arguments. In both cases, the
+quantitative data variables must be defined by the \code{quantCols}
+argument or \code{quantCols} variable in \code{colAnnotation} (see
+single-set cases in the example). These cases can be presented
+schematically by
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{|------+----------------+-----------|
+| cols | quantCols 1..N | more cols |
+|      |                |           |
+|      |                |           |
+|      |                |           |
+|------+----------------+-----------|
+}\if{html}{\out{</div>}}\tabular{lll}{
+   cols \tab quantCols 1..N \tab more cols \cr
+   . \tab ... \tab ... \cr
+   . \tab ... \tab ... \cr
+}
+}
 \examples{
 
 ######################################
