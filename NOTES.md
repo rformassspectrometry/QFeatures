@@ -338,6 +338,14 @@ issue](https://github.com/rformassspectrometry/QFeatures/issues/171).
 |------+------------+-----------|
 ```
 
+```
+readQFeatures(hlpsms, quantCols = 1:10)
+readQFeatures(hlpsms, colAnnotation = colann)
+
+## also possible, but redundant
+readQFeatures(hlpsms, colAnnotation = colann, quantCols = 1:10)
+```
+
 2. Multi-set case, multiplexed: requires `colAnnotation` and `runCol`.
 
 ```
@@ -350,17 +358,22 @@ issue](https://github.com/rformassspectrometry/QFeatures/issues/171).
 |-----+------+------------+-----------|
 ```
 
-3. Multi-set case, LF: requires `colAnnotation` and `runCol` with a
-   optional `channelCol` (for plexDIA).
+```
+readQFeatures(hlpsms, quantCols = 1:10, runCol = "file")
+readQFeatures(hlpsms, colAnnotation = colann, runCol = "file")
+```
+
+3. Multi-set case, LF: requires `colData` and `runCol` with a optional
+   `multiplexing` (for plexDIA).
 
 ```
-|-----+------+---------+-----------+-------|
-| Run | cols | Quant 1 | more cols | multi |
-|   1 |      |         |           |       |
-|   1 |      |         |           |       |
-|-----+------+---------+-----------+-------|
-|   2 |      |         |           |       |
-|-----+------+---------+-----------+-------|
+|-----+------+---------+-----------+-----------|
+| Run | cols | Quant 1 | more cols | multiplex |
+|   1 |      |         |           |           |
+|   1 |      |         |           |           |
+|-----+------+---------+-----------+-----------|
+|   2 |      |         |           |           |
+|-----+------+---------+-----------+-----------|
 ```
 
 4. Special case DIANN. A specialised function that parses the table to
@@ -370,68 +383,20 @@ Users can either use the arguments above or a `colAnnotation`
 data.frame (that will become the `colData`).
 
 
+## DIANN data
 
-Some issues, to be discussed:
-
-```
-> readQFeatures(hlpsms, colAnnotation = 1:10, name = "psms")
-Checking arguments.
-Error in .checkQuantCols(assayData, colAnnotation, quantCols) :
-  When 'quantCols' is NULL, 'colAnnotation' must contain a column called 'quantCols'.
-```
-
-after fixing
+- DIANN data is in long format
+- readQFeaturesFromDIANN() would need to transform from long to wide,
+  then use readQFeatures()
 
 ```
-> colData(readQFeatures(hlpsms, colAnnotation = 1:10, name = "psms"))
-Checking arguments.
-Loading data as a 'SummarizedExperiment' object.
-Formatting sample annotations (colData).
-Formatting data as a 'QFeatures' object.
-DataFrame with 10 rows and 1 column
-      quantCols
-      <integer>
-X126         NA
-X127C        NA
-X127N        NA
-X128C        NA
-X128N        NA
-X129C        NA
-X129N        NA
-X130C        NA
-X130N        NA
-X131         NA
+dfr |>
+  diannWider() |>
+  readQFeatures()
+
+readQFeaturesFromDIANN <- funtion(dfr, multiplexing = NULL, ...) {
+    if (!is.null(multiplexing))
+        x <- .diannWider(multiplexing)
+    readQFeatures(x, ...)
+}
 ```
-
-OK with more fixing
-
-
-```
-i <- grepl("X1", colnames(hlpsms))
-## ERROR readQFeatures(hlpsms, colAnnotation = i, name = "psms")
-readQFeatures(hlpsms, quantCols = i, name = "psms") ## OK
-```
-
-```
-cd <- data.frame(quantCols = names(hlpsms)[i])
-readQFeatures(hlpsms, colAnnotation = cd, name = "psms")
-```
-
-What annoys me though with this is the naming of the arguments. Often,
-the names in a generic function are generic, such as `object` or `x`
-and `y`. The problem is that the first argument refers to the actual
-data (either as a data.frame, or as the file that contains it), and
-the second one refers to either the vector `ecols` or the data.frame
-`colData`.
-
-- We could simplify this by only supporting a data.frame like object
-  for the first argument. That first argument is currently called
-  `table` (single-assay case) and `featureData` (multi-assay
-  case). This argument could be called `x` for generality, but given
-  that the second one should be more explicit than `y`(see next
-  point), `featureData` or `assayData` would also work.
-
-- The second argument is called `ecol` (single-assay case) and
-  `colData` (multi-assay case). Instead of calling it `y`, it could be
-  called `colAnnotation`, as it either annotates the columns to be
-  used to populate the assay, or the colData.

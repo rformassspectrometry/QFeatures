@@ -15,21 +15,50 @@ test_that(".checkWarnEcol works", {
 
 test_that(".checkQuantCols works", {
     expect_error(readQFeatures(x),
-                 "Provide one of 'colAnnotation' or 'quantCols'")
-    expect_error(readQFeatures(x, colAnnotation = data.frame()),
-                 "'colAnnotation' must contain a column called 'quantCols'")
-    ## expect_warning(readQFeatures(x, colAnnotation = data.frame(quantCols = 1:10),
+                 "Provide one of 'colData' or 'quantCols'")
+    expect_error(readQFeatures(x, colData = data.frame()),
+                 "'colData' must contain a column called 'quantCols'")
+    ## expect_warning(readQFeatures(x, colData = data.frame(quantCols = 1:10),
     ##                              quantCols = 1:10),
-    ##                "Ignoring 'quantCols', using 'colAnnotation'.")
-    expect_error(readQFeatures(x, colAnnotation = data.frame(quantCols = "foo")),
+    ##                "Ignoring 'quantCols', using 'colData'.")
+    expect_error(readQFeatures(x, colData = data.frame(quantCols = "foo")),
                  "Some column names in 'quantCols' are not found in 'assayData'")
-    expect_error(readQFeatures(x, colAnnotation = data.frame(quantCols = c("X126", "foo"))),
+    expect_error(readQFeatures(x, colData = data.frame(quantCols = c("X126", "foo"))),
                  "Some column names in 'quantCols' are not found in 'assayData'")
 })
 
+test_that(".checkRunCol works", {
+    ## Single-set case
+    expect_null(.checkRunCol(, , NULL))
+    ##################################################
+    ## Multi-set case and runCol: positive control
+    expect_identical(.checkRunCol(x, NULL, "file"), x[["file"]])
+    ## --------------------------------------------
+    ## Multi-set case and runCol: errors
+    expect_error(.checkRunCol(x, NULL, c("file", "file")),
+                 "'runCol' must contain the name of a single column in 'assayData'.")
+    expect_error(.checkRunCol(x, NULL, "nofile"),
+                 "not found in 'assayData'.")
+    ##################################################
+    ## Multi-set case, runCol and colData: positive control
+    colann <- data.frame(runCol = rep(paste0("File", 1:3), each = 10),
+                         quantCol = rep(names(x)[1:10], 3))
+    expect_identical(.checkRunCol(x, colann, "file"), x[["file"]])
+    ## --------------------------------------------
+    ## Multi-set case, runCol and colData: errors
+    expect_error(.checkRunCol(x, colann, "nofile"),
+                 "not found in 'assayData'.")
+    names(colann)[1] <- "noRunCol"
+    expect_error(.checkRunCol(x, colann, "file"),
+                 "'colData' must contain a column called 'runCol'.")
+    colann <- data.frame(runCol = rep(paste0("File", 1:2), each = 15),
+                         quantCol = rep(names(x)[1:10], 3))
+    expect_warning(.checkRunCol(x, colann, "file"),
+                   "Some runs are missing in 'colData':")
+})
 
-test_that("readQFeatures: colAnnotation and quantCols are equivalent", {
-    r1 <- readQFeatures(x, colAnnotation = data.frame(quantCols = names(x)[1:10]))
+test_that("readQFeatures: colData and quantCols are equivalent", {
+    r1 <- readQFeatures(x, colData = data.frame(quantCols = names(x)[1:10]))
     r2 <- readQFeatures(x, quantCols = 1:10)
     colData(r1) <- colData(r2) ## ignore colData
     expect_identical(r1, r2)
@@ -56,12 +85,12 @@ test_that("readQFeatures: testing use cases", {
     )
     ## With colAnnot
     expect_identical(
-        readQFeatures(x, 1:10, colAnnotation = colAnnot),
+        readQFeatures(x, 1:10, colData = colAnnot),
         QFeatures(List(quants = se_exp), colData = colAnnot)
     )
     ## Without quantCols
     expect_identical(
-        qf <- readQFeatures(x, colAnnotation = colAnnot),
+        qf <- readQFeatures(x, colData = colAnnot),
         QFeatures(List(quants = se_exp), colData = colAnnot)
     )
     ## Check colnames
@@ -90,18 +119,18 @@ test_that("readQFeatures: testing use cases", {
     ## With colAnnot
     colAnnot$runCol <- colAnnot$file
     expect_identical(
-        readQFeatures(x, quantCols = 1, runCol = "file", colAnnotation = colAnnot),
+        readQFeatures(x, quantCols = 1, runCol = "file", colData = colAnnot),
         QFeatures(List(el_exp), colData = colAnnot[paste0("File", 1:3), ])
     )
     ## When length(quantCol) == 1, colAnnot doesn't need a quantCol
     expect_identical(
-        readQFeatures(x, 1, runCol = "file", colAnnotation = colAnnot),
+        readQFeatures(x, 1, runCol = "file", colData = colAnnot),
         QFeatures(List(el_exp), colData = colAnnot[paste0("File", 1:3), ])
     )
     ## Without quantCols
     colAnnot$quantCols <- colnames(x)[1]
     expect_identical(
-        qf <- readQFeatures(x, runCol = "file", colAnnotation = colAnnot),
+        qf <- readQFeatures(x, runCol = "file", colData = colAnnot),
         QFeatures(List(el_exp), colData = colAnnot[paste0("File", 1:3), ])
     )
     ## Check colnames
@@ -133,12 +162,12 @@ test_that("readQFeatures: testing use cases", {
     ## With colAnnot
     colAnnot$runCol <- colAnnot$file
     expect_identical(
-        readQFeatures(x, quantCols = 1:10, runCol = "file", colAnnotation = colAnnot),
+        readQFeatures(x, quantCols = 1:10, runCol = "file", colData = colAnnot),
         QFeatures(List(el_exp), colData = colAnnot[order(rownames(colAnnot)), ])
     )
     ## Without quantCols
     expect_identical(
-        qf <- readQFeatures(x, runCol = "file", colAnnotation = colAnnot),
+        qf <- readQFeatures(x, runCol = "file", colData = colAnnot),
         QFeatures(List(el_exp), colData = colAnnot[order(rownames(colAnnot)), ])
     )
     ## Check colnames
@@ -184,8 +213,8 @@ test_that("readQFeatures: test polymorphism", {
         row.names = colnames(se_exp)
     )
     expect_identical(
-        readQFeatures(x, colAnnotation = colAnnot),
-        readQFeatures(x, colAnnotation = as.list(colAnnot))
+        readQFeatures(x, colData = colAnnot),
+        readQFeatures(x, colData = as.list(colAnnot))
     )
 })
 
@@ -200,7 +229,7 @@ test_that("readQFeatures: errors, warnings and messages", {
     ## no quantCols and no colAnnot = error
     expect_error(
         readQFeatures(x),
-        regexp = "Provide one of 'colAnnotation' or 'quantCols', both mustn't be NULL."
+        regexp = "Provide one of 'colData' or 'quantCols', both mustn't be NULL."
     )
     ## some quantCols are missing = error
     expect_error(
@@ -210,21 +239,21 @@ test_that("readQFeatures: errors, warnings and messages", {
     ## if colAnnot is not NULL, it must contain a quantCols column
     colAnnot$quantCols <- NULL
     expect_error(
-        readQFeatures(x, quantCols = 1:10, colAnnotation = colAnnot),
-        regexp = "^'colAnnotation' must contain a column called 'quantCols'"
+        readQFeatures(x, quantCols = 1:10, colData = colAnnot),
+        regexp = "^'colData' must contain a column called 'quantCols'"
     )
     expect_error(
-        readQFeatures(x, colAnnotation = colAnnot),
-        regexp = "When 'quantCols' is NULL, 'colAnnotation' must contain a column called 'quantCols'"
+        readQFeatures(x, colData = colAnnot),
+        regexp = "When 'quantCols' is NULL, 'colData' must contain a column called 'quantCols'"
     )
     expect_error(
-        readQFeatures(x, quantCols = 1:10, runCol = "file", colAnnotation = colAnnot),
-        regexp = "^'colAnnotation' must contain a column called 'quantCols'"
+        readQFeatures(x, quantCols = 1:10, runCol = "file", colData = colAnnot),
+        regexp = "^'colData' must contain a column called 'quantCols'"
     )
     ## runCol is a vector = error
     expect_error(
         readQFeatures(x, quantCols = 1:10, runCol = x$file),
-        regexp = "'runCol' is a vector. Please provide the name of a column in 'assayData'."
+        regexp = "'runCol' must contain the name of a single column in 'assayData'."
     )
     ## runCol not found in assay data = error
     expect_error(
@@ -238,8 +267,8 @@ test_that("readQFeatures: errors, warnings and messages", {
         row.names = grep("^X", colnames(x), value = TRUE)
     )
     expect_error(
-        readQFeatures(x, quantCols = 1:10, runCol = "file", colAnnotation = colAnnot),
-        regexp = "When 'runCol' is not NULL, 'colAnnotation' must contain a column called 'runCol'."
+        readQFeatures(x, quantCols = 1:10, runCol = "file", colData = colAnnot),
+        regexp = "When 'runCol' is not NULL, 'colData' must contain a column called 'runCol'."
     )
 
     ## Missing runs in colAnnot = warning
@@ -255,8 +284,8 @@ test_that("readQFeatures: errors, warnings and messages", {
     })
     names(el_exp) <- paste0("File", 1:3)
     expect_warning(
-        qf <- readQFeatures(x, quantCols = 1, runCol = "file", colAnnotation = colAnnot),
-        regexp = "Some runs are missing in 'colAnnot': File3"
+        qf <- readQFeatures(x, quantCols = 1, runCol = "file", colData = colAnnot),
+        regexp = "Some runs are missing in 'colData': File3"
     )
     ## Missing annotations are autatomically filled with NA
     colAnnot["File3", ] <- NA

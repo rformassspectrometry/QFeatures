@@ -124,11 +124,11 @@ for details), most users will probably possess quantitative data in a
 spreadsheet or a dataframe. In such cases, the easiest is to use the
 `readQFeatures` function to extract the quantitative data and metadata
 columns. Below, we load the `hlpsms` dataframe that contains data for
-`r ncol(hlpsms)` PSMs from the TMT-10plex hyperLOPIT spatial
-proteomics experiment from [@Christoforou:2016]. The `ecol` argument
-specifies that columns 1 to 10 contain quantitation data, and that the
-assay should be named `psms` in the returned `QFeatures` object, to
-reflect the nature of the data.
+`r nrow(hlpsms)` PSMs from the TMT-10plex hyperLOPIT spatial
+proteomics experiment from [@Christoforou:2016]. The `quantCols`
+argument specifies that columns 1 to 10 contain quantitation data, and
+that the assay should be named `psms` in the returned `QFeatures`
+object, to reflect the nature of the data.
 
 
 ```{r readQFeatures}

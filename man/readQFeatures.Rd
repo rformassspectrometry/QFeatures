@@ -18,7 +18,7 @@ readSummarizedExperiment(
 
 readQFeatures(
   assayData,
-  colAnnotation = NULL,
+  colData = NULL,
   quantCols = NULL,
   runCol = NULL,
   name = "quants",
@@ -36,7 +36,7 @@ to a \code{data.frame}, holding the quantitative assay. For
 
 \item{quantCols}{A \code{numeric()}, \code{logical()} or \code{character()}
 defining the columns of the \code{assayData} that contain the
-quantitative data. Can also be defined in \code{colAnnotation}.}
+quantitative data. Can also be defined in \code{colData}.}
 
 \item{fnames}{For the single- and multi-set cases, an optional
 \code{character(1)} or \code{numeric(1)} indicating the column to be
@@ -45,13 +45,13 @@ used as feature names.  Note that rownames must be unique in
 
 \item{ecol}{Same as \code{quantCols} for the single-set case. Available
 for backwards compatibility. Default is \code{NULL}. If both \code{ecol}
-and \code{colAnnotation} are set, an error is thrown.}
+and \code{colData} are set, an error is thrown.}
 
 \item{...}{Further arguments that can be passed on to \code{\link[=read.csv]{read.csv()}}
 except \code{stringsAsFactors}, which is always \code{FALSE}. Only
 applicable to \code{readSummarizedExperiment()}.}
 
-\item{colAnnotation}{The type of this parameter will define
+\item{colData}{The type of this parameter will define
 whether the resulting \code{QFeatures} object will contain a single
 or multiple sets.
 
@@ -64,15 +64,15 @@ For the multi-set case, a `data.frame` or any object that can
 be coerced to a `data.frame`. It is expected to contain all
 the sample annotations. Required fields are the acquisition
 batch (given by `runCol`) and the acquisition channel within
-the batch (e.g. TMT channel, given by
-`channelCol`). Additional fields (e.g. sample type,
-acquisition date, ...) are allowed and will be stored as
-sample metadata in the `QFeatures`'s colData slot.
+the batch (e.g. TMT channel, given by `quandCols`). Additional
+fields (e.g. sample type, acquisition date, ...) are allowed
+and will be stored as sample metadata in the `QFeatures`'s
+colData slot.
 }\if{html}{\out{</div>}}}
 
 \item{runCol}{For the multi-set case, a \code{numeric(1)} or
 \code{character(1)} pointing to the column of \code{assayData} and
-\code{colAnnotation} that contain the batch names. Make sure that
+\code{colData} that contain the batch names. Make sure that
 the column name in both tables are either identical and
 syntactically valid (if you supply a \code{character}) or have the
 same index (if you supply a \code{numeric}). Note that characters
@@ -114,23 +114,53 @@ input table contains data for multiple runs/batches?
 }
 \details{
 The single- and multi-set cases are defined by the parameters,
-whether passed by the \code{colAnnotation} data.frame and/or the
-\code{quantCols} and \code{runCol} arguments. In both cases, the
-quantitative data variables must be defined by the \code{quantCols}
-argument or \code{quantCols} variable in \code{colAnnotation} (see
-single-set cases in the example). These cases can be presented
-schematically by
+whether passed by the \code{colData} data.frame and/or the
+\code{quantCols} and \code{runCol} arguments.
+\subsection{Single-set case}{
+
+In both single- and multi-set cases, the quantitative data
+variables must be defined by the \code{quantCols} argument or
+\code{quantCols} variable in \code{colData} (see single-set cases in the
+example). These cases can be represented schematically as shown
+below.
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{|------+----------------+-----------|
 | cols | quantCols 1..N | more cols |
-|      |                |           |
-|      |                |           |
-|      |                |           |
+| .    | ...            | ...       |
+| .    | ...            | ...       |
+| .    | ...            | ...       |
 |------+----------------+-----------|
-}\if{html}{\out{</div>}}\tabular{lll}{
-   cols \tab quantCols 1..N \tab more cols \cr
-   . \tab ... \tab ... \cr
-   . \tab ... \tab ... \cr
+}\if{html}{\out{</div>}}
+
+The single-set case is defined by the absence of any \code{runCol}
+input (see next section).
+}
+
+\subsection{Multi-set case}{
+
+A run/batch variable is required to import multi-set data. It can
+either be defined as a \code{runCol} argument only, or a \code{runCol}
+argument and a \code{runCol} variable in \code{colData} (see multi-set cases
+in the example). These cases can be represented schematically as
+shown below.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{|--------+------+----------------+-----------|
+| runCol | cols | quantCols 1..N | more cols |
+|   1    | .    | ...            | ...       |
+|   1    | .    | ...            | ...       |
+|--------+------+----------------+-----------|
+|   2    | .    | ...            | ...       |
+|--------+------+----------------+-----------|
+|   .    | .    | ...            | ...       |
+|--------+------+----------------+-----------|
+}\if{html}{\out{</div>}}
+
+Whe using a \code{colData} data.frame as input, it must contain at
+least \code{quantCols} and \code{runCol} (in the multi-set case)
+variables. Additional sample annotations are desirable, and the
+reason such a \code{colData} can be passed directly to populate the
+\code{colData} slot of the returned object. When using the \code{quantCols}
+and \code{runCol} only, the \code{colData} slot remains empty.
 }
 }
 \examples{
@@ -147,32 +177,40 @@ qf1 <- readQFeatures(hlpsms, quantCols = 1:10, name = "psms")
 qf1
 
 ######################################
-## Single-set case using a data.frame
+## Single-set case using a data.frame.
 
-## All PSMs were acquired in the same acquisition
+## All PSMs were acquired in the same acquisition File1
 hlpsms$file <- "File1"
 hlpsms[1:10, c(1, 2, 10:11, 14, 17, 29)]
-(colann <- data.frame(file = rep("File1", 10),
+(coldat <- data.frame(file = rep("File1", 10),
                       var = rnorm(10),
                       quantCols = names(hlpsms)[1:10]))
-qf2 <- readQFeatures(hlpsms, colAnnotation = colann)
+qf2 <- readQFeatures(hlpsms, colData = coldat)
 qf2
 colData(qf2)
 
 ######################################
-## Multi-set case.
+## Multi-set case
 
 ## Let's simulate 3 different files/batches for that same input
-## data.frame, and define a colAnnotation data.frame.
+## data.frame, and define a colData data.frame.
 
 hlpsms$file <- paste0("File", sample(1:3, nrow(hlpsms), replace = TRUE))
 hlpsms[1:10, c(1, 2, 10:11, 14, 17, 29)]
-(colann <- data.frame(runCol = rep(paste0("File", 1:3), each = 10),
-                      quantCols = names(hlpsms)[1:10]))
 
-qf3 <- readQFeatures(hlpsms, colAnnotation = colann, runCol = "file")
+qf3 <- readQFeatures(hlpsms, quantCols = 1:10, runCol = "file")
 qf3
-colData(qf3)
+
+
+######################################
+## Multi-set case using a data.frame
+
+(coldat <- data.frame(runCol = rep(paste0("File", 1:3), each = 10),
+                      var = rnorm(10),
+                      quantCols = names(hlpsms)[1:10]))
+qf4 <- readQFeatures(hlpsms, colData = coldat, runCol = "file")
+qf4
+colData(qf4)
 }
 \seealso{
 \itemize{
