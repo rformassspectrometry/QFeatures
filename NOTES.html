@@ -225,6 +225,11 @@ colData names(0):</code></pre>
 |      |            |           |
 |      |            |           |
 |------+------------+-----------|</code></pre>
+<pre><code><span><span class="fu"><a href="reference/readQFeatures.html">readQFeatures</a></span><span class="op">(</span><span class="va">hlpsms</span>, quantCols <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/readQFeatures.html">readQFeatures</a></span><span class="op">(</span><span class="va">hlpsms</span>, colAnnotation <span class="op">=</span> <span class="va">colann</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## also possible, but redundant</span></span>
+<span><span class="fu"><a href="reference/readQFeatures.html">readQFeatures</a></span><span class="op">(</span><span class="va">hlpsms</span>, colAnnotation <span class="op">=</span> <span class="va">colann</span>, quantCols <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></code></pre>
 <ol start="2" style="list-style-type: decimal"><li>Multi-set case, multiplexed: requires <code>colAnnotation</code> and <code>runCol</code>.</li>
 </ol><pre><code>|-----+------+------------+-----------|
 | Run | cols | Quant 1..N | more cols |
@@ -233,50 +238,33 @@ colData names(0):</code></pre>
 |-----+------+------------+-----------|
 |   2 |      |            |           |
 |-----+------+------------+-----------|</code></pre>
-<ol start="3" style="list-style-type: decimal"><li>Multi-set case, LF: requires <code>colAnnotation</code> and <code>runCol</code> with a optional <code>channelCol</code> (for plexDIA).</li>
-</ol><pre><code>|-----+------+---------+-----------+-------|
-| Run | cols | Quant 1 | more cols | multi |
-|   1 |      |         |           |       |
-|   1 |      |         |           |       |
-|-----+------+---------+-----------+-------|
-|   2 |      |         |           |       |
-|-----+------+---------+-----------+-------|</code></pre>
+<pre><code><span><span class="fu"><a href="reference/readQFeatures.html">readQFeatures</a></span><span class="op">(</span><span class="va">hlpsms</span>, quantCols <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, runCol <span class="op">=</span> <span class="st">"file"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/readQFeatures.html">readQFeatures</a></span><span class="op">(</span><span class="va">hlpsms</span>, colAnnotation <span class="op">=</span> <span class="va">colann</span>, runCol <span class="op">=</span> <span class="st">"file"</span><span class="op">)</span></span></code></pre>
+<ol start="3" style="list-style-type: decimal"><li>Multi-set case, LF: requires <code>colData</code> and <code>runCol</code> with a optional <code>multiplexing</code> (for plexDIA).</li>
+</ol><pre><code>|-----+------+---------+-----------+-----------|
+| Run | cols | Quant 1 | more cols | multiplex |
+|   1 |      |         |           |           |
+|   1 |      |         |           |           |
+|-----+------+---------+-----------+-----------|
+|   2 |      |         |           |           |
+|-----+------+---------+-----------+-----------|</code></pre>
 <ol start="4" style="list-style-type: decimal"><li>Special case DIANN. A specialised function that parses the table to case 2.</li>
 </ol><p>Users can either use the arguments above or a <code>colAnnotation</code> data.frame (that will become the <code>colData</code>).</p>
-<p>Some issues, to be discussed:</p>
-<pre><code>&gt; readQFeatures(hlpsms, colAnnotation = 1:10, name = "psms")
-Checking arguments.
-Error in .checkQuantCols(assayData, colAnnotation, quantCols) :
-  When 'quantCols' is NULL, 'colAnnotation' must contain a column called 'quantCols'.</code></pre>
-<p>after fixing</p>
-<pre><code>&gt; colData(readQFeatures(hlpsms, colAnnotation = 1:10, name = "psms"))
-Checking arguments.
-Loading data as a 'SummarizedExperiment' object.
-Formatting sample annotations (colData).
-Formatting data as a 'QFeatures' object.
-DataFrame with 10 rows and 1 column
-      quantCols
-      &lt;integer&gt;
-X126         NA
-X127C        NA
-X127N        NA
-X128C        NA
-X128N        NA
-X129C        NA
-X129N        NA
-X130C        NA
-X130N        NA
-X131         NA</code></pre>
-<p>OK with more fixing</p>
-<pre><code><span><span class="va">i</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"X1"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">hlpsms</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">## ERROR readQFeatures(hlpsms, colAnnotation = i, name = "psms")</span></span>
-<span><span class="fu"><a href="reference/readQFeatures.html">readQFeatures</a></span><span class="op">(</span><span class="va">hlpsms</span>, quantCols <span class="op">=</span> <span class="va">i</span>, name <span class="op">=</span> <span class="st">"psms"</span><span class="op">)</span> <span class="co">## OK</span></span></code></pre>
-<pre><code><span><span class="va">cd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>quantCols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">hlpsms</span><span class="op">)</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/readQFeatures.html">readQFeatures</a></span><span class="op">(</span><span class="va">hlpsms</span>, colAnnotation <span class="op">=</span> <span class="va">cd</span>, name <span class="op">=</span> <span class="st">"psms"</span><span class="op">)</span></span></code></pre>
-<p>What annoys me though with this is the naming of the arguments. Often, the names in a generic function are generic, such as <code>object</code> or <code>x</code> and <code>y</code>. The problem is that the first argument refers to the actual data (either as a data.frame, or as the file that contains it), and the second one refers to either the vector <code>ecols</code> or the data.frame <code>colData</code>.</p>
-<ul><li><p>We could simplify this by only supporting a data.frame like object for the first argument. That first argument is currently called <code>table</code> (single-assay case) and <code>featureData</code> (multi-assay case). This argument could be called <code>x</code> for generality, but given that the second one should be more explicit than <code>y</code>(see next point), <code>featureData</code> or <code>assayData</code> would also work.</p></li>
-<li><p>The second argument is called <code>ecol</code> (single-assay case) and <code>colData</code> (multi-assay case). Instead of calling it <code>y</code>, it could be called <code>colAnnotation</code>, as it either annotates the columns to be used to populate the assay, or the colData.</p></li>
-</ul></div>
+<div class="section level2">
+<h2 id="diann-data">DIANN data<a class="anchor" aria-label="anchor" href="#diann-data"></a></h2>
+<ul><li>DIANN data is in long format</li>
+<li>readQFeaturesFromDIANN() would need to transform from long to wide, then use readQFeatures()</li>
+</ul><pre><code>dfr |&gt;
+  diannWider() |&gt;
+  readQFeatures()
+
+readQFeaturesFromDIANN &lt;- funtion(dfr, multiplexing = NULL, ...) {
+    if (!is.null(multiplexing))
+        x &lt;- .diannWider(multiplexing)
+    readQFeatures(x, ...)
+}</code></pre>
+</div>
+</div>
 
 
   </div>

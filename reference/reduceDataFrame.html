@@ -159,17 +159,17 @@ level functions that rely on reduction of <code>DataFrame</code> objects.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 1000 rows and 7 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              k         x         y           z        ir     r     invar</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;integer&gt; &lt;numeric&gt; &lt;integer&gt; &lt;character&gt; &lt;IRanges&gt; &lt;Rle&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           20      1.22         1           M      1-10     1        21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2           10      1.15         2           M      2-11     1        11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3           33     -0.30         3           U      3-12     5        34</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4           16      0.96         4           J      4-13     5        17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5           65      0.01         5           S      5-14     1        66</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           62      1.11         1           C      1-10     1        63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2           25     -0.74         2           W      2-11     2        26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           96     -0.25         3           U      3-12     2        97</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4           91     -0.10         4           X      4-13     2        92</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5           40     -0.57         5           T      5-14     5        41</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ...        ...       ...       ...         ...       ...   ...       ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 996         34     -1.10       996           Q  996-1005     1        35</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 997         53     -1.46       997           Z  997-1006     5        54</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 998         98      0.73       998           K  998-1007     3        99</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 999         50     -1.19       999           R  999-1008     2        51</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1000        55      0.27      1000           J 1000-1009     2        56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 996         22     -0.65       996           E  996-1005     1        23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 997         99     -0.10       997           V  997-1006     5       100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 998         63     -0.94       998           E  998-1007     4        64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 999        100      0.43       999           X  999-1008     4       101</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1000        25      0.27      1000           J 1000-1009     1        26</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Shinks the DataFrame</span></span></span>
 <span class="r-in"><span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">df</span>, <span class="va">df</span><span class="op">$</span><span class="va">k</span><span class="op">)</span></span></span>
@@ -177,60 +177,60 @@ level functions that rely on reduction of <code>DataFrame</code> objects.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 100 rows and 7 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             k                     x               y               z</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;integer&gt;         &lt;NumericList&gt;   &lt;IntegerList&gt; &lt;CharacterList&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           1    0.96,0.80,0.72,...  73,208,338,...       L,O,V,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2           2  1.19,-0.23, 0.66,... 133,310,454,...       G,F,O,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3           3  0.31,-1.64,-0.04,...  47,155,492,...       B,T,R,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4           4  2.09,-0.60, 0.35,...  33,209,334,...       C,G,H,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5           5 -0.58, 1.17, 0.82,...   30,78,136,...       K,M,C,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           1 -0.17, 0.37,-1.05,...  58,193,323,...       C,F,G,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2           2  1.55,-0.08, 0.12,... 118,295,439,...       E,P,I,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           3  0.29,-2.80, 1.29,...  32,140,477,...       X,E,U,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4           4    0.87,0.24,1.20,...  18,194,319,...       Q,Q,V,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5           5  0.86,-0.89,-0.28,...   15,63,121,...       J,Q,V,...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ...       ...                   ...             ...             ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 96         96    0.24,0.31,0.85,...  18,276,425,...       M,F,Z,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 97         97 -0.55, 0.64, 0.47,...   52,57,119,...       L,I,N,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 98         98 -0.26,-0.37, 1.86,... 159,178,236,...       E,A,D,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 99         99    1.35,0.66,1.77,...   48,97,174,...       D,J,M,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100       100  0.87, 0.66,-0.56,...   58,81,504,...       A,Q,J,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96         96 -0.25,-0.17,-0.13,...   3,261,410,...       U,M,C,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97         97  0.31,-0.27,-0.57,...   37,42,104,...       L,C,C,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98         98  1.14, 0.84,-0.17,... 144,163,221,...       W,T,P,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99         99    0.04,2.16,0.47,...   33,82,159,...       L,L,A,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100       100  0.38, 0.27,-0.60,...   43,66,489,...       X,F,L,...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                              ir         r     invar</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;IRangesList&gt; &lt;RleList&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     73-82,208-217,338-347,... 4,3,4,...         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   133-142,310-319,454-463,... 5,5,2,...         3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     47-56,155-164,492-501,... 5,1,5,...         4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     33-42,209-218,334-343,... 5,2,5,...         5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       30-39,78-87,136-145,... 3,1,3,...         6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     58-67,193-202,323-332,... 2,4,2,...         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   118-127,295-304,439-448,... 3,5,1,...         3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     32-41,140-149,477-486,... 4,2,4,...         4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     18-27,194-203,319-328,... 1,2,3,...         5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       15-24,63-72,121-130,... 2,5,3,...         6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ...                         ...       ...       ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 96    18-27,276-285,425-434,... 5,4,5,...        97</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 97      52-61,57-66,119-128,... 2,5,4,...        98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 98  159-168,178-187,236-245,... 5,3,4,...        99</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 99     48-57,97-106,174-183,... 1,1,1,...       100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100     58-67,81-90,504-513,... 3,2,1,...       101</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96     3-12,261-270,410-419,... 2,4,1,...        97</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97      37-46,42-51,104-113,... 3,4,1,...        98</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98  144-153,163-172,221-230,... 4,1,4,...        99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99      33-42,82-91,159-168,... 4,1,4,...       100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100     43-52,66-75,489-498,... 1,1,4,...       101</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## With a tally of the number of members in each group</span></span></span>
 <span class="r-in"><span><span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">df</span>, <span class="va">df</span><span class="op">$</span><span class="va">k</span>, count <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 100 rows and 8 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             k                     x               y               z</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;integer&gt;         &lt;NumericList&gt;   &lt;IntegerList&gt; &lt;CharacterList&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           1    0.96,0.80,0.72,...  73,208,338,...       L,O,V,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2           2  1.19,-0.23, 0.66,... 133,310,454,...       G,F,O,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3           3  0.31,-1.64,-0.04,...  47,155,492,...       B,T,R,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4           4  2.09,-0.60, 0.35,...  33,209,334,...       C,G,H,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5           5 -0.58, 1.17, 0.82,...   30,78,136,...       K,M,C,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           1 -0.17, 0.37,-1.05,...  58,193,323,...       C,F,G,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2           2  1.55,-0.08, 0.12,... 118,295,439,...       E,P,I,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           3  0.29,-2.80, 1.29,...  32,140,477,...       X,E,U,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4           4    0.87,0.24,1.20,...  18,194,319,...       Q,Q,V,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5           5  0.86,-0.89,-0.28,...   15,63,121,...       J,Q,V,...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ...       ...                   ...             ...             ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 96         96    0.24,0.31,0.85,...  18,276,425,...       M,F,Z,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 97         97 -0.55, 0.64, 0.47,...   52,57,119,...       L,I,N,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 98         98 -0.26,-0.37, 1.86,... 159,178,236,...       E,A,D,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 99         99    1.35,0.66,1.77,...   48,97,174,...       D,J,M,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100       100  0.87, 0.66,-0.56,...   58,81,504,...       A,Q,J,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96         96 -0.25,-0.17,-0.13,...   3,261,410,...       U,M,C,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97         97  0.31,-0.27,-0.57,...   37,42,104,...       L,C,C,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98         98  1.14, 0.84,-0.17,... 144,163,221,...       W,T,P,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99         99    0.04,2.16,0.47,...   33,82,159,...       L,L,A,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100       100  0.38, 0.27,-0.60,...   43,66,489,...       X,F,L,...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                              ir         r     invar        .n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;IRangesList&gt; &lt;RleList&gt; &lt;numeric&gt; &lt;integer&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     73-82,208-217,338-347,... 4,3,4,...         2        12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   133-142,310-319,454-463,... 5,5,2,...         3         9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     47-56,155-164,492-501,... 5,1,5,...         4         9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     33-42,209-218,334-343,... 5,2,5,...         5        12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       30-39,78-87,136-145,... 3,1,3,...         6         9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     58-67,193-202,323-332,... 2,4,2,...         2        12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   118-127,295-304,439-448,... 3,5,1,...         3         9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     32-41,140-149,477-486,... 4,2,4,...         4         9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     18-27,194-203,319-328,... 1,2,3,...         5        12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       15-24,63-72,121-130,... 2,5,3,...         6         9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ...                         ...       ...       ...       ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 96    18-27,276-285,425-434,... 5,4,5,...        97         7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 97      52-61,57-66,119-128,... 2,5,4,...        98        12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 98  159-168,178-187,236-245,... 5,3,4,...        99        10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 99     48-57,97-106,174-183,... 1,1,1,...       100        15</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100     58-67,81-90,504-513,... 3,2,1,...       101        10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96     3-12,261-270,410-419,... 2,4,1,...        97         7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97      37-46,42-51,104-113,... 3,4,1,...        98        12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98  144-153,163-172,221-230,... 4,1,4,...        99        10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99      33-42,82-91,159-168,... 4,1,4,...       100        16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100     43-52,66-75,489-498,... 1,1,4,...       101        11</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Much faster, but more crowded result</span></span></span>
 <span class="r-in"><span><span class="va">df3</span> <span class="op">&lt;-</span> <span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">df</span>, <span class="va">df</span><span class="op">$</span><span class="va">k</span>, simplify <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
@@ -238,30 +238,30 @@ level functions that rely on reduction of <code>DataFrame</code> objects.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 100 rows and 7 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   k                     x               y               z</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;IntegerList&gt;         &lt;NumericList&gt;   &lt;IntegerList&gt; &lt;CharacterList&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         1,1,1,...    0.96,0.80,0.72,...  73,208,338,...       L,O,V,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2         2,2,2,...  1.19,-0.23, 0.66,... 133,310,454,...       G,F,O,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3         3,3,3,...  0.31,-1.64,-0.04,...  47,155,492,...       B,T,R,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4         4,4,4,...  2.09,-0.60, 0.35,...  33,209,334,...       C,G,H,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5         5,5,5,... -0.58, 1.17, 0.82,...   30,78,136,...       K,M,C,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         1,1,1,... -0.17, 0.37,-1.05,...  58,193,323,...       C,F,G,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2         2,2,2,...  1.55,-0.08, 0.12,... 118,295,439,...       E,P,I,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3         3,3,3,...  0.29,-2.80, 1.29,...  32,140,477,...       X,E,U,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4         4,4,4,...    0.87,0.24,1.20,...  18,194,319,...       Q,Q,V,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5         5,5,5,...  0.86,-0.89,-0.28,...   15,63,121,...       J,Q,V,...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ...             ...                   ...             ...             ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 96     96,96,96,...    0.24,0.31,0.85,...  18,276,425,...       M,F,Z,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 97     97,97,97,... -0.55, 0.64, 0.47,...   52,57,119,...       L,I,N,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 98     98,98,98,... -0.26,-0.37, 1.86,... 159,178,236,...       E,A,D,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 99     99,99,99,...    1.35,0.66,1.77,...   48,97,174,...       D,J,M,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100 100,100,100,...  0.87, 0.66,-0.56,...   58,81,504,...       A,Q,J,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96     96,96,96,... -0.25,-0.17,-0.13,...   3,261,410,...       U,M,C,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97     97,97,97,...  0.31,-0.27,-0.57,...   37,42,104,...       L,C,C,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98     98,98,98,...  1.14, 0.84,-0.17,... 144,163,221,...       W,T,P,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99     99,99,99,...    0.04,2.16,0.47,...   33,82,159,...       L,L,A,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100 100,100,100,...  0.38, 0.27,-0.60,...   43,66,489,...       X,F,L,...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                              ir         r           invar</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;IRangesList&gt; &lt;RleList&gt;   &lt;NumericList&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     73-82,208-217,338-347,... 4,3,4,...       2,2,2,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   133-142,310-319,454-463,... 5,5,2,...       3,3,3,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     47-56,155-164,492-501,... 5,1,5,...       4,4,4,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     33-42,209-218,334-343,... 5,2,5,...       5,5,5,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       30-39,78-87,136-145,... 3,1,3,...       6,6,6,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     58-67,193-202,323-332,... 2,4,2,...       2,2,2,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   118-127,295-304,439-448,... 3,5,1,...       3,3,3,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     32-41,140-149,477-486,... 4,2,4,...       4,4,4,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     18-27,194-203,319-328,... 1,2,3,...       5,5,5,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       15-24,63-72,121-130,... 2,5,3,...       6,6,6,...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ...                         ...       ...             ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 96    18-27,276-285,425-434,... 5,4,5,...    97,97,97,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 97      52-61,57-66,119-128,... 2,5,4,...    98,98,98,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 98  159-168,178-187,236-245,... 5,3,4,...    99,99,99,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 99     48-57,97-106,174-183,... 1,1,1,... 100,100,100,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100     58-67,81-90,504-513,... 3,2,1,... 101,101,101,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96     3-12,261-270,410-419,... 2,4,1,...    97,97,97,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97      37-46,42-51,104-113,... 3,4,1,...    98,98,98,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98  144-153,163-172,221-230,... 4,1,4,...    99,99,99,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99      33-42,82-91,159-168,... 4,1,4,... 100,100,100,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100     43-52,66-75,489-498,... 1,1,4,... 101,101,101,...</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Drop all non-invariant columns</span></span></span>
 <span class="r-in"><span><span class="fu">reduceDataFrame</span><span class="op">(</span><span class="va">df</span>, <span class="va">df</span><span class="op">$</span><span class="va">k</span>, drop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
