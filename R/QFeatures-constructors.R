@@ -306,23 +306,33 @@ readQFeatures <- function(assayData,
 
 
 ## This function will check the batch/run variable inputs. At the end,
-## it will return a vector of runs/batches or NULL.
+## it will return a vector of runs/batches or NULL (single-set
+## case). Possible inputs combinations are:
+##
+## - `runCol` is NULL: single-set case
+## - `runCol` only (i.e. `colAnnotion` is NULL), of length 1, refering
+##   to a variable in `assayData`.
+## - `runCol` and `colAnnotation`: in this case,
+##   `colAnnotation$runCol` must exist.
 .checkRunCol <- function(assayData, colAnnotation, runCol) {
+    ## No runCol provided: single-set case
     if (is.null(runCol)) return(NULL)
+    ## We have a runCol argument: multi-set case
     if (length(runCol) > 1)
-        stop("'runCol' is a vector. Please provide the name of a ",
-             "column in 'assayData'.")
+        stop("'runCol' must contain the name of a single column ",
+             "in 'assayData'.")
     if (!runCol %in% colnames(assayData))
         stop("'", runCol, "' (provided as 'runCol') not found ",
              "in 'assayData'.")
     runs <- assayData[[runCol]]
     if (!is.null(colAnnotation)) {
+        ## We have a colAnnotation argument
         if (!"runCol" %in% colnames(colAnnotation))
             stop("When 'runCol' is not NULL, 'colAnnotation' must ",
                  "contain a column called 'runCol'.")
         mis <- !runs %in% colAnnotation$runCol
         if (any(mis)) {
-            warning("Some runs are missing in 'colAnnot': ",
+            warning("Some runs are missing in 'colAnnotation': ",
                     paste0(unique(runs[mis]), collapse = ", "))
         }
     }
