@@ -388,6 +388,7 @@ data.frame (that will become the `colData`).
 - DIANN data is in long format
 - readQFeaturesFromDIANN() would need to transform from long to wide,
   then use readQFeatures()
+- multiplexing: NULL or "none"
 
 ```
 dfr |>
