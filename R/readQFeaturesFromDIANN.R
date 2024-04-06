@@ -128,7 +128,7 @@ readQFeaturesFromDIANN <- function(assayData,
                                       runCol = runCol)
     ans <- pivot_wider(
         assayData, id_cols = all_of(idCols),
-        names_from = Label,
+        names_from = "Label",
         values_from = all_of(quantCols)
     )
     list(assayData = ans,
