@@ -254,6 +254,7 @@ colData names(0):</code></pre>
 <h2 id="diann-data">DIANN data<a class="anchor" aria-label="anchor" href="#diann-data"></a></h2>
 <ul><li>DIANN data is in long format</li>
 <li>readQFeaturesFromDIANN() would need to transform from long to wide, then use readQFeatures()</li>
+<li>multiplexing: NULL or “none”</li>
 </ul><pre><code>dfr |&gt;
   diannWider() |&gt;
   readQFeatures()

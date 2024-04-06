@@ -84,7 +84,7 @@ sure that these match the class validity requirements."><meta property="og:image
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Quantitative MS QFeatures</h1>
-    <small class="dont-index">Source: <a href="https://github.com/RforMassSpectrometry/QFeatures/blob/HEAD/R/QFeatures-class.R" class="external-link"><code>R/QFeatures-class.R</code></a>, <a href="https://github.com/RforMassSpectrometry/QFeatures/blob/HEAD/R/QFeatures-constructors.R" class="external-link"><code>R/QFeatures-constructors.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/RforMassSpectrometry/QFeatures/blob/HEAD/R/QFeatures-class.R" class="external-link"><code>R/QFeatures-class.R</code></a></small>
     <div class="hidden name"><code>QFeatures-class.Rd</code></div>
     </div>
 
@@ -117,7 +117,9 @@ sure that these match the class validity requirements.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre><code># S4 method for QFeatures
+    <div class="sourceCode"><pre><code>QFeatures(..., assayLinks = NULL)
+
+# S4 method for QFeatures
 show(object)
 
 # S3 method for QFeatures
@@ -173,14 +175,21 @@ replaceAssay(x, y, i)
 # S4 method for QFeatures
 updateObject(object, ..., verbose = FALSE)
 
-dropEmptyAssays(object, dims = 1:2)
-
-QFeatures(..., assayLinks = NULL)</code></pre></div>
+dropEmptyAssays(object, dims = 1:2)</code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>object</dt>
+    <dl><dt>...</dt>
+<dd><p>See <code>MultiAssayExperiment</code> for details. For <code>plot</code>,
+further arguments passed to <code><a href="https://r.igraph.org/reference/plot.igraph.html" class="external-link">igraph::plot.igraph</a></code>.</p></dd>
+
+
+<dt>assayLinks</dt>
+<dd><p>An optional <a href="AssayLinks.html">AssayLinks</a>.</p></dd>
+
+
+<dt>object</dt>
 <dd><p>An instance of class QFeatures.</p></dd>
 
 
@@ -193,11 +202,6 @@ QFeatures(..., assayLinks = NULL)</code></pre></div>
 is generated using <code>plotly</code>. Else, a static plot using <code>igraph</code>
 is generated. We recommend interactive exploration when the
 <code>QFeatures</code> object contains more than 50 assays.</p></dd>
-
-
-<dt>...</dt>
-<dd><p>See <code>MultiAssayExperiment</code> for details. For <code>plot</code>,
-further arguments passed to <code><a href="https://r.igraph.org/reference/plot.igraph.html" class="external-link">igraph::plot.igraph</a></code>.</p></dd>
 
 
 <dt>i</dt>
@@ -259,10 +263,6 @@ the assays already present in <code>x</code>.</p></dd>
 <dt>name</dt>
 <dd><p>A <code>character(1)</code> naming the single assay. Ignored if
 <code>y</code> is a list of assays.</p></dd>
-
-
-<dt>assayLinks</dt>
-<dd><p>An optional <a href="AssayLinks.html">AssayLinks</a> object.</p></dd>
 
 
 <dt>verbose</dt>
