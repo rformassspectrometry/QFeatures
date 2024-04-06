@@ -59,7 +59,7 @@
 ##'
 ##' @examples
 ##'
-##' ## x <- read.delim(MsDataHub::benchmarkingDIA.tsv())
+##' x <- read.delim(MsDataHub::benchmarkingDIA.tsv())
 ##' ## fix file names
 ##' ## x[[1]] <- sub("^.+raw-data\\\\", "", x[[1]])
 ##' ## cd <- data.frame(File.Name = unique(x[[1]]))

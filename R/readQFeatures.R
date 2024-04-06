@@ -264,7 +264,8 @@ readQFeatures <- function(assayData,
                           name = "quants",
                           removeEmptyCols = FALSE,
                           verbose = TRUE,
-                          ecol = NULL) {
+                          ecol = NULL,
+                          ...) {
     if (verbose) message("Checking arguments.")
     assayData <- as.data.frame(assayData)
     if (!is.null(colData))
@@ -273,7 +274,7 @@ readQFeatures <- function(assayData,
     quantCols <- .checkQuantCols(assayData, colData, quantCols)
     runs <- .checkRunCol(assayData, colData, runCol)
     if (verbose) message("Loading data as a 'SummarizedExperiment' object.")
-    se <- readSummarizedExperiment(assayData, quantCols)
+    se <- readSummarizedExperiment(assayData, quantCols, ...)
     rownames(se) <- make.unique(rownames(se))
     if (length(runs)) {
         if (verbose) message("Splitting data in runs.")

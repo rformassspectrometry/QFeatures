@@ -147,7 +147,6 @@ test_that("dims,ncols,nrows", {
     ## Without use names
     expect_identical(dims(feat3, use.names = FALSE)[2, ],
                      ncols(feat3, use.names = FALSE))
-
 })
 
 test_that("coerce,MultiAssayExperiment,QFeatures-method", {
