@@ -3,7 +3,9 @@
 ##' @description
 ##'
 ##' This function takes the output tables from DIA-NN and converts
-##' them into a multi-set `QFeatures` object.
+##' them into a multi-set `QFeatures` object. It is a wrapper around
+##' [readQFeatures()] with default parameters set to for DIA-NN
+##' label-free and plexDIA report files.
 ##'
 ##' @param assayData A `data.frame` or any object that can be coerced
 ##'     to a data.frame that contains the data from the `Report.tsv`
@@ -30,11 +32,16 @@
 ##'
 ##' @param multiplexing A `character(1)` indicating the type of
 ##'     multiplexing used in the experiment. One of `"none"` (default,
-##'     label-free experiment) or `"mTRAQ"` (for plexDIA
+##'     for label-free experiments) or `"mTRAQ"` (for plexDIA
 ##'     experiments).
 ##'
 ##' @param ecol Same as `quantCols` for the single-set case. See
 ##'     [readQFeatures()] for details
+##'
+##'
+##' @param verbose A `logical(1)` indicating whether the progress of
+##'     the data reading and formatting should be printed to the
+##'     console. Default is `TRUE`.
 ##'
 ##' @param ... Further arguments passed to [readQFeatures()].
 ##'
@@ -44,8 +51,10 @@
 ##'
 ##' @seealso
 ##'
-##' - The [readQFeatures()] function to import other quantitative
-##'   data.
+##' - The `QFeatures` (see [QFeatures()]) class to read about how to
+##'   manipulate the resulting `QFeatures` object.
+##'
+##' - The [readQFeatures()] function which this one depends on.
 ##'
 ##' @author Laurent Gatto, Christophe Vanderaa
 ##'
@@ -82,10 +91,15 @@ readQFeaturesFromDIANN <- function(assayData,
                                    multiplexing = c("none", "mTRAQ"),
                                    extractedData = NULL,
                                    ecol = NULL,
+                                   verbose = TRUE,
                                    ...) {
     multiplexing <- match.arg(multiplexing, several.ok = FALSE)
     if (multiplexing == "mTRAQ") {
-        assayData <- .formatMtraqReportData(assayData, colData, quantCols)
+        if (verbose) message("Pivoting quantiative data.")
+        assayData <- .formatMtraqReportData(assayData, colData,
+                                      quantCols, runCol)
+        quantCols <- assayData[[2]]
+        assayData <- assayData[[1]]
     } ## else is none
     ans <- readQFeatures(assayData, colData = colData,
                          quantCols = quantCols,
@@ -171,46 +185,50 @@ readQFeaturesFromDIANN <- function(assayData,
 ## from the precursor ID, identifies constant columns within precursor
 ## and puts the quantification data for different mTRAQ labels in
 ## separate columns (wide format).
-.formatMtraqReportData <- function(assayData, colData, quantCols) {
+.formatMtraqReportData <- function(assayData, colData, quantCols, runCol) {
     assayData$Label <-
         sub("^.*[Q-](\\d).*$", "\\1", assayData$Modified.Sequence)
     assayData$Precursor.Id <-
         gsub("\\(mTRAQ.*?\\)", "(mTRAQ)", assayData$Precursor.Id)
-    .checkLabelsInColData(colData, assayData)
-    idCols <- .findPrecursorVariables(assayData)
-    pivot_wider(
+    ## .checkLabelsInColData(colData, assayData)
+    idCols <- .findPrecursorVariables(assayData,
+                                      precursorId = "Precursor.Id",
+                                      runCol = runCol)
+    ans <- pivot_wider(
         assayData, id_cols = all_of(idCols),
-        names_from = "Label",
+        names_from = Label,
         values_from = all_of(quantCols)
     )
+    list(assayData = ans,
+         quantCols = setdiff(colnames(ans), colnames(assayData)))
 }
 
 ## Internal function that identifies which variables in the report
 ## data are constant within each precursor (with each run).
-.findPrecursorVariables <- function(assayData) {
-    precIds <- paste0(assayData$Precursor.Id, assayData$File.Name)
+.findPrecursorVariables <- function(assayData, precursorId, runCol) {
+    precIds <- paste0(assayData[[precursorId]], assayData[[runCol]])
     nUniqueIds <- length(unique(precIds))
     nLevels <- sapply(colnames(assayData), function(x) {
-        nrow(unique(assayData[, c("Precursor.Id", "File.Name", x)]))
+        nrow(unique(assayData[, c(precursorId, runCol, x)]))
     })
     names(nLevels)[nLevels == nUniqueIds]
 }
 
 ## Internal function that ensures that the assayData and the
 ## colData are correctly linked.
-.checkLabelsInColData <- function(colData, assayData) {
-    if (!"Label" %in% colnames(colData))
-        stop("'colData' must contain a column named 'Label' that ",
-             "provides the mTRAQ reagent used to label the ",
-             "samples and/or single cells.")
-    if (any(mis <- !colData$Label %in% assayData$Label)) {
-        stop("Some labels from 'colData$Label' were not found as",
-             "part of the mTRAQ labels found in ",
-             "'assayData$Modified.Sequence': ",
-             paste0(unique(colData$Label[mis]), collapse = ", "))
-    }
-    NULL
-}
+## .checkLabelsInColData <- function(colData, assayData) {
+##     if (!"Label" %in% colnames(colData))
+##         stop("'colData' must contain a column named 'Label' that ",
+##              "provides the mTRAQ reagent used to label the ",
+##              "samples and/or single cells.")
+##     if (any(mis <- !colData$Label %in% assayData$Label)) {
+##         stop("Some labels from 'colData$Label' were not found as",
+##              "part of the mTRAQ labels found in ",
+##              "'assayData$Modified.Sequence': ",
+##              paste0(unique(colData$Label[mis]), collapse = ", "))
+##     }
+##     NULL
+## }
 
 ## Internal function that adds the extractedData to a QFeatures
 ## object. The functions first converts the extractedData to a

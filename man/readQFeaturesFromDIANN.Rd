@@ -12,6 +12,7 @@ readQFeaturesFromDIANN(
   multiplexing = c("none", "mTRAQ"),
   extractedData = NULL,
   ecol = NULL,
+  verbose = TRUE,
   ...
 )
 }
@@ -34,7 +35,7 @@ details.}
 
 \item{multiplexing}{A \code{character(1)} indicating the type of
 multiplexing used in the experiment. One of \code{"none"} (default,
-label-free experiment) or \code{"mTRAQ"} (for plexDIA
+for label-free experiments) or \code{"mTRAQ"} (for plexDIA
 experiments).}
 
 \item{extractedData}{A \code{data.frame} or any object that can be
@@ -47,6 +48,10 @@ multiplexed experiments where DIA-NN was run using the
 \item{ecol}{Same as \code{quantCols} for the single-set case. See
 \code{\link[=readQFeatures]{readQFeatures()}} for details}
 
+\item{verbose}{A \code{logical(1)} indicating whether the progress of
+the data reading and formatting should be printed to the
+console. Default is \code{TRUE}.}
+
 \item{...}{Further arguments passed to \code{\link[=readQFeatures]{readQFeatures()}}.}
 }
 \value{
@@ -56,7 +61,9 @@ each acquisition run is stored in a separate set as a
 }
 \description{
 This function takes the output tables from DIA-NN and converts
-them into a multi-set \code{QFeatures} object.
+them into a multi-set \code{QFeatures} object. It is a wrapper around
+\code{\link[=readQFeatures]{readQFeatures()}} with default parameters set to for DIA-NN
+label-free and plexDIA report files.
 }
 \examples{
 
@@ -82,8 +89,9 @@ readQFeaturesFromDIANN(x, colData = cd)
 }
 \seealso{
 \itemize{
-\item The \code{\link[=readQFeatures]{readQFeatures()}} function to import other quantitative
-data.
+\item The \code{QFeatures} (see \code{\link[=QFeatures]{QFeatures()}}) class to read about how to
+manipulate the resulting \code{QFeatures} object.
+\item The \code{\link[=readQFeatures]{readQFeatures()}} function which this one depends on.
 }
 }
 \author{
