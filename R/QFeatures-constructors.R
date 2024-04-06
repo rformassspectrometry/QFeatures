@@ -4,26 +4,26 @@
 ##'
 ##' These functions convert tabular data into dedicated data
 ##' objets. The [readSummarizedExperiment()] function takes a
-##' `data.frame` and converts it into a [SummarizedExperiment] object.
-##' The [readQFeatures()] function takes a `data.frame` and converts
-##' it into a `QFeatures` object (see [QFeatures()] for details). Two
-##' use-cases exist here:
+##' `data.frame` and converts it into a [SummarizedExperiment()]
+##' object.  The [readQFeatures()] function takes a `data.frame` and
+##' converts it into a `QFeatures` object (see [QFeatures()] for
+##' details). Two use-cases exist here:
 ##'
 ##' - The single-set case will generate a `QFeatures` object with a
-##'   single [SummarizedExperiment] set containing all features of the
+##'   single `SummarizedExperiment` set containing all features of the
 ##'   input table.
 ##'
-##' - The multi-set case will generate a `QFeatures` object with
-##'   multiple [SummarizedExperiment] sets, resulting from splitting
+##' - The multi-set case will generate a `QFeatures` object containing
+##'   multiple `SummarizedExperiment` sets, resulting from splitting
 ##'   the input table. This multi-set case should be used when the
-##'   input table contains data for multiple runs/batches?
+##'   input table contains data from multiple runs/batches?
 ##'
 ##'
 ##' @details
 ##'
-##' The single- and multi-set cases are defined by the parameters,
-##' whether passed by the `colData` data.frame and/or the
-##' `quantCols` and `runCol` arguments.
+##' The single- and multi-set cases are defined by the `quantCols` and
+##' `runCol` parameters, whether passed by the `colData` `data.frame`
+##' and/or the `quantCols` and `runCol` arguments.
 ##'
 ##' ## Single-set case
 ##'
@@ -66,68 +66,55 @@
 ##' |--------+------+----------------+-----------|
 ##' ```
 ##'
-##' Whe using a `colData` data.frame as input, it must contain at
+##' Whe using a `colData` `data.frame` as input, it must contain at
 ##' least `quantCols` and `runCol` (in the multi-set case)
 ##' variables. Additional sample annotations are desirable, and the
 ##' reason such a `colData` can be passed directly to populate the
 ##' `colData` slot of the returned object. When using the `quantCols`
-##' and `runCol` only, the `colData` slot remains empty.
+##' and `runCol` only, the `colData` slot contains zero
+##' columns/variables.
 ##'
 ##'
 ##' @param assayData A `data.frame`, or any object that can be coerced
-##'     to a `data.frame`, holding the quantitative assay. For
+##'     into a `data.frame`, holding the quantitative assay. For
 ##'     `readSummarizedExperiment()`, this can also be a
-##'     `character(1)` to a filename.
+##'     `character(1)` pointing to a filename.
 ##'
-##' @param colData The type of this parameter will define
-##'     whether the resulting `QFeatures` object will contain a single
-##'     or multiple sets.
-##'
-##'     For the single-set case, a `numeric` indicating the indices of
-##'     the columns to be used as expression values, or a `character`
-##'     indicating the names of the columns, or a `logical` indicating
-##'     the quantitative assay's columns.
-##'
-##'     For the multi-set case, a `data.frame` or any object that can
-##'     be coerced to a `data.frame`. It is expected to contain all
-##'     the sample annotations. Required fields are the acquisition
-##'     batch (given by `runCol`) and the acquisition channel within
-##'     the batch (e.g. TMT channel, given by `quandCols`). Additional
-##'     fields (e.g. sample type, acquisition date, ...) are allowed
-##'     and will be stored as sample metadata in the `QFeatures`'s
-##'     colData slot.
+##' @param colData A `data.frame` (or any object that can be coerced
+##'     to a `data.frame`) containing sample/column annotations,
+##'     including `quantCols` and `runCol` (see details).
 ##'
 ##' @param quantCols A `numeric()`, `logical()` or `character()`
 ##'     defining the columns of the `assayData` that contain the
-##'     quantitative data. Can also be defined in `colData`.
+##'     quantitative data. This information can also be defined in
+##'     `colData`.
 ##'
 ##' @param runCol For the multi-set case, a `numeric(1)` or
-##'     `character(1)` pointing to the column of `assayData` and
-##'     `colData` that contain the batch names. Make sure that
-##'     the column name in both tables are either identical and
+##'     `character(1)` pointing to the column of `assayData` (and
+##'     `colData`, is set) that contains the runs/batches. Make sure
+##'     that the column name in both tables are identical and
 ##'     syntactically valid (if you supply a `character`) or have the
 ##'     same index (if you supply a `numeric`). Note that characters
 ##'     are converted to syntactically valid names using `make.names`
 ##'
 ##' @param fnames For the single- and multi-set cases, an optional
 ##'     `character(1)` or `numeric(1)` indicating the column to be
-##'     used as feature names.  Note that rownames must be unique in
-##'     `QFeatures` sets.
+##'     used as feature names.  Note that rownames must be unique
+##'     within `QFeatures` sets.
 ##'
 ##' @param name For the single-set case, an optional `character(1)` to
 ##'     name the set in the `QFeatures` object. Default is `quants`.
 ##'
-##' @param removeEmptyCols A `logical(1)`. If true, the function will
-##'     remove in each batch the columns that contain only missing
-##'     values.
+##' @param removeEmptyCols A `logical(1)`. If `TRUE`, quantitative
+##'     columns that contain only missing values are removed.
 ##'
 ##' @param verbose A `logical(1)` indicating whether the progress of
 ##'     the data reading and formatting should be printed to the
 ##'     console. Default is `TRUE`.
 ##'
-##' @param ecol Same as `quantCols` for the single-set case. Available
-##'     for backwards compatibility. Default is `NULL`. If both `ecol`
-##'     and `colData` are set, an error is thrown.
+##' @param ecol Same as `quantCols`. Available for backwards
+##'     compatibility. Default is `NULL`. If both `ecol` and `colData`
+##'     are set, an error is thrown.
 ##'
 ##' @param ... Additional parameters passed to
 ##'     `readSummarizedExperiment()` by `readQFeatures()` and
@@ -171,15 +158,12 @@
 ##' ## Create a QFeatures object with a single psms set
 ##' qf1 <- readQFeatures(hlpsms, quantCols = 1:10, name = "psms")
 ##' qf1
+##' colData(qf1)
 ##'
 ##' ######################################
 ##' ## Single-set case using a data.frame.
 ##'
-##' ## All PSMs were acquired in the same acquisition File1
-##' hlpsms$file <- "File1"
-##' hlpsms[1:10, c(1, 2, 10:11, 14, 17, 29)]
-##' (coldat <- data.frame(file = rep("File1", 10),
-##'                       var = rnorm(10),
+##' (coldat <- data.frame(var = rnorm(10),
 ##'                       quantCols = names(hlpsms)[1:10]))
 ##' qf2 <- readQFeatures(hlpsms, colData = coldat)
 ##' qf2
@@ -196,6 +180,7 @@
 ##'
 ##' qf3 <- readQFeatures(hlpsms, quantCols = 1:10, runCol = "file")
 ##' qf3
+##' colData(qf3)
 ##'
 ##'
 ##' ######################################
@@ -298,8 +283,7 @@ readQFeatures <- function(assayData,
                           name = "quants",
                           removeEmptyCols = FALSE,
                           verbose = TRUE,
-                          ecol = NULL,
-                          ...) {
+                          ecol = NULL) {
     if (verbose) message("Checking arguments.")
     assayData <- as.data.frame(assayData)
     if (!is.null(colData))
@@ -308,7 +292,7 @@ readQFeatures <- function(assayData,
     quantCols <- .checkQuantCols(assayData, colData, quantCols)
     runs <- .checkRunCol(assayData, colData, runCol)
     if (verbose) message("Loading data as a 'SummarizedExperiment' object.")
-    se <- readSummarizedExperiment(assayData, quantCols, ...)
+    se <- readSummarizedExperiment(assayData, quantCols)
     rownames(se) <- make.unique(rownames(se))
     if (length(runs)) {
         if (verbose) message("Splitting data in runs.")
@@ -330,6 +314,9 @@ readQFeatures <- function(assayData,
 ## ecol if quantCols wasn't used.
 .checkWarnEcol <- function(quantCols, ecol) {
     if (!is.null(ecol)) {
+        if (!is.null(quantCols))
+            stop("'quantCols' and 'ecols' can't be defined together. ",
+                 "Use 'quantCols' only.")
         warning("'ecol' is deprecated, use 'quantCols' instead.")
         if (is.null(quantCols))
             quantCols <- ecol

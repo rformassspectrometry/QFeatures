@@ -6,10 +6,12 @@ colann <- data.frame(file = rep(paste0("File", 1:3), each = 10),
 
 
 test_that(".checkWarnEcol works", {
-    expect_identical(QFeatures:::.checkWarnEcol(NULL, NULL), NULL)
-    expect_identical(QFeatures:::.checkWarnEcol(1, NULL), 1)
-    expect_warning(res <- QFeatures:::.checkWarnEcol(NULL, 1),
+    expect_identical(.checkWarnEcol(NULL, NULL), NULL)
+    expect_identical(.checkWarnEcol(1, NULL), 1)
+    expect_warning(res <- .checkWarnEcol(NULL, 1),
                    "'ecol' is deprecated, use 'quantCols' instead")
+    expect_error(.checkWarnEcol(1, 1),
+                 "Use 'quantCols' only.")
     expect_identical(res, 1)
 })
 
