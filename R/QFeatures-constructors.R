@@ -194,25 +194,6 @@
 ##' colData(qf4)
 NULL
 
-##' @export
-##'
-##' @rdname QFeatures-class
-##'
-##' @param assayLinks An optional [AssayLinks] object.
-QFeatures <- function(..., assayLinks = NULL) {
-    ans <- MultiAssayExperiment(...)
-    if (isEmpty(ans)) assayLinks <- AssayLinks()
-    else {
-        if (is.null(assayLinks))
-            assayLinks <- AssayLinks(names = names(ans))
-    }
-    new("QFeatures",
-        ExperimentList = ans@ExperimentList,
-        colData = ans@colData,
-        sampleMap = ans@sampleMap,
-        metadata = ans@metadata,
-        assayLinks = assayLinks)
-}
 
 ##' @export
 ##'
