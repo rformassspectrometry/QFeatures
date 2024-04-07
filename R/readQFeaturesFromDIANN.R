@@ -83,7 +83,9 @@
 ##' #################################
 ##' ## mTRAQ multi-set case
 ##'
-##' ## TODO
+##' ## TODO, once data is on ExperimentHub
+##' ## x <- read.delim("Report-Derks2022-plexDIA.tsv")
+##' ## readQFeaturesFromDIANN(x, multiplexing = "mTRAQ")
 readQFeaturesFromDIANN <- function(assayData,
                                    colData = NULL,
                                    quantCols = "Ms1.Area",
