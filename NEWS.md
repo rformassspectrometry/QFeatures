@@ -1,5 +1,9 @@
 # QFeatures 1.13
 
+## QFeatures 1.13.4
+
+- Nothing yet.
+
 ## QFeatures 1.13.3
 
 - Fix `is.vector()` (see issue #203)
