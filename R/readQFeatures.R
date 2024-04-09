@@ -11,12 +11,19 @@
 ##'
 ##' - The single-set case will generate a `QFeatures` object with a
 ##'   single `SummarizedExperiment` set containing all features of the
-##'   input table.
+##'   input table. This single-set case should be used when reading 
+##'   data at the peptide or at the protein level. These data are
+##'   contained in a table where the quantitative values for each 
+##'   sample are contained in a separate column. 
 ##'
 ##' - The multi-set case will generate a `QFeatures` object containing
 ##'   multiple `SummarizedExperiment` sets, resulting from splitting
 ##'   the input table. This multi-set case should be used when the
-##'   input table contains data from multiple runs/batches?
+##'   input table contains data from multiple runs/batches, as it is 
+##'   the case when reading data at the PSM or the precursor level.
+##'   In these cases, the data table to read contains one (LFQ) or 
+##'   more (labelled) columns which contain quanitative information 
+##'   for multiple MS acquisition runs.
 ##'
 ##'
 ##' @details
@@ -25,12 +32,11 @@
 ##' `runCol` parameters, whether passed by the `colData` `data.frame`
 ##' and/or the `quantCols` and `runCol` arguments.
 ##'
-##' ## Single-set case
+##' @section Single-set case:
 ##'
 ##' In both single- and multi-set cases, the quantitative data
-##' variables must be defined by the `quantCols` argument or
-##' `quantCols` variable in `colData` (see single-set cases in the
-##' example). These cases can be represented schematically as shown
+##' variables must be defined by the `quantCols`. These cases can be
+##' represented schematically as shown
 ##' below.
 ##'
 ##' ```
@@ -46,13 +52,11 @@
 ##' input (see next section).
 ##'
 ##'
-##' ## Multi-set case
+##' @section Multi-set case:
 ##'
 ##' A run/batch variable is required to import multi-set data. It can
-##' either be defined as a `runCol` argument only, or a `runCol`
-##' argument and a `runCol` variable in `colData` (see multi-set cases
-##' in the example). These cases can be represented schematically as
-##' shown below.
+##' either be defined as a `runCol` argument only. These cases can be
+##' represented schematically as shown below.
 ##'
 ##' ```
 ##' |--------+------+----------------+-----------|
@@ -65,20 +69,65 @@
 ##' |   .    | .    | ...            | ...       |
 ##' |--------+------+----------------+-----------|
 ##' ```
-##'
-##' Whe using a `colData` `data.frame` as input, it must contain at
-##' least `quantCols` and `runCol` (in the multi-set case)
-##' variables. Additional sample annotations are desirable, and the
-##' reason such a `colData` can be passed directly to populate the
-##' `colData` slot of the returned object. When using the `quantCols`
-##' and `runCol` only, the `colData` slot contains zero
+##' 
+##' **Why splitting the table into multiple sets?** In the table 
+##' depicted above, the quantCols provide quantitative values for
+##' multiple sample (one sample in each run/batch provided by 
+##' `runCol`). This violates the `SummarizedExperiment` paradigm where
+##' each column should contain an individual sample and would make 
+##' downstream data manipulation and data analyses cumbersome. A
+##' solution could be to reshape the table into a wide format to
+##' ensure that every sample is contained in a separate column. 
+##' However, this would assume that rows of the table are shared 
+##' across runs. When working with PSM data, every PSM is 
+##' uniquely characterised by the run it is found. Hence, there are no
+##' shared feature identifiers across runs that would enable a sound
+##' widening of the table. Splitting the table into sets is the only 
+##' solution for having every sample in a separate column while 
+##' preserving the PSM identity.
+##' 
+##' @section Adding sample annotations with `colData`:
+##' 
+##' We strongly recommend providing sample annotations when creating
+##' a `QFeatures` object. The `colData` is a table where each row 
+##' corresponds to a sample and each column provides information about
+##' the sample. There is no restriction on the number of columns and 
+##' to the type of data they should contain. However, we impose one or
+##' two columns (depending on the use case) that allow to link the 
+##' annotations of each sample to its quantitative data:
+##' 
+##' *Single-set case:* the `colData` must contain a column named
+##' `quantCols` that provides the names of the columns in `assayData`
+##' that contain the quantitative values for each sample (see 
+##' single-set cases in the examples).
+##' 
+##' *Multi-set case:* the `colData` must contain a column named
+##' `quantCols` that provides the names of the columns in `assayData`
+##' that contain the quantitative values for each sample, and a column
+##' name `runCol` that provides the name of the MS run/batch in which
+##' each sample has been acquired. The entries in 
+##' `colData[["runCol"]]` should match the entries provided by 
+##' `assayData[[runCol]]`.
+##' 
+##' *Note1*: when the `quantCols` argument is not provided to 
+##' `readQFeatures()`, the function will automatically determine the
+##' `quantCols` from `colData[["quantCols"]]`. Therefore, `quantCols`
+##' and `colData` cannot be both missing. 
+##' 
+##' *Note2*: samples that are present in `assayData` but absent 
+##' `colData` will lead to a warning, and the missing entries will be
+##' automatically added to the `colData` and filled with `NA`s. 
+##' 
+##' *Note3*: when using the `quantCols` and `runCol` arguments only
+##' (without `colData`), the `colData` slot contains zero 
 ##' columns/variables.
-##'
 ##'
 ##' @param assayData A `data.frame`, or any object that can be coerced
 ##'     into a `data.frame`, holding the quantitative assay. For
 ##'     `readSummarizedExperiment()`, this can also be a
-##'     `character(1)` pointing to a filename.
+##'     `character(1)` pointing to a filename. This `data.frame` is 
+##'     typically generated by an identification and quantification 
+##'     software, such as Sage, Proteome Discoverer, MaxQuant, ...
 ##'
 ##' @param colData A `data.frame` (or any object that can be coerced
 ##'     to a `data.frame`) containing sample/column annotations,
@@ -87,7 +136,7 @@
 ##' @param quantCols A `numeric()`, `logical()` or `character()`
 ##'     defining the columns of the `assayData` that contain the
 ##'     quantitative data. This information can also be defined in
-##'     `colData`.
+##'     `colData` (see details).
 ##'
 ##' @param runCol For the multi-set case, a `numeric(1)` or
 ##'     `character(1)` pointing to the column of `assayData` (and
@@ -161,7 +210,7 @@
 ##' colData(qf1)
 ##'
 ##' ######################################
-##' ## Single-set case using a data.frame.
+##' ## Single-set case with colData.
 ##'
 ##' (coldat <- data.frame(var = rnorm(10),
 ##'                       quantCols = names(hlpsms)[1:10]))
@@ -170,7 +219,7 @@
 ##' colData(qf2)
 ##'
 ##' ######################################
-##' ## Multi-set case
+##' ## Multi-set case.
 ##'
 ##' ## Let's simulate 3 different files/batches for that same input
 ##' ## data.frame, and define a colData data.frame.
@@ -184,7 +233,7 @@
 ##'
 ##'
 ##' ######################################
-##' ## Multi-set case using a data.frame
+##' ## Multi-set case with colData.
 ##'
 ##' (coldat <- data.frame(runCol = rep(paste0("File", 1:3), each = 10),
 ##'                       var = rnorm(10),
