@@ -215,9 +215,25 @@ manipulate the resulting <code>QFeatures</code> object.</p></li>
 <span class="r-in"><span><span class="co">#################################</span></span></span>
 <span class="r-in"><span><span class="co">## mTRAQ multi-set case</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## TODO, once data is on ExperimentHub</span></span></span>
-<span class="r-in"><span><span class="co">## x &lt;- read.delim("Report-Derks2022-plexDIA.tsv")</span></span></span>
-<span class="r-in"><span><span class="co">## readQFeaturesFromDIANN(x, multiplexing = "mTRAQ")</span></span></span>
+<span class="r-in"><span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.delim</a></span><span class="op">(</span><span class="fu">MsDataHub</span><span class="fu">::</span><span class="fu">Report.Derks2022.plexDIA.tsv</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> see ?MsDataHub and browseVignettes('MsDataHub') for documentation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> loading from cache</span>
+<span class="r-in"><span><span class="va">x2</span><span class="op">[[</span><span class="st">"File.Name"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x2</span><span class="op">[[</span><span class="st">"Run"</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu">readQFeaturesFromDIANN</span><span class="op">(</span><span class="va">x2</span>, multiplexing <span class="op">=</span> <span class="st">"mTRAQ"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Pivoting quantiative data.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking arguments.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading data as a 'SummarizedExperiment' object.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Splitting data in runs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting sample annotations (colData).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting data as a 'QFeatures' object.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 54 assays:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] wJD1146: SummarizedExperiment with 2635 rows and 3 columns </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] wJD1147: SummarizedExperiment with 3000 rows and 3 columns </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] wJD1148: SummarizedExperiment with 2676 rows and 3 columns </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [52] wJD1203: SummarizedExperiment with 4441 rows and 3 columns </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [53] wJD1204: SummarizedExperiment with 4416 rows and 3 columns </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [54] wJD1205: SummarizedExperiment with 4492 rows and 3 columns </span>
 </code></pre></div>
     </div>
   </div>
