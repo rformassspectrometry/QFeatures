@@ -2,7 +2,8 @@
 
 ## QFeatures 1.13.4
 
-- Nothing yet.
+- Use DIA-NN example data from MsDataHub in
+  `readQFeaturesFromDIANN()`.
 
 ## QFeatures 1.13.3
 
