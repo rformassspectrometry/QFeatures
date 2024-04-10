@@ -1,5 +1,9 @@
 # QFeatures 1.13
 
+## QFeatures 1.13.5
+
+- Reuse `readQFeatres()` params in `readQFeatureFromDIANN()`.
+
 ## QFeatures 1.13.4
 
 - Use DIA-NN example data from MsDataHub in
