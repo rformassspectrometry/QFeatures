@@ -1,5 +1,9 @@
 # QFeatures 1.13
 
+## QFeatures 1.13.6
+
+- Migrate `.splitS[C]E()` unit test form `scp` to `QFeatures`.
+
 ## QFeatures 1.13.5
 
 - Reuse `readQFeatres()` params in `readQFeatureFromDIANN()`.
