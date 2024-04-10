@@ -92,31 +92,21 @@ details). Two use-cases exist here:
 \itemize{
 \item The single-set case will generate a \code{QFeatures} object with a
 single \code{SummarizedExperiment} set containing all features of the
-input table. This single-set case should be used when reading
-data at the peptide or at the protein level. These data are
-contained in a table where the quantitative values for each
-sample are contained in a separate column.
+input table.
 \item The multi-set case will generate a \code{QFeatures} object containing
 multiple \code{SummarizedExperiment} sets, resulting from splitting
-the input table. This multi-set case should be used when the
-input table contains data from multiple runs/batches, as it is
-the case when reading data at the PSM or the precursor level.
-In these cases, the data table to read contains one (LFQ) or
-more (labelled) columns which contain quanitative information
-for multiple MS acquisition runs.
+the input table. This multi-set case is generally used when the
+input table contains data from multiple runs/batches.
 }
 }
 \details{
 The single- and multi-set cases are defined by the \code{quantCols} and
-\code{runCol} parameters, whether passed by the \code{colData} \code{data.frame}
-and/or the \code{quantCols} and \code{runCol} arguments.
-}
-\section{Single-set case}{
+\code{runCol} parameters, whether passed by the \code{quantCols} and
+\code{runCol} vectors and/or the \code{colData} \code{data.frame} (see below).
+\subsection{Single-set case:}{
 
-
-In both single- and multi-set cases, the quantitative data
-variables must be defined by the \code{quantCols}. These cases can be
-represented schematically as shown
+The quantitative data variables are defined by the \code{quantCols}.
+The single-set case can be represented schematically as shown
 below.
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{|------+----------------+-----------|
@@ -127,16 +117,28 @@ below.
 |------+----------------+-----------|
 }\if{html}{\out{</div>}}
 
-The single-set case is defined by the absence of any \code{runCol}
-input (see next section).
+Note that every \code{quantCols} column contains data for a single
+sample. The single-set case is defined by the absence of any
+\code{runCol} input (see next section). We here provide a
+(non-exhaustive) list of typical data sets that fall under the
+single-set case:
+\itemize{
+\item Peptide- or protein-level label-free data (bulk or single-cell).
+\item Peptide- or protein-level multiplexed (e.g. TMT) data (bulk or
+single-cell).
+\item PSM-level multiplexed data acquired in a single MS run (bulk or
+single-cell).
+\item PSM-level data from fractionation experiments, where each
+fraction of the same sample is acquired with the same
+multiplexing label.
+}
 }
 
-\section{Multi-set case}{
+\subsection{Multi-set case:}{
 
-
-A run/batch variable is required to import multi-set data. It can
-either be defined as a \code{runCol} argument only. These cases can be
-represented schematically as shown below.
+A run/batch variable, \code{runCol}, is required to import multi-set
+data. The multi-set case can be represented schematically as shown
+below.
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{|--------+------+----------------+-----------|
 | runCol | cols | quantCols 1..N | more cols |
@@ -149,61 +151,59 @@ represented schematically as shown below.
 |--------+------+----------------+-----------|
 }\if{html}{\out{</div>}}
 
-\strong{Why splitting the table into multiple sets?} In the table
-depicted above, the quantCols provide quantitative values for
-multiple sample (one sample in each run/batch provided by
-\code{runCol}). This violates the \code{SummarizedExperiment} paradigm where
-each column should contain an individual sample and would make
-downstream data manipulation and data analyses cumbersome. A
-solution could be to reshape the table into a wide format to
-ensure that every sample is contained in a separate column.
-However, this would assume that rows of the table are shared
-across runs. When working with PSM data, every PSM is
-uniquely characterised by the run it is found. Hence, there are no
-shared feature identifiers across runs that would enable a sound
-widening of the table. Splitting the table into sets is the only
-solution for having every sample in a separate column while
-preserving the PSM identity.
+Every \code{quantCols} column contains data for multiple samples
+acquired in different runs. The multi-set case applies when
+\code{runCol} is provided, which will determine how the table is split
+into multiple sets.
+
+We here provide a (non-exhaustive) list of typical data sets that
+fall under the multi-set case:
+\itemize{
+\item PSM- or precursor-level multiplexed data acquired in multiple
+runs (bulk or single-cell)
+\item PSM- or precursor-level label-free data acquired in multiple
+runs (bulk or single-cell)
+\item DIA-NN data (see also \code{\link[=readQFeaturesFromDIANN]{readQFeaturesFromDIANN()}}).
+}
 }
 
-\section{Adding sample annotations with \code{colData}}{
+\subsection{Adding sample annotations with \code{colData}:}{
 
-
-We strongly recommend providing sample annotations when creating
+We recommend providing sample annotations when creating
 a \code{QFeatures} object. The \code{colData} is a table where each row
 corresponds to a sample and each column provides information about
-the sample. There is no restriction on the number of columns and
-to the type of data they should contain. However, we impose one or
+the samples. There is no restriction on the number of columns and
+on the type of data they should contain. However, we impose one or
 two columns (depending on the use case) that allow to link the
 annotations of each sample to its quantitative data:
-
-\emph{Single-set case:} the \code{colData} must contain a column named
+\itemize{
+\item Single-set case: the \code{colData} must contain a column named
 \code{quantCols} that provides the names of the columns in \code{assayData}
-that contain the quantitative values for each sample (see
-single-set cases in the examples).
-
-\emph{Multi-set case:} the \code{colData} must contain a column named
+with quantitative values for each sample (see single-set cases
+in the examples).
+\item Multi-set case: the \code{colData} must contain a column named
 \code{quantCols} that provides the names of the columns in \code{assayData}
-that contain the quantitative values for each sample, and a column
-name \code{runCol} that provides the name of the MS run/batch in which
-each sample has been acquired. The entries in
+with the quantitative values for each sample, and a column
+named \code{runCol} that provides the name of the MS run/batch in
+which each sample has been acquired. The entries in
 \code{colData[["runCol"]]} should match the entries provided by
 \code{assayData[[runCol]]}.
+}
 
-\emph{Note1}: when the \code{quantCols} argument is not provided to
+When the \code{quantCols} argument is not provided to
 \code{readQFeatures()}, the function will automatically determine the
 \code{quantCols} from \code{colData[["quantCols"]]}. Therefore, \code{quantCols}
 and \code{colData} cannot be both missing.
 
-\emph{Note2}: samples that are present in \code{assayData} but absent
+Samples that are present in \code{assayData} but absent
 \code{colData} will lead to a warning, and the missing entries will be
 automatically added to the \code{colData} and filled with \code{NA}s.
 
-\emph{Note3}: when using the \code{quantCols} and \code{runCol} arguments only
-(without \code{colData}), the \code{colData} slot contains zero
+When using the \code{quantCols} and \code{runCol} arguments only
+(without \code{colData}), the \code{colData} contains zero
 columns/variables.
 }
-
+}
 \examples{
 
 ######################################
