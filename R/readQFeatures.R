@@ -3,32 +3,32 @@
 ##' @description
 ##'
 ##' These functions convert tabular data into dedicated data
-##' objets. The [readSummarizedExperiment()] function takes a
-##' `data.frame` and converts it into a [SummarizedExperiment()]
-##' object.  The [readQFeatures()] function takes a `data.frame` and
-##' converts it into a `QFeatures` object (see [QFeatures()] for
-##' details). Two use-cases exist here:
+##' objets. The [readSummarizedExperiment()] function takes a file
+##' name or `data.frame` and converts it into a
+##' [SummarizedExperiment()] object.  The [readQFeatures()] function
+##' takes a `data.frame` and converts it into a `QFeatures` object
+##' (see [QFeatures()] for details). For the latter, two use-cases
+##' exist:
 ##'
 ##' - The single-set case will generate a `QFeatures` object with a
-##'   single `SummarizedExperiment` set containing all features of the
+##'   single `SummarizedExperiment` containing all features of the
 ##'   input table.
 ##'
 ##' - The multi-set case will generate a `QFeatures` object containing
-##'   multiple `SummarizedExperiment` sets, resulting from splitting
-##'   the input table. This multi-set case is generally used when the
+##'   multiple `SummarizedExperiment`s, resulting from splitting the
+##'   input table. This multi-set case is generally used when the
 ##'   input table contains data from multiple runs/batches.
-##'
 ##'
 ##' @details
 ##'
 ##' The single- and multi-set cases are defined by the `quantCols` and
-##' `runCol` parameters, whether passed by the `quantCols` and 
+##' `runCol` parameters, whether passed by the `quantCols` and
 ##' `runCol` vectors and/or the `colData` `data.frame` (see below).
 ##'
-##' ## Single-set case:
+##' ## Single-set case
 ##'
-##' The quantitative data variables are defined by the `quantCols`. 
-##' The single-set case can be represented schematically as shown 
+##' The quantitative data variables are defined by the `quantCols`.
+##' The single-set case can be represented schematically as shown
 ##' below.
 ##'
 ##' ```
@@ -40,24 +40,24 @@
 ##' |------+----------------+-----------|
 ##' ```
 ##'
-##' Note that every `quantCols` column contains data for a single 
-##' sample. The single-set case is defined by the absence of any 
-##' `runCol` input (see next section). We here provide a 
-##' (non-exhaustive) list of typical data sets that fall under the 
+##' Note that every `quantCols` column contains data for a single
+##' sample. The single-set case is defined by the absence of any
+##' `runCol` input (see next section). We here provide a
+##' (non-exhaustive) list of typical data sets that fall under the
 ##' single-set case:
-##' 
+##'
 ##' - Peptide- or protein-level label-free data (bulk or single-cell).
-##' - Peptide- or protein-level multiplexed (e.g. TMT) data (bulk or 
+##' - Peptide- or protein-level multiplexed (e.g. TMT) data (bulk or
 ##'   single-cell).
-##' - PSM-level multiplexed data acquired in a single MS run (bulk or 
+##' - PSM-level multiplexed data acquired in a single MS run (bulk or
 ##'   single-cell).
-##' - PSM-level data from fractionation experiments, where each 
-##'   fraction of the same sample is acquired with the same 
+##' - PSM-level data from fractionation experiments, where each
+##'   fraction of the same sample was acquired with the same
 ##'   multiplexing label.
 ##'
-##' ## Multi-set case:
+##' ## Multi-set case
 ##'
-##' A run/batch variable, `runCol`, is required to import multi-set 
+##' A run/batch variable, `runCol`, is required to import multi-set
 ##' data. The multi-set case can be represented schematically as shown
 ##' below.
 ##'
@@ -72,62 +72,62 @@
 ##' |   .    | .    | ...            | ...       |
 ##' |--------+------+----------------+-----------|
 ##' ```
-##' 
-##' Every `quantCols` column contains data for multiple samples 
-##' acquired in different runs. The multi-set case applies when 
+##'
+##' Every `quantCols` column contains data for multiple samples
+##' acquired in different runs. The multi-set case applies when
 ##' `runCol` is provided, which will determine how the table is split
-##' into multiple sets. 
-##' 
-##' We here provide a (non-exhaustive) list of typical data sets that 
+##' into multiple sets.
+##'
+##' We here provide a (non-exhaustive) list of typical data sets that
 ##' fall under the multi-set case:
-##' 
+##'
 ##' - PSM- or precursor-level multiplexed data acquired in multiple
 ##'   runs (bulk or single-cell)
 ##' - PSM- or precursor-level label-free data acquired in multiple
 ##'   runs (bulk or single-cell)
 ##' - DIA-NN data (see also [readQFeaturesFromDIANN()]).
-##' 
-##' ## Adding sample annotations with `colData`:
-##' 
-##' We recommend providing sample annotations when creating
-##' a `QFeatures` object. The `colData` is a table where each row 
+##'
+##' ## Adding sample annotations with `colData`
+##'
+##' We recommend providing sample annotations when creating a
+##' `QFeatures` object. The `colData` is a table in which each row
 ##' corresponds to a sample and each column provides information about
-##' the samples. There is no restriction on the number of columns and 
+##' the samples. There is no restriction on the number of columns and
 ##' on the type of data they should contain. However, we impose one or
-##' two columns (depending on the use case) that allow to link the 
+##' two columns (depending on the use case) that allow to link the
 ##' annotations of each sample to its quantitative data:
-##' 
+##'
 ##' - Single-set case: the `colData` must contain a column named
-##'   `quantCols` that provides the names of the columns in `assayData`
-##'   with quantitative values for each sample (see single-set cases 
-##'   in the examples).
-##' 
+##'   `quantCols` that provides the names of the columns in
+##'   `assayData` containing quantitative values for each sample (see
+##'   single-set cases in the examples).
+##'
 ##' - Multi-set case: the `colData` must contain a column named
-##'   `quantCols` that provides the names of the columns in `assayData`
-##'   with the quantitative values for each sample, and a column
-##'   named `runCol` that provides the name of the MS run/batch in 
-##'   which each sample has been acquired. The entries in 
-##'   `colData[["runCol"]]` should match the entries provided by 
-##'   `assayData[[runCol]]`.
-##' 
-##' When the `quantCols` argument is not provided to 
+##'   `quantCols` that provides the names of the columns in
+##'   `assayData` with the quantitative values for each sample, and a
+##'   column named `runCol` that provides the MS runs/batches in which
+##'   each sample has been acquired. The entries in
+##'   `colData[["runCol"]]` are matched against the entries provided
+##'   by `assayData[[runCol]]`.
+##'
+##' When the `quantCols` argument is not provided to
 ##' `readQFeatures()`, the function will automatically determine the
 ##' `quantCols` from `colData[["quantCols"]]`. Therefore, `quantCols`
-##' and `colData` cannot be both missing. 
-##' 
-##' Samples that are present in `assayData` but absent 
+##' and `colData` cannot be both missing.
+##'
+##' Samples that are present in `assayData` but absent
 ##' `colData` will lead to a warning, and the missing entries will be
-##' automatically added to the `colData` and filled with `NA`s. 
-##' 
+##' automatically added to the `colData` and filled with `NA`s.
+##'
 ##' When using the `quantCols` and `runCol` arguments only
-##' (without `colData`), the `colData` contains zero 
+##' (without `colData`), the `colData` contains zero
 ##' columns/variables.
 ##'
 ##' @param assayData A `data.frame`, or any object that can be coerced
 ##'     into a `data.frame`, holding the quantitative assay. For
 ##'     `readSummarizedExperiment()`, this can also be a
-##'     `character(1)` pointing to a filename. This `data.frame` is 
-##'     typically generated by an identification and quantification 
+##'     `character(1)` pointing to a filename. This `data.frame` is
+##'     typically generated by an identification and quantification
 ##'     software, such as Sage, Proteome Discoverer, MaxQuant, ...
 ##'
 ##' @param colData A `data.frame` (or any object that can be coerced

@@ -84,18 +84,19 @@ former, the quantitative sets of each run are stored in
 }
 \description{
 These functions convert tabular data into dedicated data
-objets. The \code{\link[=readSummarizedExperiment]{readSummarizedExperiment()}} function takes a
-\code{data.frame} and converts it into a \code{\link[=SummarizedExperiment]{SummarizedExperiment()}}
-object.  The \code{\link[=readQFeatures]{readQFeatures()}} function takes a \code{data.frame} and
-converts it into a \code{QFeatures} object (see \code{\link[=QFeatures]{QFeatures()}} for
-details). Two use-cases exist here:
+objets. The \code{\link[=readSummarizedExperiment]{readSummarizedExperiment()}} function takes a file
+name or \code{data.frame} and converts it into a
+\code{\link[=SummarizedExperiment]{SummarizedExperiment()}} object.  The \code{\link[=readQFeatures]{readQFeatures()}} function
+takes a \code{data.frame} and converts it into a \code{QFeatures} object
+(see \code{\link[=QFeatures]{QFeatures()}} for details). For the latter, two use-cases
+exist:
 \itemize{
 \item The single-set case will generate a \code{QFeatures} object with a
-single \code{SummarizedExperiment} set containing all features of the
+single \code{SummarizedExperiment} containing all features of the
 input table.
 \item The multi-set case will generate a \code{QFeatures} object containing
-multiple \code{SummarizedExperiment} sets, resulting from splitting
-the input table. This multi-set case is generally used when the
+multiple \code{SummarizedExperiment}s, resulting from splitting the
+input table. This multi-set case is generally used when the
 input table contains data from multiple runs/batches.
 }
 }
@@ -103,7 +104,7 @@ input table contains data from multiple runs/batches.
 The single- and multi-set cases are defined by the \code{quantCols} and
 \code{runCol} parameters, whether passed by the \code{quantCols} and
 \code{runCol} vectors and/or the \code{colData} \code{data.frame} (see below).
-\subsection{Single-set case:}{
+\subsection{Single-set case}{
 
 The quantitative data variables are defined by the \code{quantCols}.
 The single-set case can be represented schematically as shown
@@ -129,12 +130,12 @@ single-cell).
 \item PSM-level multiplexed data acquired in a single MS run (bulk or
 single-cell).
 \item PSM-level data from fractionation experiments, where each
-fraction of the same sample is acquired with the same
+fraction of the same sample was acquired with the same
 multiplexing label.
 }
 }
 
-\subsection{Multi-set case:}{
+\subsection{Multi-set case}{
 
 A run/batch variable, \code{runCol}, is required to import multi-set
 data. The multi-set case can be represented schematically as shown
@@ -167,10 +168,10 @@ runs (bulk or single-cell)
 }
 }
 
-\subsection{Adding sample annotations with \code{colData}:}{
+\subsection{Adding sample annotations with \code{colData}}{
 
-We recommend providing sample annotations when creating
-a \code{QFeatures} object. The \code{colData} is a table where each row
+We recommend providing sample annotations when creating a
+\code{QFeatures} object. The \code{colData} is a table in which each row
 corresponds to a sample and each column provides information about
 the samples. There is no restriction on the number of columns and
 on the type of data they should contain. However, we impose one or
@@ -178,16 +179,16 @@ two columns (depending on the use case) that allow to link the
 annotations of each sample to its quantitative data:
 \itemize{
 \item Single-set case: the \code{colData} must contain a column named
-\code{quantCols} that provides the names of the columns in \code{assayData}
-with quantitative values for each sample (see single-set cases
-in the examples).
+\code{quantCols} that provides the names of the columns in
+\code{assayData} containing quantitative values for each sample (see
+single-set cases in the examples).
 \item Multi-set case: the \code{colData} must contain a column named
-\code{quantCols} that provides the names of the columns in \code{assayData}
-with the quantitative values for each sample, and a column
-named \code{runCol} that provides the name of the MS run/batch in
-which each sample has been acquired. The entries in
-\code{colData[["runCol"]]} should match the entries provided by
-\code{assayData[[runCol]]}.
+\code{quantCols} that provides the names of the columns in
+\code{assayData} with the quantitative values for each sample, and a
+column named \code{runCol} that provides the MS runs/batches in which
+each sample has been acquired. The entries in
+\code{colData[["runCol"]]} are matched against the entries provided
+by \code{assayData[[runCol]]}.
 }
 
 When the \code{quantCols} argument is not provided to
