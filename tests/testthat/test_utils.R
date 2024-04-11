@@ -41,9 +41,6 @@ test_that(".checkFilterVariables works", {
     expect_error(.checkFilterVariables(rd, "v"),
                  "'v' is/are absent from all rowData.")
     w <- 1
-    ## This one fails when run interactively
-    ## expect_error(.checkFilterVariables(rd, "w"),
-    ##              "No vars left")
-    expect_error(.checkFilterVariables(rd, "ww"),
-                 "'ww' is/are absent from all rowData.")
+    expect_error(.checkFilterVariables(rd, "w"),
+                 "'w' is/are absent from all rowData.")
 })

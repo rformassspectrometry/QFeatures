@@ -370,10 +370,14 @@ filterFeaturesWithFormula <- function(object, filter, i,
     ## 2 in .local()
     ## 3 in filterFeatures()
     ## 4 in environment the function was called
-    vars <- vars[!vars %in% ls(envir = parent.frame(4))]
-    if (!length(vars))
-        stop("No vars left")
-    ## Get in which assays each variable comes from
+    ##
+    ## BUT WHY? This fails when the user has a variable in their
+    ## working environment.
+    ##
+    ## vars <- vars[!vars %in% ls(envir = parent.frame(4))]
+    ## if (!length(vars))
+    ##     stop("No vars left")
+    ## get in which assays each variable comes from
     out <- sapply(colnames(rowdata), function(rdn) vars %in% rdn)
     if (!is.array(out)) out <- t(out)
     rownames(out) <- vars
