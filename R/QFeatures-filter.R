@@ -371,12 +371,22 @@ filterFeaturesWithFormula <- function(object, filter, i,
     ## 3 in filterFeatures()
     ## 4 in environment the function was called
     ##
-    ## BUT WHY? This fails when the user has a variable in their
-    ## working environment.
+    ## This is needed for when the value is a variable itself, such as
+    ## in:
+    ## target <- "location"
+    ## filterFeatures(feat1, ~  location == target)
     ##
-    ## vars <- vars[!vars %in% ls(envir = parent.frame(4))]
-    ## if (!length(vars))
-    ##     stop("No vars left")
+    ## BUT is breaks if location exists in the working env:
+    ## location <- 1
+    ## filterFeatures(feat1, ~  location == "Mitchondrion")
+    ## filterFeatures(feat1, ~  location == target)
+    ##
+    ## The number of variables (that we want to keep, vs their values
+    ## (that we don't want) isn't necessarily 1, as shown in:
+    ## filterFeatures(feat1, ~ pval <= 0.03 & grepl("Mito", location))
+    vars <- vars[!vars %in% ls(envir = parent.frame(4))]
+    if (!length(vars))
+        stop("No vars left.")
     ## get in which assays each variable comes from
     out <- sapply(colnames(rowdata), function(rdn) vars %in% rdn)
     if (!is.array(out)) out <- t(out)
