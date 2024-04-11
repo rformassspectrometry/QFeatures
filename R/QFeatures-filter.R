@@ -332,27 +332,35 @@ filterFeaturesWithFormula <- function(object, filter, i,
     object[sel, , ]
 }
 
-## Internal function that checks whether the variables queries by the
-## filter are available in a given a List of DataFrame objects, each
-## element representing the rowData associated to an assay in a
-## QFeatures object. If one or more variables are missing from across
-## all assays, an error is thrown because no filtering can be applied.
-## The function will ignore variables that are stored in parent
-## environments as these are used as filtering values rather than
-## variables. The function prints the search result to the console as
-## well to inform the user how many assays contain the desired
-## filtering variable, and which assays are ignored due to missing
-## filtering variables.
-## @param rowdata A List of DataFrame objects reprensting the rowData
-##     of a QFeatures object. Each element is related to an assay.
-## @param vars A character() with one or more variables name used for
-##     later filtering. The function checks there presence. Variables
-##     present in parent environment are ignored
-## @return A matrix where rows represent filter variables (excluding
-##     variables found in the parent environment) and columns
-##     represent assays. Each element is a logical indicating whether
-##     a gien variable was found in the rowData associated to a given
-##     assay (TRUE) or not (FALSE).
+##' Internal function that checks whether the variables queried by the
+##' filter are available in a given a List of DataFrame objects, each
+##' element representing the rowData associated with an assay in a
+##' QFeatures object.
+##'
+##' If one or more variables are missing from *all* assays, an error
+##' is thrown because no filtering can be applied. The function will
+##' ignore variables that are stored in parent environments as these
+##' are used as filtering values rather than variables. The function
+##' prints the search result to the console as well, to inform the
+##' user of how many assays contain the desired filtering variable(s),
+##' and which assays are ignored due to missing filtering
+##' variables(s).
+##'
+##' @param rowdata `List` of `DataFrame` objects reprensting the
+##'     rowData of a `QFeatures` object. Each element is related to an
+##'     assay.
+##'
+##' @param vars `character()` with one or more filter variable names.
+##'     The function checks their presence. Variables present in
+##'     parent environment are ignored.
+##'
+##' @return A `matrix` where rows represent filter variables
+##'     (excluding variables found in the parent environment) and
+##'     columns represent assays. Each element is a logical indicating
+##'     whether a given variable was found in the rowData associated
+##'     to a given assay (`TRUE`) or not (`FALSE`).
+##'
+##' @noRd
 .checkFilterVariables <- function(rowdata, vars) {
     ## Ignore variables from the user environment. We search for
     ## variables to omit from the check in the 4th parent environment
@@ -363,6 +371,8 @@ filterFeaturesWithFormula <- function(object, filter, i,
     ## 3 in filterFeatures()
     ## 4 in environment the function was called
     vars <- vars[!vars %in% ls(envir = parent.frame(4))]
+    if (!length(vars))
+        stop("No vars left")
     ## Get in which assays each variable comes from
     out <- sapply(colnames(rowdata), function(rdn) vars %in% rdn)
     if (!is.array(out)) out <- t(out)

@@ -19,3 +19,31 @@ test_that(".splitSE", {
     expect_error(.splitSE(se, factor(1:3)),
                  regexp = "not compatible with dim")
 })
+
+
+
+test_that(".checkFilterVariables works", {
+    rd <- List(X1 = DataFrame(x = 1:3,
+                              y = 1:3),
+               X2 = DataFrame(x = 1:3,
+                              z = 1:3),
+               X3 = DataFrame(x = 1:3,
+                              z = 1:3))
+    expect_true(all(.checkFilterVariables(rd, "x")))
+    expect_message(.checkFilterVariables(rd, "x"),
+                   "'x' found in 3 out of 3 assay")
+    expect_equivalent(rowSums(.checkFilterVariables(rd, "z")), 2L)
+    expect_message(.checkFilterVariables(rd, "z"),
+                   "'z' found in 2 out of 3 assay")
+    expect_equivalent(rowSums(.checkFilterVariables(rd, "y")), 1L)
+    expect_message(.checkFilterVariables(rd, "y"),
+                   "'y' found in 1 out of 3 assay")
+    expect_error(.checkFilterVariables(rd, "v"),
+                 "'v' is/are absent from all rowData.")
+    w <- 1
+    ## This one fails when run interactively
+    ## expect_error(.checkFilterVariables(rd, "w"),
+    ##              "No vars left")
+    expect_error(.checkFilterVariables(rd, "ww"),
+                 "'ww' is/are absent from all rowData.")
+})
