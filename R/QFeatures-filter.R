@@ -263,7 +263,8 @@ filterFeaturesWithAnnotationFilter <- function(object, filter, i,
 
     ## Check the filtering variables
     vars <- field(filter)
-    isPresent <- .checkFilterVariables(rowData(object), vars)
+    isPresent <- .checkFilterVariables(rowData(object), vars,
+                                       check_parent = FALSE)
 
     ## Apply the filter
     sel <- lapply(experiments(object),
@@ -354,6 +355,11 @@ filterFeaturesWithFormula <- function(object, filter, i,
 ##'     The function checks their presence. Variables present in
 ##'     parent environment are ignored.
 ##'
+##' @param parent.frame `logical(1)` should variables that are present
+##'     in `parent.frame(4)` be removed. Default is `TRUE`. Set to
+##'     `FALSE` when using `VariableFilter()`, as only filter values
+##'     are passed.
+##'
 ##' @return A `matrix` where rows represent filter variables
 ##'     (excluding variables found in the parent environment) and
 ##'     columns represent assays. Each element is a logical indicating
@@ -361,7 +367,7 @@ filterFeaturesWithFormula <- function(object, filter, i,
 ##'     to a given assay (`TRUE`) or not (`FALSE`).
 ##'
 ##' @noRd
-.checkFilterVariables <- function(rowdata, vars) {
+.checkFilterVariables <- function(rowdata, vars, check_parent = TRUE) {
     ## Ignore variables from the user environment. We search for
     ## variables to omit from the check in the 4th parent environment
     ## (may not always be .GlobalEnv). Here is a "traceback" counter:
@@ -372,7 +378,8 @@ filterFeaturesWithFormula <- function(object, filter, i,
     ## 4 in environment the function was called
     ##
     ## This is needed for when the value is a variable itself, such as
-    ## in:
+    ## in, because we don't want to search for target in the rowData.
+    ##
     ## target <- "location"
     ## filterFeatures(feat1, ~  location == target)
     ##
@@ -384,7 +391,14 @@ filterFeaturesWithFormula <- function(object, filter, i,
     ## The number of variables (that we want to keep, vs their values
     ## (that we don't want) isn't necessarily 1, as shown in:
     ## filterFeatures(feat1, ~ pval <= 0.03 & grepl("Mito", location))
-    vars <- vars[!vars %in% ls(envir = parent.frame(4))]
+
+    ## Could first check vars[1], that should always be a proper var
+    ## (unless there's a typo). Then check in the parent.frame(4), and
+    ## then check the reduced (possibly empty) vars.
+
+    browser()
+    if (check_parent)
+        vars <- vars[!vars %in% ls(envir = parent.frame(4))]
     if (!length(vars))
         stop("No vars left.")
     ## get in which assays each variable comes from
