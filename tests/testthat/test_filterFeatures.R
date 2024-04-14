@@ -229,21 +229,47 @@ test_that("filterFeatures on selected assays", {
 
 
 test_that("test filterFeatures with value and vars in GlobalEnv", {
+    ## #################################################
+    ## See issue #208 for detail about this unit test ##
+    ## #################################################
     data(feat1)
-    feat1 <- aggregateFeatures(feat1, 1, fcol = "Sequence", name = "peptides", fun = colMedians)
-    feat1 <- aggregateFeatures(feat1, 2, fcol = "Protein", name = "proteins", fun = colMedians)
-    ##
+    feat1 <- aggregateFeatures(feat1, 1, fcol = "Sequence", name = "peptides")
+    feat1 <- aggregateFeatures(feat1, 2, fcol = "Protein", name = "proteins")
+    ## ###########################
+    ## Positive control
+    expect_type(ans <- filterFeatures(feat1, ~  location == "Mitochondrion"), "S4")
+    nr <- nrows(ans)
+    expect_identical(nr, c(psms = 6L, peptides = 2L, proteins = 1L))
+    ## ###########################
+    ## Fails, as target isn't found in parent.frame(), thus not
+    ## removed, and not found in rowData.
     expect_error(filterFeatures(feat1, ~  location == target),
                  "'target' is/are absent from all rowData.")
+    ## Now works, as target is found in parent.frame(), and removed
+    ## from the vars that are looked up in rowData.
     target <- "Mitochondrion"
-    expect_type(filterFeatures(feat1, ~  location == target), "S4")
+    expect_type(test1 <- filterFeatures(feat1, ~  location == target), "S4")
+    expect_identical(test1, ans)
+    test1 <- filterFeatures(feat1, VariableFilter("location", "Mitochondrion", "=="))
+    expect_identical(test1, ans)
+    ## But now, both target and location are found in parent.frame(),
+    ## leading to the problem discussed in issue #208.
     location <- 1
-    expect_error(filterFeatures(feat1, ~  location == target),
-                 "No vars left.")
-    ##
+    test2 <- filterFeatures(feat1, ~  location == target)
+    expect_identical(test2, ans)
+    test2 <- filterFeatures(feat1, VariableFilter("location", "Mitochondrion", "=="))
+    expect_identical(test2, ans)
     rm(location)
+    ## Checking that filters work with multiple filters
     res1 <- filterFeatures(feat1, ~ pval <= 0.03 & grepl("Mito", location))
+    expect_identical(nrows(res1), c(psms = 2L, peptides = 0L, proteins = 0L))
     res2 <- filterFeatures(feat1, ~ pval <= 0.03) |>
         filterFeatures(~ location == "Mitochondrion")
     expect_identical(res1, res2)
+    res3 <- filterFeatures(feat1, ~ grepl("Mito", location) & pval <= 0.03)
+    expect_identical(res1, res3)
+    res4 <- filterFeatures(feat1,
+                           VariableFilter("location", "Mitochondrion", "==")) |>
+        filterFeatures(VariableFilter("pval", 0.03, "<="))
+    expect_identical(res1, res4)
 })

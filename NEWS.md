@@ -2,6 +2,11 @@
 
 ## QFeatures 1.13.6
 
+- Fix `filterFeatures()` when the filter variable also exists in the
+  global environment (issue #208).
+
+## QFeatures 1.13.6
+
 - Migrate `.splitS[C]E()` unit test form `scp` to `QFeatures`.
 
 ## QFeatures 1.13.5

@@ -51,7 +51,9 @@
 ##'
 ##' @rdname QFeatures-filtering
 ##'
-##' @aliases filterFeatures filterFeatures,QFeatures,formula-method filterFeatures,QFeatures,AnnotationFilter-method CharacterVariableFilter NumericVariableFilter VariableFilter
+##' @aliases filterFeatures filterFeatures,QFeatures,formula-method
+##' @aliases filterFeatures,QFeatures,AnnotationFilter-method
+##' @aliases CharacterVariableFilter NumericVariableFilter VariableFilter
 ##'
 ##' @examples
 ##'
@@ -263,8 +265,7 @@ filterFeaturesWithAnnotationFilter <- function(object, filter, i,
 
     ## Check the filtering variables
     vars <- field(filter)
-    isPresent <- .checkFilterVariables(rowData(object), vars,
-                                       check_parent = FALSE)
+    isPresent <- .checkFilterVariables(rowData(object), vars)
 
     ## Apply the filter
     sel <- lapply(experiments(object),
@@ -367,7 +368,7 @@ filterFeaturesWithFormula <- function(object, filter, i,
 ##'     to a given assay (`TRUE`) or not (`FALSE`).
 ##'
 ##' @noRd
-.checkFilterVariables <- function(rowdata, vars, check_parent = TRUE) {
+.checkFilterVariables <- function(rowdata, vars) {
     ## Ignore variables from the user environment. We search for
     ## variables to omit from the check in the 4th parent environment
     ## (may not always be .GlobalEnv). Here is a "traceback" counter:
@@ -378,12 +379,15 @@ filterFeaturesWithFormula <- function(object, filter, i,
     ## 4 in environment the function was called
     ##
     ## This is needed for when the value is a variable itself, such as
-    ## in, because we don't want to search for target in the rowData.
+    ## below, because we don't want to search for target in the
+    ## rowData.
     ##
     ## target <- "location"
     ## filterFeatures(feat1, ~  location == target)
     ##
-    ## BUT is breaks if location exists in the working env:
+    ## BUT this breaks if location exists in the working env
+    ## (described also in issue #208)
+    ##
     ## location <- 1
     ## filterFeatures(feat1, ~  location == "Mitchondrion")
     ## filterFeatures(feat1, ~  location == target)
@@ -391,16 +395,14 @@ filterFeaturesWithFormula <- function(object, filter, i,
     ## The number of variables (that we want to keep, vs their values
     ## (that we don't want) isn't necessarily 1, as shown in:
     ## filterFeatures(feat1, ~ pval <= 0.03 & grepl("Mito", location))
-
-    ## Could first check vars[1], that should always be a proper var
-    ## (unless there's a typo). Then check in the parent.frame(4), and
-    ## then check the reduced (possibly empty) vars.
-
-    browser()
-    if (check_parent)
-        vars <- vars[!vars %in% ls(envir = parent.frame(4))]
-    if (!length(vars))
-        stop("No vars left.")
+    ##
+    v1 <- vars[1]
+    vars <- vars[!vars %in% ls(envir = parent.frame(4))]
+    ## vars[1], should always be a proper var (unless there's a
+    ## typo). Add it back to avoid removing all vars.
+    vars <- unique(c(vars, v1))
+    if (!length(vars)) ## this should never happen anymore
+        stop("No filter variables left.")
     ## get in which assays each variable comes from
     out <- sapply(colnames(rowdata), function(rdn) vars %in% rdn)
     if (!is.array(out)) out <- t(out)
