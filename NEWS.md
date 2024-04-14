@@ -1,6 +1,6 @@
 # QFeatures 1.13
 
-## QFeatures 1.13.6
+## QFeatures 1.13.7
 
 - Fix `filterFeatures()` when the filter variable also exists in the
   global environment (issue #208).
