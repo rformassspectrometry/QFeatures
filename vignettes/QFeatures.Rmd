@@ -151,7 +151,7 @@ head(rowData(hl[["psms"]]))
 
 For further details on how to manipulate such objects, refer to the
 `r BiocStyle::Biocpkg("MultiAssayExperiment")` [@Ramos:2017] and
-`r BiocStyle::Biocpkg("SummerizedExperiment")` [@SE] packages.
+`r BiocStyle::Biocpkg("SummarizedExperiment")` [@SE] packages.
 
 As illustrated in figure \@ref(fig:featuresplot), an central
 characteristic of `QFeatures` objects is the aggregative relation
