@@ -798,6 +798,7 @@ setReplaceMethod("names", c("QFeatures", "character"),
 ##'     (default `1L`)
 ##'
 ##' @importFrom MultiAssayExperiment longFormat
+##' @importFrom reshape2 melt
 ##'
 ##' @export
 longFormat <- function(object,

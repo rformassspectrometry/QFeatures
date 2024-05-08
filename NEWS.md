@@ -1,5 +1,10 @@
 # QFeatures 1.15
 
+## QFeatures 1.15.1
+
+- Import `reshape2::melt`, required for
+  `MultiAssayExperiment::longFormat()`.
+
 ## QFeatures 1.15.0
 
 - New Bioc devel
