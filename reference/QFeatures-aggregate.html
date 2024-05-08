@@ -30,7 +30,7 @@ accessed with the aggcounts() accessor."><meta property="og:image" content="/log
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.15.1</span>
       </span>
     </div>
 
@@ -95,7 +95,7 @@ accessed with the <code>aggcounts()</code> accessor.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for QFeatures</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for class 'QFeatures'</span></span>
 <span><span class="fu">aggregateFeatures</span><span class="op">(</span></span>
 <span>  <span class="va">object</span>,</span>
 <span>  <span class="va">i</span>,</span>
@@ -105,60 +105,60 @@ accessed with the <code>aggcounts()</code> accessor.</p>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># S4 method for SummarizedExperiment</span></span>
+<span><span class="co"># S4 method for class 'SummarizedExperiment'</span></span>
 <span><span class="fu">aggregateFeatures</span><span class="op">(</span><span class="va">object</span>, <span class="va">fcol</span>, fun <span class="op">=</span> <span class="fu">MsCoreUtils</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/MsCoreUtils/man/robustSummary.html" class="external-link">robustSummary</a></span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># S4 method for QFeatures</span></span>
+<span><span class="co"># S4 method for class 'QFeatures'</span></span>
 <span><span class="fu">adjacencyMatrix</span><span class="op">(</span><span class="va">object</span>, <span class="va">i</span>, adjName <span class="op">=</span> <span class="st">"adjacencyMatrix"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">adjacencyMatrix</span><span class="op">(</span><span class="va">object</span>, <span class="va">i</span>, adjName <span class="op">=</span> <span class="st">"adjacencyMatrix"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
 <span></span>
-<span><span class="co"># S4 method for SummarizedExperiment</span></span>
+<span><span class="co"># S4 method for class 'SummarizedExperiment'</span></span>
 <span><span class="fu">aggcounts</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>object</dt>
+    <dl><dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
 <dd><p>An instance of class <code>SummarizedExperiment</code> or
 <code>QFeatures</code>.</p></dd>
 
 
-<dt>i</dt>
+<dt id="arg-i">i<a class="anchor" aria-label="anchor" href="#arg-i"></a></dt>
 <dd><p>When adding an adjacency matrix to an assay of a
 <code>QFeatures</code> object, the index or name of the assay the
 adjacency matrix will be added to. Ignored when <code>x</code> is an
 <code>SummarizedExperiment</code>.</p></dd>
 
 
-<dt>fcol</dt>
+<dt id="arg-fcol">fcol<a class="anchor" aria-label="anchor" href="#arg-fcol"></a></dt>
 <dd><p>A <code>character(1)</code> naming a rowdata variable (of assay
 <code>i</code> in case of a <code>QFeatures</code>) defining how to aggregate the
 features of the assay. This variable is either a <code>character</code>
 or a (possibly sparse) matrix. See below for details.</p></dd>
 
 
-<dt>name</dt>
+<dt id="arg-name">name<a class="anchor" aria-label="anchor" href="#arg-name"></a></dt>
 <dd><p>A <code>character(1)</code> naming the new assay. Default is
 <code>newAssay</code>. Note that the function will fail if there's
 already an assay with <code>name</code>.</p></dd>
 
 
-<dt>fun</dt>
+<dt id="arg-fun">fun<a class="anchor" aria-label="anchor" href="#arg-fun"></a></dt>
 <dd><p>A function used for quantitative feature
 aggregation. See Details for examples.</p></dd>
 
 
-<dt>...</dt>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional parameters passed the <code>fun</code>.</p></dd>
 
 
-<dt>adjName</dt>
+<dt id="arg-adjname">adjName<a class="anchor" aria-label="anchor" href="#arg-adjname"></a></dt>
 <dd><p><code>character(1)</code> with the variable name containing
 the adjacency matrix. Default is <code>"adjacencyMatrix"</code>.</p></dd>
 
 
-<dt>value</dt>
+<dt id="arg-value">value<a class="anchor" aria-label="anchor" href="#arg-value"></a></dt>
 <dd><p>An adjacency matrix with row and column names. The
 matrix will be coerced to compressed, column-oriented sparse
 matrix (class <code>dgCMatrix</code>) as defined in the <code>Matrix</code> package,
@@ -502,7 +502,7 @@ further details.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
 </div>
 
       </footer></div>

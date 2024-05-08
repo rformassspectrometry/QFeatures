@@ -41,7 +41,7 @@ sure that these match the class validity requirements."><meta property="og:image
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.15.1</span>
       </span>
     </div>
 
@@ -119,37 +119,37 @@ sure that these match the class validity requirements.</p>
     <div id="ref-usage">
     <div class="sourceCode"><pre><code>QFeatures(..., assayLinks = NULL)
 
-# S4 method for QFeatures
+# S4 method for class 'QFeatures'
 show(object)
 
-# S3 method for QFeatures
+# S3 method for class 'QFeatures'
 plot(x, interactive = FALSE, ...)
 
-# S4 method for QFeatures,ANY,ANY,ANY
+# S4 method for class 'QFeatures,ANY,ANY,ANY'
 [(x, i, j, ..., drop = TRUE)
 
-# S4 method for QFeatures,character,ANY,ANY
+# S4 method for class 'QFeatures,character,ANY,ANY'
 [(x, i, j, k, ..., drop = TRUE)
 
-# S4 method for QFeatures
+# S4 method for class 'QFeatures'
 c(x, ...)
 
-# S4 method for QFeatures
+# S4 method for class 'QFeatures'
 dims(x, use.names = TRUE)
 
-# S4 method for QFeatures
+# S4 method for class 'QFeatures'
 nrows(x, use.names = TRUE)
 
-# S4 method for QFeatures
+# S4 method for class 'QFeatures'
 ncols(x, use.names = TRUE)
 
-# S4 method for QFeatures
+# S4 method for class 'QFeatures'
 rowData(x, use.names = TRUE, ...)
 
-# S4 method for QFeatures,DataFrameList
+# S4 method for class 'QFeatures,DataFrameList'
 rowData(x) &lt;- value
 
-# S4 method for QFeatures,ANY
+# S4 method for class 'QFeatures,ANY'
 rowData(x) &lt;- value
 
 rbindRowData(object, i)
@@ -158,7 +158,7 @@ selectRowData(x, rowvars)
 
 rowDataNames(x)
 
-# S4 method for QFeatures,character
+# S4 method for class 'QFeatures,character'
 names(x) &lt;- value
 
 longFormat(object, colvars = NULL, rowvars = NULL, index = 1L)
@@ -169,10 +169,10 @@ removeAssay(x, i)
 
 replaceAssay(x, y, i)
 
-# S4 method for QFeatures,ANY,ANY
+# S4 method for class 'QFeatures,ANY,ANY'
 [[(x, i, j, ...) &lt;- value
 
-# S4 method for QFeatures
+# S4 method for class 'QFeatures'
 updateObject(object, ..., verbose = FALSE)
 
 dropEmptyAssays(object, dims = 1:2)</code></pre></div>
@@ -180,78 +180,78 @@ dropEmptyAssays(object, dims = 1:2)</code></pre></div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>...</dt>
+    <dl><dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>See <code>MultiAssayExperiment</code> for details. For <code>plot</code>,
 further arguments passed to <code><a href="https://r.igraph.org/reference/plot.igraph.html" class="external-link">igraph::plot.igraph</a></code>.</p></dd>
 
 
-<dt>assayLinks</dt>
+<dt id="arg-assaylinks">assayLinks<a class="anchor" aria-label="anchor" href="#arg-assaylinks"></a></dt>
 <dd><p>An optional <a href="AssayLinks.html">AssayLinks</a>.</p></dd>
 
 
-<dt>object</dt>
+<dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
 <dd><p>An instance of class QFeatures.</p></dd>
 
 
-<dt>x</dt>
+<dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>An instance of class QFeatures.</p></dd>
 
 
-<dt>interactive</dt>
+<dt id="arg-interactive">interactive<a class="anchor" aria-label="anchor" href="#arg-interactive"></a></dt>
 <dd><p>A <code>logical(1)</code>. If <code>TRUE</code>, an interactive graph
 is generated using <code>plotly</code>. Else, a static plot using <code>igraph</code>
 is generated. We recommend interactive exploration when the
 <code>QFeatures</code> object contains more than 50 assays.</p></dd>
 
 
-<dt>i</dt>
+<dt id="arg-i">i<a class="anchor" aria-label="anchor" href="#arg-i"></a></dt>
 <dd><p>An indexing vector. See the corresponding section in the
 documentation for more details.</p></dd>
 
 
-<dt>j</dt>
+<dt id="arg-j">j<a class="anchor" aria-label="anchor" href="#arg-j"></a></dt>
 <dd><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>, <code><a href="https://rdrr.io/r/base/logical.html" class="external-link">logical()</a></code>, or <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code> vector for
 subsetting by <code>colData</code> rows.</p></dd>
 
 
-<dt>drop</dt>
+<dt id="arg-drop">drop<a class="anchor" aria-label="anchor" href="#arg-drop"></a></dt>
 <dd><p>logical (default <code>TRUE</code>) whether to drop empty assay
 elements in the <code>ExperimentList</code>.</p></dd>
 
 
-<dt>k</dt>
+<dt id="arg-k">k<a class="anchor" aria-label="anchor" href="#arg-k"></a></dt>
 <dd><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>, <code><a href="https://rdrr.io/r/base/logical.html" class="external-link">logical()</a></code>, or <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code> vector for
 subsetting by assays</p></dd>
 
 
-<dt>use.names</dt>
+<dt id="arg-use-names">use.names<a class="anchor" aria-label="anchor" href="#arg-use-names"></a></dt>
 <dd><p>A <code>logical(1)</code> indicating whether the rownames of
 each assay should be propagated to the corresponding <code>rowData</code>.</p></dd>
 
 
-<dt>value</dt>
+<dt id="arg-value">value<a class="anchor" aria-label="anchor" href="#arg-value"></a></dt>
 <dd><p>The values to use as a replacement. See the
 corresponding section in the documentation for more details.</p></dd>
 
 
-<dt>rowvars</dt>
+<dt id="arg-rowvars">rowvars<a class="anchor" aria-label="anchor" href="#arg-rowvars"></a></dt>
 <dd><p>A <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> with the names of the <code>rowData</code>
 variables (columns) to retain in any assay.</p></dd>
 
 
-<dt>colvars</dt>
+<dt id="arg-colvars">colvars<a class="anchor" aria-label="anchor" href="#arg-colvars"></a></dt>
 <dd><p>A <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> that selects column(s) in the
 <code>colData</code>.</p></dd>
 
 
-<dt>index</dt>
+<dt id="arg-index">index<a class="anchor" aria-label="anchor" href="#arg-index"></a></dt>
 <dd><p>The assay indicator within each <code>SummarizedExperiment</code>
 object. A vector input is supported in the case that the
 <code>SummarizedExperiment</code> object(s) has more than one assay
 (default <code>1L</code>)</p></dd>
 
 
-<dt>y</dt>
+<dt id="arg-y">y<a class="anchor" aria-label="anchor" href="#arg-y"></a></dt>
 <dd><p>An object that inherits from <code>SummarizedExperiment</code> or a
 <em>named</em> list of assays. When <code>y</code> is a list, each element must
 inherit from a <code>SummarizedExperiment</code> and the names of the
@@ -260,16 +260,16 @@ list names must be unique and cannot overlap with the names of
 the assays already present in <code>x</code>.</p></dd>
 
 
-<dt>name</dt>
+<dt id="arg-name">name<a class="anchor" aria-label="anchor" href="#arg-name"></a></dt>
 <dd><p>A <code>character(1)</code> naming the single assay. Ignored if
 <code>y</code> is a list of assays.</p></dd>
 
 
-<dt>verbose</dt>
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>logical (default FALSE) whether to print extra messages</p></dd>
 
 
-<dt>dims</dt>
+<dt id="arg-dims">dims<a class="anchor" aria-label="anchor" href="#arg-dims"></a></dt>
 <dd><p><code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code> that defines the dimensions to consider to
 drop empty assays. 1 for rows (i.e. assays without any
 features) and 2 for columns (i.e. assays without any
@@ -508,7 +508,7 @@ processing methods using in quantitative proteomics.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
 </div>
 
       </footer></div>

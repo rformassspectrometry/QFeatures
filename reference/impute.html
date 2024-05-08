@@ -24,7 +24,7 @@ the different imputation methods available and strategies."><meta property="og:i
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.15.1</span>
       </span>
     </div>
 
@@ -85,10 +85,10 @@ the different imputation methods available and strategies.</p>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">impute</span></span>
 <span></span>
-<span><span class="co"># S4 method for SummarizedExperiment</span></span>
+<span><span class="co"># S4 method for class 'SummarizedExperiment'</span></span>
 <span><span class="fu">impute</span><span class="op">(</span><span class="va">object</span>, <span class="va">method</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># S4 method for QFeatures</span></span>
+<span><span class="co"># S4 method for class 'QFeatures'</span></span>
 <span><span class="fu">impute</span><span class="op">(</span><span class="va">object</span>, <span class="va">method</span>, <span class="va">...</span>, <span class="va">i</span>, name <span class="op">=</span> <span class="st">"imputedAssay"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -98,29 +98,29 @@ the different imputation methods available and strategies.</p>
     </div>
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>object</dt>
+    <dl><dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
 <dd><p>A <code>SummarizedExperiment</code> or <code>QFeatures</code> object with
 missing values to be imputed.</p></dd>
 
 
-<dt>method</dt>
+<dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
 <dd><p><code>character(1)</code> defining the imputation method. See
 <code>imputeMethods()</code> for available ones. See
 <code><a href="https://rdrr.io/pkg/MsCoreUtils/man/imputation.html" class="external-link">MsCoreUtils::impute_matrix()</a></code> for details.</p></dd>
 
 
-<dt>...</dt>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional parameters passed to the inner imputation
 function. See <code><a href="https://rdrr.io/pkg/MsCoreUtils/man/imputation.html" class="external-link">MsCoreUtils::impute_matrix()</a></code> for details.</p></dd>
 
 
-<dt>i</dt>
+<dt id="arg-i">i<a class="anchor" aria-label="anchor" href="#arg-i"></a></dt>
 <dd><p>A <code>logical(1)</code> or a <code>character(1)</code> that defines which
 element of the <code>QFeatures</code> instance to impute. It cannot be
 missing and must be of length one.</p></dd>
 
 
-<dt>name</dt>
+<dt id="arg-name">name<a class="anchor" aria-label="anchor" href="#arg-name"></a></dt>
 <dd><p>A <code>character(1)</code> naming the new assay name. Default
 is <code>imputedAssay</code>.</p></dd>
 
@@ -169,8 +169,8 @@ is <code>imputedAssay</code>.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: mvtnorm</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: Matrix</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘Matrix’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:S4Vectors’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: 'Matrix'</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from 'package:S4Vectors':</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     expand</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: gmm</span>
@@ -182,8 +182,8 @@ is <code>imputedAssay</code>.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> and has been superseded by the norm2 package.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: pcaMethods</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘pcaMethods’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:stats’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: 'pcaMethods'</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from 'package:stats':</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     loadings</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: impute</span>
@@ -262,7 +262,7 @@ is <code>imputedAssay</code>.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
 </div>
 
       </footer></div>

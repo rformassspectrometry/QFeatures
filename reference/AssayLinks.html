@@ -19,7 +19,7 @@ instances."><meta property="og:image" content="/logo.png"><!-- mathjax --><scrip
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.15.1</span>
       </span>
     </div>
 
@@ -73,13 +73,13 @@ instances.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre><code># S4 method for AssayLink
+    <div class="sourceCode"><pre><code># S4 method for class 'AssayLink'
 show(object)
 
-# S4 method for AssayLinks
+# S4 method for class 'AssayLinks'
 updateObject(object, ..., verbose = FALSE)
 
-# S4 method for AssayLink
+# S4 method for class 'AssayLink'
 updateObject(object, ..., verbose = FALSE)
 
 AssayLink(name, from = NA_character_, fcol = NA_character_, hits = Hits())
@@ -90,10 +90,10 @@ assayLink(x, i)
 
 assayLinks(x, i)
 
-# S4 method for AssayLink,character,ANY,ANY
+# S4 method for class 'AssayLink,character,ANY,ANY'
 [(x, i, j, ..., drop = TRUE)
 
-# S4 method for AssayLinks,list,ANY,ANY
+# S4 method for class 'AssayLinks,list,ANY,ANY'
 [(x, i, j, ..., drop = TRUE)
 
 addAssayLink(object, from, to, varFrom, varTo)
@@ -103,76 +103,76 @@ addAssayLinkOneToOne(object, from, to)</code></pre></div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>object</dt>
+    <dl><dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
 <dd><p>An <code>AssayLink</code> object to show.</p></dd>
 
 
-<dt>...</dt>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>A set of <code>AssayLink</code> objects or a list thereof.</p></dd>
 
 
-<dt>verbose</dt>
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>logical (default FALSE) whether to print extra messages</p></dd>
 
 
-<dt>name</dt>
+<dt id="arg-name">name<a class="anchor" aria-label="anchor" href="#arg-name"></a></dt>
 <dd><p>A mandatory name of the assay(s).</p></dd>
 
 
-<dt>from</dt>
+<dt id="arg-from">from<a class="anchor" aria-label="anchor" href="#arg-from"></a></dt>
 <dd><p>A <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> or <code><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer()</a></code> indicating which
 assay(s) to link from in <code>object</code></p></dd>
 
 
-<dt>fcol</dt>
+<dt id="arg-fcol">fcol<a class="anchor" aria-label="anchor" href="#arg-fcol"></a></dt>
 <dd><p>The feature variable of the parent assay used to
 generate the current assay (used in
 <code>aggregateFeatures</code>). <code>NA_character_</code>, if not applicable.</p></dd>
 
 
-<dt>hits</dt>
+<dt id="arg-hits">hits<a class="anchor" aria-label="anchor" href="#arg-hits"></a></dt>
 <dd><p>An object of class <a href="https://rdrr.io/pkg/S4Vectors/man/Hits-class.html" class="external-link">S4Vectors::Hits</a> matching the
 features of two assays.</p></dd>
 
 
-<dt>names</dt>
+<dt id="arg-names">names<a class="anchor" aria-label="anchor" href="#arg-names"></a></dt>
 <dd><p>A <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> of <code>AssayLink</code> names. If provided,
 <code>...</code> are ignored, and <code>names</code> is used to create an
 <code>AssayLinks</code> object with <code>AssayLink</code> instances with names
 <code>names</code>.</p></dd>
 
 
-<dt>x</dt>
+<dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>An instance of class <a href="QFeatures-class.html">QFeatures</a>.</p></dd>
 
 
-<dt>i</dt>
+<dt id="arg-i">i<a class="anchor" aria-label="anchor" href="#arg-i"></a></dt>
 <dd><p>The index or name of the assay whose <code>AssayLink</code> and
 parents <code>AssayLink</code> instances are to be returned. For <code>[</code>, the
 feature names to filter on.</p></dd>
 
 
-<dt>j</dt>
+<dt id="arg-j">j<a class="anchor" aria-label="anchor" href="#arg-j"></a></dt>
 <dd><p>ignored.</p></dd>
 
 
-<dt>drop</dt>
+<dt id="arg-drop">drop<a class="anchor" aria-label="anchor" href="#arg-drop"></a></dt>
 <dd><p>ignored.</p></dd>
 
 
-<dt>to</dt>
+<dt id="arg-to">to<a class="anchor" aria-label="anchor" href="#arg-to"></a></dt>
 <dd><p>A <code>character(1)</code> or <code>integer(1)</code> indicating which assay
 to link to in <code>object</code></p></dd>
 
 
-<dt>varFrom</dt>
+<dt id="arg-varfrom">varFrom<a class="anchor" aria-label="anchor" href="#arg-varfrom"></a></dt>
 <dd><p>A <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> indicating the feature variable(s)
 to use to match the <code>from</code> assay(s) to the <code>to</code>
 assay. <code>varFrom</code> must have the same length as <code>from</code> and is
 assumed to be ordered as <code>from</code>.</p></dd>
 
 
-<dt>varTo</dt>
+<dt id="arg-varto">varTo<a class="anchor" aria-label="anchor" href="#arg-varto"></a></dt>
 <dd><p>A <code>character(1)</code> indicating the feature variable to
 use to match the <code>to</code> assay to the <code>from</code> assay(s).</p></dd>
 
@@ -306,7 +306,7 @@ names of the assays, instead of a supplied variable name in
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
 </div>
 
       </footer></div>

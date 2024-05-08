@@ -21,7 +21,7 @@ filters can be provided as instances of class AnnotationFilter
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.15.1</span>
       </span>
     </div>
 
@@ -79,27 +79,27 @@ filters can be provided as instances of class <code>AnnotationFilter</code>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">VariableFilter</span><span class="op">(</span><span class="va">field</span>, <span class="va">value</span>, condition <span class="op">=</span> <span class="st">"=="</span>, not <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># S4 method for QFeatures,AnnotationFilter</span></span>
+<span><span class="co"># S4 method for class 'QFeatures,AnnotationFilter'</span></span>
 <span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">object</span>, <span class="va">filter</span>, <span class="va">i</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span>, keep <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># S4 method for QFeatures,formula</span></span>
+<span><span class="co"># S4 method for class 'QFeatures,formula'</span></span>
 <span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">object</span>, <span class="va">filter</span>, <span class="va">i</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span>, keep <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>field</dt>
+    <dl><dt id="arg-field">field<a class="anchor" aria-label="anchor" href="#arg-field"></a></dt>
 <dd><p><code>character(1)</code> refering to the name of the variable
 to apply the filter on.</p></dd>
 
 
-<dt>value</dt>
+<dt id="arg-value">value<a class="anchor" aria-label="anchor" href="#arg-value"></a></dt>
 <dd><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> or <code><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer()</a></code> value for the
 <code>CharacterVariableFilter</code> and <code>NumericVariableFilter</code> filters
 respectively.</p></dd>
 
 
-<dt>condition</dt>
+<dt id="arg-condition">condition<a class="anchor" aria-label="anchor" href="#arg-condition"></a></dt>
 <dd><p><code>character(1)</code> defining the condition to be used in
 the filter. For <code>NumericVariableFilter</code>, one of <code>"=="</code>,
 <code>"!="</code>, <code>"&gt;"</code>, <code>"&lt;"</code>, <code>"&gt;="</code> or <code>"&lt;="</code>. For
@@ -108,39 +108,39 @@ the filter. For <code>NumericVariableFilter</code>, one of <code>"=="</code>,
 condition is <code>"=="</code>.</p></dd>
 
 
-<dt>not</dt>
+<dt id="arg-not">not<a class="anchor" aria-label="anchor" href="#arg-not"></a></dt>
 <dd><p><code>logical(1)</code> indicating whether the filtering should be negated
 or not. <code>TRUE</code> indicates is negated (!). <code>FALSE</code> indicates not negated.
 Default <code>not</code> is <code>FALSE</code>, so no negation.</p></dd>
 
 
-<dt>object</dt>
+<dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
 <dd><p>An instance of class <a href="QFeatures-class.html">QFeatures</a>.</p></dd>
 
 
-<dt>filter</dt>
+<dt id="arg-filter">filter<a class="anchor" aria-label="anchor" href="#arg-filter"></a></dt>
 <dd><p>Either an instance of class AnnotationFilter or a
 formula.</p></dd>
 
 
-<dt>i</dt>
+<dt id="arg-i">i<a class="anchor" aria-label="anchor" href="#arg-i"></a></dt>
 <dd><p>A numeric, logical or character vector pointing to the
 assay(s) to be filtered.</p></dd>
 
 
-<dt>na.rm</dt>
+<dt id="arg-na-rm">na.rm<a class="anchor" aria-label="anchor" href="#arg-na-rm"></a></dt>
 <dd><p><code>logical(1)</code> indicating whether missing values should
 be removed. Default is <code>FALSE</code>.</p></dd>
 
 
-<dt>keep</dt>
+<dt id="arg-keep">keep<a class="anchor" aria-label="anchor" href="#arg-keep"></a></dt>
 <dd><p><code>logical(1)</code> indicating whether to keep the features
 of assays for which at least one of the filtering variables are
 missing in the rowData. When <code>FALSE</code> (default), all such assay
 will contain 0 features; when <code>TRUE</code>, the assays are untouched.</p></dd>
 
 
-<dt>...</dt>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional parameters. Currently ignored.</p></dd>
 
 </dl></div>
@@ -725,7 +725,7 @@ vignette provides an extended example.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
 </div>
 
       </footer></div>
