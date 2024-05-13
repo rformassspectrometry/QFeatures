@@ -1,5 +1,10 @@
 # QFeatures 1.15
 
+## QFeatures 1.15.2
+
+- New API unit test (see issue
+  [#214](https://github.com/rformassspectrometry/QFeatures/issues/214).
+
 ## QFeatures 1.15.1
 
 - Import `reshape2::melt`, required for
