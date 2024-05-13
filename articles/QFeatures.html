@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">QFeatures</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.15.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.15.2</span>
       </span>
     </div>
 
@@ -280,7 +280,7 @@ set, as an example, to the mean. The new assay is named
 <span><span class="co">## dim: 2923 10 </span></span>
 <span><span class="co">## metadata(0):</span></span>
 <span><span class="co">## assays(2): assay aggcounts</span></span>
-<span><span class="co">## rownames(2923): AAAVSTEGk AAIDYQk ... ykVEEASDLSISk ykVPQTEEPTAk</span></span>
+<span><span class="co">## rownames(2923): aAADADVSLHNFSAR aAADPSEk ... yYSFFDLNPk YYSIASSSk</span></span>
 <span><span class="co">## rowData names(7): Sequence ProteinDescriptions ... markers .n</span></span>
 <span><span class="co">## colnames(10): X126 X127C ... X130N X131</span></span>
 <span><span class="co">## colData names(0):</span></span></code></pre>
@@ -370,11 +370,11 @@ assays.</p>
 <pre><code><span><span class="co">## DataFrame with 4519 rows and 5 columns</span></span>
 <span><span class="co">##            assay       rowname ProteinGroupAccessions       markers        .n</span></span>
 <span><span class="co">##      &lt;character&gt;   &lt;character&gt;            &lt;character&gt;   &lt;character&gt; &lt;integer&gt;</span></span>
-<span><span class="co">## 1       peptides     AAAVSTEGk                 Q9ERE8       unknown         1</span></span>
-<span><span class="co">## 2       peptides       AAIDYQk                 Q3THS6       unknown         1</span></span>
-<span><span class="co">## 3       peptides AAISQPGISE...                 Q8BP40 Mitochondr...         1</span></span>
-<span><span class="co">## 4       peptides AALAHSEIAT...               Q9QXS1-3       unknown         1</span></span>
-<span><span class="co">## 5       peptides    AAMIVNQLSk                 Q02257 Plasma mem...         1</span></span>
+<span><span class="co">## 1       peptides aAADADVSLH...                 P0C7N9       unknown         1</span></span>
+<span><span class="co">## 2       peptides      aAADPSEk                 Q6P9Q6       unknown         1</span></span>
+<span><span class="co">## 3       peptides aAAQFLTSTW...                 Q9D7Z3 Nucleus - ...         1</span></span>
+<span><span class="co">## 4       peptides aAASGAAGDk...                 A2AGT5       unknown         1</span></span>
+<span><span class="co">## 5       peptides     AAAVSTEGk                 Q9ERE8       unknown         1</span></span>
 <span><span class="co">## ...          ...           ...                    ...           ...       ...</span></span>
 <span><span class="co">## 4515    proteins        Q9Z2V5                 Q9Z2V5       unknown         1</span></span>
 <span><span class="co">## 4516    proteins        Q9Z2W0                 Q9Z2W0       unknown         1</span></span>
@@ -599,7 +599,12 @@ and that variable was dropped from the other assays.</p>
 <span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so;  LAPACK version 3.10.0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## locale:</span></span>
-<span><span class="co">## [1] C</span></span>
+<span><span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></span>
+<span><span class="co">##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span></span>
+<span><span class="co">##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span></span>
+<span><span class="co">##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span></span>
+<span><span class="co">##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></span>
+<span><span class="co">## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## time zone: UTC</span></span>
 <span><span class="co">## tzcode source: system (glibc)</span></span>
@@ -609,7 +614,7 @@ and that variable was dropped from the other assays.</p>
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">##  [1] ggplot2_3.5.1               QFeatures_1.15.1           </span></span>
+<span><span class="co">##  [1] ggplot2_3.5.1               QFeatures_1.15.2           </span></span>
 <span><span class="co">##  [3] MultiAssayExperiment_1.31.1 SummarizedExperiment_1.35.0</span></span>
 <span><span class="co">##  [5] Biobase_2.65.0              GenomicRanges_1.57.0       </span></span>
 <span><span class="co">##  [7] GenomeInfoDb_1.41.0         IRanges_2.39.0             </span></span>
@@ -629,12 +634,12 @@ and that variable was dropped from the other assays.</p>
 <span><span class="co">## [25] htmltools_0.5.8.1       sass_0.4.9              yaml_2.3.8             </span></span>
 <span><span class="co">## [28] lazyeval_0.2.2          pillar_1.9.0            tidyr_1.3.1            </span></span>
 <span><span class="co">## [31] pkgdown_2.0.9.9000      crayon_1.5.2            jquerylib_0.1.4        </span></span>
-<span><span class="co">## [34] MASS_7.3-60.2           DelayedArray_0.31.0     cachem_1.0.8           </span></span>
+<span><span class="co">## [34] MASS_7.3-60.2           DelayedArray_0.31.1     cachem_1.0.8           </span></span>
 <span><span class="co">## [37] abind_1.4-5             tidyselect_1.2.1        digest_0.6.35          </span></span>
 <span><span class="co">## [40] stringi_1.8.4           dplyr_1.1.4             reshape2_1.4.4         </span></span>
 <span><span class="co">## [43] purrr_1.0.2             bookdown_0.39           labeling_0.4.3         </span></span>
 <span><span class="co">## [46] fastmap_1.1.1           grid_4.4.0              colorspace_2.1-0       </span></span>
-<span><span class="co">## [49] cli_3.6.2               SparseArray_1.5.1       magrittr_2.0.3         </span></span>
+<span><span class="co">## [49] cli_3.6.2               SparseArray_1.5.3       magrittr_2.0.3         </span></span>
 <span><span class="co">## [52] S4Arrays_1.5.0          utf8_1.2.4              withr_3.0.0            </span></span>
 <span><span class="co">## [55] scales_1.3.0            UCSC.utils_1.1.0        rmarkdown_2.26.2       </span></span>
 <span><span class="co">## [58] XVector_0.45.0          httr_1.4.7              igraph_2.0.3           </span></span>
