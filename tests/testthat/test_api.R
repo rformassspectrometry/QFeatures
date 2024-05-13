@@ -15,6 +15,7 @@ api <- c("addAssay", "addAssayLink", "addAssayLinkOneToOne",
          "zeroIsNA")
 
 test_that("API hasn't changed", {
-    current_api <- ls(pos = "package:QFeatures")
-    expect_identical(current_api, api)
+    current_api <- sort(ls(pos = "package:QFeatures"))
+    expect_identical(length(current_api), length(api))
+    expect_identical(current_api, sort(api))
 })
