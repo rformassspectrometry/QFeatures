@@ -1,0 +1,53 @@
+reference:
+  - title: "QFeatures class"
+    desc: "The QFeatures class"
+    contents:
+      - QFeatures
+      - show
+      - plot
+      - joinAssay
+      - assayLink
+      - assayLinks
+      - addAssayLink
+      - addAssayLinkOneToOne
+      - dropEmptyAssays
+      - countUniqueFeatures
+  - title: "Data import"
+    desc: "Create QFeatures and SummarizedExperiment object"
+    contents:
+      - readQFeatures
+      - readQFeaturesFromDIANN
+      - readSummarizedExperiment
+  - title: "Missing data"
+    desc: "Filtering and handling of missing values"
+    contents:
+      - zeroIsNA
+      - infIsNA
+      - nNA
+      - filterNA
+      - impute
+  - title: QFeatures processing
+    desc: "Quantitative data processing"
+    contents:
+      - logTransform
+      - scaleTransform
+      - normaize
+      - sweep
+  - title: "Feature aggregations"
+    desc: "Feature aggregations"
+    contents:
+      - aggregateFeatures
+      - adjacencyMatrix
+      - aggcounts
+  - title: "Filtering"
+    desc: "Feature filtering"
+    contents:
+      - filterFeatures
+      - VariableFilter
+      - subsetByFeature
+  - title: "Example data"
+    desc: "Example data"
+    contents:
+      - feat1
+      - feat3
+      - hlpsms
