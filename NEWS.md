@@ -2,7 +2,9 @@
 
 ## QFeatures 1.15.2
 
-- New API unit test (see issue
+- Fix bug in `QFeatures::longFormat()` when rownames are numerical
+  (reported upstream https://github.com/waldronlab/MultiAssayExperiment/issues/331).
+- Starting New API unit test (see issue
   [#214](https://github.com/rformassspectrometry/QFeatures/issues/214).
 
 ## QFeatures 1.15.1

@@ -822,7 +822,7 @@ longFormat <- function(object,
         rds <- do.call(rbind, rds)
         ## Merge the rowData to the long table
         cbind(longDataFrame,
-              rds[longDataFrame$rowname, , drop = FALSE])
+              rds[as.character(longDataFrame$rowname), , drop = FALSE])
     } else {
         ## If rowvars is null, return the MAE longFormat output
         MultiAssayExperiment::longFormat(object, colvars, index)
