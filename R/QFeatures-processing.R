@@ -30,7 +30,7 @@
 ##'
 ##' The `method` parameter in `normalize` can be one of `"sum"`,
 ##' `"max"`, `"center.mean"`, `"center.median"`, `"div.mean"`,
-##' `"div.median"`, `"diff.meda"`, `"quantiles`", `"quantiles.robust`"
+##' `"div.median"`, `"diff.median"`, `"quantiles`", `"quantiles.robust`"
 ##' or `"vsn"`. The [MsCoreUtils::normalizeMethods()] function returns
 ##' a vector of available normalisation methods.
 ##'
