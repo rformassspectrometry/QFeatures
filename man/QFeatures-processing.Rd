@@ -118,7 +118,7 @@ See the \emph{Processing} vignette for examples.
 \details{
 The \code{method} parameter in \code{normalize} can be one of \code{"sum"},
 \code{"max"}, \code{"center.mean"}, \code{"center.median"}, \code{"div.mean"},
-\code{"div.median"}, \code{"diff.meda"}, \verb{"quantiles}", \verb{"quantiles.robust}"
+\code{"div.median"}, \code{"diff.median"}, \verb{"quantiles}", \verb{"quantiles.robust}"
 or \code{"vsn"}. The \code{\link[MsCoreUtils:normalize]{MsCoreUtils::normalizeMethods()}} function returns
 a vector of available normalisation methods.
 \itemize{
