@@ -1,8 +1,8 @@
-pandoc: '3.2'
-pkgdown: 2.0.9.9000
-pkgdown_sha: c1485b494b9d669527cd342daf939aca6948c54f
+pandoc: '3.3'
+pkgdown: 2.1.1.9000
+pkgdown_sha: c0cbde4221b87c7e81273e804f210213129c3d83
 articles:
   Processing: Processing.html
   QFeatures: QFeatures.html
   Visualization: Visualization.html
-last_built: 2024-07-04T08:04Z
+last_built: 2024-09-18T18:23Z
