@@ -471,7 +471,7 @@ readQFeatures <- function(assayData,
 
 .createUniqueColnames <- function(el, quantCols) {
     if (length(quantCols) == 1)  suffix <- ""
-    else suffix <- paste0("_", colnames(el[[1]]))
+    else suffix <- paste0("_", quantCols)
     for (i in seq_along(el)) {
         colnames(el[[i]]) <- paste0(names(el)[[i]], suffix)
     }
