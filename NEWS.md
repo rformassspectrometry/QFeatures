@@ -1,4 +1,31 @@
+# QFeatures 1.15
+
+## QFeatures 1.15.2
+
+- Fix typo in normalisation methods.
+
+## QFeatures 1.15.2
+
+- Fix bug in `QFeatures::longFormat()` when rownames are numerical
+  (reported upstream https://github.com/waldronlab/MultiAssayExperiment/issues/331).
+- Starting New API unit test (see issue
+  [#214](https://github.com/rformassspectrometry/QFeatures/issues/214).
+
+## QFeatures 1.15.1
+
+- Import `reshape2::melt`, required for
+  `MultiAssayExperiment::longFormat()`.
+
+## QFeatures 1.15.0
+
+- New Bioc devel
+
 # QFeatures 1.13
+
+## QFeatures 1.13.7
+
+- Fix `filterFeatures()` when the filter variable also exists in the
+  global environment (issue #208).
 
 ## QFeatures 1.13.6
 
