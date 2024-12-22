@@ -297,7 +297,7 @@ setMethod("show", "QFeatures",
                   return(NULL)
               }
               n <- length(object)
-              cat(sprintf("An instance of class %s", class(object)), "containing", n, "assays:")
+              cat(sprintf("An instance of class %s", class(object)), "containing", n, "set(s):")
               el <- experiments(object)
               o_class <- class(el)
               elem_cl <- vapply(el, class, character(1L))
