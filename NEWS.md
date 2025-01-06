@@ -3,6 +3,7 @@
 ## QFeatures 1.17.1
 
 - Fix: solved `readQFeatures()` bug and adapted unit tests.
+- Docs: created new vignette about reading data with `QFeatures`
 
 ## QFeatures 1.17.0
 
