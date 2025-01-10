@@ -1,6 +1,23 @@
+# QFeatures 1.17
+
+## QFeatures 1.17.1
+
+- Fix: solved `readQFeatures()` bug and adapted unit tests.
+- Docs: created new vignette about reading data with `QFeatures`
+
+## QFeatures 1.17.0
+
+- New Bioconductor 3.21 (devel) release
+
+# QFeatures 1.16
+
+## QFeatures 1.16.0
+
+- New Bioconductor 3.20 (stable) release
+
 # QFeatures 1.15
 
-## QFeatures 1.15.2
+## QFeatures 1.15.3
 
 - Fix typo in normalisation methods.
 

@@ -64,6 +64,26 @@ test_that("readQFeatures: colData and quantCols are equivalent", {
     r2 <- readQFeatures(x, quantCols = 1:10)
     colData(r1) <- colData(r2) ## ignore colData
     expect_identical(r1, r2)
+    ## This also works when colData and assayData quantCols are in a
+    ## different order (cf https://github.com/UCLouvain-CBIO/scp/issues/77)
+    ## Create a data matrix where quantCols are in another order than
+    ## provided by the colData
+    ad <- matrix(
+        1:75, ncol = 5,
+        dimnames = list(NULL, rev(paste0("quantCol", 1:5)))
+    )
+    ad <- as.data.frame(ad)
+    ad$runCol <- rep(paste0("run", 1:3), each = 5)
+    cd <- data.frame(
+        quantCols = rep(paste0("quantCol", 1:5), 3),
+        runCol = rep(paste0("run", 1:3), each = 5)
+    )
+    qf <- readQFeatures(
+        assayData = ad, colData = cd, runCol = "runCol"
+    )
+    exp <- ad[ad$runCol == ad$runCol[[1]], -6]
+    colnames(exp) <- paste0(ad$runCol[[1]], "_", colnames(exp))
+    expect_identical(as.matrix(exp), assay(qf, 1))
 })
 
 
@@ -354,7 +374,7 @@ test_that(".splitSE", {
     m <- matrix(1:100, ncol = 10,
                 dimnames = list(paste0("row", 1:10),
                                 paste0("col", 1:10)))
-    se <- SummarizedExperiment(assay = m, 
+    se <- SummarizedExperiment(assay = m,
                                rowData = DataFrame(rowDataCol = 1:nrow(m)%%3),
                                colData = DataFrame(colvar = 1:ncol(m)%%5))
     ## Split by row
