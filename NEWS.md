@@ -1,5 +1,9 @@
 # QFeatures 1.17
 
+## QFeatures 1.17.2
+
+- Nothing yet
+
 ## QFeatures 1.17.1
 
 - Fix: solved `readQFeatures()` bug and adapted unit tests.
