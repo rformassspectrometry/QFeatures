@@ -69,14 +69,11 @@
 ##' - The `rowDataNames` accessor returns a list with the `rowData`
 ##'   variable names.
 ##'
-##' - The `longFormat` accessor takes a `QFeatures` object and returns
-##'   it in a long format `DataFrame`. Each quantitative value is
-##'   reported on a separate line. `colData` and `rowData` data can
-##'   also be added. This function is an extension of the `longFormat`
-##'   function in the [MultiAssayExperiment::MultiAssayExperiment].
-##'
-##' - The `getQFeaturesType` accessor takes a `QFeatures` object and
-##'  returns its type.
+##' - The `longForm` accessor takes a `QFeatures` object and returns it in a
+##'   long format `DataFrame`, replacing the now deprectated `longFormat()` Each
+##'   quantitative value is reported on a separate line. `colData` and `rowData`
+##'   data can also be added. This function is an extension of the `longForm()`
+##'   method in the [MultiAssayExperiment::MultiAssayExperiment].
 ##'
 ##' @section Adding, removing and replacing assays:
 ##'
@@ -826,9 +823,6 @@ rbindRowData <- function(object, i) {
 
 ##' @rdname QFeatures-class
 ##'
-##' @param rowvars A `character()` with the names of the `rowData`
-##'     variables (columns) to retain in any assay.
-##'
 ##' @export
 selectRowData <- function(x, rowvars) {
     stopifnot(inherits(x, "QFeatures"))
@@ -892,52 +886,16 @@ setReplaceMethod(
 
 ##' @rdname QFeatures-class
 ##'
-##' @param colvars A `character()` that selects column(s) in the
-##'     `colData`.
-##' @param index The assay indicator within each `SummarizedExperiment`
-##'     object. A vector input is supported in the case that the
-##'     `SummarizedExperiment` object(s) has more than one assay
-##'     (default `1L`)
-##'
-##' @importFrom MultiAssayExperiment longFormat
-##' @importFrom reshape2 melt
-##'
 ##' @export
 longFormat <- function(object,
-    colvars = NULL,
-    rowvars = NULL,
-    index = 1L) {
-    if (!is.null(rowvars)) {
-        rdNames <- rowDataNames(object)
-        misNames <- sapply(
-            rdNames,
-            function(x) any(!rowvars %in% x)
-        )
-        ## Check that all required
-        if (any(misNames)) {
-            stop(
-                "Some 'rowvars' not found in assay(s): ",
-                paste0(names(misNames)[misNames], collapse = ", ")
-            )
-        }
-        ## Get long format table with quantification values and colvars
-        longDataFrame <-
-            MultiAssayExperiment::longFormat(object, colvars, index)
-        ## Get the required rowData
-        rds <- lapply(
-            rowData(object),
-            function(rd) rd[, rowvars, drop = FALSE]
-        )
-        rds <- do.call(rbind, rds)
-        ## Merge the rowData to the long table
-        cbind(
-            longDataFrame,
-            rds[as.character(longDataFrame$rowname), , drop = FALSE]
-        )
-    } else {
-        ## If rowvars is null, return the MAE longFormat output
-        MultiAssayExperiment::longFormat(object, colvars, index)
-    }
+                       colvars = NULL,
+                       rowvars = NULL,
+                       index = 1L) {
+    .Deprecated("longForm")
+    longForm(object,
+             colvars = colvars,
+             rowvars = rowvars,
+             index = index)
 }
 
 

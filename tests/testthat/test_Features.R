@@ -823,38 +823,6 @@ test_that("assays must have unique rownames", {
 })
 
 
-test_that("longFormat", {
-    colData(feat2)$X <- 1:12
-    ## Select a single colvars and rowvars
-    lt <- longFormat(feat2, rowvars = "Prot", colvars = "X")
-    ## Check dimensions
-    expect_equal(nrow(lt),
-                 sum(apply(dims(feat2), 2, prod)))
-    expect_identical(ncol(lt),
-                     5L+2L)
-    ## Check content
-    expect_identical(lt$Prot,
-                     unname(unlist(lapply(rowData(feat2),
-                                          ## Repeat 4x because 4 samples
-                                          function(x) rep(x$Prot, 4)))))
-    ## Select a single colvars and no rowvars (make sure that
-    ## the implementation does not break the MAE implementation)
-    lt <- longFormat(feat2, colvars = "X")
-    expect_equal(nrow(lt),
-                 sum(apply(dims(feat2), 2, prod)))
-    expect_identical(ncol(lt),
-                     5L+1L)
-    ## Select multiple rowvars
-    lt <- longFormat(feat2, rowvars = c("Prot", "x"))
-    expect_equal(nrow(lt),
-                 sum(apply(dims(feat2), 2, prod)))
-    expect_identical(ncol(lt),
-                     5L+2L)
-    ## Test error: rowvars is missing in rowData
-    expect_error(longFormat(feat2, rowvars = "y"),
-                 regexp = "not found")
-})
-
 test_that("dropEmptyAssays", {
     ## Object is not of class QFeatures = error
     expect_error(
