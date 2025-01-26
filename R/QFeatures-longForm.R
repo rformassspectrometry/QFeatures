@@ -52,48 +52,55 @@ setMethod("longForm", "QFeatures",
           })
 
 
-## ##' @importFrom reshape2 melt
-## setMethod("longForm", "SummarizedExperiment",
-##           function(object, colvars = NULL,
-##                    rowvars = NULL,
-##                    index = NULL) {
-##               ## Default is to use all assays in the SE
-##               if (is.null(index))
-##                   index <- seq_along(assayNames(object))
-##               ## Check that index is within bounds
-##               if (max(index) > length(assayNames(object)) | min(index) < 1)
-##                   stop("Assay index(ces) not within bounds.")
-##               if (!is.null(colvars)) {
-##                   ## Check that all colvars exist
-##                   if (!all(colvars %in% names(colData(object))))
-##                       stop("Some 'colvars' not found in colData(.).")
-##               }
-##               if (!is.null(rowvars)) {
-##                   ## Check that all rowvars exist
-##                   if (!all(rowvars %in% names(rowData(object))))
-##                       stop("Some 'rowvars' not found in rowData(.).")
-##               }
-##               res <- lapply(index,
-##                             function(i) {
-##                                 ans <- reshape2::melt(assay(object, i),
-##                                                       varnames = c("rowname", "colname"),
-##                                                       value.name = "value")
-##                                 ans$assayName <- assayNames(object)[i]
-##                                 rownames(ans) <- NULL
-##                                 ans
-##                             })
-##               res <- do.call(rbind, res)
-##               ## Add colData variables
-##               cd <- colData(object)[as.character(res$colname),
-##                                     colvars,
-##                                     drop = FALSE]
-##               rownames(cd) <- NULL
-##               res <- cbind(res, cd)
-##               ## Add rowData variables
-##               rd <- rowData(object)[as.character(res$rowname),
-##                                     rowvars,
-##                                     drop = FALSE]
-##               rownames(rd) <- NULL
-##               res <- cbind(res, rd)
-##               as(res, "DataFrame")
-##           })
+##' @importFrom reshape2 melt
+longFormSE <- function(object, colvars = NULL, rowvars = NULL,
+                       index = seq_along(assays(object))) {
+    ## Check that indices are within bounds
+    if (max(index) > length(assays(object)) | min(index) < 1)
+        stop("Index out of (assay) bounds.")
+    ## Check that all colvars exist
+    if (!is.null(colvars)) {
+        if (!all(colvars %in% names(colData(object))))
+            stop("Some 'colvars' not found in colData(.).")
+    }
+    ## Check that all rowvars exist
+    if (!is.null(rowvars)) {
+        if (!all(rowvars %in% names(rowData(object))))
+            stop("Some 'rowvars' not found in rowData(.).")
+    }
+    ## Need names for the assayNames columns. If the object's assays don't have
+    ## any names, use the index set above.
+    if (is.null(nms <- assayNames(object)))
+        nms <- index
+    res <- lapply(seq_along(index),
+                  function(i) {
+                      ans <- reshape2::melt(assay(object, index[i]),
+                                            varnames = c("rowname", "colname"),
+                                            value.name = "value")
+                      ans$assayName <- nms[i]
+                      rownames(ans) <- NULL
+                      ans
+                  })
+    res <- do.call(rbind, res)
+    if (!is.null(colvars)) { ## Add colData variables.
+        ## Need object to have colnames
+        if (is.null(colnames(object)))
+            colnames(object) <- seq_len(ncol(object))
+        cd <- colData(object)[as.character(res$colname),
+                              colvars,
+                              drop = FALSE]
+        rownames(cd) <- NULL
+        res <- cbind(res, cd)
+    }
+    if (!is.null(rowvars)) { ## Add rowData variables
+        ## Need object to have rownames
+        if (is.null(rownames(object)))
+            rownames(object) <- seq_len(nrow(object))
+        rd <- rowData(object)[as.character(res$rowname),
+                              rowvars,
+                              drop = FALSE]
+        rownames(rd) <- NULL
+        res <- cbind(res, rd)
+    }
+    as(res, "DataFrame")
+}
