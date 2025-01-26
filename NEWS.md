@@ -2,7 +2,7 @@
 
 ## QFeatures 1.17.2
 
-- Nothing yet
+- New `longForm()` methods (replacing `longFormat()`, now deprecated).
 
 ## QFeatures 1.17.1
 

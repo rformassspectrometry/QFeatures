@@ -260,14 +260,14 @@ cptac
 ```
 
 The `addAssay()` function is the general function that adds new assays
-to a `QFeatures` object. The step above could also be fun with the
+to a `QFeatures` object. The step above could also be run with the
 following syntax, that implicitly returns an updated `QFeatures`
 object.
 
 ```{r, eval = FALSE}
 logTransform(cptac,
              i = "peptides",
-             name = "log_peptides")
+             name = "peptides_log")
 ```
 
 ```{r, fig.cap = "Quantitative data in its original scale (left) and log2-transformed (right)."}
@@ -295,7 +295,7 @@ the `QFeatures` object.
 
 ```{r, eval = FALSE}
 normalize(cptac,
-          i = "log_peptides",
+          i = "peptides_log",
           name = "lognorm_peptides",
           method = "center.median")
 ```
@@ -332,7 +332,10 @@ that takes the following inputs:
 
 
 ```{r, warning = FALSE}
-cptac <- aggregateFeatures(cptac, i = "peptides_norm", fcol = "Proteins", name = "proteins")
+cptac <- aggregateFeatures(cptac,
+                           i = "peptides_norm",
+                           fcol = "Proteins",
+                           name = "proteins")
 cptac
 ```
 
@@ -362,12 +365,15 @@ pattern in the 2 groups at the protein and peptide level.
 ```{r, message = TRUE, fig.cap = "Expression intensities for the protein *P02787ups|TRFE_HUMAN_UPS* (right, green) and its peptides (left) in groups A (circles) and B (triangles)."}
 library("ggplot2")
 library("dplyr")
-longFormat(cptac["P02787ups|TRFE_HUMAN_UPS", ]) |>
+longForm(cptac["P02787ups|TRFE_HUMAN_UPS", ]) |>
     as.data.frame() |>
     mutate(group = ifelse(grepl("A", colname), "A", "B")) |>
     mutate(sample = sub("Intensity\\.", "", colname)) |>
-    ggplot(aes(x = sample, y = value, colour = rowname, shape = group)) +
-    geom_point() +
+    ggplot(aes(x = sample, y = value,
+               colour = rowname,
+               shape = group)) +
+    geom_line(aes(group = rowname)) +
+    geom_point(size = 3) +
     facet_grid(~ assay)
 ```
 

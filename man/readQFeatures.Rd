@@ -78,9 +78,9 @@ console. Default is \code{TRUE}.}
 }
 \value{
 An instance of class \code{QFeatures} or
-\code{\link[SummarizedExperiment:RangedSummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}}. For the
+\code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}}. For the
 former, the quantitative sets of each run are stored in
-\code{\link[SummarizedExperiment:RangedSummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}} object.
+\code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}} object.
 }
 \description{
 These functions convert tabular data into dedicated data
