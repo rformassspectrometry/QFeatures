@@ -71,3 +71,22 @@ test_that("longFormSE works with 2 assays", {
         longFormSE(se, colvars = "colX", rowvars = "rowX"),
         rbind(longDF, longDF2))
 })
+
+test_that("longFormSE works with unnamed assays", {
+    ## one "" names
+    assay(se, 2) <- assay(se)
+    longDF2 <- longDF
+    longDF2$assayName <- ""
+    expect_identical(
+        longFormSE(se, colvars = "colX", rowvars = "rowX"),
+        rbind(longDF, longDF2))
+    alst <- assays(se)
+    names(alst) <- NULL
+    assays(se) <- alst
+    longDF$assayName <- 1L
+    longDF2$assayName <- 2L
+    ## No names
+    expect_equal(
+        longFormSE(se, colvars = "colX", rowvars = "rowX"),
+        rbind(longDF, longDF2))
+})
