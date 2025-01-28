@@ -36,3 +36,26 @@ test_that("longForm", {
     expect_error(longForm(feat2, rowvars = "y"),
                  regexp = "not found")
 })
+
+## longDF <- data.frame(
+##     rowname = rep(paste0("G", 1:10), 10),
+##     colname = rep(paste0("S", 1:10), each = 10),
+##     value = 1:100,
+##     assayName = "counts",
+##     colX = rep(LETTERS[1:10], each = 10),
+##     rowX = rep(letters[1:10], 10))
+
+## counts <- matrix(1:100, nrow = 10)
+## dimnames(counts) <- list(
+##     paste0("G", 1:10),
+##     paste0("S", 1:10))
+## cd <- data.frame(colX = LETTERS[1:10])
+## rd <- data.frame(rowX = letters[1:10])
+## se <- SummarizedExperiment(list(counts = counts),
+##                            colData = cd,
+##                            rowData = rd)
+
+
+## all.equal(longFormSE(se), longDF[, 1:4])
+## all.equal(longFormSE(se, colvars = "colX"), longDF[, 1:5])
+## all.equal(longFormSE(se, colvars = "colX", rowvars = "rowX"), longDF)
