@@ -37,25 +37,37 @@ test_that("longForm", {
                  regexp = "not found")
 })
 
-## longDF <- data.frame(
-##     rowname = rep(paste0("G", 1:10), 10),
-##     colname = rep(paste0("S", 1:10), each = 10),
-##     value = 1:100,
-##     assayName = "counts",
-##     colX = rep(LETTERS[1:10], each = 10),
-##     rowX = rep(letters[1:10], 10))
-
-## counts <- matrix(1:100, nrow = 10)
-## dimnames(counts) <- list(
-##     paste0("G", 1:10),
-##     paste0("S", 1:10))
-## cd <- data.frame(colX = LETTERS[1:10])
-## rd <- data.frame(rowX = letters[1:10])
-## se <- SummarizedExperiment(list(counts = counts),
-##                            colData = cd,
-##                            rowData = rd)
 
 
-## all.equal(longFormSE(se), longDF[, 1:4])
-## all.equal(longFormSE(se, colvars = "colX"), longDF[, 1:5])
-## all.equal(longFormSE(se, colvars = "colX", rowvars = "rowX"), longDF)
+longDF <- data.frame(
+    rowname = rep(paste0("G", 1:10), 10),
+    colname = rep(paste0("S", 1:10), each = 10),
+    value = 1:100,
+    assayName = "counts",
+    colX = rep(LETTERS[1:10], each = 10),
+    rowX = rep(letters[1:10], 10))
+counts <- matrix(1:100, nrow = 10)
+dimnames(counts) <- list(
+    paste0("G", 1:10),
+    paste0("S", 1:10))
+cd <- data.frame(colX = LETTERS[1:10])
+rd <- data.frame(rowX = letters[1:10])
+se <- SummarizedExperiment(list(counts = counts),
+                           colData = cd,
+                           rowData = rd)
+
+test_that("longFormSE works with 1 assay", {
+    expect_identical(longFormSE(se), longDF[, 1:4])
+    expect_identical(longFormSE(se, colvars = "colX"), longDF[, 1:5])
+    expect_identical(longFormSE(se, colvars = "colX", rowvars = "rowX"), longDF)
+})
+
+
+test_that("longFormSE works with 2 assays", {
+    assay(se, "count2") <- assay(se)
+    longDF2 <- longDF
+    longDF2$assayName <- "count2"
+    expect_identical(
+        longFormSE(se, colvars = "colX", rowvars = "rowX"),
+        rbind(longDF, longDF2))
+})
