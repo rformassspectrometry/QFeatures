@@ -76,7 +76,8 @@ longFormSE <- function(object, colvars = NULL, rowvars = NULL,
                   function(i) {
                       ans <- reshape2::melt(assay(object, index[i]),
                                             varnames = c("rowname", "colname"),
-                                            value.name = "value")
+                                            value.name = "value",
+                                            as.is = TRUE)
                       ans$assayName <- nms[i]
                       rownames(ans) <- NULL
                       ans
