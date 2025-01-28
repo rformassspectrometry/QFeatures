@@ -102,5 +102,6 @@ longFormSE <- function(object, colvars = NULL, rowvars = NULL,
         rownames(rd) <- NULL
         res <- cbind(res, rd)
     }
-    as(res, "DataFrame")
+    ## as(res, "DataFrame")
+    res
 }
