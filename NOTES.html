@@ -269,6 +269,12 @@ readQFeaturesFromDIANN &lt;- funtion(dfr, multiplexing = NULL, ...) {
 }</code></pre>
 </div>
 </div>
+<div class="section level1">
+<h1 id="possible-optimsations">Possible optimsations<a class="anchor" aria-label="anchor" href="#possible-optimsations"></a></h1>
+<p>Simple ones</p>
+<ul><li>In <code>longForm()</code> have a <code>na.rm</code> argument and propagate it to <code><a href="https://rdrr.io/pkg/reshape2/man/melt.html" class="external-link">reshape2::melt()</a></code> for each assay. This would require to loop over assay, extract them with <code>getWithColData()</code>, and use our own <code>longFormSE()</code> supporting <code>na.rm</code>.</li>
+<li>Parallelise <code><a href="reference/QFeatures-aggregate.html">aggregateFeatures()</a></code>, <code><a href="reference/QFeatures-processing.html">logTransform()</a></code>, <code><a href="reference/QFeatures-processing.html">scaleTransform()</a></code>, <code><a href="reference/impute.html">impute()</a></code>, …</li>
+</ul></div>
 
 
   </div>
