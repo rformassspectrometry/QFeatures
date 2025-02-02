@@ -54,7 +54,8 @@ setMethod("longForm", "QFeatures",
 
 ##' @importFrom reshape2 melt
 longFormSE <- function(object, colvars = NULL, rowvars = NULL,
-                       index = seq_along(assays(object))) {
+                       index = seq_along(assays(object)),
+                       na.rm = FALSE) {
     ## Check that indices are within bounds
     if (max(index) > length(assays(object)) | min(index) < 1)
         stop("Index out of (assay) bounds.")
@@ -77,7 +78,8 @@ longFormSE <- function(object, colvars = NULL, rowvars = NULL,
                       ans <- reshape2::melt(assay(object, index[i]),
                                             varnames = c("rowname", "colname"),
                                             value.name = "value",
-                                            as.is = TRUE)
+                                            as.is = TRUE,
+                                            na.rm = na.rm)
                       ans$assayName <- nms[i]
                       rownames(ans) <- NULL
                       ans
