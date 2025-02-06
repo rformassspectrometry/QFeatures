@@ -46,3 +46,16 @@ test_that(".checkFilterVariables works", {
     expect_error(.checkFilterVariables(rd, "ww"),
                  "'ww' is/are absent from all rowData.")
 })
+
+
+test_that(".setAssayRownames works", {
+    data(feat2)
+    newnames <- CharacterList(LETTERS[1:10],
+                              LETTERS[1:4],
+                              LETTERS[1:7])
+    for (i in 1:3)
+        rowData(feat2[[i]])[["NEWNAME"]] <- newnames[[i]]
+    ans <- .setAssayRownames(feat2, "NEWNAME")
+    expect_identical(unname(rownames(ans)),
+                     newnames)
+})

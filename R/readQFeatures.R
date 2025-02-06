@@ -518,7 +518,7 @@ readQFeatures <- function(assayData,
 ## with rownames and assayLinks.
 .setAssayRownames <- function(object, fcol) {
     stopifnot(inherits(object, "MultiAssayExperiment"))
-    ok <- lapply(rowData(acms),
+    ok <- lapply(rowData(object),
                  function(x) stopifnot(fcol %in% names(x)))
     expl <- lapply(experiments(object),
                    function(x) {
