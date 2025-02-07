@@ -116,6 +116,7 @@ input table contains data from multiple runs/batches.</p></li>
 <span>  removeEmptyCols <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  ecol <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  fnames <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -144,7 +145,7 @@ quantitative data. This information can also be defined in
 <dd><p>For the single- and multi-set cases, an optional
 <code>character(1)</code> or <code>numeric(1)</code> indicating the column to be
 used as feature names.  Note that rownames must be unique
-within <code>QFeatures</code> sets.</p></dd>
+within <code>QFeatures</code> sets. Default is <code>NULL</code>.</p></dd>
 
 
 <dt id="arg-ecol">ecol<a class="anchor" aria-label="anchor" href="#arg-ecol"></a></dt>
@@ -194,9 +195,9 @@ console. Default is <code>TRUE</code>.</p></dd>
     <div id="value">
     <h2>Value</h2>
     <p>An instance of class <code>QFeatures</code> or
-<code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html" class="external-link">SummarizedExperiment::SummarizedExperiment()</a></code>. For the
+<code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">SummarizedExperiment::SummarizedExperiment()</a></code>. For the
 former, the quantitative sets of each run are stored in
-<code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html" class="external-link">SummarizedExperiment::SummarizedExperiment()</a></code> object.</p>
+<code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">SummarizedExperiment::SummarizedExperiment()</a></code> object.</p>
     </div>
     <div id="details">
     <h2>Details</h2>

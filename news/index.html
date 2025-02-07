@@ -70,7 +70,7 @@
 <h2 class="page-header" data-toc-text="1.17" id="qfeatures-117">QFeatures 1.17<a class="anchor" aria-label="anchor" href="#qfeatures-117"></a></h2>
 <div class="section level3">
 <h3 id="qfeatures-1-17">QFeatures 1.17.2<a class="anchor" aria-label="anchor" href="#qfeatures-1-17"></a></h3>
-<ul><li>Nothing yet</li>
+<ul><li>Fix <code>fnames</code> argument in <code><a href="../reference/readQFeatures.html">readQFeatures()</a></code>. The <code>fnames</code> argument is not passed to <code><a href="../reference/readQFeatures.html">readSummarizedExperiment()</a></code> anymore, but used at in <code><a href="../reference/readQFeatures.html">readQFeatures()</a></code>. Rownames are now set after splitting. Given that rownames must be unique and that this was enforced with <code><a href="https://rdrr.io/r/base/make.unique.html" class="external-link">make.unique()</a></code>, the previous behaviour misnamed features that should get the same name.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="qfeatures-1-17-1">QFeatures 1.17.1<a class="anchor" aria-label="anchor" href="#qfeatures-1-17-1"></a></h3>
