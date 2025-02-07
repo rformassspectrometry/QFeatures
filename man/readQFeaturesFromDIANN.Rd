@@ -87,7 +87,7 @@ x[["File.Name"]] <- x[["Run"]]
 readQFeaturesFromDIANN(x)
 
 ## use the precursor identifier as assay rownames
-readQFeaturesFromDIANN(x) |>
+readQFeaturesFromDIANN(x, fnames = "Precursor.Id") |>
     rownames()
 
 ## with a colData (and default arguments)
