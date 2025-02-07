@@ -25,6 +25,7 @@ readQFeatures(
   removeEmptyCols = FALSE,
   verbose = TRUE,
   ecol = NULL,
+  fnames = NULL,
   ...
 )
 }
@@ -44,7 +45,7 @@ quantitative data. This information can also be defined in
 \item{fnames}{For the single- and multi-set cases, an optional
 \code{character(1)} or \code{numeric(1)} indicating the column to be
 used as feature names.  Note that rownames must be unique
-within \code{QFeatures} sets.}
+within \code{QFeatures} sets. Default is \code{NULL}.}
 
 \item{ecol}{Same as \code{quantCols}. Available for backwards
 compatibility. Default is \code{NULL}. If both \code{ecol} and \code{colData}
@@ -78,9 +79,9 @@ console. Default is \code{TRUE}.}
 }
 \value{
 An instance of class \code{QFeatures} or
-\code{\link[SummarizedExperiment:RangedSummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}}. For the
+\code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}}. For the
 former, the quantitative sets of each run are stored in
-\code{\link[SummarizedExperiment:RangedSummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}} object.
+\code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}} object.
 }
 \description{
 These functions convert tabular data into dedicated data

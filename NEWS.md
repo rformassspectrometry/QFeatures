@@ -2,7 +2,12 @@
 
 ## QFeatures 1.17.2
 
-- Nothing yet
+- Fix `fnames` argument in `readQFeatures()`. The `fnames` argument is
+  not passed to `readSummarizedExperiment()` anymore, but used at in
+  `readQFeatures()`. Rownames are now set after splitting. Given that
+  rownames must be unique and that this was enforced with
+  `make.unique()`, the previous behaviour misnamed features that
+  should get the same name.
 
 ## QFeatures 1.17.1
 
