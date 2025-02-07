@@ -1,6 +1,6 @@
 # QFeatures 1.17
 
-## QFeatures 1.17.2
+## QFeatures 1.17.3
 
 - Nothing yet.
 
