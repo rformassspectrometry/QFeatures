@@ -2,6 +2,10 @@
 
 ## QFeatures 1.17.2
 
+- Nothing yet.
+
+## QFeatures 1.17.2
+
 - Fix `fnames` argument in `readQFeatures()`. The `fnames` argument is
   not passed to `readSummarizedExperiment()` anymore, but used at in
   `readQFeatures()`. Rownames are now set after splitting. Given that
