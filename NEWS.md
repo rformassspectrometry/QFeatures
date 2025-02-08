@@ -2,7 +2,7 @@
 
 ## QFeatures 1.17.3
 
-- Nothing yet.
+- Fix bug in `nNA()` on empty assays (see #174).
 
 ## QFeatures 1.17.2
 
