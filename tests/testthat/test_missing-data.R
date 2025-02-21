@@ -141,6 +141,13 @@ test_that("infIsNA,QFeatures", {
     expect_equal(assay(ft[["inf"]]), assay(se_na))
 })
 
+test_that("nNA on empty assay", {
+    se <- ft_na[[1]]
+    se0 <- ft_na[[1]][, 0]
+    expect_identical(sapply(nNA(se), names),
+                     sapply(nNA(se0), names))
+})
+
 test_that("nNA,SummarizedExperiment and nNA,QFeatures", {
     ## Add an assay with different dimensions (cf issue 118)
     ft0 <- addAssay(ft0, ft0[[1]][1:2, 1:2], name = "subset1")
