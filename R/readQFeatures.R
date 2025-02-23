@@ -123,6 +123,14 @@
 ##' (without `colData`), the `colData` contains zero
 ##' columns/variables.
 ##'
+##' ## Feature names
+##'
+##' Assay feature (i.e. rownames) are important as they are used when assays are
+##' joined with [joinAssays()]. They can be set upon creation of the
+##' [QFeatures()] object by setting the `fnames` argument. See also
+##' [createPrecursorId()] in case a precursor identifier is note readily
+##' available and should be created from other, existing rowData variables.
+##'
 ##' @param assayData A `data.frame`, or any object that can be coerced
 ##'     into a `data.frame`, holding the quantitative assay. For
 ##'     `readSummarizedExperiment()`, this can also be a
@@ -148,9 +156,9 @@
 ##'     are converted to syntactically valid names using `make.names`
 ##'
 ##' @param fnames For the single- and multi-set cases, an optional
-##'     `character(1)` or `numeric(1)` indicating the column to be
-##'     used as feature names.  Note that rownames must be unique
-##'     within `QFeatures` sets. Default is `NULL`.
+##'     `character(1)` or `numeric(1)` indicating the column to be used as
+##'     feature names.  Note that rownames must be unique within `QFeatures`
+##'     sets. Default is `NULL`. See also section 'Feature names'.
 ##'
 ##' @param name For the single-set case, an optional `character(1)` to
 ##'     name the set in the `QFeatures` object. Default is `quants`.

@@ -4,7 +4,7 @@
 \alias{joinAssays}
 \title{Join assays in a QFeatures object}
 \usage{
-joinAssays(x, i, name = "joinedAssay")
+joinAssays(x, i, name = "joinedAssay", fcol = NULL)
 }
 \arguments{
 \item{x}{An instance of class \link{QFeatures}.}
@@ -14,6 +14,11 @@ joinAssays(x, i, name = "joinedAssay")
 \item{name}{A \code{character(1)} naming the new assay. Default is
 \code{joinedAssay}. Note that the function will fail if there's
 already an assay with \code{name}.}
+
+\item{fcol}{Default is \code{NULL}, to use assay rownames when
+joining. Alternatively, \code{fcol} can be a \code{character(1)} defining a
+rowData variable, present in all assays, that will be used to join
+assays. See \code{\link[=createPrecursorId]{createPrecursorId()}} for an example.}
 }
 \value{
 A \code{QFeatures} object with an additional assay.
@@ -23,22 +28,20 @@ This function applies a full-join type of operation on 2 or more
 assays in a \code{QFeatures} instance.
 }
 \details{
-The rows to be joined are chosen based on the rownames of the
-respective assays. It is the user's responsability to make sure
-these are meaningful, such as for example refering to unique
-peptide sequences or proteins.
+The rows to be joined are chosen based on the rownames of the respective
+assays. It is the user's responsability to make sure these are meaningful,
+such as for example refering to unique precursors, peptide sequences or
+proteins.
 
-The join operation acts along the rows and expects the samples
-(columns) of the assays to be disjoint, i.e. the assays mustn't
-share any samples. Rows that aren't present in an assay are set to
-\code{NA} when merged.
+The join operation acts along the rows and expects the samples (columns) of
+the assays to be disjoint, i.e. the assays mustn't share any samples. Rows
+that aren't present in an assay are set to \code{NA} when merged.
 
-The \code{rowData} slots are also joined. However, only columns that
-are shared and that have the same values for matching columns/rows
-are retained. For example of a feature variable \code{A} in sample \code{S1}
-contains value \code{a1} and variable \code{A} in sample \code{S2} in a different
-assay contains \code{a2}, then the feature variable \code{A} is dropped in
-the merged assay.
+The \code{rowData} slots are also joined. However, only columns that are shared
+and that have the same values for matching columns/rows are retained. For
+example of a feature variable \code{A} in sample \code{S1} contains value \code{a1} and
+variable \code{A} in sample \code{S2} in a different assay contains \code{a2}, then the
+feature variable \code{A} is dropped in the merged assay.
 
 The joined assay is linked to its parent assays through an \code{AssayLink}
 object. The link between the child assay and the parent assays is based on

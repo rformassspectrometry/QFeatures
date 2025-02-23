@@ -35,13 +35,13 @@ from PSM data.
 \examples{
 data("ft_na")
 ## Count number of (non-missing) PSMs
-ft_na <- countUniqueFeatures(ft_na, 
-                             i = "na", 
+ft_na <- countUniqueFeatures(ft_na,
+                             i = "na",
                              colDataName = "counts")
 ft_na$counts
 ## Count number of unique rowData feature
-ft_na <- countUniqueFeatures(ft_na, 
-                             i = "na", 
+ft_na <- countUniqueFeatures(ft_na,
+                             i = "na",
                              groupBy = "Y",
                              colDataName = "Y_counts")
 ft_na$Y_counts

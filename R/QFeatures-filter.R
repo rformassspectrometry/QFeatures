@@ -40,6 +40,15 @@
 ##' `NumericVariableFilters` objects), which can be created with the
 ##' `VariableFilter` constructor.
 ##'
+##' @section Helper functions:
+##'
+##' - The `isDuplicated()` function takes a vector (or rowData variable when
+##'   used to filter features) as input, and return a logical of the same
+##'   length, with elements set to `TRUE` for unique occurence, and `FALSE`
+##'   otherwise. This function is different from [duplicated()], as here even
+##'   the first occurence is set to `FALSE`. See [createPrecursorId()] for an
+##'   application.
+##'
 ##' @seealso The [QFeatures] man page for subsetting and the `QFeatures`
 ##'     vignette provides an extended example.
 ##'
@@ -54,6 +63,7 @@
 ##' @aliases filterFeatures filterFeatures,QFeatures,formula-method
 ##' @aliases filterFeatures,QFeatures,AnnotationFilter-method
 ##' @aliases CharacterVariableFilter NumericVariableFilter VariableFilter
+##' @aliases isDuplicated
 ##'
 ##' @examples
 ##'
@@ -455,4 +465,17 @@ contains <- function(x, value) {
     value <- gsub('([[:punct:]])', '\\[\\1\\]', value)
     ## Return whether elements in x contain value or not
     grepl(pattern = value, x = x)
+}
+
+
+##' @rdname QFeatures-filtering
+##'
+##' @export
+##'
+##' @param A `vector()` that will be checked for duplications.
+isDuplicated <- function(x) {
+    ans <- rep(TRUE, length(x))
+    keep <- names(which(table(x) == 1))
+    ans[x %in% keep] <- FALSE
+    ans
 }
