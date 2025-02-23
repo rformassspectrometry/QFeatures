@@ -472,7 +472,7 @@ contains <- function(x, value) {
 ##'
 ##' @export
 ##'
-##' @param A `vector()` that will be checked for duplications.
+##' @param x A `vector()` that will be checked for duplications.
 isDuplicated <- function(x) {
     ans <- rep(TRUE, length(x))
     keep <- names(which(table(x) == 1))
