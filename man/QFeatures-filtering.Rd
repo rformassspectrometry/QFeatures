@@ -59,7 +59,7 @@ will contain 0 features; when \code{TRUE}, the assays are untouched.}
 
 \item{...}{Additional parameters. Currently ignored.}
 
-\item{A}{\code{vector()} that will be checked for duplications.}
+\item{x}{A \code{vector()} that will be checked for duplications.}
 }
 \value{
 An filtered \code{QFeature} object.
