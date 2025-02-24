@@ -536,3 +536,24 @@ readQFeatures <- function(assayData,
     experiments(object) <- List(expl)
     object
 }
+
+.setAssayRownames2 <- function(object, i = seq_along(feat4), fcol) {
+    stopifnot(inherits(object, "MultiAssayExperiment"))
+    i <- .normIndex(object, i, allowAbsent = FALSE)
+    ok <- lapply(rowData(object[, , i]),
+                 function(x) stopifnot(fcol %in% names(x)))
+    ## Note that is is more efficient time and memory-wise (about twice on a
+    ## small QFeatures) to iterate over the experiments and then replace them,
+    ## rather than updating/replacing the assays in-place.
+    expl <- experiments(object)
+    for (ii in i)
+        rownames(expl[[ii]]) <- rowData(expl[[ii]])[[fcol]]
+    experiments(object) <- expl
+    object
+}
+
+bench::mark(
+           r1 <- QFeatures:::.setAssayRownames(feat4, fcol = "Precursor.Id"),
+           r2 <- QFeatures:::.setAssayRownames2(feat4, fcol = "Precursor.Id"),
+           r3 <- QFeatures:::.setAssayRownames3(feat4, fcol = "Precursor.Id"),
+           iterations = 100)
