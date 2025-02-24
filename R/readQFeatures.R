@@ -551,9 +551,3 @@ readQFeatures <- function(assayData,
     experiments(object) <- expl
     object
 }
-
-bench::mark(
-           r1 <- QFeatures:::.setAssayRownames(feat4, fcol = "Precursor.Id"),
-           r2 <- QFeatures:::.setAssayRownames2(feat4, fcol = "Precursor.Id"),
-           r3 <- QFeatures:::.setAssayRownames3(feat4, fcol = "Precursor.Id"),
-           iterations = 100)
