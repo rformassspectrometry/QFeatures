@@ -272,3 +272,23 @@ test_that("aggregateFeatures,QFeatures: aggregate multiple assays", {
                                    fun = colSums),
                  regexp = "'i' and 'fcol' must have same length")
 })
+
+test_that("aggregateFeatures,QFeatures: invariant columns discarded", {
+    data("feat3")
+    expect_warning(feat3 <- feat3[, , 1:3],
+                   regexp = "experiments' dropped; see 'drops")
+    ii <- names(feat3)
+    for (i in ii) {
+       rowData(feat3[[i]])$variant <- seq_along(nrow(rowData(feat3[[i]])))
+    }
+    rowData(feat3[[1]])$psms1col <- 1
+
+   feat3aggr <- aggregateFeatures(feat3, i = ii, fcol = "Protein",
+                                       name = paste0("prots", 1:3),
+                                       fun = colSums)
+    ## Checking the aggregated assay rowData doesn't contain the variant columns
+    expect_identical(dims(feat3aggr),
+                     matrix(c(7L, 8L, 10L, rep(2L, 3), rep(c(2L, 2L, 4L), 2)),
+                            nrow = 2, byrow = TRUE,
+                            dimnames = list(NULL, c(ii, paste0("prots", 1:3)))))
+})

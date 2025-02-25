@@ -25,7 +25,7 @@
 \alias{longFormat}
 \alias{removeAssay}
 \alias{replaceAssay}
-\alias{[[<-,QFeatures,ANY,ANY-method}
+\alias{[[<-,QFeatures,ANY,ANY,ANY-method}
 \alias{updateObject,QFeatures-method}
 \alias{dropEmptyAssays}
 \title{Quantitative MS QFeatures}
@@ -70,7 +70,7 @@ removeAssay(x, i)
 
 replaceAssay(x, y, i)
 
-\S4method{[[}{QFeatures,ANY,ANY}(x, i, j, ...) <- value
+\S4method{[[}{QFeatures,ANY,ANY,ANY}(x, i, j, ...) <- value
 
 \S4method{updateObject}{QFeatures}(object, ..., verbose = FALSE)
 
