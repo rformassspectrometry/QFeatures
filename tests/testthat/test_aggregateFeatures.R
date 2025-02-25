@@ -287,8 +287,8 @@ test_that("aggregateFeatures,QFeatures: invariant columns discarded", {
                                        name = paste0("prots", 1:3),
                                        fun = colSums)
     ## Checking the aggregated assay rowData doesn't contain the variant columns
-    expect_identical(dims(feat3aggr),
-                     matrix(c(7L, 8L, 10L, rep(2L, 3), rep(c(2L, 2L, 4L), 2)),
-                            nrow = 2, byrow = TRUE,
-                            dimnames = list(NULL, c(ii, paste0("prots", 1:3)))))
+    expect_identical(dims(rowData(feat3aggr)),
+                     matrix(c(7L, 7L, 8L, 3L, 10L, 3L, rep(c(2L, 4L), 3)),
+                            nrow = 6, byrow = TRUE,
+                            dimnames = list(c(ii, paste0("prots", 1:3)), NULL)))
 })
