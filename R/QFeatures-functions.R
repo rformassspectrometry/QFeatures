@@ -96,7 +96,7 @@ countUniqueFeatures <- function(object,
 ##' concatenation of other rowData variables that, together, should create
 ##' unique identifiers.
 ##'
-##' These precursor identifiers, assuming their are unique, can then be used to
+##' These precursor identifiers, assuming they are unique, can then be used to
 ##' join assays using [joinAssays()], rather than using the rownames, as
 ##' illustrated below.
 ##'
@@ -156,7 +156,7 @@ createPrecursorId <- function(object,
                               name = "Precursor.Id",
                               fcols = c("Modified.Sequence", "Precursor.Charge"),
                               i = seq_along(object)) {
-    sapply(rowDataNames(object),
+    sapply(rowDataNames(object)[i],
            function(rnms) {
                ## Check that 'name' does not already exist
                if (name %in% rnms)
