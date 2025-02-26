@@ -35,7 +35,7 @@
 ##'     or a (possibly sparse) matrix. See below for details.
 ##'
 ##' @param name A `character()` naming the new assays.
-##'     name must have the same length as i.
+##'     `name` must have the same length as i.
 ##'     Default is `newAssay`. Note that the function will fail if there's
 ##'     already an assay with `name`.
 ##'
