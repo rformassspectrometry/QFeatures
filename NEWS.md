@@ -2,7 +2,8 @@
 
 ## QFeatures 1.17.4
 
-- Nothing yet.
+- Optimisation of `aggregateFeatures` in the case of 
+multiple assays aggregation.
 
 ## QFeatures 1.17.3
 
