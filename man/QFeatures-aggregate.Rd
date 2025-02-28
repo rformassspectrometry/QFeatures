@@ -44,7 +44,7 @@ features of the assays. This variable is either a \code{character}
 or a (possibly sparse) matrix. See below for details.}
 
 \item{name}{A \code{character()} naming the new assays.
-name must have the same length as i.
+\code{name} must have the same length as i.
 Default is \code{newAssay}. Note that the function will fail if there's
 already an assay with \code{name}.}
 
