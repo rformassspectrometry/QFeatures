@@ -1,5 +1,9 @@
 # QFeatures 1.17
 
+## QFeatures 1.17.5
+
+- Nothing yet.
+
 ## QFeatures 1.17.4
 
 - Optimisation of `aggregateFeatures` in the case of 
