@@ -292,12 +292,18 @@ QFeatures <- function(..., assayLinks = NULL) {
 ##' @exportMethod show
 setMethod("show", "QFeatures",
           function(object) {
+              type <- suppressWarnings(getQFeaturesType(object))
+              typeMsg <- ifelse(is.null(type), "undefined", type)  # Handle missing type
+              
               if (isEmpty(object)) {
-                  cat(sprintf("A empty instance of class %s", class(object)), "\n")
+                  cat(sprintf("An empty instance of class %s (type: %s)\n", 
+                              class(object), typeMsg))
                   return(NULL)
               }
+              
               n <- length(object)
-              cat(sprintf("An instance of class %s", class(object)), "containing", n, "set(s):")
+              cat(sprintf("An instance of class %s (type: %s) with %d set%s:\n", 
+                          class(object), typeMsg, n, ifelse(n == 1, "", "s")))
               el <- experiments(object)
               o_class <- class(el)
               elem_cl <- vapply(el, class, character(1L))
@@ -1183,4 +1189,35 @@ dropEmptyAssays <- function(object, dims = 1:2) {
         object <- object[, , ncols(object) > 0]
     if (!length(object)) return(QFeatures())
     object
+}
+
+
+##' @param type `character(1)` that defines the type of the QFeatures.
+##'     The type can be either "bulk" or "SCP" (default is "bulk").
+##'
+##' @rdname QFeatures-class
+##'
+##' @export
+setQFeaturesType <- function(object, type = "bulk") {
+    stopifnot(inherits(object, "QFeatures"))
+    valid_types <- c("bulk", "SCP")
+    if (!type %in% valid_types) {
+        stop("Invalid QFeatures type. Must be one of: ",
+            paste(valid_types, collapse = ", "))
+    }
+    metadata(object)[["._type"]] <- type
+    object
+}
+
+
+##' @rdname QFeatures-class
+##'
+##' @export
+getQFeaturesType <- function(object) {
+    stopifnot(inherits(object, "QFeatures"))
+    type <- metadata(object)[["._type"]]
+    if (is.null(type)) {
+        warning("No type set for this QFeatures object. Returning NULL.")
+    }
+    type
 }
