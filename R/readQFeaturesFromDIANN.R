@@ -102,6 +102,7 @@ readQFeaturesFromDIANN <- function(assayData,
     if (!is.null(extractedData)) {
         ans <- .addDiannExtractedData(ans, extractedData)
     }
+    ans <- setQFeaturesType(ans)
     ans
 }
 
