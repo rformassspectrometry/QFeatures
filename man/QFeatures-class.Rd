@@ -28,8 +28,6 @@
 \alias{[[<-,QFeatures,ANY,ANY-method}
 \alias{updateObject,QFeatures-method}
 \alias{dropEmptyAssays}
-\alias{setQFeaturesType}
-\alias{getQFeaturesType}
 \title{Quantitative MS QFeatures}
 \usage{
 QFeatures(..., assayLinks = NULL)
@@ -77,10 +75,6 @@ replaceAssay(x, y, i)
 \S4method{updateObject}{QFeatures}(object, ..., verbose = FALSE)
 
 dropEmptyAssays(object, dims = 1:2)
-
-setQFeaturesType(object, type = "bulk")
-
-getQFeaturesType(object)
 }
 \arguments{
 \item{...}{See \code{MultiAssayExperiment} for details. For \code{plot},
@@ -140,12 +134,9 @@ the assays already present in \code{x}.}
 
 \item{dims}{\code{numeric()} that defines the dimensions to consider to
 drop empty assays. 1 for rows (i.e. assays without any
-features) and 2 for columns (i.e. assays without any
+features) and 2 for columns (i.e. assays withoutgetQFeaturesType any
 samples). Default is \code{1:2}. Any value other that 1 and/or 2
 will trigger an error.}
-
-\item{type}{\code{character(1)} that defines the type of the QFeatures.
-The type can be either "bulk" or "SCP" (default is "bulk").}
 }
 \description{
 Conceptually, a \code{QFeatures} object holds a set of \emph{assays}, each

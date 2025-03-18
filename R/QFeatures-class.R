@@ -291,44 +291,48 @@ QFeatures <- function(..., assayLinks = NULL) {
 ##'
 ##' @exportMethod show
 setMethod("show", "QFeatures",
-          function(object) {
-              type <- suppressWarnings(getQFeaturesType(object))
-              typeMsg <- ifelse(is.null(type), "undefined", type)  # Handle missing type
-              
-              if (isEmpty(object)) {
-                  cat(sprintf("An empty instance of class %s (type: %s)\n", 
-                              class(object), typeMsg))
-                  return(NULL)
-              }
-              
-              n <- length(object)
-              cat(sprintf("An instance of class %s (type: %s) with %d set%s:\n", 
-                          class(object), typeMsg, n, ifelse(n == 1, "", "s")))
-              el <- experiments(object)
-              o_class <- class(el)
-              elem_cl <- vapply(el, class, character(1L))
-              o_len <- length(el)
-              o_names <- names(el)
-              featdim <- vapply(el, FUN = function(obj) {
-                  dim(obj)[1]
-              }, FUN.VALUE = integer(1L))
-              sampdim <- vapply(el, FUN = function(obj) {
-                  dim(obj)[2]
-              }, FUN.VALUE = integer(1L))
-              if (n <= 7) {
-                  cat(sprintf("\n [%i] %s: %s with %s rows and %s columns",
-                              seq(o_len), o_names, elem_cl,
-                              featdim, sampdim), "\n")
-              } else {
-                  cat(sprintf("\n [%i] %s: %s with %s rows and %s columns",
-                              seq(o_len)[1:3], o_names[1:3], elem_cl[1:3],
-                              featdim[1:3], sampdim[1:3]), "\n")
-                  cat(" ...")
-                  cat(sprintf("\n [%i] %s: %s with %s rows and %s columns",
-                              seq(o_len)[(n-2):n], o_names[(n-2):n], elem_cl[(n-2):n],
-                              featdim[(n-2):n], sampdim[(n-2):n]), "\n")
-              }
-          })
+            function(object) {
+                type <- suppressWarnings(.getQFeaturesType(object))
+                if (is.null(type)) {
+                    if (any(sapply(experiments(object), function(x) inherits(x, "SingleCellExperiment")))) {
+                        type <- "scp"
+                    } else {
+                        type <- "bulk"
+                    }
+                    }
+                if (isEmpty(object)) {
+                    cat(sprintf("An empty instance of class %s (type: %s)\n", 
+                                class(object), type))
+                    return(NULL)
+                }
+                n <- length(object)
+                cat(sprintf("An instance of class %s (type: %s) with %d set%s:\n", 
+                            class(object), type, n, ifelse(n == 1, "", "s")))
+                el <- experiments(object)
+                o_class <- class(el)
+                elem_cl <- vapply(el, class, character(1L))
+                o_len <- length(el)
+                o_names <- names(el)
+                featdim <- vapply(el, FUN = function(obj) {
+                    dim(obj)[1]
+                }, FUN.VALUE = integer(1L))
+                sampdim <- vapply(el, FUN = function(obj) {
+                    dim(obj)[2]
+                }, FUN.VALUE = integer(1L))
+                if (n <= 7) {
+                    cat(sprintf("\n [%i] %s: %s with %s rows and %s columns",
+                                seq(o_len), o_names, elem_cl,
+                                featdim, sampdim), "\n")
+                } else {
+                    cat(sprintf("\n [%i] %s: %s with %s rows and %s columns",
+                                seq(o_len)[1:3], o_names[1:3], elem_cl[1:3],
+                                featdim[1:3], sampdim[1:3]), "\n")
+                    cat(" ...")
+                    cat(sprintf("\n [%i] %s: %s with %s rows and %s columns",
+                                seq(o_len)[(n-2):n], o_names[(n-2):n], elem_cl[(n-2):n],
+                                featdim[(n-2):n], sampdim[(n-2):n]), "\n")
+                }
+            })
 
 
 ## Function that creates a plotly network graph from an igraph object
@@ -1172,7 +1176,7 @@ setMethod("updateObject", "QFeatures",
 
 ##' @param dims `numeric()` that defines the dimensions to consider to
 ##'     drop empty assays. 1 for rows (i.e. assays without any
-##'     features) and 2 for columns (i.e. assays without any
+##'     features) and 2 for columns (i.e. assays withoutgetQFeaturesType any
 ##'     samples). Default is `1:2`. Any value other that 1 and/or 2
 ##'     will trigger an error.
 ##'
@@ -1192,32 +1196,34 @@ dropEmptyAssays <- function(object, dims = 1:2) {
 }
 
 
-##' @param type `character(1)` that defines the type of the QFeatures.
-##'     The type can be either "bulk" or "SCP" (default is "bulk").
-##'
-##' @rdname QFeatures-class
-##'
-##' @export
-setQFeaturesType <- function(object, type = "bulk") {
+## Set the metadata(qfeatures)$._type element of a QFeatures.
+## The type should be one present in `.validQFeaturesType()`.
+##
+## @param type `character(1)` that defines the type of the QFeatures.
+##     The type can be either "bulk" or "SCP" (default is "bulk").
+##
+.setQFeaturesType <- function(object, type = "bulk") {
     stopifnot(inherits(object, "QFeatures"))
-    valid_types <- c("bulk", "SCP")
-    if (!type %in% valid_types) {
+    if (!type %in% .validQFeaturesType()) {
         stop("Invalid QFeatures type. Must be one of: ",
-            paste(valid_types, collapse = ", "))
+            paste(.validQFeaturesType(), collapse = ", "))
     }
     metadata(object)[["._type"]] <- type
     object
 }
 
 
-##' @rdname QFeatures-class
-##'
-##' @export
-getQFeaturesType <- function(object) {
+## Return the QFeatures type.
+.getQFeaturesType <- function(object) {
     stopifnot(inherits(object, "QFeatures"))
     type <- metadata(object)[["._type"]]
     if (is.null(type)) {
         warning("No type set for this QFeatures object. Returning NULL.")
     }
     type
+}
+
+
+.validQFeaturesType <- function() {
+    c("bulk", "scp")
 }

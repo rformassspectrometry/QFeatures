@@ -102,8 +102,7 @@ readQFeaturesFromDIANN <- function(assayData,
     if (!is.null(extractedData)) {
         ans <- .addDiannExtractedData(ans, extractedData)
     }
-    ans <- setQFeaturesType(ans)
-    ans
+    .setQFeaturesType(ans)
 }
 
 ## (Only for mTRAQ multiplexing!) Internal function that extracts the
