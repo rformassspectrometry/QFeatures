@@ -134,7 +134,7 @@ the assays already present in \code{x}.}
 
 \item{dims}{\code{numeric()} that defines the dimensions to consider to
 drop empty assays. 1 for rows (i.e. assays without any
-features) and 2 for columns (i.e. assays withoutgetQFeaturesType any
+features) and 2 for columns (i.e. assays without any
 samples). Default is \code{1:2}. Any value other that 1 and/or 2
 will trigger an error.}
 }
