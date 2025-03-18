@@ -933,3 +933,22 @@ test_that("dropEmptyAssays", {
     )
     expect_identical(test, QFeatures())
 })
+
+test_that(".setQFeaturesType", {
+    qf <- QFeatures()
+    expect_equal(metadata(qf)[["._type"]], NULL)
+    qf <- .setQFeaturesType(qf)
+    expect_equal(metadata(qf)[["._type"]], "bulk")
+    qf <- .setQFeaturesType(qf, "scp")
+    expect_equal(metadata(qf)[["._type"]], "scp")
+    expect_error(.setQFeaturesType(qf, "invalid"), "Invalid QFeatures type")
+})
+
+test_that(".setQFeaturesType", {
+    qf <- QFeatures()
+    expect_warning(type <- .getQFeaturesType(qf),
+                   "No type set for this QFeatures object")
+    expect_null(type)
+    qf <- .setQFeaturesType(qf, "scp")
+    expect_equal(.getQFeaturesType(qf), "scp")
+})

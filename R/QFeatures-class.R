@@ -1329,7 +1329,7 @@ setMethod(
 
 ##' @param dims `numeric()` that defines the dimensions to consider to
 ##'     drop empty assays. 1 for rows (i.e. assays without any
-##'     features) and 2 for columns (i.e. assays withoutgetQFeaturesType any
+##'     features) and 2 for columns (i.e. assays without any
 ##'     samples). Default is `1:2`. Any value other that 1 and/or 2
 ##'     will trigger an error.
 ##'
@@ -1358,7 +1358,8 @@ dropEmptyAssays <- function(object, dims = 1:2) {
 ## The type should be one present in `.validQFeaturesType()`.
 ##
 ## @param type `character(1)` that defines the type of the QFeatures.
-##     The type can be either "bulk" or "SCP" (default is "bulk").
+##     The type can be either "bulk" or "scp" (default is "bulk"),
+##      see `.validQFeaturesType()` for accepted types.
 ##
 .setQFeaturesType <- function(object, type = "bulk") {
     stopifnot(inherits(object, "QFeatures"))
