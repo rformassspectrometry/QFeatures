@@ -75,6 +75,9 @@
 ##'   also be added. This function is an extension of the `longFormat`
 ##'   function in the [MultiAssayExperiment::MultiAssayExperiment].
 ##'
+##' - The `getQFeaturesType` accessor takes a `QFeatures` object and
+##'  returns its type.
+##'
 ##' @section Adding, removing and replacing assays:
 ##'
 ##' - The [aggregateFeatures()] function creates a new assay by
@@ -181,6 +184,8 @@
 ##' @aliases addAssay
 ##' @aliases dims,QFeatures-method show,QFeatures-method
 ##' @aliases [,QFeatures,ANY,ANY,ANY-method [,QFeatures,character,ANY,ANY-method
+##'
+##' @aliases getQFeaturesType setQFeaturesType validQFeaturesType
 ##'
 ##' @aliases rowDataNames selectRowData
 ##'
@@ -300,14 +305,7 @@ QFeatures <- function(..., assayLinks = NULL) {
 setMethod(
     "show", "QFeatures",
     function(object) {
-        type <- suppressWarnings(.getQFeaturesType(object))
-        if (is.null(type)) {
-            if (any(sapply(experiments(object), function(x) inherits(x, "SingleCellExperiment")))) {
-                type <- "scp"
-            } else {
-                type <- "bulk"
-            }
-        }
+        type <- suppressWarnings(getQFeaturesType(object))
         if (isEmpty(object)) {
             cat(sprintf(
                 "An empty instance of class %s (type: %s)\n",
@@ -1354,19 +1352,19 @@ dropEmptyAssays <- function(object, dims = 1:2) {
 }
 
 
-## Set the metadata(qfeatures)$._type element of a QFeatures.
-## The type should be one present in `.validQFeaturesType()`.
-##
-## @param type `character(1)` that defines the type of the QFeatures.
-##     The type can be either "bulk" or "scp" (default is "bulk"),
-##      see `.validQFeaturesType()` for accepted types.
-##
-.setQFeaturesType <- function(object, type = "bulk") {
+##' @rdname QFeatures-class
+##' @param type `character(1)` that defines the type of the QFeatures.
+##'     The type can be either "bulk" or "scp" (default is "bulk"),
+##'      see [validQFeaturesType] for accepted types.
+##'
+##' @export
+##'
+setQFeaturesType <- function(object, type = "bulk") {
     stopifnot(inherits(object, "QFeatures"))
-    if (!type %in% .validQFeaturesType()) {
+    if (!type %in% validQFeaturesType()) {
         stop(
             "Invalid QFeatures type. Must be one of: ",
-            paste(.validQFeaturesType(), collapse = ", ")
+            paste(validQFeaturesType(), collapse = ", ")
         )
     }
     metadata(object)[["._type"]] <- type
@@ -1374,17 +1372,26 @@ dropEmptyAssays <- function(object, dims = 1:2) {
 }
 
 
-## Return the QFeatures type.
-.getQFeaturesType <- function(object) {
+##' @rdname QFeatures-class
+##' @export
+getQFeaturesType <- function(object) {
     stopifnot(inherits(object, "QFeatures"))
     type <- metadata(object)[["._type"]]
     if (is.null(type)) {
-        warning("No type set for this QFeatures object. Returning NULL.")
+        warning(paste("No explicit type set for this QFeatures object,",
+                      "choosing a type in fonction of experiments classes"))
+        if (any(sapply(experiments(object),
+                       function(x) inherits(x, "SingleCellExperiment")))) {
+            type <- "scp"
+        } else {
+            type <- "bulk"
+        }
     }
     type
 }
 
-
-.validQFeaturesType <- function() {
+##' @rdname QFeatures-class
+##' @export
+validQFeaturesType <- function() {
     c("bulk", "scp")
 }
