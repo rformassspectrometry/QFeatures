@@ -2,11 +2,12 @@
 
 ## QFeatures 1.17.5
 
-- Nothing yet.
+- Remove superfluous message when filtering with `keep = TRUE` (see
+  issue 231).
 
 ## QFeatures 1.17.4
 
-- Optimisation of `aggregateFeatures` in the case of 
+- Optimisation of `aggregateFeatures` in the case of
 multiple assays aggregation.
 
 ## QFeatures 1.17.3
