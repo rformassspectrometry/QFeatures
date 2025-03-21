@@ -37,6 +37,7 @@ on:
     branches:
       - master
       # - 'RELEASE_*'
+  workflowdispatch:
 
 name: R-CMD-check-bioc
 
