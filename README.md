@@ -5,11 +5,9 @@
 [![codecov.io](https://codecov.io/github/rformassspectrometry/QFeatures/coverage.svg?branch=master)](https://codecov.io/github/rformassspectrometry/QFeatures?branch=master)
 [![license](https://img.shields.io/badge/license-Artistic--2.0-brightgreen.svg)](https://opensource.org/licenses/Artistic-2.0)
 
-<img
-src="https://raw.githubusercontent.com/rformassspectrometry/stickers/master/QFeatures/QFeatures.png"
-height="150">
-
 ### What is QFeatures?
+
+<img src="man/figures/logo.png" align="right" height="139" alt="" />
 
 `QFeatures` is a [Bioconductor
 package](http://bioconductor.org/packages/QFeatures) that provides
