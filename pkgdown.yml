@@ -6,4 +6,7 @@ articles:
   QFeatures: QFeatures.html
   read_QFeatures: read_QFeatures.html
   Visualization: Visualization.html
-last_built: 2025-03-22T13:52Z
+last_built: 2025-03-22T14:28Z
+urls:
+  reference: https://rformassspectrometry.github.io/QFeatures/reference
+  article: https://rformassspectrometry.github.io/QFeatures/articles
