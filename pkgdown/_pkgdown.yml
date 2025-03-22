@@ -1,3 +1,5 @@
+template:
+  bootstrap: 5
 reference:
   - title: "QFeatures class"
     desc: "The QFeatures class"
