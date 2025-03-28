@@ -123,6 +123,14 @@
 ##' (without `colData`), the `colData` contains zero
 ##' columns/variables.
 ##'
+##' ## Feature names
+##'
+##' Assay feature (i.e. rownames) are important as they are used when assays are
+##' joined with [joinAssays()]. They can be set upon creation of the
+##' [QFeatures()] object by setting the `fnames` argument. See also
+##' [createPrecursorId()] in case a precursor identifier is note readily
+##' available and should be created from other, existing rowData variables.
+##'
 ##' @param assayData A `data.frame`, or any object that can be coerced
 ##'     into a `data.frame`, holding the quantitative assay. For
 ##'     `readSummarizedExperiment()`, this can also be a
@@ -148,9 +156,9 @@
 ##'     are converted to syntactically valid names using `make.names`
 ##'
 ##' @param fnames For the single- and multi-set cases, an optional
-##'     `character(1)` or `numeric(1)` indicating the column to be
-##'     used as feature names.  Note that rownames must be unique
-##'     within `QFeatures` sets. Default is `NULL`.
+##'     `character(1)` or `numeric(1)` indicating the column to be used as
+##'     feature names.  Note that rownames must be unique within `QFeatures`
+##'     sets. Default is `NULL`. See also section 'Feature names'.
 ##'
 ##' @param name For the single-set case, an optional `character(1)` to
 ##'     name the set in the `QFeatures` object. Default is `quants`.
@@ -528,3 +536,22 @@ readQFeatures <- function(assayData,
     experiments(object) <- List(expl)
     object
 }
+
+.setAssayRownames2 <- function(object, i = seq_along(feat4), fcol) {
+    stopifnot(inherits(object, "MultiAssayExperiment"))
+    i <- .normIndex(object, i, allowAbsent = FALSE)
+    ## TODO: make sure the names are unique, otherwise it will fail later, when
+    ## validating to QFeatures object - better fail early.
+    ok <- lapply(rowData(object[, , i]),
+                 function(x) stopifnot(fcol %in% names(x)))
+    ## Note that is is more efficient time and memory-wise (about twice on a
+    ## small QFeatures) to iterate over the experiments and then replace them,
+    ## rather than updating/replacing the assays in-place.
+    expl <- experiments(object)
+    for (ii in i)
+        rownames(expl[[ii]]) <- rowData(expl[[ii]])[[fcol]]
+    experiments(object) <- expl
+    object
+}
+
+## TODO: we should also udpate the assay link to/from the renamed assays.
