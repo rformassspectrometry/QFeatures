@@ -529,7 +529,7 @@ slots. The <code>mito_filter</code> will return all PSMs, peptides and
 proteins that were annotated as localising to the mitochondrion.</p>
 <div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span><span class="op">(</span><span class="va">hl</span>, <span class="va">mito_filter</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 'markers' found in 3 out of 3 assay(s)</span></span></code></pre>
+<pre><code><span><span class="co">## 'markers' found in 3 out of 3 assay(s).</span></span></code></pre>
 <pre><code><span><span class="co">## An instance of class QFeatures containing 3 set(s):</span></span>
 <span><span class="co">##  [1] psms: SummarizedExperiment with 167 rows and 10 columns </span></span>
 <span><span class="co">##  [2] peptides: SummarizedExperiment with 162 rows and 10 columns </span></span>
@@ -540,26 +540,30 @@ in the <code>psms</code> assays. The q-values are only relevant to PSMs
 and that variable was dropped from the other assays.</p>
 <div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span><span class="op">(</span><span class="va">hl</span>, <span class="va">qval_filter</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 'qValue' found in 1 out of 3 assay(s)</span></span>
-<span><span class="co">## No filter applied to the following assay(s) because one or more filtering variables are missing in the rowData: peptides, proteins.</span></span>
-<span><span class="co">## You can control whether to remove or keep the features using the 'keep' argument (see '?filterFeature').</span></span></code></pre>
+<pre><code><span><span class="co">## 'qValue' found in 1 out of 3 assay(s).</span></span></code></pre>
+<pre><code><span><span class="co">## No filter applied to the following assay(s) because one or more</span></span>
+<span><span class="co">## filtering variables are missing in the rowData: peptides, proteins. You</span></span>
+<span><span class="co">## can control whether to remove or keep the features using the 'keep'</span></span>
+<span><span class="co">## argument (see '?filterFeature').</span></span></code></pre>
 <pre><code><span><span class="co">## An instance of class QFeatures containing 3 set(s):</span></span>
 <span><span class="co">##  [1] psms: SummarizedExperiment with 2466 rows and 10 columns </span></span>
 <span><span class="co">##  [2] peptides: SummarizedExperiment with 0 rows and 10 columns </span></span>
 <span><span class="co">##  [3] proteins: SummarizedExperiment with 0 rows and 10 columns</span></span></code></pre>
 <p>The same filters can be created using the forumla interface:</p>
-<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span><span class="op">(</span><span class="va">hl</span>, <span class="op">~</span> <span class="va">markers</span> <span class="op">==</span> <span class="st">"Mitochondrion"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 'markers' found in 3 out of 3 assay(s)</span></span></code></pre>
+<pre><code><span><span class="co">## 'markers' found in 3 out of 3 assay(s).</span></span></code></pre>
 <pre><code><span><span class="co">## An instance of class QFeatures containing 3 set(s):</span></span>
 <span><span class="co">##  [1] psms: SummarizedExperiment with 167 rows and 10 columns </span></span>
 <span><span class="co">##  [2] peptides: SummarizedExperiment with 162 rows and 10 columns </span></span>
 <span><span class="co">##  [3] proteins: SummarizedExperiment with 113 rows and 10 columns</span></span></code></pre>
-<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span><span class="op">(</span><span class="va">hl</span>, <span class="op">~</span> <span class="va">qValue</span> <span class="op">&lt;=</span> <span class="fl">0.001</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 'qValue' found in 1 out of 3 assay(s)</span></span>
-<span><span class="co">## No filter applied to the following assay(s) because one or more filtering variables are missing in the rowData: peptides, proteins.</span></span>
-<span><span class="co">## You can control whether to remove or keep the features using the 'keep' argument (see '?filterFeature').</span></span></code></pre>
+<pre><code><span><span class="co">## 'qValue' found in 1 out of 3 assay(s).</span></span></code></pre>
+<pre><code><span><span class="co">## No filter applied to the following assay(s) because one or more</span></span>
+<span><span class="co">## filtering variables are missing in the rowData: peptides, proteins. You</span></span>
+<span><span class="co">## can control whether to remove or keep the features using the 'keep'</span></span>
+<span><span class="co">## argument (see '?filterFeature').</span></span></code></pre>
 <pre><code><span><span class="co">## An instance of class QFeatures containing 3 set(s):</span></span>
 <span><span class="co">##  [1] psms: SummarizedExperiment with 2466 rows and 10 columns </span></span>
 <span><span class="co">##  [2] peptides: SummarizedExperiment with 0 rows and 10 columns </span></span>
@@ -568,7 +572,7 @@ and that variable was dropped from the other assays.</p>
 <div class="section level2">
 <h2 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<pre><code><span><span class="co">## R Under development (unstable) (2025-02-24 r87814)</span></span>
+<pre><code><span><span class="co">## R Under development (unstable) (2025-03-08 r87910)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
 <span><span class="co">## Running under: Ubuntu 24.04.2 LTS</span></span>
 <span><span class="co">## </span></span>
@@ -603,8 +607,8 @@ and that variable was dropped from the other assays.</p>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] gtable_0.3.6            xfun_0.51               bslib_0.9.0            </span></span>
 <span><span class="co">##  [4] htmlwidgets_1.6.4       lattice_0.22-6          vctrs_0.6.5            </span></span>
-<span><span class="co">##  [7] tools_4.5.0             tibble_3.2.1            cluster_2.1.8          </span></span>
-<span><span class="co">## [10] pkgconfig_2.0.3         BiocBaseUtils_1.9.0     Matrix_1.7-2           </span></span>
+<span><span class="co">##  [7] tools_4.5.0             tibble_3.2.1            cluster_2.1.8.1        </span></span>
+<span><span class="co">## [10] pkgconfig_2.0.3         BiocBaseUtils_1.9.0     Matrix_1.7-3           </span></span>
 <span><span class="co">## [13] desc_1.4.3              lifecycle_1.0.4         GenomeInfoDbData_1.2.14</span></span>
 <span><span class="co">## [16] farver_2.1.2            compiler_4.5.0          stringr_1.5.1          </span></span>
 <span><span class="co">## [19] textshaping_1.0.0       munsell_0.5.1           clue_0.3-66            </span></span>
@@ -613,7 +617,7 @@ and that variable was dropped from the other assays.</p>
 <span><span class="co">## [28] crayon_1.5.3            jquerylib_0.1.4         tidyr_1.3.1            </span></span>
 <span><span class="co">## [31] MASS_7.3-65             DelayedArray_0.33.6     cachem_1.1.0           </span></span>
 <span><span class="co">## [34] abind_1.4-8             tidyselect_1.2.1        digest_0.6.37          </span></span>
-<span><span class="co">## [37] stringi_1.8.4           purrr_1.0.4             dplyr_1.1.4            </span></span>
+<span><span class="co">## [37] stringi_1.8.7           purrr_1.0.4             dplyr_1.1.4            </span></span>
 <span><span class="co">## [40] reshape2_1.4.4          bookdown_0.42           labeling_0.4.3         </span></span>
 <span><span class="co">## [43] fastmap_1.2.0           grid_4.5.0              colorspace_2.1-1       </span></span>
 <span><span class="co">## [46] cli_3.6.4               SparseArray_1.7.7       magrittr_2.0.3         </span></span>
@@ -622,9 +626,9 @@ and that variable was dropped from the other assays.</p>
 <span><span class="co">## [55] httr_1.4.7              igraph_2.1.4            ragg_1.3.3             </span></span>
 <span><span class="co">## [58] evaluate_1.0.3          knitr_1.50              rlang_1.1.5            </span></span>
 <span><span class="co">## [61] Rcpp_1.0.14             glue_1.8.0              BiocManager_1.30.25    </span></span>
-<span><span class="co">## [64] jsonlite_1.9.1          AnnotationFilter_1.31.0 R6_2.6.1               </span></span>
+<span><span class="co">## [64] jsonlite_2.0.0          AnnotationFilter_1.31.0 R6_2.6.1               </span></span>
 <span><span class="co">## [67] plyr_1.8.9              systemfonts_1.2.1       fs_1.6.5               </span></span>
-<span><span class="co">## [70] ProtGenerics_1.39.2     MsCoreUtils_1.19.1</span></span></code></pre>
+<span><span class="co">## [70] ProtGenerics_1.39.2     MsCoreUtils_1.19.2</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

@@ -460,7 +460,7 @@ vignette provides an extended example.</p></div>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## using the forumla interface, exact mathc</span></span></span>
 <span class="r-in"><span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="op">~</span>  <span class="va">location</span> <span class="op">==</span> <span class="st">"Mitochondrion"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 3 out of 3 assay(s)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 3 out of 3 assay(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 3 set(s):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] psms: SummarizedExperiment with 6 rows and 2 columns </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] peptides: SummarizedExperiment with 2 rows and 2 columns </span>
@@ -468,7 +468,7 @@ vignette provides an extended example.</p></div>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## using the forumula intefrace, martial match</span></span></span>
 <span class="r-in"><span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/startsWith.html" class="external-link">startsWith</a></span><span class="op">(</span><span class="va">location</span>, <span class="st">"Mito"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 3 out of 3 assay(s)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 3 out of 3 assay(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 3 set(s):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] psms: SummarizedExperiment with 6 rows and 2 columns </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] peptides: SummarizedExperiment with 2 rows and 2 columns </span>
@@ -476,7 +476,7 @@ vignette provides an extended example.</p></div>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## using a user-defined character filter</span></span></span>
 <span class="r-in"><span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="fu">VariableFilter</span><span class="op">(</span><span class="st">"location"</span>, <span class="st">"Mitochondrion"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 3 out of 3 assay(s)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 3 out of 3 assay(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 3 set(s):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] psms: SummarizedExperiment with 6 rows and 2 columns </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] peptides: SummarizedExperiment with 2 rows and 2 columns </span>
@@ -484,13 +484,13 @@ vignette provides an extended example.</p></div>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## using a user-defined character filter with partial match</span></span></span>
 <span class="r-in"><span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="fu">VariableFilter</span><span class="op">(</span><span class="st">"location"</span>, <span class="st">"Mito"</span>, <span class="st">"startsWith"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 3 out of 3 assay(s)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 3 out of 3 assay(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 3 set(s):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] psms: SummarizedExperiment with 6 rows and 2 columns </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] peptides: SummarizedExperiment with 2 rows and 2 columns </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [3] proteins: SummarizedExperiment with 1 rows and 2 columns </span>
 <span class="r-in"><span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="fu">VariableFilter</span><span class="op">(</span><span class="st">"location"</span>, <span class="st">"itochon"</span>, <span class="st">"contains"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 3 out of 3 assay(s)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 3 out of 3 assay(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 3 set(s):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] psms: SummarizedExperiment with 6 rows and 2 columns </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] peptides: SummarizedExperiment with 2 rows and 2 columns </span>
@@ -503,7 +503,7 @@ vignette provides an extended example.</p></div>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## using a user-defined character filter</span></span></span>
 <span class="r-in"><span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="fu">VariableFilter</span><span class="op">(</span><span class="st">"location"</span>, <span class="st">"unknown"</span>, condition <span class="op">=</span> <span class="st">"!="</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 3 out of 3 assay(s)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 3 out of 3 assay(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 3 set(s):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] psms: SummarizedExperiment with 6 rows and 2 columns </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] peptides: SummarizedExperiment with 2 rows and 2 columns </span>
@@ -511,7 +511,7 @@ vignette provides an extended example.</p></div>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## using the forumula interface</span></span></span>
 <span class="r-in"><span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="op">~</span> <span class="va">location</span> <span class="op">!=</span> <span class="st">"unknown"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 3 out of 3 assay(s)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 3 out of 3 assay(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 3 set(s):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] psms: SummarizedExperiment with 6 rows and 2 columns </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] peptides: SummarizedExperiment with 2 rows and 2 columns </span>
@@ -523,9 +523,11 @@ vignette provides an extended example.</p></div>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## using a user-defined numeric filter</span></span></span>
 <span class="r-in"><span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="fu">VariableFilter</span><span class="op">(</span><span class="st">"pval"</span>, <span class="fl">0.03</span>, <span class="st">"&lt;="</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'pval' found in 1 out of 3 assay(s)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No filter applied to the following assay(s) because one or more filtering variables are missing in the rowData: peptides, proteins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> You can control whether to remove or keep the features using the 'keep' argument (see '?filterFeature').</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'pval' found in 1 out of 3 assay(s).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No filter applied to the following assay(s) because one or more</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> filtering variables are missing in the rowData: peptides, proteins. You</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> can control whether to remove or keep the features using the 'keep'</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> argument (see '?filterFeature').</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 3 set(s):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] psms: SummarizedExperiment with 3 rows and 2 columns </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] peptides: SummarizedExperiment with 0 rows and 2 columns </span>
@@ -533,9 +535,11 @@ vignette provides an extended example.</p></div>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## using the formula interface</span></span></span>
 <span class="r-in"><span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="op">~</span> <span class="va">pval</span> <span class="op">&lt;=</span> <span class="fl">0.03</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'pval' found in 1 out of 3 assay(s)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No filter applied to the following assay(s) because one or more filtering variables are missing in the rowData: peptides, proteins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> You can control whether to remove or keep the features using the 'keep' argument (see '?filterFeature').</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'pval' found in 1 out of 3 assay(s).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No filter applied to the following assay(s) because one or more</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> filtering variables are missing in the rowData: peptides, proteins. You</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> can control whether to remove or keep the features using the 'keep'</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> argument (see '?filterFeature').</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 3 set(s):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] psms: SummarizedExperiment with 3 rows and 2 columns </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] peptides: SummarizedExperiment with 0 rows and 2 columns </span>
@@ -543,9 +547,11 @@ vignette provides an extended example.</p></div>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## you can also remove all p-values that are NA (if any)</span></span></span>
 <span class="r-in"><span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="op">~</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">pval</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'pval' found in 1 out of 3 assay(s)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No filter applied to the following assay(s) because one or more filtering variables are missing in the rowData: peptides, proteins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> You can control whether to remove or keep the features using the 'keep' argument (see '?filterFeature').</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'pval' found in 1 out of 3 assay(s).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No filter applied to the following assay(s) because one or more</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> filtering variables are missing in the rowData: peptides, proteins. You</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> can control whether to remove or keep the features using the 'keep'</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> argument (see '?filterFeature').</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 3 set(s):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] psms: SummarizedExperiment with 10 rows and 2 columns </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] peptides: SummarizedExperiment with 0 rows and 2 columns </span>
@@ -557,14 +563,14 @@ vignette provides an extended example.</p></div>
 <span class="r-in"><span><span class="co">## ----------------------------------------------------------------</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="fu">VariableFilter</span><span class="op">(</span><span class="st">"location"</span>, <span class="st">"not"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 3 out of 3 assay(s)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 3 out of 3 assay(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 3 set(s):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] psms: SummarizedExperiment with 0 rows and 2 columns </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] peptides: SummarizedExperiment with 0 rows and 2 columns </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [3] proteins: SummarizedExperiment with 0 rows and 2 columns </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="op">~</span> <span class="va">location</span> <span class="op">==</span> <span class="st">"not"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 3 out of 3 assay(s)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 3 out of 3 assay(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 3 set(s):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] psms: SummarizedExperiment with 0 rows and 2 columns </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] peptides: SummarizedExperiment with 0 rows and 2 columns </span>
@@ -577,18 +583,18 @@ vignette provides an extended example.</p></div>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">feat2</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">feat2</span>, <span class="op">~</span> <span class="va">y</span> <span class="op">&lt;</span> <span class="fl">0</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'y' found in 2 out of 3 assay(s)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No filter applied to the following assay(s) because one or more filtering variables are missing in the rowData: assay1.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> You can control whether to remove or keep the features using the 'keep' argument (see '?filterFeature').</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'y' found in 2 out of 3 assay(s).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No filter applied to the following assay(s) because one or more</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> filtering variables are missing in the rowData: assay1. You can control</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> whether to remove or keep the features using the 'keep' argument (see</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> '?filterFeature').</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 3 set(s):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] assay1: SummarizedExperiment with 0 rows and 4 columns </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] assay2: SummarizedExperiment with 1 rows and 4 columns </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [3] assay3: SummarizedExperiment with 5 rows and 4 columns </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">feat2</span>, <span class="op">~</span> <span class="va">y</span> <span class="op">&lt;</span> <span class="fl">0</span>, keep <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'y' found in 2 out of 3 assay(s)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No filter applied to the following assay(s) because one or more filtering variables are missing in the rowData: assay1.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> You can control whether to remove or keep the features using the 'keep' argument (see '?filterFeature').</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'y' found in 2 out of 3 assay(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 3 set(s):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] assay1: SummarizedExperiment with 10 rows and 4 columns </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] assay2: SummarizedExperiment with 1 rows and 4 columns </span>
@@ -617,7 +623,7 @@ vignette provides an extended example.</p></div>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The row with the NA is not removed</span></span></span>
 <span class="r-in"><span><span class="fu">rowData</span><span class="op">(</span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="op">~</span> <span class="va">location</span> <span class="op">==</span> <span class="st">"Mitochondrion"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 1 out of 1 assay(s)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 1 out of 1 assay(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 6 rows and 5 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Sequence     Protein       Var      location      pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;character&gt; &lt;character&gt; &lt;integer&gt;   &lt;character&gt; &lt;numeric&gt;</span>
@@ -628,7 +634,7 @@ vignette provides an extended example.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PSM5    ELGNDAYK       ProtA         5 Mitochondr...     0.012</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PSM6    ELGNDAYK       ProtA         6 Mitochondr...     0.011</span>
 <span class="r-in"><span><span class="fu">rowData</span><span class="op">(</span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="op">~</span> <span class="va">location</span> <span class="op">==</span> <span class="st">"Mitochondrion"</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 1 out of 1 assay(s)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 1 out of 1 assay(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 6 rows and 5 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Sequence     Protein       Var      location      pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;character&gt; &lt;character&gt; &lt;integer&gt;   &lt;character&gt; &lt;numeric&gt;</span>
@@ -641,7 +647,7 @@ vignette provides an extended example.</p></div>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The row with the NA is removed</span></span></span>
 <span class="r-in"><span><span class="fu">rowData</span><span class="op">(</span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="op">~</span> <span class="va">location</span> <span class="op">==</span> <span class="st">"Mitochondrion"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 1 out of 1 assay(s)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 1 out of 1 assay(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 5 rows and 5 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Sequence     Protein       Var      location      pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;character&gt; &lt;character&gt; &lt;integer&gt;   &lt;character&gt; &lt;numeric&gt;</span>
@@ -656,7 +662,7 @@ vignette provides an extended example.</p></div>
 <span class="r-in"><span><span class="co">## explicitly.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">rowData</span><span class="op">(</span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="op">~</span> <span class="va">location</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="st">"Mitochondrion"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 1 out of 1 assay(s)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 1 out of 1 assay(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 5 rows and 5 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Sequence     Protein       Var      location      pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;character&gt; &lt;character&gt; &lt;integer&gt;   &lt;character&gt; &lt;numeric&gt;</span>
@@ -666,7 +672,7 @@ vignette provides an extended example.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PSM5    ELGNDAYK       ProtA         5 Mitochondr...     0.012</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PSM6    ELGNDAYK       ProtA         6 Mitochondr...     0.011</span>
 <span class="r-in"><span><span class="fu">rowData</span><span class="op">(</span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="op">~</span> <span class="va">location</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">"Mitochondrion"</span><span class="op">)</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 1 out of 1 assay(s)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 1 out of 1 assay(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 6 rows and 5 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Sequence     Protein       Var      location      pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;character&gt; &lt;character&gt; &lt;integer&gt;   &lt;character&gt; &lt;numeric&gt;</span>
@@ -679,7 +685,7 @@ vignette provides an extended example.</p></div>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Explicit handling</span></span></span>
 <span class="r-in"><span><span class="fu">filterFeatures</span><span class="op">(</span><span class="va">feat1</span>, <span class="op">~</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">location</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">location</span> <span class="op">==</span> <span class="st">"Mitochondrion"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 1 out of 1 assay(s)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 1 out of 1 assay(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 1 set(s):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] psms: SummarizedExperiment with 5 rows and 2 columns </span>
 <span class="r-in"><span></span></span>
@@ -687,8 +693,8 @@ vignette provides an extended example.</p></div>
 <span class="r-in"><span><span class="va">feat1</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>   <span class="fu">filterFeatures</span><span class="op">(</span> <span class="op">~</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">location</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>   <span class="fu">filterFeatures</span><span class="op">(</span> <span class="op">~</span> <span class="va">location</span> <span class="op">==</span> <span class="st">"Mitochondrion"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 1 out of 1 assay(s)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 1 out of 1 assay(s)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 1 out of 1 assay(s).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'location' found in 1 out of 1 assay(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures containing 1 set(s):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] psms: SummarizedExperiment with 5 rows and 2 columns </span>
 </code></pre></div>
