@@ -29,21 +29,32 @@ test_that(".checkFilterVariables works", {
                               z = 1:3),
                X3 = DataFrame(x = 1:3,
                               z = 1:3))
-    expect_true(all(.checkFilterVariables(rd, "x")))
-    expect_message(.checkFilterVariables(rd, "x"),
+    expect_true(all(.checkFilterVariables(rd, "x", keep = FALSE)))
+    expect_true(all(.checkFilterVariables(rd, "x", keep = TRUE)))
+    expect_message(.checkFilterVariables(rd, "x", keep = FALSE),
                    "'x' found in 3 out of 3 assay")
-    expect_equivalent(rowSums(.checkFilterVariables(rd, "z")), 2L)
-    expect_message(.checkFilterVariables(rd, "z"),
+    expect_message(.checkFilterVariables(rd, "x", keep = TRUE),
+                   "'x' found in 3 out of 3 assay")
+    expect_equivalent(rowSums(.checkFilterVariables(rd, "z", keep = TRUE)), 2L)
+    expect_equivalent(rowSums(.checkFilterVariables(rd, "z", keep = FALSE)), 2L)
+    expect_message(.checkFilterVariables(rd, "z", keep = FALSE),
                    "'z' found in 2 out of 3 assay")
-    expect_equivalent(rowSums(.checkFilterVariables(rd, "y")), 1L)
-    expect_message(.checkFilterVariables(rd, "y"),
+        expect_message(.checkFilterVariables(rd, "z", keep = TRUE),
+                   "'z' found in 2 out of 3 assay")
+    expect_equivalent(rowSums(.checkFilterVariables(rd, "y", keep = FALSE)), 1L)
+    expect_equivalent(rowSums(.checkFilterVariables(rd, "y", keep = TRUE)), 1L)
+    expect_message(.checkFilterVariables(rd, "y", keep = FALSE),
                    "'y' found in 1 out of 3 assay")
-    expect_error(.checkFilterVariables(rd, "v"),
+    expect_message(.checkFilterVariables(rd, "y", keep = TRUE),
+                   "'y' found in 1 out of 3 assay")
+    expect_error(.checkFilterVariables(rd, "v", keep = FALSE),
+                 "'v' is/are absent from all rowData.")
+    expect_error(.checkFilterVariables(rd, "v", keep = TRUE),
                  "'v' is/are absent from all rowData.")
     w <- 1
-    ## expect_error(.checkFilterVariables(rd, "w"),
-    ##              "No vars left.")
-    expect_error(.checkFilterVariables(rd, "ww"),
+    expect_error(.checkFilterVariables(rd, "ww", keep = FALSE),
+                 "'ww' is/are absent from all rowData.")
+    expect_error(.checkFilterVariables(rd, "ww", keep = TRUE),
                  "'ww' is/are absent from all rowData.")
 })
 
