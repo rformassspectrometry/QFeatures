@@ -4,15 +4,15 @@ api <- c("addAssay", "addAssayLink", "addAssayLinkOneToOne",
          "aggregateFeatures", "assayLink", "AssayLink", "assayLinks",
          "AssayLinks", "coerce", "countUniqueFeatures", "dims",
          "display", "dropEmptyAssays", "expandDataFrame",
-         "filterFeatures", "filterNA", "impute", "infIsNA",
+         "filterFeatures", "filterNA", "getQFeaturesType", "impute", "infIsNA",
          "joinAssays", "logTransform", "longFormat", "ncols", "nNA",
          "normalize", "nrows", "QFeatures", "rbindRowData",
          "readQFeatures", "readQFeaturesFromDIANN",
          "readSummarizedExperiment", "reduceDataFrame", "removeAssay",
          "replaceAssay", "rowData<-", "rowDataNames",
-         "scaleTransform", "selectRowData", "show", "subsetByFeature",
-         "sweep", "unfoldDataFrame", "updateObject", "VariableFilter",
-         "zeroIsNA")
+         "scaleTransform", "selectRowData", "setQFeaturesType", "show",
+         "subsetByFeature", "sweep", "unfoldDataFrame", "updateObject",
+         "validQFeaturesType", "VariableFilter", "zeroIsNA")
 
 test_that("API hasn't changed", {
     current_api <- sort(ls(pos = "package:QFeatures"))
