@@ -3,3 +3,4 @@ vignettes/QFeatures.html
 vignettes/QFeatures_files
 *.Rproj
 .Rhistory
+.RData

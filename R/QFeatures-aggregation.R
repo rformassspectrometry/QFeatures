@@ -291,11 +291,6 @@ setMethod("aggregateFeatures", "QFeatures",
                   ## Update invariant colnames
                   rowDataColsKept <- colnames(rowData(aggAssay))
               }
-              for (j in name) {
-                  rowDataColsKept <- intersect(rowDataColsKept,
-                                               colnames(rowData(object[[j]])))
-                  rowData(object[[j]]) <- rowData(object[[j]])[, rowDataColsKept]
-              }
               object
           })
 
