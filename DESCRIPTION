@@ -1,6 +1,6 @@
 Package: QFeatures
 Title: Quantitative features for mass spectrometry data
-Version: 1.17.4
+Version: 1.17.5
 Authors@R: c(person("Laurent", "Gatto",
                     email = "laurent.gatto@uclouvain.be",
                     comment = c(ORCID = "0000-0002-1520-2268"),
@@ -9,7 +9,7 @@ Authors@R: c(person("Laurent", "Gatto",
                     email = "christophe.vanderaa@uclouvain.be",
                     comment = c(ORCID = "0000-0001-7443-5427"),
                     role = "aut"),
-             person("Léopold", "Guyot", 
+             person("Léopold", "Guyot",
                      email = "leopold.guyot@ulb.be",
                      role = "ctb"))
 Description: The QFeatures infrastructure enables the management and
