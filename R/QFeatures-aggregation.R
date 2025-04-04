@@ -273,14 +273,15 @@ setMethod("aggregateFeatures", "QFeatures",
               ## Aggregate each assay
               for (j in seq_along(i)) {
                   from <- i[[j]]
+                  fromAssay <- object[[from]]
                   to <- name[[j]]
                   by <- fcol[[j]]
                   ## Remove already discarded columns from rowData
                   rowDataColsKept <- intersect(rowDataColsKept,
-                                               colnames(rowData(object[[from]])))
-                  rowData(object[[from]]) <- rowData(object[[from]])[, rowDataColsKept, drop = FALSE]
+                                               colnames(rowData(fromAssay)))
+                  rowData(fromAssay) <- rowData(fromAssay)[, rowDataColsKept, drop = FALSE]
                   ## Create the aggregated assay
-                  aggAssay <- .aggregateQFeatures(object[[from]],
+                  aggAssay <- .aggregateQFeatures(fromAssay,
                                                   by, fun, ...)
                   ## Add the assay to the QFeatures object
                   object <- addAssay(object, aggAssay, name = to)
@@ -290,6 +291,11 @@ setMethod("aggregateFeatures", "QFeatures",
                                          varTo = by)
                   ## Update invariant colnames
                   rowDataColsKept <- colnames(rowData(aggAssay))
+              }
+              for (j in name) {
+                  rowDataColsKept <- intersect(rowDataColsKept,
+                                               colnames(rowData(object[[j]])))
+                  rowData(object[[j]]) <- rowData(object[[j]])[, rowDataColsKept]
               }
               object
           })
