@@ -296,10 +296,15 @@ setMethod("aggregateFeatures", "QFeatures",
               }
               ## Get the AssayLinks for the aggregated assays
               alnks <- lapply(seq_along(i), function(j) {
-                hits <- QFeatures:::.get_Hits(rdFrom = rowData(object[[i[j]]]),
-                                      rdTo = rowData(el[[j]]),
-                                      varFrom = fcol[[j]],
-                                      varTo = fcol[[j]])
+                hits <- tryCatch({
+                QFeatures:::.get_Hits(
+                    rdFrom = rowData(object[[i[j]]]),
+                    rdTo = rowData(el[[j]]),
+                    varFrom = fcol[[j]],
+                    varTo = fcol[[j]]
+                )}, error = function(e) {
+                    Hits()
+                })
                 AssayLink(name = name[j], from = i[j], fcol = fcol[j], hits = hits)
               })
               ## Append the aggregated assays and AssayLinks to the previous assays
