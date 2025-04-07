@@ -257,8 +257,6 @@ NULL
 ##' @exportMethod aggregateFeatures
 ##' @rdname QFeatures-aggregate
 
-# Need to use experiments() instead of QFeatures object then create a new QFeatures
-# cf aggregateFeaturesOverAssays in scp
 setMethod("aggregateFeatures", "QFeatures",
           function(object, i, fcol, name = "newAssay",
                    fun = MsCoreUtils::robustSummary, ...) {
@@ -287,6 +285,7 @@ setMethod("aggregateFeatures", "QFeatures",
                   ## Create the aggregated assay
                   el[[j]] <- aggregateFeatures(fromAssay, by, fun, ...)
                   rowDataColsKept <- colnames(rowData(el[[j]]))
+                  message("\rAggregated: ", j, "/", length(i), "\n")
               }
               names(el) <- name
               for (j in name) {
@@ -295,6 +294,10 @@ setMethod("aggregateFeatures", "QFeatures",
                   rowData(el[[j]]) <- rowData(el[[j]])[, rowDataColsKept, drop = FALSE]
               }
               ## Get the AssayLinks for the aggregated assays
+              ## Here we need to catch the error to avoid stopping the
+              ## aggregation in the case where we don't have the fcol
+              ## column in the rowData of the new assay
+              ## (ie. in the case of AdjencyMatrix)
               alnks <- lapply(seq_along(i), function(j) {
                 hits <- tryCatch({
                 QFeatures:::.get_Hits(
