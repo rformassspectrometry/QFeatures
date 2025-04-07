@@ -256,6 +256,9 @@ NULL
 
 ##' @exportMethod aggregateFeatures
 ##' @rdname QFeatures-aggregate
+
+# Need to use experiments() instead of QFeatures object then create a new QFeatures
+# cf aggregateFeaturesOverAssays in scp
 setMethod("aggregateFeatures", "QFeatures",
           function(object, i, fcol, name = "newAssay",
                    fun = MsCoreUtils::robustSummary, ...) {
@@ -269,35 +272,48 @@ setMethod("aggregateFeatures", "QFeatures",
               if (length(i) != length(name)) stop("'i' and 'name' must have same length")
               if (length(fcol) == 1) fcol <- rep(fcol, length(i))
               if (length(i) != length(fcol)) stop("'i' and 'fcol' must have same length")
-              rowDataColsKept <- colnames(rowData(object[[i[1]]]))
+
+              el <- experiments(object)[i]
+              rowDataColsKept <- colnames(rowData(el[[i[1]]]))
               ## Aggregate each assay
               for (j in seq_along(i)) {
                   from <- i[[j]]
-                  fromAssay <- object[[from]]
-                  to <- name[[j]]
+                  fromAssay <- el[[from]]
                   by <- fcol[[j]]
                   ## Remove already discarded columns from rowData
                   rowDataColsKept <- intersect(rowDataColsKept,
                                                colnames(rowData(fromAssay)))
                   rowData(fromAssay) <- rowData(fromAssay)[, rowDataColsKept, drop = FALSE]
                   ## Create the aggregated assay
-                  aggAssay <- .aggregateQFeatures(fromAssay,
-                                                  by, fun, ...)
-                  ## Add the assay to the QFeatures object
-                  object <- addAssay(object, aggAssay, name = to)
-                  ## Link the input assay to the aggregated assay
-                  object <- addAssayLink(object, from = from,
-                                         to  = to, varFrom = by,
-                                         varTo = by)
-                  ## Update invariant colnames
-                  rowDataColsKept <- colnames(rowData(aggAssay))
+                  el[[j]] <- aggregateFeatures(fromAssay, by, fun, ...)
+                  rowDataColsKept <- colnames(rowData(el[[j]]))
               }
+              names(el) <- name
               for (j in name) {
                   rowDataColsKept <- intersect(rowDataColsKept,
-                                               colnames(rowData(object[[j]])))
-                  rowData(object[[j]]) <- rowData(object[[j]])[, rowDataColsKept]
+                                               colnames(rowData(el[[j]])))
+                  rowData(el[[j]]) <- rowData(el[[j]])[, rowDataColsKept, drop = FALSE]
               }
-              object
+              ## Get the AssayLinks for the aggregated assays
+              alnks <- lapply(seq_along(i), function(j) {
+                hits <- QFeatures:::.get_Hits(rdFrom = rowData(object[[i[j]]]),
+                                      rdTo = rowData(el[[j]]),
+                                      varFrom = fcol[[j]],
+                                      varTo = fcol[[j]])
+                AssayLink(name = name[j], from = i[j], fcol = fcol[j], hits = hits)
+              })
+              ## Append the aggregated assays and AssayLinks to the previous assays
+              el <- c(object@ExperimentList, el)
+              alnks <- append(object@assayLinks, AssayLinks(alnks))
+              ## Update the sampleMapfrom the data
+              smap <- MultiAssayExperiment:::.sampleMapFromData(colData(object), el)
+              ## Create the new QFeatures object
+            new("QFeatures",
+                ExperimentList = el,
+                colData = colData(object),
+                sampleMap = smap,
+                metadata = metadata(object),
+                assayLinks = alnks)
           })
 
 
