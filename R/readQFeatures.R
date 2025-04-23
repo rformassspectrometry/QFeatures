@@ -499,7 +499,16 @@ readQFeatures <- function(assayData,
     if (is.null(colData))
         return(DataFrame(row.names = sampleNames))
     if (!length(runs)) {
-        rownames(colData) <- sampleNames
+        if ("quantCols" %in% colnames(colData)) {
+            # use quantCols column as quantCols argument
+            # can have different ordering
+            rownames(colData) <- colData$quantCols
+        } else if (length(quantCols) == nrow(colData)) {
+            # no quantCols column, we prioritize quantCols argument
+            rownames(colData) <- quantCols
+        } else {
+            rownames(colData) <- sampleNames
+        }
     } else {
         if (length(quantCols) == 1) {
             rownames(colData) <- colData$runCol
