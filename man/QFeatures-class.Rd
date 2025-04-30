@@ -9,9 +9,6 @@
 \alias{show,QFeatures-method}
 \alias{[,QFeatures,ANY,ANY,ANY-method}
 \alias{[,QFeatures,character,ANY,ANY-method}
-\alias{getQFeaturesType}
-\alias{setQFeaturesType}
-\alias{validQFeaturesType}
 \alias{rowDataNames}
 \alias{selectRowData}
 \alias{plot.QFeatures}
@@ -78,12 +75,6 @@ replaceAssay(x, y, i)
 \S4method{updateObject}{QFeatures}(object, ..., verbose = FALSE)
 
 dropEmptyAssays(object, dims = 1:2)
-
-setQFeaturesType(object, type = "bulk")
-
-getQFeaturesType(object)
-
-validQFeaturesType()
 }
 \arguments{
 \item{...}{See \code{MultiAssayExperiment} for details. For \code{plot},
@@ -146,10 +137,6 @@ drop empty assays. 1 for rows (i.e. assays without any
 features) and 2 for columns (i.e. assays without any
 samples). Default is \code{1:2}. Any value other that 1 and/or 2
 will trigger an error.}
-
-\item{type}{\code{character(1)} that defines the type of the QFeatures.
-The type can be either "bulk" or "scp" (default is "bulk"),
-see \link{validQFeaturesType} for accepted types.}
 }
 \description{
 Conceptually, a \code{QFeatures} object holds a set of \emph{assays}, each

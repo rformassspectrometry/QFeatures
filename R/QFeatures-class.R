@@ -185,7 +185,6 @@
 ##' @aliases dims,QFeatures-method show,QFeatures-method
 ##' @aliases [,QFeatures,ANY,ANY,ANY-method [,QFeatures,character,ANY,ANY-method
 ##'
-##' @aliases getQFeaturesType setQFeaturesType validQFeaturesType
 ##'
 ##' @aliases rowDataNames selectRowData
 ##'
@@ -1352,46 +1351,68 @@ dropEmptyAssays <- function(object, dims = 1:2) {
 }
 
 
-##' @rdname QFeatures-class
-##' @param type `character(1)` that defines the type of the QFeatures.
-##'     The type can be either "bulk" or "scp" (default is "bulk"),
-##'      see [validQFeaturesType] for accepted types.
+##' Set and Get QFeatures Type
 ##'
+##' Developer-level functions to set and retrieve the type of a `QFeatures` 
+##' object. This type can help internal methods adapt their behavior to the
+##' structure of the data.
+##'
+##' @param object An instance of class [QFeatures].
+##' @param type `character(1)` defining the type of the QFeatures.
+##'     Must be one of the values returned by [validQFeaturesType()].
+##'
+##' @return 
+##' - `setQFeaturesType()`: returns the updated `QFeatures` object with
+##'   the type stored in its metadata.
+##' - `getQFeaturesType()`: returns a character string indicating the
+##'   type of the `QFeatures` object. If no type is explicitly set, 
+##'   it is inferred from the class of the experiments.
+##' - `validQFeaturesType()`: character vector of valid QFeatures types.
+##'
+##' @details
+##' These functions control an internal metadata field (`._type`) used to
+##' distinguish between different structural uses of `QFeatures` objects.
+##'
+##' @note These functions are intended for package developers and internal use.
+##'       End users should typically not call them directly.
+##'
+##' @rdname QFeatures-type
+##' @keywords internal
 ##' @export
-##'
-setQFeaturesType <- function(object, type = "bulk") {
-    stopifnot(inherits(object, "QFeatures"))
-    if (!type %in% validQFeaturesType()) {
-        stop(
-            "Invalid QFeatures type. Must be one of: ",
-            paste(validQFeaturesType(), collapse = ", ")
-        )
-    }
-    metadata(object)[["._type"]] <- type
-    object
+setQFeaturesType <- function(object, type) {
+  stopifnot(inherits(object, "QFeatures"))
+  if (!type %in% validQFeaturesType()) {
+    stop(
+      "Invalid QFeatures type. Must be one of: ",
+      paste(validQFeaturesType(), collapse = ", ")
+    )
+  }
+  metadata(object)[["._type"]] <- type
+  object
 }
 
-
-##' @rdname QFeatures-class
+##' @rdname QFeatures-type
+##' @keywords internal
 ##' @export
 getQFeaturesType <- function(object) {
-    stopifnot(inherits(object, "QFeatures"))
-    type <- metadata(object)[["._type"]]
-    if (is.null(type)) {
-        warning(paste("No explicit type set for this QFeatures object,",
-                      "choosing a type in fonction of experiments classes"))
-        if (any(sapply(experiments(object),
-                       function(x) inherits(x, "SingleCellExperiment")))) {
-            type <- "scp"
-        } else {
-            type <- "bulk"
-        }
+  stopifnot(inherits(object, "QFeatures"))
+  type <- metadata(object)[["._type"]]
+  if (is.null(type)) {
+    warning(paste("No explicit type set for this QFeatures object,",
+                  "choosing a type in fonction of experiments classes"))
+    if (any(sapply(experiments(object),
+                   function(x) inherits(x, "SingleCellExperiment")))) {
+      type <- "scp"
+    } else {
+      type <- "bulk"
     }
-    type
+  }
+  type
 }
 
-##' @rdname QFeatures-class
+##' @rdname QFeatures-type
+##' @keywords internal
 ##' @export
 validQFeaturesType <- function() {
-    c("bulk", "scp")
+  c("bulk", "scp")
 }

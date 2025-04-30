@@ -343,7 +343,7 @@ readQFeatures <- function(assayData,
         if (verbose) message("Setting assay rownames.")
         ans <- .setAssayRownames(ans, fnames)
     }
-    setQFeaturesType(ans)
+    setQFeaturesType(ans, "bulk")
 }
 
 

@@ -937,7 +937,7 @@ test_that("dropEmptyAssays", {
 test_that("setQFeaturesType", {
     qf <- QFeatures()
     expect_equal(metadata(qf)[["._type"]], NULL)
-    qf <- setQFeaturesType(qf)
+    qf <- setQFeaturesType(qf, "bulk")
     expect_equal(metadata(qf)[["._type"]], "bulk")
     qf <- setQFeaturesType(qf, "scp")
     expect_equal(metadata(qf)[["._type"]], "scp")
@@ -946,7 +946,7 @@ test_that("setQFeaturesType", {
 
 test_that("getQFeaturesType", {
     qf <- QFeatures()
-    expect_warning(type <- getQFeaturesType(qf),
+    expect_warning(type <- getQFeatMsDataHuburesType(qf),
                    "No explicit type set for this QFeatures object")
     expect_equal(type, "bulk")
     qf <- setQFeaturesType(qf, "scp")
