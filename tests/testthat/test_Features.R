@@ -937,7 +937,7 @@ test_that("dropEmptyAssays", {
 test_that("setQFeaturesType", {
     qf <- QFeatures()
     expect_equal(metadata(qf)[["._type"]], NULL)
-    qf <- setQFeaturesType(qf)
+    qf <- setQFeaturesType(qf, "bulk")
     expect_equal(metadata(qf)[["._type"]], "bulk")
     qf <- setQFeaturesType(qf, "scp")
     expect_equal(metadata(qf)[["._type"]], "scp")
