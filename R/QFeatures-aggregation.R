@@ -293,35 +293,16 @@ setMethod("aggregateFeatures", "QFeatures",
                                                colnames(rowData(el[[j]])))
                   rowData(el[[j]]) <- rowData(el[[j]])[, rowDataColsKept, drop = FALSE]
               }
-              ## Get the AssayLinks for the aggregated assays
-              ## Here we need to catch the error to avoid stopping the
-              ## aggregation in the case where we don't have the fcol
-              ## column in the rowData of the new assay
-              ## (ie. in the case of AdjencyMatrix)
-              alnks <- lapply(seq_along(i), function(j) {
-                hits <- tryCatch({
-                QFeatures:::.get_Hits(
-                    rdFrom = rowData(object[[i[j]]]),
-                    rdTo = rowData(el[[j]]),
-                    varFrom = fcol[[j]],
-                    varTo = fcol[[j]]
-                )}, error = function(e) {
-                    Hits()
-                })
-                AssayLink(name = name[j], from = i[j], fcol = fcol[j], hits = hits)
-              })
-              ## Append the aggregated assays and AssayLinks to the previous assays
-              el <- c(object@ExperimentList, el)
-              alnks <- append(object@assayLinks, AssayLinks(alnks))
-              ## Update the sampleMapfrom the data
-              smap <- MultiAssayExperiment:::.sampleMapFromData(colData(object), el)
               ## Create the new QFeatures object
-            new("QFeatures",
-                ExperimentList = el,
-                colData = colData(object),
-                sampleMap = smap,
-                metadata = metadata(object),
-                assayLinks = alnks)
+              for (j in seq_along(name)) {
+                  object <- addAssay(object, el[[j]], name[j])
+                  object <- addAssayLink(object,
+                      from = i[[j]],
+                      to = name[j],
+                      varFrom = fcol[[j]],
+                      varTo = fcol[[j]])
+              }
+              object
           })
 
 
