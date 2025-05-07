@@ -25,6 +25,8 @@ the type stored in its metadata.
 \item \code{getQFeaturesType()}: returns a character string indicating the
 type of the \code{QFeatures} object. If no type is explicitly set,
 it is inferred from the class of the experiments.
+If the QFeatures contains any \code{SingleCellExperiment} objects,
+the type is set to "scp". Otherwise, it is set to "bulk".
 \item \code{validQFeaturesType()}: character vector of valid QFeatures types.
 }
 }
@@ -34,11 +36,24 @@ object. This type can help internal methods adapt their behavior to the
 structure of the data.
 }
 \details{
-These functions control an internal metadata field (\code{._type}) used to
+These functions control an internal metadata slot (\code{._type}) used to
 distinguish between different structural uses of \code{QFeatures} objects.
+This slot is directly accessible with \code{metadata(object)[["._type"]]}.
 }
 \note{
+The \code{QFeatures} type slot was introduced because, in the
+context of the \code{scp} package, we found that \code{SingleCellExperiment}
+objects were slower than \code{SummarizedExperiment}
+objects (\href{https://github.com/UCLouvain-CBIO/scp/issues/83}{GH issue: scp#83}).
+As a result, we started using \code{SummarizedExperiment} objects
+within \code{scp}. However, to retain information about the type of
+data being handled, we introduced the \code{QFeatures} type slot.
+This slot is, for example, used in the \code{show} method of \code{QFeatures}.
+}
+\section{Warning}{
+
 These functions are intended for package developers and internal use.
 End users should typically not call them directly.
 }
+
 \keyword{internal}
