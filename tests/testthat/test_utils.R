@@ -67,6 +67,23 @@ test_that(".setAssayRownames works", {
     for (i in 1:3)
         rowData(feat2[[i]])[["NEWNAME"]] <- newnames[[i]]
     ans <- .setAssayRownames(feat2, "NEWNAME")
+    expect_true(validObject(ans))
     expect_identical(unname(rownames(ans)),
                      newnames)
+})
+
+test_that(".setAssayRownames works with duplicated names", {
+    data(feat2)
+    newnames <- CharacterList(c(LETTERS[1:5], LETTERS[1:5]),
+                              LETTERS[1:4],
+                              LETTERS[1:7])
+    for (i in 1:3)
+        rowData(feat2[[i]])[["NEWNAME"]] <- newnames[[i]]
+    ans <- .setAssayRownames(feat2, "NEWNAME")
+    expect_true(validObject(ans))
+    ## all but first names are the same
+    expect_identical(unname(rownames(ans)[-1]),
+                     newnames[-1])
+    expect_identical(unname(rownames(ans)[[1]]),
+                     make.unique(newnames[[1]]))
 })
