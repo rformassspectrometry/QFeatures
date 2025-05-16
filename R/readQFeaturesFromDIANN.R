@@ -61,6 +61,10 @@
 ##' ## using default arguments
 ##' readQFeaturesFromDIANN(x)
 ##'
+##' ## use the precursor identifier as assay rownames
+##' readQFeaturesFromDIANN(x, fnames = "Precursor.Id") |>
+##'     rownames()
+##'
 ##' ## with a colData (and default arguments)
 ##' cd <- data.frame(sampleInfo = LETTERS[1:24],
 ##'                  quantCols = "Ms1.Area",

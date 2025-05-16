@@ -265,7 +265,7 @@ filterFeaturesWithAnnotationFilter <- function(object, filter, i,
 
     ## Check the filtering variables
     vars <- field(filter)
-    isPresent <- .checkFilterVariables(rowData(object), vars)
+    isPresent <- .checkFilterVariables(rowData(object), vars, keep)
 
     ## Apply the filter
     sel <- lapply(experiments(object),
@@ -307,7 +307,7 @@ filterFeaturesWithFormula <- function(object, filter, i,
 
     ## Check the filtering variables
     vars <- all.vars(filter)
-    isPresent <- .checkFilterVariables(rowData(object), vars)
+    isPresent <- .checkFilterVariables(rowData(object), vars, keep)
 
     ## Apply the filter
     sel <- lapply(experiments(object),
@@ -356,10 +356,7 @@ filterFeaturesWithFormula <- function(object, filter, i,
 ##'     The function checks their presence. Variables present in
 ##'     parent environment are ignored.
 ##'
-##' @param parent.frame `logical(1)` should variables that are present
-##'     in `parent.frame(4)` be removed. Default is `TRUE`. Set to
-##'     `FALSE` when using `VariableFilter()`, as only filter values
-##'     are passed.
+##' @param keep `logical(1)`, passed from `filterFeatures()`.
 ##'
 ##' @return A `matrix` where rows represent filter variables
 ##'     (excluding variables found in the parent environment) and
@@ -368,7 +365,7 @@ filterFeaturesWithFormula <- function(object, filter, i,
 ##'     to a given assay (`TRUE`) or not (`FALSE`).
 ##'
 ##' @noRd
-.checkFilterVariables <- function(rowdata, vars) {
+.checkFilterVariables <- function(rowdata, vars, keep) {
     ## Ignore variables from the user environment. We search for
     ## variables to omit from the check in the 4th parent environment
     ## (may not always be .GlobalEnv). Here is a "traceback" counter:
@@ -417,15 +414,17 @@ filterFeaturesWithFormula <- function(object, filter, i,
     msg <- sapply(vars, function(var) {
         x <- sum(out[var, ])
         paste0("'", var, "' found in ", x, " out of ", length(rowdata),
-               " assay(s)\n")
+               " assay(s).")
     })
-    if (length(absent) > 0)
-        msg <- c(msg, "No filter applied to the following assay(s) because ",
-                 "one or more filtering variables are missing ",
-                 "in the rowData: ", paste0(absent, collapse = ", "), ".\n",
-                 "You can control whether to remove or keep the features ",
-                 "using the 'keep' argument (see '?filterFeature').")
     message(msg)
+    if (!keep & length(absent) > 0) {
+        msg <- paste0("No filter applied to the following assay(s) because ",
+                      "one or more filtering variables are missing ",
+                      "in the rowData: ", paste0(absent, collapse = ", "), ".\n",
+                      "You can control whether to remove or keep the features ",
+                      "using the 'keep' argument (see '?filterFeature').")
+        message(paste(strwrap(msg), collapse = "\n"))
+    }
     ## Return the presence matrix
     out
 }

@@ -401,3 +401,14 @@ readQFeaturesFromDIANN <- funtion(dfr, multiplexing = NULL, ...) {
     readQFeatures(x, ...)
 }
 ```
+
+# Possible optimsations
+
+Simple ones
+
+- In `longForm()` have a `na.rm` argument and propagate it to
+  `reshape2::melt()` for each assay. This would require to loop over
+  assay, extract them with `getWithColData()`, and use our own
+  `longFormSE()` supporting `na.rm`.
+- Parallelise `aggregateFeatures()`, `logTransform()`,
+  `scaleTransform()`, `impute()`, ...

@@ -1,3 +1,43 @@
+# QFeatures 1.17
+
+## QFeatures 1.17.5
+
+- Remove superfluous message when filtering with `keep = TRUE` (see
+  issue 231).
+
+## QFeatures 1.17.4
+
+- Optimisation of `aggregateFeatures` in the case of
+multiple assays aggregation.
+
+## QFeatures 1.17.3
+
+- Fix bug in `nNA()` on empty assays (see #174).
+
+## QFeatures 1.17.2
+
+- Fix `fnames` argument in `readQFeatures()`. The `fnames` argument is
+  not passed to `readSummarizedExperiment()` anymore, but used at in
+  `readQFeatures()`. Rownames are now set after splitting. Given that
+  rownames must be unique and that this was enforced with
+  `make.unique()`, the previous behaviour misnamed features that
+  should get the same name.
+
+## QFeatures 1.17.1
+
+- Fix: solved `readQFeatures()` bug and adapted unit tests.
+- Docs: created new vignette about reading data with `QFeatures`
+
+## QFeatures 1.17.0
+
+- New Bioconductor 3.21 (devel) release
+
+# QFeatures 1.16
+
+## QFeatures 1.16.0
+
+- New Bioconductor 3.20 (stable) release
+
 # QFeatures 1.15
 
 ## QFeatures 1.15.2
