@@ -18,6 +18,7 @@
 ##'
 ##' @exportMethod longForm
 ##'
+##' @aliases longForm longForm,QFeatures longForm,SummarizedExperiment
 ##' @aliases longFormat
 setMethod("longForm", "QFeatures",
           function(object, colvars = NULL,
@@ -111,6 +112,11 @@ longFormSE <- function(object, colvars = NULL, rowvars = NULL,
     res
 }
 
+setMethod("longForm", "SummarizedExperiment",
+          function(object, colvars = NULL,
+                   rowvars = NULL,
+                   index = seq_along(assays(object)))
+              longFormSE(object, colvars, rowvars, index, na.rm = FALSE))
 
 ##' @noRd
 ##'
