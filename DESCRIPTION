@@ -18,7 +18,7 @@ Description: The QFeatures infrastructure enables the management and
    experience to manages quantitative data across different assay
    levels (such as peptide spectrum matches, peptides and proteins) in
    a coherent and tractable format.
-Depends: R (>= 4.0), MultiAssayExperiment (>= 1.33.6)
+Depends: R (>= 4.1), MultiAssayExperiment (>= 1.33.6)
 Imports:
    methods,
    stats,
@@ -92,4 +92,3 @@ Collate:
     'display.R'
 Roxygen: list(markdown=TRUE)
 RoxygenNote: 7.3.2
-

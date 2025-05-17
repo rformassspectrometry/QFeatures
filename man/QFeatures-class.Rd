@@ -28,6 +28,9 @@
 \alias{updateObject,QFeatures-method}
 \alias{dropEmptyAssays}
 \alias{longForm,QFeatures-method}
+\alias{longForm}
+\alias{longForm,QFeatures}
+\alias{longForm,SummarizedExperiment}
 \alias{longFormat}
 \title{Quantitative MS QFeatures}
 \usage{
