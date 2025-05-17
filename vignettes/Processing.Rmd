@@ -251,7 +251,7 @@ Below, we use the `logTransform` function to log2-transform our
 data. This time, instead of overwriting the peptides assay, we are
 going to create a new one to contain the log2-transformed data.
 
-```{r logTransform}
+```{r addLogTransform, eval = FALSE}
 addAssay(cptac,
          logTransform(cptac[[1]]),
          name = "peptides_log")
@@ -263,7 +263,7 @@ with the `logTransform()` method, that directly returns an updated
 `QFeatures` object. Using `logTransform()` also automatically adds
 links between assays.
 
-```{r, eval = FALSE}
+```{r logTransform, eval = TRUE}
 cptac <- logTransform(cptac,
                       i = "peptides",
                       name = "peptides_log")
@@ -298,9 +298,10 @@ It is also possible to extract and normalise the `peptides_log`
 `SummarizedExperiment` and add it back to the `QFeatures` object with
 `addAssay()`.
 
-```{r, eval = FALSE}
+```{r addNormalize, eval = FALSE}
 addAssay(cptac,
-         normalize(cptac[["peptides_log"]], method = "center.median"),
+         normalize(cptac[["peptides_log"]],
+                   method = "center.median"),
          name = "peptides_norm")
 ```
 
@@ -335,7 +336,7 @@ that takes the following inputs:
   `robustSummary` [@Sticker:2019].
 
 
-```{r, warning = FALSE}
+```{r aggregate, warning = FALSE}
 cptac <- aggregateFeatures(cptac,
                            i = "peptides_norm",
                            fcol = "Proteins",
