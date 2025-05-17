@@ -150,7 +150,7 @@
 ##' @param fnames For the single- and multi-set cases, an optional
 ##'     `character(1)` or `numeric(1)` indicating the column to be
 ##'     used as feature names.  Note that rownames must be unique
-##'     within `QFeatures` sets.
+##'     within `QFeatures` sets. Default is `NULL`.
 ##'
 ##' @param name For the single-set case, an optional `character(1)` to
 ##'     name the set in the `QFeatures` object. Default is `quants`.
@@ -315,6 +315,7 @@ readQFeatures <- function(assayData,
                           removeEmptyCols = FALSE,
                           verbose = TRUE,
                           ecol = NULL,
+                          fnames = NULL,
                           ...) {
     if (verbose) message("Checking arguments.")
     assayData <- as.data.frame(assayData)
@@ -337,7 +338,12 @@ readQFeatures <- function(assayData,
     if (verbose) message("Formatting sample annotations (colData).")
     colData <- .formatColData(el, colData, runs, quantCols)
     if (verbose) message("Formatting data as a 'QFeatures' object.")
-    QFeatures(experiments = el, colData = colData)
+    ans <- QFeatures(experiments = el, colData = colData)
+    if (!is.null(fnames)) {
+        if (verbose) message("Setting assay rownames.")
+        ans <- .setAssayRownames(ans, fnames)
+    }
+    ans
 }
 
 
@@ -504,4 +510,24 @@ readQFeatures <- function(assayData,
     colData <- colData[sampleNames, , drop = FALSE]
     rownames(colData) <- sampleNames ## clean NA in rownames
     colData
+}
+
+
+## This function sets the assay rownames. We use it in readQFeatures() when
+## fnames is used. Note that we don't want to export it to avoid messing
+## with rownames and assayLinks.
+.setAssayRownames <- function(object, fcol) {
+    stopifnot(inherits(object, "MultiAssayExperiment"))
+    ok <- lapply(rowData(object),
+                 function(x) stopifnot(fcol %in% names(x)))
+    expl <- lapply(experiments(object),
+                   function(x) {
+                       rn <- rowData(x)[[fcol]]
+                       if (anyDuplicated(rn))
+                           rn <- make.unique(rn)
+                       rownames(x) <- rn
+                       x
+                   })
+    experiments(object) <- List(expl)
+    object
 }

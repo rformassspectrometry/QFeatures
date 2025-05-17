@@ -1,8 +1,39 @@
+# QFeatures 1.19
+
+
+## QFeatures 1.19.1
+
+- Fix duplicated fnames bug (see issue #237).
+- Use `longForm()` methods (replacing `longFormat()`, now defunct).
+
+## QFeatures 1.19.0
+
+- New devel version
+
 # QFeatures 1.17
+
+## QFeatures 1.17.5
+
+- Remove superfluous message when filtering with `keep = TRUE` (see
+  issue 231).
+
+## QFeatures 1.17.4
+
+- Optimisation of `aggregateFeatures` in the case of
+multiple assays aggregation.
+
+## QFeatures 1.17.3
+
+- Fix bug in `nNA()` on empty assays (see #174).
 
 ## QFeatures 1.17.2
 
-- New `longForm()` methods (replacing `longFormat()`, now deprecated).
+- Fix `fnames` argument in `readQFeatures()`. The `fnames` argument is
+  not passed to `readSummarizedExperiment()` anymore, but used at in
+  `readQFeatures()`. Rownames are now set after splitting. Given that
+  rownames must be unique and that this was enforced with
+  `make.unique()`, the previous behaviour misnamed features that
+  should get the same name.
 
 ## QFeatures 1.17.1
 

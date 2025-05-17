@@ -16,8 +16,13 @@
 ## data from a SummarizedExperiment object
 .nNAByAssay <- function(object) {
     x <- assay(object)
-    nNA <- sum(is.na(x))
-    pNA <- nNA / length(x)
+    if (nrow(x) == 0 || ncol(x) == 0) {
+        nNA <- NA_integer_
+        pNA <- NA_real_
+    } else {
+        nNA <- sum(is.na(x))
+        pNA <- nNA / length(x)
+    }
     DataFrame(nNA = unname(nNA),
               pNA = unname(pNA))
 }
@@ -27,9 +32,15 @@
 ## SummarizedExperiment object
 .nNAByMargin <- function(object, MARGIN = 1) {
     x <- assay(object)
-    nNA <- apply(is.na(x), MARGIN, sum)
-    n <- ifelse(MARGIN == 1, ncol(x), nrow(x))
-    pNA <- nNA / n
+    if (nrow(x) == 0 || ncol(x) == 0) {
+        nNA <- NA_integer_
+        pNA <- NA_real_
+        names(pNA) <- ""
+    } else {
+        nNA <- apply(is.na(x), MARGIN, sum)
+        n <- ifelse(MARGIN == 1, ncol(x), nrow(x))
+        pNA <- nNA / n
+    }
     DataFrame(name = names(pNA),
               nNA = unname(nNA),
               pNA = unname(pNA))

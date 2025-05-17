@@ -25,6 +25,7 @@ readQFeatures(
   removeEmptyCols = FALSE,
   verbose = TRUE,
   ecol = NULL,
+  fnames = NULL,
   ...
 )
 }
@@ -44,7 +45,7 @@ quantitative data. This information can also be defined in
 \item{fnames}{For the single- and multi-set cases, an optional
 \code{character(1)} or \code{numeric(1)} indicating the column to be
 used as feature names.  Note that rownames must be unique
-within \code{QFeatures} sets.}
+within \code{QFeatures} sets. Default is \code{NULL}.}
 
 \item{ecol}{Same as \code{quantCols}. Available for backwards
 compatibility. Default is \code{NULL}. If both \code{ecol} and \code{colData}
