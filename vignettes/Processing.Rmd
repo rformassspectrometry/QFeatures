@@ -252,21 +252,22 @@ data. This time, instead of overwriting the peptides assay, we are
 going to create a new one to contain the log2-transformed data.
 
 ```{r logTransform}
-cptac <- addAssay(cptac,
-                  logTransform(cptac[[1]]),
-                  name = "peptides_log")
-cptac
+addAssay(cptac,
+         logTransform(cptac[[1]]),
+         name = "peptides_log")
 ```
 
 The `addAssay()` function is the general function that adds new assays
 to a `QFeatures` object. The step above could more easily be exectuted
 with the `logTransform()` method, that directly returns an updated
-`QFeatures` object.
+`QFeatures` object. Using `logTransform()` also automatically adds
+links between assays.
 
 ```{r, eval = FALSE}
-logTransform(cptac,
-             i = "peptides",
-             name = "peptides_log")
+cptac <- logTransform(cptac,
+                      i = "peptides",
+                      name = "peptides_log")
+cptac
 ```
 
 ```{r, fig.cap = "Quantitative data in its original scale (left) and log2-transformed (right)."}
@@ -288,8 +289,8 @@ The `normalize()` function can also be directly applied to the
 ```{r normalize}
 cptac <- normalize(cptac,
                    i = "peptides_log",
-                   name = "lognorm_peptides",
-                   method = "center.median")
+                   name = "peptides_norm",
+                   method = "diff.median")
 cptac
 ```
 
@@ -336,7 +337,7 @@ that takes the following inputs:
 
 ```{r, warning = FALSE}
 cptac <- aggregateFeatures(cptac,
-                           i = "lognorm_peptides",
+                           i = "peptides_norm",
                            fcol = "Proteins",
                            name = "proteins")
 cptac
@@ -363,12 +364,14 @@ table(rowData(cptac[["proteins"]])$.n)
 ```
 
 Let's choose `P02787ups|TRFE_HUMAN_UPS` and visualise its expression
-pattern in the 2 groups at the protein and peptide level.
+pattern in the 2 groups at the protein and (log-tranformed and
+normalised) peptide level. We drop the first peptide-level assay as it
+is on a different scale (i.e. not log-transformed).
 
 ```{r, message = TRUE, fig.cap = "Expression intensities for the protein *P02787ups|TRFE_HUMAN_UPS* (right, green) and its peptides (left) in groups A (circles) and B (triangles)."}
 library("ggplot2")
 library("dplyr")
-longForm(cptac["P02787ups|TRFE_HUMAN_UPS", ]) |>
+longForm(cptac["P02787ups|TRFE_HUMAN_UPS", , -1]) |>
     as.data.frame() |>
     mutate(group = ifelse(grepl("A", colname), "A", "B")) |>
     mutate(sample = sub("Intensity\\.", "", colname)) |>
