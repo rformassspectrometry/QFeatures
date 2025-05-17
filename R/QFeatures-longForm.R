@@ -17,6 +17,8 @@
 ##' @importFrom BiocGenerics longForm
 ##'
 ##' @exportMethod longForm
+##'
+##' @aliases longFormat
 setMethod("longForm", "QFeatures",
           function(object, colvars = NULL,
                    rowvars = NULL,
@@ -107,4 +109,15 @@ longFormSE <- function(object, colvars = NULL, rowvars = NULL,
     }
     ## as(res, "DataFrame")
     res
+}
+
+
+##' @noRd
+##'
+##' @export
+longFormat <- function(object,
+                       colvars = NULL,
+                       rowvars = NULL,
+                       index = 1L) {
+    .Defunct("longForm")
 }
