@@ -30,8 +30,9 @@
 \alias{longForm,QFeatures-method}
 \alias{longForm}
 \alias{longForm,QFeatures}
-\alias{longForm,SummarizedExperiment}
 \alias{longFormat}
+\alias{longForm,SummarizedExperiment-method}
+\alias{longForm,SummarizedExperiment}
 \title{Quantitative MS QFeatures}
 \usage{
 QFeatures(..., assayLinks = NULL)
@@ -79,6 +80,13 @@ replaceAssay(x, y, i)
 dropEmptyAssays(object, dims = 1:2)
 
 \S4method{longForm}{QFeatures}(object, colvars = NULL, rowvars = NULL, index = 1L)
+
+\S4method{longForm}{SummarizedExperiment}(
+  object,
+  colvars = NULL,
+  rowvars = NULL,
+  index = seq_along(assays(object))
+)
 }
 \arguments{
 \item{...}{See \code{MultiAssayExperiment} for details. For \code{plot},

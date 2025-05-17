@@ -18,7 +18,7 @@
 ##'
 ##' @exportMethod longForm
 ##'
-##' @aliases longForm longForm,QFeatures longForm,SummarizedExperiment
+##' @aliases longForm longForm,QFeatures
 ##' @aliases longFormat
 setMethod("longForm", "QFeatures",
           function(object, colvars = NULL,
@@ -112,6 +112,11 @@ longFormSE <- function(object, colvars = NULL, rowvars = NULL,
     res
 }
 
+##' @rdname QFeatures-class
+##'
+##' @exportMethod longForm
+##'
+##' @aliases longForm,SummarizedExperiment
 setMethod("longForm", "SummarizedExperiment",
           function(object, colvars = NULL,
                    rowvars = NULL,
