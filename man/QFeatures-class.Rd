@@ -22,7 +22,6 @@
 \alias{rowData<-,QFeatures,ANY-method}
 \alias{rbindRowData}
 \alias{names<-,QFeatures,character-method}
-\alias{longFormat}
 \alias{removeAssay}
 \alias{replaceAssay}
 \alias{[[<-,QFeatures,ANY,ANY-method}
@@ -62,8 +61,6 @@ selectRowData(x, rowvars)
 rowDataNames(x)
 
 \S4method{names}{QFeatures,character}(x) <- value
-
-longFormat(object, colvars = NULL, rowvars = NULL, index = 1L)
 
 addAssay(x, y, name, assayLinks)
 
@@ -115,14 +112,6 @@ corresponding section in the documentation for more details.}
 \item{rowvars}{A \code{character()} with the names of the \code{rowData}
 variables (columns) to retain in any assay.}
 
-\item{colvars}{A \code{character()} that selects column(s) in the \code{colData}.}
-
-\item{index}{When object is an instance of class \code{QFeatures}, a \code{numeric(1)}
-indicating what assay within each \code{SummarizedExperiment} object to
-return. Default is \code{1L}. If object is a \code{SummarizedExperiment}, a
-\code{numeric()} indicating what assays to pull and convert. Default is to
-use all assays.}
-
 \item{y}{An object that inherits from \code{SummarizedExperiment} or a
 \emph{named} list of assays. When \code{y} is a list, each element must
 inherit from a \code{SummarizedExperiment} and the names of the
@@ -140,6 +129,14 @@ drop empty assays. 1 for rows (i.e. assays without any
 features) and 2 for columns (i.e. assays without any
 samples). Default is \code{1:2}. Any value other that 1 and/or 2
 will trigger an error.}
+
+\item{colvars}{A \code{character()} that selects column(s) in the \code{colData}.}
+
+\item{index}{When object is an instance of class \code{QFeatures}, a \code{numeric(1)}
+indicating what assay within each \code{SummarizedExperiment} object to
+return. Default is \code{1L}. If object is a \code{SummarizedExperiment}, a
+\code{numeric()} indicating what assays to pull and convert. Default is to
+use all assays.}
 }
 \description{
 Conceptually, a \code{QFeatures} object holds a set of \emph{assays}, each
@@ -209,10 +206,10 @@ that are common to all assays are kept.
 \item The \code{rowDataNames} accessor returns a list with the \code{rowData}
 variable names.
 \item The \code{longForm} accessor takes a \code{QFeatures} object and returns it in a
-long format \code{DataFrame}, replacing the now deprectated \code{longFormat()} Each
-quantitative value is reported on a separate line. \code{colData} and \code{rowData}
-data can also be added. This function is an extension of the \code{longForm()}
-method in the \link[MultiAssayExperiment:MultiAssayExperiment]{MultiAssayExperiment::MultiAssayExperiment}.
+long format \code{DataFrame}. Each quantitative value is reported on a separate
+line. \code{colData} and \code{rowData} data can also be added. This function is an
+extension of the \code{longForm()} method in the
+\link[MultiAssayExperiment:MultiAssayExperiment]{MultiAssayExperiment::MultiAssayExperiment}.
 }
 }
 
