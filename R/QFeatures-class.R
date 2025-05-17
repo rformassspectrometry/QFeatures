@@ -70,10 +70,10 @@
 ##'   variable names.
 ##'
 ##' - The `longForm` accessor takes a `QFeatures` object and returns it in a
-##'   long format `DataFrame`, replacing the now deprectated `longFormat()` Each
-##'   quantitative value is reported on a separate line. `colData` and `rowData`
-##'   data can also be added. This function is an extension of the `longForm()`
-##'   method in the [MultiAssayExperiment::MultiAssayExperiment].
+##'   long format `DataFrame`. Each quantitative value is reported on a separate
+##'   line. `colData` and `rowData` data can also be added. This function is an
+##'   extension of the `longForm()` method in the
+##'   [MultiAssayExperiment::MultiAssayExperiment].
 ##'
 ##' @section Adding, removing and replacing assays:
 ##'
@@ -884,18 +884,14 @@ setReplaceMethod(
 )
 
 
-##' @rdname QFeatures-class
+##' @noRd
 ##'
 ##' @export
 longFormat <- function(object,
                        colvars = NULL,
                        rowvars = NULL,
                        index = 1L) {
-    .Deprecated("longForm")
-    longForm(object,
-             colvars = colvars,
-             rowvars = rowvars,
-             index = index)
+    .Defunct("longForm")
 }
 
 

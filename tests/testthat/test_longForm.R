@@ -1,9 +1,8 @@
 data(feat2)
 colData(feat2)$X <- 1:12
 
-test_that("longFormat is deprecated", {
-    expect_warning(longFormat(feat2, rowvars = "Prot", colvars = "X"),
-                   "'longFormat' is deprecated.")
+test_that("longFormat is defunct", {
+    expect_error(longFormat(feat2, rowvars = "Prot", colvars = "X"))
 })
 
 test_that("longForm", {
