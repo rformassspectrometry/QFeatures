@@ -181,7 +181,6 @@
 ##' @aliases addAssay
 ##' @aliases dims,QFeatures-method show,QFeatures-method
 ##' @aliases [,QFeatures,ANY,ANY,ANY-method [,QFeatures,character,ANY,ANY-method
-##'
 ##' @aliases rowDataNames selectRowData
 ##'
 ##' @rdname QFeatures-class
@@ -783,18 +782,6 @@ setReplaceMethod("names", c("QFeatures", "character"),
                      }
                      x
                  })
-
-
-##' @noRd
-##'
-##' @export
-longFormat <- function(object,
-                       colvars = NULL,
-                       rowvars = NULL,
-                       index = 1L) {
-    .Defunct("longForm")
-}
-
 
 ##' @param y An object that inherits from `SummarizedExperiment` or a
 ##'     *named* list of assays. When `y` is a list, each element must

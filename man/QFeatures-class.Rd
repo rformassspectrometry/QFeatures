@@ -28,6 +28,7 @@
 \alias{updateObject,QFeatures-method}
 \alias{dropEmptyAssays}
 \alias{longForm,QFeatures-method}
+\alias{longFormat}
 \title{Quantitative MS QFeatures}
 \usage{
 QFeatures(..., assayLinks = NULL)
