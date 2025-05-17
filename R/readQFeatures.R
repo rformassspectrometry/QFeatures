@@ -522,7 +522,10 @@ readQFeatures <- function(assayData,
                  function(x) stopifnot(fcol %in% names(x)))
     expl <- lapply(experiments(object),
                    function(x) {
-                       rownames(x) <- rowData(x)[[fcol]]
+                       rn <- rowData(x)[[fcol]]
+                       if (anyDuplicated(rn))
+                           rn <- make.unique(rn)
+                       rownames(x) <- rn
                        x
                    })
     experiments(object) <- List(expl)
