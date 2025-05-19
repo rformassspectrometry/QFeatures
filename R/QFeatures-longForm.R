@@ -23,36 +23,52 @@
 setMethod("longForm", "QFeatures",
           function(object, colvars = NULL,
                    rowvars = NULL,
-                   index = 1L) {
-              if (!is.null(rowvars)) {
-                  rdNames <- rowDataNames(object)
-                  misNames <- sapply(rdNames,
-                                     function (x) any(!rowvars %in% x))
-                  ## Check that all required
-                  if (any(misNames))
-                      stop("Some 'rowvars' not found in assay(s): ",
-                           paste0(names(misNames)[misNames], collapse = ", "))
-                  ## Get long format table with quantification values and colvars
-                  longDataFrame <-
-                      MultiAssayExperiment::longForm(
-                                                as(object, "MultiAssayExperiment"),
-                                                colDataCols = colvars,
-                                                i = index)
-                  ## Get the required rowData
-                  rds <- lapply(rowData(object),
-                                function(rd) rd[, rowvars, drop = FALSE])
-                  rds <- do.call(rbind, rds)
-                  ## Merge the rowData to the long table
-                  cbind(longDataFrame,
-                        rds[as.character(longDataFrame$rowname), , drop = FALSE])
-              } else {
-                  ## If rowvars is null, return the MAE longForm output
-                  MultiAssayExperiment::longForm(
-                                            as(object, "MultiAssayExperiment"),
-                                            colDataCols = colvars,
-                                            i = index)
-              }
-          })
+                   index = 1L)
+              longFormQFeatures(object, colvars, rowvars, index))
+
+##' @rdname QFeatures-class
+##'
+##' @exportMethod longForm
+##'
+##' @aliases longForm,SummarizedExperiment
+setMethod("longForm", "SummarizedExperiment",
+          function(object, colvars = NULL,
+                   rowvars = NULL,
+                   index = seq_along(assays(object)))
+              longFormSE(object, colvars, rowvars, index, na.rm = FALSE))
+
+longFormQFeatures <- function(object, colvars = NULL,
+                              rowvars = NULL,
+                              index = 1L) {
+    if (!is.null(rowvars)) {
+        rdNames <- rowDataNames(object)
+        misNames <- sapply(rdNames,
+                           function (x) any(!rowvars %in% x))
+        ## Check that all required
+        if (any(misNames))
+            stop("Some 'rowvars' not found in assay(s): ",
+                 paste0(names(misNames)[misNames], collapse = ", "))
+        ## Get long format table with quantification values and colvars
+        longDataFrame <-
+            MultiAssayExperiment::longForm(
+                                      as(object, "MultiAssayExperiment"),
+                                      colDataCols = colvars,
+                                      i = index)
+        ## Get the required rowData
+        rds <- lapply(rowData(object),
+                      function(rd) rd[, rowvars, drop = FALSE])
+        rds <- do.call(rbind, rds)
+        ## Merge the rowData to the long table
+        cbind(longDataFrame,
+              rds[as.character(longDataFrame$rowname), , drop = FALSE])
+    } else {
+        ## If rowvars is null, return the MAE longForm output
+        MultiAssayExperiment::longForm(
+                                  as(object, "MultiAssayExperiment"),
+                                  colDataCols = colvars,
+                                  i = index)
+    }
+}
 
 
 ##' @importFrom reshape2 melt
@@ -111,17 +127,6 @@ longFormSE <- function(object, colvars = NULL, rowvars = NULL,
     ## as(res, "DataFrame")
     res
 }
-
-##' @rdname QFeatures-class
-##'
-##' @exportMethod longForm
-##'
-##' @aliases longForm,SummarizedExperiment
-setMethod("longForm", "SummarizedExperiment",
-          function(object, colvars = NULL,
-                   rowvars = NULL,
-                   index = seq_along(assays(object)))
-              longFormSE(object, colvars, rowvars, index, na.rm = FALSE))
 
 ##' @noRd
 ##'
