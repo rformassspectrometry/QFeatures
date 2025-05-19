@@ -499,23 +499,28 @@ readQFeatures <- function(assayData,
     if (is.null(colData))
         return(DataFrame(row.names = sampleNames))
     if (!length(runs)) {
+        # assign colData rownames to match colData to sampleNames
         if ("quantCols" %in% colnames(colData)) {
-            # use quantCols column as quantCols argument
-            # can have different ordering
+            # use colData$quantCols as rownames
+            # (quantCols argument is not guaranteed to match to colData rows)
             rownames(colData) <- colData$quantCols
         } else if (length(quantCols) == nrow(colData)) {
-            # no quantCols column, we prioritize quantCols argument
+            # no colData$quantCols column
+            # we assume the colData order matches quantCols argument
             rownames(colData) <- quantCols
         } else {
+            # assume colData order matches sampleNames
             rownames(colData) <- sampleNames
         }
     } else {
+        # run information is present, colData should match individual runs
         if (length(quantCols) == 1) {
             rownames(colData) <- colData$runCol
         } else {
             rownames(colData) <- paste0(colData$runCol, "_", colData$quantCols)
         }
     }
+    # match colData to sampleNames
     colData <- colData[sampleNames, , drop = FALSE]
     rownames(colData) <- sampleNames ## clean NA in rownames
     colData
