@@ -304,7 +304,8 @@ QFeatures <- function(..., assayLinks = NULL) {
 setMethod(
     "show", "QFeatures",
     function(object) {
-        type <- suppressWarnings(getQFeaturesType(object))
+        # suppress messages in case of implicit QFeatures type
+        type <- suppressMessages(getQFeaturesType(object))
         if (isEmpty(object)) {
             cat(sprintf(
                 "An empty instance of class %s (type: %s)\n",
@@ -1353,38 +1354,51 @@ dropEmptyAssays <- function(object, dims = 1:2) {
 
 ##' Set and Get QFeatures Type
 ##'
-##' Developer-level functions to set and retrieve the type of a `QFeatures` 
-##' object. This type can help internal methods adapt their behavior to the
+##' Developer-level functions to set and retrieve the type of a `QFeatures`
+##' object. This type can help internal methods adapt their behaviour to the
 ##' structure of the data.
 ##'
 ##' @param object An instance of class [QFeatures].
 ##' @param type `character(1)` defining the type of the QFeatures.
-##'     Must be one of the values returned by [validQFeaturesType()].
+##'     Must be one of the values returned by [validQFeaturesTypes()].
 ##'
-##' @return 
+##' @return
 ##' - `setQFeaturesType()`: returns the updated `QFeatures` object with
 ##'   the type stored in its metadata.
 ##' - `getQFeaturesType()`: returns a character string indicating the
-##'   type of the `QFeatures` object. If no type is explicitly set, 
-##'   it is inferred from the class of the experiments.
-##' - `validQFeaturesType()`: character vector of valid QFeatures types.
+##'   type of the `QFeatures` object. If no type is explicitly set,
+##'   it is inferred from the class of the experiments. 
+##'   If the QFeatures contains any `SingleCellExperiment` objects, 
+##'   the type is set to "scp". Otherwise, it is set to "bulk".
+##' - `validQFeaturesTypes()`: character vector of valid QFeatures types.
 ##'
+##' @section Warning: 
+##' These functions are intended for package developers and internal use.
+##' End users should typically not call them directly.
 ##' @details
-##' These functions control an internal metadata field (`._type`) used to
+##' These functions control an internal metadata slot (`._type`) used to
 ##' distinguish between different structural uses of `QFeatures` objects.
+##' This slot is directly accessible with `metadata(object)[["._type"]]`.
 ##'
-##' @note These functions are intended for package developers and internal use.
-##'       End users should typically not call them directly.
+##' @note The `QFeatures` type slot was introduced because, in the 
+##'       context of the `scp` package, we found that `SingleCellExperiment`   
+##'       objects were slower than `SummarizedExperiment` 
+##'       objects (\href{https://github.com/UCLouvain-CBIO/scp/issues/83}{GH issue: scp#83}).
+##'       As a result, we started using `SummarizedExperiment` objects
+##'       within `scp`. However, to retain information about the type of
+##'       data being handled, we introduced the `QFeatures` type slot.
+##'       This slot is, for example, used in the `show` method of `QFeatures`.
+
 ##'
 ##' @rdname QFeatures-type
 ##' @keywords internal
 ##' @export
 setQFeaturesType <- function(object, type) {
   stopifnot(inherits(object, "QFeatures"))
-  if (!type %in% validQFeaturesType()) {
+  if (!type %in% validQFeaturesTypes()) {
     stop(
       "Invalid QFeatures type. Must be one of: ",
-      paste(validQFeaturesType(), collapse = ", ")
+      paste(validQFeaturesTypes(), collapse = ", ")
     )
   }
   metadata(object)[["._type"]] <- type
@@ -1398,7 +1412,7 @@ getQFeaturesType <- function(object) {
   stopifnot(inherits(object, "QFeatures"))
   type <- metadata(object)[["._type"]]
   if (is.null(type)) {
-    warning(paste("No explicit type set for this QFeatures object,",
+    message(paste("No explicit type set for this QFeatures object,",
                   "choosing a type in fonction of experiments classes"))
     if (any(sapply(experiments(object),
                    function(x) inherits(x, "SingleCellExperiment")))) {
@@ -1413,6 +1427,6 @@ getQFeaturesType <- function(object) {
 ##' @rdname QFeatures-type
 ##' @keywords internal
 ##' @export
-validQFeaturesType <- function() {
+validQFeaturesTypes <- function() {
   c("bulk", "scp")
 }

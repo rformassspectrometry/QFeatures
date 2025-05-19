@@ -12,7 +12,7 @@ api <- c("addAssay", "addAssayLink", "addAssayLinkOneToOne",
          "replaceAssay", "rowData<-", "rowDataNames",
          "scaleTransform", "selectRowData", "setQFeaturesType", "show",
          "subsetByFeature", "sweep", "unfoldDataFrame", "updateObject",
-         "validQFeaturesType", "VariableFilter", "zeroIsNA")
+         "validQFeaturesTypes", "VariableFilter", "zeroIsNA")
 
 test_that("API hasn't changed", {
     current_api <- sort(ls(pos = "package:QFeatures"))
