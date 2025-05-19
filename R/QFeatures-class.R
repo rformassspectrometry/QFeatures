@@ -1355,12 +1355,12 @@ dropEmptyAssays <- function(object, dims = 1:2) {
 ##' Set and Get QFeatures Type
 ##'
 ##' Developer-level functions to set and retrieve the type of a `QFeatures`
-##' object. This type can help internal methods adapt their behavior to the
+##' object. This type can help internal methods adapt their behaviour to the
 ##' structure of the data.
 ##'
 ##' @param object An instance of class [QFeatures].
 ##' @param type `character(1)` defining the type of the QFeatures.
-##'     Must be one of the values returned by [validQFeaturesType()].
+##'     Must be one of the values returned by [validQFeaturesTypes()].
 ##'
 ##' @return
 ##' - `setQFeaturesType()`: returns the updated `QFeatures` object with
@@ -1370,7 +1370,7 @@ dropEmptyAssays <- function(object, dims = 1:2) {
 ##'   it is inferred from the class of the experiments. 
 ##'   If the QFeatures contains any `SingleCellExperiment` objects, 
 ##'   the type is set to "scp". Otherwise, it is set to "bulk".
-##' - `validQFeaturesType()`: character vector of valid QFeatures types.
+##' - `validQFeaturesTypes()`: character vector of valid QFeatures types.
 ##'
 ##' @section Warning: 
 ##' These functions are intended for package developers and internal use.
@@ -1395,10 +1395,10 @@ dropEmptyAssays <- function(object, dims = 1:2) {
 ##' @export
 setQFeaturesType <- function(object, type) {
   stopifnot(inherits(object, "QFeatures"))
-  if (!type %in% validQFeaturesType()) {
+  if (!type %in% validQFeaturesTypes()) {
     stop(
       "Invalid QFeatures type. Must be one of: ",
-      paste(validQFeaturesType(), collapse = ", ")
+      paste(validQFeaturesTypes(), collapse = ", ")
     )
   }
   metadata(object)[["._type"]] <- type
@@ -1427,6 +1427,6 @@ getQFeaturesType <- function(object) {
 ##' @rdname QFeatures-type
 ##' @keywords internal
 ##' @export
-validQFeaturesType <- function() {
+validQFeaturesTypes <- function() {
   c("bulk", "scp")
 }

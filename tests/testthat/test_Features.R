@@ -953,6 +953,6 @@ test_that("getQFeaturesType", {
     expect_equal(getQFeaturesType(qf), "scp")
 })
 
-test_that("validQFeaturesType", {
-    expect_equal(validQFeaturesType(), c("bulk", "scp"))
+test_that("validQFeaturesTypes", {
+    expect_equal(validQFeaturesTypes(), c("bulk", "scp"))
 })
