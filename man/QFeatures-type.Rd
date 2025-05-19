@@ -3,20 +3,20 @@
 \name{setQFeaturesType}
 \alias{setQFeaturesType}
 \alias{getQFeaturesType}
-\alias{validQFeaturesType}
+\alias{validQFeaturesTypes}
 \title{Set and Get QFeatures Type}
 \usage{
 setQFeaturesType(object, type)
 
 getQFeaturesType(object)
 
-validQFeaturesType()
+validQFeaturesTypes()
 }
 \arguments{
 \item{object}{An instance of class \link{QFeatures}.}
 
 \item{type}{\code{character(1)} defining the type of the QFeatures.
-Must be one of the values returned by \code{\link[=validQFeaturesType]{validQFeaturesType()}}.}
+Must be one of the values returned by \code{\link[=validQFeaturesTypes]{validQFeaturesTypes()}}.}
 }
 \value{
 \itemize{
@@ -27,12 +27,12 @@ type of the \code{QFeatures} object. If no type is explicitly set,
 it is inferred from the class of the experiments.
 If the QFeatures contains any \code{SingleCellExperiment} objects,
 the type is set to "scp". Otherwise, it is set to "bulk".
-\item \code{validQFeaturesType()}: character vector of valid QFeatures types.
+\item \code{validQFeaturesTypes()}: character vector of valid QFeatures types.
 }
 }
 \description{
 Developer-level functions to set and retrieve the type of a \code{QFeatures}
-object. This type can help internal methods adapt their behavior to the
+object. This type can help internal methods adapt their behaviour to the
 structure of the data.
 }
 \details{
