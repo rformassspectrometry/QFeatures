@@ -304,8 +304,8 @@ QFeatures <- function(..., assayLinks = NULL) {
 setMethod(
     "show", "QFeatures",
     function(object) {
-        # supress warnings in case of implicit QFeatures type
-        type <- suppressWarnings(getQFeaturesType(object))
+        # suppress messages in case of implicit QFeatures type
+        type <- suppressMessages(getQFeaturesType(object))
         if (isEmpty(object)) {
             cat(sprintf(
                 "An empty instance of class %s (type: %s)\n",
