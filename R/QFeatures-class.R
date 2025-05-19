@@ -1412,7 +1412,7 @@ getQFeaturesType <- function(object) {
   stopifnot(inherits(object, "QFeatures"))
   type <- metadata(object)[["._type"]]
   if (is.null(type)) {
-    warning(paste("No explicit type set for this QFeatures object,",
+    message(paste("No explicit type set for this QFeatures object,",
                   "choosing a type in fonction of experiments classes"))
     if (any(sapply(experiments(object),
                    function(x) inherits(x, "SingleCellExperiment")))) {
