@@ -69,11 +69,9 @@
 ##' - The `rowDataNames` accessor returns a list with the `rowData`
 ##'   variable names.
 ##'
-##' - The `longForm` accessor takes a `QFeatures` object and returns it in a
-##'   long format `DataFrame`. Each quantitative value is reported on a separate
-##'   line. `colData` and `rowData` data can also be added. This function is an
-##'   extension of the `longForm()` method in the
-##'   [MultiAssayExperiment::MultiAssayExperiment].
+##' - The [longForm()] accessor takes a `QFeatures` instance and returns it in a
+##'   long *tidy* `DataFrame`, where each quantitative value is reported on a
+##'   separate line.
 ##'
 ##' @section Adding, removing and replacing assays:
 ##'
@@ -152,6 +150,9 @@
 ##'
 ##' @param drop logical (default `TRUE`) whether to drop empty assay
 ##'     elements in the `ExperimentList`.
+##'
+##' @param rowvars A `character()` with the names of the `rowData`
+##'     variables (columns) to retain in any assay.
 ##'
 ##' @param ... See `MultiAssayExperiment` for details. For `plot`,
 ##'     further arguments passed to `igraph::plot.igraph`.
