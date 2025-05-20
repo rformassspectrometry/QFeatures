@@ -1,15 +1,29 @@
-##' @rdname QFeatures-class
+##' @title Reshape into a long data format
+##'
+##' @description
+##'
+##' The `longForm()` method transform a [QFeatures] or [SummarizedExperiment]
+##' instance into a long *tidy* [DataFrame] that contains the assay data, where
+##' each quantitative value is reported on a separate line. `colData` and
+##' `rowData` varibales can also be added. This function is an extension of the
+##' `longForm()` method in the [MultiAssayExperiment::MultiAssayExperiment].
+##'
+##' Note that the previous `longFormat` implementation is not defunct.
+##'
+##' @param object An instance of class [QFeatures] or [SummarizedExperiment].
 ##'
 ##' @param colvars A `character()` that selects column(s) in the `colData`.
 ##'
 ##' @param rowvars A `character()` with the names of the `rowData`
 ##'     variables (columns) to retain in any assay.
 ##'
-##' @param i When object is an instance of class `QFeatures`, a `numeric(1)`
+##' @param i When `object` is an instance of class `QFeatures`, a `numeric(1)`
 ##'     indicating what assay within each `SummarizedExperiment` object to
-##'     return. Default is `1L`. If object is a `SummarizedExperiment`, a
+##'     return. Default is `1L`. If `object` is a `SummarizedExperiment`, a
 ##'     `numeric()` indicating what assays to pull and convert. Default is to
 ##'     use all assays.
+##'
+##' @rdname QFeatures-longForm
 ##'
 ##' @importFrom MultiAssayExperiment longForm
 ##' @importFrom reshape2 melt
@@ -20,13 +34,39 @@
 ##'
 ##' @aliases longForm longForm,QFeatures
 ##' @aliases longFormat
+##'
+##' @examples
+##'
+##' data(feat2)
+##'
+##' longForm(feat2)
+##'
+##' ## add a colData variable and use it in longFrom
+##' colData(feat2)$colvar <- paste0("Var", 1:12)
+##' colData(feat2)
+##' longForm(feat2, colvars = "colvar")
+##'
+##' ## use a rowData variable in longFrom
+##' rowDataNames(feat2)
+##' longForm(feat2, rowvar = "Prot")
+##'
+##' ## use both col/rowData
+##' longForm(feat2, colvar = "colvar", rowvar = "Prot")
+##'
+##' ## also works on a single SE
+##' se <- getWithColData(feat2, 1)
+##' longForm(se)
+##' longForm(se, colvar = "colvar")
+##' longForm(se, rowvar = "Prot")
+##' longForm(se, colvar = "colvar", rowvar = "Prot")
+
 setMethod("longForm", "QFeatures",
           function(object, colvars = NULL,
                    rowvars = NULL,
                    i = 1L)
               longFormQFeatures(object, colvars, rowvars, i))
 
-##' @rdname QFeatures-class
+##' @rdname QFeatures-longForm
 ##'
 ##' @exportMethod longForm
 ##'
