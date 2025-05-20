@@ -54,11 +54,12 @@ rd <- data.frame(rowX = letters[1:10])
 se <- SummarizedExperiment(list(counts = counts),
                            colData = cd,
                            rowData = rd)
+longDF <- as(longDF, "DataFrame")
 
 test_that("longFormSE works with 1 assay", {
-    expect_identical(longFormSE(se), longDF[, 1:4])
-    expect_identical(longFormSE(se, colvars = "colX"), longDF[, 1:5])
-    expect_identical(longFormSE(se, colvars = "colX", rowvars = "rowX"), longDF)
+    expect_identical(longForm(se), longDF[, 1:4])
+    expect_identical(longForm(se, colvars = "colX"), longDF[, 1:5])
+    expect_identical(longForm(se, colvars = "colX", rowvars = "rowX"), longDF)
 })
 
 
@@ -67,7 +68,7 @@ test_that("longFormSE works with 2 assays", {
     longDF2 <- longDF
     longDF2$assayName <- "count2"
     expect_identical(
-        longFormSE(se, colvars = "colX", rowvars = "rowX"),
+        longForm(se, colvars = "colX", rowvars = "rowX"),
         rbind(longDF, longDF2))
 })
 
@@ -77,7 +78,7 @@ test_that("longFormSE works with unnamed assays", {
     longDF2 <- longDF
     longDF2$assayName <- ""
     expect_identical(
-        longFormSE(se, colvars = "colX", rowvars = "rowX"),
+        longForm(se, colvars = "colX", rowvars = "rowX"),
         rbind(longDF, longDF2))
     alst <- assays(se)
     names(alst) <- NULL
@@ -86,6 +87,6 @@ test_that("longFormSE works with unnamed assays", {
     longDF2$assayName <- 2L
     ## No names
     expect_equal(
-        longFormSE(se, colvars = "colX", rowvars = "rowX"),
+        longForm(se, colvars = "colX", rowvars = "rowX"),
         rbind(longDF, longDF2))
 })
