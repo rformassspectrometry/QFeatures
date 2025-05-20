@@ -27,6 +27,10 @@ return. Default is \code{1L}. If \code{object} is a \code{SummarizedExperiment},
 \code{numeric()} indicating what assays to pull and convert. Default is to
 use all assays.}
 }
+\value{
+A \code{DataFrame} for \link{QFeatures} objects. A \code{data.frame} for
+\link{SummarizedExperiment} objects.
+}
 \description{
 The \code{longForm()} method transform a \link{QFeatures} or \link{SummarizedExperiment}
 instance into a long \emph{tidy} \link{DataFrame} that contains the assay data, where
