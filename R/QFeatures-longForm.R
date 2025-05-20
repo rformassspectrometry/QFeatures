@@ -23,6 +23,9 @@
 ##'     `numeric()` indicating what assays to pull and convert. Default is to
 ##'     use all assays.
 ##'
+##' @return A `DataFrame` for [QFeatures] objects. A `data.frame` for
+##'     [SummarizedExperiment] objects.
+##'
 ##' @rdname QFeatures-longForm
 ##'
 ##' @importFrom MultiAssayExperiment longForm
