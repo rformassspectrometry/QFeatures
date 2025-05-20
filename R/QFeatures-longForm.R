@@ -23,8 +23,7 @@
 ##'     `numeric()` indicating what assays to pull and convert. Default is to
 ##'     use all assays.
 ##'
-##' @return A `DataFrame` for [QFeatures] objects. A `data.frame` for
-##'     [SummarizedExperiment] objects.
+##' @return A `DataFrame` instance.
 ##'
 ##' @rdname QFeatures-longForm
 ##'
@@ -169,8 +168,7 @@ longFormSE <- function(object, colvars = NULL, rowvars = NULL,
         rownames(rd) <- NULL
         res <- cbind(res, rd)
     }
-    ## as(res, "DataFrame")
-    res
+    as(res, "DataFrame")
 }
 
 ##' @noRd

@@ -28,8 +28,7 @@ return. Default is \code{1L}. If \code{object} is a \code{SummarizedExperiment},
 use all assays.}
 }
 \value{
-A \code{DataFrame} for \link{QFeatures} objects. A \code{data.frame} for
-\link{SummarizedExperiment} objects.
+A \code{DataFrame} instance.
 }
 \description{
 The \code{longForm()} method transform a \link{QFeatures} or \link{SummarizedExperiment}
