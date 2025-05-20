@@ -35,7 +35,7 @@ setMethod("longForm", "SummarizedExperiment",
           function(object, colvars = NULL,
                    rowvars = NULL,
                    i = seq_along(assays(object)))
-              longFormSE(object, colvars, rowvars, i, na.rm = FALSE))
+              longFormSE(object, colvars, rowvars, i))
 
 longFormQFeatures <- function(object, colvars = NULL,
                               rowvars = NULL,
@@ -77,8 +77,7 @@ longFormQFeatures <- function(object, colvars = NULL,
 
 ##' @importFrom reshape2 melt
 longFormSE <- function(object, colvars = NULL, rowvars = NULL,
-                       i = seq_along(assays(object)),
-                       na.rm = FALSE) {
+                       i = seq_along(assays(object))) {
     ## Check that indices are within bounds
     if (max(i) > length(assays(object)) | min(i) < 1)
         stop("Argument 'i' out of (assay) bounds.")
@@ -101,8 +100,7 @@ longFormSE <- function(object, colvars = NULL, rowvars = NULL,
                       ans <- reshape2::melt(assay(object, i[ii]),
                                             varnames = c("rowname", "colname"),
                                             value.name = "value",
-                                            as.is = TRUE,
-                                            na.rm = na.rm)
+                                            as.is = TRUE)
                       ans$assayName <- nms[ii]
                       rownames(ans) <- NULL
                       ans
