@@ -79,14 +79,9 @@ replaceAssay(x, y, i)
 
 dropEmptyAssays(object, dims = 1:2)
 
-\S4method{longForm}{QFeatures}(object, colvars = NULL, rowvars = NULL, index = 1L)
+\S4method{longForm}{QFeatures}(object, colvars = NULL, rowvars = NULL, i = 1L)
 
-\S4method{longForm}{SummarizedExperiment}(
-  object,
-  colvars = NULL,
-  rowvars = NULL,
-  index = seq_along(assays(object))
-)
+\S4method{longForm}{SummarizedExperiment}(object, colvars = NULL, rowvars = NULL, i = seq_along(assays(object)))
 }
 \arguments{
 \item{...}{See \code{MultiAssayExperiment} for details. For \code{plot},
@@ -103,8 +98,11 @@ is generated using \code{plotly}. Else, a static plot using \code{igraph}
 is generated. We recommend interactive exploration when the
 \code{QFeatures} object contains more than 50 assays.}
 
-\item{i}{An indexing vector. See the corresponding section in the
-documentation for more details.}
+\item{i}{When object is an instance of class \code{QFeatures}, a \code{numeric(1)}
+indicating what assay within each \code{SummarizedExperiment} object to
+return. Default is \code{1L}. If object is a \code{SummarizedExperiment}, a
+\code{numeric()} indicating what assays to pull and convert. Default is to
+use all assays.}
 
 \item{j}{\code{character()}, \code{logical()}, or \code{numeric()} vector for
 subsetting by \code{colData} rows.}
@@ -143,12 +141,6 @@ samples). Default is \code{1:2}. Any value other that 1 and/or 2
 will trigger an error.}
 
 \item{colvars}{A \code{character()} that selects column(s) in the \code{colData}.}
-
-\item{index}{When object is an instance of class \code{QFeatures}, a \code{numeric(1)}
-indicating what assay within each \code{SummarizedExperiment} object to
-return. Default is \code{1L}. If object is a \code{SummarizedExperiment}, a
-\code{numeric()} indicating what assays to pull and convert. Default is to
-use all assays.}
 }
 \description{
 Conceptually, a \code{QFeatures} object holds a set of \emph{assays}, each

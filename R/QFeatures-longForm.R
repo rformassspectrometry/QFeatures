@@ -5,7 +5,7 @@
 ##' @param rowvars A `character()` with the names of the `rowData`
 ##'     variables (columns) to retain in any assay.
 ##'
-##' @param index When object is an instance of class `QFeatures`, a `numeric(1)`
+##' @param i When object is an instance of class `QFeatures`, a `numeric(1)`
 ##'     indicating what assay within each `SummarizedExperiment` object to
 ##'     return. Default is `1L`. If object is a `SummarizedExperiment`, a
 ##'     `numeric()` indicating what assays to pull and convert. Default is to
@@ -23,8 +23,8 @@
 setMethod("longForm", "QFeatures",
           function(object, colvars = NULL,
                    rowvars = NULL,
-                   index = 1L)
-              longFormQFeatures(object, colvars, rowvars, index))
+                   i = 1L)
+              longFormQFeatures(object, colvars, rowvars, i))
 
 ##' @rdname QFeatures-class
 ##'
@@ -34,12 +34,16 @@ setMethod("longForm", "QFeatures",
 setMethod("longForm", "SummarizedExperiment",
           function(object, colvars = NULL,
                    rowvars = NULL,
-                   index = seq_along(assays(object)))
-              longFormSE(object, colvars, rowvars, index, na.rm = FALSE))
+                   i = seq_along(assays(object)))
+              longFormSE(object, colvars, rowvars, i, na.rm = FALSE))
 
 longFormQFeatures <- function(object, colvars = NULL,
                               rowvars = NULL,
-                              index = 1L) {
+                              i = 1L) {
+    if (length(i) > 1) {
+        warning("'i' must be of length 1 - using first element.")
+        i <- i[1]
+    }
     if (!is.null(rowvars)) {
         rdNames <- rowDataNames(object)
         misNames <- sapply(rdNames,
@@ -53,7 +57,7 @@ longFormQFeatures <- function(object, colvars = NULL,
             MultiAssayExperiment::longForm(
                                       as(object, "MultiAssayExperiment"),
                                       colDataCols = colvars,
-                                      i = index)
+                                      i = i)
         ## Get the required rowData
         rds <- lapply(rowData(object),
                       function(rd) rd[, rowvars, drop = FALSE])
@@ -66,18 +70,18 @@ longFormQFeatures <- function(object, colvars = NULL,
         MultiAssayExperiment::longForm(
                                   as(object, "MultiAssayExperiment"),
                                   colDataCols = colvars,
-                                  i = index)
+                                  i = i)
     }
 }
 
 
 ##' @importFrom reshape2 melt
 longFormSE <- function(object, colvars = NULL, rowvars = NULL,
-                       index = seq_along(assays(object)),
+                       i = seq_along(assays(object)),
                        na.rm = FALSE) {
     ## Check that indices are within bounds
-    if (max(index) > length(assays(object)) | min(index) < 1)
-        stop("Index out of (assay) bounds.")
+    if (max(i) > length(assays(object)) | min(i) < 1)
+        stop("Argument 'i' out of (assay) bounds.")
     ## Check that all colvars exist
     if (!is.null(colvars)) {
         if (!all(colvars %in% names(colData(object))))
@@ -89,17 +93,17 @@ longFormSE <- function(object, colvars = NULL, rowvars = NULL,
             stop("Some 'rowvars' not found in rowData(.).")
     }
     ## Need names for the assayNames columns. If the object's assays don't have
-    ## any names, use the index set above.
+    ## any names, use the index i set above.
     if (is.null(nms <- assayNames(object)))
-        nms <- index
-    res <- lapply(seq_along(index),
-                  function(i) {
-                      ans <- reshape2::melt(assay(object, index[i]),
+        nms <- i
+    res <- lapply(seq_along(i),
+                  function(ii) {
+                      ans <- reshape2::melt(assay(object, i[ii]),
                                             varnames = c("rowname", "colname"),
                                             value.name = "value",
                                             as.is = TRUE,
                                             na.rm = na.rm)
-                      ans$assayName <- nms[i]
+                      ans$assayName <- nms[ii]
                       rownames(ans) <- NULL
                       ans
                   })
@@ -134,6 +138,6 @@ longFormSE <- function(object, colvars = NULL, rowvars = NULL,
 longFormat <- function(object,
                        colvars = NULL,
                        rowvars = NULL,
-                       index = 1L) {
+                       i = 1L) {
     .Defunct("longForm")
 }
