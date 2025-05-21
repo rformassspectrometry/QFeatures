@@ -220,17 +220,17 @@ jobs:
       ## See https://github.com/Bioconductor/bioconductor_docker/issues/22
       - name: Manually install preprocessCore
         run: |
-          git clone https://github.com/bmbolstad/preprocessCore.git
+          git clone https://git.bioconductor.org/packages/preprocessCore
           cd preprocessCore
           R CMD INSTALL --configure-args="--disable-threading"  .
 
-      - name: Install MsDataHub from Github (>= 1.3.3)
-        run: BiocManager::install("RforMassSpectrometry/MsDataHub")
-        shell: Rscript {0}
+      ## - name: Install MsDataHub from Github (>= 1.3.3)
+      ##   run: BiocManager::install("RforMassSpectrometry/MsDataHub")
+      ##   shell: Rscript {0}
 
-      - name: Install ProtGenerics from Github (>= 1.35.1)
-        run: BiocManager::install("RforMassSpectrometry/ProtGenerics")
-        shell: Rscript {0}
+      ## - name: Install ProtGenerics from Github (>= 1.35.1)
+      ##   run: BiocManager::install("RforMassSpectrometry/ProtGenerics")
+      ##   shell: Rscript {0}
 
       - name: Session info
         run: |

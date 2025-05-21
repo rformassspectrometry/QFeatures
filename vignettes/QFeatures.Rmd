@@ -283,7 +283,7 @@ once converted into a `data.frame`. See the visualization vignette for
 more details about data exploration from a `QFeatures` object.
 
 ```{r plotstat3}
-stat3_df <- data.frame(longFormat(stat3))
+stat3_df <- data.frame(longForm(stat3))
 stat3_df$assay <- factor(stat3_df$assay,
                         levels = c("psms", "peptides", "proteins"))
 library("ggplot2")
@@ -309,7 +309,7 @@ stat
 Below, we visualise the expression profiles for the two proteins.
 
 ```{r plotstat}
-stat_df <- data.frame(longFormat(stat))
+stat_df <- data.frame(longForm(stat))
 stat_df$stat3 <- ifelse(stat_df$rowname %in% stat3_df$rowname,
                         "STAT3", "STAT1")
 stat_df$assay <- factor(stat_df$assay,
@@ -339,7 +339,7 @@ and possibly
 ```{r subsetpipe, eval = FALSE}
 hl |>
     subsetByFeature("P42227-2") |>
-    longFormat() |>
+    longForm() |>
     as.data.frame() |>
     ggplot(aes(x = colname,
                y = value,
@@ -405,5 +405,10 @@ filterFeatures(hl, ~ qValue <= 0.001)
 sessionInfo()
 ```
 
+# License {-}
+
+This vignette is distributed under a
+[CC BY-SA license](https://creativecommons.org/licenses/by-sa/2.0/)
+license.
 
 # References {-}

@@ -1,11 +1,11 @@
-## version 1.15.1
+## version 1.19.1
 api <- c("addAssay", "addAssayLink", "addAssayLinkOneToOne",
          "adjacencyMatrix", "adjacencyMatrix<-", "aggcounts",
          "aggregateFeatures", "assayLink", "AssayLink", "assayLinks",
          "AssayLinks", "coerce", "countUniqueFeatures", "dims",
          "display", "dropEmptyAssays", "expandDataFrame",
          "filterFeatures", "filterNA", "getQFeaturesType", "impute", "infIsNA",
-         "joinAssays", "logTransform", "longFormat", "ncols", "nNA",
+         "joinAssays", "logTransform", "longFormat", "longForm", "ncols", "nNA",
          "normalize", "nrows", "QFeatures", "rbindRowData",
          "readQFeatures", "readQFeaturesFromDIANN",
          "readSummarizedExperiment", "reduceDataFrame", "removeAssay",
