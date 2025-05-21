@@ -1,9 +1,12 @@
 # QFeatures 1.19
 
-
 ## QFeatures 1.19.1
 
 - Fix duplicated fnames bug (see issue #237).
+- Use `longForm()` methods (replacing `longFormat()`, now defunct).
+- Add `longForm,SummarizedExperiment`, supporting `rowvars` and
+  `colvars`, as `longForm,QFeatures` does. Without this method, uses
+  `longForm,ANY` that doesn't.
 
 ## QFeatures 1.19.0
 

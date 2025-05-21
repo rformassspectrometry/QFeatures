@@ -166,10 +166,10 @@ reference [book](https://jokergoo.github.io/ComplexHeatmap-reference/book/).
 
 # Advanced data exploration
 
-In this section, we show how to combine in a single table
-different pieces of information available in a `QFeatures` object,
-that are quantitation data, feature metadata and sample metadata. The
-`QFeatures` package provides the `longFormat` function that converts a
+In this section, we show how to combine in a single table different
+pieces of information available in a `QFeatures` object, that are
+quantitation data, feature metadata and sample metadata. The
+`QFeatures` package provides the `longForm()` function that converts a
 `QFeatures` object into a long table. Long tables are very useful when
 using `ggplot2` for data visualization. For instance, suppose we want
 to visualize the distribution of protein quantitation (present in the
@@ -179,10 +179,10 @@ to visualize the distribution of protein quantitation (present in the
 quantitation values coming from the same protein using lines. This can
 all be plotted at once in a few lines of code.
 
-```{r longFormat, fig.height = 7, fig.width = 9}
-lf <- longFormat(hl[, , "proteins"],
-                 rowvars = "markers",
-                 colvars = "tag")
+```{r longForm, fig.height = 7, fig.width = 9}
+lf <- longForm(hl[, , "proteins"],
+               rowvars = "markers",
+               colvars = "tag")
 ggplot(data.frame(lf)) +
     aes(x = tag,
         y = value,
@@ -191,7 +191,7 @@ ggplot(data.frame(lf)) +
     facet_wrap(~ markers, scales = "free_y", ncol = 3)
 ```
 
-`longFormat` allows to retrieve and combine all available data from a
+`longForm()` allows to retrieve and combine all available data from a
 `Qfeatures` object. We here demonstrate the ease to combine different
 pieces that could highlight sample specific and/or feature specific
 effects on data quantitation.
@@ -228,6 +228,12 @@ interest, which can then be visualised as a heatmap (figure
 ```{r sessioninfo, echo=FALSE}
 sessionInfo()
 ```
+
+# License {-}
+
+This vignette is distributed under a
+[CC BY-SA license](https://creativecommons.org/licenses/by-sa/2.0/)
+license.
 
 
 # References {-}

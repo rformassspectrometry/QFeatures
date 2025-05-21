@@ -69,11 +69,9 @@
 ##' - The `rowDataNames` accessor returns a list with the `rowData`
 ##'   variable names.
 ##'
-##' - The `longFormat` accessor takes a `QFeatures` object and returns
-##'   it in a long format `DataFrame`. Each quantitative value is
-##'   reported on a separate line. `colData` and `rowData` data can
-##'   also be added. This function is an extension of the `longFormat`
-##'   function in the [MultiAssayExperiment::MultiAssayExperiment].
+##' - The [longForm()] accessor takes a `QFeatures` instance and returns it in a
+##'   long *tidy* `DataFrame`, where each quantitative value is reported on a
+##'   separate line.
 ##'
 ##' @section Adding, removing and replacing assays:
 ##'
@@ -153,6 +151,9 @@
 ##' @param drop logical (default `TRUE`) whether to drop empty assay
 ##'     elements in the `ExperimentList`.
 ##'
+##' @param rowvars A `character()` with the names of the `rowData`
+##'     variables (columns) to retain in any assay.
+##'
 ##' @param ... See `MultiAssayExperiment` for details. For `plot`,
 ##'     further arguments passed to `igraph::plot.igraph`.
 ##'
@@ -181,7 +182,6 @@
 ##' @aliases addAssay
 ##' @aliases dims,QFeatures-method show,QFeatures-method
 ##' @aliases [,QFeatures,ANY,ANY,ANY-method [,QFeatures,character,ANY,ANY-method
-##'
 ##' @aliases rowDataNames selectRowData
 ##'
 ##' @rdname QFeatures-class
@@ -732,9 +732,6 @@ rbindRowData <- function(object, i)  {
 
 ##' @rdname QFeatures-class
 ##'
-##' @param rowvars A `character()` with the names of the `rowData`
-##'     variables (columns) to retain in any assay.
-##'
 ##' @export
 selectRowData <- function(x, rowvars) {
     stopifnot(inherits(x, "QFeatures"))
@@ -786,49 +783,6 @@ setReplaceMethod("names", c("QFeatures", "character"),
                      }
                      x
                  })
-
-
-##' @rdname QFeatures-class
-##'
-##' @param colvars A `character()` that selects column(s) in the
-##'     `colData`.
-##' @param index The assay indicator within each `SummarizedExperiment`
-##'     object. A vector input is supported in the case that the
-##'     `SummarizedExperiment` object(s) has more than one assay
-##'     (default `1L`)
-##'
-##' @importFrom MultiAssayExperiment longFormat
-##' @importFrom reshape2 melt
-##'
-##' @export
-longFormat <- function(object,
-                       colvars = NULL,
-                       rowvars = NULL,
-                       index = 1L) {
-    if (!is.null(rowvars)) {
-        rdNames <- rowDataNames(object)
-        misNames <- sapply(rdNames,
-                           function (x) any(!rowvars %in% x))
-        ## Check that all required
-        if (any(misNames))
-            stop("Some 'rowvars' not found in assay(s): ",
-                 paste0(names(misNames)[misNames], collapse = ", "))
-        ## Get long format table with quantification values and colvars
-        longDataFrame <-
-            MultiAssayExperiment::longFormat(object, colvars, index)
-        ## Get the required rowData
-        rds <- lapply(rowData(object),
-                      function(rd) rd[, rowvars, drop = FALSE])
-        rds <- do.call(rbind, rds)
-        ## Merge the rowData to the long table
-        cbind(longDataFrame,
-              rds[as.character(longDataFrame$rowname), , drop = FALSE])
-    } else {
-        ## If rowvars is null, return the MAE longFormat output
-        MultiAssayExperiment::longFormat(object, colvars, index)
-    }
-}
-
 
 ##' @param y An object that inherits from `SummarizedExperiment` or a
 ##'     *named* list of assays. When `y` is a list, each element must
