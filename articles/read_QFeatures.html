@@ -164,7 +164,8 @@ table is converted to a <code>QFeatures</code> object as follows:</p>
 <span><span class="co">#&gt; Loading data as a 'SummarizedExperiment' object.</span></span>
 <span><span class="co">#&gt; Formatting sample annotations (colData).</span></span>
 <span><span class="co">#&gt; Formatting data as a 'QFeatures' object.</span></span>
-<span><span class="co">#&gt; An instance of class QFeatures containing 1 set(s):</span></span>
+<span><span class="co">#&gt; An instance of class QFeatures (type: bulk) with 1 set:</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  [1] quants: SummarizedExperiment with 3010 rows and 10 columns</span></span></code></pre></div>
 <p>The object returned by <code><a href="../reference/readQFeatures.html">readQFeatures()</a></code> is a
 <code>QFeatures</code> object containing 1
@@ -177,7 +178,8 @@ by providing the <code>name</code> argument:</p>
 <span><span class="co">#&gt; Loading data as a 'SummarizedExperiment' object.</span></span>
 <span><span class="co">#&gt; Formatting sample annotations (colData).</span></span>
 <span><span class="co">#&gt; Formatting data as a 'QFeatures' object.</span></span>
-<span><span class="co">#&gt; An instance of class QFeatures containing 1 set(s):</span></span>
+<span><span class="co">#&gt; An instance of class QFeatures (type: bulk) with 1 set:</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  [1] psms: SummarizedExperiment with 3010 rows and 10 columns</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -229,7 +231,8 @@ depending on the <code>runCol</code> column, here given as
 <span><span class="co">#&gt; Splitting data in runs.</span></span>
 <span><span class="co">#&gt; Formatting sample annotations (colData).</span></span>
 <span><span class="co">#&gt; Formatting data as a 'QFeatures' object.</span></span>
-<span><span class="co">#&gt; An instance of class QFeatures containing 3 set(s):</span></span>
+<span><span class="co">#&gt; An instance of class QFeatures (type: bulk) with 3 sets:</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  [1] run1.raw: SummarizedExperiment with 1004 rows and 10 columns </span></span>
 <span><span class="co">#&gt;  [2] run2.raw: SummarizedExperiment with 1004 rows and 10 columns </span></span>
 <span><span class="co">#&gt;  [3] run3.raw: SummarizedExperiment with 1002 rows and 10 columns</span></span></code></pre></div>
@@ -282,7 +285,8 @@ a column named <code>quantCols</code>.</p>
 <span><span class="co">#&gt; Loading data as a 'SummarizedExperiment' object.</span></span>
 <span><span class="co">#&gt; Formatting sample annotations (colData).</span></span>
 <span><span class="co">#&gt; Formatting data as a 'QFeatures' object.</span></span>
-<span><span class="co">#&gt; An instance of class QFeatures containing 1 set(s):</span></span>
+<span><span class="co">#&gt; An instance of class QFeatures (type: bulk) with 1 set:</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  [1] quants: SummarizedExperiment with 3010 rows and 10 columns</span></span></code></pre></div>
 <p>For convenience, the <code>quantCols</code> argument can be omitted
 when providing <code>colData</code> (<code>quantCols</code> are then
@@ -293,7 +297,8 @@ fetched from this table):</p>
 <span><span class="co">#&gt; Loading data as a 'SummarizedExperiment' object.</span></span>
 <span><span class="co">#&gt; Formatting sample annotations (colData).</span></span>
 <span><span class="co">#&gt; Formatting data as a 'QFeatures' object.</span></span>
-<span><span class="co">#&gt; An instance of class QFeatures containing 1 set(s):</span></span>
+<span><span class="co">#&gt; An instance of class QFeatures (type: bulk) with 1 set:</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  [1] quants: SummarizedExperiment with 3010 rows and 10 columns</span></span></code></pre></div>
 <p>The annotations are retrieved as follows:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -352,7 +357,8 @@ duplicating the table for each run:</p>
 <span><span class="co">#&gt; Splitting data in runs.</span></span>
 <span><span class="co">#&gt; Formatting sample annotations (colData).</span></span>
 <span><span class="co">#&gt; Formatting data as a 'QFeatures' object.</span></span>
-<span><span class="co">#&gt; An instance of class QFeatures containing 3 set(s):</span></span>
+<span><span class="co">#&gt; An instance of class QFeatures (type: bulk) with 3 sets:</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  [1] run1.raw: SummarizedExperiment with 1004 rows and 10 columns </span></span>
 <span><span class="co">#&gt;  [2] run2.raw: SummarizedExperiment with 1004 rows and 10 columns </span></span>
 <span><span class="co">#&gt;  [3] run3.raw: SummarizedExperiment with 1002 rows and 10 columns</span></span></code></pre></div>
@@ -400,7 +406,8 @@ containing only <code>NA</code>s.</p>
 <span><span class="co">#&gt; Loading data as a 'SummarizedExperiment' object.</span></span>
 <span><span class="co">#&gt; Formatting sample annotations (colData).</span></span>
 <span><span class="co">#&gt; Formatting data as a 'QFeatures' object.</span></span>
-<span><span class="co">#&gt; An instance of class QFeatures containing 1 set(s):</span></span>
+<span><span class="co">#&gt; An instance of class QFeatures (type: bulk) with 1 set:</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  [1] quants: SummarizedExperiment with 3010 rows and 9 columns</span></span></code></pre></div>
 <p>Note that we have set all values in <code>X126</code> to missing.
 Hence, the set contains only 9 columns instead of the previous 10.</p>
@@ -415,7 +422,8 @@ console. To disable the console output, you can use the
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">qfSingle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readQFeatures.html">readQFeatures</a></span><span class="op">(</span></span>
 <span>    <span class="va">hlpsms</span>, quantCols <span class="op">=</span> <span class="va">quantCols</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; An instance of class QFeatures containing 1 set(s):</span></span>
+<span><span class="co">#&gt; An instance of class QFeatures (type: bulk) with 1 set:</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  [1] quants: SummarizedExperiment with 3010 rows and 10 columns</span></span></code></pre></div>
 </div>
 </div>

@@ -165,7 +165,8 @@ peptide sequences.</p>
 <pre><code><span><span class="co">## Setting assay rownames.</span></span></code></pre>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cptac</span></span></code></pre></div>
-<pre><code><span><span class="co">## An instance of class QFeatures containing 1 set(s):</span></span>
+<pre><code><span><span class="co">## An instance of class QFeatures (type: bulk) with 1 set:</span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">##  [1] peptides: SummarizedExperiment with 11466 rows and 6 columns</span></span></code></pre>
 </div>
 <div class="section level2">
@@ -193,12 +194,14 @@ groups, 6A and 6B, and the original sample numbers.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span><span class="op">(</span><span class="va">cptac</span>, <span class="op">~</span> <span class="va">Reverse</span> <span class="op">==</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 'Reverse' found in 1 out of 1 assay(s).</span></span></code></pre>
-<pre><code><span><span class="co">## An instance of class QFeatures containing 1 set(s):</span></span>
+<pre><code><span><span class="co">## An instance of class QFeatures (type: bulk) with 1 set:</span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">##  [1] peptides: SummarizedExperiment with 11436 rows and 6 columns</span></span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span><span class="op">(</span><span class="va">cptac</span>, <span class="op">~</span> <span class="va">Potential.contaminant</span> <span class="op">==</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 'Potential.contaminant' found in 1 out of 1 assay(s).</span></span></code></pre>
-<pre><code><span><span class="co">## An instance of class QFeatures containing 1 set(s):</span></span>
+<pre><code><span><span class="co">## An instance of class QFeatures (type: bulk) with 1 set:</span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">##  [1] peptides: SummarizedExperiment with 11385 rows and 6 columns</span></span></code></pre>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cptac</span> <span class="op">&lt;-</span> <span class="va">cptac</span> <span class="op">|&gt;</span></span>
@@ -289,7 +292,8 @@ default value).</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-missing-data.html">filterNA</a></span><span class="op">(</span><span class="va">cptac</span>, i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">)</span>, pNA <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
 <span><span class="va">cptac</span></span></code></pre></div>
-<pre><code><span><span class="co">## An instance of class QFeatures containing 1 set(s):</span></span>
+<pre><code><span><span class="co">## An instance of class QFeatures (type: bulk) with 1 set:</span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns</span></span></code></pre>
 <p>I we wanted to keep peptides that have up to 90% of missing values,
 corresponsing in this case to those that have only one value (i.e 5/6
@@ -424,7 +428,8 @@ assays.</p>
 <span>                      i <span class="op">=</span> <span class="st">"peptides"</span>,</span>
 <span>                      name <span class="op">=</span> <span class="st">"peptides_log"</span><span class="op">)</span></span>
 <span><span class="va">cptac</span></span></code></pre></div>
-<pre><code><span><span class="co">## An instance of class QFeatures containing 2 set(s):</span></span>
+<pre><code><span><span class="co">## An instance of class QFeatures (type: bulk) with 2 sets:</span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns </span></span>
 <span><span class="co">##  [2] peptides_log: SummarizedExperiment with 4051 rows and 6 columns</span></span></code></pre>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
@@ -454,7 +459,8 @@ the <code>QFeatures</code> object.</p>
 <span>                   name <span class="op">=</span> <span class="st">"peptides_norm"</span>,</span>
 <span>                   method <span class="op">=</span> <span class="st">"diff.median"</span><span class="op">)</span></span>
 <span><span class="va">cptac</span></span></code></pre></div>
-<pre><code><span><span class="co">## An instance of class QFeatures containing 3 set(s):</span></span>
+<pre><code><span><span class="co">## An instance of class QFeatures (type: bulk) with 3 sets:</span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns </span></span>
 <span><span class="co">##  [2] peptides_log: SummarizedExperiment with 4051 rows and 6 columns </span></span>
 <span><span class="co">##  [3] peptides_norm: SummarizedExperiment with 4051 rows and 6 columns</span></span></code></pre>
@@ -514,7 +520,8 @@ namely <code>robustSummary</code> <span class="citation">(Sticker et al.
 <span>                           fcol <span class="op">=</span> <span class="st">"Proteins"</span>,</span>
 <span>                           name <span class="op">=</span> <span class="st">"proteins"</span><span class="op">)</span></span>
 <span><span class="va">cptac</span></span></code></pre></div>
-<pre><code><span><span class="co">## An instance of class QFeatures containing 4 set(s):</span></span>
+<pre><code><span><span class="co">## An instance of class QFeatures (type: bulk) with 4 sets:</span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns </span></span>
 <span><span class="co">##  [2] peptides_log: SummarizedExperiment with 4051 rows and 6 columns </span></span>
 <span><span class="co">##  [3] peptides_norm: SummarizedExperiment with 4051 rows and 6 columns </span></span>
