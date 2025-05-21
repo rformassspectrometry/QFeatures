@@ -1,5 +1,9 @@
 # QFeatures 1.19
 
+## QFeatures 1.19.2
+
+- Nothing yet.
+
 ## QFeatures 1.19.1
 
 - Fix duplicated fnames bug (see issue #237).
