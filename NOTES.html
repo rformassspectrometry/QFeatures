@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">QFeatures</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.17.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.19.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -245,7 +245,7 @@ readQFeaturesFromDIANN &lt;- funtion(dfr, multiplexing = NULL, ...) {
 <div class="section level1">
 <h1 id="possible-optimsations">Possible optimsations<a class="anchor" aria-label="anchor" href="#possible-optimsations"></a></h1>
 <p>Simple ones</p>
-<ul><li>In <code>longForm()</code> have a <code>na.rm</code> argument and propagate it to <code><a href="https://rdrr.io/pkg/reshape2/man/melt.html" class="external-link">reshape2::melt()</a></code> for each assay. This would require to loop over assay, extract them with <code>getWithColData()</code>, and use our own <code>longFormSE()</code> supporting <code>na.rm</code>.</li>
+<ul><li>In <code><a href="reference/QFeatures-longForm.html">longForm()</a></code> have a <code>na.rm</code> argument and propagate it to <code><a href="https://rdrr.io/pkg/reshape2/man/melt.html" class="external-link">reshape2::melt()</a></code> for each assay. This would require to loop over assay, extract them with <code>getWithColData()</code>, and use our own <code>longFormSE()</code> supporting <code>na.rm</code>.</li>
 <li>Parallelise <code><a href="reference/QFeatures-aggregate.html">aggregateFeatures()</a></code>, <code><a href="reference/QFeatures-processing.html">logTransform()</a></code>, <code><a href="reference/QFeatures-processing.html">scaleTransform()</a></code>, <code><a href="reference/impute.html">impute()</a></code>, …</li>
 </ul></div>
 
@@ -259,7 +259,7 @@ readQFeaturesFromDIANN &lt;- funtion(dfr, multiplexing = NULL, ...) {
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.9000.</p>
 </div>
 
     </footer></div>
