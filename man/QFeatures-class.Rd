@@ -197,6 +197,8 @@ variable names.
 \item The \code{\link[=longForm]{longForm()}} accessor takes a \code{QFeatures} instance and returns it in a
 long \emph{tidy} \code{DataFrame}, where each quantitative value is reported on a
 separate line.
+\item The \code{getQFeaturesType} accessor takes a \code{QFeatures} object and
+returns its type.
 }
 }
 
