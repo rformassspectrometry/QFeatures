@@ -6,6 +6,7 @@ reference:
     desc: "The QFeatures class"
     contents:
     - QFeatures
+    - longForm
     - joinAssays
     - assayLink
     - assayLinks
