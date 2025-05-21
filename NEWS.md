@@ -7,6 +7,8 @@
 - Add `longForm,SummarizedExperiment`, supporting `rowvars` and
   `colvars`, as `longForm,QFeatures` does. Without this method, uses
   `longForm,ANY` that doesn't.
+- Defined a `QFeatures` object type (bulk or single-cell) in the
+  instance's metadata slot (developer features).
 
 ## QFeatures 1.19.0
 
