@@ -69,11 +69,9 @@
 ##' - The `rowDataNames` accessor returns a list with the `rowData`
 ##'   variable names.
 ##'
-##' - The `longFormat` accessor takes a `QFeatures` object and returns
-##'   it in a long format `DataFrame`. Each quantitative value is
-##'   reported on a separate line. `colData` and `rowData` data can
-##'   also be added. This function is an extension of the `longFormat`
-##'   function in the [MultiAssayExperiment::MultiAssayExperiment].
+##' - The [longForm()] accessor takes a `QFeatures` instance and returns it in a
+##'   long *tidy* `DataFrame`, where each quantitative value is reported on a
+##'   separate line.
 ##'
 ##' - The `getQFeaturesType` accessor takes a `QFeatures` object and
 ##'  returns its type.
@@ -156,6 +154,9 @@
 ##' @param drop logical (default `TRUE`) whether to drop empty assay
 ##'     elements in the `ExperimentList`.
 ##'
+##' @param rowvars A `character()` with the names of the `rowData`
+##'     variables (columns) to retain in any assay.
+##'
 ##' @param ... See `MultiAssayExperiment` for details. For `plot`,
 ##'     further arguments passed to `igraph::plot.igraph`.
 ##'
@@ -184,8 +185,6 @@
 ##' @aliases addAssay
 ##' @aliases dims,QFeatures-method show,QFeatures-method
 ##' @aliases [,QFeatures,ANY,ANY,ANY-method [,QFeatures,character,ANY,ANY-method
-##'
-##'
 ##' @aliases rowDataNames selectRowData
 ##'
 ##' @rdname QFeatures-class
@@ -826,9 +825,6 @@ rbindRowData <- function(object, i) {
 
 ##' @rdname QFeatures-class
 ##'
-##' @param rowvars A `character()` with the names of the `rowData`
-##'     variables (columns) to retain in any assay.
-##'
 ##' @export
 selectRowData <- function(x, rowvars) {
     stopifnot(inherits(x, "QFeatures"))
@@ -888,58 +884,6 @@ setReplaceMethod(
         x
     }
 )
-
-
-##' @rdname QFeatures-class
-##'
-##' @param colvars A `character()` that selects column(s) in the
-##'     `colData`.
-##' @param index The assay indicator within each `SummarizedExperiment`
-##'     object. A vector input is supported in the case that the
-##'     `SummarizedExperiment` object(s) has more than one assay
-##'     (default `1L`)
-##'
-##' @importFrom MultiAssayExperiment longFormat
-##' @importFrom reshape2 melt
-##'
-##' @export
-longFormat <- function(object,
-    colvars = NULL,
-    rowvars = NULL,
-    index = 1L) {
-    if (!is.null(rowvars)) {
-        rdNames <- rowDataNames(object)
-        misNames <- sapply(
-            rdNames,
-            function(x) any(!rowvars %in% x)
-        )
-        ## Check that all required
-        if (any(misNames)) {
-            stop(
-                "Some 'rowvars' not found in assay(s): ",
-                paste0(names(misNames)[misNames], collapse = ", ")
-            )
-        }
-        ## Get long format table with quantification values and colvars
-        longDataFrame <-
-            MultiAssayExperiment::longFormat(object, colvars, index)
-        ## Get the required rowData
-        rds <- lapply(
-            rowData(object),
-            function(rd) rd[, rowvars, drop = FALSE]
-        )
-        rds <- do.call(rbind, rds)
-        ## Merge the rowData to the long table
-        cbind(
-            longDataFrame,
-            rds[as.character(longDataFrame$rowname), , drop = FALSE]
-        )
-    } else {
-        ## If rowvars is null, return the MAE longFormat output
-        MultiAssayExperiment::longFormat(object, colvars, index)
-    }
-}
-
 
 ##' @param y An object that inherits from `SummarizedExperiment` or a
 ##'     *named* list of assays. When `y` is a list, each element must
@@ -1367,12 +1311,12 @@ dropEmptyAssays <- function(object, dims = 1:2) {
 ##'   the type stored in its metadata.
 ##' - `getQFeaturesType()`: returns a character string indicating the
 ##'   type of the `QFeatures` object. If no type is explicitly set,
-##'   it is inferred from the class of the experiments. 
-##'   If the QFeatures contains any `SingleCellExperiment` objects, 
+##'   it is inferred from the class of the experiments.
+##'   If the QFeatures contains any `SingleCellExperiment` objects,
 ##'   the type is set to "scp". Otherwise, it is set to "bulk".
 ##' - `validQFeaturesTypes()`: character vector of valid QFeatures types.
 ##'
-##' @section Warning: 
+##' @section Warning:
 ##' These functions are intended for package developers and internal use.
 ##' End users should typically not call them directly.
 ##' @details
@@ -1380,15 +1324,14 @@ dropEmptyAssays <- function(object, dims = 1:2) {
 ##' distinguish between different structural uses of `QFeatures` objects.
 ##' This slot is directly accessible with `metadata(object)[["._type"]]`.
 ##'
-##' @note The `QFeatures` type slot was introduced because, in the 
-##'       context of the `scp` package, we found that `SingleCellExperiment`   
-##'       objects were slower than `SummarizedExperiment` 
+##' @note The `QFeatures` type slot was introduced because, in the
+##'       context of the `scp` package, we found that `SingleCellExperiment`
+##'       objects were slower than `SummarizedExperiment`
 ##'       objects (\href{https://github.com/UCLouvain-CBIO/scp/issues/83}{GH issue: scp#83}).
 ##'       As a result, we started using `SummarizedExperiment` objects
 ##'       within `scp`. However, to retain information about the type of
 ##'       data being handled, we introduced the `QFeatures` type slot.
 ##'       This slot is, for example, used in the `show` method of `QFeatures`.
-
 ##'
 ##' @rdname QFeatures-type
 ##' @keywords internal
