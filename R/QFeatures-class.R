@@ -73,9 +73,6 @@
 ##'   long *tidy* `DataFrame`, where each quantitative value is reported on a
 ##'   separate line.
 ##'
-##' - The `getQFeaturesType` accessor takes a `QFeatures` object and
-##'  returns its type.
-##'
 ##' @section Adding, removing and replacing assays:
 ##'
 ##' - The [aggregateFeatures()] function creates a new assay by
