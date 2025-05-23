@@ -256,7 +256,6 @@ NULL
 
 ##' @exportMethod aggregateFeatures
 ##' @rdname QFeatures-aggregate
-
 setMethod("aggregateFeatures", "QFeatures",
           function(object, i, fcol, name = "newAssay",
                    fun = MsCoreUtils::robustSummary, ...) {
@@ -285,7 +284,7 @@ setMethod("aggregateFeatures", "QFeatures",
                   ## Create the aggregated assay
                   el[[j]] <- aggregateFeatures(fromAssay, by, fun, ...)
                   rowDataColsKept <- colnames(rowData(el[[j]]))
-                  message("\rAggregated: ", j, "/", length(i), "\n")
+                  message("\rAggregated: ", j, "/", length(i))
               }
               names(el) <- name
               for (j in name) {
