@@ -269,32 +269,37 @@ setMethod("aggregateFeatures", "QFeatures",
               if (length(i) != length(name)) stop("'i' and 'name' must have same length")
               if (length(fcol) == 1) fcol <- rep(fcol, length(i))
               if (length(i) != length(fcol)) stop("'i' and 'fcol' must have same length")
-              rowDataColsKept <- colnames(rowData(object[[i[1]]]))
+
+              el <- experiments(object)[i]
+              rowDataColsKept <- colnames(rowData(el[[i[1]]]))
               ## Aggregate each assay
               for (j in seq_along(i)) {
                   from <- i[[j]]
-                  to <- name[[j]]
+                  fromAssay <- el[[from]]
                   by <- fcol[[j]]
                   ## Remove already discarded columns from rowData
                   rowDataColsKept <- intersect(rowDataColsKept,
-                                               colnames(rowData(object[[from]])))
-                  rowData(object[[from]]) <- rowData(object[[from]])[, rowDataColsKept, drop = FALSE]
+                                               colnames(rowData(fromAssay)))
+                  rowData(fromAssay) <- rowData(fromAssay)[, rowDataColsKept, drop = FALSE]
                   ## Create the aggregated assay
-                  aggAssay <- .aggregateQFeatures(object[[from]],
-                                                  by, fun, ...)
-                  ## Add the assay to the QFeatures object
-                  object <- addAssay(object, aggAssay, name = to)
-                  ## Link the input assay to the aggregated assay
-                  object <- addAssayLink(object, from = from,
-                                         to  = to, varFrom = by,
-                                         varTo = by)
-                  ## Update invariant colnames
-                  rowDataColsKept <- colnames(rowData(aggAssay))
+                  el[[j]] <- aggregateFeatures(fromAssay, by, fun, ...)
+                  rowDataColsKept <- colnames(rowData(el[[j]]))
+                  message("\rAggregated: ", j, "/", length(i))
               }
+              names(el) <- name
               for (j in name) {
                   rowDataColsKept <- intersect(rowDataColsKept,
-                                               colnames(rowData(object[[j]])))
-                  rowData(object[[j]]) <- rowData(object[[j]])[, rowDataColsKept]
+                                               colnames(rowData(el[[j]])))
+                  rowData(el[[j]]) <- rowData(el[[j]])[, rowDataColsKept, drop = FALSE]
+              }
+              ## Create the new QFeatures object
+              for (j in seq_along(name)) {
+                  object <- addAssay(object, el[[j]], name[j])
+                  object <- addAssayLink(object,
+                      from = i[[j]],
+                      to = name[j],
+                      varFrom = fcol[[j]],
+                      varTo = fcol[[j]])
               }
               object
           })
