@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">QFeatures</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.19.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.19.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -240,13 +240,14 @@ set, as an example, to the mean. The new assay is named
 <pre><code><span><span class="co">## Your row data contain missing values. Please read the relevant</span></span>
 <span><span class="co">## section(s) in the aggregateFeatures manual page regarding the effects</span></span>
 <span><span class="co">## of missing values on data aggregation.</span></span></code></pre>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<pre><code><span><span class="co">## Aggregated: 1/1</span></span></code></pre>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hl</span></span></code></pre></div>
 <pre><code><span><span class="co">## An instance of class QFeatures (type: bulk) with 2 sets:</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  [1] psms: SummarizedExperiment with 3010 rows and 10 columns </span></span>
 <span><span class="co">##  [2] peptides: SummarizedExperiment with 2923 rows and 10 columns</span></span></code></pre>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hl</span><span class="op">[[</span><span class="st">"peptides"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">## class: SummarizedExperiment </span></span>
 <span><span class="co">## dim: 2923 10 </span></span>
@@ -258,16 +259,18 @@ set, as an example, to the mean. The new assay is named
 <span><span class="co">## colData names(0):</span></span></code></pre>
 <p>Below, we repeat the aggregation operation by grouping peptides into
 proteins as defined by the <em>ProteinGroupAccessions</em> variable.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-aggregate.html">aggregateFeatures</a></span><span class="op">(</span><span class="va">hl</span>, <span class="st">"peptides"</span>, <span class="st">"ProteinGroupAccessions"</span>,</span>
-<span>                        name <span class="op">=</span> <span class="st">"proteins"</span>, fun <span class="op">=</span> <span class="va">colMeans</span><span class="op">)</span></span>
-<span><span class="va">hl</span></span></code></pre></div>
+<span>                        name <span class="op">=</span> <span class="st">"proteins"</span>, fun <span class="op">=</span> <span class="va">colMeans</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Aggregated: 1/1</span></span></code></pre>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hl</span></span></code></pre></div>
 <pre><code><span><span class="co">## An instance of class QFeatures (type: bulk) with 3 sets:</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  [1] psms: SummarizedExperiment with 3010 rows and 10 columns </span></span>
 <span><span class="co">##  [2] peptides: SummarizedExperiment with 2923 rows and 10 columns </span></span>
 <span><span class="co">##  [3] proteins: SummarizedExperiment with 1596 rows and 10 columns</span></span></code></pre>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hl</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">## class: SummarizedExperiment </span></span>
 <span><span class="co">## dim: 1596 10 </span></span>
@@ -283,10 +286,10 @@ doens’t currently possess any sample metadata. These can be addedd as a
 new <code>DataFrame</code> with matching names (i.e. the
 <code>DataFrame</code> rownames must be identical assay’s colnames) or
 can be added one variable at at time, as shown below.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">colData</span><span class="op">(</span><span class="va">hl</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## DataFrame with 10 rows and 0 columns</span></span></code></pre>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hl</span><span class="op">$</span><span class="va">tag</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"126"</span>, <span class="st">"127N"</span>, <span class="st">"127C"</span>, <span class="st">"128N"</span>, <span class="st">"128C"</span>, <span class="st">"129N"</span>, <span class="st">"129C"</span>,</span>
 <span>            <span class="st">"130N"</span>, <span class="st">"130C"</span>, <span class="st">"131"</span><span class="op">)</span></span>
 <span><span class="fu">colData</span><span class="op">(</span><span class="va">hl</span><span class="op">)</span></span></code></pre></div>
@@ -317,7 +320,7 @@ assay in a <code>QFeatures</code> object. Therefore there are as many
 <code>rowDataNames</code> provides a list where each element contains
 the name of the <code>rowData</code> columns available in the
 corresponding assay.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/QFeatures-class.html">rowDataNames</a></span><span class="op">(</span><span class="va">hl</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## CharacterList of length 3</span></span>
 <span><span class="co">## [["psms"]] Sequence ProteinDescriptions NbProteins ... RTmin markers</span></span>
@@ -329,7 +332,7 @@ the function on the <code>QFeautures</code> object directly. Similarly
 to <code>rowDataNames</code>, a list is returned where each element
 contains the <code>rowData</code> available in the corresponding
 assay.</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">rowData</span><span class="op">(</span><span class="va">hl</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## DataFrameList of length 3</span></span>
 <span><span class="co">## names(3): psms peptides proteins</span></span></code></pre>
@@ -338,7 +341,7 @@ assay.</p>
 using the <code>rbindRowData</code> function. The function will
 automatically select the columns that are common to all selected
 assays.</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/QFeatures-class.html">rbindRowData</a></span><span class="op">(</span><span class="va">hl</span>, i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"peptides"</span>, <span class="st">"proteins"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## DataFrame with 4519 rows and 5 columns</span></span>
 <span><span class="co">##            assay       rowname ProteinGroupAccessions       markers        .n</span></span>
@@ -364,19 +367,19 @@ to the <code>rowData</code>. For instance, let’s add a
 <code>rowData</code> variables with the mean protein expression as well
 as the associated standard deviation. First, we need to create the
 <code>DataFrame</code> with the mean expression.</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html" class="external-link">DataFrame</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">hl</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                sd <span class="op">=</span> <span class="fu">rowSds</span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">hl</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Then, we create the list and name the element <code>proteins</code>
 so that the new data is added to the <code>rowData</code> of the
 <code>proteins</code> assay. To add the list, we insert it back into the
 <code>rowData</code>.</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">rowData</span><span class="op">(</span><span class="va">hl</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/List-class.html" class="external-link">List</a></span><span class="op">(</span>proteins <span class="op">=</span> <span class="va">dF</span><span class="op">)</span></span></code></pre></div>
 <p>As shown below, the new <code>mean</code> and <code>sd</code>
 variables have been added to the <code>rowData</code> of the
 <code>proteins</code> assay.</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">rowData</span><span class="op">(</span><span class="va">hl</span><span class="op">)</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">## DataFrame with 1596 rows and 5 columns</span></span>
 <span><span class="co">##          ProteinGroupAccessions     markers        .n      mean        sd</span></span>
@@ -410,7 +413,7 @@ accession number P42227-2. This accession number corresponds to a
 feature name in the <em>proteins</em> assay. But this protein row was
 computed from 8 peptide rows in the <em>peptides</em> assay, themselves
 resulting from the aggregation of 8 rows in the <em>psms</em> assay.</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stat3</span> <span class="op">&lt;-</span> <span class="va">hl</span><span class="op">[</span><span class="st">"P42227-2"</span>, , <span class="op">]</span></span>
 <span><span class="va">stat3</span></span></code></pre></div>
 <pre><code><span><span class="co">## An instance of class QFeatures (type: bulk) with 3 sets:</span></span>
@@ -422,7 +425,7 @@ resulting from the aggregation of 8 rows in the <em>psms</em> assay.</p>
 <code>ggplot2</code> once converted into a <code>data.frame</code>. See
 the visualization vignette for more details about data exploration from
 a <code>QFeatures</code> object.</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stat3_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="../reference/QFeatures-longForm.html">longForm</a></span><span class="op">(</span><span class="va">stat3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">stat3_df</span><span class="op">$</span><span class="va">assay</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">stat3_df</span><span class="op">$</span><span class="va">assay</span>,</span>
 <span>                        levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"psms"</span>, <span class="st">"peptides"</span>, <span class="st">"proteins"</span><span class="op">)</span><span class="op">)</span></span>
@@ -440,7 +443,7 @@ namely P42227-2 and P42225. We obtain a new <code>QFeatures</code>
 instance containing 2 proteins, 9 peptides and 10 PSMS. From this, we
 can readily conclude that STAT1 was identified by a single
 PSM/peptide.</p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stat</span> <span class="op">&lt;-</span> <span class="va">hl</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"P42227-2"</span>, <span class="st">"P42225"</span><span class="op">)</span>, , <span class="op">]</span></span>
 <span><span class="va">stat</span></span></code></pre></div>
 <pre><code><span><span class="co">## An instance of class QFeatures (type: bulk) with 3 sets:</span></span>
@@ -449,7 +452,7 @@ PSM/peptide.</p>
 <span><span class="co">##  [2] peptides: SummarizedExperiment with 9 rows and 10 columns </span></span>
 <span><span class="co">##  [3] proteins: SummarizedExperiment with 2 rows and 10 columns</span></span></code></pre>
 <p>Below, we visualise the expression profiles for the two proteins.</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stat_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="../reference/QFeatures-longForm.html">longForm</a></span><span class="op">(</span><span class="va">stat</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">stat_df</span><span class="op">$</span><span class="va">stat3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">stat_df</span><span class="op">$</span><span class="va">rowname</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html" class="external-link">%in%</a></span> <span class="va">stat3_df</span><span class="op">$</span><span class="va">rowname</span>,</span>
 <span>                        <span class="st">"STAT3"</span>, <span class="st">"STAT1"</span><span class="op">)</span></span>
@@ -466,7 +469,7 @@ PSM/peptide.</p>
 <p>The subsetting by feature names is also available as a call to the
 <code>subsetByFeature</code> function, for use with the pipe
 operator.</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hl</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../reference/QFeatures-subsetBy.html">subsetByFeature</a></span><span class="op">(</span><span class="st">"P42227-2"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## An instance of class QFeatures (type: bulk) with 3 sets:</span></span>
@@ -474,7 +477,7 @@ operator.</p>
 <span><span class="co">##  [1] psms: SummarizedExperiment with 9 rows and 10 columns </span></span>
 <span><span class="co">##  [2] peptides: SummarizedExperiment with 8 rows and 10 columns </span></span>
 <span><span class="co">##  [3] proteins: SummarizedExperiment with 1 rows and 10 columns</span></span></code></pre>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hl</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../reference/QFeatures-subsetBy.html">subsetByFeature</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"P42227-2"</span>, <span class="st">"P42225"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## An instance of class QFeatures (type: bulk) with 3 sets:</span></span>
@@ -483,7 +486,7 @@ operator.</p>
 <span><span class="co">##  [2] peptides: SummarizedExperiment with 9 rows and 10 columns </span></span>
 <span><span class="co">##  [3] proteins: SummarizedExperiment with 2 rows and 10 columns</span></span></code></pre>
 <p>and possibly</p>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hl</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../reference/QFeatures-subsetBy.html">subsetByFeature</a></span><span class="op">(</span><span class="st">"P42227-2"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../reference/QFeatures-longForm.html">longForm</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -507,7 +510,7 @@ pre-defined filters (such as <code>SymbolFilter</code>,
 <code>ProteinIdFilter</code>, … that filter on gene symbol, protein
 identifier, …), this package allows users to define arbitrary character
 or numeric filters using the <code>VariableFilter</code>.</p>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mito_filter</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-filtering.html">VariableFilter</a></span><span class="op">(</span>field <span class="op">=</span> <span class="st">"markers"</span>,</span>
 <span>                              value <span class="op">=</span> <span class="st">"Mitochondrion"</span>,</span>
 <span>                              condition <span class="op">=</span> <span class="st">"=="</span><span class="op">)</span></span>
@@ -515,7 +518,7 @@ or numeric filters using the <code>VariableFilter</code>.</p>
 <pre><code><span><span class="co">## class: CharacterVariableFilter </span></span>
 <span><span class="co">## condition: == </span></span>
 <span><span class="co">## value: Mitochondrion</span></span></code></pre>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">qval_filter</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-filtering.html">VariableFilter</a></span><span class="op">(</span>field <span class="op">=</span> <span class="st">"qValue"</span>,</span>
 <span>                              value <span class="op">=</span> <span class="fl">0.001</span>,</span>
 <span>                              condition <span class="op">=</span> <span class="st">"&lt;="</span><span class="op">)</span></span>
@@ -526,7 +529,7 @@ or numeric filters using the <code>VariableFilter</code>.</p>
 <p>These filter can then readily be applied to all assays’ row data
 slots. The <code>mito_filter</code> will return all PSMs, peptides and
 proteins that were annotated as localising to the mitochondrion.</p>
-<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span><span class="op">(</span><span class="va">hl</span>, <span class="va">mito_filter</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 'markers' found in 3 out of 3 assay(s).</span></span></code></pre>
 <pre><code><span><span class="co">## An instance of class QFeatures (type: bulk) with 3 sets:</span></span>
@@ -538,7 +541,7 @@ proteins that were annotated as localising to the mitochondrion.</p>
 subset of PSMs, because the <code>qValue</code> variable is only present
 in the <code>psms</code> assays. The q-values are only relevant to PSMs
 and that variable was dropped from the other assays.</p>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span><span class="op">(</span><span class="va">hl</span>, <span class="va">qval_filter</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 'qValue' found in 1 out of 3 assay(s).</span></span></code></pre>
 <pre><code><span><span class="co">## No filter applied to the following assay(s) because one or more</span></span>
@@ -551,7 +554,7 @@ and that variable was dropped from the other assays.</p>
 <span><span class="co">##  [2] peptides: SummarizedExperiment with 0 rows and 10 columns </span></span>
 <span><span class="co">##  [3] proteins: SummarizedExperiment with 0 rows and 10 columns</span></span></code></pre>
 <p>The same filters can be created using the forumla interface:</p>
-<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span><span class="op">(</span><span class="va">hl</span>, <span class="op">~</span> <span class="va">markers</span> <span class="op">==</span> <span class="st">"Mitochondrion"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 'markers' found in 3 out of 3 assay(s).</span></span></code></pre>
 <pre><code><span><span class="co">## An instance of class QFeatures (type: bulk) with 3 sets:</span></span>
@@ -559,7 +562,7 @@ and that variable was dropped from the other assays.</p>
 <span><span class="co">##  [1] psms: SummarizedExperiment with 167 rows and 10 columns </span></span>
 <span><span class="co">##  [2] peptides: SummarizedExperiment with 162 rows and 10 columns </span></span>
 <span><span class="co">##  [3] proteins: SummarizedExperiment with 113 rows and 10 columns</span></span></code></pre>
-<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/QFeatures-filtering.html">filterFeatures</a></span><span class="op">(</span><span class="va">hl</span>, <span class="op">~</span> <span class="va">qValue</span> <span class="op">&lt;=</span> <span class="fl">0.001</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 'qValue' found in 1 out of 3 assay(s).</span></span></code></pre>
 <pre><code><span><span class="co">## No filter applied to the following assay(s) because one or more</span></span>
@@ -599,7 +602,7 @@ and that variable was dropped from the other assays.</p>
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">##  [1] ggplot2_3.5.2               QFeatures_1.19.2           </span></span>
+<span><span class="co">##  [1] ggplot2_3.5.2               QFeatures_1.19.3           </span></span>
 <span><span class="co">##  [3] MultiAssayExperiment_1.35.3 SummarizedExperiment_1.39.0</span></span>
 <span><span class="co">##  [5] Biobase_2.69.0              GenomicRanges_1.61.0       </span></span>
 <span><span class="co">##  [7] GenomeInfoDb_1.45.3         IRanges_2.43.0             </span></span>

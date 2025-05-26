@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">QFeatures</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.19.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.19.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -518,8 +518,10 @@ namely <code>robustSummary</code> <span class="citation">(Sticker et al.
 <code class="sourceCode R"><span><span class="va">cptac</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QFeatures-aggregate.html">aggregateFeatures</a></span><span class="op">(</span><span class="va">cptac</span>,</span>
 <span>                           i <span class="op">=</span> <span class="st">"peptides_norm"</span>,</span>
 <span>                           fcol <span class="op">=</span> <span class="st">"Proteins"</span>,</span>
-<span>                           name <span class="op">=</span> <span class="st">"proteins"</span><span class="op">)</span></span>
-<span><span class="va">cptac</span></span></code></pre></div>
+<span>                           name <span class="op">=</span> <span class="st">"proteins"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Aggregated: 1/1</span></span></code></pre>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cptac</span></span></code></pre></div>
 <pre><code><span><span class="co">## An instance of class QFeatures (type: bulk) with 4 sets:</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns </span></span>
@@ -531,7 +533,7 @@ namely <code>robustSummary</code> <span class="citation">(Sticker et al.
 the first 6 proteins and their respective variables. The latter shown
 that number of peptides that were using during the aggregation step
 (<code>.n</code> column).</p>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##                                      Intensity.6A_7 Intensity.6A_8</span></span>
 <span><span class="co">## P00918ups|CAH2_HUMAN_UPS                   17.23988       16.98222</span></span>
@@ -554,7 +556,7 @@ that number of peptides that were using during the aggregation step
 <span><span class="co">## P02144ups|MYG_HUMAN_UPS                    18.55434       18.29205</span></span>
 <span><span class="co">## P02753ups|RETBP_HUMAN_UPS                  17.73507       18.15238</span></span>
 <span><span class="co">## P02787ups|TRFE_HUMAN_UPS                   18.51059       18.15718</span></span></code></pre>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">rowData</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## DataFrame with 1125 rows and 3 columns</span></span>
 <span><span class="co">##                                           Proteins Leading.razor.protein</span></span>
@@ -588,7 +590,7 @@ computing the table below, that shows us that we have 405 proteins that
 are based on a single peptides, 230 that are based on two, 119 that are
 based on three, … and a single protein that is the results of
 aggregating 44 peptides.</p>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu">rowData</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">$</span><span class="va">.n</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20 </span></span>
@@ -599,7 +601,7 @@ aggregating 44 peptides.</p>
 expression pattern in the 2 groups at the protein and (log-tranformed
 and normalised) peptide level. We drop the first peptide-level assay as
 it is on a different scale (i.e. not log-transformed).</p>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://dplyr.tidyverse.org" class="external-link">"dplyr"</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/QFeatures-longForm.html">longForm</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">[</span><span class="st">"P02787ups|TRFE_HUMAN_UPS"</span>, , <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -663,7 +665,7 @@ proteomics data analysis</a> chapter of the WSBIM2122 course.</li>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
 <span><span class="co">##  [1] gplots_3.2.0                dplyr_1.1.4                </span></span>
-<span><span class="co">##  [3] ggplot2_3.5.2               QFeatures_1.19.2           </span></span>
+<span><span class="co">##  [3] ggplot2_3.5.2               QFeatures_1.19.3           </span></span>
 <span><span class="co">##  [5] MultiAssayExperiment_1.35.3 SummarizedExperiment_1.39.0</span></span>
 <span><span class="co">##  [7] Biobase_2.69.0              GenomicRanges_1.61.0       </span></span>
 <span><span class="co">##  [9] GenomeInfoDb_1.45.3         IRanges_2.43.0             </span></span>
@@ -683,7 +685,7 @@ proteomics data analysis</a> chapter of the WSBIM2122 course.</li>
 <span><span class="co">## [25] htmltools_0.5.8.1       sass_0.4.10             yaml_2.3.10            </span></span>
 <span><span class="co">## [28] lazyeval_0.2.2          pkgdown_2.1.3.9000      pillar_1.10.2          </span></span>
 <span><span class="co">## [31] crayon_1.5.3            jquerylib_0.1.4         tidyr_1.3.1            </span></span>
-<span><span class="co">## [34] MASS_7.3-65             limma_3.65.0            DelayedArray_0.35.1    </span></span>
+<span><span class="co">## [34] MASS_7.3-65             limma_3.65.1            DelayedArray_0.35.1    </span></span>
 <span><span class="co">## [37] cachem_1.1.0            abind_1.4-8             gtools_3.9.5           </span></span>
 <span><span class="co">## [40] tidyselect_1.2.1        digest_0.6.37           stringi_1.8.7          </span></span>
 <span><span class="co">## [43] purrr_1.0.4             reshape2_1.4.4          bookdown_0.43          </span></span>
