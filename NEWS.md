@@ -1,5 +1,9 @@
 # QFeatures 1.19
 
+## QFeatures 1.19.3
+
+- Nothing yet.
+
 ## QFeatures 1.19.2
 
 - Aggregate features optimisation.
