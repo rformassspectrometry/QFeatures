@@ -2,7 +2,7 @@
 
 ## QFeatures 1.19.2
 
-- Nothing yet.
+- Aggregate features optimisation.
 
 ## QFeatures 1.19.1
 
