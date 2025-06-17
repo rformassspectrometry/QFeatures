@@ -83,17 +83,20 @@ test_that("readQFeatures: testing use cases", {
     ## Without colAnnot
     expect_identical(
         readQFeatures(x, quantCols = 1:10),
-        QFeatures(List(quants = se_exp))
+        QFeatures(List(quants = se_exp),
+                  metadata = list("._type" = "bulk"))
     )
     ## With colAnnot
     expect_identical(
         readQFeatures(x, 1:10, colData = colAnnot),
-        QFeatures(List(quants = se_exp), colData = colAnnot)
+        QFeatures(List(quants = se_exp), colData = colAnnot,
+                  metadata = list("._type" = "bulk"))
     )
     ## Without quantCols
     expect_identical(
         qf <- readQFeatures(x, colData = colAnnot),
-        QFeatures(List(quants = se_exp), colData = colAnnot)
+        QFeatures(List(quants = se_exp), colData = colAnnot,
+                  metadata = list("._type" = "bulk"))
     )
     ## Check colnames
     expect_identical(
@@ -116,24 +119,28 @@ test_that("readQFeatures: testing use cases", {
     ## Without colAnnot
     expect_identical(
         readQFeatures(x, quantCol = 1, runCol = "file"),
-        QFeatures(List(el_exp))
+        QFeatures(List(el_exp),
+                  metadata = list("._type" = "bulk"))
     )
     ## With colAnnot
     colAnnot$runCol <- colAnnot$file
     expect_identical(
         readQFeatures(x, quantCols = 1, runCol = "file", colData = colAnnot),
-        QFeatures(List(el_exp), colData = colAnnot[paste0("File", 1:3), ])
+        QFeatures(List(el_exp), colData = colAnnot[paste0("File", 1:3), ],
+                  metadata = list("._type" = "bulk"))
     )
     ## When length(quantCol) == 1, colAnnot doesn't need a quantCol
     expect_identical(
         readQFeatures(x, 1, runCol = "file", colData = colAnnot),
-        QFeatures(List(el_exp), colData = colAnnot[paste0("File", 1:3), ])
+        QFeatures(List(el_exp), colData = colAnnot[paste0("File", 1:3), ],
+                  metadata = list("._type" = "bulk"))
     )
     ## Without quantCols
     colAnnot$quantCols <- colnames(x)[1]
     expect_identical(
         qf <- readQFeatures(x, runCol = "file", colData = colAnnot),
-        QFeatures(List(el_exp), colData = colAnnot[paste0("File", 1:3), ])
+        QFeatures(List(el_exp), colData = colAnnot[paste0("File", 1:3), ],
+                  metadata = list("._type" = "bulk"))
     )
     ## Check colnames
     expect_identical(
@@ -159,18 +166,21 @@ test_that("readQFeatures: testing use cases", {
     ## Without colAnnot
     expect_identical(
         readQFeatures(x, quantCols = 1:10, runCol = "file"),
-        QFeatures(List(el_exp))
+        QFeatures(List(el_exp),
+                  metadata = list("._type" = "bulk"))
     )
     ## With colAnnot
     colAnnot$runCol <- colAnnot$file
     expect_identical(
         readQFeatures(x, quantCols = 1:10, runCol = "file", colData = colAnnot),
-        QFeatures(List(el_exp), colData = colAnnot[order(rownames(colAnnot)), ])
+        QFeatures(List(el_exp), colData = colAnnot[order(rownames(colAnnot)), ],
+                  metadata = list("._type" = "bulk"))
     )
     ## Without quantCols
     expect_identical(
         qf <- readQFeatures(x, runCol = "file", colData = colAnnot),
-        QFeatures(List(el_exp), colData = colAnnot[order(rownames(colAnnot)), ])
+        QFeatures(List(el_exp), colData = colAnnot[order(rownames(colAnnot)), ],
+                  metadata = list("._type" = "bulk"))
     )
     ## Check colnames
     expect_identical(
@@ -184,11 +194,13 @@ test_that("readQFeatures: testing use cases", {
     se_na <- readSummarizedExperiment(x_na, 1:10)
     expect_identical(
         readQFeatures(x_na, quantCol = 1:10, removeEmptyCols = FALSE),
-        QFeatures(List(quants = se_na))
+        QFeatures(List(quants = se_na),
+                  metadata = list("._type" = "bulk"))
     )
     expect_identical(
         readQFeatures(x_na, quantCols = 1:10, removeEmptyCols = TRUE),
-        QFeatures(List(quants = se_na[, -1]))
+        QFeatures(List(quants = se_na[, -1]),
+                  metadata = list("._type" = "bulk"))
     )
 })
 
@@ -201,7 +213,8 @@ test_that("readQFeatures: test polymorphism", {
     )
     expect_identical(
         readQFeatures(x, quantCols = 1:10, name = "foo"),
-        QFeatures(List(foo = se_exp))
+        QFeatures(List(foo = se_exp),
+                  metadata = list("._type" = "bulk"))
     )
     ## Test quantCols polymorphism
     expect_identical(
@@ -291,7 +304,8 @@ test_that("readQFeatures: errors, warnings and messages", {
     )
     ## Missing annotations are autatomically filled with NA
     colAnnot["File3", ] <- NA
-    expect_identical(qf, QFeatures(List(el_exp), colData = colAnnot))
+    expect_identical(qf, QFeatures(List(el_exp), colData = colAnnot,
+                                   metadata = list("._type" = "bulk")))
 
     ## Test verbose = messages
     expect_no_message(readQFeatures(x, quantCols = 1:10, verbose = FALSE))

@@ -1,3 +1,27 @@
+# QFeatures 1.19
+
+## QFeatures 1.19.3
+
+- Nothing yet.
+
+## QFeatures 1.19.2
+
+- Aggregate features optimisation.
+
+## QFeatures 1.19.1
+
+- Fix duplicated fnames bug (see issue #237).
+- Use `longForm()` methods (replacing `longFormat()`, now defunct).
+- Add `longForm,SummarizedExperiment`, supporting `rowvars` and
+  `colvars`, as `longForm,QFeatures` does. Without this method, uses
+  `longForm,ANY` that doesn't.
+- Defined a `QFeatures` object type (bulk or single-cell) in the
+  instance's metadata slot (developer features).
+
+## QFeatures 1.19.0
+
+- New devel version
+
 # QFeatures 1.17
 
 ## QFeatures 1.17.5

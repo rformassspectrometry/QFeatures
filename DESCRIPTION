@@ -1,6 +1,6 @@
 Package: QFeatures
 Title: Quantitative features for mass spectrometry data
-Version: 1.19.0
+Version: 1.19.3
 Authors@R: c(person("Laurent", "Gatto",
                     email = "laurent.gatto@uclouvain.be",
                     comment = c(ORCID = "0000-0002-1520-2268"),
@@ -18,7 +18,7 @@ Description: The QFeatures infrastructure enables the management and
    experience to manages quantitative data across different assay
    levels (such as peptide spectrum matches, peptides and proteins) in
    a coherent and tractable format.
-Depends: R (>= 4.0), MultiAssayExperiment
+Depends: R (>= 4.1), MultiAssayExperiment (>= 1.33.6)
 Imports:
    methods,
    stats,
@@ -26,7 +26,7 @@ Imports:
    S4Vectors,
    IRanges,
    SummarizedExperiment,
-   BiocGenerics,
+   BiocGenerics (>= 0.53.4),
    ProtGenerics (>= 1.35.1),
    AnnotationFilter,
    lazyeval,
@@ -74,6 +74,7 @@ Collate:
     'AssayLinks.R'
     'QFeatures-class.R'
     'QFeatures-functions.R'
+    'QFeatures-longForm.R'
     'QFeatures-processing.R'
     'QFeatures-filter.R'
     'QFeatures-missing-data.R'
