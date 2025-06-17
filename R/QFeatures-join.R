@@ -51,10 +51,15 @@
 }
 
 
-mergeSElist <- function(x) {
+mergeSElist <- function(x, fcol = NULL) {
     x_classes <- unique(vapply(x, class, character(1)))
     if (length(x_classes) != 1)
         stop("Can't join assays from different classes.", call. = FALSE)
+    if (!is.null(fcol)) {
+        ## Set assay rownames for joining
+        message("Using '", fcol, "' to join assays.")
+        x <- .setAssayRownamesExperimentList(x, fcol)
+    }
     joined_mcols <- Reduce(.merge_2_by_cols, lapply(x, rowData))
     joined_assay <- .merge_assays_by_rows(lapply(x, assay))
     joined_coldata <- Reduce(.merge_2_by_cols, lapply(x, colData))
@@ -158,14 +163,22 @@ joinAssays <- function(x,
               "Need at least 2 assays to join" = length(i) >= 2)
     if (name %in% names(x))
         stop("Assay with name '", name, "' already exists.")
-    if (!is.null(fcol)) {
-        ## Set assay rownames for joining
-        message("Using '", fcol, "' to join assays.")
-        x <- .setAssayRownames(x, fcol)
-    }
+    # if (!is.null(fcol)) {
+    #     ## Set assay rownames for joining
+    #     message("Using '", fcol, "' to join assays.")
+    #     x <- .setAssayRownames(x, fcol)
+    # }
     ## Join assays and add to x
-    joined_se <- mergeSElist(experiments(x)[i])
+    joined_se <- mergeSElist(experiments(x)[i], fcol = fcol)
     x <- addAssay(x, joined_se, name = name)
     ## Add the multi-parent AssayLinks
-    addAssayLink(x, from = i, to = name)
+    if (is.null(fcol)) {
+        addAssayLink(x, from = i, to = name)
+    } else {
+        addAssayLink(
+            x, from = i, to = name, varFrom = rep(fcol, length(i)), 
+            varTo = fcol
+        )
+    }
+    
 }
