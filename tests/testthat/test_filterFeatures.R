@@ -77,6 +77,7 @@ test_that("filterFeatures with NAs", {
 
 test_that("filterFeatures with missing filter variables", {
     ## Prepare data
+
     data(feat1)
     feat1 <- aggregateFeatures(feat1, 1, fcol = "Sequence", name = "peptides", fun = colMedians)
     feat1 <- aggregateFeatures(feat1, 2, fcol = "Protein", name = "proteins", fun = colMedians)
@@ -84,19 +85,21 @@ test_that("filterFeatures with missing filter variables", {
     ## Using Variable filter
 
     ## Test: 1 variable, missing in some assays, remove features for
-    ## missing variables
-    expect_message(
-        filt <- filterFeatures(feat1, VariableFilter("pval", 0.03, "<=")),
-        regexp = "pval.*1 out of 3.*keep['] argument"
-    )
+    ## missing variables. Two messages, about assays and keep.
+    msgs <- capture_messages(
+        filt <- filterFeatures(feat1, VariableFilter("pval", 0.03, "<=")))
+    expect_match(msgs, "pval.*1 out of 3.", all = FALSE)
+    expect_match(msgs, "keep", all = FALSE)
+
     expect_identical(lengths(filt), c(3L, 0L, 0L))
+
     ## Test: 1 variable, missing in some assays, keep features for
-    ## missing variables
-    expect_message(
-        filt <- filterFeatures(feat1, VariableFilter("pval", 0.03, "<="), keep = TRUE),
-        regexp = "pval.*1 out of 3.*keep['] argument"
-    )
+    ## missing variables. One message about assays.
+    msgs <- capture_messages(
+        filt <- filterFeatures(feat1, VariableFilter("pval", 0.03, "<="), keep = TRUE))
+    expect_match(msgs, "pval.*1 out of 3.", all = TRUE)
     expect_identical(lengths(filt), c(3L, 3L, 2L))
+
     ## Test: 1 variable, missing in all assays
     expect_error(filterFeatures(feat1, ~ foo),
                  regexp = "foo.*absent")
@@ -105,40 +108,46 @@ test_that("filterFeatures with missing filter variables", {
     ## Using formula filter
 
     ## Test: 1 variable, missing in some assays, remove features for
-    ## missing variables
-    expect_message(
-        filt <- filterFeatures(feat1, ~ pval <= 0.03),
-        regexp = "pval.*1 out of 3.*keep['] argument"
-    )
+    ## missing variables.  Two messages, about assays and keep
+    msgs <- capture_messages(
+        filt <- filterFeatures(feat1, ~ pval <= 0.03))
+    expect_match(msgs, "pval.*1 out of 3.", all = FALSE)
+    expect_match(msgs, "keep", all = FALSE)
     expect_identical(lengths(filt), c(3L, 0L, 0L))
+
     ## Test: 1 variable, missing in some assays, keep features for
-    ## missing variables
-    expect_message(
-        filt <- filterFeatures(feat1, ~ pval <= 0.03, keep = TRUE),
-        regexp = "pval.*1 out of 3.*keep['] argument"
-    )
+    ## missing variables. On message about assays.
+    msgs <- capture_messages(
+        filt <- filterFeatures(feat1, ~ pval <= 0.03, keep = TRUE))
+    expect_match(msgs, "pval.*1 out of 3.", all = TRUE)
     expect_identical(lengths(filt), c(3L, 3L, 2L))
+
     ## Test: 1 variable, missing in all assays
     expect_error(filterFeatures(feat1, ~ foo),
                  regexp = "foo.*absent")
 
-    ## Test: 2 variables, 1 present in all assays and 1 in some, remove
-    ## features for missing variables
-    expect_message(
-        filt <- filterFeatures(feat1, ~ pval <= 0.03 & grepl("Mito", location)),
-        regexp = "pval.*1 out of 3.*location.*3 out of 3.*keep['] argument"
-    )
+    ## Test: 2 variables, 1 present in all assays and 1 in some, remove features
+    ## for missing variables. Two messages about assays and keep.
+    msgs <- capture_messages(
+        filt <- filterFeatures(feat1, ~ pval <= 0.03 & grepl("Mito", location)))
+    expect_match(msgs, "pval.*1 out of 3.", all = FALSE)
+    expect_match(msgs, "pval.*3 out of 3.", all = FALSE)
+    expect_match(msgs, "keep", all = FALSE)
     expect_identical(lengths(filt), c(2L, 0L, 0L))
+
     ## Test: 2 variables, 1 present in all assays and 1 in some, keep
-    ## features for missing variables
-    expect_message(
-        filt <- filterFeatures(feat1, ~ pval <= 0.03 & grepl("Mito", location), keep = TRUE),
-        regexp = "pval.*1 out of 3.*location.*3 out of 3.*keep['] argument"
-    )
+    ## features for missing variables. One message about assays.
+    msgs <- capture_messages(
+        filt <- filterFeatures(feat1, ~ pval <= 0.03 & grepl("Mito", location),
+                               keep = TRUE))
+    expect_match(msgs, "pval.*1 out of 3.", all = TRUE)
+    expect_match(msgs, "pval.*3 out of 3.", all = TRUE)
     expect_identical(lengths(filt), c(2L, 3L, 2L))
+
     ## Test: 2 variable, 1 missing in all assays
     expect_error(filterFeatures(feat1, ~ pval <= 0.03 & foo),
                  regexp = "foo.*absent")
+
     ## Test: 2 variable, 2 missing in all assays
     expect_error(filterFeatures(feat1, ~ foo & bar),
                  regexp = "foo['][,] [']bar.*absent")
