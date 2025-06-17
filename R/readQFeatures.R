@@ -351,7 +351,7 @@ readQFeatures <- function(assayData,
         if (verbose) message("Setting assay rownames.")
         ans <- .setAssayRownames(ans, fnames)
     }
-    ans
+    setQFeaturesType(ans, "bulk")
 }
 
 
@@ -485,7 +485,7 @@ readQFeatures <- function(assayData,
 
 .createUniqueColnames <- function(el, quantCols) {
     if (length(quantCols) == 1)  suffix <- ""
-    else suffix <- paste0("_", colnames(el[[1]]))
+    else suffix <- paste0("_", quantCols)
     for (i in seq_along(el)) {
         colnames(el[[i]]) <- paste0(names(el)[[i]], suffix)
     }
@@ -530,7 +530,10 @@ readQFeatures <- function(assayData,
                  function(x) stopifnot(fcol %in% names(x)))
     expl <- lapply(experiments(object),
                    function(x) {
-                       rownames(x) <- rowData(x)[[fcol]]
+                       rn <- rowData(x)[[fcol]]
+                       if (anyDuplicated(rn))
+                           rn <- make.unique(rn)
+                       rownames(x) <- rn
                        x
                    })
     experiments(object) <- List(expl)

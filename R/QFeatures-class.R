@@ -69,11 +69,9 @@
 ##' - The `rowDataNames` accessor returns a list with the `rowData`
 ##'   variable names.
 ##'
-##' - The `longFormat` accessor takes a `QFeatures` object and returns
-##'   it in a long format `DataFrame`. Each quantitative value is
-##'   reported on a separate line. `colData` and `rowData` data can
-##'   also be added. This function is an extension of the `longFormat`
-##'   function in the [MultiAssayExperiment::MultiAssayExperiment].
+##' - The [longForm()] accessor takes a `QFeatures` instance and returns it in a
+##'   long *tidy* `DataFrame`, where each quantitative value is reported on a
+##'   separate line.
 ##'
 ##' @section Adding, removing and replacing assays:
 ##'
@@ -153,6 +151,9 @@
 ##' @param drop logical (default `TRUE`) whether to drop empty assay
 ##'     elements in the `ExperimentList`.
 ##'
+##' @param rowvars A `character()` with the names of the `rowData`
+##'     variables (columns) to retain in any assay.
+##'
 ##' @param ... See `MultiAssayExperiment` for details. For `plot`,
 ##'     further arguments passed to `igraph::plot.igraph`.
 ##'
@@ -181,7 +182,6 @@
 ##' @aliases addAssay
 ##' @aliases dims,QFeatures-method show,QFeatures-method
 ##' @aliases [,QFeatures,ANY,ANY,ANY-method [,QFeatures,character,ANY,ANY-method
-##'
 ##' @aliases rowDataNames selectRowData
 ##'
 ##' @rdname QFeatures-class
@@ -260,11 +260,15 @@ NULL
 ##  - Rename to QFeatures (see issue 89)
 
 setClass("QFeatures",
-         contains = "MultiAssayExperiment",
-         slots = c(version = "character",
-                   assayLinks = "AssayLinks"),
-         prototype = prototype(
-             version = "0.3"))
+    contains = "MultiAssayExperiment",
+    slots = c(
+        version = "character",
+        assayLinks = "AssayLinks"
+    ),
+    prototype = prototype(
+        version = "0.3"
+    )
+)
 
 ##' @export
 ##'
@@ -273,56 +277,75 @@ setClass("QFeatures",
 ##' @param assayLinks An optional [AssayLinks] object.
 QFeatures <- function(..., assayLinks = NULL) {
     ans <- MultiAssayExperiment(...)
-    if (isEmpty(ans)) assayLinks <- AssayLinks()
-    else {
-        if (is.null(assayLinks))
+    if (isEmpty(ans)) {
+        assayLinks <- AssayLinks()
+    } else {
+        if (is.null(assayLinks)) {
             assayLinks <- AssayLinks(names = names(ans))
+        }
     }
     new("QFeatures",
         ExperimentList = ans@ExperimentList,
         colData = ans@colData,
         sampleMap = ans@sampleMap,
         metadata = ans@metadata,
-        assayLinks = assayLinks)
+        assayLinks = assayLinks
+    )
 }
 
 
 ##' @rdname QFeatures-class
 ##'
 ##' @exportMethod show
-setMethod("show", "QFeatures",
-          function(object) {
-              if (isEmpty(object)) {
-                  cat(sprintf("A empty instance of class %s", class(object)), "\n")
-                  return(NULL)
-              }
-              n <- length(object)
-              cat(sprintf("An instance of class %s", class(object)), "containing", n, "set(s):")
-              el <- experiments(object)
-              o_class <- class(el)
-              elem_cl <- vapply(el, class, character(1L))
-              o_len <- length(el)
-              o_names <- names(el)
-              featdim <- vapply(el, FUN = function(obj) {
-                  dim(obj)[1]
-              }, FUN.VALUE = integer(1L))
-              sampdim <- vapply(el, FUN = function(obj) {
-                  dim(obj)[2]
-              }, FUN.VALUE = integer(1L))
-              if (n <= 7) {
-                  cat(sprintf("\n [%i] %s: %s with %s rows and %s columns",
-                              seq(o_len), o_names, elem_cl,
-                              featdim, sampdim), "\n")
-              } else {
-                  cat(sprintf("\n [%i] %s: %s with %s rows and %s columns",
-                              seq(o_len)[1:3], o_names[1:3], elem_cl[1:3],
-                              featdim[1:3], sampdim[1:3]), "\n")
-                  cat(" ...")
-                  cat(sprintf("\n [%i] %s: %s with %s rows and %s columns",
-                              seq(o_len)[(n-2):n], o_names[(n-2):n], elem_cl[(n-2):n],
-                              featdim[(n-2):n], sampdim[(n-2):n]), "\n")
-              }
-          })
+setMethod(
+    "show", "QFeatures",
+    function(object) {
+        # suppress messages in case of implicit QFeatures type
+        type <- suppressMessages(getQFeaturesType(object))
+        if (isEmpty(object)) {
+            cat(sprintf(
+                "An empty instance of class %s (type: %s)\n",
+                class(object), type
+            ))
+            return(NULL)
+        }
+        n <- length(object)
+        cat(sprintf(
+            "An instance of class %s (type: %s) with %d set%s:\n",
+            class(object), type, n, ifelse(n == 1, "", "s")
+        ))
+        el <- experiments(object)
+        o_class <- class(el)
+        elem_cl <- vapply(el, class, character(1L))
+        o_len <- length(el)
+        o_names <- names(el)
+        featdim <- vapply(el, FUN = function(obj) {
+            dim(obj)[1]
+        }, FUN.VALUE = integer(1L))
+        sampdim <- vapply(el, FUN = function(obj) {
+            dim(obj)[2]
+        }, FUN.VALUE = integer(1L))
+        if (n <= 7) {
+            cat(sprintf(
+                "\n [%i] %s: %s with %s rows and %s columns",
+                seq(o_len), o_names, elem_cl,
+                featdim, sampdim
+            ), "\n")
+        } else {
+            cat(sprintf(
+                "\n [%i] %s: %s with %s rows and %s columns",
+                seq(o_len)[1:3], o_names[1:3], elem_cl[1:3],
+                featdim[1:3], sampdim[1:3]
+            ), "\n")
+            cat(" ...")
+            cat(sprintf(
+                "\n [%i] %s: %s with %s rows and %s columns",
+                seq(o_len)[(n - 2):n], o_names[(n - 2):n], elem_cl[(n - 2):n],
+                featdim[(n - 2):n], sampdim[(n - 2):n]
+            ), "\n")
+        }
+    }
+)
 
 
 ## Function that creates a plotly network graph from an igraph object
@@ -340,38 +363,48 @@ setMethod("show", "QFeatures",
     el <- get.edgelist(graph)
     if (nrow(el) > 0) {
         edge_coords <- sapply(1:nrow(el), function(i) {
-            edge_coord <- c(coords[el[i, 1], 1],
-                            coords[el[i, 1], 2],
-                            coords[el[i, 2], 1],
-                            coords[el[i, 2], 2])
+            edge_coord <- c(
+                coords[el[i, 1], 1],
+                coords[el[i, 1], 2],
+                coords[el[i, 2], 1],
+                coords[el[i, 2], 2]
+            )
         })
         pl <- plotly::add_segments(pl,
-                                   x = edge_coords[1, ],
-                                   y = edge_coords[2, ],
-                                   xend = edge_coords[3, ],
-                                   yend = edge_coords[4, ],
-                                   line = list(color = "grey", width = 0.3,
-                                               showarrow = TRUE))
+            x = edge_coords[1, ],
+            y = edge_coords[2, ],
+            xend = edge_coords[3, ],
+            yend = edge_coords[4, ],
+            line = list(
+                color = "grey", width = 0.3,
+                showarrow = TRUE
+            )
+        )
     }
     ## Add nodes
     pl <- plotly::add_markers(pl,
-                              x = coords[, 1], y = coords[, 2],
-                              marker = list(color = rgb(0.8, 0.8, 0.8),
-                                            size = 40),
-                              text = names(V(graph)),
-                              hoverinfo = "text")
+        x = coords[, 1], y = coords[, 2],
+        marker = list(
+            color = rgb(0.8, 0.8, 0.8),
+            size = 40
+        ),
+        text = names(V(graph)),
+        hoverinfo = "text"
+    )
     ## Add labels
     pl <- plotly::add_text(pl,
-                           x = coords[, 1], y = coords[, 2],
-                           hoverinfo = "text",
-                           text = names(V(graph)))
+        x = coords[, 1], y = coords[, 2],
+        hoverinfo = "text",
+        text = names(V(graph))
+    )
 
     ## Edit plot plot
     axis <- list(title = "", showgrid = FALSE, showticklabels = FALSE, zeroline = FALSE)
     plotly::layout(pl,
-                   xaxis = axis,
-                   yaxis = axis,
-                   showlegend = FALSE)
+        xaxis = axis,
+        yaxis = axis,
+        showlegend = FALSE
+    )
 }
 
 ## Offset on the coordinates for better rendering when many assays
@@ -406,20 +439,25 @@ setMethod("show", "QFeatures",
 ##'
 ##' @importFrom igraph make_graph layout_as_tree plot.igraph add_edges V
 ##' @export
-plot.QFeatures <- function (x, interactive = FALSE, ...) {
+plot.QFeatures <- function(x, interactive = FALSE, ...) {
     ## Check arguments
-    if (!interactive & length(x) > 50)
-        warning("The QFeatures object contains many assays. You may ",
-                "want to consider creating an interactive plot (set ",
-                "'interactive = TRUE')")
+    if (!interactive & length(x) > 50) {
+        warning(
+            "The QFeatures object contains many assays. You may ",
+            "want to consider creating an interactive plot (set ",
+            "'interactive = TRUE')"
+        )
+    }
     ## Create the network graph
-    graph <- make_graph(edges = character(0),
-                        isolates = names(x))
+    graph <- make_graph(
+        edges = character(0),
+        isolates = names(x)
+    )
     ## Add the edges = links between assays
     roots <- c()
     for (child in names(x)) {
         parents <- assayLink(x, child)@from
-        for(parent in parents) {
+        for (parent in parents) {
             if (!is.na(parent)) {
                 graph <- add_edges(graph, c(parent, child))
             } else {
@@ -495,9 +533,11 @@ plot.QFeatures <- function (x, interactive = FALSE, ...) {
             .pruneHits(hits, parent, self = object[[al@name]])
         }, hits = al@hits, parent = experiments(object)[al@from])
     } else { ## If the AssayLink contains a single Hits object
-        al@hits <- .pruneHits(hits = al@hits,
-                              parent = object[[al@from]],
-                              self = object[[al@name]])
+        al@hits <- .pruneHits(
+            hits = al@hits,
+            parent = object[[al@from]],
+            self = object[[al@name]]
+        )
     }
     al
 }
@@ -513,7 +553,9 @@ plot.QFeatures <- function (x, interactive = FALSE, ...) {
     object@assayLinks <- object@assayLinks[names(object)]
     ## Removed lost links in each AssayLink object
     object@assayLinks <- endoapply(object@assayLinks,
-                                   .pruneAssayLink, object = object)
+        .pruneAssayLink,
+        object = object
+    )
     ## Check new AssaLinks are valid
     .validAssayLinks(object)
     object
@@ -524,23 +566,27 @@ plot.QFeatures <- function (x, interactive = FALSE, ...) {
 ##' @importFrom methods callNextMethod
 ##'
 ##' @exportMethod [
-setMethod("[", c("QFeatures", "ANY", "ANY", "ANY"),
-          function(x, i, j, ..., drop = TRUE) {
-              ## Subset the assays
-              ans <- callNextMethod(x, i, j, ..., drop)
+setMethod(
+    "[", c("QFeatures", "ANY", "ANY", "ANY"),
+    function(x, i, j, ..., drop = TRUE) {
+        ## Subset the assays
+        ans <- callNextMethod(x, i, j, ..., drop)
 
-              ## Prune the AssayLinks so that the `QFeatures` object
-              ## remains valid
-              .pruneAssayLinks(ans)
-          })
+        ## Prune the AssayLinks so that the `QFeatures` object
+        ## remains valid
+        .pruneAssayLinks(ans)
+    }
+)
 
 ##' @rdname QFeatures-class
-setMethod("[", c("QFeatures", "character", "ANY", "ANY"),
-          function(x, i, j, k, ..., drop = TRUE) {
-              if (missing(j)) j <- TRUE
-              if (missing(k)) k <- TRUE
-              subsetByFeature(x, i)[, j, k]
-          })
+setMethod(
+    "[", c("QFeatures", "character", "ANY", "ANY"),
+    function(x, i, j, k, ..., drop = TRUE) {
+        if (missing(j)) j <- TRUE
+        if (missing(k)) k <- TRUE
+        subsetByFeature(x, i)[, j, k]
+    }
+)
 
 
 ##' @rdname QFeatures-class
@@ -552,49 +598,60 @@ setMethod("[", c("QFeatures", "character", "ANY", "ANY"),
 ##' @exportMethod coerce
 ##'
 setAs("MultiAssayExperiment", "QFeatures", function(from) {
-    QFeatures(experiments = experiments(from),
-              colData = colData(from),
-              sampleMap = sampleMap(from),
-              metadata = metadata(from),
-              drops = from@drops,
-              assayLinks = AssayLinks(names = names(from)))
+    QFeatures(
+        experiments = experiments(from),
+        colData = colData(from),
+        sampleMap = sampleMap(from),
+        metadata = metadata(from),
+        drops = from@drops,
+        assayLinks = AssayLinks(names = names(from))
+    )
 })
 
 ##' @rdname QFeatures-class
 ##'
 ##' @exportMethod c
-setMethod("c", "QFeatures",
-          function(x, ...) {
-              ## Retrieve the assays to add
-              args <- list(...)
+setMethod(
+    "c", "QFeatures",
+    function(x, ...) {
+        ## Retrieve the assays to add
+        args <- list(...)
 
-              ## Check arguments
-              if (any(sapply(args, inherits, "SummarizedExperiment")) ||
-                  any(sapply(args, inherits, "List")) ||
-                  any(sapply(args, is.list))) {
-                  stop("Trying to combine a QFeatures object with objects that ",
-                       "inherit from SummarizedExperiment, List, or ",
-                       "list. Consider using 'addAssay()' instead.")
-              } else if (any(sapply(args, class) == "MultiAssayExperiment")) {
-                  stop("Trying to combine a QFeatures object with one ",
-                       "or more MultiAssayExperiment objects. You must ",
-                       "first coerce these objects to QFeatures using ",
-                       "'as(object, \"QFeatures\")'.")
-              } else if (!all(sapply(args, inherits, "QFeatures"))) {
-                  args <- lapply(args, as, "QFeatures")
-              }
-              if(length(names(args)))
-                  warning("Argument names are provided but will be ignored.")
+        ## Check arguments
+        if (any(sapply(args, inherits, "SummarizedExperiment")) ||
+            any(sapply(args, inherits, "List")) ||
+            any(sapply(args, is.list))) {
+            stop(
+                "Trying to combine a QFeatures object with objects that ",
+                "inherit from SummarizedExperiment, List, or ",
+                "list. Consider using 'addAssay()' instead."
+            )
+        } else if (any(sapply(args, class) == "MultiAssayExperiment")) {
+            stop(
+                "Trying to combine a QFeatures object with one ",
+                "or more MultiAssayExperiment objects. You must ",
+                "first coerce these objects to QFeatures using ",
+                "'as(object, \"QFeatures\")'."
+            )
+        } else if (!all(sapply(args, inherits, "QFeatures"))) {
+            args <- lapply(args, as, "QFeatures")
+        }
+        if (length(names(args))) {
+            warning("Argument names are provided but will be ignored.")
+        }
 
-              ## Combine the different slots
-              el <- .combineAssays(x, args)
-              cd <- .combineColData(x, args)
-              al <- .combineAssayLinks(x, args)
+        ## Combine the different slots
+        el <- .combineAssays(x, args)
+        cd <- .combineColData(x, args)
+        al <- .combineAssayLinks(x, args)
 
-              QFeatures(experiments = el,
-                        colData = cd,
-                        assayLinks = al)
-          })
+        QFeatures(
+            experiments = el,
+            colData = cd,
+            assayLinks = al
+        )
+    }
+)
 
 ## Internal function to combine the assays of x with the assays of each
 ## element in y.
@@ -611,20 +668,27 @@ setMethod("c", "QFeatures",
 ## @param y A list-like object where each element is expected to be a
 ##     QFeatures
 .combineColData <- function(x, y) {
-    if (!length(y)) return(x)
+    if (!length(y)) {
+        return(x)
+    }
     out <- colData(x)
     err <- c()
     for (i in seq_along(y)) {
         yy <- colData(y[[i]])
         cn <- .checkDataConflict(out, yy)
-        if (length(cn))
+        if (length(cn)) {
             err <- c(err, paste0(cn, " (in argument ", i + 1, ")"))
+        }
         out <- .transferData(out, yy)
     }
-    if (length(err)) stop("Column(s) in the colData have conflicting ",
-                          "information when combining the QFeatures ",
-                          "objects. Problematic column(s): ",
-                          paste(err, collapse = ", "))
+    if (length(err)) {
+        stop(
+            "Column(s) in the colData have conflicting ",
+            "information when combining the QFeatures ",
+            "objects. Problematic column(s): ",
+            paste(err, collapse = ", ")
+        )
+    }
     out
 }
 
@@ -644,70 +708,90 @@ setMethod("c", "QFeatures",
 ##'
 ##' @importFrom BiocGenerics dims
 ##' @exportMethod dims
-setMethod("dims", "QFeatures",
-          function(x, use.names = TRUE)
-              vapply(experiments(x), dim, USE.NAMES = use.names, integer(2)))
+setMethod(
+    "dims", "QFeatures",
+    function(x, use.names = TRUE) {
+        vapply(experiments(x), dim, USE.NAMES = use.names, integer(2))
+    }
+)
 
 ##' @rdname QFeatures-class
 ##' @importFrom BiocGenerics nrows
 ##' @exportMethod nrows
-setMethod("nrows", "QFeatures",
-          function(x, use.names = TRUE)
-              vapply(experiments(x), nrow, USE.NAMES = use.names, integer(1)))
+setMethod(
+    "nrows", "QFeatures",
+    function(x, use.names = TRUE) {
+        vapply(experiments(x), nrow, USE.NAMES = use.names, integer(1))
+    }
+)
 
 ##' @rdname QFeatures-class
 ##' @importFrom BiocGenerics ncols
 ##' @exportMethod ncols
-setMethod("ncols", "QFeatures",
-          function(x, use.names = TRUE)
-              vapply(experiments(x), ncol, USE.NAMES = use.names, integer(1)))
+setMethod(
+    "ncols", "QFeatures",
+    function(x, use.names = TRUE) {
+        vapply(experiments(x), ncol, USE.NAMES = use.names, integer(1))
+    }
+)
 
 ##' @rdname QFeatures-class
 ##'
 ##' @param use.names A `logical(1)` indicating whether the rownames of
 ##'     each assay should be propagated to the corresponding `rowData`.
 ##'
-setMethod("rowData", "QFeatures",
-          function(x, use.names = TRUE, ...) {
-              List(lapply(experiments(x), function(xx)
-                  mcols(xx, use.names = use.names, ...)))
-          })
+setMethod(
+    "rowData", "QFeatures",
+    function(x, use.names = TRUE, ...) {
+        List(lapply(experiments(x), function(xx) {
+            mcols(xx, use.names = use.names, ...)
+        }))
+    }
+)
 
 ##' @rdname QFeatures-class
 ##'
 ##' @export
-setReplaceMethod("rowData", c("QFeatures", "DataFrameList"),
-                 function(x, value) {
-                     i <- intersect(names(value), names(x))
-                     if (!length(i)) {
-                         warning("Could not find a common assay between ",
-                                 "'names(value)' and names(object)")
-                         return(x)
-                     }
-                     el <- experiments(x)
-                     for (ii in i)
-                         rowData(el[[ii]])[, colnames(value[[ii]])] <-
-                         value[[ii]]
-                     BiocGenerics:::replaceSlots(x,
-                                                 ExperimentList = el,
-                                                 check = FALSE)
-                 })
+setReplaceMethod(
+    "rowData", c("QFeatures", "DataFrameList"),
+    function(x, value) {
+        i <- intersect(names(value), names(x))
+        if (!length(i)) {
+            warning(
+                "Could not find a common assay between ",
+                "'names(value)' and names(object)"
+            )
+            return(x)
+        }
+        el <- experiments(x)
+        for (ii in i) {
+            rowData(el[[ii]])[, colnames(value[[ii]])] <-
+                value[[ii]]
+        }
+        BiocGenerics:::replaceSlots(x,
+            ExperimentList = el,
+            check = FALSE
+        )
+    }
+)
 
 ##' @rdname QFeatures-class
 ##'
 ##' @export
-setReplaceMethod("rowData", c("QFeatures", "ANY"),
-                 function(x, value) {
-                     value <- endoapply(value, as, "DataFrame")
-                     value <- as(value, "List")
-                     rowData(x) <- value
-                     x
-                 })
+setReplaceMethod(
+    "rowData", c("QFeatures", "ANY"),
+    function(x, value) {
+        value <- endoapply(value, as, "DataFrame")
+        value <- as(value, "List")
+        rowData(x) <- value
+        x
+    }
+)
 
 ##' @rdname QFeatures-class
 ##'
 ##' @export
-rbindRowData <- function(object, i)  {
+rbindRowData <- function(object, i) {
     ## Extract the rowData and column names from the desired assay(s)
     rdlist <- rowData(object)[i]
     rdNames <- rowDataNames(object)[i]
@@ -718,10 +802,16 @@ rbindRowData <- function(object, i)  {
         return(DataFrame())
     }
     ## Add assay and rowname to the rowData
-    rdlist <- lapply(names(rdlist),
-                     function(x) cbind(assay = x,
-                                       rowname = rownames(rdlist[[x]]),
-                                       rdlist[[x]][, commonCols]))
+    rdlist <- lapply(
+        names(rdlist),
+        function(x) {
+            cbind(
+                assay = x,
+                rowname = rownames(rdlist[[x]]),
+                rdlist[[x]][, commonCols]
+            )
+        }
+    )
     ## Row bind all tables in one DataFrame
     rdlist <- do.call(rbind, rdlist)
     rownames(rdlist) <- NULL
@@ -732,17 +822,15 @@ rbindRowData <- function(object, i)  {
 
 ##' @rdname QFeatures-class
 ##'
-##' @param rowvars A `character()` with the names of the `rowData`
-##'     variables (columns) to retain in any assay.
-##'
 ##' @export
 selectRowData <- function(x, rowvars) {
     stopifnot(inherits(x, "QFeatures"))
     rowvars <- as.character(rowvars)
     allvars <- unique(unlist(rowDataNames(x)))
     missingvars <- setdiff(rowvars, allvars)
-    if (length(missingvars))
+    if (length(missingvars)) {
         message(length(missingvars), " missing/mis-typed rowvars.")
+    }
     for (i in seq_len(length(x))) {
         rd <- rowData(x[[i]])
         rowData(x[[i]]) <- rd[, colnames(rd) %in% rowvars, drop = FALSE]
@@ -758,77 +846,41 @@ selectRowData <- function(x, rowvars) {
 ##' @export
 rowDataNames <- function(x) {
     stopifnot(inherits(x, "MultiAssayExperiment"))
-    CharacterList(lapply(experiments(x),
-                         function(xx) {
-                             if (inherits(xx, "SummarizedExperiment"))
-                                 colnames(rowData(xx))
-                             else if (inherits(xx, "eSet"))
-                                 colnames(Biobase::fData(xx))
-                             else NA_character_
-                         }))
+    CharacterList(lapply(
+        experiments(x),
+        function(xx) {
+            if (inherits(xx, "SummarizedExperiment")) {
+                colnames(rowData(xx))
+            } else if (inherits(xx, "eSet")) {
+                colnames(Biobase::fData(xx))
+            } else {
+                NA_character_
+            }
+        }
+    ))
 }
 
 
 ##' @rdname QFeatures-class
 ##'
 ##' @exportMethod names<-
-setReplaceMethod("names", c("QFeatures", "character"),
-                 function(x, value) {
-                     key_vals <- cbind(names(x), value)
-                     x <-  callNextMethod(x, value)
-                     names(x@assayLinks) <- value
-                     for (i in seq_len(length(x))) {
-                         al <- x@assayLinks[[i]]
-                         al@name  <- unname(key_vals[key_vals[, 1] == al@name, 2])
-                         if (!all(is.na(al@from)))
-                             al@from <- unname(key_vals[key_vals[, 1] %in% al@from, 2])
-                         x@assayLinks[[i]] <- al
-                     }
-                     x
-                 })
-
-
-##' @rdname QFeatures-class
-##'
-##' @param colvars A `character()` that selects column(s) in the
-##'     `colData`.
-##' @param index The assay indicator within each `SummarizedExperiment`
-##'     object. A vector input is supported in the case that the
-##'     `SummarizedExperiment` object(s) has more than one assay
-##'     (default `1L`)
-##'
-##' @importFrom MultiAssayExperiment longFormat
-##' @importFrom reshape2 melt
-##'
-##' @export
-longFormat <- function(object,
-                       colvars = NULL,
-                       rowvars = NULL,
-                       index = 1L) {
-    if (!is.null(rowvars)) {
-        rdNames <- rowDataNames(object)
-        misNames <- sapply(rdNames,
-                           function (x) any(!rowvars %in% x))
-        ## Check that all required
-        if (any(misNames))
-            stop("Some 'rowvars' not found in assay(s): ",
-                 paste0(names(misNames)[misNames], collapse = ", "))
-        ## Get long format table with quantification values and colvars
-        longDataFrame <-
-            MultiAssayExperiment::longFormat(object, colvars, index)
-        ## Get the required rowData
-        rds <- lapply(rowData(object),
-                      function(rd) rd[, rowvars, drop = FALSE])
-        rds <- do.call(rbind, rds)
-        ## Merge the rowData to the long table
-        cbind(longDataFrame,
-              rds[as.character(longDataFrame$rowname), , drop = FALSE])
-    } else {
-        ## If rowvars is null, return the MAE longFormat output
-        MultiAssayExperiment::longFormat(object, colvars, index)
+setReplaceMethod(
+    "names", c("QFeatures", "character"),
+    function(x, value) {
+        key_vals <- cbind(names(x), value)
+        x <- callNextMethod(x, value)
+        names(x@assayLinks) <- value
+        for (i in seq_len(length(x))) {
+            al <- x@assayLinks[[i]]
+            al@name <- unname(key_vals[key_vals[, 1] == al@name, 2])
+            if (!all(is.na(al@from))) {
+                al@from <- unname(key_vals[key_vals[, 1] %in% al@from, 2])
+            }
+            x@assayLinks[[i]] <- al
+        }
+        x
     }
-}
-
+)
 
 ##' @param y An object that inherits from `SummarizedExperiment` or a
 ##'     *named* list of assays. When `y` is a list, each element must
@@ -848,19 +900,21 @@ longFormat <- function(object,
 ##'
 ##' @export
 addAssay <- function(x,
-                     y,
-                     name,
-                     assayLinks) {
+    y,
+    name,
+    assayLinks) {
     ## Check arguments
     stopifnot(inherits(x, "QFeatures"))
     y <- .checkAssaysToInsert(y, x, name, replace = FALSE)
 
     ## Check (or create) assayLinks
     if (!missing(assayLinks)) {
-        if (inherits(assayLinks, "AssayLink"))
+        if (inherits(assayLinks, "AssayLink")) {
             assayLinks <- AssayLinks(assayLinks)
-        if (!identical(sort(names(assayLinks)), sort(names(y))))
+        }
+        if (!identical(sort(names(assayLinks)), sort(names(y)))) {
             stop("'assayLinks' must be named after the assay(s) in 'y'.")
+        }
     } else {
         assayLinks <- AssayLinks(names = names(y))
     }
@@ -913,8 +967,8 @@ removeAssay <- function(x, i) {
 ##'
 ##' @export
 replaceAssay <- function(x,
-                         y,
-                         i) {
+    y,
+    i) {
     ## Check arguments
     stopifnot(inherits(x, "QFeatures"))
     if (!missing(i)) i <- .normIndex(x, i)
@@ -939,13 +993,18 @@ replaceAssay <- function(x,
 
     ## Update the AssayLinks
     al <- x@assayLinks
-    allfrom <- lapply(al, function (x) x@from)
+    allfrom <- lapply(al, function(x) x@from)
     for (ii in names(y)) {
-        if (identical(sort(rownames(x[[ii]])),
-                      sort(rownames(y[[ii]]))) &&
-            identical(sort(colnames(x[[ii]])),
-                      sort(colnames(y[[ii]]))))
+        if (identical(
+            sort(rownames(x[[ii]])),
+            sort(rownames(y[[ii]]))
+        ) &&
+            identical(
+                sort(colnames(x[[ii]])),
+                sort(colnames(y[[ii]]))
+            )) {
             next()
+        }
 
         al[[ii]] <- AssayLink(ii)
         repl <- names(allfrom)[sapply(allfrom, function(x) any(x %in% ii))]
@@ -953,17 +1012,20 @@ replaceAssay <- function(x,
             if (inherits(al[[jj]]@hits, "List")) {
                 al[[jj]]@from <- al[[jj]]@from[al[[jj]]@from != ii]
                 al[[jj]]@hits <- al[[jj]]@hits[names(al[[jj]]@hits) != ii]
-                if (length(al[[jj]]@hits) == 1)
+                if (length(al[[jj]]@hits) == 1) {
                     al[[jj]]@hits <- al[[jj]]@hits[[1]]
+                }
             } else {
                 al[[jj]] <- AssayLink(jj)
             }
         }
     }
     if (!identical(al, x@assayLinks)) {
-        warning("Links between assays were lost/removed during ",
-                "replacement. See '?addAssayLink' to restore them ",
-                "manually. ")
+        warning(
+            "Links between assays were lost/removed during ",
+            "replacement. See '?addAssayLink' to restore them ",
+            "manually. "
+        )
     }
 
     ## Update the QFeatures object with all the updated parts
@@ -980,25 +1042,31 @@ replaceAssay <- function(x,
 ##' @rdname QFeatures-class
 ##'
 ##' @export
-setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
-                 function(x, i, j, ..., value) {
-                     if (length(i) != 1)
-                         stop("'x[[i]] <- value' does not allow multiple ",
-                              "replacements. Consider using 'addAssay()', ",
-                              "'replaceAssay()' or 'removeAssay()' instead.")
-                     i <- .normIndex(x, i, allowAbsent = TRUE)
-                     if (!missing(j) || length(list(...)))
-                         stop("invalid replacement")
-                     if (i %in% names(x)) {
-                         if (is.null(value)) {
-                             return(removeAssay(x = x, i = i))
-                         } else {
-                             return(replaceAssay(x = x, y = value, i = i))
-                         }
-                     } else {
-                         return(addAssay(x = x, y = value, name = i))
-                     }
-                 })
+setReplaceMethod(
+    "[[", c("QFeatures", "ANY", "ANY", "ANY"),
+    function(x, i, j, ..., value) {
+        if (length(i) != 1) {
+            stop(
+                "'x[[i]] <- value' does not allow multiple ",
+                "replacements. Consider using 'addAssay()', ",
+                "'replaceAssay()' or 'removeAssay()' instead."
+            )
+        }
+        i <- .normIndex(x, i, allowAbsent = TRUE)
+        if (!missing(j) || length(list(...))) {
+            stop("invalid replacement")
+        }
+        if (i %in% names(x)) {
+            if (is.null(value)) {
+                return(removeAssay(x = x, i = i))
+            } else {
+                return(replaceAssay(x = x, y = value, i = i))
+            }
+        } else {
+            return(addAssay(x = x, y = value, name = i))
+        }
+    }
+)
 
 ## Internal function that normalize the assay indexing. In this
 ## context, normalization means that the returned assay index is a
@@ -1017,18 +1085,26 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
 ## @return A character() with assay names present in object, or new
 ##     assay names (when allowAbsent = FALSE).
 .normIndex <- function(object, i, allowAbsent = FALSE) {
-    if (is.logical(i) & length(i) != length(object))
-        stop("The assay index ('i') is logical but its does not ",
-             "match the number of assays in the QFeatures object.")
+    if (is.logical(i) & length(i) != length(object)) {
+        stop(
+            "The assay index ('i') is logical but its does not ",
+            "match the number of assays in the QFeatures object."
+        )
+    }
     if (is.factor(i)) i <- as.character(i)
-    if (is.numeric(i) || is.logical(i))
+    if (is.numeric(i) || is.logical(i)) {
         i <- names(object)[i]
+    }
     if (!length(i)) stop("No assay selected.")
-    if (any(is.na(i)))
+    if (any(is.na(i))) {
         stop("'i' has out of bounds entries")
-    if (!allowAbsent & any(mis <- !i %in% names(object)))
-        stop("The following assay(s) is/are not found:",
-             paste(i[mis], collapse = ","))
+    }
+    if (!allowAbsent & any(mis <- !i %in% names(object))) {
+        stop(
+            "The following assay(s) is/are not found:",
+            paste(i[mis], collapse = ",")
+        )
+    }
     i
 }
 
@@ -1038,26 +1114,39 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
         stopifnot(is.character(name))
         y <- structure(list(y), .Names = name[1])
     } else {
-        if (!missing(name))
+        if (!missing(name)) {
             warning("'y' is provided as a list, 'name' is ignored.")
-        if (length(names(y)) != length(y))
+        }
+        if (length(names(y)) != length(y)) {
             stop("When 'y' is a list, it must be a named List.")
+        }
     }
     ## Make sure the assays comply to the requirements
     sapply(y, validObject) ## throws an error if any assay is corrupt
-    if (any(duplicated(names(y))))
+    if (any(duplicated(names(y)))) {
         stop("Replacement names must be unique.")
-    if (!replace && any(names(y) %in% names(x)))
-        stop("One or more assay names are already present in 'x'. ",
-             "See 'replaceAssay()' if you want to replace assays.")
-    if (replace && !all(names(y) %in% names(x)))
-        stop("One or more assay names are not in 'x'. See ",
-             "'addAssay()' if you want to add assays.")
-    if (!all(sapply(y, inherits, "SummarizedExperiment")))
-        stop("The replacement object(s) should inherit from ",
-             "SummarizedExperiment.")
-    if (any(sapply(y, function(yy) any(duplicated(rownames(yy))))))
+    }
+    if (!replace && any(names(y) %in% names(x))) {
+        stop(
+            "One or more assay names are already present in 'x'. ",
+            "See 'replaceAssay()' if you want to replace assays."
+        )
+    }
+    if (replace && !all(names(y) %in% names(x))) {
+        stop(
+            "One or more assay names are not in 'x'. See ",
+            "'addAssay()' if you want to add assays."
+        )
+    }
+    if (!all(sapply(y, inherits, "SummarizedExperiment"))) {
+        stop(
+            "The replacement object(s) should inherit from ",
+            "SummarizedExperiment."
+        )
+    }
+    if (any(sapply(y, function(yy) any(duplicated(rownames(yy)))))) {
         stop("The replacement object(s) should have unique row names.")
+    }
     ## Return the valid y
     y
 }
@@ -1077,24 +1166,33 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
     err <- c()
     for (i in names(y)) {
         cn <- .checkDataConflict(cd, colData(y[[i]]))
-        if (length(cn))
+        if (length(cn)) {
             err <- c(err, paste0(cn, " (in ", i, ")"))
+        }
     }
-    if (length(err) > 0) stop("Column(s) in the colData in y have ",
-                              "conflicting information with the ",
-                              "QFeatures colData. Problematic ",
-                              "column(s): ", paste(err, collapse = ", "))
+    if (length(err) > 0) {
+        stop(
+            "Column(s) in the colData in y have ",
+            "conflicting information with the ",
+            "QFeatures colData. Problematic ",
+            "column(s): ", paste(err, collapse = ", ")
+        )
+    }
 
     ## Remove lost samples (in case of replacement)
     if (any(names(y) %in% names(x))) {
         cnOld <- cnNew <- colnames(x)
         repl <- names(y)[names(y) %in% names(x)]
-        for (ii in repl)
+        for (ii in repl) {
             cnNew[[ii]] <- colnames(y[[ii]])
-        oldSamples <- setdiff(unique(unlist(cnOld)),
-                              unique(unlist(cnNew)))
-        if (length(oldSamples))
+        }
+        oldSamples <- setdiff(
+            unique(unlist(cnOld)),
+            unique(unlist(cnNew))
+        )
+        if (length(oldSamples)) {
             cd <- cd[!rownames(cd) %in% oldSamples, , drop = FALSE]
+        }
     }
     ## Perform the actual colData transfer
     for (i in names(y)) {
@@ -1110,12 +1208,14 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
 ##
 ## returns a character vector with problematic column names where a
 ## clash was identified. Returns an empty character vector if no problem.
-.checkDataConflict <- function (x, y) {
+.checkDataConflict <- function(x, y) {
     rn <- intersect(rownames(x), rownames(y))
     cn <- intersect(colnames(x), colnames(y))
-    if (length(rn) == 0 || length(cn) == 0) return(character(0))
+    if (length(rn) == 0 || length(cn) == 0) {
+        return(character(0))
+    }
     ## We consider a problem when:
-    isProbl <- sapply(cn, function (ii) {
+    isProbl <- sapply(cn, function(ii) {
         ## i. the overlaping colData column are different
         !identical(x[rn, ii], y[rn, ii]) &&
             ## ii. the colData x is not all missing
@@ -1150,17 +1250,19 @@ setReplaceMethod("[[", c("QFeatures", "ANY", "ANY", "ANY"),
 ##' @rdname QFeatures-class
 ##'
 ##' @exportMethod updateObject
-setMethod("updateObject", "QFeatures",
-          function(object, ..., verbose = FALSE)
-          {
-              if (verbose)
-                  message("updateObject(object = 'QFeatures')")
-              ## Update slots that are specific to QFeatures
-              object@assayLinks <- updateObject(object@assayLinks, ...,
-                                                verbose = verbose)
-              ## Update MAE slots
-              callNextMethod()
-          }
+setMethod(
+    "updateObject", "QFeatures",
+    function(object, ..., verbose = FALSE) {
+        if (verbose) {
+            message("updateObject(object = 'QFeatures')")
+        }
+        ## Update slots that are specific to QFeatures
+        object@assayLinks <- updateObject(object@assayLinks, ...,
+            verbose = verbose
+        )
+        ## Update MAE slots
+        callNextMethod()
+    }
 )
 
 
@@ -1175,12 +1277,96 @@ setMethod("updateObject", "QFeatures",
 ##' @export
 dropEmptyAssays <- function(object, dims = 1:2) {
     stopifnot(inherits(object, "QFeatures"))
-    if (!all(dims %in% 1:2))
+    if (!all(dims %in% 1:2)) {
         stop("Argument 'dims' must be in '1:2'.")
-    if (1 %in% dims)
+    }
+    if (1 %in% dims) {
         object <- object[, , nrows(object) > 0]
-    if (2 %in% dims)
+    }
+    if (2 %in% dims) {
         object <- object[, , ncols(object) > 0]
-    if (!length(object)) return(QFeatures())
+    }
+    if (!length(object)) {
+        return(QFeatures())
+    }
     object
+}
+
+
+##' Set and Get QFeatures Type
+##'
+##' Developer-level functions to set and retrieve the type of a `QFeatures`
+##' object. This type can help internal methods adapt their behaviour to the
+##' structure of the data.
+##'
+##' @param object An instance of class [QFeatures].
+##' @param type `character(1)` defining the type of the QFeatures.
+##'     Must be one of the values returned by [validQFeaturesTypes()].
+##'
+##' @return
+##' - `setQFeaturesType()`: returns the updated `QFeatures` object with
+##'   the type stored in its metadata.
+##' - `getQFeaturesType()`: returns a character string indicating the
+##'   type of the `QFeatures` object. If no type is explicitly set,
+##'   it is inferred from the class of the experiments.
+##'   If the QFeatures contains any `SingleCellExperiment` objects,
+##'   the type is set to "scp". Otherwise, it is set to "bulk".
+##' - `validQFeaturesTypes()`: character vector of valid QFeatures types.
+##'
+##' @section Warning:
+##' These functions are intended for package developers and internal use.
+##' End users should typically not call them directly.
+##' @details
+##' These functions control an internal metadata slot (`._type`) used to
+##' distinguish between different structural uses of `QFeatures` objects.
+##' This slot is directly accessible with `metadata(object)[["._type"]]`.
+##'
+##' @note The `QFeatures` type slot was introduced because, in the
+##'       context of the `scp` package, we found that `SingleCellExperiment`
+##'       objects were slower than `SummarizedExperiment`
+##'       objects (\href{https://github.com/UCLouvain-CBIO/scp/issues/83}{GH issue: scp#83}).
+##'       As a result, we started using `SummarizedExperiment` objects
+##'       within `scp`. However, to retain information about the type of
+##'       data being handled, we introduced the `QFeatures` type slot.
+##'       This slot is, for example, used in the `show` method of `QFeatures`.
+##'
+##' @rdname QFeatures-type
+##' @keywords internal
+##' @export
+setQFeaturesType <- function(object, type) {
+  stopifnot(inherits(object, "QFeatures"))
+  if (!type %in% validQFeaturesTypes()) {
+    stop(
+      "Invalid QFeatures type. Must be one of: ",
+      paste(validQFeaturesTypes(), collapse = ", ")
+    )
+  }
+  metadata(object)[["._type"]] <- type
+  object
+}
+
+##' @rdname QFeatures-type
+##' @keywords internal
+##' @export
+getQFeaturesType <- function(object) {
+  stopifnot(inherits(object, "QFeatures"))
+  type <- metadata(object)[["._type"]]
+  if (is.null(type)) {
+    message(paste("No explicit type set for this QFeatures object,",
+                  "choosing a type in fonction of experiments classes"))
+    if (any(sapply(experiments(object),
+                   function(x) inherits(x, "SingleCellExperiment")))) {
+      type <- "scp"
+    } else {
+      type <- "bulk"
+    }
+  }
+  type
+}
+
+##' @rdname QFeatures-type
+##' @keywords internal
+##' @export
+validQFeaturesTypes <- function() {
+  c("bulk", "scp")
 }
