@@ -336,7 +336,7 @@ readQFeatures <- function(assayData,
     }
     if (removeEmptyCols) el <- .removeEmptyColumns(el)
     if (verbose) message("Formatting sample annotations (colData).")
-    colData <- .formatColData(el, colData, runs, quantCols)
+    colData <- .formatColData(el, colData, runs)
     if (verbose) message("Formatting data as a 'QFeatures' object.")
     ans <- QFeatures(experiments = el, colData = colData)
     if (!is.null(fnames)) {
@@ -494,31 +494,19 @@ readQFeatures <- function(assayData,
 
 ## This function will create a colData from the different (possibly
 ## missing, i.e. NULL) arguments
-.formatColData <- function(el, colData, runs, quantCols) {
+.formatColData <- function(el, colData, runs) {
     sampleNames <- unlist(lapply(el, colnames), use.names = FALSE)
     if (is.null(colData))
         return(DataFrame(row.names = sampleNames))
-    if (!length(runs)) {
-        # assign colData rownames to match colData to sampleNames
-        if ("quantCols" %in% colnames(colData)) {
-            # use colData$quantCols as rownames
-            # (quantCols argument is not guaranteed to match to colData rows)
-            rownames(colData) <- colData$quantCols
-        } else if (length(quantCols) == nrow(colData)) {
-            # no colData$quantCols column
-            # we assume the colData order matches quantCols argument
-            rownames(colData) <- quantCols
-        } else {
-            # assume colData order matches sampleNames
-            rownames(colData) <- sampleNames
-        }
+    # assign colData rownames to match colData to sampleNames
+    # colData$quantCols presence was checked by .checkQuantCols
+    if (is.null(runs)) {
+        # use colData$quantCols as rownames
+        rownames(colData) <- colData$quantCols
     } else {
         # run information is present, colData should match individual runs
-        if (length(quantCols) == 1) {
-            rownames(colData) <- colData$runCol
-        } else {
-            rownames(colData) <- paste0(colData$runCol, "_", colData$quantCols)
-        }
+        # the presence of colData$runCol was checked by .checkRunCol
+        rownames(colData) <- paste0(colData$runCol, "_", colData$quantCols)
     }
     # match colData to sampleNames
     colData <- colData[sampleNames, , drop = FALSE]
