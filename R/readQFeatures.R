@@ -552,5 +552,6 @@ readQFeatures <- function(assayData,
         rownames(x) <- rn
         x
     })
+    names(expl) <- names(object)
     List(expl)
 }
