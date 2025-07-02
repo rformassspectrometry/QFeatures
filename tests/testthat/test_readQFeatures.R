@@ -233,6 +233,44 @@ test_that("readQFeatures: test polymorphism", {
     )
 })
 
+test_that("readQFeatures: testing fnames", {
+    require("SummarizedExperiment")
+    
+    ## No fnames
+    se1 <- readSummarizedExperiment(x, 1:10)
+    expect_identical(
+        readQFeatures(x, quantCols = 1:10),
+        QFeatures(List(quants = se_exp),
+                  metadata = list("._type" = "bulk"))
+    )
+    ## Character fnames
+    sel <- !duplicated(rowData(se_exp)$Sequence)
+    x2 <- x[sel, ]
+    se2 <- readSummarizedExperiment(x1, 1:10)
+    rownames(se2) <- rowData(se2)$Sequence
+    expect_identical(
+        readQFeatures(x2, quantCols = 1:10, fnames = "Sequence"),
+        QFeatures(List(quants = se2),
+                  metadata = list("._type" = "bulk"))
+    )
+    ## Numeric fnames
+    expect_identical(
+        readQFeatures(x2, quantCols = 1:10, fnames = "Sequence"),
+        readQFeatures(x2, quantCols = 1:10, fnames = 1)
+    )
+    ## Duplicated fnames = warning
+    se3 <- readSummarizedExperiment(x, 1:10)
+    rownames(se3) <- make.unique(rowData(se3)$Sequence)
+    expect_warning(
+        test <- readQFeatures(x, quantCols = 1:10, fnames = "Sequence"),
+        regexp = "Duplicated entries found in ‘Sequence’ in rowData of assay quants; they are made unique."
+    )
+    expect_identical(
+        test,
+        QFeatures(List(quants = se3),
+                  metadata = list("._type" = "bulk"))
+    )
+})
 
 test_that("readQFeatures: errors, warnings and messages", {
     se_exp <- readSummarizedExperiment(x, 1:10)
