@@ -166,3 +166,96 @@ test_that("aggregate and join (issue 81)", {
     ## rownames are different
     expect_equivalent(assay(x), assay(y))
 })
+
+test_that("join with an fcol", {
+    ## See for background:
+    ## https://github.com/rformassspectrometry/QFeatures/issues/221
+    ## https://github.com/rformassspectrometry/QFeatures/pull/223
+    
+    ## Join assays that are not linked, 
+    library(QFeatures)
+    library(testthat)
+    data(feat2)
+    ## Create feature ids that overlap between sets
+    rowData(feat2) <- lapply(rowData(feat2), function(x) {
+        x$id <- seq_len(nrow(x))
+        x
+    })
+    expect_message(
+        test <- joinAssays(feat2, i = 1:3, fcol = "id"),
+        regexp = "Using 'id' to join assays."
+    )
+    ## Check the joined assay has the expected dimensions, where
+    ## number of rows should match the number of rows of largest set
+    ## and the number of column should match the total number of
+    ## colums
+    coln <- unname(unlist(colnames(feat2)))
+    rown <- as.character(seq_len(max(nrows(feat2))))
+    ## Note that base::merge (used internally by joinAssays) does some
+    ## weird reordering of the rows (although sort = FALSE)...
+    ord <- c(1:7, 9:10, 8)
+    expect_identical(
+        dimnames(test[[4]]),
+        list(rown[ord], coln)
+    )
+    ## Check the quant matrix is as expected
+    exp_m <- matrix(
+        NA, length(rown), length(coln), dimnames = list(rown, coln)
+    )
+    for (i in as.list(experiments(feat2))) {
+        exp_m[rowData(i)$id, colnames(i)] <- assay(i)
+    }
+    exp_m <- exp_m[ord, ]
+    expect_identical(exp_m, assay(test[[4]]))
+    ## Check that the SE object is expected
+    exp_cd <- do.call(rbind, lapply(experiments(feat2), function(x) {
+        colData(x)[, "Var1", drop = FALSE]
+    }))
+    exp_se <- SummarizedExperiment(
+        assays = list(exp_m), 
+        rowData = DataFrame(id = as.integer(ord), row.names = ord),
+        colData = exp_cd
+    )
+    expect_identical(exp_se, test[[4]])
+    ## Check that the QF is expected
+    exp_qf <- addAssay(feat2, exp_se, "joinedAssay")
+    exp_qf <- addAssayLink(
+        exp_qf, from = 1:3, 4, varFrom = rep("id", 3), varTo = "id"
+    )
+    expect_identical(exp_qf, test)
+    ## When fcol has duplicated entries, the function automatically
+    ## make the rownames unique and throws a warning
+    rowData(feat2) <- lapply(rowData(feat2), function(x) {
+        x$id <- c(1, seq_len(nrow(x) - 1))
+        x
+    })
+    expect_message(
+        expect_warning(
+            test <- joinAssays(feat2, i = 1:3, fcol = "id"),
+            regexp = "Duplicated entries found in ‘id’ in rowData of assay assay1; they are made unique."
+        ),
+        regexp = "Using 'id' to join assays."
+    )
+    ## Make sure this works when joining a subset of the assays
+    data("feat3")
+    expect_message(
+        test <- joinAssays(feat3, i = 1:2, fcol = "Var"),
+        regexp = "Using 'Var' to join assays."
+    )
+    exp_m <- assay(feat3[["psmsall"]])
+    rownames(exp_m) <- sub("PSM", "", rownames(exp_m))
+    expect_identical(assay(test[["joinedAssay"]]), exp_m)
+    rd <- rowData(feat3[["psmsall"]])
+    rownames(rd) <- sub("PSM", "", rownames(rd))
+    exp_se <- SummarizedExperiment(
+        assays = list(exp_m),
+        rowData = rd,
+        colData = colData(feat3[["psmsall"]])
+    )
+    expect_identical(test[["joinedAssay"]], exp_se)
+    exp_qf <- addAssay(feat3, exp_se, "joinedAssay")
+    exp_qf <- addAssayLink(
+        exp_qf, from = 1:2, 8, varFrom = rep("Var", 2), varTo = "Var"
+    )
+    expect_identical(exp_qf, test)
+})

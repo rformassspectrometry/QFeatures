@@ -1,4 +1,3 @@
-
 data(feat3)
 
 test_that("subsetByFeatures", {
@@ -24,9 +23,9 @@ test_that("subsetByFeatures", {
     res3 <- feat1["SYGFNAAR", , ]
     expect_identical(res1, res2)
     expect_identical(res1, res3)
-    ## Check the QFeatures subsetting follows the same behavior as 
+    ## Check the QFeatures subsetting follows the same behavior as
     ## MultiAssayExperiment
-    expect_identical(dims(subsetByFeature(feat1, "PSM1")), 
+    expect_identical(dims(subsetByFeature(feat1, "PSM1")),
                      dims(subsetByRow(feat1, "PSM1")))
 })
 
@@ -52,6 +51,6 @@ test_that("subsetByFeatures: full pipeline", {
     expect_identical(dims(ftsub)[2, ], dims(feat3)[2, ])
     expect_identical(dims(ftsub)[1, ], dims(feat3)[1, ] - c(4L, 7L, 7L, rep(2L, 4)))
     expect_identical("SYGFNAAR",
-                     unique(unlist(lapply(rowData(ftsub), 
+                     unique(unlist(lapply(rowData(ftsub),
                                           function(x) x$Sequence))))
 })

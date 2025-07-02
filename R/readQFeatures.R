@@ -351,7 +351,7 @@ readQFeatures <- function(assayData,
         if (verbose) message("Setting assay rownames.")
         ans <- .setAssayRownames(ans, fnames)
     }
-    ans
+    setQFeaturesType(ans, "bulk")
 }
 
 
@@ -485,7 +485,7 @@ readQFeatures <- function(assayData,
 
 .createUniqueColnames <- function(el, quantCols) {
     if (length(quantCols) == 1)  suffix <- ""
-    else suffix <- paste0("_", colnames(el[[1]]))
+    else suffix <- paste0("_", quantCols)
     for (i in seq_along(el)) {
         colnames(el[[i]]) <- paste0(names(el)[[i]], suffix)
     }
@@ -525,33 +525,34 @@ readQFeatures <- function(assayData,
 ## fnames is used. Note that we don't want to export it to avoid messing
 ## with rownames and assayLinks.
 .setAssayRownames <- function(object, fcol) {
+    if (is.numeric(fcol)) fcol <- rowDataNames(object)[[1]][[fcol]]
     stopifnot(inherits(object, "MultiAssayExperiment"))
-    ok <- lapply(rowData(object),
-                 function(x) stopifnot(fcol %in% names(x)))
-    expl <- lapply(experiments(object),
-                   function(x) {
-                       rownames(x) <- rowData(x)[[fcol]]
-                       x
-                   })
-    experiments(object) <- List(expl)
+    experiments(object) <- .setAssayRownamesExperimentList(
+        experiments(object), fcol
+    )
     object
 }
 
-.setAssayRownames2 <- function(object, i = seq_along(feat4), fcol) {
-    stopifnot(inherits(object, "MultiAssayExperiment"))
-    i <- .normIndex(object, i, allowAbsent = FALSE)
-    ## TODO: make sure the names are unique, otherwise it will fail later, when
-    ## validating to QFeatures object - better fail early.
-    ok <- lapply(rowData(object[, , i]),
-                 function(x) stopifnot(fcol %in% names(x)))
-    ## Note that is is more efficient time and memory-wise (about twice on a
-    ## small QFeatures) to iterate over the experiments and then replace them,
-    ## rather than updating/replacing the assays in-place.
-    expl <- experiments(object)
-    for (ii in i)
-        rownames(expl[[ii]]) <- rowData(expl[[ii]])[[fcol]]
-    experiments(object) <- expl
-    object
+## This is used by the function above, but also by mergeSElist()
+.setAssayRownamesExperimentList <- function(object, fcol) {
+    stopifnot(inherits(object, "ExperimentList"))
+    is_ok <- sapply(names(object), function(ii){
+        ifelse(fcol %in% names(rowData(object[[ii]])), TRUE, FALSE)
+    })
+    if (any(!is_ok)) 
+        stop(sQuote(fcol), " not found in the following assays: ",
+             paste0(names(object)[!is_ok], collapse = ", "), ".")
+    expl <- lapply(names(object), function(ii) {
+        x <- object[[ii]]
+        rn <- rowData(x)[[fcol]]
+        if (anyDuplicated(rn)) {
+            warning("Duplicated entries found in ", sQuote(fcol), 
+                    " in rowData of assay ", ii, "; they are made unique.")
+            rn <- make.unique(as.character(rn))
+        }
+        rownames(x) <- rn
+        x
+    })
+    names(expl) <- names(object)
+    List(expl)
 }
-
-## TODO: we should also udpate the assay link to/from the renamed assays.
