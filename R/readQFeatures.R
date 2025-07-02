@@ -525,6 +525,7 @@ readQFeatures <- function(assayData,
 ## fnames is used. Note that we don't want to export it to avoid messing
 ## with rownames and assayLinks.
 .setAssayRownames <- function(object, fcol) {
+    if (is.numeric(fcol)) fcol <- rowDataNames(object)[[1]][[fcol]]
     stopifnot(inherits(object, "MultiAssayExperiment"))
     experiments(object) <- .setAssayRownamesExperimentList(
         experiments(object), fcol
