@@ -108,12 +108,14 @@ test_that("readQFeatures: testing use cases", {
     shuffledColAnnot <- colAnnot[shuffledSamplesOrder, , drop = FALSE]
     expect_identical(
         readQFeatures(x, shuffledSamplesOrder, colData = shuffledColAnnot),
-        QFeatures(List(quants = se_exp), colData = colAnnot)
+        QFeatures(List(quants = se_exp), colData = colAnnot,
+                  metadata = list("._type" = "bulk"))
     )
     ## With colAnnot and quantCols, but with different colAnnot row order (PR #234)
     expect_identical(
         readQFeatures(x, 1:10, colData = shuffledColAnnot),
-        QFeatures(List(quants = se_exp), colData = colAnnot)
+        QFeatures(List(quants = se_exp), colData = colAnnot,
+                  metadata = list("._type" = "bulk"))
     )
 
     ## Case 2: Multiple-set, one quantitative col
