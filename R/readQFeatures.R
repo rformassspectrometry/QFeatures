@@ -506,7 +506,15 @@ readQFeatures <- function(assayData,
     } else {
         # run information is present, colData should match individual runs
         # the presence of colData$runCol was checked by .checkRunCol
-        rownames(colData) <- paste0(colData$runCol, "_", colData$quantCols)
+        if (any(duplicated(colData$runCol))) {
+            # quantCols as postfix if runCol is duplicated
+            newRownames <- paste0(colData$runCol, "_", colData$quantCols)
+            if (any(duplicated(newRownames)))
+                stop("There are duplicated samples (runCol-quantCols combinations) in the colData table.")
+            rownames(colData) <- newRownames
+        } else {
+            rownames(colData) <- colData$runCol
+        }
     }
     # match colData to sampleNames
     colData <- colData[sampleNames, , drop = FALSE]
