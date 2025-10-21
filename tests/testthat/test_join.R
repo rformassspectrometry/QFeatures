@@ -232,7 +232,7 @@ test_that("join with an fcol", {
     expect_message(
         expect_warning(
             test <- joinAssays(feat2, i = 1:3, fcol = "id"),
-            regexp = "Duplicated entries found in ‘id’ in rowData of assay assay1; they are made unique."
+            regexp = "Duplicated entries found in .id. in rowData of assay assay1; they are made unique."
         ),
         regexp = "Using 'id' to join assays."
     )
@@ -259,3 +259,4 @@ test_that("join with an fcol", {
     )
     expect_identical(exp_qf, test)
 })
+
