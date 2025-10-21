@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">QFeatures</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.19.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.19.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,10 +62,10 @@
 
 <link href="read_QFeatures_files/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
 <script src="read_QFeatures_files/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="read_QFeatures_files/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
-<script src="read_QFeatures_files/datatables-binding-0.33/datatables.js"></script><link href="read_QFeatures_files/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+<script src="read_QFeatures_files/datatables-binding-0.34.0/datatables.js"></script><link href="read_QFeatures_files/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="read_QFeatures_files/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
-<script src="read_QFeatures_files/dt-core-1.13.6/js/jquery.dataTables.min.js"></script><link href="read_QFeatures_files/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
-<script src="read_QFeatures_files/crosstalk-1.2.1/js/crosstalk.min.js"></script><div class="row">
+<script src="read_QFeatures_files/dt-core-1.13.6/js/jquery.dataTables.min.js"></script><link href="read_QFeatures_files/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+<script src="read_QFeatures_files/crosstalk-1.2.2/js/crosstalk.min.js"></script><div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Load mass spectrometry-based proteomics data using `readQFeatures()`</h1>
                         <h4 data-toc-skip class="author">Laurent
@@ -73,7 +73,7 @@ Gatto</h4>
                                     <h4 data-toc-skip class="author">Christophe
 Vanderaa</h4>
                         
-            <h4 data-toc-skip class="date">26 May 2025</h4>
+            <h4 data-toc-skip class="date">21 October 2025</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/RforMassSpectrometry/QFeatures/blob/master/vignettes/read_QFeatures.Rmd" class="external-link"><code>vignettes/read_QFeatures.Rmd</code></a></small>
       <div class="d-none name"><code>read_QFeatures.Rmd</code></div>
@@ -100,7 +100,7 @@ composed of PSMs. <code>QFeatures</code> automatically creates links
 between the related features through an <code>AssayLinks</code>
 object.</p>
 <div class="figure">
-<img src="figs/readQFeatures_class.png" alt="The `QFeatures` data class. The `QFeatures` object contains a list of `SummarizedExperiment` ojects (see [class description](https://bioconductor.org/packages/release/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html)) on `SingleCellExperiment` and `QFeatures` objects" width="100%"><p class="caption">
+<img src="figs/readQFeatures_class.png" class="r-plt" alt="The `QFeatures` data class. The `QFeatures` object contains a list of `SummarizedExperiment` ojects (see [class description](https://bioconductor.org/packages/release/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html)) on `SingleCellExperiment` and `QFeatures` objects" width="100%"><p class="caption">
 The <code>QFeatures</code> data class. The <code>QFeatures</code> object
 contains a list of <code>SummarizedExperiment</code> ojects (see <a href="https://bioconductor.org/packages/release/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html" class="external-link">class
 description</a>) on <code>SingleCellExperiment</code> and
@@ -140,7 +140,7 @@ protein name</li>
 <p>In this case, each quantitative column contains information for a
 single sample. This can be schematically represented as below:</p>
 <div class="figure">
-<img src="figs/readQFeatures_assayData_single.png" alt="Schematic representation of a data table under the single-set case. Quantification columns (`quantCols`) are represented by different shades of red." width="150px"><p class="caption">
+<img src="figs/readQFeatures_assayData_single.png" class="r-plt" alt="Schematic representation of a data table under the single-set case. Quantification columns (`quantCols`) are represented by different shades of red." width="150px"><p class="caption">
 Schematic representation of a data table under the single-set case.
 Quantification columns (<code>quantCols</code>) are represented by
 different shades of red.
@@ -202,7 +202,7 @@ protein name.</li>
 <p>Each quantitative column contains information for multiple samples.
 This can be schematically represented as below:</p>
 <div class="figure">
-<img src="figs/readQFeatures_assayData_multi.png" alt="Schematic representation of a data table under the multi-set case. Quantification columns (`quantCols`) are coloured by run and shaded by label. Every sample is uniquely represented by a colour and shade. Note that every `quantCol` contains multiple samples." width="180px"><p class="caption">
+<img src="figs/readQFeatures_assayData_multi.png" class="r-plt" alt="Schematic representation of a data table under the multi-set case. Quantification columns (`quantCols`) are coloured by run and shaded by label. Every sample is uniquely represented by a colour and shade. Note that every `quantCol` contains multiple samples." width="180px"><p class="caption">
 Schematic representation of a data table under the multi-set case.
 Quantification columns (<code>quantCols</code>) are coloured by run and
 shaded by label. Every sample is uniquely represented by a colour and
@@ -254,7 +254,7 @@ required.</p>
 <p>For the single-set case, the <code>colData</code> table must contain
 a column named <code>quantCols</code>.</p>
 <div class="figure">
-<img src="figs/readQFeatures_colData_single.png" alt="`colData` for the single-set case" width="140px"><p class="caption">
+<img src="figs/readQFeatures_colData_single.png" class="r-plt" alt="`colData` for the single-set case" width="140px"><p class="caption">
 <code>colData</code> for the single-set case
 </p>
 </div>
@@ -320,7 +320,7 @@ fetched from this table):</p>
 column named <code>quantCols</code> and a column called
 <code>runCol</code>.</p>
 <div class="figure">
-<img src="figs/readQFeatures_colData_multi.png" alt="`colData` for the multi-set case" width="175px"><p class="caption">
+<img src="figs/readQFeatures_colData_multi.png" class="r-plt" alt="`colData` for the multi-set case" width="175px"><p class="caption">
 <code>colData</code> for the multi-set case
 </p>
 </div>
@@ -441,7 +441,7 @@ stored in the <code>assay</code> slot. Any other column is considered as
 feature annotation and will be stored as <code>rowData</code>.</li>
 </ol>
 <div class="figure">
-<img src="figs/readQFeatures_step1.png" alt="Step1: Convert the input table to a `SingleCellExperiment` object" width="200px"><p class="caption">
+<img src="figs/readQFeatures_step1.png" class="r-plt" alt="Step1: Convert the input table to a `SingleCellExperiment` object" width="200px"><p class="caption">
 Step1: Convert the input table to a <code>SingleCellExperiment</code>
 object
 </p>
@@ -452,7 +452,7 @@ object is split according to the acquisition run provided by the
 <code>runCol</code> column in <code>assayData</code>.</li>
 </ol>
 <div class="figure">
-<img src="figs/readQFeatures_step2.png" alt="Step2: Split by acquisition run" width="240px"><p class="caption">
+<img src="figs/readQFeatures_step2.png" class="r-plt" alt="Step2: Split by acquisition run" width="240px"><p class="caption">
 Step2: Split by acquisition run
 </p>
 </div>
@@ -466,7 +466,7 @@ provided, the sample annotations are empty. Otherwise,
 the <code>colData</code> slot of the <code>QFeatures</code> object.</li>
 </ol>
 <div class="figure">
-<img src="figs/readQFeatures_step3.png" alt="Step3: Adding and matching the sample annotations" width="520px"><p class="caption">
+<img src="figs/readQFeatures_step3.png" class="r-plt" alt="Step3: Adding and matching the sample annotations" width="520px"><p class="caption">
 Step3: Adding and matching the sample annotations
 </p>
 </div>
@@ -476,7 +476,7 @@ Step3: Adding and matching the sample annotations
 object.</li>
 </ol>
 <div class="figure">
-<img src="figs/readQFeatures_step4.png" alt="Step4: Converting to a `QFeatures`" width="400px"><p class="caption">
+<img src="figs/readQFeatures_step4.png" class="r-plt" alt="Step4: Converting to a `QFeatures`" width="400px"><p class="caption">
 Step4: Converting to a <code>QFeatures</code>
 </p>
 </div>
@@ -518,9 +518,9 @@ the function or the documentation are also warmly welcome.</p>
 <div class="section level2">
 <h2 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<pre><code>R version 4.5.0 (2025-04-11)
+<pre><code>R version 4.5.1 (2025-06-13)
 Platform: x86_64-pc-linux-gnu
-Running under: Ubuntu 24.04.2 LTS
+Running under: Ubuntu 24.04.3 LTS
 
 Matrix products: default
 BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -542,37 +542,36 @@ attached base packages:
 [8] base     
 
 other attached packages:
- [1] DT_0.33                     QFeatures_1.19.2           
- [3] MultiAssayExperiment_1.35.3 SummarizedExperiment_1.39.0
- [5] Biobase_2.69.0              GenomicRanges_1.61.0       
- [7] GenomeInfoDb_1.45.3         IRanges_2.43.0             
- [9] S4Vectors_0.47.0            BiocGenerics_0.55.0        
+ [1] DT_0.34.0                   QFeatures_1.19.3           
+ [3] MultiAssayExperiment_1.35.9 SummarizedExperiment_1.39.2
+ [5] Biobase_2.69.1              GenomicRanges_1.61.5       
+ [7] Seqinfo_0.99.2              IRanges_2.43.5             
+ [9] S4Vectors_0.47.4            BiocGenerics_0.55.4        
 [11] generics_0.1.4              MatrixGenerics_1.21.0      
-[13] matrixStats_1.5.0           BiocStyle_2.37.0           
+[13] matrixStats_1.5.0           BiocStyle_2.37.1           
 
 loaded via a namespace (and not attached):
- [1] xfun_0.52               bslib_0.9.0             htmlwidgets_1.6.4      
- [4] lattice_0.22-7          crosstalk_1.2.1         vctrs_0.6.5            
- [7] tools_4.5.0             tibble_3.2.1            cluster_2.1.8.1        
-[10] pkgconfig_2.0.3         BiocBaseUtils_1.11.0    Matrix_1.7-3           
-[13] desc_1.4.3              lifecycle_1.0.4         compiler_4.5.0         
-[16] stringr_1.5.1           textshaping_1.0.1       clue_0.3-66            
+ [1] xfun_0.53               bslib_0.9.0             htmlwidgets_1.6.4      
+ [4] lattice_0.22-7          crosstalk_1.2.2         vctrs_0.6.5            
+ [7] tools_4.5.1             tibble_3.3.0            cluster_2.1.8.1        
+[10] pkgconfig_2.0.3         BiocBaseUtils_1.11.2    Matrix_1.7-4           
+[13] desc_1.4.3              lifecycle_1.0.4         compiler_4.5.1         
+[16] stringr_1.5.2           textshaping_1.0.4       clue_0.3-66            
 [19] htmltools_0.5.8.1       sass_0.4.10             yaml_2.3.10            
-[22] lazyeval_0.2.2          pkgdown_2.1.3.9000      pillar_1.10.2          
+[22] lazyeval_0.2.2          pkgdown_2.1.3.9000      pillar_1.11.1          
 [25] crayon_1.5.3            jquerylib_0.1.4         tidyr_1.3.1            
-[28] MASS_7.3-65             DelayedArray_0.35.1     cachem_1.1.0           
+[28] MASS_7.3-65             DelayedArray_0.35.3     cachem_1.1.0           
 [31] abind_1.4-8             tidyselect_1.2.1        digest_0.6.37          
-[34] stringi_1.8.7           purrr_1.0.4             dplyr_1.1.4            
-[37] reshape2_1.4.4          bookdown_0.43           fastmap_1.2.0          
-[40] grid_4.5.0              cli_3.6.5               SparseArray_1.9.0      
-[43] magrittr_2.0.3          S4Arrays_1.9.0          UCSC.utils_1.5.0       
-[46] rmarkdown_2.29          XVector_0.49.0          httr_1.4.7             
-[49] igraph_2.1.4            ragg_1.4.0              evaluate_1.0.3         
-[52] knitr_1.50              rlang_1.1.6             Rcpp_1.0.14            
-[55] glue_1.8.0              BiocManager_1.30.25     jsonlite_2.0.0         
-[58] AnnotationFilter_1.33.0 R6_2.6.1                plyr_1.8.9             
-[61] systemfonts_1.2.3       fs_1.6.6                ProtGenerics_1.41.0    
-[64] MsCoreUtils_1.21.0     </code></pre>
+[34] stringi_1.8.7           purrr_1.1.0             dplyr_1.1.4            
+[37] reshape2_1.4.4          bookdown_0.45           fastmap_1.2.0          
+[40] grid_4.5.1              cli_3.6.5               SparseArray_1.9.1      
+[43] magrittr_2.0.4          S4Arrays_1.9.1          rmarkdown_2.30         
+[46] XVector_0.49.1          igraph_2.2.0            ragg_1.5.0             
+[49] evaluate_1.0.5          knitr_1.50              rlang_1.1.6            
+[52] Rcpp_1.1.0              glue_1.8.0              BiocManager_1.30.26    
+[55] jsonlite_2.0.0          AnnotationFilter_1.33.0 R6_2.6.1               
+[58] plyr_1.8.9              systemfonts_1.3.1       fs_1.6.6               
+[61] ProtGenerics_1.41.0     MsCoreUtils_1.21.0     </code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>

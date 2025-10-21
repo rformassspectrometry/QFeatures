@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">QFeatures</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.19.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.19.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -383,7 +383,7 @@ minimum value) method. Conversely, it is recommended to use <em>hot
 deck</em> methods (for example nearest neighbour, maximum likelihood,
 etc) when data are missing at random.</p>
 <div class="figure">
-<img src="Processing_files/figure-html/miximp-1.png" alt="Mixed imputation method. Black cells represent presence of quantitation values and light grey corresponds to missing data. The two groups of interest are depicted in green and blue along the heatmap columns. Two classes of proteins are annotated on the left: yellow are proteins with randomly occurring missing values (if any) while proteins in brown are candidates for non-random missing value imputation." width="700"><p class="caption">
+<img src="Processing_files/figure-html/miximp-1.png" class="r-plt" alt="Mixed imputation method. Black cells represent presence of quantitation values and light grey corresponds to missing data. The two groups of interest are depicted in green and blue along the heatmap columns. Two classes of proteins are annotated on the left: yellow are proteins with randomly occurring missing values (if any) while proteins in brown are candidates for non-random missing value imputation." width="700"><p class="caption">
 Mixed imputation method. Black cells represent presence of quantitation
 values and light grey corresponds to missing data. The two groups of
 interest are depicted in green and blue along the heatmap columns. Two
@@ -437,7 +437,7 @@ assays.</p>
 <span><span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html" class="external-link">plotDensities</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html" class="external-link">plotDensities</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="Processing_files/figure-html/unnamed-chunk-9-1.png" alt="Quantitative data in its original scale (left) and log2-transformed (right)." width="700"><p class="caption">
+<img src="Processing_files/figure-html/unnamed-chunk-9-1.png" class="r-plt" alt="Quantitative data in its original scale (left) and log2-transformed (right)." width="700"><p class="caption">
 Quantitative data in its original scale (left) and log2-transformed
 (right).
 </p>
@@ -478,7 +478,7 @@ back to the <code>QFeatures</code> object with
 <span><span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html" class="external-link">plotDensities</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"peptides_log"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotDensities.html" class="external-link">plotDensities</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"peptides_norm"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="Processing_files/figure-html/unnamed-chunk-10-1.png" alt="Distribution of log2 peptide intensities before (left) and after (right) median normalisation." width="700"><p class="caption">
+<img src="Processing_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" alt="Distribution of log2 peptide intensities before (left) and after (right) median normalisation." width="700"><p class="caption">
 Distribution of log2 peptide intensities before (left) and after (right)
 median normalisation.
 </p>
@@ -488,9 +488,9 @@ median normalisation.
 <h2 id="feature-aggregation">Feature aggregation<a class="anchor" aria-label="anchor" href="#feature-aggregation"></a>
 </h2>
 <p>At this stage, it is possible to directly use the peptide-level
-intensities to perform a statistical analysis <span class="citation">(Goeminne, Gevaert, and Clement 2016)</span>, or
-aggregate the peptide-level data into protein intensities, and perform
-the differential expression analysis at the protein level.</p>
+intensities to perform a statistical analysis <span class="citation">(Goeminne et al. 2016)</span>, or aggregate the
+peptide-level data into protein intensities, and perform the
+differential expression analysis at the protein level.</p>
 <p>To aggregate feature data, we can use the
 <code>aggregateFeatures</code> function that takes the following
 inputs:</p>
@@ -618,7 +618,7 @@ it is on a different scale (i.e. not log-transformed).</p>
 <pre><code><span><span class="co">## harmonizing input:</span></span>
 <span><span class="co">##   removing 6 sampleMap rows not in names(experiments)</span></span></code></pre>
 <div class="figure">
-<img src="Processing_files/figure-html/unnamed-chunk-13-1.png" alt="Expression intensities for the protein *P02787ups|TRFE_HUMAN_UPS* (right, green) and its peptides (left) in groups A (circles) and B (triangles)." width="700"><p class="caption">
+<img src="Processing_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="Expression intensities for the protein *P02787ups|TRFE_HUMAN_UPS* (right, green) and its peptides (left) in groups A (circles) and B (triangles)." width="700"><p class="caption">
 Expression intensities for the protein <em>P02787ups|TRFE_HUMAN_UPS</em>
 (right, green) and its peptides (left) in groups A (circles) and B
 (triangles).
@@ -640,9 +640,9 @@ proteomics data analysis</a> chapter of the WSBIM2122 course.</li>
 <div class="section level2">
 <h2 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<pre><code><span><span class="co">## R version 4.5.0 (2025-04-11)</span></span>
+<pre><code><span><span class="co">## R version 4.5.1 (2025-06-13)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
-<span><span class="co">## Running under: Ubuntu 24.04.2 LTS</span></span>
+<span><span class="co">## Running under: Ubuntu 24.04.3 LTS</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
 <span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
@@ -665,40 +665,40 @@ proteomics data analysis</a> chapter of the WSBIM2122 course.</li>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
 <span><span class="co">##  [1] gplots_3.2.0                dplyr_1.1.4                </span></span>
-<span><span class="co">##  [3] ggplot2_3.5.2               QFeatures_1.19.2           </span></span>
-<span><span class="co">##  [5] MultiAssayExperiment_1.35.3 SummarizedExperiment_1.39.0</span></span>
-<span><span class="co">##  [7] Biobase_2.69.0              GenomicRanges_1.61.0       </span></span>
-<span><span class="co">##  [9] GenomeInfoDb_1.45.3         IRanges_2.43.0             </span></span>
-<span><span class="co">## [11] S4Vectors_0.47.0            BiocGenerics_0.55.0        </span></span>
+<span><span class="co">##  [3] ggplot2_4.0.0               QFeatures_1.19.3           </span></span>
+<span><span class="co">##  [5] MultiAssayExperiment_1.35.9 SummarizedExperiment_1.39.2</span></span>
+<span><span class="co">##  [7] Biobase_2.69.1              GenomicRanges_1.61.5       </span></span>
+<span><span class="co">##  [9] Seqinfo_0.99.2              IRanges_2.43.5             </span></span>
+<span><span class="co">## [11] S4Vectors_0.47.4            BiocGenerics_0.55.4        </span></span>
 <span><span class="co">## [13] generics_0.1.4              MatrixGenerics_1.21.0      </span></span>
-<span><span class="co">## [15] matrixStats_1.5.0           BiocStyle_2.37.0           </span></span>
+<span><span class="co">## [15] matrixStats_1.5.0           BiocStyle_2.37.1           </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] gtable_0.3.6            xfun_0.52               bslib_0.9.0            </span></span>
+<span><span class="co">##  [1] gtable_0.3.6            xfun_0.53               bslib_0.9.0            </span></span>
 <span><span class="co">##  [4] caTools_1.18.3          htmlwidgets_1.6.4       lattice_0.22-7         </span></span>
-<span><span class="co">##  [7] bitops_1.0-9            vctrs_0.6.5             tools_4.5.0            </span></span>
-<span><span class="co">## [10] tibble_3.2.1            cluster_2.1.8.1         pkgconfig_2.0.3        </span></span>
-<span><span class="co">## [13] BiocBaseUtils_1.11.0    KernSmooth_2.23-26      Matrix_1.7-3           </span></span>
-<span><span class="co">## [16] RColorBrewer_1.1-3      desc_1.4.3              lifecycle_1.0.4        </span></span>
-<span><span class="co">## [19] farver_2.1.2            compiler_4.5.0          stringr_1.5.1          </span></span>
-<span><span class="co">## [22] textshaping_1.0.1       statmod_1.5.0           clue_0.3-66            </span></span>
-<span><span class="co">## [25] htmltools_0.5.8.1       sass_0.4.10             yaml_2.3.10            </span></span>
-<span><span class="co">## [28] lazyeval_0.2.2          pkgdown_2.1.3.9000      pillar_1.10.2          </span></span>
-<span><span class="co">## [31] crayon_1.5.3            jquerylib_0.1.4         tidyr_1.3.1            </span></span>
-<span><span class="co">## [34] MASS_7.3-65             limma_3.65.1            DelayedArray_0.35.1    </span></span>
-<span><span class="co">## [37] cachem_1.1.0            abind_1.4-8             gtools_3.9.5           </span></span>
-<span><span class="co">## [40] tidyselect_1.2.1        digest_0.6.37           stringi_1.8.7          </span></span>
-<span><span class="co">## [43] purrr_1.0.4             reshape2_1.4.4          bookdown_0.43          </span></span>
-<span><span class="co">## [46] labeling_0.4.3          fastmap_1.2.0           grid_4.5.0             </span></span>
-<span><span class="co">## [49] cli_3.6.5               SparseArray_1.9.0       magrittr_2.0.3         </span></span>
-<span><span class="co">## [52] S4Arrays_1.9.0          withr_3.0.2             scales_1.4.0           </span></span>
-<span><span class="co">## [55] UCSC.utils_1.5.0        rmarkdown_2.29          XVector_0.49.0         </span></span>
-<span><span class="co">## [58] httr_1.4.7              igraph_2.1.4            ragg_1.4.0             </span></span>
-<span><span class="co">## [61] evaluate_1.0.3          knitr_1.50              rlang_1.1.6            </span></span>
-<span><span class="co">## [64] Rcpp_1.0.14             glue_1.8.0              BiocManager_1.30.25    </span></span>
-<span><span class="co">## [67] msdata_0.49.0           jsonlite_2.0.0          AnnotationFilter_1.33.0</span></span>
-<span><span class="co">## [70] R6_2.6.1                plyr_1.8.9              systemfonts_1.2.3      </span></span>
-<span><span class="co">## [73] fs_1.6.6                ProtGenerics_1.41.0     MsCoreUtils_1.21.0</span></span></code></pre>
+<span><span class="co">##  [7] bitops_1.0-9            vctrs_0.6.5             tools_4.5.1            </span></span>
+<span><span class="co">## [10] tibble_3.3.0            cluster_2.1.8.1         pkgconfig_2.0.3        </span></span>
+<span><span class="co">## [13] BiocBaseUtils_1.11.2    KernSmooth_2.23-26      Matrix_1.7-4           </span></span>
+<span><span class="co">## [16] RColorBrewer_1.1-3      S7_0.2.0                desc_1.4.3             </span></span>
+<span><span class="co">## [19] lifecycle_1.0.4         farver_2.1.2            compiler_4.5.1         </span></span>
+<span><span class="co">## [22] stringr_1.5.2           textshaping_1.0.4       statmod_1.5.1          </span></span>
+<span><span class="co">## [25] clue_0.3-66             htmltools_0.5.8.1       sass_0.4.10            </span></span>
+<span><span class="co">## [28] yaml_2.3.10             lazyeval_0.2.2          pkgdown_2.1.3.9000     </span></span>
+<span><span class="co">## [31] pillar_1.11.1           crayon_1.5.3            jquerylib_0.1.4        </span></span>
+<span><span class="co">## [34] tidyr_1.3.1             MASS_7.3-65             limma_3.65.6           </span></span>
+<span><span class="co">## [37] DelayedArray_0.35.3     cachem_1.1.0            abind_1.4-8            </span></span>
+<span><span class="co">## [40] gtools_3.9.5            tidyselect_1.2.1        digest_0.6.37          </span></span>
+<span><span class="co">## [43] stringi_1.8.7           purrr_1.1.0             reshape2_1.4.4         </span></span>
+<span><span class="co">## [46] bookdown_0.45           labeling_0.4.3          fastmap_1.2.0          </span></span>
+<span><span class="co">## [49] grid_4.5.1              cli_3.6.5               SparseArray_1.9.1      </span></span>
+<span><span class="co">## [52] magrittr_2.0.4          S4Arrays_1.9.1          withr_3.0.2            </span></span>
+<span><span class="co">## [55] scales_1.4.0            rmarkdown_2.30          XVector_0.49.1         </span></span>
+<span><span class="co">## [58] igraph_2.2.0            ragg_1.5.0              evaluate_1.0.5         </span></span>
+<span><span class="co">## [61] knitr_1.50              rlang_1.1.6             Rcpp_1.1.0             </span></span>
+<span><span class="co">## [64] glue_1.8.0              BiocManager_1.30.26     msdata_0.49.0          </span></span>
+<span><span class="co">## [67] jsonlite_2.0.0          AnnotationFilter_1.33.0 R6_2.6.1               </span></span>
+<span><span class="co">## [70] plyr_1.8.9              systemfonts_1.3.1       fs_1.6.6               </span></span>
+<span><span class="co">## [73] ProtGenerics_1.41.0     MsCoreUtils_1.21.0</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
@@ -709,7 +709,7 @@ license</a> license.</p>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Cox:2008" class="csl-entry">
 Cox, J, and M Mann. 2008. <span>“MaxQuant Enables High Peptide
 Identification Rates, Individualized p.p.b.-Range Mass Accuracies and
@@ -729,8 +729,7 @@ Label-Free Quantitative Proteomics Data Sets to Compare Imputation
 Strategies.”</span> <em>J Proteome Res</em> 15 (4): 1116–25. <a href="https://doi.org/10.1021/acs.jproteome.5b00981" class="external-link">https://doi.org/10.1021/acs.jproteome.5b00981</a>.
 </div>
 <div id="ref-Paulovich:2010" class="csl-entry">
-Paulovich, Amanda G, Dean Billheimer, Amy-Joan L Ham, Lorenzo
-Vega-Montoto, Paul A Rudnick, David L Tabb, Pei Wang, et al. 2010.
+Paulovich, Amanda G, Dean Billheimer, Amy-Joan L Ham, et al. 2010.
 <span>“Interlaboratory Study Characterizing a Yeast Performance Standard
 for Benchmarking <span>LC-MS</span> Platform Performance.”</span>
 <em>Mol. Cell. Proteomics</em> 9 (2): 242–54.
@@ -738,7 +737,7 @@ for Benchmarking <span>LC-MS</span> Platform Performance.”</span>
 <div id="ref-Sticker:2019" class="csl-entry">
 Sticker, Adriaan, Ludger Goeminne, Lennart Martens, and Lieven Clement.
 2019. <span>“Robust Summarization and Inference in Proteome-Wide
-Label-Free Quantification.”</span> <em>bioRxiv</em>. <a href="https://doi.org/10.1101/668863" class="external-link">https://doi.org/10.1101/668863</a>.
+Label-Free Quantification.”</span> <em>bioRxiv</em>, ahead of print. <a href="https://doi.org/10.1101/668863" class="external-link">https://doi.org/10.1101/668863</a>.
 </div>
 </div>
 </div>
