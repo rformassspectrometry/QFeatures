@@ -259,16 +259,16 @@ colData(qfSingle)
 #> DataFrame with 10 rows and 3 columns
 #>       quantCols   condition       batch
 #>       <integer> <character> <character>
-#> X126          1           A      batch1
-#> X127C         2           B      batch1
-#> X127N         3           A      batch1
-#> X128C         4           B      batch1
-#> X128N         5           A      batch1
-#> X129C         6           B      batch2
-#> X129N         7           A      batch2
-#> X130C         8           B      batch2
-#> X130N         9           A      batch2
-#> X131         10           B      batch2
+#> X126         NA          NA          NA
+#> X127C        NA          NA          NA
+#> X127N        NA          NA          NA
+#> X128C        NA          NA          NA
+#> X128N        NA          NA          NA
+#> X129C        NA          NA          NA
+#> X129N        NA          NA          NA
+#> X130C        NA          NA          NA
+#> X130N        NA          NA          NA
+#> X131         NA          NA          NA
 ```
 
 For the multi-set case, the `colData` table must contain a column named
