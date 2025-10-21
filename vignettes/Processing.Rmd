@@ -239,7 +239,6 @@ deterministic minimum value imputation on the
 `r sum(!rowData(se_na2)$randna)` proteins that display a non-random pattern
 of missing values (brown on figure \@ref(fig:miximp)).
 
-
 # Data transformation
 
 When analysing continuous data using parametric methods (such as
@@ -252,22 +251,23 @@ Below, we use the `logTransform` function to log2-transform our
 data. This time, instead of overwriting the peptides assay, we are
 going to create a new one to contain the log2-transformed data.
 
-```{r}
-cptac <- addAssay(cptac,
-                  logTransform(cptac[[1]]),
-                  name = "peptides_log")
-cptac
+```{r addLogTransform, eval = FALSE}
+addAssay(cptac,
+         logTransform(cptac[[1]]),
+         name = "peptides_log")
 ```
 
 The `addAssay()` function is the general function that adds new assays
-to a `QFeatures` object. The step above could also be fun with the
-following syntax, that implicitly returns an updated `QFeatures`
-object.
+to a `QFeatures` object. The step above could more easily be exectuted
+with the `logTransform()` method, that directly returns an updated
+`QFeatures` object. Using `logTransform()` also automatically adds
+links between assays.
 
-```{r, eval = FALSE}
-logTransform(cptac,
-             i = "peptides",
-             name = "log_peptides")
+```{r logTransform, eval = TRUE}
+cptac <- logTransform(cptac,
+                      i = "peptides",
+                      name = "peptides_log")
+cptac
 ```
 
 ```{r, fig.cap = "Quantitative data in its original scale (left) and log2-transformed (right)."}
@@ -279,25 +279,30 @@ limma::plotDensities(assay(cptac[[2]]))
 # Normalisation
 
 Assays in `QFeatures` objects can be normalised with the `normalize`
- function. The type of normalisation is defined by the `method`
- argument; below, we use quantile normalisation, store the normalised
- data into a new experiment, and visualise the resulting data.
+function. The type of normalisation is defined by the `method`
+argument; below, we use median normalisation, store the normalised
+data into a new experiment, and visualise the resulting data.
 
-```{r}
-cptac <- addAssay(cptac,
-                  normalize(cptac[["peptides_log"]], method = "center.median"),
-                  name = "peptides_norm")
+The `normalize()` function can also be directly applied to the
+`QFeatures` object.
+
+```{r normalize}
+cptac <- normalize(cptac,
+                   i = "peptides_log",
+                   name = "peptides_norm",
+                   method = "diff.median")
 cptac
 ```
 
-As above, the `normalize()` function can also be firectly applied to
-the `QFeatures` object.
+It is also possible to extract and normalise the `peptides_log`
+`SummarizedExperiment` and add it back to the `QFeatures` object with
+`addAssay()`.
 
-```{r, eval = FALSE}
-normalize(cptac,
-          i = "log_peptides",
-          name = "lognorm_peptides",
-          method = "center.median")
+```{r addNormalize, eval = FALSE}
+addAssay(cptac,
+         normalize(cptac[["peptides_log"]],
+                   method = "center.median"),
+         name = "peptides_norm")
 ```
 
 
@@ -331,8 +336,11 @@ that takes the following inputs:
   `robustSummary` [@Sticker:2019].
 
 
-```{r, warning = FALSE}
-cptac <- aggregateFeatures(cptac, i = "peptides_norm", fcol = "Proteins", name = "proteins")
+```{r aggregate, warning = FALSE}
+cptac <- aggregateFeatures(cptac,
+                           i = "peptides_norm",
+                           fcol = "Proteins",
+                           name = "proteins")
 cptac
 ```
 
@@ -357,31 +365,32 @@ table(rowData(cptac[["proteins"]])$.n)
 ```
 
 Let's choose `P02787ups|TRFE_HUMAN_UPS` and visualise its expression
-pattern in the 2 groups at the protein and peptide level.
+pattern in the 2 groups at the protein and (log-tranformed and
+normalised) peptide level. We drop the first peptide-level assay as it
+is on a different scale (i.e. not log-transformed).
 
 ```{r, message = TRUE, fig.cap = "Expression intensities for the protein *P02787ups|TRFE_HUMAN_UPS* (right, green) and its peptides (left) in groups A (circles) and B (triangles)."}
 library("ggplot2")
 library("dplyr")
-longFormat(cptac["P02787ups|TRFE_HUMAN_UPS", ]) |>
+longForm(cptac["P02787ups|TRFE_HUMAN_UPS", , -1]) |>
     as.data.frame() |>
     mutate(group = ifelse(grepl("A", colname), "A", "B")) |>
     mutate(sample = sub("Intensity\\.", "", colname)) |>
-    ggplot(aes(x = sample, y = value, colour = rowname, shape = group)) +
-    geom_point() +
+    ggplot(aes(x = sample, y = value,
+               colour = rowname,
+               shape = group)) +
+    geom_line(aes(group = rowname)) +
+    geom_point(size = 3) +
     facet_grid(~ assay)
 ```
 
-# TODO
-
-- Improve on data visualisation.
-
 # See also
 
+- The other vignettes in the `QFeatures` package.
 - The
   [QFeaturesWorkshop2020](https://lgatto.github.io/QFeaturesWorkshop2020/index.html)
   workshop, presented at the EuroBioc2020 meeting. It also documents
   how to use a custom docker container to run the workshop code.
-
 - The [Quantitative proteomics data
   analysis](https://uclouvain-cbio.github.io/WSBIM2122/sec-prot.html)
   chapter of the WSBIM2122 course.
@@ -392,5 +401,10 @@ longFormat(cptac["P02787ups|TRFE_HUMAN_UPS", ]) |>
 sessionInfo()
 ```
 
+# License {-}
+
+This vignette is distributed under a
+[CC BY-SA license](https://creativecommons.org/licenses/by-sa/2.0/)
+license.
 
 # References {-}

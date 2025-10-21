@@ -1,36 +1,42 @@
-##' @title Aggregate an assay's quantitative features
+##' @title Aggregate assays' quantitative features
 ##'
 ##' @description
 ##'
-##' This function aggregates the quantitative features of an assay,
-##' applying a summarisation function (`fun`) to sets of features.
+##' This function aggregates the quantitative features of one or
+##' multiple assays, applying a summarisation function (`fun`) to
+##' sets of features.
 ##' The `fcol` variable name points to a rowData column that defines
 ##' how to group the features during aggregate. This variable can
 ##' eigher be a vector (we then refer to an *aggregation by vector*)
 ##' or an adjacency matrix (*aggregation by matrix*).
 ##'
-##' The rowData of the aggregated `SummarizedExperiment` assay
+##' The rowData of the aggregated `SummarizedExperiment` assays
 ##' contains a `.n` variable that provides the number of parent
 ##' features that were aggregated.
 ##'
 ##' When aggregating with a vector, the newly aggregated
-##' `SummarizedExperiment` assay also contains a new `aggcounts` assay
+##' `SummarizedExperiment` assays also contains a new `aggcounts` assay
 ##' containing the aggregation counts matrix, i.e. the number of
 ##' features that were aggregated for each sample, which can be
 ##' accessed with the `aggcounts()` accessor.
 ##'
+##' Only the rowData columns that are invariant within a group across
+##' all assays will be retained in the new assays' rowData.
+##'
 ##' @param object An instance of class [QFeatures] or [SummarizedExperiment].
 ##'
-##' @param i The index or name of the assay which features will be
-##'     aggregated the create the new assay.
+##' @param i A `numeric()` or `character()` indicating the index or name
+##'     of one or multiple assays that will be aggregated
+##'     to create one or multiple new assays.
 ##'
 ##' @param fcol A `character(1)` naming a rowdata variable (of assay
 ##'     `i` in case of a `QFeatures`) defining how to aggregate the
-##'     features of the assay. This variable is either a `character`
+##'     features of the assays. This variable is either a `character`
 ##'     or a (possibly sparse) matrix. See below for details.
 ##'
-##' @param name A `character(1)` naming the new assay. Default is
-##'     `newAssay`. Note that the function will fail if there's
+##' @param name A `character()` naming the new assays.
+##'     `name` must have the same length as i.
+##'     Default is `newAssay`. Note that the function will fail if there's
 ##'     already an assay with `name`.
 ##'
 ##' @param fun A function used for quantitative feature
@@ -263,20 +269,37 @@ setMethod("aggregateFeatures", "QFeatures",
               if (length(i) != length(name)) stop("'i' and 'name' must have same length")
               if (length(fcol) == 1) fcol <- rep(fcol, length(i))
               if (length(i) != length(fcol)) stop("'i' and 'fcol' must have same length")
+
+              el <- experiments(object)[i]
+              rowDataColsKept <- colnames(rowData(el[[i[1]]]))
               ## Aggregate each assay
               for (j in seq_along(i)) {
                   from <- i[[j]]
-                  to <- name[[j]]
+                  fromAssay <- el[[from]]
                   by <- fcol[[j]]
+                  ## Remove already discarded columns from rowData
+                  rowDataColsKept <- intersect(rowDataColsKept,
+                                               colnames(rowData(fromAssay)))
+                  rowData(fromAssay) <- rowData(fromAssay)[, rowDataColsKept, drop = FALSE]
                   ## Create the aggregated assay
-                  aggAssay <- .aggregateQFeatures(object[[from]],
-                                                  by, fun, ...)
-                  ## Add the assay to the QFeatures object
-                  object <- addAssay(object, aggAssay, name = to)
-                  ## Link the input assay to the aggregated assay
-                  object <- addAssayLink(object, from = from,
-                                         to  = to, varFrom = by,
-                                         varTo = by)
+                  el[[j]] <- aggregateFeatures(fromAssay, by, fun, ...)
+                  rowDataColsKept <- colnames(rowData(el[[j]]))
+                  message("\rAggregated: ", j, "/", length(i))
+              }
+              names(el) <- name
+              for (j in name) {
+                  rowDataColsKept <- intersect(rowDataColsKept,
+                                               colnames(rowData(el[[j]])))
+                  rowData(el[[j]]) <- rowData(el[[j]])[, rowDataColsKept, drop = FALSE]
+              }
+              ## Create the new QFeatures object
+              for (j in seq_along(name)) {
+                  object <- addAssay(object, el[[j]], name[j])
+                  object <- addAssayLink(object,
+                      from = i[[j]],
+                      to = name[j],
+                      varFrom = fcol[[j]],
+                      varTo = fcol[[j]])
               }
               object
           })

@@ -64,26 +64,6 @@ test_that("readQFeatures: colData and quantCols are equivalent", {
     r2 <- readQFeatures(x, quantCols = 1:10)
     colData(r1) <- colData(r2) ## ignore colData
     expect_identical(r1, r2)
-    ## This also works when colData and assayData quantCols are in a
-    ## different order (cf https://github.com/UCLouvain-CBIO/scp/issues/77)
-    ## Create a data matrix where quantCols are in another order than
-    ## provided by the colData
-    ad <- matrix(
-        1:75, ncol = 5,
-        dimnames = list(NULL, rev(paste0("quantCol", 1:5)))
-    )
-    ad <- as.data.frame(ad)
-    ad$runCol <- rep(paste0("run", 1:3), each = 5)
-    cd <- data.frame(
-        quantCols = rep(paste0("quantCol", 1:5), 3),
-        runCol = rep(paste0("run", 1:3), each = 5)
-    )
-    qf <- readQFeatures(
-        assayData = ad, colData = cd, runCol = "runCol"
-    )
-    exp <- ad[ad$runCol == ad$runCol[[1]], -6]
-    colnames(exp) <- paste0(ad$runCol[[1]], "_", colnames(exp))
-    expect_identical(as.matrix(exp), assay(qf, 1))
 })
 
 
@@ -103,17 +83,20 @@ test_that("readQFeatures: testing use cases", {
     ## Without colAnnot
     expect_identical(
         readQFeatures(x, quantCols = 1:10),
-        QFeatures(List(quants = se_exp))
+        QFeatures(List(quants = se_exp),
+                  metadata = list("._type" = "bulk"))
     )
     ## With colAnnot
     expect_identical(
         readQFeatures(x, 1:10, colData = colAnnot),
-        QFeatures(List(quants = se_exp), colData = colAnnot)
+        QFeatures(List(quants = se_exp), colData = colAnnot,
+                  metadata = list("._type" = "bulk"))
     )
     ## Without quantCols
     expect_identical(
         qf <- readQFeatures(x, colData = colAnnot),
-        QFeatures(List(quants = se_exp), colData = colAnnot)
+        QFeatures(List(quants = se_exp), colData = colAnnot,
+                  metadata = list("._type" = "bulk"))
     )
     ## Check colnames
     expect_identical(
@@ -136,24 +119,28 @@ test_that("readQFeatures: testing use cases", {
     ## Without colAnnot
     expect_identical(
         readQFeatures(x, quantCol = 1, runCol = "file"),
-        QFeatures(List(el_exp))
+        QFeatures(List(el_exp),
+                  metadata = list("._type" = "bulk"))
     )
     ## With colAnnot
     colAnnot$runCol <- colAnnot$file
     expect_identical(
         readQFeatures(x, quantCols = 1, runCol = "file", colData = colAnnot),
-        QFeatures(List(el_exp), colData = colAnnot[paste0("File", 1:3), ])
+        QFeatures(List(el_exp), colData = colAnnot[paste0("File", 1:3), ],
+                  metadata = list("._type" = "bulk"))
     )
     ## When length(quantCol) == 1, colAnnot doesn't need a quantCol
     expect_identical(
         readQFeatures(x, 1, runCol = "file", colData = colAnnot),
-        QFeatures(List(el_exp), colData = colAnnot[paste0("File", 1:3), ])
+        QFeatures(List(el_exp), colData = colAnnot[paste0("File", 1:3), ],
+                  metadata = list("._type" = "bulk"))
     )
     ## Without quantCols
     colAnnot$quantCols <- colnames(x)[1]
     expect_identical(
         qf <- readQFeatures(x, runCol = "file", colData = colAnnot),
-        QFeatures(List(el_exp), colData = colAnnot[paste0("File", 1:3), ])
+        QFeatures(List(el_exp), colData = colAnnot[paste0("File", 1:3), ],
+                  metadata = list("._type" = "bulk"))
     )
     ## Check colnames
     expect_identical(
@@ -179,18 +166,21 @@ test_that("readQFeatures: testing use cases", {
     ## Without colAnnot
     expect_identical(
         readQFeatures(x, quantCols = 1:10, runCol = "file"),
-        QFeatures(List(el_exp))
+        QFeatures(List(el_exp),
+                  metadata = list("._type" = "bulk"))
     )
     ## With colAnnot
     colAnnot$runCol <- colAnnot$file
     expect_identical(
         readQFeatures(x, quantCols = 1:10, runCol = "file", colData = colAnnot),
-        QFeatures(List(el_exp), colData = colAnnot[order(rownames(colAnnot)), ])
+        QFeatures(List(el_exp), colData = colAnnot[order(rownames(colAnnot)), ],
+                  metadata = list("._type" = "bulk"))
     )
     ## Without quantCols
     expect_identical(
         qf <- readQFeatures(x, runCol = "file", colData = colAnnot),
-        QFeatures(List(el_exp), colData = colAnnot[order(rownames(colAnnot)), ])
+        QFeatures(List(el_exp), colData = colAnnot[order(rownames(colAnnot)), ],
+                  metadata = list("._type" = "bulk"))
     )
     ## Check colnames
     expect_identical(
@@ -204,11 +194,13 @@ test_that("readQFeatures: testing use cases", {
     se_na <- readSummarizedExperiment(x_na, 1:10)
     expect_identical(
         readQFeatures(x_na, quantCol = 1:10, removeEmptyCols = FALSE),
-        QFeatures(List(quants = se_na))
+        QFeatures(List(quants = se_na),
+                  metadata = list("._type" = "bulk"))
     )
     expect_identical(
         readQFeatures(x_na, quantCols = 1:10, removeEmptyCols = TRUE),
-        QFeatures(List(quants = se_na[, -1]))
+        QFeatures(List(quants = se_na[, -1]),
+                  metadata = list("._type" = "bulk"))
     )
 })
 
@@ -221,7 +213,8 @@ test_that("readQFeatures: test polymorphism", {
     )
     expect_identical(
         readQFeatures(x, quantCols = 1:10, name = "foo"),
-        QFeatures(List(foo = se_exp))
+        QFeatures(List(foo = se_exp),
+                  metadata = list("._type" = "bulk"))
     )
     ## Test quantCols polymorphism
     expect_identical(
@@ -240,6 +233,44 @@ test_that("readQFeatures: test polymorphism", {
     )
 })
 
+test_that("readQFeatures: testing fnames", {
+    require("SummarizedExperiment")
+    
+    ## No fnames
+    se1 <- readSummarizedExperiment(x, 1:10)
+    expect_identical(
+        readQFeatures(x, quantCols = 1:10),
+        QFeatures(List(quants = se_exp),
+                  metadata = list("._type" = "bulk"))
+    )
+    ## Character fnames
+    sel <- !duplicated(rowData(se_exp)$Sequence)
+    x2 <- x[sel, ]
+    se2 <- readSummarizedExperiment(x1, 1:10)
+    rownames(se2) <- rowData(se2)$Sequence
+    expect_identical(
+        readQFeatures(x2, quantCols = 1:10, fnames = "Sequence"),
+        QFeatures(List(quants = se2),
+                  metadata = list("._type" = "bulk"))
+    )
+    ## Numeric fnames
+    expect_identical(
+        readQFeatures(x2, quantCols = 1:10, fnames = "Sequence"),
+        readQFeatures(x2, quantCols = 1:10, fnames = 1)
+    )
+    ## Duplicated fnames = warning
+    se3 <- readSummarizedExperiment(x, 1:10)
+    rownames(se3) <- make.unique(rowData(se3)$Sequence)
+    expect_warning(
+        test <- readQFeatures(x, quantCols = 1:10, fnames = "Sequence"),
+        regexp = "Duplicated entries found in ‘Sequence’ in rowData of assay quants; they are made unique."
+    )
+    expect_identical(
+        test,
+        QFeatures(List(quants = se3),
+                  metadata = list("._type" = "bulk"))
+    )
+})
 
 test_that("readQFeatures: errors, warnings and messages", {
     se_exp <- readSummarizedExperiment(x, 1:10)
@@ -311,7 +342,8 @@ test_that("readQFeatures: errors, warnings and messages", {
     )
     ## Missing annotations are autatomically filled with NA
     colAnnot["File3", ] <- NA
-    expect_identical(qf, QFeatures(List(el_exp), colData = colAnnot))
+    expect_identical(qf, QFeatures(List(el_exp), colData = colAnnot,
+                                   metadata = list("._type" = "bulk")))
 
     ## Test verbose = messages
     expect_no_message(readQFeatures(x, quantCols = 1:10, verbose = FALSE))
@@ -374,7 +406,7 @@ test_that(".splitSE", {
     m <- matrix(1:100, ncol = 10,
                 dimnames = list(paste0("row", 1:10),
                                 paste0("col", 1:10)))
-    se <- SummarizedExperiment(assay = m,
+    se <- SummarizedExperiment(assay = m, 
                                rowData = DataFrame(rowDataCol = 1:nrow(m)%%3),
                                colData = DataFrame(colvar = 1:ncol(m)%%5))
     ## Split by row

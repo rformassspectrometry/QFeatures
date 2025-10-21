@@ -10,7 +10,7 @@
 \alias{adjacencyMatrix,QFeatures-method}
 \alias{aggregateFeatures,SummarizedExperiment-method}
 \alias{adjacencyMatrix<-}
-\title{Aggregate an assay's quantitative features}
+\title{Aggregate assays' quantitative features}
 \usage{
 \S4method{aggregateFeatures}{QFeatures}(
   object,
@@ -40,11 +40,12 @@ adjacency matrix will be added to. Ignored when \code{x} is an
 
 \item{fcol}{A \code{character(1)} naming a rowdata variable (of assay
 \code{i} in case of a \code{QFeatures}) defining how to aggregate the
-features of the assay. This variable is either a \code{character}
+features of the assays. This variable is either a \code{character}
 or a (possibly sparse) matrix. See below for details.}
 
-\item{name}{A \code{character(1)} naming the new assay. Default is
-\code{newAssay}. Note that the function will fail if there's
+\item{name}{A \code{character()} naming the new assays.
+\code{name} must have the same length as i.
+Default is \code{newAssay}. Note that the function will fail if there's
 already an assay with \code{name}.}
 
 \item{fun}{A function used for quantitative feature
@@ -65,22 +66,26 @@ A \code{QFeatures} object with an additional assay or a
 \code{SummarizedExperiment} object (or subclass thereof).
 }
 \description{
-This function aggregates the quantitative features of an assay,
-applying a summarisation function (\code{fun}) to sets of features.
+This function aggregates the quantitative features of one or
+multiple assays, applying a summarisation function (\code{fun}) to
+sets of features.
 The \code{fcol} variable name points to a rowData column that defines
 how to group the features during aggregate. This variable can
 eigher be a vector (we then refer to an \emph{aggregation by vector})
 or an adjacency matrix (\emph{aggregation by matrix}).
 
-The rowData of the aggregated \code{SummarizedExperiment} assay
+The rowData of the aggregated \code{SummarizedExperiment} assays
 contains a \code{.n} variable that provides the number of parent
 features that were aggregated.
 
 When aggregating with a vector, the newly aggregated
-\code{SummarizedExperiment} assay also contains a new \code{aggcounts} assay
+\code{SummarizedExperiment} assays also contains a new \code{aggcounts} assay
 containing the aggregation counts matrix, i.e. the number of
 features that were aggregated for each sample, which can be
 accessed with the \code{aggcounts()} accessor.
+
+Only the rowData columns that are invariant within a group across
+all assays will be retained in the new assays' rowData.
 }
 \details{
 Aggregation is performed by a function that takes a matrix as

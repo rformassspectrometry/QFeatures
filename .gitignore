@@ -1,3 +1,6 @@
 .Rproj.user
 vignettes/QFeatures.html
 vignettes/QFeatures_files
+.Rhistory
+*.Rproj
+.RData
