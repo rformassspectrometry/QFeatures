@@ -1,5 +1,11 @@
 # QFeatures 1.19
 
+## QFeatures 1.19.4
+
+- readQFeatures() doesn't ignore colData$quantCols (PR #234)
+- Create unique precursor ids and use them in joinAssays() (PR #223)
+- joinAssays() allows joining based on fcol (PR #247)
+
 ## QFeatures 1.19.3
 
 - Fixed joinAssays with fcol so that assayLinks are correctly created
@@ -64,6 +70,10 @@ multiple assays aggregation.
 - New Bioconductor 3.20 (stable) release
 
 # QFeatures 1.15
+
+## QFeatures 1.15.3
+
+- Fix typo in normalisation methods.
 
 ## QFeatures 1.15.2
 
