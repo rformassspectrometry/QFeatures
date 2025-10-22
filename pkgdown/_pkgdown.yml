@@ -50,7 +50,6 @@ reference:
     - filterFeatures
     - VariableFilter
     - subsetByFeature
-    - 
   - title: "Example data"
     desc: "Example data"
     contents:

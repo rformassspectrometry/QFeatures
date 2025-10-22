@@ -67,8 +67,8 @@ biocViews: Infrastructure, MassSpectrometry, Proteomics, Metabolomics
 License: Artistic-2.0
 Encoding: UTF-8
 VignetteBuilder: knitr
-BugReports: https://github.com/RforMassSpectrometry/QFeatures/issues
-URL: https://github.com/RforMassSpectrometry/QFeatures
+BugReports: https://github.com/rformassspectrometry/QFeatures/issues
+URL: https://rformassspectrometry.github.io/QFeatures
 Collate:
     'AllGenerics.R'
     'AssayLinks.R'
