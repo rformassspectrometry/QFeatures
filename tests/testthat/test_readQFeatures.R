@@ -260,7 +260,7 @@ test_that("readQFeatures: testing fnames", {
     ## Character fnames
     sel <- !duplicated(rowData(se1)$Sequence)
     x2 <- x[sel, ]
-    se2 <- readSummarizedExperiment(x, 1:10)
+    se2 <- readSummarizedExperiment(x2, 1:10)
     rownames(se2) <- rowData(se2)$Sequence
     expect_identical(
         readQFeatures(x2, quantCols = 1:10, fnames = "Sequence"),
@@ -277,7 +277,7 @@ test_that("readQFeatures: testing fnames", {
     rownames(se3) <- make.unique(rowData(se3)$Sequence)
     expect_warning(
         test <- readQFeatures(x, quantCols = 1:10, fnames = "Sequence"),
-        regexp = "Duplicated entries found in 'Sequence' in rowData of assay quants; they are made unique."
+        regexp = "Duplicated entries found in .Sequence. in rowData of assay quants; they are made unique."
     )
     expect_identical(
         test,
