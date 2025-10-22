@@ -103,6 +103,20 @@ test_that("readQFeatures: testing use cases", {
         colnames(qf),
         CharacterList(quants = colnames(se_exp))
     )
+    ## With colAnnot and quantCols, but with different x columns and quantCols (PR #234)
+    shuffledSamplesOrder <- sample(1:10, 10L)
+    shuffledColAnnot <- colAnnot[shuffledSamplesOrder, , drop = FALSE]
+    expect_identical(
+        readQFeatures(x, shuffledSamplesOrder, colData = shuffledColAnnot),
+        QFeatures(List(quants = se_exp), colData = colAnnot,
+                  metadata = list("._type" = "bulk"))
+    )
+    ## With colAnnot and quantCols, but with different colAnnot row order (PR #234)
+    expect_identical(
+        readQFeatures(x, 1:10, colData = shuffledColAnnot),
+        QFeatures(List(quants = se_exp), colData = colAnnot,
+                  metadata = list("._type" = "bulk"))
+    )
 
     ## Case 2: Multiple-set, one quantitative col
     se_exp <- readSummarizedExperiment(x, 1)
@@ -240,13 +254,13 @@ test_that("readQFeatures: testing fnames", {
     se1 <- readSummarizedExperiment(x, 1:10)
     expect_identical(
         readQFeatures(x, quantCols = 1:10),
-        QFeatures(List(quants = se_exp),
+        QFeatures(List(quants = se1),
                   metadata = list("._type" = "bulk"))
     )
     ## Character fnames
-    sel <- !duplicated(rowData(se_exp)$Sequence)
+    sel <- !duplicated(rowData(se1)$Sequence)
     x2 <- x[sel, ]
-    se2 <- readSummarizedExperiment(x1, 1:10)
+    se2 <- readSummarizedExperiment(x2, 1:10)
     rownames(se2) <- rowData(se2)$Sequence
     expect_identical(
         readQFeatures(x2, quantCols = 1:10, fnames = "Sequence"),
@@ -263,7 +277,7 @@ test_that("readQFeatures: testing fnames", {
     rownames(se3) <- make.unique(rowData(se3)$Sequence)
     expect_warning(
         test <- readQFeatures(x, quantCols = 1:10, fnames = "Sequence"),
-        regexp = "Duplicated entries found in ‘Sequence’ in rowData of assay quants; they are made unique."
+        regexp = "Duplicated entries found in .Sequence. in rowData of assay quants; they are made unique."
     )
     expect_identical(
         test,

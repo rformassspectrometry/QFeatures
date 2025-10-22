@@ -2,7 +2,8 @@
 
 ## QFeatures 1.19.3
 
-- Nothing yet.
+- Fixed joinAssays with fcol so that assayLinks are correctly created
+  (PR 247).
 
 ## QFeatures 1.19.2
 
