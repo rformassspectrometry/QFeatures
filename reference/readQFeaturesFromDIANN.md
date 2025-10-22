@@ -123,6 +123,8 @@ Laurent Gatto, Christophe Vanderaa
 
 x <- read.delim(MsDataHub::benchmarkingDIA.tsv())
 #> see ?MsDataHub and browseVignettes('MsDataHub') for documentation
+#> Error while performing HEAD request.
+#>    Proceeding without cache information.
 #> loading from cache
 x[["File.Name"]] <- x[["Run"]]
 

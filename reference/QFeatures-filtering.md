@@ -16,6 +16,8 @@ filterFeatures(object, filter, i, na.rm = FALSE, keep = FALSE, ...)
 
 # S4 method for class 'QFeatures,formula'
 filterFeatures(object, filter, i, na.rm = FALSE, keep = FALSE, ...)
+
+isDuplicated(x)
 ```
 
 ## Arguments
@@ -76,6 +78,11 @@ filterFeatures(object, filter, i, na.rm = FALSE, keep = FALSE, ...)
 
   Additional parameters. Currently ignored.
 
+- x:
+
+  A [`vector()`](https://rdrr.io/r/base/vector.html) that will be
+  checked for duplications.
+
 ## Value
 
 An filtered `QFeature` object.
@@ -109,6 +116,17 @@ set a field on which to operate. These arbitrary filters operate either
 on a character variables (as `CharacterVariableFilter` objects) or
 numerics (as `NumericVariableFilters` objects), which can be created
 with the `VariableFilter` constructor.
+
+## Helper functions
+
+- The `isDuplicated()` function takes a vector (or rowData variable when
+  used to filter features) as input, and return a logical of the same
+  length, with elements set to `TRUE` for unique occurence, and `FALSE`
+  otherwise. This function is different from
+  [`duplicated()`](https://rdrr.io/r/base/duplicated.html), as here even
+  the first occurence is set to `FALSE`. See
+  [`createPrecursorId()`](https://rformassspectrometry.github.io/QFeatures/reference/createPrecursorId.md)
+  for an application.
 
 ## See also
 

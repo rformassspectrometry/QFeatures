@@ -46,14 +46,14 @@ An object of class `QFeatures`.
 ``` r
 data("ft_na")
 ## Count number of (non-missing) PSMs
-ft_na <- countUniqueFeatures(ft_na, 
-                             i = "na", 
+ft_na <- countUniqueFeatures(ft_na,
+                             i = "na",
                              colDataName = "counts")
 ft_na$counts
 #> [1] 2 3 4
 ## Count number of unique rowData feature
-ft_na <- countUniqueFeatures(ft_na, 
-                             i = "na", 
+ft_na <- countUniqueFeatures(ft_na,
+                             i = "na",
                              groupBy = "Y",
                              colDataName = "Y_counts")
 ft_na$Y_counts

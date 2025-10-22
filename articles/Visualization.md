@@ -300,7 +300,7 @@ interest, which can then be visualised as a heatmap (figure
     ## 
     ## other attached packages:
     ##  [1] ComplexHeatmap_2.25.2       ggplot2_4.0.0              
-    ##  [3] QFeatures_1.19.3            MultiAssayExperiment_1.35.9
+    ##  [3] QFeatures_1.19.4            MultiAssayExperiment_1.35.9
     ##  [5] SummarizedExperiment_1.39.2 Biobase_2.69.1             
     ##  [7] GenomicRanges_1.61.5        Seqinfo_0.99.2             
     ##  [9] IRanges_2.43.5              S4Vectors_0.47.4           

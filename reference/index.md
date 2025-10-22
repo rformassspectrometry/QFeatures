@@ -46,6 +46,8 @@ The QFeatures class
   : Links between Assays
 - [`countUniqueFeatures()`](https://rformassspectrometry.github.io/QFeatures/reference/countUniqueFeatures.md)
   : Count Unique Features
+- [`createPrecursorId()`](https://rformassspectrometry.github.io/QFeatures/reference/createPrecursorId.md)
+  : Create precursor identfiers
 - [`display()`](https://rformassspectrometry.github.io/QFeatures/reference/display.md)
   : Interactive MultiAssayExperiment Explorer
 
@@ -115,6 +117,7 @@ Feature filtering
 - [`VariableFilter()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-filtering.md)
   [`filterFeatures(`*`<QFeatures>`*`,`*`<AnnotationFilter>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-filtering.md)
   [`filterFeatures(`*`<QFeatures>`*`,`*`<formula>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-filtering.md)
+  [`isDuplicated()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-filtering.md)
   : Filter features based on their rowData
 - [`subsetByFeature`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-subsetBy.md)
   [`subsetByFeature,QFeatures,character-method`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-subsetBy.md)
@@ -131,6 +134,11 @@ Example data
   :
 
   Example `QFeatures` object after processing
+
+- [`feat4`](https://rformassspectrometry.github.io/QFeatures/reference/feat4.md)
+  :
+
+  Example `QFeatures`
 
 - [`hlpsms`](https://rformassspectrometry.github.io/QFeatures/reference/hlpsms.md)
   : hyperLOPIT PSM-level expression data

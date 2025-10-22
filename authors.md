@@ -13,16 +13,16 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/RforMassSpectrometry/QFeatures/blob/master/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/rformassspectrometry/QFeatures/blob/master/DESCRIPTION)
 
 Gatto L, Vanderaa C (2025). *QFeatures: Quantitative features for mass
-spectrometry data*. R package version 1.19.3,
-<https://github.com/RforMassSpectrometry/QFeatures>.
+spectrometry data*. R package version 1.19.4,
+<https://rformassspectrometry.github.io/QFeatures>.
 
     @Manual{,
       title = {QFeatures: Quantitative features for mass spectrometry data},
       author = {Laurent Gatto and Christophe Vanderaa},
       year = {2025},
-      note = {R package version 1.19.3},
-      url = {https://github.com/RforMassSpectrometry/QFeatures},
+      note = {R package version 1.19.4},
+      url = {https://rformassspectrometry.github.io/QFeatures},
     }

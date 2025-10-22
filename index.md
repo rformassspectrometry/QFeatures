@@ -47,3 +47,15 @@ license](https://opensource.org/licenses/Artistic-2.0). The
 documentation, including the manual pages and the vignettes, are
 distributed under a [CC BY-SA
 license](https://creativecommons.org/licenses/by-sa/4.0/).
+
+## Contributions
+
+Contributions are welcome, and should ideally be provided through a
+Github pull request. Feel free to discuss any more non-trivial
+suggestions or changes first in an issue.
+
+### Contributors
+
+- [Alexey Stukalov](https://github.com/alyst): [readQFeatures(): don’t
+  ignore
+  colData\$quantCols](https://github.com/rformassspectrometry/QFeatures/pull/234).

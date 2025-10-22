@@ -37,7 +37,7 @@ input table contains data from multiple runs/batches.
 
     <a class="navbar-brand me-2" href="../index.html">QFeatures</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.19.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.19.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,7 +56,7 @@ input table contains data from multiple runs/batches.
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/RforMassSpectrometry/QFeatures/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/rformassspectrometry/QFeatures/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -65,7 +65,7 @@ input table contains data from multiple runs/batches.
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>QFeatures from tabular data</h1>
-      <small class="dont-index">Source: <a href="https://github.com/RforMassSpectrometry/QFeatures/blob/master/R/readQFeatures.R" class="external-link"><code>R/readQFeatures.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rformassspectrometry/QFeatures/blob/master/R/readQFeatures.R" class="external-link"><code>R/readQFeatures.R</code></a></small>
       <div class="d-none name"><code>readQFeatures.Rd</code></div>
     </div>
 
@@ -131,9 +131,9 @@ quantitative data. This information can also be defined in
 
 <dt id="arg-fnames">fnames<a class="anchor" aria-label="anchor" href="#arg-fnames"></a></dt>
 <dd><p>For the single- and multi-set cases, an optional
-<code>character(1)</code> or <code>numeric(1)</code> indicating the column to be
-used as feature names.  Note that rownames must be unique
-within <code>QFeatures</code> sets. Default is <code>NULL</code>.</p></dd>
+<code>character(1)</code> or <code>numeric(1)</code> indicating the column to be used as
+feature names.  Note that rownames must be unique within <code>QFeatures</code>
+sets. Default is <code>NULL</code>. See also section 'Feature names'.</p></dd>
 
 
 <dt id="arg-ecol">ecol<a class="anchor" aria-label="anchor" href="#arg-ecol"></a></dt>
@@ -279,6 +279,17 @@ automatically added to the <code>colData</code> and filled with <code>NA</code>s
 columns/variables.</p>
 </div>
 
+<div class="section">
+<h3 id="feature-names">Feature names<a class="anchor" aria-label="anchor" href="#feature-names"></a></h3>
+
+
+<p>Assay feature (i.e. rownames) are important as they are used when assays are
+joined with <code><a href="joinAssays.html">joinAssays()</a></code>. They can be set upon creation of the
+<code><a href="QFeatures-class.html">QFeatures()</a></code> object by setting the <code>fnames</code> argument. See also
+<code><a href="createPrecursorId.html">createPrecursorId()</a></code> in case a precursor identifier is note readily
+available and should be created from other, existing rowData variables.</p>
+</div>
+
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -334,16 +345,16 @@ quantitative data.</p></li>
 <span class="r-in"><span><span class="op">(</span><span class="va">coldat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                      quantCols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">hlpsms</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           var quantCols</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0.1179067      X126</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  -0.3912262     X127C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   0.8497468     X127N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   0.6412677     X128C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  -0.8533205     X128N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   1.4502467     X129C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  -0.5834776     X129N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  -1.5154718     X130C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9   1.4507215     X130N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 -0.8785367      X131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0.8497468      X126</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0.6412677     X127C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  -0.8533205     X127N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   1.4502467     X128C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  -0.5834776     X128N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  -1.5154718     X129C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   1.4507215     X129N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  -0.8785367     X130C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9   0.4751676     X130N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 -1.7268766      X131</span>
 <span class="r-in"><span><span class="va">qf2</span> <span class="op">&lt;-</span> <span class="fu">readQFeatures</span><span class="op">(</span><span class="va">hlpsms</span>, colData <span class="op">=</span> <span class="va">coldat</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Checking arguments.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading data as a 'SummarizedExperiment' object.</span>
@@ -357,16 +368,16 @@ quantitative data.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 10 rows and 2 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             var   quantCols</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;numeric&gt; &lt;character&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X126   0.117907        X126</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X127C -0.391226       X127C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X127N  0.849747       X127N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X128C  0.641268       X128C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X128N -0.853321       X128N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X129C  1.450247       X129C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X129N -0.583478       X129N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X130C -1.515472       X130C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X130N  1.450721       X130N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X131  -0.878537        X131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X126   0.849747        X126</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X127C  0.641268       X127C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X127N -0.853321       X127N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X128C  1.450247       X128C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X128N -0.583478       X128N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X129C -1.515472       X129C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X129N  1.450721       X129N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X130C -0.878537       X130C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X130N  0.475168       X130N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X131  -1.726877        X131</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">######################################</span></span></span>
 <span class="r-in"><span><span class="co">## Multi-set case.</span></span></span>
@@ -388,16 +399,16 @@ quantitative data.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 795 0.60288497 0.11022069 0.02182222  TDQNYEk                 Q8BMJ2 0.01880</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 816 0.10298287 0.05818306 0.07723716  QEEIQQk                 Q3URD3 0.02900</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      file</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 383 File3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 475 File3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 478 File2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 383 File2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 475 File2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 478 File1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 552 File2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 596 File1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 610 File2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 731 File1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 731 File2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 786 File2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 795 File2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 816 File2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 795 File3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 816 File1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">qf3</span> <span class="op">&lt;-</span> <span class="fu">readQFeatures</span><span class="op">(</span><span class="va">hlpsms</span>, quantCols <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, runCol <span class="op">=</span> <span class="st">"file"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Checking arguments.</span>
@@ -409,8 +420,8 @@ quantitative data.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures (type: bulk) with 3 sets:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] File1: SummarizedExperiment with 987 rows and 10 columns </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] File2: SummarizedExperiment with 999 rows and 10 columns </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] File3: SummarizedExperiment with 1024 rows and 10 columns </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] File2: SummarizedExperiment with 1000 rows and 10 columns </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] File3: SummarizedExperiment with 1023 rows and 10 columns </span>
 <span class="r-in"><span><span class="fu">colData</span><span class="op">(</span><span class="va">qf3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 30 rows and 0 columns</span>
 <span class="r-in"><span></span></span>
@@ -422,36 +433,36 @@ quantitative data.</p></li>
 <span class="r-in"><span>                      var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                      quantCols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">hlpsms</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    runCol        var quantCols</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   File1  1.4355254      X126</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   File1  1.1164447     X127C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   File1  0.3708669     X127N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   File1 -0.2440149     X128C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   File1 -0.3593569     X128N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   File1 -1.4886982     X129C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   File1  0.1080776     X129N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   File1 -1.1260707     X130C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9   File1  0.7647629     X130N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  File1  0.4455515      X131</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11  File2  1.4355254      X126</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  File2  1.1164447     X127C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13  File2  0.3708669     X127N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14  File2 -0.2440149     X128C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15  File2 -0.3593569     X128N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16  File2 -1.4886982     X129C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17  File2  0.1080776     X129N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18  File2 -1.1260707     X130C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19  File2  0.7647629     X130N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20  File2  0.4455515      X131</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21  File3  1.4355254      X126</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22  File3  1.1164447     X127C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23  File3  0.3708669     X127N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24  File3 -0.2440149     X128C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25  File3 -0.3593569     X128N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26  File3 -1.4886982     X129C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27  File3  0.1080776     X129N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28  File3 -1.1260707     X130C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29  File3  0.7647629     X130N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30  File3  0.4455515      X131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   File1 -0.5998708      X126</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   File1  1.4683437     X127C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   File1 -0.6198368     X127N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   File1  0.5668461     X128C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   File1  1.3854334     X128N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   File1  1.3984792     X129C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   File1 -1.7610803     X129N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   File1 -0.4927893     X130C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9   File1  0.8543945     X130N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  File1  0.3859256      X131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11  File2 -0.5998708      X126</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  File2  1.4683437     X127C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13  File2 -0.6198368     X127N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14  File2  0.5668461     X128C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15  File2  1.3854334     X128N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16  File2  1.3984792     X129C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17  File2 -1.7610803     X129N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18  File2 -0.4927893     X130C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19  File2  0.8543945     X130N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20  File2  0.3859256      X131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21  File3 -0.5998708      X126</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22  File3  1.4683437     X127C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23  File3 -0.6198368     X127N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24  File3  0.5668461     X128C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25  File3  1.3854334     X128N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26  File3  1.3984792     X129C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27  File3 -1.7610803     X129N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28  File3 -0.4927893     X130C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29  File3  0.8543945     X130N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30  File3  0.3859256      X131</span>
 <span class="r-in"><span><span class="va">qf4</span> <span class="op">&lt;-</span> <span class="fu">readQFeatures</span><span class="op">(</span><span class="va">hlpsms</span>, colData <span class="op">=</span> <span class="va">coldat</span>, runCol <span class="op">=</span> <span class="st">"file"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Checking arguments.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading data as a 'SummarizedExperiment' object.</span>
@@ -462,23 +473,23 @@ quantitative data.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures (type: bulk) with 3 sets:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] File1: SummarizedExperiment with 987 rows and 10 columns </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] File2: SummarizedExperiment with 999 rows and 10 columns </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] File3: SummarizedExperiment with 1024 rows and 10 columns </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] File2: SummarizedExperiment with 1000 rows and 10 columns </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] File3: SummarizedExperiment with 1023 rows and 10 columns </span>
 <span class="r-in"><span><span class="fu">colData</span><span class="op">(</span><span class="va">qf4</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 30 rows and 3 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  runCol       var   quantCols</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;character&gt; &lt;numeric&gt; &lt;character&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> File1_X126        File1  1.435525        X126</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> File1_X127C       File1  1.116445       X127C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> File1_X127N       File1  0.370867       X127N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> File1_X128C       File1 -0.244015       X128C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> File1_X128N       File1 -0.359357       X128N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> File1_X126        File1 -0.599871        X126</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> File1_X127C       File1  1.468344       X127C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> File1_X127N       File1 -0.619837       X127N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> File1_X128C       File1  0.566846       X128C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> File1_X128N       File1  1.385433       X128N</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ...                 ...       ...         ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> File3_X129C       File3 -1.488698       X129C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> File3_X129N       File3  0.108078       X129N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> File3_X130C       File3 -1.126071       X130C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> File3_X130N       File3  0.764763       X130N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> File3_X131        File3  0.445552        X131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> File3_X129C       File3  1.398479       X129C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> File3_X129N       File3 -1.761080       X129N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> File3_X130C       File3 -0.492789       X130C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> File3_X130N       File3  0.854394       X130N</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> File3_X131        File3  0.385926        X131</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

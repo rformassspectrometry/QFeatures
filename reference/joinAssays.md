@@ -6,7 +6,7 @@ in a `QFeatures` instance.
 ## Usage
 
 ``` r
-joinAssays(x, i, name = "joinedAssay")
+joinAssays(x, i, name = "joinedAssay", fcol = NULL)
 ```
 
 ## Arguments
@@ -25,6 +25,14 @@ joinAssays(x, i, name = "joinedAssay")
   A `character(1)` naming the new assay. Default is `joinedAssay`. Note
   that the function will fail if there's already an assay with `name`.
 
+- fcol:
+
+  Default is `NULL`, to use assay rownames when joining. Alternatively,
+  `fcol` can be a `character(1)` defining a rowData variable, present in
+  all assays, that will be used to join assays. See
+  [`createPrecursorId()`](https://rformassspectrometry.github.io/QFeatures/reference/createPrecursorId.md)
+  for an example.
+
 ## Value
 
 A `QFeatures` object with an additional assay.
@@ -33,8 +41,8 @@ A `QFeatures` object with an additional assay.
 
 The rows to be joined are chosen based on the rownames of the respective
 assays. It is the user's responsability to make sure these are
-meaningful, such as for example refering to unique peptide sequences or
-proteins.
+meaningful, such as for example refering to unique precursors, peptide
+sequences or proteins.
 
 The join operation acts along the rows and expects the samples (columns)
 of the assays to be disjoint, i.e. the assays mustn't share any samples.

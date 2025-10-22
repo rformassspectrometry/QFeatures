@@ -2,6 +2,15 @@
 
 ## QFeatures 1.19
 
+### QFeatures 1.19.4
+
+- readQFeatures() doesn’t ignore colData\$quantCols (PR
+  [\#234](https://github.com/rformassspectrometry/QFeatures/issues/234))
+- Create unique precursor ids and use them in joinAssays() (PR
+  [\#223](https://github.com/rformassspectrometry/QFeatures/issues/223))
+- joinAssays() allows joining based on fcol (PR
+  [\#247](https://github.com/rformassspectrometry/QFeatures/issues/247))
+
 ### QFeatures 1.19.3
 
 - Fixed joinAssays with fcol so that assayLinks are correctly created
@@ -14,7 +23,7 @@
 ### QFeatures 1.19.1
 
 - Fix duplicated fnames bug (see issue
-  [\#237](https://github.com/RforMassSpectrometry/QFeatures/issues/237)).
+  [\#237](https://github.com/rformassspectrometry/QFeatures/issues/237)).
 - Use
   [`longForm()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-longForm.md)
   methods (replacing
@@ -47,7 +56,7 @@
 - Fix bug in
   [`nNA()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-missing-data.md)
   on empty assays (see
-  [\#174](https://github.com/RforMassSpectrometry/QFeatures/issues/174)).
+  [\#174](https://github.com/rformassspectrometry/QFeatures/issues/174)).
 
 ### QFeatures 1.17.2
 
@@ -111,7 +120,7 @@
 - Fix
   [`filterFeatures()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-filtering.md)
   when the filter variable also exists in the global environment (issue
-  [\#208](https://github.com/RforMassSpectrometry/QFeatures/issues/208)).
+  [\#208](https://github.com/rformassspectrometry/QFeatures/issues/208)).
 
 ### QFeatures 1.13.6
 
@@ -129,15 +138,15 @@
 ### QFeatures 1.13.3
 
 - Fix [`is.vector()`](https://rdrr.io/r/base/vector.html) (see issue
-  [\#203](https://github.com/RforMassSpectrometry/QFeatures/issues/203))
+  [\#203](https://github.com/rformassspectrometry/QFeatures/issues/203))
 - [`readQFeatures()`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeatures.md)
   multi-set support (ported from `scp::readSCP()` - see issue
-  [\#199](https://github.com/RforMassSpectrometry/QFeatures/issues/199)).
+  [\#199](https://github.com/rformassspectrometry/QFeatures/issues/199)).
 - new
   [`readQFeaturesFromDIANN()`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeaturesFromDIANN.md)
   function to import DIA-NN report files (ported from
   `scp::readSCPfromDIANN()` - see issue
-  [\#199](https://github.com/RforMassSpectrometry/QFeatures/issues/199)).
+  [\#199](https://github.com/rformassspectrometry/QFeatures/issues/199)).
 
 ### QFeatures 1.13.2
 
@@ -160,7 +169,7 @@
   and
   [`filterNA()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-missing-data.md)
   and man pages to clarify percentages and proportions (see
-  [\#189](https://github.com/RforMassSpectrometry/QFeatures/issues/189)).
+  [\#189](https://github.com/rformassspectrometry/QFeatures/issues/189)).
 
 ### QFeatures 1.11.0
 
@@ -179,7 +188,7 @@
 - New
   [`dropEmptyAssays()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)
   function (see issue
-  [\#184](https://github.com/RforMassSpectrometry/QFeatures/issues/184)).
+  [\#184](https://github.com/rformassspectrometry/QFeatures/issues/184)).
 
 ### QFeatures 1.9.3
 
@@ -235,7 +244,7 @@
 - fix: fixed
   [`addAssay()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)
   to solve issue
-  [\#104](https://github.com/RforMassSpectrometry/QFeatures/issues/104).
+  [\#104](https://github.com/rformassspectrometry/QFeatures/issues/104).
 - refactor: refactored
   [`addAssay()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)
   and dramatically improved the usage of computational resources.
@@ -249,7 +258,7 @@
   [`addAssay()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md),
   these functions are used to implement the replacement method `[[<-`
   required to solve issue
-  [\#57](https://github.com/RforMassSpectrometry/QFeatures/issues/57).
+  [\#57](https://github.com/rformassspectrometry/QFeatures/issues/57).
 - Add CC-BY-SA license for vignettes.
 
 ### QFeatures 1.7.1
@@ -377,14 +386,14 @@
 
 - New feature: the `longFormat` function returns a long `DataFrame` with
   quantitative data along with metadata (see
-  [\#116](https://github.com/RforMassSpectrometry/QFeatures/issues/116))
+  [\#116](https://github.com/rformassspectrometry/QFeatures/issues/116))
   \<2020-10-8 Thu\>
 - New feature: the `rowData` method returns a list containing the
   `rowData` for all assays (see
-  [\#86](https://github.com/RforMassSpectrometry/QFeatures/issues/86))
+  [\#86](https://github.com/rformassspectrometry/QFeatures/issues/86))
   \<2020-09-16 Wed\>
 - Keep colnames when reading a single column assay (see
-  [\#108](https://github.com/RforMassSpectrometry/QFeatures/issues/108))
+  [\#108](https://github.com/rformassspectrometry/QFeatures/issues/108))
   \<2020-09-09 Wed\>
 
 ### QFeatures 0.99.2

@@ -681,7 +681,7 @@ Expression intensities for the protein *P02787ups\|TRFE_HUMAN_UPS*
     ## 
     ## other attached packages:
     ##  [1] gplots_3.2.0                dplyr_1.1.4                
-    ##  [3] ggplot2_4.0.0               QFeatures_1.19.3           
+    ##  [3] ggplot2_4.0.0               QFeatures_1.19.4           
     ##  [5] MultiAssayExperiment_1.35.9 SummarizedExperiment_1.39.2
     ##  [7] Biobase_2.69.1              GenomicRanges_1.61.5       
     ##  [9] Seqinfo_0.99.2              IRanges_2.43.5             

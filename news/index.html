@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">QFeatures</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.19.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.19.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,7 +26,7 @@
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/RforMassSpectrometry/QFeatures/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/rformassspectrometry/QFeatures/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -35,28 +35,34 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/RforMassSpectrometry/QFeatures/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/rformassspectrometry/QFeatures/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.19" id="qfeatures-119">QFeatures 1.19<a class="anchor" aria-label="anchor" href="#qfeatures-119"></a></h2>
 <div class="section level3">
-<h3 id="qfeatures-1-19">QFeatures 1.19.3<a class="anchor" aria-label="anchor" href="#qfeatures-1-19"></a></h3>
+<h3 id="qfeatures-1-19">QFeatures 1.19.4<a class="anchor" aria-label="anchor" href="#qfeatures-1-19"></a></h3>
+<ul><li>readQFeatures() doesn’t ignore colData$quantCols (PR <a href="https://github.com/rformassspectrometry/QFeatures/issues/234" class="external-link">#234</a>)</li>
+<li>Create unique precursor ids and use them in joinAssays() (PR <a href="https://github.com/rformassspectrometry/QFeatures/issues/223" class="external-link">#223</a>)</li>
+<li>joinAssays() allows joining based on fcol (PR <a href="https://github.com/rformassspectrometry/QFeatures/issues/247" class="external-link">#247</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="qfeatures-1-19-1">QFeatures 1.19.3<a class="anchor" aria-label="anchor" href="#qfeatures-1-19-1"></a></h3>
 <ul><li>Fixed joinAssays with fcol so that assayLinks are correctly created (PR 247).</li>
 </ul></div>
 <div class="section level3">
-<h3 id="qfeatures-1-19-1">QFeatures 1.19.2<a class="anchor" aria-label="anchor" href="#qfeatures-1-19-1"></a></h3>
+<h3 id="qfeatures-1-19-2">QFeatures 1.19.2<a class="anchor" aria-label="anchor" href="#qfeatures-1-19-2"></a></h3>
 <ul><li>Aggregate features optimisation.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="qfeatures-1-19-2">QFeatures 1.19.1<a class="anchor" aria-label="anchor" href="#qfeatures-1-19-2"></a></h3>
-<ul><li>Fix duplicated fnames bug (see issue <a href="https://github.com/RforMassSpectrometry/QFeatures/issues/237" class="external-link">#237</a>).</li>
+<h3 id="qfeatures-1-19-3">QFeatures 1.19.1<a class="anchor" aria-label="anchor" href="#qfeatures-1-19-3"></a></h3>
+<ul><li>Fix duplicated fnames bug (see issue <a href="https://github.com/rformassspectrometry/QFeatures/issues/237" class="external-link">#237</a>).</li>
 <li>Use <code><a href="../reference/QFeatures-longForm.html">longForm()</a></code> methods (replacing <code><a href="../reference/QFeatures-longForm.html">longFormat()</a></code>, now defunct).</li>
 <li>Add <code>longForm,SummarizedExperiment</code>, supporting <code>rowvars</code> and <code>colvars</code>, as <code>longForm,QFeatures</code> does. Without this method, uses <code>longForm,ANY</code> that doesn’t.</li>
 <li>Defined a <code>QFeatures</code> object type (bulk or single-cell) in the instance’s metadata slot (developer features).</li>
 </ul></div>
 <div class="section level3">
-<h3 id="qfeatures-1-19-3">QFeatures 1.19.0<a class="anchor" aria-label="anchor" href="#qfeatures-1-19-3"></a></h3>
+<h3 id="qfeatures-1-19-4">QFeatures 1.19.0<a class="anchor" aria-label="anchor" href="#qfeatures-1-19-4"></a></h3>
 <ul><li>New devel version</li>
 </ul></div>
 </div>
@@ -72,7 +78,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="qfeatures-1-17-2">QFeatures 1.17.3<a class="anchor" aria-label="anchor" href="#qfeatures-1-17-2"></a></h3>
-<ul><li>Fix bug in <code><a href="../reference/QFeatures-missing-data.html">nNA()</a></code> on empty assays (see <a href="https://github.com/RforMassSpectrometry/QFeatures/issues/174" class="external-link">#174</a>).</li>
+<ul><li>Fix bug in <code><a href="../reference/QFeatures-missing-data.html">nNA()</a></code> on empty assays (see <a href="https://github.com/rformassspectrometry/QFeatures/issues/174" class="external-link">#174</a>).</li>
 </ul></div>
 <div class="section level3">
 <h3 id="qfeatures-1-17-3">QFeatures 1.17.2<a class="anchor" aria-label="anchor" href="#qfeatures-1-17-3"></a></h3>
@@ -120,7 +126,7 @@
 <h2 class="pkg-version" data-toc-text="1.13" id="qfeatures-113">QFeatures 1.13<a class="anchor" aria-label="anchor" href="#qfeatures-113"></a></h2>
 <div class="section level3">
 <h3 id="qfeatures-1-13">QFeatures 1.13.7<a class="anchor" aria-label="anchor" href="#qfeatures-1-13"></a></h3>
-<ul><li>Fix <code><a href="../reference/QFeatures-filtering.html">filterFeatures()</a></code> when the filter variable also exists in the global environment (issue <a href="https://github.com/RforMassSpectrometry/QFeatures/issues/208" class="external-link">#208</a>).</li>
+<ul><li>Fix <code><a href="../reference/QFeatures-filtering.html">filterFeatures()</a></code> when the filter variable also exists in the global environment (issue <a href="https://github.com/rformassspectrometry/QFeatures/issues/208" class="external-link">#208</a>).</li>
 </ul></div>
 <div class="section level3">
 <h3 id="qfeatures-1-13-1">QFeatures 1.13.6<a class="anchor" aria-label="anchor" href="#qfeatures-1-13-1"></a></h3>
@@ -136,10 +142,10 @@
 </ul></div>
 <div class="section level3">
 <h3 id="qfeatures-1-13-4">QFeatures 1.13.3<a class="anchor" aria-label="anchor" href="#qfeatures-1-13-4"></a></h3>
-<ul><li>Fix <code><a href="https://rdrr.io/r/base/vector.html" class="external-link">is.vector()</a></code> (see issue <a href="https://github.com/RforMassSpectrometry/QFeatures/issues/203" class="external-link">#203</a>)</li>
+<ul><li>Fix <code><a href="https://rdrr.io/r/base/vector.html" class="external-link">is.vector()</a></code> (see issue <a href="https://github.com/rformassspectrometry/QFeatures/issues/203" class="external-link">#203</a>)</li>
 <li>
-<code><a href="../reference/readQFeatures.html">readQFeatures()</a></code> multi-set support (ported from <code>scp::readSCP()</code> - see issue <a href="https://github.com/RforMassSpectrometry/QFeatures/issues/199" class="external-link">#199</a>).</li>
-<li>new <code><a href="../reference/readQFeaturesFromDIANN.html">readQFeaturesFromDIANN()</a></code> function to import DIA-NN report files (ported from <code>scp::readSCPfromDIANN()</code> - see issue <a href="https://github.com/RforMassSpectrometry/QFeatures/issues/199" class="external-link">#199</a>).</li>
+<code><a href="../reference/readQFeatures.html">readQFeatures()</a></code> multi-set support (ported from <code>scp::readSCP()</code> - see issue <a href="https://github.com/rformassspectrometry/QFeatures/issues/199" class="external-link">#199</a>).</li>
+<li>new <code><a href="../reference/readQFeaturesFromDIANN.html">readQFeaturesFromDIANN()</a></code> function to import DIA-NN report files (ported from <code>scp::readSCPfromDIANN()</code> - see issue <a href="https://github.com/rformassspectrometry/QFeatures/issues/199" class="external-link">#199</a>).</li>
 </ul></div>
 <div class="section level3">
 <h3 id="qfeatures-1-13-5">QFeatures 1.13.2<a class="anchor" aria-label="anchor" href="#qfeatures-1-13-5"></a></h3>
@@ -158,7 +164,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="qfeatures-1-11-1">QFeatures 1.11.1<a class="anchor" aria-label="anchor" href="#qfeatures-1-11-1"></a></h3>
-<ul><li>Update <code><a href="../reference/QFeatures-missing-data.html">nNA()</a></code> and <code><a href="../reference/QFeatures-missing-data.html">filterNA()</a></code> and man pages to clarify percentages and proportions (see <a href="https://github.com/RforMassSpectrometry/QFeatures/issues/189" class="external-link">#189</a>).</li>
+<ul><li>Update <code><a href="../reference/QFeatures-missing-data.html">nNA()</a></code> and <code><a href="../reference/QFeatures-missing-data.html">filterNA()</a></code> and man pages to clarify percentages and proportions (see <a href="https://github.com/rformassspectrometry/QFeatures/issues/189" class="external-link">#189</a>).</li>
 </ul></div>
 <div class="section level3">
 <h3 id="qfeatures-1-11-2">QFeatures 1.11.0<a class="anchor" aria-label="anchor" href="#qfeatures-1-11-2"></a></h3>
@@ -176,7 +182,7 @@
 <h2 class="pkg-version" data-toc-text="1.9" id="qfeatures-19">QFeatures 1.9<a class="anchor" aria-label="anchor" href="#qfeatures-19"></a></h2>
 <div class="section level3">
 <h3 id="qfeatures-1-9">QFeatures 1.9.4<a class="anchor" aria-label="anchor" href="#qfeatures-1-9"></a></h3>
-<ul><li>New <code><a href="../reference/QFeatures-class.html">dropEmptyAssays()</a></code> function (see issue <a href="https://github.com/RforMassSpectrometry/QFeatures/issues/184" class="external-link">#184</a>).</li>
+<ul><li>New <code><a href="../reference/QFeatures-class.html">dropEmptyAssays()</a></code> function (see issue <a href="https://github.com/rformassspectrometry/QFeatures/issues/184" class="external-link">#184</a>).</li>
 </ul></div>
 <div class="section level3">
 <h3 id="qfeatures-1-9-1">QFeatures 1.9.3<a class="anchor" aria-label="anchor" href="#qfeatures-1-9-1"></a></h3>
@@ -223,10 +229,10 @@
 <li>tests: improved unit tests for <code><a href="../reference/QFeatures-filtering.html">filterFeatures()</a></code>
 </li>
 <li>feat: added a keep argument in <code><a href="../reference/QFeatures-filtering.html">filterFeatures()</a></code> to control whether to keep or remove features for assays that do not contain the filter variable. Also added message printing for a better overview of which variable were found.</li>
-<li>fix: fixed <code><a href="../reference/QFeatures-class.html">addAssay()</a></code> to solve issue <a href="https://github.com/RforMassSpectrometry/QFeatures/issues/104" class="external-link">#104</a>.</li>
+<li>fix: fixed <code><a href="../reference/QFeatures-class.html">addAssay()</a></code> to solve issue <a href="https://github.com/rformassspectrometry/QFeatures/issues/104" class="external-link">#104</a>.</li>
 <li>refactor: refactored <code><a href="../reference/QFeatures-class.html">addAssay()</a></code> and dramatically improved the usage of computational resources.</li>
 <li>feat: <code>colData</code> is automatically transferred from the assay to the QFeatures object.</li>
-<li>feat: implemented <code><a href="../reference/QFeatures-class.html">removeAssay()</a></code> and <code><a href="../reference/QFeatures-class.html">replaceAssay()</a></code>. Together with <code><a href="../reference/QFeatures-class.html">addAssay()</a></code>, these functions are used to implement the replacement method <code>[[&lt;-</code> required to solve issue <a href="https://github.com/RforMassSpectrometry/QFeatures/issues/57" class="external-link">#57</a>.</li>
+<li>feat: implemented <code><a href="../reference/QFeatures-class.html">removeAssay()</a></code> and <code><a href="../reference/QFeatures-class.html">replaceAssay()</a></code>. Together with <code><a href="../reference/QFeatures-class.html">addAssay()</a></code>, these functions are used to implement the replacement method <code>[[&lt;-</code> required to solve issue <a href="https://github.com/rformassspectrometry/QFeatures/issues/57" class="external-link">#57</a>.</li>
 <li>Add CC-BY-SA license for vignettes.</li>
 </ul></div>
 <div class="section level3">
@@ -337,9 +343,9 @@
 </ul></div>
 <div class="section level3">
 <h3 id="qfeatures-0-99-1">QFeatures 0.99.3<a class="anchor" aria-label="anchor" href="#qfeatures-0-99-1"></a></h3>
-<ul><li>New feature: the <code>longFormat</code> function returns a long <code>DataFrame</code> with quantitative data along with metadata (see <a href="https://github.com/RforMassSpectrometry/QFeatures/issues/116" class="external-link">#116</a>) &lt;2020-10-8 Thu&gt;</li>
-<li>New feature: the <code>rowData</code> method returns a list containing the <code>rowData</code> for all assays (see <a href="https://github.com/RforMassSpectrometry/QFeatures/issues/86" class="external-link">#86</a>) &lt;2020-09-16 Wed&gt;</li>
-<li>Keep colnames when reading a single column assay (see <a href="https://github.com/RforMassSpectrometry/QFeatures/issues/108" class="external-link">#108</a>) &lt;2020-09-09 Wed&gt;</li>
+<ul><li>New feature: the <code>longFormat</code> function returns a long <code>DataFrame</code> with quantitative data along with metadata (see <a href="https://github.com/rformassspectrometry/QFeatures/issues/116" class="external-link">#116</a>) &lt;2020-10-8 Thu&gt;</li>
+<li>New feature: the <code>rowData</code> method returns a list containing the <code>rowData</code> for all assays (see <a href="https://github.com/rformassspectrometry/QFeatures/issues/86" class="external-link">#86</a>) &lt;2020-09-16 Wed&gt;</li>
+<li>Keep colnames when reading a single column assay (see <a href="https://github.com/rformassspectrometry/QFeatures/issues/108" class="external-link">#108</a>) &lt;2020-09-09 Wed&gt;</li>
 </ul></div>
 <div class="section level3">
 <h3 id="qfeatures-0-99-2">QFeatures 0.99.2<a class="anchor" aria-label="anchor" href="#qfeatures-0-99-2"></a></h3>

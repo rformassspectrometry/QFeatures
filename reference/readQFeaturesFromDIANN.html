@@ -15,7 +15,7 @@ DIA-NN label-free and plexDIA report files: default runCol is
 
     <a class="navbar-brand me-2" href="../index.html">QFeatures</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.19.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.19.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,7 +34,7 @@ DIA-NN label-free and plexDIA report files: default runCol is
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/RforMassSpectrometry/QFeatures/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/rformassspectrometry/QFeatures/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -43,7 +43,7 @@ DIA-NN label-free and plexDIA report files: default runCol is
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Read DIA-NN output as a QFeatures objects</h1>
-      <small class="dont-index">Source: <a href="https://github.com/RforMassSpectrometry/QFeatures/blob/master/R/readQFeaturesFromDIANN.R" class="external-link"><code>R/readQFeaturesFromDIANN.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rformassspectrometry/QFeatures/blob/master/R/readQFeaturesFromDIANN.R" class="external-link"><code>R/readQFeaturesFromDIANN.R</code></a></small>
       <div class="d-none name"><code>readQFeaturesFromDIANN.Rd</code></div>
     </div>
 
@@ -171,6 +171,8 @@ manipulate the resulting <code>QFeatures</code> object.</p></li>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.delim</a></span><span class="op">(</span><span class="fu">MsDataHub</span><span class="fu">::</span><span class="fu"><a href="https://rformassspectrometry.github.io/MsDataHub/reference/benchmarkingDIA.html" class="external-link">benchmarkingDIA.tsv</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> see ?MsDataHub and browseVignettes('MsDataHub') for documentation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Error while performing HEAD request.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>    Proceeding without cache information.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> loading from cache</span>
 <span class="r-in"><span><span class="va">x</span><span class="op">[[</span><span class="st">"File.Name"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[[</span><span class="st">"Run"</span><span class="op">]</span><span class="op">]</span></span></span>
 <span class="r-in"><span></span></span>
