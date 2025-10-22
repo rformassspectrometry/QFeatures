@@ -14,6 +14,7 @@ reference:
     - addAssayLinkOneToOne
     - dropEmptyAssays
     - countUniqueFeatures
+    - createPrecursorId
     - display
   - title: "Data import"
     desc: "Create QFeatures and SummarizedExperiment object"
@@ -49,11 +50,13 @@ reference:
     - filterFeatures
     - VariableFilter
     - subsetByFeature
+    - 
   - title: "Example data"
     desc: "Example data"
     contents:
     - feat1
     - feat3
+    - feat4
     - hlpsms
   - title: "DataFrame"
     desc: "DataFrame functions"
