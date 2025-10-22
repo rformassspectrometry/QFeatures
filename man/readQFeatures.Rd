@@ -43,9 +43,9 @@ quantitative data. This information can also be defined in
 \code{colData} (see details).}
 
 \item{fnames}{For the single- and multi-set cases, an optional
-\code{character(1)} or \code{numeric(1)} indicating the column to be
-used as feature names.  Note that rownames must be unique
-within \code{QFeatures} sets. Default is \code{NULL}.}
+\code{character(1)} or \code{numeric(1)} indicating the column to be used as
+feature names.  Note that rownames must be unique within \code{QFeatures}
+sets. Default is \code{NULL}. See also section 'Feature names'.}
 
 \item{ecol}{Same as \code{quantCols}. Available for backwards
 compatibility. Default is \code{NULL}. If both \code{ecol} and \code{colData}
@@ -204,6 +204,15 @@ automatically added to the \code{colData} and filled with \code{NA}s.
 When using the \code{quantCols} and \code{runCol} arguments only
 (without \code{colData}), the \code{colData} contains zero
 columns/variables.
+}
+
+\subsection{Feature names}{
+
+Assay feature (i.e. rownames) are important as they are used when assays are
+joined with \code{\link[=joinAssays]{joinAssays()}}. They can be set upon creation of the
+\code{\link[=QFeatures]{QFeatures()}} object by setting the \code{fnames} argument. See also
+\code{\link[=createPrecursorId]{createPrecursorId()}} in case a precursor identifier is note readily
+available and should be created from other, existing rowData variables.
 }
 }
 \examples{

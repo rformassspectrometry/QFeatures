@@ -29,18 +29,18 @@
 .merge_assays_by_rows <- function(l) {
     cn <- unlist(lapply(l, colnames))
     rn <- unique(unlist(lapply(l, rownames)))
-    
+
     ## Check for duplicate column (sample) names
-    if (any(duplicated(cn))) 
+    if (any(duplicated(cn)))
         stop("Merging assays with columns in common is not allowed.")
-    
-    res <- matrix(NA, ncol = length(cn), nrow = length(rn), 
+
+    res <- matrix(NA, ncol = length(cn), nrow = length(rn),
                   dimnames = list(rn, cn))
     for (i in seq_along(l)) {
         x <- l[[i]]
-        res[rownames(x), colnames(x)] <- as.matrix(x) 
+        res[rownames(x), colnames(x)] <- as.matrix(x)
         ## as.matrix in case x is an HDF5Array, note x (and res) are
-        ## realized in memory. 
+        ## realized in memory.
     }
     res
 }
@@ -51,10 +51,15 @@
 }
 
 
-mergeSElist <- function(x) {
+mergeSElist <- function(x, fcol = NULL) {
     x_classes <- unique(vapply(x, class, character(1)))
     if (length(x_classes) != 1)
         stop("Can't join assays from different classes.", call. = FALSE)
+    if (!is.null(fcol)) {
+        ## Set assay rownames for joining
+        message("Using '", fcol, "' to join assays.")
+        x <- .setAssayRownamesExperimentList(x, fcol)
+    }
     joined_mcols <- Reduce(.merge_2_by_cols, lapply(x, rowData))
     joined_assay <- .merge_assays_by_rows(lapply(x, assay))
     joined_coldata <- Reduce(.merge_2_by_cols, lapply(x, colData))
@@ -87,26 +92,29 @@ mergeSElist <- function(x) {
 ##'     `joinedAssay`. Note that the function will fail if there's
 ##'     already an assay with `name`.
 ##'
+##' @param fcol Default is `NULL`, to use assay rownames when
+##'     joining. Alternatively, `fcol` can be a `character(1)` defining a
+##'     rowData variable, present in all assays, that will be used to join
+##'     assays. See [createPrecursorId()] for an example.
+##'
 ##' @return A `QFeatures` object with an additional assay.
 ##'
 ##' @details
 ##'
-##' The rows to be joined are chosen based on the rownames of the
-##' respective assays. It is the user's responsability to make sure
-##' these are meaningful, such as for example refering to unique
-##' peptide sequences or proteins.
+##' The rows to be joined are chosen based on the rownames of the respective
+##' assays. It is the user's responsability to make sure these are meaningful,
+##' such as for example refering to unique precursors, peptide sequences or
+##' proteins.
 ##'
-##' The join operation acts along the rows and expects the samples
-##' (columns) of the assays to be disjoint, i.e. the assays mustn't
-##' share any samples. Rows that aren't present in an assay are set to
-##' `NA` when merged.
+##' The join operation acts along the rows and expects the samples (columns) of
+##' the assays to be disjoint, i.e. the assays mustn't share any samples. Rows
+##' that aren't present in an assay are set to `NA` when merged.
 ##'
-##' The `rowData` slots are also joined. However, only columns that
-##' are shared and that have the same values for matching columns/rows
-##' are retained. For example of a feature variable `A` in sample `S1`
-##' contains value `a1` and variable `A` in sample `S2` in a different
-##' assay contains `a2`, then the feature variable `A` is dropped in
-##' the merged assay.
+##' The `rowData` slots are also joined. However, only columns that are shared
+##' and that have the same values for matching columns/rows are retained. For
+##' example of a feature variable `A` in sample `S1` contains value `a1` and
+##' variable `A` in sample `S2` in a different assay contains `a2`, then the
+##' feature variable `A` is dropped in the merged assay.
 ##'
 ##' The joined assay is linked to its parent assays through an `AssayLink`
 ##' object. The link between the child assay and the parent assays is based on
@@ -149,14 +157,28 @@ mergeSElist <- function(x) {
 ##' rowData(feat2[["joinedAssay"]])
 joinAssays <- function(x,
                        i,
-                       name = "joinedAssay") {
+                       name = "joinedAssay",
+                       fcol = NULL) {
     stopifnot("Object must be of class 'QFeatures'" = inherits(x, "QFeatures"),
               "Need at least 2 assays to join" = length(i) >= 2)
     if (name %in% names(x))
         stop("Assay with name '", name, "' already exists.")
+    # if (!is.null(fcol)) {
+    #     ## Set assay rownames for joining
+    #     message("Using '", fcol, "' to join assays.")
+    #     x <- .setAssayRownames(x, fcol)
+    # }
     ## Join assays and add to x
-    joined_se <- mergeSElist(experiments(x)[i])
+    joined_se <- mergeSElist(experiments(x)[i], fcol = fcol)
     x <- addAssay(x, joined_se, name = name)
     ## Add the multi-parent AssayLinks
-    addAssayLink(x, from = i, to = name)
+    if (is.null(fcol)) {
+        addAssayLink(x, from = i, to = name)
+    } else {
+        addAssayLink(
+            x, from = i, to = name, varFrom = rep(fcol, length(i)), 
+            varTo = fcol
+        )
+    }
+    
 }

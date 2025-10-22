@@ -123,6 +123,14 @@
 ##' (without `colData`), the `colData` contains zero
 ##' columns/variables.
 ##'
+##' ## Feature names
+##'
+##' Assay feature (i.e. rownames) are important as they are used when assays are
+##' joined with [joinAssays()]. They can be set upon creation of the
+##' [QFeatures()] object by setting the `fnames` argument. See also
+##' [createPrecursorId()] in case a precursor identifier is note readily
+##' available and should be created from other, existing rowData variables.
+##'
 ##' @param assayData A `data.frame`, or any object that can be coerced
 ##'     into a `data.frame`, holding the quantitative assay. For
 ##'     `readSummarizedExperiment()`, this can also be a
@@ -148,9 +156,9 @@
 ##'     are converted to syntactically valid names using `make.names`
 ##'
 ##' @param fnames For the single- and multi-set cases, an optional
-##'     `character(1)` or `numeric(1)` indicating the column to be
-##'     used as feature names.  Note that rownames must be unique
-##'     within `QFeatures` sets. Default is `NULL`.
+##'     `character(1)` or `numeric(1)` indicating the column to be used as
+##'     feature names.  Note that rownames must be unique within `QFeatures`
+##'     sets. Default is `NULL`. See also section 'Feature names'.
 ##'
 ##' @param name For the single-set case, an optional `character(1)` to
 ##'     name the set in the `QFeatures` object. Default is `quants`.
@@ -477,7 +485,7 @@ readQFeatures <- function(assayData,
 
 .createUniqueColnames <- function(el, quantCols) {
     if (length(quantCols) == 1)  suffix <- ""
-    else suffix <- paste0("_", colnames(el[[1]]))
+    else suffix <- paste0("_", quantCols)
     for (i in seq_along(el)) {
         colnames(el[[i]]) <- paste0(names(el)[[i]], suffix)
     }
@@ -527,17 +535,34 @@ readQFeatures <- function(assayData,
 ## fnames is used. Note that we don't want to export it to avoid messing
 ## with rownames and assayLinks.
 .setAssayRownames <- function(object, fcol) {
+    if (is.numeric(fcol)) fcol <- rowDataNames(object)[[1]][[fcol]]
     stopifnot(inherits(object, "MultiAssayExperiment"))
-    ok <- lapply(rowData(object),
-                 function(x) stopifnot(fcol %in% names(x)))
-    expl <- lapply(experiments(object),
-                   function(x) {
-                       rn <- rowData(x)[[fcol]]
-                       if (anyDuplicated(rn))
-                           rn <- make.unique(rn)
-                       rownames(x) <- rn
-                       x
-                   })
-    experiments(object) <- List(expl)
+    experiments(object) <- .setAssayRownamesExperimentList(
+        experiments(object), fcol
+    )
     object
+}
+
+## This is used by the function above, but also by mergeSElist()
+.setAssayRownamesExperimentList <- function(object, fcol) {
+    stopifnot(inherits(object, "ExperimentList"))
+    is_ok <- sapply(names(object), function(ii){
+        ifelse(fcol %in% names(rowData(object[[ii]])), TRUE, FALSE)
+    })
+    if (any(!is_ok)) 
+        stop(sQuote(fcol), " not found in the following assays: ",
+             paste0(names(object)[!is_ok], collapse = ", "), ".")
+    expl <- lapply(names(object), function(ii) {
+        x <- object[[ii]]
+        rn <- rowData(x)[[fcol]]
+        if (anyDuplicated(rn)) {
+            warning("Duplicated entries found in ", sQuote(fcol), 
+                    " in rowData of assay ", ii, "; they are made unique.")
+            rn <- make.unique(as.character(rn))
+        }
+        rownames(x) <- rn
+        x
+    })
+    names(expl) <- names(object)
+    List(expl)
 }

@@ -65,10 +65,6 @@ multiple assays aggregation.
 
 # QFeatures 1.15
 
-## QFeatures 1.15.3
-
-- Fix typo in normalisation methods.
-
 ## QFeatures 1.15.2
 
 - Fix bug in `QFeatures::longFormat()` when rownames are numerical

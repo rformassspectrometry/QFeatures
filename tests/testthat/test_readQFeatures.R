@@ -64,26 +64,6 @@ test_that("readQFeatures: colData and quantCols are equivalent", {
     r2 <- readQFeatures(x, quantCols = 1:10)
     colData(r1) <- colData(r2) ## ignore colData
     expect_identical(r1, r2)
-    ## This also works when colData and assayData quantCols are in a
-    ## different order (cf https://github.com/UCLouvain-CBIO/scp/issues/77)
-    ## Create a data matrix where quantCols are in another order than
-    ## provided by the colData
-    ad <- matrix(
-        1:75, ncol = 5,
-        dimnames = list(NULL, rev(paste0("quantCol", 1:5)))
-    )
-    ad <- as.data.frame(ad)
-    ad$runCol <- rep(paste0("run", 1:3), each = 5)
-    cd <- data.frame(
-        quantCols = rep(paste0("quantCol", 1:5), 3),
-        runCol = rep(paste0("run", 1:3), each = 5)
-    )
-    qf <- readQFeatures(
-        assayData = ad, colData = cd, runCol = "runCol"
-    )
-    exp <- ad[ad$runCol == ad$runCol[[1]], -6]
-    colnames(exp) <- paste0(ad$runCol[[1]], "_", colnames(exp))
-    expect_identical(as.matrix(exp), assay(qf, 1))
 })
 
 
@@ -267,6 +247,44 @@ test_that("readQFeatures: test polymorphism", {
     )
 })
 
+test_that("readQFeatures: testing fnames", {
+    require("SummarizedExperiment")
+    
+    ## No fnames
+    se1 <- readSummarizedExperiment(x, 1:10)
+    expect_identical(
+        readQFeatures(x, quantCols = 1:10),
+        QFeatures(List(quants = se1),
+                  metadata = list("._type" = "bulk"))
+    )
+    ## Character fnames
+    sel <- !duplicated(rowData(se1)$Sequence)
+    x2 <- x[sel, ]
+    se2 <- readSummarizedExperiment(x2, 1:10)
+    rownames(se2) <- rowData(se2)$Sequence
+    expect_identical(
+        readQFeatures(x2, quantCols = 1:10, fnames = "Sequence"),
+        QFeatures(List(quants = se2),
+                  metadata = list("._type" = "bulk"))
+    )
+    ## Numeric fnames
+    expect_identical(
+        readQFeatures(x2, quantCols = 1:10, fnames = "Sequence"),
+        readQFeatures(x2, quantCols = 1:10, fnames = 1)
+    )
+    ## Duplicated fnames = warning
+    se3 <- readSummarizedExperiment(x, 1:10)
+    rownames(se3) <- make.unique(rowData(se3)$Sequence)
+    expect_warning(
+        test <- readQFeatures(x, quantCols = 1:10, fnames = "Sequence"),
+        regexp = "Duplicated entries found in .Sequence. in rowData of assay quants; they are made unique."
+    )
+    expect_identical(
+        test,
+        QFeatures(List(quants = se3),
+                  metadata = list("._type" = "bulk"))
+    )
+})
 
 test_that("readQFeatures: errors, warnings and messages", {
     se_exp <- readSummarizedExperiment(x, 1:10)
@@ -402,7 +420,7 @@ test_that(".splitSE", {
     m <- matrix(1:100, ncol = 10,
                 dimnames = list(paste0("row", 1:10),
                                 paste0("col", 1:10)))
-    se <- SummarizedExperiment(assay = m,
+    se <- SummarizedExperiment(assay = m, 
                                rowData = DataFrame(rowDataCol = 1:nrow(m)%%3),
                                colData = DataFrame(colvar = 1:ncol(m)%%5))
     ## Split by row
