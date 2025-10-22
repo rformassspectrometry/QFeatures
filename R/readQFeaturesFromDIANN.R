@@ -19,8 +19,9 @@
 ##'
 ##' @param multiplexing A `character(1)` indicating the type of
 ##'     multiplexing used in the experiment. One of `"none"` (default,
-##'     for label-free experiments) or `"mTRAQ"` (for plexDIA
-##'     experiments).
+##'     for label-free experiments), `"mTRAQ"` (for multiplex experiments
+##'     with mTRAQ labeling) or `"dimethyl"` (for multiplex experiments
+##'     with dimethyl labeling).
 ##'
 ##' @param ... Further arguments passed to [readQFeatures()].
 ##'
@@ -77,11 +78,12 @@
 ##' x2 <- read.delim(MsDataHub::Report.Derks2022.plexDIA.tsv())
 ##' x2[["File.Name"]] <- x2[["Run"]]
 ##' readQFeaturesFromDIANN(x2, multiplexing = "mTRAQ")
+##' 
 readQFeaturesFromDIANN <- function(assayData,
                                    colData = NULL,
                                    quantCols = "Ms1.Area",
                                    runCol = "File.Name",
-                                   multiplexing = c("none", "mTRAQ"),
+                                   multiplexing = c("none", "mTRAQ", "dimethyl"),
                                    extractedData = NULL,
                                    ecol = NULL,
                                    verbose = TRUE,
@@ -93,6 +95,12 @@ readQFeaturesFromDIANN <- function(assayData,
                                       quantCols, runCol)
         quantCols <- assayData[[2]]
         assayData <- assayData[[1]]
+    } else if (multiplexing == "dimethyl"){
+      if (verbose) message("Pivoting quantiative data.")
+      assayData <- .formatDimethylReportData(assayData, colData,
+                                             quantCols, runCol)
+      quantCols <- assayData[[2]]
+      assayData <- assayData[[1]]
     } ## else is none
     ans <- readQFeatures(assayData, colData = colData,
                          quantCols = quantCols,
@@ -126,6 +134,24 @@ readQFeaturesFromDIANN <- function(assayData,
     )
     list(assayData = ans,
          quantCols = setdiff(colnames(ans), colnames(assayData)))
+}
+
+## (Only for dimethyl multiplexing!) Internal function that 
+## identifies constant columns within precursor and puts the 
+## quantification data for different channels in separate
+## columns (wide format).
+.formatDimethylReportData <- function(assayData, colData, quantCols, runCol) {
+  idCols <- .findPrecursorVariables(assayData,
+                                    precursorId = "Precursor.Id",
+                                    runCol = runCol)
+  ans <- pivot_wider(
+    assayData, id_cols = all_of(idCols),
+    names_from = "Channel",
+    values_from = all_of(quantCols)
+  )
+  
+  list(assayData = ans,
+       quantCols = sort(setdiff(colnames(ans), colnames(assayData))))
 }
 
 ## Internal function that identifies which variables in the report
