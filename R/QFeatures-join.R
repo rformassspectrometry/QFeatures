@@ -163,11 +163,6 @@ joinAssays <- function(x,
               "Need at least 2 assays to join" = length(i) >= 2)
     if (name %in% names(x))
         stop("Assay with name '", name, "' already exists.")
-    # if (!is.null(fcol)) {
-    #     ## Set assay rownames for joining
-    #     message("Using '", fcol, "' to join assays.")
-    #     x <- .setAssayRownames(x, fcol)
-    # }
     ## Join assays and add to x
     joined_se <- mergeSElist(experiments(x)[i], fcol = fcol)
     x <- addAssay(x, joined_se, name = name)
