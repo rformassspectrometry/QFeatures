@@ -43,21 +43,28 @@
     }
     DataFrame(name = names(pNA),
               nNA = unname(nNA),
-              pNA = unname(pNA))
+              pNA = unname(pNA), 
+              row.names = names(pNA))
+
 }
 
 ## Internal function that compute the number and proportion of missing
 ## data for a SummarizedExperiment object
-.nNA <- function(x) {
+.nNA <- function(x, addToObject) {
     nNA <- .nNAByAssay(x)
     nNA_rows <- .nNAByMargin(x, 1)
     nNA_cols <- .nNAByMargin(x, 2)
+    if (addToObject) {
+        colData(x) <- cbind(colData(x), nNA_cols[, c("nNA", "pNA")])
+        rowData(x) <- cbind(rowData(x), nNA_rows[, c("nNA", "pNA")])
+        return(x)
+    }
     list(nNA = nNA, nNArows = nNA_rows, nNAcols = nNA_cols)
 }
 
 ## Internal function that compute the number and proportion of missing
 ## data for a QFeatures object
-.nNAi <- function(object, i) {
+.nNAi <- function(object, i, addToObject) {
     i <- .normIndex(object, i)
     ## Get number of missing data per assay
     nNAassay <- do.call(rbind, lapply(i, function(ii)
@@ -235,19 +242,19 @@ setMethod("infIsNA", c("QFeatures", "character"),
 ##' @exportMethod nNA
 ##' @rdname QFeatures-missing-data
 setMethod("nNA", c("SummarizedExperiment", "missing"),
-          function(object, i) .nNA(object))
+          function(object, i, addToObject = FALSE) .nNA(object, addToObject))
 
 ##' @rdname QFeatures-missing-data
 setMethod("nNA", c("QFeatures", "integer"),
-          function(object, i) .nNAi(object, i))
+          function(object, i, addToObject = FALSE) .nNAi(object, i, addToObject))
 
 ##' @rdname QFeatures-missing-data
 setMethod("nNA", c("QFeatures", "numeric"),
-          function(object, i) .nNAi(object, as.integer(i)))
+          function(object, i, addToObject = FALSE) .nNAi(object, as.integer(i), addToObject))
 
 ##' @rdname QFeatures-missing-data
 setMethod("nNA", c("QFeatures", "character"),
-          function(object, i) .nNAi(object, i) )
+          function(object, i, addToObject = FALSE) .nNAi(object, i, addToObject))
 
 
 ####---- filterNA ----####

@@ -37,18 +37,20 @@ test_that("function: .nNAByAssay, .nNAByMargin, .nNA, and .nNAi", {
     expect_identical(nNArows,
                      DataFrame(name = rownames(se_na),
                                nNA = c(1L, 0L, 1L, 1L),
-                               pNA = c(1/3, 0, 1/3, 1/3)))
+                               pNA = c(1/3, 0, 1/3, 1/3),
+                               row.names = rownames(se_na)))
     expect_identical(nNAcols,
                      DataFrame(name = colnames(se_na),
                                nNA = c(2L, 1L, 0L),
-                               pNA = c(1/2, 1/4, 0)))
+                               pNA = c(1/2, 1/4, 0),
+                               row.names = colnames(se_na)))
 
     ## .nNA for SummarizedExperiemnt
-    expect_identical(QFeatures:::.nNA(se_na),
+    expect_identical(QFeatures:::.nNA(se_na, addToObject = FALSE),
                      list(nNA = nNAassay, nNArows = nNArows,
                           nNAcols =nNAcols))
     ## Expect only 0's (no missing data) for se_zero
-    expect_true(all(sapply(QFeatures:::.nNA(se_zero),
+    expect_true(all(sapply(QFeatures:::.nNA(se_zero, addToObject = FALSE),
                            function(x) all(x[, "pNA"] == 0))))
 
     ## .nNAi for QFeatures
@@ -60,7 +62,7 @@ test_that("function: .nNAByAssay, .nNAByMargin, .nNA, and .nNAi", {
     nNAcols <- c(2L, 1L, 0L, rep(0L, 3))
     pNAcols <- nNAcols / 4
     ## Test results
-    n_na <- QFeatures:::.nNAi(ft0, 1:2)
+    n_na <- QFeatures:::.nNAi(ft0, 1:2, addToObject = FALSE)
     ## .nNAByAssay
     expect_identical(n_na$nNA,
                      DataFrame(assay = names(ft0)[1:2],
@@ -79,7 +81,7 @@ test_that("function: .nNAByAssay, .nNAByMargin, .nNA, and .nNAi", {
                                nNA = nNAcols,
                                pNA = pNAcols))
     ## Check .nNAi with character indexing
-    expect_identical(n_na, QFeatures:::.nNAi(ft0, c("na", "zero")))
+    expect_identical(n_na, QFeatures:::.nNAi(ft0, c("na", "zero"), addToObject = FALSE))
 })
 
 test_that("function: .row_for_filterNA", {
@@ -152,8 +154,10 @@ test_that("nNA,SummarizedExperiment and nNA,QFeatures", {
     ## Add an assay with different dimensions (cf issue 118)
     ft0 <- addAssay(ft0, ft0[[1]][1:2, 1:2], name = "subset1")
     ## Method vs internal function
-    expect_identical(nNA(se_na), QFeatures:::.nNA(se_na))
-    expect_identical(nNA(ft0, 1:4), QFeatures:::.nNAi(ft0, 1:4))
+    expect_identical(nNA(se_na),
+        QFeatures:::.nNA(se_na, addToObject = FALSE))
+    expect_identical(nNA(ft0, 1:4),
+        QFeatures:::.nNAi(ft0, 1:4, addToObject = FALSE))
     ## nNA on a single assay
     expect_identical(nNA(ft0[[1]]), nNA(se_na))
     ## nNA on multiple assays

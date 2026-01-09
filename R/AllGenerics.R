@@ -18,7 +18,7 @@ setGeneric("infIsNA",
            function(object, i) standardGeneric("infIsNA"))
 
 setGeneric("nNA",
-           function(object, i) standardGeneric("nNA"))
+           function(object, i, addToObject = FALSE) standardGeneric("nNA"))
 
 setGeneric("logTransform",
            function(object, ...) standardGeneric("logTransform"))
