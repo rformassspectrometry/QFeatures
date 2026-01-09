@@ -168,9 +168,9 @@ head(rowData(hl[["psms"]]))
     ## 6        -0.67     21.27 Nucleus - ...
 
 For further details on how to manipulate such objects, refer to the
-*[MultiAssayExperiment](https://bioconductor.org/packages/3.22/MultiAssayExperiment)*
+*[MultiAssayExperiment](https://bioconductor.org/packages/3.23/MultiAssayExperiment)*
 (Ramos et al. 2017) and
-*[SummarizedExperiment](https://bioconductor.org/packages/3.22/SummarizedExperiment)*
+*[SummarizedExperiment](https://bioconductor.org/packages/3.23/SummarizedExperiment)*
 (Morgan et al. 2019) packages.
 
 As illustrated in figure @ref(fig:featuresplot), an central
@@ -638,7 +638,7 @@ filterFeatures(hl, ~ qValue <= 0.001)
 
 ## Session information
 
-    ## R version 4.5.1 (2025-06-13)
+    ## R Under development (unstable) (2026-01-03 r89269)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.3 LTS
     ## 
@@ -662,38 +662,38 @@ filterFeatures(hl, ~ qValue <= 0.001)
     ## [8] base     
     ## 
     ## other attached packages:
-    ##  [1] ggplot2_4.0.0               QFeatures_1.19.4           
-    ##  [3] MultiAssayExperiment_1.35.9 SummarizedExperiment_1.39.2
-    ##  [5] Biobase_2.69.1              GenomicRanges_1.61.5       
-    ##  [7] Seqinfo_0.99.2              IRanges_2.43.5             
-    ##  [9] S4Vectors_0.47.4            BiocGenerics_0.55.4        
-    ## [11] generics_0.1.4              MatrixGenerics_1.21.0      
-    ## [13] matrixStats_1.5.0           BiocStyle_2.37.1           
+    ##  [1] ggplot2_4.0.1               QFeatures_1.19.4           
+    ##  [3] MultiAssayExperiment_1.37.2 SummarizedExperiment_1.41.0
+    ##  [5] Biobase_2.71.0              GenomicRanges_1.63.1       
+    ##  [7] Seqinfo_1.1.0               IRanges_2.45.0             
+    ##  [9] S4Vectors_0.49.0            BiocGenerics_0.57.0        
+    ## [11] generics_0.1.4              MatrixGenerics_1.23.0      
+    ## [13] matrixStats_1.5.0           BiocStyle_2.39.0           
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] gtable_0.3.6            xfun_0.53               bslib_0.9.0            
+    ##  [1] gtable_0.3.6            xfun_0.55               bslib_0.9.0            
     ##  [4] htmlwidgets_1.6.4       lattice_0.22-7          vctrs_0.6.5            
-    ##  [7] tools_4.5.1             tibble_3.3.0            cluster_2.1.8.1        
-    ## [10] pkgconfig_2.0.3         BiocBaseUtils_1.11.2    Matrix_1.7-4           
-    ## [13] RColorBrewer_1.1-3      S7_0.2.0                desc_1.4.3             
-    ## [16] lifecycle_1.0.4         farver_2.1.2            compiler_4.5.1         
-    ## [19] stringr_1.5.2           textshaping_1.0.4       clue_0.3-66            
-    ## [22] htmltools_0.5.8.1       sass_0.4.10             yaml_2.3.10            
-    ## [25] lazyeval_0.2.2          pkgdown_2.1.3.9000      pillar_1.11.1          
-    ## [28] crayon_1.5.3            jquerylib_0.1.4         tidyr_1.3.1            
-    ## [31] MASS_7.3-65             DelayedArray_0.35.3     cachem_1.1.0           
-    ## [34] abind_1.4-8             tidyselect_1.2.1        digest_0.6.37          
-    ## [37] stringi_1.8.7           purrr_1.1.0             dplyr_1.1.4            
-    ## [40] reshape2_1.4.4          bookdown_0.45           labeling_0.4.3         
-    ## [43] fastmap_1.2.0           grid_4.5.1              cli_3.6.5              
-    ## [46] SparseArray_1.9.1       magrittr_2.0.4          S4Arrays_1.9.1         
-    ## [49] withr_3.0.2             scales_1.4.0            rmarkdown_2.30         
-    ## [52] XVector_0.49.1          igraph_2.2.0            ragg_1.5.0             
-    ## [55] evaluate_1.0.5          knitr_1.50              rlang_1.1.6            
-    ## [58] Rcpp_1.1.0              glue_1.8.0              BiocManager_1.30.26    
-    ## [61] jsonlite_2.0.0          AnnotationFilter_1.33.0 R6_2.6.1               
+    ##  [7] tools_4.6.0             tibble_3.3.0            cluster_2.1.8.1        
+    ## [10] BiocBaseUtils_1.13.0    pkgconfig_2.0.3         Matrix_1.7-4           
+    ## [13] RColorBrewer_1.1-3      S7_0.2.1                desc_1.4.3             
+    ## [16] lifecycle_1.0.5         farver_2.1.2            compiler_4.6.0         
+    ## [19] stringr_1.6.0           textshaping_1.0.4       clue_0.3-66            
+    ## [22] htmltools_0.5.9         sass_0.4.10             yaml_2.3.12            
+    ## [25] lazyeval_0.2.2          pkgdown_2.2.0.9000      pillar_1.11.1          
+    ## [28] jquerylib_0.1.4         tidyr_1.3.2             MASS_7.3-65            
+    ## [31] DelayedArray_0.37.0     cachem_1.1.0            abind_1.4-8            
+    ## [34] tidyselect_1.2.1        digest_0.6.39           stringi_1.8.7          
+    ## [37] purrr_1.2.1             dplyr_1.1.4             reshape2_1.4.5         
+    ## [40] bookdown_0.46           labeling_0.4.3          fastmap_1.2.0          
+    ## [43] grid_4.6.0              cli_3.6.5               SparseArray_1.11.10    
+    ## [46] magrittr_2.0.4          S4Arrays_1.11.1         withr_3.0.2            
+    ## [49] scales_1.4.0            rmarkdown_2.30          XVector_0.51.0         
+    ## [52] igraph_2.2.1            otel_0.2.0              ragg_1.5.0             
+    ## [55] evaluate_1.0.5          knitr_1.51              rlang_1.1.7            
+    ## [58] Rcpp_1.1.0.8.2          glue_1.8.0              BiocManager_1.30.27    
+    ## [61] jsonlite_2.0.0          AnnotationFilter_1.35.0 R6_2.6.1               
     ## [64] plyr_1.8.9              systemfonts_1.3.1       fs_1.6.6               
-    ## [67] ProtGenerics_1.41.0     MsCoreUtils_1.21.0
+    ## [67] ProtGenerics_1.43.0     MsCoreUtils_1.23.2
 
 ## License
 

@@ -275,7 +275,7 @@ interest, which can then be visualised as a heatmap (figure
 
 ## Session information
 
-    ## R version 4.5.1 (2025-06-13)
+    ## R Under development (unstable) (2026-01-03 r89269)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.3 LTS
     ## 
@@ -299,43 +299,43 @@ interest, which can then be visualised as a heatmap (figure
     ## [8] methods   base     
     ## 
     ## other attached packages:
-    ##  [1] ComplexHeatmap_2.25.2       ggplot2_4.0.0              
-    ##  [3] QFeatures_1.19.4            MultiAssayExperiment_1.35.9
-    ##  [5] SummarizedExperiment_1.39.2 Biobase_2.69.1             
-    ##  [7] GenomicRanges_1.61.5        Seqinfo_0.99.2             
-    ##  [9] IRanges_2.43.5              S4Vectors_0.47.4           
-    ## [11] BiocGenerics_0.55.4         generics_0.1.4             
-    ## [13] MatrixGenerics_1.21.0       matrixStats_1.5.0          
-    ## [15] BiocStyle_2.37.1           
+    ##  [1] ComplexHeatmap_2.27.0       ggplot2_4.0.1              
+    ##  [3] QFeatures_1.19.4            MultiAssayExperiment_1.37.2
+    ##  [5] SummarizedExperiment_1.41.0 Biobase_2.71.0             
+    ##  [7] GenomicRanges_1.63.1        Seqinfo_1.1.0              
+    ##  [9] IRanges_2.45.0              S4Vectors_0.49.0           
+    ## [11] BiocGenerics_0.57.0         generics_0.1.4             
+    ## [13] MatrixGenerics_1.23.0       matrixStats_1.5.0          
+    ## [15] BiocStyle_2.39.0           
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] tidyselect_1.2.1        dplyr_1.1.4             farver_2.1.2           
-    ##  [4] S7_0.2.0                fastmap_1.2.0           lazyeval_0.2.2         
-    ##  [7] digest_0.6.37           lifecycle_1.0.4         cluster_2.1.8.1        
-    ## [10] ProtGenerics_1.41.0     magrittr_2.0.4          compiler_4.5.1         
-    ## [13] rlang_1.1.6             sass_0.4.10             tools_4.5.1            
-    ## [16] igraph_2.2.0            yaml_2.3.10             knitr_1.50             
-    ## [19] S4Arrays_1.9.1          labeling_0.4.3          htmlwidgets_1.6.4      
-    ## [22] DelayedArray_0.35.3     plyr_1.8.9              RColorBrewer_1.1-3     
-    ## [25] abind_1.4-8             withr_3.0.2             purrr_1.1.0            
+    ##  [4] S7_0.2.1                fastmap_1.2.0           lazyeval_0.2.2         
+    ##  [7] digest_0.6.39           lifecycle_1.0.5         cluster_2.1.8.1        
+    ## [10] ProtGenerics_1.43.0     magrittr_2.0.4          compiler_4.6.0         
+    ## [13] rlang_1.1.7             sass_0.4.10             tools_4.6.0            
+    ## [16] igraph_2.2.1            yaml_2.3.12             knitr_1.51             
+    ## [19] S4Arrays_1.11.1         labeling_0.4.3          htmlwidgets_1.6.4      
+    ## [22] DelayedArray_0.37.0     plyr_1.8.9              RColorBrewer_1.1-3     
+    ## [25] abind_1.4-8             withr_3.0.2             purrr_1.2.1            
     ## [28] desc_1.4.3              colorspace_2.1-2        scales_1.4.0           
     ## [31] iterators_1.0.14        MASS_7.3-65             cli_3.6.5              
-    ## [34] rmarkdown_2.30          crayon_1.5.3            ragg_1.5.0             
-    ## [37] rjson_0.2.23            reshape2_1.4.4          BiocBaseUtils_1.11.2   
-    ## [40] cachem_1.1.0            stringr_1.5.2           parallel_4.5.1         
-    ## [43] AnnotationFilter_1.33.0 BiocManager_1.30.26     XVector_0.49.1         
-    ## [46] vctrs_0.6.5             Matrix_1.7-4            jsonlite_2.0.0         
-    ## [49] bookdown_0.45           GetoptLong_1.0.5        clue_0.3-66            
-    ## [52] magick_2.9.0            systemfonts_1.3.1       foreach_1.5.2          
-    ## [55] tidyr_1.3.1             jquerylib_0.1.4         glue_1.8.0             
-    ## [58] pkgdown_2.1.3.9000      codetools_0.2-20        shape_1.4.6.1          
-    ## [61] stringi_1.8.7           gtable_0.3.6            tibble_3.3.0           
-    ## [64] pillar_1.11.1           htmltools_0.5.8.1       circlize_0.4.16        
-    ## [67] R6_2.6.1                textshaping_1.0.4       doParallel_1.0.17      
-    ## [70] evaluate_1.0.5          lattice_0.22-7          png_0.1-8              
-    ## [73] bslib_0.9.0             Rcpp_1.1.0              SparseArray_1.9.1      
-    ## [76] xfun_0.53               MsCoreUtils_1.21.0      fs_1.6.6               
-    ## [79] pkgconfig_2.0.3         GlobalOptions_0.1.2
+    ## [34] crayon_1.5.3            rmarkdown_2.30          ragg_1.5.0             
+    ## [37] otel_0.2.0              rjson_0.2.23            reshape2_1.4.5         
+    ## [40] BiocBaseUtils_1.13.0    cachem_1.1.0            stringr_1.6.0          
+    ## [43] parallel_4.6.0          AnnotationFilter_1.35.0 BiocManager_1.30.27    
+    ## [46] XVector_0.51.0          vctrs_0.6.5             Matrix_1.7-4           
+    ## [49] jsonlite_2.0.0          bookdown_0.46           GetoptLong_1.1.0       
+    ## [52] clue_0.3-66             magick_2.9.0            systemfonts_1.3.1      
+    ## [55] foreach_1.5.2           tidyr_1.3.2             jquerylib_0.1.4        
+    ## [58] glue_1.8.0              pkgdown_2.2.0.9000      codetools_0.2-20       
+    ## [61] shape_1.4.6.1           stringi_1.8.7           gtable_0.3.6           
+    ## [64] tibble_3.3.0            pillar_1.11.1           htmltools_0.5.9        
+    ## [67] circlize_0.4.17         R6_2.6.1                textshaping_1.0.4      
+    ## [70] doParallel_1.0.17       evaluate_1.0.5          lattice_0.22-7         
+    ## [73] png_0.1-8               bslib_0.9.0             Rcpp_1.1.0.8.2         
+    ## [76] SparseArray_1.11.10     xfun_0.55               GlobalOptions_0.1.3    
+    ## [79] MsCoreUtils_1.23.2      fs_1.6.6                pkgconfig_2.0.3
 
 ## License
 

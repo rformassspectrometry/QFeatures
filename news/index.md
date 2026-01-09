@@ -106,8 +106,7 @@
 ### QFeatures 1.15.1
 
 - Import [`reshape2::melt`](https://rdrr.io/pkg/reshape2/man/melt.html),
-  required for
-  [`MultiAssayExperiment::longFormat()`](https://github.com/waldronlab/MultiAssayExperiment/reference/longFormat-defunct.html).
+  required for `MultiAssayExperiment::longFormat()`.
 
 ### QFeatures 1.15.0
 
