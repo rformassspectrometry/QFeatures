@@ -41,13 +41,13 @@
 
 \S4method{infIsNA}{QFeatures,character}(object, i)
 
-\S4method{nNA}{SummarizedExperiment,missing}(object, i)
+\S4method{nNA}{SummarizedExperiment,missing}(object, i, addToObject = FALSE)
 
-\S4method{nNA}{QFeatures,integer}(object, i)
+\S4method{nNA}{QFeatures,integer}(object, i, addToObject = FALSE)
 
-\S4method{nNA}{QFeatures,numeric}(object, i)
+\S4method{nNA}{QFeatures,numeric}(object, i, addToObject = FALSE)
 
-\S4method{nNA}{QFeatures,character}(object, i)
+\S4method{nNA}{QFeatures,character}(object, i, addToObject = FALSE)
 
 \S4method{filterNA}{SummarizedExperiment}(object, pNA = 0)
 
@@ -56,7 +56,12 @@
 \arguments{
 \item{object}{An object of class \code{QFeatures} or \code{SummarizedExperiment}.}
 
-\item{i}{One or more indices or names of the assay(s) to be processed.}
+\item{i}{One or more indices or names of the set(s) to be processed.}
+
+\item{addToObject}{\code{logical(1)} indicating if the nNA should
+return a list of \code{DataFrame} that contain the metrics or
+a \code{QFeatures} object that contains the metrics in the
+\code{rowData} and \code{colData} of the specified set(s).}
 
 \item{pNA}{\code{numeric(1)} providing the maximum proportion of
 missing values per feature (row) that is acceptable. Feature
@@ -83,16 +88,19 @@ intensity of 0.
 \code{NA}. This is necessary when third-party software divide
 expression data by zero values, for instance during custom
 normalization.
-\item \code{nNA(object, i)} returns a list of missing value summaries. The
-first element \code{nNA} gives a \code{DataFrame} with the number and the
-proportion of missing values for the whole assay; the second
-element \code{nNArows} provides a \code{DataFrame} with the number and the
-proportion of missing values for the features (rows) of the
-assay(s); the third element \code{nNAcols} provides the number and
-the proportions of missing values in each sample of the
-assay(s).  When \code{object} has class \code{QFeatures} and additional
-column with the assays is provided in each element's
-\code{DataFrame}.
+\item \code{nNA(object, i, addToObject = FALSE)} computes summaries of missing
+values. When \code{addToObject = FALSE}, it returns a list with three
+elements: (1) \code{nNA}, a \code{DataFrame} reporting the number and
+proportion of missing values for the whole set; (2) \code{nNArows},
+a \code{DataFrame} with the number and proportion of missing values for
+the features (rows) of the set(s); and (3) \code{nNAcols}, a
+\code{DataFrame} with the number and proportion of missing values for
+each sample (columns) of the set(s). When \code{object} has class
+\code{QFeatures}, an additional column indicating the assay is included
+in each \code{DataFrame}. When \code{addToObject = TRUE}, no list is returned;
+instead, two columns, \code{nNA} (number of missing values) and \code{pNA}
+(proportion of missing values),  are added to the \code{rowData} and
+\code{colData} of the set(s).
 \item \code{filterNA(object, pNA, i)} removes features (rows) that contain
 a proportion of more missing values of \code{pNA} or higher.
 }
@@ -105,15 +113,20 @@ data(ft_na)
 ## Summary if missing values
 nNA(ft_na, 1)
 
+## Insert NA metrics into the QFeatures' rowData and colData
+
+ft_na <- nNA(ft_na, 1, addToObject = TRUE)
+
 ## Remove rows with missing values
 assay(filterNA(ft_na, i = 1))
 
 ## Replace NAs by zero and back
-ft_na <- impute(ft_na, i = 1, method = "zero")
-assay(ft_na)
-ft_na <- zeroIsNA(ft_na, 1)
-assay(ft_na)
+ft_na <- impute(ft_na, method = "zero", i = 1, name = "imputedSet")
+assay(ft_na[["imputedSet"]])
+## Replace zero by NA in the newly created set
+ft_na <- zeroIsNA(ft_na, 2)
+assay(ft_na[["imputedSet"]])
 }
 \seealso{
-The \code{impute()} for \code{QFeautres} instances.
+The \code{impute()} for \code{QFeatures} instances.
 }

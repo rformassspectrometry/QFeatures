@@ -14,7 +14,7 @@ impute
 
 \S4method{impute}{SummarizedExperiment}(object, method, ...)
 
-\S4method{impute}{QFeatures}(object, method, ..., i, name = "imputedAssay")
+\S4method{impute}{QFeatures}(object, method, ..., i, name = "imputedSet")
 }
 \arguments{
 \item{object}{A \code{SummarizedExperiment} or \code{QFeatures} object with
@@ -32,7 +32,7 @@ element of the \code{QFeatures} instance to impute. It cannot be
 missing and must be of length one.}
 
 \item{name}{A \code{character(1)} naming the new assay name. Default
-is \code{imputedAssay}.}
+is \code{imputedSet}.}
 }
 \description{
 The \code{impute} method performs data imputation on \code{QFeatures} and
