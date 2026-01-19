@@ -66,18 +66,41 @@
 ## data for a QFeatures object
 .nNAi <- function(object, i, addToObject) {
     i <- .normIndex(object, i)
-    ## Get number of missing data per assay
-    nNAassay <- do.call(rbind, lapply(i, function(ii)
-        cbind(assay = ii, .nNAByAssay(object[[ii]])) ))
-    ## Get number of missing data per row
-    nNArow <- do.call(rbind, lapply(i, function(ii)
-        cbind(assay = ii, .nNAByMargin(object[[ii]], 1)) ))
-    ## Get number of missing data per column
-    nNAcol <- do.call(rbind, lapply(i, function(ii)
-        cbind(assay = ii, .nNAByMargin(object[[ii]], 2)) ))
-    ## Return as list
-    list(nNA = nNAassay, nNArows = nNArow, nNAcols = nNAcol)
+
+    if (!addToObject) {
+        nNAassay <- do.call(rbind, lapply(i, function(ii)
+            cbind(assay = ii, .nNAByAssay(object[[ii]]))))
+        ## Get number of missing data per row
+        nNArow <- do.call(rbind, lapply(i, function(ii)
+            cbind(assay = ii, .nNAByMargin(object[[ii]], 1))))
+        ## Get number of missing data per column
+        nNAcol <- do.call(rbind, lapply(i, function(ii)
+            cbind(assay = ii, .nNAByMargin(object[[ii]], 2))))
+        ## Return as list
+        return(list(nNA = nNAassay, nNArows = nNArow, nNAcols = nNAcol))
+    }
+    
+    ## Insert nNA and pNA in set(s)'s rowData and colData
+    for (ii in i) {
+        se <- object[[ii]]
+        se <- .nNA(se, addToObject)
+        object[[ii]] <- se
+    }
+
+    object
 }
+
+    ## Get number of missing data per assay
+    #nNAassay <- do.call(rbind, lapply(i, function(ii)
+    #    cbind(assay = ii, .nNAByAssay(object[[ii]])) ))
+    ## Get number of missing data per row
+    #nNArow <- do.call(rbind, lapply(i, function(ii)
+    #    cbind(assay = ii, .nNAByMargin(object[[ii]], 1)) ))
+    ## Get number of missing data per column
+    #nNAcol <- do.call(rbind, lapply(i, function(ii)
+    #    cbind(assay = ii, .nNAByMargin(object[[ii]], 2)) ))
+    ## Return as list
+    #list(nNA = nNAassay, nNArows = nNArow, nNAcols = nNAcol)
 
 .row_for_filterNA <- function(x, pNA = 0L) {
     if (!is.matrix(x))
@@ -118,16 +141,19 @@
 ##'    expression data by zero values, for instance during custom
 ##'    normalization.
 ##'
-##' - `nNA(object, i)` returns a list of missing value summaries. The
-##'   first element `nNA` gives a `DataFrame` with the number and the
-##'   proportion of missing values for the whole assay; the second
-##'   element `nNArows` provides a `DataFrame` with the number and the
-##'   proportion of missing values for the features (rows) of the
-##'   assay(s); the third element `nNAcols` provides the number and
-##'   the proportions of missing values in each sample of the
-##'   assay(s).  When `object` has class `QFeatures` and additional
-##'   column with the assays is provided in each element's
-##'   `DataFrame`.
+##' - `nNA(object, i, addToObject = FALSE)` computes summaries of missing
+##'   values. When `addToObject = FALSE`, it returns a list with three
+##'   elements: (1) `nNA`, a `DataFrame` reporting the number and
+##'   proportion of missing values for the whole set; (2) `nNArows`,
+##'   a `DataFrame` with the number and proportion of missing values for
+##'   the features (rows) of the set(s); and (3) `nNAcols`, a
+##'   `DataFrame` with the number and proportion of missing values for
+##'   each sample (columns) of the set(s). When `object` has class
+##'   `QFeatures`, an additional column indicating the assay is included
+##'   in each `DataFrame`. When `addToObject = TRUE`, no list is returned;
+##'   instead, two columns, `nNA` (number of missing values) and `pNA`
+##'   (proportion of missing values),  are added to the `rowData` and
+##'   `colData` of the set(s).
 ##'
 ##' - `filterNA(object, pNA, i)` removes features (rows) that contain
 ##'   a proportion of more missing values of `pNA` or higher.
@@ -141,7 +167,12 @@
 ##'     with higher proportions are removed. If 0 (default), features
 ##'     that contain any number of `NA` values are dropped.
 ##'
-##' @param i One or more indices or names of the assay(s) to be processed.
+##' @param i One or more indices or names of the set(s) to be processed.
+##'
+##' @param addToObject `logical(1)` indicating if the nNA should
+##'     return a list of `DataFrame` that contain the metrics or 
+##'     a `QFeatures` object that contains the metrics in the 
+##'     `rowData` and `colData` of the specified set(s).
 ##'
 ##' @return An instance of the same class as `object`.
 ##'
@@ -157,7 +188,7 @@
 ##'
 ##' @rdname QFeatures-missing-data
 ##'
-##' @seealso The `impute()` for `QFeautres` instances.
+##' @seealso The `impute()` for `QFeatures` instances.
 ##'
 ##' @examples
 ##' data(ft_na)
@@ -165,14 +196,19 @@
 ##' ## Summary if missing values
 ##' nNA(ft_na, 1)
 ##'
+##' ## Insert NA metrics into the QFeatures' rowData and colData
+##'
+##' ft_na <- nNA(ft_na, 1, addToObject = TRUE)
+##'
 ##' ## Remove rows with missing values
 ##' assay(filterNA(ft_na, i = 1))
 ##'
 ##' ## Replace NAs by zero and back
-##' ft_na <- impute(ft_na, i = 1, method = "zero")
-##' assay(ft_na)
-##' ft_na <- zeroIsNA(ft_na, 1)
-##' assay(ft_na)
+##' ft_na <- impute(ft_na, method = "zero", i = 1, name = "imputedSet")
+##' assay(ft_na[["imputedSet"]])
+##' ## Replace zero by NA in the newly created set
+##' ft_na <- zeroIsNA(ft_na, 2)
+##' assay(ft_na[["imputedSet"]])
 NULL
 
 

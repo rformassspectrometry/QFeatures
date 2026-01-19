@@ -81,12 +81,12 @@ setMethod("impute", "SummarizedExperiment",
 ##'     element of the `QFeatures` instance to impute. It cannot be
 ##'      missing and must be of length one.
 ##' @param name A `character(1)` naming the new assay name. Default
-##'     is `imputedAssay`.
+##'     is `imputedSet`.
 ##'
 ##' @export
 ##' @rdname impute
 setMethod("impute", "QFeatures",
-          function(object, method, ..., i, name = "imputedAssay") {
+          function(object, method, ..., i, name = "imputedSet") {
               .applyTransformation(object, i, name, impute,
                                    method = method, ...)
               

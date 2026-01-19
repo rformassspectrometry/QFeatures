@@ -38,7 +38,7 @@ test_that("impute,QFeatures", {
     ft_imp <- impute(ft, i = "se_na2", method = "MinDet")
     x_imp <- MsCoreUtils::impute_matrix(x, method = "MinDet")
     ## Check the new assay was correctly imputed
-    expect_identical(x_imp, assay(ft_imp[["imputedAssay"]]))
+    expect_identical(x_imp, assay(ft_imp[["imputedSet"]]))
     ## Check the assay was added
     expect_true(length(ft_imp) == (length(ft) + 1))
     ## Test imputation of multiples assays
