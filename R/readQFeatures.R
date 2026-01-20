@@ -337,7 +337,7 @@ readQFeatures <- function(assayData,
     rownames(se) <- make.unique(rownames(se))
     if (length(runs)) {
         if (verbose) message("Splitting data in runs.")
-        el <- .splitSE(se, runs)
+        el <- .splitSE(se, runs, verbose)
         el <- .createUniqueColnames(el, quantCols)
     } else {
         el <- structure(list(se), .Names = name[1])
@@ -458,7 +458,7 @@ readQFeatures <- function(assayData,
 ##'     (in that order). If a match is found, the respective variable
 ##'     is extracted, converted to a factor if needed.
 ##' @noRd
-.splitSE <- function(x, f) {
+.splitSE <- function(x, f, verbose = FALSE) {
     ## Check that f is a factor
     if (length(f) == 1) {
         if (f %in% colnames(rowData(x))) {
@@ -471,30 +471,41 @@ readQFeatures <- function(assayData,
             stop("'", f, "' not found in rowData or colData")
         }
     }
+
     ## Check that the factor matches one of the dimensions
     if (!length(f) %in% dim(x))
         stop("length(f) not compatible with dim(x).")
+
     if (length(f) == nrow(x)) {
         s <- split(rownames(x), f = f)
+        split_rows <- TRUE
     } else {
         s <- split(colnames(x), f = f)
+        split_rows <- FALSE
     }
 
-    pb <- txtProgressBar(min = 0, max = length(s), style = 3)
+    if (verbose) {
+        pb <- txtProgressBar(min = 0, max = length(s), style = 3)
+        on.exit(close(pb), add = TRUE)
+    }
 
     xl <- setNames(
         lapply(seq_along(s), function(i) {
-            setTxtProgressBar(pb, i)
-            if (length(f) == nrow(x)) x[s[[i]], ] else x[, s[[i]]]
+            if (verbose)
+                setTxtProgressBar(pb, i)
+
+            if (split_rows)
+                x[s[[i]], ]
+            else
+                x[, s[[i]]]
         }),
         names(s)
     )
 
-    close(pb)
-            
     ## Convert list to an ExperimentList
     do.call(ExperimentList, xl)
 }
+
 
 .createUniqueColnames <- function(el, quantCols) {
     if (length(quantCols) == 1)  suffix <- ""
