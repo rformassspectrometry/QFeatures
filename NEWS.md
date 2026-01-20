@@ -1,3 +1,9 @@
+# QFeatures 1.21
+
+## QFeatures 1.21.1
+
+- add `addToObject` argument to the `nNA` method (issue #253)
+
 # QFeatures 1.19
 
 ## QFeatures 1.19.4

@@ -90,18 +90,6 @@
     object
 }
 
-    ## Get number of missing data per assay
-    #nNAassay <- do.call(rbind, lapply(i, function(ii)
-    #    cbind(assay = ii, .nNAByAssay(object[[ii]])) ))
-    ## Get number of missing data per row
-    #nNArow <- do.call(rbind, lapply(i, function(ii)
-    #    cbind(assay = ii, .nNAByMargin(object[[ii]], 1)) ))
-    ## Get number of missing data per column
-    #nNAcol <- do.call(rbind, lapply(i, function(ii)
-    #    cbind(assay = ii, .nNAByMargin(object[[ii]], 2)) ))
-    ## Return as list
-    #list(nNA = nNAassay, nNArows = nNArow, nNAcols = nNAcol)
-
 .row_for_filterNA <- function(x, pNA = 0L) {
     if (!is.matrix(x))
         stop(sQuote("x"), " must be a matrix.")
