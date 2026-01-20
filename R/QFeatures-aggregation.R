@@ -280,7 +280,7 @@ setMethod("aggregateFeatures", "QFeatures",
                   from <- i[[j]]
                   fromAssay <- el[[from]]
                   by <- fcol[[j]]
-                  set_name <- name[j]
+                  set_name <- names(object)[[j]] 
 
                   ## Remove already discarded columns from rowData
                   rowDataColsKept <- intersect(
