@@ -474,11 +474,24 @@ readQFeatures <- function(assayData,
     ## Check that the factor matches one of the dimensions
     if (!length(f) %in% dim(x))
         stop("length(f) not compatible with dim(x).")
-    if (length(f) == nrow(x)) { ## Split along rows
-        xl <- lapply(split(rownames(x), f = f), function(i) x[i, ])
-    } else { ## Split along columns
-        xl <- lapply(split(colnames(x), f = f), function(i) x[, i])
+    if (length(f) == nrow(x)) {
+        s <- split(rownames(x), f = f)
+    } else {
+        s <- split(colnames(x), f = f)
     }
+
+    pb <- txtProgressBar(min = 0, max = length(s), style = 3)
+
+    xl <- setNames(
+        lapply(seq_along(s), function(i) {
+            setTxtProgressBar(pb, i)
+            if (length(f) == nrow(x)) x[s[[i]], ] else x[, s[[i]]]
+        }),
+        names(s)
+    )
+
+    close(pb)
+            
     ## Convert list to an ExperimentList
     do.call(ExperimentList, xl)
 }
