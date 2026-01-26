@@ -19,20 +19,19 @@ ft0_named <- QFeatures(list(na = se_na,
     inf = se_inf_named))
 ## Create a QFeatures with nNA and pNA columns in colData and rowData
 ft_nNA <- ft0_named
+colData(ft_nNA)$nNA <- c(2L, 1L, 0L,
+                         0L, 0L, 0L,
+                         0L, 0L, 0L)
+colData(ft_nNA)$pNA <- c(1/2, 1/4, 0,
+                         0, 0, 0,
+                         0, 0, 0)
 
-
-colData(ft_nNA[[1]])$nNA <- c(2L, 1L, 0L)
-colData(ft_nNA[[1]])$pNA <- c(1/2, 1/4, 0)
 rowData(ft_nNA[[1]])$nNA <- c(1L, 0L, 1L, 1L)
 rowData(ft_nNA[[1]])$pNA <- c(1/3, 0, 1/3, 1/3)
 
-colData(ft_nNA[[2]])$nNA <- c(0L, 0L, 0L)
-colData(ft_nNA[[2]])$pNA <- c(0, 0, 0)
 rowData(ft_nNA[[2]])$nNA <- c(0L, 0L, 0L, 0L)
 rowData(ft_nNA[[2]])$pNA <- c(0, 0, 0, 0)
 
-colData(ft_nNA[[3]])$nNA <- c(0L, 0L, 0L)
-colData(ft_nNA[[3]])$pNA <- c(0, 0, 0)
 rowData(ft_nNA[[3]])$nNA <- c(0L, 0L, 0L, 0L)
 rowData(ft_nNA[[3]])$pNA <- c(0, 0, 0, 0)
 
@@ -75,13 +74,13 @@ test_that("function: .nNAByAssay, .nNAByMargin, .nNA, and .nNAi", {
                           nNAcols = nNAcols))
     ## .nNA for SummarizedExperiemnt, addToObject = TRUE
     expect_identical(QFeatures:::.nNA(se_na, addToObject = TRUE),
-                     ft_nNA[[1]])
+                     getWithColData(ft_nNA, 1))
     ## Expect only 0's (no missing data) for se_zero, addToObject = FALSE
     expect_true(all(sapply(QFeatures:::.nNA(se_zero, addToObject = FALSE),
                            function(x) all(x[, "pNA"] == 0))))
     ## Expect only 0's (no missing data) for se_zero, addToObject = TRUE
     expect_identical(QFeatures:::.nNA(se_zero_named, addToObject = TRUE),
-                     ft_nNA[[2]])
+                     getWithColData(ft_nNA, 2))
 
     ## .nNAi for QFeatures
     ## The expected results are initialized after manual inspection

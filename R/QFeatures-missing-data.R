@@ -43,9 +43,8 @@
     }
     DataFrame(name = names(pNA),
               nNA = unname(nNA),
-              pNA = unname(pNA), 
+              pNA = unname(pNA),
               row.names = names(pNA))
-
 }
 
 ## Internal function that compute the number and proportion of missing
@@ -67,28 +66,45 @@
 .nNAi <- function(object, i, addToObject) {
     i <- .normIndex(object, i)
 
+    nNAcol <- do.call(rbind, lapply(i, function(ii)
+        cbind(assay = ii, .nNAByMargin(object[[ii]], 2))
+    ))
+
     if (!addToObject) {
         nNAassay <- do.call(rbind, lapply(i, function(ii)
-            cbind(assay = ii, .nNAByAssay(object[[ii]]))))
-        ## Get number of missing data per row
+            cbind(assay = ii, .nNAByAssay(object[[ii]]))
+        ))
+
         nNArow <- do.call(rbind, lapply(i, function(ii)
-            cbind(assay = ii, .nNAByMargin(object[[ii]], 1))))
-        ## Get number of missing data per column
-        nNAcol <- do.call(rbind, lapply(i, function(ii)
-            cbind(assay = ii, .nNAByMargin(object[[ii]], 2))))
-        ## Return as list
-        return(list(nNA = nNAassay, nNArows = nNArow, nNAcols = nNAcol))
+            cbind(assay = ii, .nNAByMargin(object[[ii]], 1))
+        ))
+
+        return(list(
+            nNA = nNAassay,
+            nNArows = nNArow,
+            nNAcols = nNAcol
+        ))
     }
-    
-    ## Insert nNA and pNA in set(s)'s rowData and colData
+
     for (ii in i) {
         se <- object[[ii]]
-        se <- .nNA(se, addToObject)
+        rowStats <- .nNAByMargin(se, 1)[, c("nNA", "pNA")]
+        rowData(se) <- cbind(rowData(se), rowStats)
         object[[ii]] <- se
     }
 
+    cd <- colData(object)
+    key <- rownames(cd)
+
+    idx <- match(key, nNAcol$name)
+
+    cd$nNA <- nNAcol$nNA[idx]
+    cd$pNA <- nNAcol$pNA[idx]
+
+    colData(object) <- cd
     object
 }
+
 
 .row_for_filterNA <- function(x, pNA = 0L) {
     if (!is.matrix(x))
