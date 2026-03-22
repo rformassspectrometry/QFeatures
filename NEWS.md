@@ -1,3 +1,13 @@
+# QFeatures 1.21
+
+## QFeatures 1.21.1
+
+- Link to RforMS contribution guide.
+
+## QFeatures 1.21.0
+
+- New devel version
+
 # QFeatures 1.19
 
 ## QFeatures 1.19.4
