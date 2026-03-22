@@ -275,9 +275,9 @@ interest, which can then be visualised as a heatmap (figure
 
 ## Session information
 
-    ## R Under development (unstable) (2026-01-03 r89269)
+    ## R Under development (unstable) (2026-03-19 r89661)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.3 LTS
+    ## Running under: Ubuntu 24.04.4 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -299,9 +299,9 @@ interest, which can then be visualised as a heatmap (figure
     ## [8] methods   base     
     ## 
     ## other attached packages:
-    ##  [1] ComplexHeatmap_2.27.0       ggplot2_4.0.1              
-    ##  [3] QFeatures_1.19.4            MultiAssayExperiment_1.37.2
-    ##  [5] SummarizedExperiment_1.41.0 Biobase_2.71.0             
+    ##  [1] ComplexHeatmap_2.27.1       ggplot2_4.0.2              
+    ##  [3] QFeatures_1.21.1            MultiAssayExperiment_1.37.2
+    ##  [5] SummarizedExperiment_1.41.1 Biobase_2.71.0             
     ##  [7] GenomicRanges_1.63.1        Seqinfo_1.1.0              
     ##  [9] IRanges_2.45.0              S4Vectors_0.49.0           
     ## [11] BiocGenerics_0.57.0         generics_0.1.4             
@@ -309,33 +309,33 @@ interest, which can then be visualised as a heatmap (figure
     ## [15] BiocStyle_2.39.0           
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] tidyselect_1.2.1        dplyr_1.1.4             farver_2.1.2           
+    ##  [1] tidyselect_1.2.1        dplyr_1.2.0             farver_2.1.2           
     ##  [4] S7_0.2.1                fastmap_1.2.0           lazyeval_0.2.2         
-    ##  [7] digest_0.6.39           lifecycle_1.0.5         cluster_2.1.8.1        
+    ##  [7] digest_0.6.39           lifecycle_1.0.5         cluster_2.1.8.2        
     ## [10] ProtGenerics_1.43.0     magrittr_2.0.4          compiler_4.6.0         
     ## [13] rlang_1.1.7             sass_0.4.10             tools_4.6.0            
-    ## [16] igraph_2.2.1            yaml_2.3.12             knitr_1.51             
+    ## [16] igraph_2.2.2            yaml_2.3.12             knitr_1.51             
     ## [19] S4Arrays_1.11.1         labeling_0.4.3          htmlwidgets_1.6.4      
     ## [22] DelayedArray_0.37.0     plyr_1.8.9              RColorBrewer_1.1-3     
     ## [25] abind_1.4-8             withr_3.0.2             purrr_1.2.1            
     ## [28] desc_1.4.3              colorspace_2.1-2        scales_1.4.0           
     ## [31] iterators_1.0.14        MASS_7.3-65             cli_3.6.5              
-    ## [34] crayon_1.5.3            rmarkdown_2.30          ragg_1.5.0             
+    ## [34] crayon_1.5.3            rmarkdown_2.30          ragg_1.5.1             
     ## [37] otel_0.2.0              rjson_0.2.23            reshape2_1.4.5         
     ## [40] BiocBaseUtils_1.13.0    cachem_1.1.0            stringr_1.6.0          
     ## [43] parallel_4.6.0          AnnotationFilter_1.35.0 BiocManager_1.30.27    
-    ## [46] XVector_0.51.0          vctrs_0.6.5             Matrix_1.7-4           
+    ## [46] XVector_0.51.0          vctrs_0.7.2             Matrix_1.7-4           
     ## [49] jsonlite_2.0.0          bookdown_0.46           GetoptLong_1.1.0       
-    ## [52] clue_0.3-66             magick_2.9.0            systemfonts_1.3.1      
+    ## [52] clue_0.3-67             magick_2.9.1            systemfonts_1.3.2      
     ## [55] foreach_1.5.2           tidyr_1.3.2             jquerylib_0.1.4        
     ## [58] glue_1.8.0              pkgdown_2.2.0.9000      codetools_0.2-20       
     ## [61] shape_1.4.6.1           stringi_1.8.7           gtable_0.3.6           
-    ## [64] tibble_3.3.0            pillar_1.11.1           htmltools_0.5.9        
-    ## [67] circlize_0.4.17         R6_2.6.1                textshaping_1.0.4      
-    ## [70] doParallel_1.0.17       evaluate_1.0.5          lattice_0.22-7         
-    ## [73] png_0.1-8               bslib_0.9.0             Rcpp_1.1.0.8.2         
-    ## [76] SparseArray_1.11.10     xfun_0.55               GlobalOptions_0.1.3    
-    ## [79] MsCoreUtils_1.23.2      fs_1.6.6                pkgconfig_2.0.3
+    ## [64] tibble_3.3.1            pillar_1.11.1           htmltools_0.5.9        
+    ## [67] circlize_0.4.17         R6_2.6.1                textshaping_1.0.5      
+    ## [70] doParallel_1.0.17       evaluate_1.0.5          lattice_0.22-9         
+    ## [73] png_0.1-9               bslib_0.10.0            Rcpp_1.1.1             
+    ## [76] SparseArray_1.11.11     xfun_0.57               GlobalOptions_0.1.3    
+    ## [79] MsCoreUtils_1.23.6      fs_2.0.0                pkgconfig_2.0.3
 
 ## License
 

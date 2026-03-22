@@ -283,16 +283,16 @@ colData(qf1)
 (coldat <- data.frame(var = rnorm(10),
                       quantCols = names(hlpsms)[1:10]))
 #>           var quantCols
-#> 1   0.8497468      X126
-#> 2   0.6412677     X127C
-#> 3  -0.8533205     X127N
-#> 4   1.4502467     X128C
-#> 5  -0.5834776     X128N
-#> 6  -1.5154718     X129C
-#> 7   1.4507215     X129N
-#> 8  -0.8785367     X130C
-#> 9   0.4751676     X130N
-#> 10 -1.7268766      X131
+#> 1   0.7543883      X126
+#> 2  -1.4626257     X127C
+#> 3  -0.1084145     X127N
+#> 4   0.7761296     X128C
+#> 5   0.6055939     X128N
+#> 6   0.4827772     X129C
+#> 7   1.6805106     X129N
+#> 8  -0.1508190     X130C
+#> 9   0.6795999     X130N
+#> 10  0.4499002      X131
 qf2 <- readQFeatures(hlpsms, colData = coldat)
 #> Checking arguments.
 #> Loading data as a 'SummarizedExperiment' object.
@@ -306,16 +306,16 @@ colData(qf2)
 #> DataFrame with 10 rows and 2 columns
 #>             var   quantCols
 #>       <numeric> <character>
-#> X126   0.849747        X126
-#> X127C  0.641268       X127C
-#> X127N -0.853321       X127N
-#> X128C  1.450247       X128C
-#> X128N -0.583478       X128N
-#> X129C -1.515472       X129C
-#> X129N  1.450721       X129N
-#> X130C -0.878537       X130C
-#> X130N  0.475168       X130N
-#> X131  -1.726877        X131
+#> X126   0.754388        X126
+#> X127C -1.462626       X127C
+#> X127N -0.108415       X127N
+#> X128C  0.776130       X128C
+#> X128N  0.605594       X128N
+#> X129C  0.482777       X129C
+#> X129N  1.680511       X129N
+#> X130C -0.150819       X130C
+#> X130N  0.679600       X130N
+#> X131   0.449900        X131
 
 ######################################
 ## Multi-set case.
@@ -337,16 +337,16 @@ hlpsms[1:10, c(1, 2, 10:11, 14, 17, 29)]
 #> 795 0.60288497 0.11022069 0.02182222  TDQNYEk                 Q8BMJ2 0.01880
 #> 816 0.10298287 0.05818306 0.07723716  QEEIQQk                 Q3URD3 0.02900
 #>      file
-#> 383 File2
-#> 475 File2
-#> 478 File1
-#> 552 File2
+#> 383 File3
+#> 475 File3
+#> 478 File2
+#> 552 File3
 #> 596 File1
 #> 610 File2
-#> 731 File2
-#> 786 File2
-#> 795 File3
-#> 816 File1
+#> 731 File3
+#> 786 File3
+#> 795 File2
+#> 816 File2
 
 qf3 <- readQFeatures(hlpsms, quantCols = 1:10, runCol = "file")
 #> Checking arguments.
@@ -357,9 +357,9 @@ qf3 <- readQFeatures(hlpsms, quantCols = 1:10, runCol = "file")
 qf3
 #> An instance of class QFeatures (type: bulk) with 3 sets:
 #> 
-#>  [1] File1: SummarizedExperiment with 987 rows and 10 columns 
-#>  [2] File2: SummarizedExperiment with 1000 rows and 10 columns 
-#>  [3] File3: SummarizedExperiment with 1023 rows and 10 columns 
+#>  [1] File1: SummarizedExperiment with 986 rows and 10 columns 
+#>  [2] File2: SummarizedExperiment with 998 rows and 10 columns 
+#>  [3] File3: SummarizedExperiment with 1026 rows and 10 columns 
 colData(qf3)
 #> DataFrame with 30 rows and 0 columns
 
@@ -370,37 +370,37 @@ colData(qf3)
 (coldat <- data.frame(runCol = rep(paste0("File", 1:3), each = 10),
                       var = rnorm(10),
                       quantCols = names(hlpsms)[1:10]))
-#>    runCol        var quantCols
-#> 1   File1 -0.5998708      X126
-#> 2   File1  1.4683437     X127C
-#> 3   File1 -0.6198368     X127N
-#> 4   File1  0.5668461     X128C
-#> 5   File1  1.3854334     X128N
-#> 6   File1  1.3984792     X129C
-#> 7   File1 -1.7610803     X129N
-#> 8   File1 -0.4927893     X130C
-#> 9   File1  0.8543945     X130N
-#> 10  File1  0.3859256      X131
-#> 11  File2 -0.5998708      X126
-#> 12  File2  1.4683437     X127C
-#> 13  File2 -0.6198368     X127N
-#> 14  File2  0.5668461     X128C
-#> 15  File2  1.3854334     X128N
-#> 16  File2  1.3984792     X129C
-#> 17  File2 -1.7610803     X129N
-#> 18  File2 -0.4927893     X130C
-#> 19  File2  0.8543945     X130N
-#> 20  File2  0.3859256      X131
-#> 21  File3 -0.5998708      X126
-#> 22  File3  1.4683437     X127C
-#> 23  File3 -0.6198368     X127N
-#> 24  File3  0.5668461     X128C
-#> 25  File3  1.3854334     X128N
-#> 26  File3  1.3984792     X129C
-#> 27  File3 -1.7610803     X129N
-#> 28  File3 -0.4927893     X130C
-#> 29  File3  0.8543945     X130N
-#> 30  File3  0.3859256      X131
+#>    runCol         var quantCols
+#> 1   File1  0.51626857      X126
+#> 2   File1  1.02704216     X127C
+#> 3   File1  0.73166309     X127N
+#> 4   File1 -0.11245031     X128C
+#> 5   File1  1.42917302     X128N
+#> 6   File1  0.89530083     X129C
+#> 7   File1 -1.50043104     X129N
+#> 8   File1 -0.70734051     X130C
+#> 9   File1 -0.11555948     X130N
+#> 10  File1  0.08755882      X131
+#> 11  File2  0.51626857      X126
+#> 12  File2  1.02704216     X127C
+#> 13  File2  0.73166309     X127N
+#> 14  File2 -0.11245031     X128C
+#> 15  File2  1.42917302     X128N
+#> 16  File2  0.89530083     X129C
+#> 17  File2 -1.50043104     X129N
+#> 18  File2 -0.70734051     X130C
+#> 19  File2 -0.11555948     X130N
+#> 20  File2  0.08755882      X131
+#> 21  File3  0.51626857      X126
+#> 22  File3  1.02704216     X127C
+#> 23  File3  0.73166309     X127N
+#> 24  File3 -0.11245031     X128C
+#> 25  File3  1.42917302     X128N
+#> 26  File3  0.89530083     X129C
+#> 27  File3 -1.50043104     X129N
+#> 28  File3 -0.70734051     X130C
+#> 29  File3 -0.11555948     X130N
+#> 30  File3  0.08755882      X131
 qf4 <- readQFeatures(hlpsms, colData = coldat, runCol = "file")
 #> Checking arguments.
 #> Loading data as a 'SummarizedExperiment' object.
@@ -410,22 +410,22 @@ qf4 <- readQFeatures(hlpsms, colData = coldat, runCol = "file")
 qf4
 #> An instance of class QFeatures (type: bulk) with 3 sets:
 #> 
-#>  [1] File1: SummarizedExperiment with 987 rows and 10 columns 
-#>  [2] File2: SummarizedExperiment with 1000 rows and 10 columns 
-#>  [3] File3: SummarizedExperiment with 1023 rows and 10 columns 
+#>  [1] File1: SummarizedExperiment with 986 rows and 10 columns 
+#>  [2] File2: SummarizedExperiment with 998 rows and 10 columns 
+#>  [3] File3: SummarizedExperiment with 1026 rows and 10 columns 
 colData(qf4)
 #> DataFrame with 30 rows and 3 columns
-#>                  runCol       var   quantCols
-#>             <character> <numeric> <character>
-#> File1_X126        File1 -0.599871        X126
-#> File1_X127C       File1  1.468344       X127C
-#> File1_X127N       File1 -0.619837       X127N
-#> File1_X128C       File1  0.566846       X128C
-#> File1_X128N       File1  1.385433       X128N
-#> ...                 ...       ...         ...
-#> File3_X129C       File3  1.398479       X129C
-#> File3_X129N       File3 -1.761080       X129N
-#> File3_X130C       File3 -0.492789       X130C
-#> File3_X130N       File3  0.854394       X130N
-#> File3_X131        File3  0.385926        X131
+#>                  runCol        var   quantCols
+#>             <character>  <numeric> <character>
+#> File1_X126        File1   0.516269        X126
+#> File1_X127C       File1   1.027042       X127C
+#> File1_X127N       File1   0.731663       X127N
+#> File1_X128C       File1  -0.112450       X128C
+#> File1_X128N       File1   1.429173       X128N
+#> ...                 ...        ...         ...
+#> File3_X129C       File3  0.8953008       X129C
+#> File3_X129N       File3 -1.5004310       X129N
+#> File3_X130C       File3 -0.7073405       X130C
+#> File3_X130N       File3 -0.1155595       X130N
+#> File3_X131        File3  0.0875588        X131
 ```

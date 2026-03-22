@@ -485,9 +485,9 @@ documentation are also warmly welcome.
 
 ## Session information
 
-    R Under development (unstable) (2026-01-03 r89269)
+    R Under development (unstable) (2026-03-19 r89661)
     Platform: x86_64-pc-linux-gnu
-    Running under: Ubuntu 24.04.3 LTS
+    Running under: Ubuntu 24.04.4 LTS
 
     Matrix products: default
     BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -509,8 +509,8 @@ documentation are also warmly welcome.
     [8] base     
 
     other attached packages:
-     [1] DT_0.34.0                   QFeatures_1.19.4           
-     [3] MultiAssayExperiment_1.37.2 SummarizedExperiment_1.41.0
+     [1] DT_0.34.0                   QFeatures_1.21.1           
+     [3] MultiAssayExperiment_1.37.2 SummarizedExperiment_1.41.1
      [5] Biobase_2.71.0              GenomicRanges_1.63.1       
      [7] Seqinfo_1.1.0               IRanges_2.45.0             
      [9] S4Vectors_0.49.0            BiocGenerics_0.57.0        
@@ -518,27 +518,27 @@ documentation are also warmly welcome.
     [13] matrixStats_1.5.0           BiocStyle_2.39.0           
 
     loaded via a namespace (and not attached):
-     [1] xfun_0.55               bslib_0.9.0             htmlwidgets_1.6.4      
-     [4] lattice_0.22-7          crosstalk_1.2.2         vctrs_0.6.5            
-     [7] tools_4.6.0             tibble_3.3.0            cluster_2.1.8.1        
+     [1] xfun_0.57               bslib_0.10.0            htmlwidgets_1.6.4      
+     [4] lattice_0.22-9          crosstalk_1.2.2         vctrs_0.7.2            
+     [7] tools_4.6.0             tibble_3.3.1            cluster_2.1.8.2        
     [10] pkgconfig_2.0.3         Matrix_1.7-4            desc_1.4.3             
     [13] lifecycle_1.0.5         compiler_4.6.0          stringr_1.6.0          
-    [16] textshaping_1.0.4       clue_0.3-66             htmltools_0.5.9        
+    [16] textshaping_1.0.5       clue_0.3-67             htmltools_0.5.9        
     [19] sass_0.4.10             yaml_2.3.12             lazyeval_0.2.2         
     [22] pkgdown_2.2.0.9000      pillar_1.11.1           jquerylib_0.1.4        
     [25] tidyr_1.3.2             MASS_7.3-65             DelayedArray_0.37.0    
     [28] cachem_1.1.0            abind_1.4-8             tidyselect_1.2.1       
     [31] digest_0.6.39           stringi_1.8.7           purrr_1.2.1            
-    [34] dplyr_1.1.4             reshape2_1.4.5          bookdown_0.46          
+    [34] dplyr_1.2.0             reshape2_1.4.5          bookdown_0.46          
     [37] fastmap_1.2.0           grid_4.6.0              cli_3.6.5              
-    [40] SparseArray_1.11.10     magrittr_2.0.4          S4Arrays_1.11.1        
-    [43] rmarkdown_2.30          XVector_0.51.0          igraph_2.2.1           
-    [46] otel_0.2.0              ragg_1.5.0              evaluate_1.0.5         
-    [49] knitr_1.51              rlang_1.1.7             Rcpp_1.1.0.8.2         
+    [40] SparseArray_1.11.11     magrittr_2.0.4          S4Arrays_1.11.1        
+    [43] rmarkdown_2.30          XVector_0.51.0          igraph_2.2.2           
+    [46] otel_0.2.0              ragg_1.5.1              evaluate_1.0.5         
+    [49] knitr_1.51              rlang_1.1.7             Rcpp_1.1.1             
     [52] glue_1.8.0              BiocManager_1.30.27     jsonlite_2.0.0         
     [55] AnnotationFilter_1.35.0 R6_2.6.1                plyr_1.8.9             
-    [58] systemfonts_1.3.1       fs_1.6.6                ProtGenerics_1.43.0    
-    [61] MsCoreUtils_1.23.2     
+    [58] systemfonts_1.3.2       fs_2.0.0                ProtGenerics_1.43.0    
+    [61] MsCoreUtils_1.23.6     
 
 ## License
 
