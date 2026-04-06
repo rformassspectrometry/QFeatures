@@ -2,6 +2,8 @@
 
 ## QFeatures 1.21.2
 
+- Add support for dimethyl multiplexing to `readQFeaturesFromDIANN()`
+  (see PR #249), contributed by Karolína Kryštofová.
 - Aggregate redundant messages in `aggregateFeatures()` (PR #255).
 - Add a progress bar to `aggregateFeatures()` and `readQFeatures()`
   (PR #255).

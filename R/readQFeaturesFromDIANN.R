@@ -19,8 +19,9 @@
 ##'
 ##' @param multiplexing A `character(1)` indicating the type of
 ##'     multiplexing used in the experiment. One of `"none"` (default,
-##'     for label-free experiments) or `"mTRAQ"` (for plexDIA
-##'     experiments).
+##'     for label-free experiments), `"mTRAQ"` (for multiplex experiments
+##'     with mTRAQ labeling) or `"dimethyl"` (for multiplex experiments
+##'     with dimethyl labeling).
 ##'
 ##' @param ... Further arguments passed to [readQFeatures()].
 ##'
@@ -81,18 +82,24 @@ readQFeaturesFromDIANN <- function(assayData,
                                    colData = NULL,
                                    quantCols = "Ms1.Area",
                                    runCol = "File.Name",
-                                   multiplexing = c("none", "mTRAQ"),
+                                   multiplexing = c("none", "mTRAQ", "dimethyl"),
                                    extractedData = NULL,
                                    ecol = NULL,
                                    verbose = TRUE,
                                    ...) {
     multiplexing <- match.arg(multiplexing, several.ok = FALSE)
     if (multiplexing == "mTRAQ") {
-        if (verbose) message("Pivoting quantiative data.")
+        if (verbose) message("Pivoting mTRAQ quantiative data.")
         assayData <- .formatMtraqReportData(assayData, colData,
-                                      quantCols, runCol)
+                                            quantCols, runCol)
         quantCols <- assayData[[2]]
         assayData <- assayData[[1]]
+    } else if (multiplexing == "dimethyl") {
+      if (verbose) message("Pivoting dimethyl quantiative data.")
+      assayData <- .formatDimethylReportData(assayData, colData,
+                                             quantCols, runCol)
+      quantCols <- assayData[[2]]
+      assayData <- assayData[[1]]
     } ## else is none
     ans <- readQFeatures(assayData, colData = colData,
                          quantCols = quantCols,
@@ -106,10 +113,10 @@ readQFeaturesFromDIANN <- function(assayData,
 }
 
 ## (Only for mTRAQ multiplexing!) Internal function that extracts the
-## mTRAQlabels from the peptide sequence, removes the mTRAQ annotation
-## from the precursor ID, identifies constant columns within precursor
-## and puts the quantification data for different mTRAQ labels in
-## separate columns (wide format).
+## mTRAQlabels from the peptide sequence, removes the mTRAQ annotation from the
+## precursor ID, identifies constant columns within precursor and puts the
+## quantification data for different mTRAQ labels in separate columns (wide
+## format).
 .formatMtraqReportData <- function(assayData, colData, quantCols, runCol) {
     assayData$Label <-
         sub("^.*[Q-](\\d).*$", "\\1", assayData$Modified.Sequence)
@@ -126,6 +133,22 @@ readQFeaturesFromDIANN <- function(assayData,
     )
     list(assayData = ans,
          quantCols = setdiff(colnames(ans), colnames(assayData)))
+}
+
+## (Only for dimethyl multiplexing!) Internal function that identifies constant
+## columns within precursor and puts the quantification data for different
+## channels in separate columns (wide format).
+.formatDimethylReportData <- function(assayData, colData, quantCols, runCol) {
+  idCols <- .findPrecursorVariables(assayData,
+                                    precursorId = "Precursor.Id",
+                                    runCol = runCol)
+  ans <- pivot_wider(
+    assayData, id_cols = all_of(idCols),
+    names_from = "Channel",
+    values_from = all_of(quantCols)
+  )
+  list(assayData = ans,
+       quantCols = sort(setdiff(colnames(ans), colnames(assayData))))
 }
 
 ## Internal function that identifies which variables in the report
