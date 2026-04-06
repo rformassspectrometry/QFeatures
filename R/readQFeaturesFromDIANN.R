@@ -78,7 +78,6 @@
 ##' x2 <- read.delim(MsDataHub::Report.Derks2022.plexDIA.tsv())
 ##' x2[["File.Name"]] <- x2[["Run"]]
 ##' readQFeaturesFromDIANN(x2, multiplexing = "mTRAQ")
-##' 
 readQFeaturesFromDIANN <- function(assayData,
                                    colData = NULL,
                                    quantCols = "Ms1.Area",
@@ -90,13 +89,13 @@ readQFeaturesFromDIANN <- function(assayData,
                                    ...) {
     multiplexing <- match.arg(multiplexing, several.ok = FALSE)
     if (multiplexing == "mTRAQ") {
-        if (verbose) message("Pivoting quantiative data.")
+        if (verbose) message("Pivoting mTRAQ quantiative data.")
         assayData <- .formatMtraqReportData(assayData, colData,
-                                      quantCols, runCol)
+                                            quantCols, runCol)
         quantCols <- assayData[[2]]
         assayData <- assayData[[1]]
-    } else if (multiplexing == "dimethyl"){
-      if (verbose) message("Pivoting quantiative data.")
+    } else if (multiplexing == "dimethyl") {
+      if (verbose) message("Pivoting dimethyl quantiative data.")
       assayData <- .formatDimethylReportData(assayData, colData,
                                              quantCols, runCol)
       quantCols <- assayData[[2]]
@@ -114,10 +113,10 @@ readQFeaturesFromDIANN <- function(assayData,
 }
 
 ## (Only for mTRAQ multiplexing!) Internal function that extracts the
-## mTRAQlabels from the peptide sequence, removes the mTRAQ annotation
-## from the precursor ID, identifies constant columns within precursor
-## and puts the quantification data for different mTRAQ labels in
-## separate columns (wide format).
+## mTRAQlabels from the peptide sequence, removes the mTRAQ annotation from the
+## precursor ID, identifies constant columns within precursor and puts the
+## quantification data for different mTRAQ labels in separate columns (wide
+## format).
 .formatMtraqReportData <- function(assayData, colData, quantCols, runCol) {
     assayData$Label <-
         sub("^.*[Q-](\\d).*$", "\\1", assayData$Modified.Sequence)
@@ -136,10 +135,9 @@ readQFeaturesFromDIANN <- function(assayData,
          quantCols = setdiff(colnames(ans), colnames(assayData)))
 }
 
-## (Only for dimethyl multiplexing!) Internal function that 
-## identifies constant columns within precursor and puts the 
-## quantification data for different channels in separate
-## columns (wide format).
+## (Only for dimethyl multiplexing!) Internal function that identifies constant
+## columns within precursor and puts the quantification data for different
+## channels in separate columns (wide format).
 .formatDimethylReportData <- function(assayData, colData, quantCols, runCol) {
   idCols <- .findPrecursorVariables(assayData,
                                     precursorId = "Precursor.Id",
@@ -149,7 +147,6 @@ readQFeaturesFromDIANN <- function(assayData,
     names_from = "Channel",
     values_from = all_of(quantCols)
   )
-  
   list(assayData = ans,
        quantCols = sort(setdiff(colnames(ans), colnames(assayData))))
 }
