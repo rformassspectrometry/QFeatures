@@ -543,6 +543,8 @@ readQFeatures <- function(assayData,
 .setAssayRownames2 <- function(object, i = seq_along(feat4), fcol) {
     stopifnot(inherits(object, "MultiAssayExperiment"))
     i <- .normIndex(object, i, allowAbsent = FALSE)
+    ## TODO: make sure the names are unique, otherwise it will fail later, when
+    ## validating to QFeatures object - better fail early.
     ok <- lapply(rowData(object[, , i]),
                  function(x) stopifnot(fcol %in% names(x)))
     ## Note that is is more efficient time and memory-wise (about twice on a
