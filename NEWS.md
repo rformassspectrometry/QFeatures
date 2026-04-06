@@ -64,7 +64,7 @@ multiple assays aggregation.
 
 # QFeatures 1.15
 
-## QFeatures 1.15.3
+## QFeatures 1.15.2
 
 - Fix typo in normalisation methods.
 
