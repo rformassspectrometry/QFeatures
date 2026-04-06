@@ -1,5 +1,11 @@
 # QFeatures 1.21
 
+## QFeatures 1.21.2
+
+- Aggregate redundant messages in `aggregateFeatures()` (PR #255).
+- Add a progress bar to `aggregateFeatures()` and `readQFeatures()`
+  (PR #255).
+
 ## QFeatures 1.21.1
 
 - Link to RforMS contribution guide.
