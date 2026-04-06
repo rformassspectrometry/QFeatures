@@ -142,8 +142,11 @@ readQFeaturesFromDIANN <- function(assayData,
   idCols <- .findPrecursorVariables(assayData,
                                     precursorId = "Precursor.Id",
                                     runCol = runCol)
+  ## id_cols was all_of(idCols), but can't be, as elements `Channel` and
+  ## `Ms1.Area` don't exist are used in names_from and values_from. Above, in
+  ## the mTRAQ examples, a new Label column is created.
   ans <- pivot_wider(
-    assayData, id_cols = all_of(idCols),
+    assayData, id_cols = everything(),
     names_from = "Channel",
     values_from = all_of(quantCols)
   )
