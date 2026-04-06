@@ -43,7 +43,7 @@ Default \code{not} is \code{FALSE}, so no negation.}
 
 \item{object}{An instance of class \link{QFeatures}.}
 
-\item{filter}{Either an instance of class \link{AnnotationFilter} or a
+\item{filter}{Either an instance of class \link[AnnotationFilter:AnnotationFilter]{AnnotationFilter::AnnotationFilter} or a
 formula.}
 
 \item{i}{A numeric, logical or character vector pointing to the
@@ -99,7 +99,7 @@ filtering rules to parent assay is desired, you may want to use
 
 
 The variable filters are filters as defined in the
-\link{AnnotationFilter} package. In addition to the pre-defined filter,
+\link[AnnotationFilter:AnnotationFilter]{AnnotationFilter::AnnotationFilter} package. In addition to the pre-defined filter,
 users can arbitrarily set a field on which to operate. These
 arbitrary filters operate either on a character variables (as
 \code{CharacterVariableFilter} objects) or numerics (as
@@ -113,7 +113,7 @@ arbitrary filters operate either on a character variables (as
 \item The \code{isDuplicated()} function takes a vector (or rowData variable when
 used to filter features) as input, and return a logical of the same
 length, with elements set to \code{TRUE} for unique occurence, and \code{FALSE}
-otherwise. This function is different from \code{\link[=duplicated]{duplicated()}}, as here even
+otherwise. This function is different from \code{\link[BiocGenerics:duplicated]{BiocGenerics::duplicated()}}, as here even
 the first occurence is set to \code{FALSE}. See \code{\link[=createPrecursorId]{createPrecursorId()}} for an
 application.
 }

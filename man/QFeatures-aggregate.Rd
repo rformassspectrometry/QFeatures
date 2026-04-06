@@ -59,7 +59,7 @@ the adjacency matrix. Default is \code{"adjacencyMatrix"}.}
 \item{value}{An adjacency matrix with row and column names. The
 matrix will be coerced to compressed, column-oriented sparse
 matrix (class \code{dgCMatrix}) as defined in the \code{Matrix} package,
-as generaled by the \code{\link[=sparseMatrix]{sparseMatrix()}} constructor.}
+as generaled by the \code{\link[Matrix:sparseMatrix]{Matrix::sparseMatrix()}} constructor.}
 }
 \value{
 A \code{QFeatures} object with an additional assay or a
@@ -166,7 +166,7 @@ that map to multiple proteins rather than as a protein group, it
 is convenient to encode this ambiguity explicitly using a
 peptide-by-proteins (sparse) adjacency matrix. This matrix is
 typically stored in the rowdata and set/retrieved with the
-\code{\link[=adjacencyMatrix]{adjacencyMatrix()}} function. It can be created manually (as
+\code{\link[ProtGenerics:protgenerics]{ProtGenerics::adjacencyMatrix()}} function. It can be created manually (as
 illustrated below) or using \code{PSMatch::makeAdjacencyMatrix()}.
 }
 

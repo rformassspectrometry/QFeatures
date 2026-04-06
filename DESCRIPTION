@@ -9,6 +9,9 @@ Authors@R: c(person("Laurent", "Gatto",
                     email = "christophe.vanderaa@uclouvain.be",
                     comment = c(ORCID = "0000-0001-7443-5427"),
                     role = "aut"),
+             person("Karolína", "Kryštofová",
+                    comment = c(ORCID = "0009-0004-2896-2188"),
+                    role = "ctb")
              person("Léopold", "Guyot",
                      email = "leopold.guyot@uclouvain.be",
                      role = "ctb"))
@@ -91,4 +94,4 @@ Collate:
     'utils.R'
     'display.R'
 Roxygen: list(markdown=TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3

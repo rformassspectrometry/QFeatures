@@ -9,7 +9,7 @@ readQFeaturesFromDIANN(
   colData = NULL,
   quantCols = "Ms1.Area",
   runCol = "File.Name",
-  multiplexing = c("none", "mTRAQ"),
+  multiplexing = c("none", "mTRAQ", "dimethyl"),
   extractedData = NULL,
   ecol = NULL,
   verbose = TRUE,
@@ -43,8 +43,9 @@ are converted to syntactically valid names using \code{make.names}}
 
 \item{multiplexing}{A \code{character(1)} indicating the type of
 multiplexing used in the experiment. One of \code{"none"} (default,
-for label-free experiments) or \code{"mTRAQ"} (for plexDIA
-experiments).}
+for label-free experiments), \code{"mTRAQ"} (for multiplex experiments
+with mTRAQ labeling) or \code{"dimethyl"} (for multiplex experiments
+with dimethyl labeling).}
 
 \item{extractedData}{A \code{data.frame} or any object that can be
 coerced to a \code{data.frame} that contains the data from the
