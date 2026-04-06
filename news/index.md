@@ -4,6 +4,11 @@
 
 ### QFeatures 1.21.2
 
+- Add support for dimethyl multiplexing to
+  [`readQFeaturesFromDIANN()`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeaturesFromDIANN.md)
+  (see PR
+  [\#249](https://github.com/rformassspectrometry/QFeatures/issues/249)),
+  contributed by Karolína Kryštofová.
 - Aggregate redundant messages in
   [`aggregateFeatures()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-aggregate.md)
   (PR

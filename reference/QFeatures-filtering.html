@@ -103,7 +103,7 @@ Default <code>not</code> is <code>FALSE</code>, so no negation.</p></dd>
 
 
 <dt id="arg-filter">filter<a class="anchor" aria-label="anchor" href="#arg-filter"></a></dt>
-<dd><p>Either an instance of class AnnotationFilter or a
+<dd><p>Either an instance of class <a href="https://rdrr.io/pkg/AnnotationFilter/man/AnnotationFilter.html" class="external-link">AnnotationFilter::AnnotationFilter</a> or a
 formula.</p></dd>
 
 
@@ -166,7 +166,7 @@ filtering rules to parent assay is desired, you may want to use
 
 
 <p>The variable filters are filters as defined in the
-AnnotationFilter package. In addition to the pre-defined filter,
+<a href="https://rdrr.io/pkg/AnnotationFilter/man/AnnotationFilter.html" class="external-link">AnnotationFilter::AnnotationFilter</a> package. In addition to the pre-defined filter,
 users can arbitrarily set a field on which to operate. These
 arbitrary filters operate either on a character variables (as
 <code>CharacterVariableFilter</code> objects) or numerics (as
@@ -180,7 +180,7 @@ arbitrary filters operate either on a character variables (as
 <ul><li><p>The <code>isDuplicated()</code> function takes a vector (or rowData variable when
 used to filter features) as input, and return a logical of the same
 length, with elements set to <code>TRUE</code> for unique occurence, and <code>FALSE</code>
-otherwise. This function is different from <code><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated()</a></code>, as here even
+otherwise. This function is different from <code><a href="https://rdrr.io/pkg/BiocGenerics/man/duplicated.html" class="external-link">BiocGenerics::duplicated()</a></code>, as here even
 the first occurence is set to <code>FALSE</code>. See <code><a href="createPrecursorId.html">createPrecursorId()</a></code> for an
 application.</p></li>
 </ul></div>

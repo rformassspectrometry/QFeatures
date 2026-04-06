@@ -308,7 +308,7 @@ interest, which can then be visualised as a heatmap (figure
     ##  [3] QFeatures_1.21.2            MultiAssayExperiment_1.37.4
     ##  [5] SummarizedExperiment_1.41.1 Biobase_2.71.0             
     ##  [7] GenomicRanges_1.63.1        Seqinfo_1.1.0              
-    ##  [9] IRanges_2.45.0              S4Vectors_0.49.0           
+    ##  [9] IRanges_2.45.0              S4Vectors_0.49.1           
     ## [11] BiocGenerics_0.57.0         generics_0.1.4             
     ## [13] MatrixGenerics_1.23.0       matrixStats_1.5.0          
     ## [15] BiocStyle_2.39.0           

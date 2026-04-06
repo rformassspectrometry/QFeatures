@@ -62,7 +62,7 @@ DIA-NN label-free and plexDIA report files: default <code>runCol</code> is
 <span>  colData <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  quantCols <span class="op">=</span> <span class="st">"Ms1.Area"</span>,</span>
 <span>  runCol <span class="op">=</span> <span class="st">"File.Name"</span>,</span>
-<span>  multiplexing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"mTRAQ"</span><span class="op">)</span>,</span>
+<span>  multiplexing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"mTRAQ"</span>, <span class="st">"dimethyl"</span><span class="op">)</span>,</span>
 <span>  extractedData <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ecol <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -109,8 +109,9 @@ are converted to syntactically valid names using <code>make.names</code></p></dd
 <dt id="arg-multiplexing">multiplexing<a class="anchor" aria-label="anchor" href="#arg-multiplexing"></a></dt>
 <dd><p>A <code>character(1)</code> indicating the type of
 multiplexing used in the experiment. One of <code>"none"</code> (default,
-for label-free experiments) or <code>"mTRAQ"</code> (for plexDIA
-experiments).</p></dd>
+for label-free experiments), <code>"mTRAQ"</code> (for multiplex experiments
+with mTRAQ labeling) or <code>"dimethyl"</code> (for multiplex experiments
+with dimethyl labeling).</p></dd>
 
 
 <dt id="arg-extracteddata">extractedData<a class="anchor" aria-label="anchor" href="#arg-extracteddata"></a></dt>
@@ -251,7 +252,7 @@ manipulate the resulting <code>QFeatures</code> object.</p></li>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> loading from cache</span>
 <span class="r-in"><span><span class="va">x2</span><span class="op">[[</span><span class="st">"File.Name"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x2</span><span class="op">[[</span><span class="st">"Run"</span><span class="op">]</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="fu">readQFeaturesFromDIANN</span><span class="op">(</span><span class="va">x2</span>, multiplexing <span class="op">=</span> <span class="st">"mTRAQ"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Pivoting quantiative data.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Pivoting mTRAQ quantiative data.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Checking arguments.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading data as a 'SummarizedExperiment' object.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Splitting data in runs.</span>

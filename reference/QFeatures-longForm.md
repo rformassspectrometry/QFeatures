@@ -2,10 +2,13 @@
 
 The `longForm()` method transform a
 [QFeatures](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)
-or SummarizedExperiment instance into a long *tidy* DataFrame that
-contains the assay data, where each quantitative value is reported on a
-separate line. `colData` and `rowData` varibales can also be added. This
-function is an extension of the `longForm()` method in the
+or
+[SummarizedExperiment::SummarizedExperiment](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
+instance into a long *tidy*
+[S4Vectors::DataFrame](https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html)
+that contains the assay data, where each quantitative value is reported
+on a separate line. `colData` and `rowData` varibales can also be added.
+This function is an extension of the `longForm()` method in the
 [MultiAssayExperiment::MultiAssayExperiment](https://github.com/waldronlab/MultiAssayExperiment/reference/MultiAssayExperiment.html).
 
 Note that the previous `longFormat` implementation is not defunct.
@@ -26,7 +29,8 @@ longForm(object, colvars = NULL, rowvars = NULL, i = seq_along(assays(object)))
 
   An instance of class
   [QFeatures](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)
-  or SummarizedExperiment.
+  or
+  [SummarizedExperiment::SummarizedExperiment](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html).
 
 - colvars:
 

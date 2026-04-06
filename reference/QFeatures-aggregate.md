@@ -90,7 +90,8 @@ aggcounts(object, ...)
   An adjacency matrix with row and column names. The matrix will be
   coerced to compressed, column-oriented sparse matrix (class
   `dgCMatrix`) as defined in the `Matrix` package, as generaled by the
-  `sparseMatrix()` constructor.
+  [`Matrix::sparseMatrix()`](https://rdrr.io/pkg/Matrix/man/sparseMatrix.html)
+  constructor.
 
 ## Value
 
@@ -185,8 +186,9 @@ When considering non-unique peptides explicitly, i.e. peptides that map
 to multiple proteins rather than as a protein group, it is convenient to
 encode this ambiguity explicitly using a peptide-by-proteins (sparse)
 adjacency matrix. This matrix is typically stored in the rowdata and
-set/retrieved with the `adjacencyMatrix()` function. It can be created
-manually (as illustrated below) or using
+set/retrieved with the
+[`ProtGenerics::adjacencyMatrix()`](https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html)
+function. It can be created manually (as illustrated below) or using
 `PSMatch::makeAdjacencyMatrix()`.
 
 ## See also

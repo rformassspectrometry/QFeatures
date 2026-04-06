@@ -16,7 +16,7 @@ readQFeaturesFromDIANN(
   colData = NULL,
   quantCols = "Ms1.Area",
   runCol = "File.Name",
-  multiplexing = c("none", "mTRAQ"),
+  multiplexing = c("none", "mTRAQ", "dimethyl"),
   extractedData = NULL,
   ecol = NULL,
   verbose = TRUE,
@@ -62,8 +62,9 @@ readQFeaturesFromDIANN(
 - multiplexing:
 
   A `character(1)` indicating the type of multiplexing used in the
-  experiment. One of `"none"` (default, for label-free experiments) or
-  `"mTRAQ"` (for plexDIA experiments).
+  experiment. One of `"none"` (default, for label-free experiments),
+  `"mTRAQ"` (for multiplex experiments with mTRAQ labeling) or
+  `"dimethyl"` (for multiplex experiments with dimethyl labeling).
 
 - extractedData:
 
@@ -203,7 +204,7 @@ x2 <- read.delim(MsDataHub::Report.Derks2022.plexDIA.tsv())
 #> loading from cache
 x2[["File.Name"]] <- x2[["Run"]]
 readQFeaturesFromDIANN(x2, multiplexing = "mTRAQ")
-#> Pivoting quantiative data.
+#> Pivoting mTRAQ quantiative data.
 #> Checking arguments.
 #> Loading data as a 'SummarizedExperiment' object.
 #> Splitting data in runs.

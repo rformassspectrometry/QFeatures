@@ -8,6 +8,9 @@
 - **Christophe Vanderaa**. Author.
   [](https://orcid.org/0000-0001-7443-5427)
 
+- **Karolína Kryštofová**. Contributor.
+  [](https://orcid.org/0009-0004-2896-2188)
+
 - **Léopold Guyot**. Contributor.
 
 ## Citation

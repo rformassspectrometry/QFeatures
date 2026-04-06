@@ -671,7 +671,7 @@ filterFeatures(hl, ~ qValue <= 0.001)
     ##  [3] MultiAssayExperiment_1.37.4 SummarizedExperiment_1.41.1
     ##  [5] Biobase_2.71.0              GenomicRanges_1.63.1       
     ##  [7] Seqinfo_1.1.0               IRanges_2.45.0             
-    ##  [9] S4Vectors_0.49.0            BiocGenerics_0.57.0        
+    ##  [9] S4Vectors_0.49.1            BiocGenerics_0.57.0        
     ## [11] generics_0.1.4              MatrixGenerics_1.23.0      
     ## [13] matrixStats_1.5.0           BiocStyle_2.39.0           
     ## 

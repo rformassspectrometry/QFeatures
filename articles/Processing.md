@@ -687,7 +687,7 @@ Expression intensities for the protein *P02787ups\|TRFE_HUMAN_UPS*
     ##  [5] MultiAssayExperiment_1.37.4 SummarizedExperiment_1.41.1
     ##  [7] Biobase_2.71.0              GenomicRanges_1.63.1       
     ##  [9] Seqinfo_1.1.0               IRanges_2.45.0             
-    ## [11] S4Vectors_0.49.0            BiocGenerics_0.57.0        
+    ## [11] S4Vectors_0.49.1            BiocGenerics_0.57.0        
     ## [13] generics_0.1.4              MatrixGenerics_1.23.0      
     ## [15] matrixStats_1.5.0           BiocStyle_2.39.0           
     ## 
