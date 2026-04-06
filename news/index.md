@@ -2,6 +2,19 @@
 
 ## QFeatures 1.21
 
+### QFeatures 1.21.2
+
+- Aggregate redundant messages in
+  [`aggregateFeatures()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-aggregate.md)
+  (PR
+  [\#255](https://github.com/rformassspectrometry/QFeatures/issues/255)).
+- Add a progress bar to
+  [`aggregateFeatures()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-aggregate.md)
+  and
+  [`readQFeatures()`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeatures.md)
+  (PR
+  [\#255](https://github.com/rformassspectrometry/QFeatures/issues/255)).
+
 ### QFeatures 1.21.1
 
 - Link to RforMS contribution guide.

@@ -23,7 +23,7 @@ See QFeatures for an example."><meta property="og:image" content="https://rforma
 
     <a class="navbar-brand me-2" href="../index.html">QFeatures</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.21.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.21.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -106,7 +106,7 @@ assays and features.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ## Aggregate PSMs into peptides</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; feat1 &lt;- aggregateFeatures(feat1, "psms", "Sequence", name = "peptides")</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Aggregated: 1/1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; feat1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures (type: bulk) with 2 sets:</span>
@@ -116,7 +116,7 @@ assays and features.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ## Aggregate peptides into proteins</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; feat1 &lt;- aggregateFeatures(feat1, "peptides", "Protein", name = "proteins")</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Aggregated: 1/1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; feat1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures (type: bulk) with 3 sets:</span>
@@ -188,10 +188,14 @@ assays and features.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ## By default, missing values are propagated</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ft2 &lt;- aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following messages occurred during aggregation:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Your quantitative data contain missing values. Please read the relevant</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> section(s) in the aggregateFeatures manual page regarding the effects</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> of missing values on data aggregation.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Aggregated: 1/1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Occurred during the aggregation of set(s): na</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; assay(ft2[[2]])</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    A  B  C</span>
@@ -214,10 +218,14 @@ assays and features.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ## Ignored when setting na.rm = TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ft3 &lt;- aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums, na.rm = TRUE)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following messages occurred during aggregation:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Your quantitative data contain missing values. Please read the relevant</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> section(s) in the aggregateFeatures manual page regarding the effects</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> of missing values on data aggregation.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Aggregated: 1/1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Occurred during the aggregation of set(s): na</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; assay(ft3[[2]])</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   A  B  C</span>
@@ -254,10 +262,14 @@ assays and features.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> d         2           B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ft3 &lt;- aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following messages occurred during aggregation:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Your quantitative and row data contain missing values. Please read the</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> relevant section(s) in the aggregateFeatures manual page regarding the</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> effects of missing values on data aggregation.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Aggregated: 1/1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Occurred during the aggregation of set(s): na</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ## The Y feature variable has been dropped!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; assay(ft3[[2]])</span>
@@ -341,7 +353,7 @@ assays and features.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; ft &lt;- aggregateFeatures(ft, "peps", "adjacencyMatrix", name = "protsByMat",</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF+                         fun = MsCoreUtils::colMeansMat)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Aggregated: 1/1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aggrgF&gt; assay(ft[[2]])</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         S1    S2</span>

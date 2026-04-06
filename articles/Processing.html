@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">QFeatures</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.21.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.21.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -519,8 +519,9 @@ namely <code>robustSummary</code> <span class="citation">(Sticker et al.
 <span>                           i <span class="op">=</span> <span class="st">"peptides_norm"</span>,</span>
 <span>                           fcol <span class="op">=</span> <span class="st">"Proteins"</span>,</span>
 <span>                           name <span class="op">=</span> <span class="st">"proteins"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Aggregated: 1/1</span></span></code></pre>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<pre><code><span><span class="co">##   |                                                                              |                                                                      |   0%</span></span></code></pre>
+<pre><code><span><span class="co">##   |                                                                              |======================================================================| 100%</span></span></code></pre>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cptac</span></span></code></pre></div>
 <pre><code><span><span class="co">## An instance of class QFeatures (type: bulk) with 4 sets:</span></span>
 <span><span class="co">## </span></span>
@@ -533,7 +534,7 @@ namely <code>robustSummary</code> <span class="citation">(Sticker et al.
 the first 6 proteins and their respective variables. The latter shown
 that number of peptides that were using during the aggregation step
 (<code>.n</code> column).</p>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##                                      Intensity.6A_7 Intensity.6A_8</span></span>
 <span><span class="co">## P00918ups|CAH2_HUMAN_UPS                   17.23988       16.98222</span></span>
@@ -556,7 +557,7 @@ that number of peptides that were using during the aggregation step
 <span><span class="co">## P02144ups|MYG_HUMAN_UPS                    18.55434       18.29205</span></span>
 <span><span class="co">## P02753ups|RETBP_HUMAN_UPS                  17.73507       18.15238</span></span>
 <span><span class="co">## P02787ups|TRFE_HUMAN_UPS                   18.51059       18.15718</span></span></code></pre>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">rowData</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## DataFrame with 1125 rows and 3 columns</span></span>
 <span><span class="co">##                                           Proteins Leading.razor.protein</span></span>
@@ -590,7 +591,7 @@ computing the table below, that shows us that we have 405 proteins that
 are based on a single peptides, 230 that are based on two, 119 that are
 based on three, … and a single protein that is the results of
 aggregating 44 peptides.</p>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu">rowData</span><span class="op">(</span><span class="va">cptac</span><span class="op">[[</span><span class="st">"proteins"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">$</span><span class="va">.n</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20 </span></span>
@@ -601,7 +602,7 @@ aggregating 44 peptides.</p>
 expression pattern in the 2 groups at the protein and (log-tranformed
 and normalised) peptide level. We drop the first peptide-level assay as
 it is on a different scale (i.e. not log-transformed).</p>
-<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://dplyr.tidyverse.org" class="external-link">"dplyr"</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/QFeatures-longForm.html">longForm</a></span><span class="op">(</span><span class="va">cptac</span><span class="op">[</span><span class="st">"P02787ups|TRFE_HUMAN_UPS"</span>, , <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -640,7 +641,7 @@ proteomics data analysis</a> chapter of the WSBIM2122 course.</li>
 <div class="section level2">
 <h2 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<pre><code><span><span class="co">## R Under development (unstable) (2026-03-19 r89661)</span></span>
+<pre><code><span><span class="co">## R Under development (unstable) (2026-04-05 r89793)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
 <span><span class="co">## Running under: Ubuntu 24.04.4 LTS</span></span>
 <span><span class="co">## </span></span>
@@ -664,9 +665,9 @@ proteomics data analysis</a> chapter of the WSBIM2122 course.</li>
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">##  [1] gplots_3.3.0                dplyr_1.2.0                </span></span>
-<span><span class="co">##  [3] ggplot2_4.0.2               QFeatures_1.21.1           </span></span>
-<span><span class="co">##  [5] MultiAssayExperiment_1.37.2 SummarizedExperiment_1.41.1</span></span>
+<span><span class="co">##  [1] gplots_3.3.0                dplyr_1.2.1                </span></span>
+<span><span class="co">##  [3] ggplot2_4.0.2               QFeatures_1.21.2           </span></span>
+<span><span class="co">##  [5] MultiAssayExperiment_1.37.4 SummarizedExperiment_1.41.1</span></span>
 <span><span class="co">##  [7] Biobase_2.71.0              GenomicRanges_1.63.1       </span></span>
 <span><span class="co">##  [9] Seqinfo_1.1.0               IRanges_2.45.0             </span></span>
 <span><span class="co">## [11] S4Vectors_0.49.0            BiocGenerics_0.57.0        </span></span>
@@ -675,30 +676,30 @@ proteomics data analysis</a> chapter of the WSBIM2122 course.</li>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] tidyselect_1.2.1        farver_2.1.2            S7_0.2.1               </span></span>
-<span><span class="co">##  [4] bitops_1.0-9            fastmap_1.2.0           lazyeval_0.2.2         </span></span>
+<span><span class="co">##  [4] bitops_1.0-9            fastmap_1.2.0           lazyeval_0.2.3         </span></span>
 <span><span class="co">##  [7] digest_0.6.39           lifecycle_1.0.5         cluster_2.1.8.2        </span></span>
-<span><span class="co">## [10] ProtGenerics_1.43.0     statmod_1.5.1           magrittr_2.0.4         </span></span>
-<span><span class="co">## [13] compiler_4.6.0          rlang_1.1.7             sass_0.4.10            </span></span>
-<span><span class="co">## [16] tools_4.6.0             igraph_2.2.2            yaml_2.3.12            </span></span>
+<span><span class="co">## [10] ProtGenerics_1.43.0     statmod_1.5.1           magrittr_2.0.5         </span></span>
+<span><span class="co">## [13] compiler_4.7.0          rlang_1.2.0             sass_0.4.10            </span></span>
+<span><span class="co">## [16] tools_4.7.0             igraph_2.2.2            yaml_2.3.12            </span></span>
 <span><span class="co">## [19] knitr_1.51              S4Arrays_1.11.1         labeling_0.4.3         </span></span>
-<span><span class="co">## [22] htmlwidgets_1.6.4       DelayedArray_0.37.0     plyr_1.8.9             </span></span>
+<span><span class="co">## [22] htmlwidgets_1.6.4       DelayedArray_0.37.1     plyr_1.8.9             </span></span>
 <span><span class="co">## [25] RColorBrewer_1.1-3      abind_1.4-8             KernSmooth_2.23-26     </span></span>
 <span><span class="co">## [28] withr_3.0.2             purrr_1.2.1             desc_1.4.3             </span></span>
-<span><span class="co">## [31] grid_4.6.0              caTools_1.18.3          scales_1.4.0           </span></span>
+<span><span class="co">## [31] grid_4.7.0              caTools_1.18.3          scales_1.4.0           </span></span>
 <span><span class="co">## [34] gtools_3.9.5            MASS_7.3-65             cli_3.6.5              </span></span>
-<span><span class="co">## [37] rmarkdown_2.30          ragg_1.5.1              otel_0.2.0             </span></span>
+<span><span class="co">## [37] rmarkdown_2.31          ragg_1.5.2              otel_0.2.0             </span></span>
 <span><span class="co">## [40] reshape2_1.4.5          BiocBaseUtils_1.13.0    cachem_1.1.0           </span></span>
 <span><span class="co">## [43] stringr_1.6.0           AnnotationFilter_1.35.0 BiocManager_1.30.27    </span></span>
-<span><span class="co">## [46] XVector_0.51.0          vctrs_0.7.2             Matrix_1.7-4           </span></span>
-<span><span class="co">## [49] jsonlite_2.0.0          bookdown_0.46           clue_0.3-67            </span></span>
+<span><span class="co">## [46] XVector_0.51.0          vctrs_0.7.2             Matrix_1.7-5           </span></span>
+<span><span class="co">## [49] jsonlite_2.0.0          bookdown_0.46           clue_0.3-68            </span></span>
 <span><span class="co">## [52] systemfonts_1.3.2       limma_3.67.0            tidyr_1.3.2            </span></span>
 <span><span class="co">## [55] jquerylib_0.1.4         glue_1.8.0              pkgdown_2.2.0.9000     </span></span>
 <span><span class="co">## [58] stringi_1.8.7           gtable_0.3.6            tibble_3.3.1           </span></span>
 <span><span class="co">## [61] pillar_1.11.1           htmltools_0.5.9         R6_2.6.1               </span></span>
 <span><span class="co">## [64] textshaping_1.0.5       evaluate_1.0.5          lattice_0.22-9         </span></span>
-<span><span class="co">## [67] msdata_0.51.1           bslib_0.10.0            Rcpp_1.1.1             </span></span>
-<span><span class="co">## [70] SparseArray_1.11.11     xfun_0.57               MsCoreUtils_1.23.6     </span></span>
-<span><span class="co">## [73] fs_2.0.0                pkgconfig_2.0.3</span></span></code></pre>
+<span><span class="co">## [67] msdata_0.51.2           bslib_0.10.0            Rcpp_1.1.1             </span></span>
+<span><span class="co">## [70] SparseArray_1.11.13     xfun_0.57               MsCoreUtils_1.23.6     </span></span>
+<span><span class="co">## [73] fs_2.0.1                pkgconfig_2.0.3</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>

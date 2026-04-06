@@ -212,7 +212,7 @@ feat1
 
 ## Aggregate PSMs into peptides
 feat1 <- aggregateFeatures(feat1, "psms", "Sequence", name = "peptides")
-#> Aggregated: 1/1
+#>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%
 feat1
 #> An instance of class QFeatures (type: bulk) with 2 sets:
 #> 
@@ -221,7 +221,7 @@ feat1
 
 ## Aggregate peptides into proteins
 feat1 <- aggregateFeatures(feat1, "peptides", "Protein", name = "proteins")
-#> Aggregated: 1/1
+#>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%
 feat1
 #> An instance of class QFeatures (type: bulk) with 3 sets:
 #> 
@@ -286,10 +286,14 @@ rowData(ft_na[[1]])
 
 ## By default, missing values are propagated
 ft2 <- aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums)
+#>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%
+#> The following messages occurred during aggregation:
+#> 
 #> Your quantitative data contain missing values. Please read the relevant
 #> section(s) in the aggregateFeatures manual page regarding the effects
 #> of missing values on data aggregation.
-#> Aggregated: 1/1
+#> 
+#> Occurred during the aggregation of set(s): na
 assay(ft2[[2]])
 #>    A  B  C
 #> 1 NA NA 20
@@ -310,10 +314,14 @@ rowData(ft2[[2]])
 
 ## Ignored when setting na.rm = TRUE
 ft3 <- aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums, na.rm = TRUE)
+#>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%
+#> The following messages occurred during aggregation:
+#> 
 #> Your quantitative data contain missing values. Please read the relevant
 #> section(s) in the aggregateFeatures manual page regarding the effects
 #> of missing values on data aggregation.
-#> Aggregated: 1/1
+#> 
+#> Occurred during the aggregation of set(s): na
 assay(ft3[[2]])
 #>   A  B  C
 #> 1 3  5 20
@@ -347,10 +355,14 @@ rowData(ft_na[[1]])
 #> d         2           B
 
 ft3 <- aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums)
+#>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%
+#> The following messages occurred during aggregation:
+#> 
 #> Your quantitative and row data contain missing values. Please read the
 #> relevant section(s) in the aggregateFeatures manual page regarding the
 #> effects of missing values on data aggregation.
-#> Aggregated: 1/1
+#> 
+#> Occurred during the aggregation of set(s): na
 ## The Y feature variable has been dropped!
 assay(ft3[[2]])
 #>    A  B  C
@@ -426,7 +438,7 @@ assay(se2)
 ft <- QFeatures(list(peps = se))
 ft <- aggregateFeatures(ft, "peps", "adjacencyMatrix", name = "protsByMat",
                         fun = MsCoreUtils::colMeansMat)
-#> Aggregated: 1/1
+#>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%
 assay(ft[[2]])
 #>         S1    S2
 #> ProtA 3.50 13.50

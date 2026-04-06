@@ -176,7 +176,7 @@ example(aggregateFeatures)
 #> 
 #> aggrgF> ## Aggregate PSMs into peptides
 #> aggrgF> feat1 <- aggregateFeatures(feat1, "psms", "Sequence", name = "peptides")
-#> Aggregated: 1/1
+#>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%
 #> 
 #> aggrgF> feat1
 #> An instance of class QFeatures (type: bulk) with 2 sets:
@@ -186,7 +186,7 @@ example(aggregateFeatures)
 #> 
 #> aggrgF> ## Aggregate peptides into proteins
 #> aggrgF> feat1 <- aggregateFeatures(feat1, "peptides", "Protein", name = "proteins")
-#> Aggregated: 1/1
+#>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%
 #> 
 #> aggrgF> feat1
 #> An instance of class QFeatures (type: bulk) with 3 sets:
@@ -258,10 +258,14 @@ example(aggregateFeatures)
 #> 
 #> aggrgF> ## By default, missing values are propagated
 #> aggrgF> ft2 <- aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums)
+#>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%
+#> The following messages occurred during aggregation:
+#> 
 #> Your quantitative data contain missing values. Please read the relevant
 #> section(s) in the aggregateFeatures manual page regarding the effects
 #> of missing values on data aggregation.
-#> Aggregated: 1/1
+#> 
+#> Occurred during the aggregation of set(s): na
 #> 
 #> aggrgF> assay(ft2[[2]])
 #>    A  B  C
@@ -284,10 +288,14 @@ example(aggregateFeatures)
 #> 
 #> aggrgF> ## Ignored when setting na.rm = TRUE
 #> aggrgF> ft3 <- aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums, na.rm = TRUE)
+#>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%
+#> The following messages occurred during aggregation:
+#> 
 #> Your quantitative data contain missing values. Please read the relevant
 #> section(s) in the aggregateFeatures manual page regarding the effects
 #> of missing values on data aggregation.
-#> Aggregated: 1/1
+#> 
+#> Occurred during the aggregation of set(s): na
 #> 
 #> aggrgF> assay(ft3[[2]])
 #>   A  B  C
@@ -324,10 +332,14 @@ example(aggregateFeatures)
 #> d         2           B
 #> 
 #> aggrgF> ft3 <- aggregateFeatures(ft_na, 1, fcol = "X", fun = colSums)
+#>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%
+#> The following messages occurred during aggregation:
+#> 
 #> Your quantitative and row data contain missing values. Please read the
 #> relevant section(s) in the aggregateFeatures manual page regarding the
 #> effects of missing values on data aggregation.
-#> Aggregated: 1/1
+#> 
+#> Occurred during the aggregation of set(s): na
 #> 
 #> aggrgF> ## The Y feature variable has been dropped!
 #> aggrgF> assay(ft3[[2]])
@@ -411,7 +423,7 @@ example(aggregateFeatures)
 #> 
 #> aggrgF> ft <- aggregateFeatures(ft, "peps", "adjacencyMatrix", name = "protsByMat",
 #> aggrgF+                         fun = MsCoreUtils::colMeansMat)
-#> Aggregated: 1/1
+#>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%
 #> 
 #> aggrgF> assay(ft[[2]])
 #>         S1    S2

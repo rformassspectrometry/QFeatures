@@ -514,7 +514,9 @@ cptac <- aggregateFeatures(cptac,
                            name = "proteins")
 ```
 
-    ## Aggregated: 1/1
+    ##   |                                                                              |                                                                      |   0%
+
+    ##   |                                                                              |======================================================================| 100%
 
 ``` r
 
@@ -656,7 +658,7 @@ Expression intensities for the protein *P02787ups\|TRFE_HUMAN_UPS*
 
 ## Session information
 
-    ## R Under development (unstable) (2026-03-19 r89661)
+    ## R Under development (unstable) (2026-04-05 r89793)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.4 LTS
     ## 
@@ -680,9 +682,9 @@ Expression intensities for the protein *P02787ups\|TRFE_HUMAN_UPS*
     ## [8] base     
     ## 
     ## other attached packages:
-    ##  [1] gplots_3.3.0                dplyr_1.2.0                
-    ##  [3] ggplot2_4.0.2               QFeatures_1.21.1           
-    ##  [5] MultiAssayExperiment_1.37.2 SummarizedExperiment_1.41.1
+    ##  [1] gplots_3.3.0                dplyr_1.2.1                
+    ##  [3] ggplot2_4.0.2               QFeatures_1.21.2           
+    ##  [5] MultiAssayExperiment_1.37.4 SummarizedExperiment_1.41.1
     ##  [7] Biobase_2.71.0              GenomicRanges_1.63.1       
     ##  [9] Seqinfo_1.1.0               IRanges_2.45.0             
     ## [11] S4Vectors_0.49.0            BiocGenerics_0.57.0        
@@ -691,30 +693,30 @@ Expression intensities for the protein *P02787ups\|TRFE_HUMAN_UPS*
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] tidyselect_1.2.1        farver_2.1.2            S7_0.2.1               
-    ##  [4] bitops_1.0-9            fastmap_1.2.0           lazyeval_0.2.2         
+    ##  [4] bitops_1.0-9            fastmap_1.2.0           lazyeval_0.2.3         
     ##  [7] digest_0.6.39           lifecycle_1.0.5         cluster_2.1.8.2        
-    ## [10] ProtGenerics_1.43.0     statmod_1.5.1           magrittr_2.0.4         
-    ## [13] compiler_4.6.0          rlang_1.1.7             sass_0.4.10            
-    ## [16] tools_4.6.0             igraph_2.2.2            yaml_2.3.12            
+    ## [10] ProtGenerics_1.43.0     statmod_1.5.1           magrittr_2.0.5         
+    ## [13] compiler_4.7.0          rlang_1.2.0             sass_0.4.10            
+    ## [16] tools_4.7.0             igraph_2.2.2            yaml_2.3.12            
     ## [19] knitr_1.51              S4Arrays_1.11.1         labeling_0.4.3         
-    ## [22] htmlwidgets_1.6.4       DelayedArray_0.37.0     plyr_1.8.9             
+    ## [22] htmlwidgets_1.6.4       DelayedArray_0.37.1     plyr_1.8.9             
     ## [25] RColorBrewer_1.1-3      abind_1.4-8             KernSmooth_2.23-26     
     ## [28] withr_3.0.2             purrr_1.2.1             desc_1.4.3             
-    ## [31] grid_4.6.0              caTools_1.18.3          scales_1.4.0           
+    ## [31] grid_4.7.0              caTools_1.18.3          scales_1.4.0           
     ## [34] gtools_3.9.5            MASS_7.3-65             cli_3.6.5              
-    ## [37] rmarkdown_2.30          ragg_1.5.1              otel_0.2.0             
+    ## [37] rmarkdown_2.31          ragg_1.5.2              otel_0.2.0             
     ## [40] reshape2_1.4.5          BiocBaseUtils_1.13.0    cachem_1.1.0           
     ## [43] stringr_1.6.0           AnnotationFilter_1.35.0 BiocManager_1.30.27    
-    ## [46] XVector_0.51.0          vctrs_0.7.2             Matrix_1.7-4           
-    ## [49] jsonlite_2.0.0          bookdown_0.46           clue_0.3-67            
+    ## [46] XVector_0.51.0          vctrs_0.7.2             Matrix_1.7-5           
+    ## [49] jsonlite_2.0.0          bookdown_0.46           clue_0.3-68            
     ## [52] systemfonts_1.3.2       limma_3.67.0            tidyr_1.3.2            
     ## [55] jquerylib_0.1.4         glue_1.8.0              pkgdown_2.2.0.9000     
     ## [58] stringi_1.8.7           gtable_0.3.6            tibble_3.3.1           
     ## [61] pillar_1.11.1           htmltools_0.5.9         R6_2.6.1               
     ## [64] textshaping_1.0.5       evaluate_1.0.5          lattice_0.22-9         
-    ## [67] msdata_0.51.1           bslib_0.10.0            Rcpp_1.1.1             
-    ## [70] SparseArray_1.11.11     xfun_0.57               MsCoreUtils_1.23.6     
-    ## [73] fs_2.0.0                pkgconfig_2.0.3
+    ## [67] msdata_0.51.2           bslib_0.10.0            Rcpp_1.1.1             
+    ## [70] SparseArray_1.11.13     xfun_0.57               MsCoreUtils_1.23.6     
+    ## [73] fs_2.0.1                pkgconfig_2.0.3
 
 ## License
 

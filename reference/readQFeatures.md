@@ -352,6 +352,7 @@ qf3 <- readQFeatures(hlpsms, quantCols = 1:10, runCol = "file")
 #> Checking arguments.
 #> Loading data as a 'SummarizedExperiment' object.
 #> Splitting data in runs.
+#>   |                                                                              |                                                                      |   0%  |                                                                              |=======================                                               |  33%  |                                                                              |===============================================                       |  67%  |                                                                              |======================================================================| 100%
 #> Formatting sample annotations (colData).
 #> Formatting data as a 'QFeatures' object.
 qf3
@@ -405,6 +406,7 @@ qf4 <- readQFeatures(hlpsms, colData = coldat, runCol = "file")
 #> Checking arguments.
 #> Loading data as a 'SummarizedExperiment' object.
 #> Splitting data in runs.
+#>   |                                                                              |                                                                      |   0%  |                                                                              |=======================                                               |  33%  |                                                                              |===============================================                       |  67%  |                                                                              |======================================================================| 100%
 #> Formatting sample annotations (colData).
 #> Formatting data as a 'QFeatures' object.
 qf4
