@@ -272,20 +272,52 @@ setMethod("aggregateFeatures", "QFeatures",
 
               el <- experiments(object)[i]
               rowDataColsKept <- colnames(rowData(el[[i[1]]]))
+              msg_log <- list()
+              pb <- txtProgressBar(min = 0, max = length(i), style = 3)
+
               ## Aggregate each assay
               for (j in seq_along(i)) {
                   from <- i[[j]]
                   fromAssay <- el[[from]]
                   by <- fcol[[j]]
+                  set_name <- names(object)[[j]] 
+
                   ## Remove already discarded columns from rowData
-                  rowDataColsKept <- intersect(rowDataColsKept,
-                                               colnames(rowData(fromAssay)))
+                  rowDataColsKept <- intersect(
+                      rowDataColsKept,
+                      colnames(rowData(fromAssay))
+                  )
                   rowData(fromAssay) <- rowData(fromAssay)[, rowDataColsKept, drop = FALSE]
+
                   ## Create the aggregated assay
-                  el[[j]] <- aggregateFeatures(fromAssay, by, fun, ...)
+                  el[[j]] <- withCallingHandlers(
+                      aggregateFeatures(fromAssay, by, fun, ...),
+                      message = function(m) {
+                          txt <- conditionMessage(m)
+                          msg_log[[txt]] <<- unique(c(msg_log[[txt]], set_name)) 
+                          invokeRestart("muffleMessage")
+                      }
+                  )
                   rowDataColsKept <- colnames(rowData(el[[j]]))
-                  message("\rAggregated: ", j, "/", length(i))
+
+                  setTxtProgressBar(pb, j)
               }
+
+              close(pb)
+              
+              ## Aggregate shared messages
+              if (length(msg_log)) {
+                  message("The following messages occurred during aggregation:")
+
+                  for (msg in names(msg_log)) {
+                      message(
+                          "\n", msg, "\n",
+                          "Occurred during the aggregation of set(s): ",
+                          paste(msg_log[[msg]], collapse = ", ")
+                      )
+                  }
+              }
+
               names(el) <- name
               for (j in name) {
                   rowDataColsKept <- intersect(rowDataColsKept,
