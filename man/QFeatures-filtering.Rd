@@ -9,6 +9,7 @@
 \alias{CharacterVariableFilter}
 \alias{NumericVariableFilter}
 \alias{VariableFilter}
+\alias{isDuplicated}
 \alias{CharacterVariableFilter-class}
 \alias{NumericVariableFilter-class}
 \title{Filter features based on their rowData}
@@ -18,6 +19,8 @@ VariableFilter(field, value, condition = "==", not = FALSE)
 \S4method{filterFeatures}{QFeatures,AnnotationFilter}(object, filter, i, na.rm = FALSE, keep = FALSE, ...)
 
 \S4method{filterFeatures}{QFeatures,formula}(object, filter, i, na.rm = FALSE, keep = FALSE, ...)
+
+isDuplicated(x)
 }
 \arguments{
 \item{field}{\code{character(1)} refering to the name of the variable
@@ -55,6 +58,8 @@ missing in the rowData. When \code{FALSE} (default), all such assay
 will contain 0 features; when \code{TRUE}, the assays are untouched.}
 
 \item{...}{Additional parameters. Currently ignored.}
+
+\item{A}{\code{vector()} that will be checked for duplications.}
 }
 \value{
 An filtered \code{QFeature} object.
@@ -100,6 +105,18 @@ arbitrary filters operate either on a character variables (as
 \code{CharacterVariableFilter} objects) or numerics (as
 \code{NumericVariableFilters} objects), which can be created with the
 \code{VariableFilter} constructor.
+}
+
+\section{Helper functions}{
+
+\itemize{
+\item The \code{isDuplicated()} function takes a vector (or rowData variable when
+used to filter features) as input, and return a logical of the same
+length, with elements set to \code{TRUE} for unique occurence, and \code{FALSE}
+otherwise. This function is different from \code{\link[=duplicated]{duplicated()}}, as here even
+the first occurence is set to \code{FALSE}. See \code{\link[=createPrecursorId]{createPrecursorId()}} for an
+application.
+}
 }
 
 \examples{
