@@ -17,6 +17,7 @@
 \alias{c,QFeatures-method}
 \alias{nrows,QFeatures-method}
 \alias{ncols,QFeatures-method}
+\alias{replaceColnames}
 \alias{rowData,QFeatures-method}
 \alias{rowData<-,QFeatures,DataFrameList-method}
 \alias{rowData<-,QFeatures,ANY-method}
@@ -46,6 +47,8 @@ QFeatures(..., assayLinks = NULL)
 \S4method{nrows}{QFeatures}(x, use.names = TRUE)
 
 \S4method{ncols}{QFeatures}(x, use.names = TRUE)
+
+replaceColnames(object, scol)
 
 \S4method{rowData}{QFeatures}(x, use.names = TRUE, ...)
 
@@ -102,6 +105,10 @@ subsetting by assays}
 
 \item{use.names}{A \code{logical(1)} indicating whether the rownames of
 each assay should be propagated to the corresponding \code{rowData}.}
+
+\item{scol}{\code{character(1)} naming the column in \code{colData(object)} to use
+as replacement sample names across all assays. Values in that
+column must be unique.}
 
 \item{value}{The values to use as a replacement. See the
 corresponding section in the documentation for more details.}
@@ -197,6 +204,8 @@ variable names.
 \item The \code{\link[=longForm]{longForm()}} accessor takes a \code{QFeatures} instance and returns it in a
 long \emph{tidy} \code{DataFrame}, where each quantitative value is reported on a
 separate line.
+\item The \code{replaceColnames} function replaces assay sample names (column names)
+across all assays using values from a \code{colData} column.
 }
 }
 
@@ -304,6 +313,9 @@ fts1 <- addAssay(fts1, se1[1:2, ], name = "se3")
 
 ## Get the assays feature metadata
 rowData(fts1)
+
+## Rename samples using colData column
+renameColnames(fts1, "Var2")
 
 ## Keep only the Fa variable
 selectRowData(fts1, rowvars = "Fa")
