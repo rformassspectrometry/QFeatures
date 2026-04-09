@@ -315,7 +315,7 @@ fts1 <- addAssay(fts1, se1[1:2, ], name = "se3")
 rowData(fts1)
 
 ## Rename samples using colData column
-renameColnames(fts1, "Var2")
+replaceColnames(fts1, "Var2")
 
 ## Keep only the Fa variable
 selectRowData(fts1, rowvars = "Fa")
