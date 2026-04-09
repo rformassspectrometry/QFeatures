@@ -10,7 +10,7 @@ api <- c(
     "nNA", "normalize", "nrows", "QFeatures", "rbindRowData",
     "readQFeatures", "readQFeaturesFromDIANN",
     "readSummarizedExperiment", "reduceDataFrame", "removeAssay",
-    "replaceAssay", "rowData<-", "rowDataNames", "scaleTransform",
+    "replaceAssay", "replaceColnames", "rowData<-", "rowDataNames", "scaleTransform",
     "selectRowData", "setQFeaturesType", "show", "subsetByFeature",
     "sweep", "unfoldDataFrame", "updateObject", "validQFeaturesTypes",
     "VariableFilter", "zeroIsNA"

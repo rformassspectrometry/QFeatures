@@ -924,3 +924,39 @@ test_that("getQFeaturesType", {
 test_that("validQFeaturesTypes", {
     expect_equal(validQFeaturesTypes(), c("bulk", "scp"))
 })
+
+test_that("replaceColnames", {
+    data("feat3")
+    qf <- feat3
+    qf$sample_id <- paste0("sample_", seq_len(nrow(colData(qf))))
+    out <- replaceColnames(qf, "sample_id")
+
+    expect_s4_class(out, "QFeatures")
+    expect_identical(colnames(out)[["psms1"]], c("sample_1", "sample_2"))
+    expect_identical(colnames(out)[["psms2"]], c("sample_3", "sample_4"))
+    expect_identical(
+        colnames(out)[["psmsall"]],
+        c("sample_1", "sample_2", "sample_3", "sample_4")
+    )
+    expect_identical(rownames(colData(out)), rownames(colData(qf)))
+    expect_identical(colData(out)$sample_id, colData(qf)$sample_id)
+
+    qf_dup <- qf
+    qf_dup$sample_id_dup <- rep("sample", nrow(colData(qf_dup)))
+    expect_error(
+        replaceColnames(qf_dup, "sample_id_dup"),
+        "new colnames should have unique values"
+    )
+    expect_error(
+        replaceColnames(qf, "unknown_column"),
+        "must be a column name of object's colData"
+    )
+    expect_error(
+        replaceColnames(qf, c("sample_id", "sample_id_dup")),
+        "must be of length 1"
+    )
+    expect_error(
+        replaceColnames(qf, 1),
+        "is.character\\(scol\\) is not TRUE"
+    )
+})
