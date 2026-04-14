@@ -327,9 +327,9 @@ See also [[https://github.com/rformassspectrometry/QFeatures/issues/171][HDF5 ba
 :PROPERTIES:
 :CUSTOM_ID: tabular-input-issue-199
 :END:
-1. Single-set case, multiplexed: requires =colAnnotation= only. Also LF
-   with a re-ordered peptide/protein-level table (runs are missing in
-   this case).
+1. Single-set case, multiplexed: requires =colAnnotation= only. Also
+   LF with a re-ordered peptide/protein-level table (runs are missing
+   in this case).
 
 #+begin_example
 |------+------------+-----------|
@@ -348,8 +348,7 @@ readQFeatures(hlpsms, colAnnotation = colann)
 readQFeatures(hlpsms, colAnnotation = colann, quantCols = 1:10)
 #+end_example
 
-2. [@2] Multi-set case, multiplexed: requires =colAnnotation= and
-   =runCol=.
+2. Multi-set case, multiplexed: requires =colAnnotation= and =runCol=.
 
 #+begin_example
 |-----+------+------------+-----------|
@@ -366,8 +365,8 @@ readQFeatures(hlpsms, quantCols = 1:10, runCol = "file")
 readQFeatures(hlpsms, colAnnotation = colann, runCol = "file")
 #+end_example
 
-3. [@3] Multi-set case, LF: requires =colData= and =runCol= with a
-   optional =multiplexing= (for plexDIA).
+3. Multi-set case, LF: requires =colData= and =runCol= with a optional
+   =multiplexing= (for plexDIA).
 
 #+begin_example
 |-----+------+---------+-----------+-----------|
@@ -379,8 +378,8 @@ readQFeatures(hlpsms, colAnnotation = colann, runCol = "file")
 |-----+------+---------+-----------+-----------|
 #+end_example
 
-4. [@4] Special case DIANN. A specialised function that parses the table
-   to case 2.
+4. Special case DIANN. A specialised function that parses the table to
+   case 2.
 
 Users can either use the arguments above or a =colAnnotation= data.frame
 (that will become the =colData=).
