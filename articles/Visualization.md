@@ -280,7 +280,7 @@ interest, which can then be visualised as a heatmap (figure
 
 ## Session information
 
-    ## R Under development (unstable) (2026-04-12 r89873)
+    ## R Under development (unstable) (2026-04-16 r89906)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.4 LTS
     ## 
@@ -308,14 +308,14 @@ interest, which can then be visualised as a heatmap (figure
     ##  [3] QFeatures_1.21.2            MultiAssayExperiment_1.37.4
     ##  [5] SummarizedExperiment_1.41.1 Biobase_2.71.0             
     ##  [7] GenomicRanges_1.63.2        Seqinfo_1.1.0              
-    ##  [9] IRanges_2.45.0              S4Vectors_0.49.1           
+    ##  [9] IRanges_2.45.0              S4Vectors_0.49.1-1         
     ## [11] BiocGenerics_0.57.0         generics_0.1.4             
     ## [13] MatrixGenerics_1.23.0       matrixStats_1.5.0          
     ## [15] BiocStyle_2.39.0           
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] tidyselect_1.2.1        dplyr_1.2.1             farver_2.1.2           
-    ##  [4] S7_0.2.1                fastmap_1.2.0           lazyeval_0.2.3         
+    ##  [4] S7_0.2.1-1              fastmap_1.2.0           lazyeval_0.2.3         
     ##  [7] digest_0.6.39           lifecycle_1.0.5         cluster_2.1.8.2        
     ## [10] ProtGenerics_1.43.0     magrittr_2.0.5          compiler_4.7.0         
     ## [13] rlang_1.2.0             sass_0.4.10             tools_4.7.0            
@@ -333,14 +333,14 @@ interest, which can then be visualised as a heatmap (figure
     ## [49] jsonlite_2.0.0          bookdown_0.46           GetoptLong_1.1.1       
     ## [52] clue_0.3-68             magick_2.9.1            systemfonts_1.3.2      
     ## [55] foreach_1.5.2           tidyr_1.3.2             jquerylib_0.1.4        
-    ## [58] glue_1.8.0              pkgdown_2.2.0.9000      codetools_0.2-20       
+    ## [58] glue_1.8.1              pkgdown_2.2.0.9000      codetools_0.2-20       
     ## [61] shape_1.4.6.1           stringi_1.8.7           gtable_0.3.6           
     ## [64] tibble_3.3.1            pillar_1.11.1           htmltools_0.5.9        
     ## [67] circlize_0.4.18         R6_2.6.1                textshaping_1.0.5      
     ## [70] doParallel_1.0.17       evaluate_1.0.5          lattice_0.22-9         
-    ## [73] png_0.1-9               bslib_0.10.0            Rcpp_1.1.1             
+    ## [73] png_0.1-9               bslib_0.10.0            Rcpp_1.1.1-1           
     ## [76] SparseArray_1.11.13     xfun_0.57               GlobalOptions_0.1.4    
-    ## [79] MsCoreUtils_1.23.7      fs_2.0.1                pkgconfig_2.0.3
+    ## [79] MsCoreUtils_1.23.9      fs_2.0.1                pkgconfig_2.0.3
 
 ## License
 

@@ -658,7 +658,7 @@ Expression intensities for the protein *P02787ups\|TRFE_HUMAN_UPS*
 
 ## Session information
 
-    ## R Under development (unstable) (2026-04-12 r89873)
+    ## R Under development (unstable) (2026-04-16 r89906)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.4 LTS
     ## 
@@ -687,12 +687,12 @@ Expression intensities for the protein *P02787ups\|TRFE_HUMAN_UPS*
     ##  [5] MultiAssayExperiment_1.37.4 SummarizedExperiment_1.41.1
     ##  [7] Biobase_2.71.0              GenomicRanges_1.63.2       
     ##  [9] Seqinfo_1.1.0               IRanges_2.45.0             
-    ## [11] S4Vectors_0.49.1            BiocGenerics_0.57.0        
+    ## [11] S4Vectors_0.49.1-1          BiocGenerics_0.57.0        
     ## [13] generics_0.1.4              MatrixGenerics_1.23.0      
     ## [15] matrixStats_1.5.0           BiocStyle_2.39.0           
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] tidyselect_1.2.1        farver_2.1.2            S7_0.2.1               
+    ##  [1] tidyselect_1.2.1        farver_2.1.2            S7_0.2.1-1             
     ##  [4] bitops_1.0-9            fastmap_1.2.0           lazyeval_0.2.3         
     ##  [7] digest_0.6.39           lifecycle_1.0.5         cluster_2.1.8.2        
     ## [10] ProtGenerics_1.43.0     statmod_1.5.1           magrittr_2.0.5         
@@ -710,12 +710,12 @@ Expression intensities for the protein *P02787ups\|TRFE_HUMAN_UPS*
     ## [46] XVector_0.51.0          vctrs_0.7.3             Matrix_1.7-5           
     ## [49] jsonlite_2.0.0          bookdown_0.46           clue_0.3-68            
     ## [52] systemfonts_1.3.2       limma_3.67.1            tidyr_1.3.2            
-    ## [55] jquerylib_0.1.4         glue_1.8.0              pkgdown_2.2.0.9000     
+    ## [55] jquerylib_0.1.4         glue_1.8.1              pkgdown_2.2.0.9000     
     ## [58] stringi_1.8.7           gtable_0.3.6            tibble_3.3.1           
     ## [61] pillar_1.11.1           htmltools_0.5.9         R6_2.6.1               
     ## [64] textshaping_1.0.5       evaluate_1.0.5          lattice_0.22-9         
-    ## [67] msdata_0.51.2           bslib_0.10.0            Rcpp_1.1.1             
-    ## [70] SparseArray_1.11.13     xfun_0.57               MsCoreUtils_1.23.7     
+    ## [67] msdata_0.51.2           bslib_0.10.0            Rcpp_1.1.1-1           
+    ## [70] SparseArray_1.11.13     xfun_0.57               MsCoreUtils_1.23.9     
     ## [73] fs_2.0.1                pkgconfig_2.0.3
 
 ## License

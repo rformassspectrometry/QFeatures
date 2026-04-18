@@ -643,7 +643,7 @@ filterFeatures(hl, ~ qValue <= 0.001)
 
 ## Session information
 
-    ## R Under development (unstable) (2026-04-12 r89873)
+    ## R Under development (unstable) (2026-04-16 r89906)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.4 LTS
     ## 
@@ -671,7 +671,7 @@ filterFeatures(hl, ~ qValue <= 0.001)
     ##  [3] MultiAssayExperiment_1.37.4 SummarizedExperiment_1.41.1
     ##  [5] Biobase_2.71.0              GenomicRanges_1.63.2       
     ##  [7] Seqinfo_1.1.0               IRanges_2.45.0             
-    ##  [9] S4Vectors_0.49.1            BiocGenerics_0.57.0        
+    ##  [9] S4Vectors_0.49.1-1          BiocGenerics_0.57.0        
     ## [11] generics_0.1.4              MatrixGenerics_1.23.0      
     ## [13] matrixStats_1.5.0           BiocStyle_2.39.0           
     ## 
@@ -680,7 +680,7 @@ filterFeatures(hl, ~ qValue <= 0.001)
     ##  [4] htmlwidgets_1.6.4       lattice_0.22-9          vctrs_0.7.3            
     ##  [7] tools_4.7.0             tibble_3.3.1            cluster_2.1.8.2        
     ## [10] BiocBaseUtils_1.13.0    pkgconfig_2.0.3         Matrix_1.7-5           
-    ## [13] RColorBrewer_1.1-3      S7_0.2.1                desc_1.4.3             
+    ## [13] RColorBrewer_1.1-3      S7_0.2.1-1              desc_1.4.3             
     ## [16] lifecycle_1.0.5         farver_2.1.2            compiler_4.7.0         
     ## [19] stringr_1.6.0           textshaping_1.0.5       clue_0.3-68            
     ## [22] htmltools_0.5.9         sass_0.4.10             yaml_2.3.12            
@@ -695,10 +695,10 @@ filterFeatures(hl, ~ qValue <= 0.001)
     ## [49] scales_1.4.0            rmarkdown_2.31          XVector_0.51.0         
     ## [52] igraph_2.2.3            otel_0.2.0              ragg_1.5.2             
     ## [55] evaluate_1.0.5          knitr_1.51              rlang_1.2.0            
-    ## [58] Rcpp_1.1.1              glue_1.8.0              BiocManager_1.30.27    
+    ## [58] Rcpp_1.1.1-1            glue_1.8.1              BiocManager_1.30.27    
     ## [61] jsonlite_2.0.0          AnnotationFilter_1.35.0 R6_2.6.1               
     ## [64] plyr_1.8.9              systemfonts_1.3.2       fs_2.0.1               
-    ## [67] ProtGenerics_1.43.0     MsCoreUtils_1.23.7
+    ## [67] ProtGenerics_1.43.0     MsCoreUtils_1.23.9
 
 ## License
 
