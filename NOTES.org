@@ -405,7 +405,7 @@ readQFeaturesFromDIANN <- funtion(dfr, multiplexing = NULL, ...) {
 }
 #+end_example
 
-* Possible optimsations
+* Possible optimisations
 :PROPERTIES:
 :CUSTOM_ID: possible-optimsations
 :END:
@@ -417,3 +417,15 @@ Simple ones
   =longFormSE()= supporting =na.rm=.
 - Parallelise =aggregateFeatures()=, =logTransform()=,
   =scaleTransform()=, =impute()=, ...
+
+* Quantitation columns/assays
+
+The =quantCols= argument defaults to all possible quantitative columns
+and the user choses one (default would be the first) among these. This
+can be implemented with =match.arg()=.
+
+The user could even choose what =quantCol= to use, selecting the
+=quantCols= among those that are available in the table.
+
+The SE could even contain all available quantitative assays, setting
+the one they chose in first position.
