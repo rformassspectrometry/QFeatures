@@ -78,6 +78,14 @@
 ##' x2 <- read.delim(MsDataHub::Report.Derks2022.plexDIA.tsv())
 ##' x2[["File.Name"]] <- x2[["Run"]]
 ##' readQFeaturesFromDIANN(x2, multiplexing = "mTRAQ")
+##'
+##' #################################
+##' ## dimethyl multi-set case
+##'
+##' x3 <- system.file("extdata", package = "QFeatures") |>
+##'        dir(full.names = TRUE) |>
+##'        read.delim()
+##' readQFeaturesFromDIANN(x3, multiplexing = 'dimethyl', runCol = 'Run')
 readQFeaturesFromDIANN <- function(assayData,
                                    colData = NULL,
                                    quantCols = "Ms1.Area",
