@@ -239,7 +239,7 @@
 ##'
 ##' ## Get the assays feature metadata
 ##' rowData(fts1)
-##' 
+##'
 ##' ## Rename samples using colData column
 ##' replaceColnames(fts1, "Var2")
 ##'
@@ -932,12 +932,7 @@ setReplaceMethod(
 ##' @rdname QFeatures-class
 ##'
 ##' @export
-addAssay <- function(
-      x,
-      y,
-      name,
-      assayLinks
-) {
+addAssay <- function(x, y, name, assayLinks) {
     ## Check arguments
     stopifnot(inherits(x, "QFeatures"))
     y <- .checkAssaysToInsert(y, x, name, replace = FALSE)
@@ -1001,11 +996,7 @@ removeAssay <- function(x, i) {
 ##' @rdname QFeatures-class
 ##'
 ##' @export
-replaceAssay <- function(
-      x,
-      y,
-      i
-) {
+replaceAssay <- function(x, y, i) {
     ## Check arguments
     stopifnot(inherits(x, "QFeatures"))
     if (!missing(i)) i <- .normIndex(x, i)
