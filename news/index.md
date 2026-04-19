@@ -5,6 +5,10 @@
 ### QFeatures 1.21.3
 
 - Add `readQFeaturesFromDIANN(multiplexing = 'dimethyl')` example.
+- New
+  [`replaceColnames()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)
+  function (see [Issue
+  258](https://github.com/rformassspectrometry/QFeatures/issues/258))
 
 ### QFeatures 1.21.2
 
