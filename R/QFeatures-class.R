@@ -73,6 +73,9 @@
 ##'   long *tidy* `DataFrame`, where each quantitative value is reported on a
 ##'   separate line.
 ##'
+##' - The `replaceColnames` function replaces assay sample names (column names)
+##'   across all assays using values from a `colData` column.
+##'
 ##' @section Adding, removing and replacing assays:
 ##'
 ##' - The [aggregateFeatures()] function creates a new assay by
@@ -236,6 +239,9 @@
 ##'
 ##' ## Get the assays feature metadata
 ##' rowData(fts1)
+##' 
+##' ## Rename samples using colData column
+##' replaceColnames(fts1, "Var2")
 ##'
 ##' ## Keep only the Fa variable
 ##' selectRowData(fts1, rowvars = "Fa")
@@ -735,6 +741,33 @@ setMethod(
     }
 )
 
+##' @param scol `character(1)` naming the column in `colData(object)` to use
+##'     as replacement sample names across all assays. Values in that
+##'     column must be unique.
+##'
+##' @rdname QFeatures-class
+##' @export
+replaceColnames <- function(object, scol) {
+    stopifnot(inherits(object, "QFeatures"))
+    stopifnot(is.character(scol))
+    if (length(scol) != 1) {
+        stop("Argument 'scol' must be of length 1.")
+    }
+    if (!scol %in% colnames(colData(object))) {
+        stop("Argument 'scol' must be a column name of object's colData.")
+    }
+    if (anyDuplicated(colData(object)[[scol]])) {
+        stop("The column of the colData chosen to serve as new colnames should have unique values")
+    }
+    newColnames <- colData(object)[[scol]]
+    names(newColnames) <- rownames(colData(object))
+    newColnamesList <- lapply(colnames(object), function(setColnames) {
+        unname(newColnames[setColnames])
+    })
+    colnames(object) <- as(newColnamesList, "CharacterList")
+    object
+}
+
 ##' @rdname QFeatures-class
 ##'
 ##' @param use.names A `logical(1)` indicating whether the rownames of
@@ -899,10 +932,12 @@ setReplaceMethod(
 ##' @rdname QFeatures-class
 ##'
 ##' @export
-addAssay <- function(x,
-    y,
-    name,
-    assayLinks) {
+addAssay <- function(
+      x,
+      y,
+      name,
+      assayLinks
+) {
     ## Check arguments
     stopifnot(inherits(x, "QFeatures"))
     y <- .checkAssaysToInsert(y, x, name, replace = FALSE)
@@ -966,9 +1001,11 @@ removeAssay <- function(x, i) {
 ##' @rdname QFeatures-class
 ##'
 ##' @export
-replaceAssay <- function(x,
-    y,
-    i) {
+replaceAssay <- function(
+      x,
+      y,
+      i
+) {
     ## Check arguments
     stopifnot(inherits(x, "QFeatures"))
     if (!missing(i)) i <- .normIndex(x, i)
@@ -1299,6 +1336,8 @@ dropEmptyAssays <- function(object, dims = 1:2) {
 ##' object. This type can help internal methods adapt their behaviour to the
 ##' structure of the data.
 ##'
+##' @name QFeatures-type
+##'
 ##' @param object An instance of class [QFeatures].
 ##' @param type `character(1)` defining the type of the QFeatures.
 ##'     Must be one of the values returned by [validQFeaturesTypes()].
@@ -1334,39 +1373,43 @@ dropEmptyAssays <- function(object, dims = 1:2) {
 ##' @keywords internal
 ##' @export
 setQFeaturesType <- function(object, type) {
-  stopifnot(inherits(object, "QFeatures"))
-  if (!type %in% validQFeaturesTypes()) {
-    stop(
-      "Invalid QFeatures type. Must be one of: ",
-      paste(validQFeaturesTypes(), collapse = ", ")
-    )
-  }
-  metadata(object)[["._type"]] <- type
-  object
+    stopifnot(inherits(object, "QFeatures"))
+    if (!type %in% validQFeaturesTypes()) {
+        stop(
+            "Invalid QFeatures type. Must be one of: ",
+            paste(validQFeaturesTypes(), collapse = ", ")
+        )
+    }
+    metadata(object)[["._type"]] <- type
+    object
 }
 
 ##' @rdname QFeatures-type
 ##' @keywords internal
 ##' @export
 getQFeaturesType <- function(object) {
-  stopifnot(inherits(object, "QFeatures"))
-  type <- metadata(object)[["._type"]]
-  if (is.null(type)) {
-    message(paste("No explicit type set for this QFeatures object,",
-                  "choosing a type in fonction of experiments classes"))
-    if (any(sapply(experiments(object),
-                   function(x) inherits(x, "SingleCellExperiment")))) {
-      type <- "scp"
-    } else {
-      type <- "bulk"
+    stopifnot(inherits(object, "QFeatures"))
+    type <- metadata(object)[["._type"]]
+    if (is.null(type)) {
+        message(paste(
+            "No explicit type set for this QFeatures object,",
+            "choosing a type in fonction of experiments classes"
+        ))
+        if (any(sapply(
+            experiments(object),
+            function(x) inherits(x, "SingleCellExperiment")
+        ))) {
+            type <- "scp"
+        } else {
+            type <- "bulk"
+        }
     }
-  }
-  type
+    type
 }
 
 ##' @rdname QFeatures-type
 ##' @keywords internal
 ##' @export
 validQFeaturesTypes <- function() {
-  c("bulk", "scp")
+    c("bulk", "scp")
 }
