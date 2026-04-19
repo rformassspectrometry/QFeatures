@@ -511,11 +511,11 @@ documentation are also warmly welcome.
     [8] base     
 
     other attached packages:
-     [1] DT_0.34.0                   QFeatures_1.21.2           
+     [1] DT_0.34.0                   QFeatures_1.21.3           
      [3] MultiAssayExperiment_1.37.4 SummarizedExperiment_1.41.1
      [5] Biobase_2.71.0              GenomicRanges_1.63.2       
      [7] Seqinfo_1.1.0               IRanges_2.45.0             
-     [9] S4Vectors_0.49.1-1          BiocGenerics_0.57.0        
+     [9] S4Vectors_0.49.2            BiocGenerics_0.57.1        
     [11] generics_0.1.4              MatrixGenerics_1.23.0      
     [13] matrixStats_1.5.0           BiocStyle_2.39.0           
 
@@ -539,7 +539,7 @@ documentation are also warmly welcome.
     [49] knitr_1.51              rlang_1.2.0             Rcpp_1.1.1-1           
     [52] glue_1.8.1              BiocManager_1.30.27     jsonlite_2.0.0         
     [55] AnnotationFilter_1.35.0 R6_2.6.1                plyr_1.8.9             
-    [58] systemfonts_1.3.2       fs_2.0.1                ProtGenerics_1.43.0    
+    [58] systemfonts_1.3.2       fs_2.1.0                ProtGenerics_1.43.0    
     [61] MsCoreUtils_1.23.9     
 
 ## License

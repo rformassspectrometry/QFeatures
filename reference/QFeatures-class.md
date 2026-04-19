@@ -59,6 +59,8 @@ nrows(x, use.names = TRUE)
 # S4 method for class 'QFeatures'
 ncols(x, use.names = TRUE)
 
+replaceColnames(object, scol)
+
 # S4 method for class 'QFeatures'
 rowData(x, use.names = TRUE, ...)
 
@@ -149,6 +151,12 @@ dropEmptyAssays(object, dims = 1:2)
   A `logical(1)` indicating whether the rownames of each assay should be
   propagated to the corresponding `rowData`.
 
+- scol:
+
+  `character(1)` naming the column in `colData(object)` to use as
+  replacement sample names across all assays. Values in that column must
+  be unique.
+
 - value:
 
   The values to use as a replacement. See the corresponding section in
@@ -232,6 +240,9 @@ dropEmptyAssays(object, dims = 1:2)
   accessor takes a `QFeatures` instance and returns it in a long *tidy*
   `DataFrame`, where each quantitative value is reported on a separate
   line.
+
+- The `replaceColnames` function replaces assay sample names (column
+  names) across all assays using values from a `colData` column.
 
 ## Adding, removing and replacing assays
 
@@ -415,6 +426,14 @@ fts1 <- addAssay(fts1, se1[1:2, ], name = "se3")
 rowData(fts1)
 #> DataFrameList of length 3
 #> names(3): se1 se2 se3
+
+## Rename samples using colData column
+replaceColnames(fts1, "Var2")
+#> An instance of class QFeatures (type: bulk) with 3 sets:
+#> 
+#>  [1] se1: SummarizedExperiment with 10 rows and 4 columns 
+#>  [2] se2: SummarizedExperiment with 4 rows and 4 columns 
+#>  [3] se3: SummarizedExperiment with 2 rows and 4 columns 
 
 ## Keep only the Fa variable
 selectRowData(fts1, rowvars = "Fa")

@@ -55,7 +55,7 @@ sure that these match the class validity requirements."><meta property="og:image
 
     <a class="navbar-brand me-2" href="../index.html">QFeatures</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.21.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.21.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -143,6 +143,8 @@ sure that these match the class validity requirements.</p>
 <span><span class="co"># S4 method for class 'QFeatures'</span></span>
 <span><span class="fu">ncols</span><span class="op">(</span><span class="va">x</span>, use.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">replaceColnames</span><span class="op">(</span><span class="va">object</span>, <span class="va">scol</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># S4 method for class 'QFeatures'</span></span>
 <span><span class="fu">rowData</span><span class="op">(</span><span class="va">x</span>, use.names <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
@@ -229,6 +231,12 @@ subsetting by assays</p></dd>
 each assay should be propagated to the corresponding <code>rowData</code>.</p></dd>
 
 
+<dt id="arg-scol">scol<a class="anchor" aria-label="anchor" href="#arg-scol"></a></dt>
+<dd><p><code>character(1)</code> naming the column in <code>colData(object)</code> to use
+as replacement sample names across all assays. Values in that
+column must be unique.</p></dd>
+
+
 <dt id="arg-value">value<a class="anchor" aria-label="anchor" href="#arg-value"></a></dt>
 <dd><p>The values to use as a replacement. See the
 corresponding section in the documentation for more details.</p></dd>
@@ -305,6 +313,8 @@ variable names.</p></li>
 <li><p>The <code><a href="QFeatures-longForm.html">longForm()</a></code> accessor takes a <code>QFeatures</code> instance and returns it in a
 long <em>tidy</em> <code>DataFrame</code>, where each quantitative value is reported on a
 separate line.</p></li>
+<li><p>The <code>replaceColnames</code> function replaces assay sample names (column names)
+across all assays using values from a <code>colData</code> column.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="adding-removing-and-replacing-assays">Adding, removing and replacing assays<a class="anchor" aria-label="anchor" href="#adding-removing-and-replacing-assays"></a></h2>
@@ -467,6 +477,14 @@ processing methods using in quantitative proteomics.</p></li>
 <span class="r-in"><span><span class="fu">rowData</span><span class="op">(</span><span class="va">fts1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrameList of length 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> names(3): se1 se2 se3</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Rename samples using colData column</span></span></span>
+<span class="r-in"><span><span class="fu">replaceColnames</span><span class="op">(</span><span class="va">fts1</span>, <span class="st">"Var2"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> An instance of class QFeatures (type: bulk) with 3 sets:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] se1: SummarizedExperiment with 10 rows and 4 columns </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] se2: SummarizedExperiment with 4 rows and 4 columns </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] se3: SummarizedExperiment with 2 rows and 4 columns </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Keep only the Fa variable</span></span></span>
 <span class="r-in"><span><span class="fu">selectRowData</span><span class="op">(</span><span class="va">fts1</span>, rowvars <span class="op">=</span> <span class="st">"Fa"</span><span class="op">)</span></span></span>

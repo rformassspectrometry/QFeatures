@@ -13,6 +13,7 @@ The QFeatures class
   [`dims(`*`<QFeatures>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)
   [`nrows(`*`<QFeatures>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)
   [`ncols(`*`<QFeatures>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)
+  [`replaceColnames()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)
   [`rowData(`*`<QFeatures>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)
   [`` `rowData<-`( ``*`<QFeatures>`*`,`*`<DataFrameList>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)
   [`` `rowData<-`( ``*`<QFeatures>`*`,`*`<ANY>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)

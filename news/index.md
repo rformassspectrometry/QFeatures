@@ -2,6 +2,10 @@
 
 ## QFeatures 1.21
 
+### QFeatures 1.21.3
+
+- Add `readQFeaturesFromDIANN(multiplexing = 'dimethyl')` example.
+
 ### QFeatures 1.21.2
 
 - Add support for dimethyl multiplexing to
