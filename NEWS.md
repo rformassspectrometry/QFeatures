@@ -1,5 +1,8 @@
 # QFeatures 1.21
 
+## QFeatures 1.21.4
+- Add new `readQFeautres` vignette.
+
 ## QFeatures 1.21.3
 
 - Add `readQFeaturesFromDIANN(multiplexing = 'dimethyl')` example.
