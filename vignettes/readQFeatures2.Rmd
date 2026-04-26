@@ -1,0 +1,581 @@
+---
+title: "Supported input formats for `readQFeatures()`"
+author:
+  - name: "Karolína Kryštofová"
+  - name: Laurent Gatto
+date: "`r BiocStyle::doc_date()`"
+package: "`r BiocStyle::pkg_ver('QFeatures')`"
+output:
+  BiocStyle::html_document:
+    self_contained: yes
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    code_folding: show
+
+vignette: >
+  %\VignetteIndexEntry{readQFeatures() input format}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+link-citations: true
+link-bibliography: true
+---
+
+## Methods
+
+### Datasets
+
+This vignette demonstrates the use of the *QFeatures* package's
+`readQFeatures()` function to import data produced by popular
+third-party software. For this purpose, subsets of the following
+previously publicly available datasets have been used:
+
++---------------------------+-----------+------+---------+------------+
+| Citation                  | PXD ID    | Mode | Label   | Code       |
++===========================+===========+======+=========+============+
+| Van Puyvelde et al., 2022 | PXD028735 | DIA  | LFQ     | A_DIA_LFQ  |
+|                           |           +------+---------+------------+
+|                           |           | DDA  | LFQ     | A_DDA_LFQ  |
++---------------------------+-----------+------+---------+------------+
+| Derks et al., 2022        | PXD029531 | DIA  | plexDIA | B_DIA_plex |
++---------------------------+-----------+------+---------+------------+
+| Christoforou et al., 2016 | PXD001279 | DDA  | TMT     | C_DDA_TMT  |
++---------------------------+-----------+------+---------+------------+
+
+Specifically, these subsets consist of these files:
+
++------------+-------------------------------------------------------+
+| Code       | Original raw file name                                |
++------------+-------------------------------------------------------+
+| A_DIA_LFQ  | LFQ_timsTOFPro_diaPASEF_Condition_A_Sample_Alpha_01.d |
+|            +-------------------------------------------------------+
+|            | LFQ_timsTOFPro_diaPASEF_Condition_A_Sample_Alpha_02.d |
+|            +-------------------------------------------------------+
+|            | LFQ_timsTOFPro_diaPASEF_Condition_A_Sample_Alpha_03.d |
+|            +-------------------------------------------------------+
+|            | LFQ_timsTOFPro_diaPASEF_Condition_B_Sample_Alpha_01.d |
+|            +-------------------------------------------------------+
+|            | LFQ_timsTOFPro_diaPASEF_Condition_B_Sample_Alpha_02.d |
+|            +-------------------------------------------------------+
+|            | LFQ_timsTOFPro_diaPASEF_Condition_B_Sample_Alpha_03.d |
++------------+-------------------------------------------------------+
+| A_DDA_LFQ  | LFQ_Orbitrap_DDA_Condition_A_Sample_Alpha_01.raw      |
+|            +-------------------------------------------------------+
+|            | LFQ_Orbitrap_DDA_Condition_A_Sample_Alpha_02.raw      |
+|            +-------------------------------------------------------+
+|            | LFQ_Orbitrap_DDA_Condition_A_Sample_Alpha_03.raw      |
+|            +-------------------------------------------------------+
+|            | LFQ_Orbitrap_DDA_Condition_B_Sample_Alpha_01.raw      |
+|            +-------------------------------------------------------+
+|            | LFQ_Orbitrap_DDA_Condition_B_Sample_Alpha_02.raw      |
+|            +-------------------------------------------------------+
+|            | LFQ_Orbitrap_DDA_Condition_B_Sample_Alpha_03.raw      |
++------------+-------------------------------------------------------+
+| B_DIA_plex | wJD803.raw                                            |
+|            +-------------------------------------------------------+
+|            | wJD804.raw                                            |
+|            +-------------------------------------------------------+
+|            | wJD815.raw                                            |
++------------+-------------------------------------------------------+
+| C_DDA_TMT  | Replicate1_fraction1.raw                              |
+|            +-------------------------------------------------------+
+|            | Replicate1_fraction2.raw                              |
++------------+-------------------------------------------------------+
+
+Identifications and quantifications performed on these datasets were
+used in combination with the following software:
+
+```{r dataset_matrix, echo=FALSE}
+suppressPackageStartupMessages(library(ComplexHeatmap))
+
+# All possible softwares, labels and report levels
+sws <- c('MaxQuant', 'DIA-NN', 'Spectronaut', 'Proteome Discoverer', 'sage', 'FragPipe', 'PEAKS')
+label <- c('LFQ', 'multiplex')
+
+# Create a combination dataset, by default leave value cells blank
+## value: 0 for not yet processed data, 1 for already processed data
+## dataset: what dataset will be used
+d <- expand.grid(software = sws, label = label)
+d$value <- 'no'
+d$dataset <- ''
+
+# Fill in manually with currently known information
+d$dataset[which(d$label == 'LFQ' & d$software == 'Spectronaut')] <- 'A_DIA_LFQ'
+d$dataset[which(d$label == 'LFQ' & d$software == 'DIA-NN')] <- 'A_DIA_LFQ'
+d$dataset[which(d$label == 'LFQ' & d$dataset == '')] <- 'A_DDA_LFQ'
+d$dataset[which(d$label == 'multiplex' & d$software %in% c('DIA-NN', 'Spectronaut'))] <- 'B_DIA_plex'
+d$dataset[which(d$dataset == '')] <- 'C_DDA_TMT'
+
+d$value[which(d$software %in% c('DIA-NN', 'MaxQuant', 'sage', 'FragPipe'))] <- 'yes'
+d$value[which(d$software == 'Spectronaut' & d$label == 'LFQ')] <- 'yes'
+d$value[which(d$software == 'FragPipe')] <- 'yes'
+d$value[which(d$software == 'PEAKS' & d$label == 'LFQ')] <- 'yes'
+
+# Dataset to matrix for plotting
+d <- tidyr::unite(d, col, label)
+#lvls <- c('LFQ_PSM', 'LFQ_peptide', 'LFQ_PG',
+#          'multiplex_PSM', 'multiplex_peptide', 'multiplex_PG')
+#d$col <- factor(d$col, levels = lvls)
+#d <- dplyr::arrange(d, col)
+
+m <- d |> dplyr::select(-dataset) |> tidyr::spread(key = 'col', value = 'value')
+rownames(m) <- m$software
+m$software <- NULL
+m <- as.matrix(m)
+colnames(m) <- gsub('LFQ_', '', fixed = TRUE, colnames(m))
+colnames(m) <- gsub('multiplex_', '', fixed = TRUE, colnames(m))
+
+# Create a helped matrix storing the text annotations
+m_anno <- d |> dplyr::select(-value) |> tidyr::spread(key = 'col', value = 'dataset')
+rownames(m_anno) <- m_anno$software
+m_anno$software <- NULL
+m_anno <- as.matrix(m_anno)
+colnames(m_anno) <- gsub('LFQ_', '', fixed = TRUE, colnames(m_anno))
+colnames(m_anno) <- gsub('multiplex_', '', fixed = TRUE, colnames(m_anno))
+
+# Create a plot using the ComplexHeatmap package
+colors = structure(c('#8BB135', '#FAA613', 'grey95'),
+                   names = c("yes", "TBD", "no"))
+
+#top_ha <- HeatmapAnnotation(foo = anno_block(labels = c("LFQ", "multiplex"),
+#                                             labels_gp = gpar(fontface = 2),
+#                                             gp = gpar(col = 'white')))
+
+Heatmap(m, name = 'Processed?',
+        col = colors,
+        cluster_rows = FALSE, cluster_columns = FALSE,
+        row_names_side = "left",
+        column_names_side = "top",
+        column_names_centered = TRUE,
+        column_names_rot = 0,
+        #column_split = rep(1:2, each = 3), column_title = NULL,
+        border = TRUE,
+#        top_annotation = top_ha,
+        cell_fun = function(j, i, x, y, width, height, fill) {
+          grid.text(m_anno[i, j], x, y, gp = gpar(fontsize = 10))
+        })
+```
+
+The data files are available in the `MsDataHub` package (>= 1.11.5).
+
+```{r MsDataHub}
+library("MsDataHub")
+MsDataHub() |>
+    dplyr::filter(grepl("19137577", SourceUrl)) |>
+    dplyr::pull(Title)
+```
+
+Each file can be accessed with the function that has its name:
+
+```{r loadFromMsDataHub}
+vanPuyvelde_2022_LFQ_DDA_FragPipe_A_2_psm.tsv()
+Derks_2022_plex_DIA_DIANN_report_subset.tsv()
+```
+
+and imported as a standard `data.frame` using the usual `read.*()`
+functions (see below).
+
+### Existing search outputs
+
+Example outputs for LFQ quantification using DIA-NN, Spectronaut and
+PEAKS were sourced from the ProteoBench website. IDs of these outputs
+on the ProteoBench website are as follows:
+
+-   DIA-NN:
+    -   DIA-NN_20250714_074145 (.parquet output)
+    -   DIA-NN_20250606_103313 (.tsv output)
+-   Spectronaut:
+    -   Spectronaut_20250609_135453
+-   PEAKS:
+    -   PEAKS_20250714_150458
+
+As an example output for multiplex quantification using DIA-NN, a
+search result of the plexDIA dataset was sourced from the MassIVE
+repository (MSV000088302).
+
+### New search outputs
+
+Following software versions were used to produce search results used
+in this vignette:
+
+-   MaxQuant 2.7.0
+-   sage 0.14.7
+-   FragPipe 23.1
+
+## Introduction
+
+Below, we describe individual outputs and their processing using the
+`readQFeatures()` functions. When applicable, we demonstrate how to
+read data on PSM, precursor, as well as protein group level.
+
+For general explanation of the `QFeatures` class and detailed
+description of individual arguments taken by the `readQFeatures()`
+group of functions, consult the `readQFeatures()` manual page of this
+[vignette](https://rformassspectrometry.github.io/QFeatures/articles/readQFeatures.html).
+
+To initiate the session, we will load the `QFeatures` package.
+
+```{r library, message = FALSE}
+library(QFeatures)
+```
+
+## MaxQuant
+
+MaxQuant produces several output `.txt` files. In order to obtain
+information from several levels of the search, we can look at the
+`evidence.txt`, `peptides.txt` and `proteinGroups.txt` files.
+
+Here we will process the results of a multi-set label-free
+experiment. First we will read the `evidence.txt` file storing
+information about PSM-level data:
+
+```{r mq-lfq-psm, message=FALSE}
+dataMaxquantLFQevidence <-
+    vanPuyvelde_2022_LFQ_DDA_MaxQuant_evidence.txt() |>
+    read.delim()
+
+nrow(dataMaxquantLFQevidence)
+```
+
+We can now import the data.frame as a `QFeatures` object using
+`"Intensity"` as quantitative column. This column the quantitation
+values of all samples, acquired in different runs, as defined in the
+`"Experiment"` column. We also rename the set names, prefixing them
+with `"psm_"`.
+
+```{r mq-lfq-psm2, message=FALSE}
+qfMaxquant <- readQFeatures(dataMaxquantLFQevidence,
+                            quantCols = "Intensity",
+                            runCol = "Experiment")
+names(qfMaxquant) <- paste('psm', names(qfMaxquant), sep = '_')
+
+qfMaxquant
+```
+
+Next we will read the peptide-level results from a `peptides.txt` file
+and append this to the `QFeatures` object as a new assay:
+
+```{r mq-lfq-peptide0, message=FALSE}
+dataMaxquantLFQpeptide <-
+    vanPuyvelde_2022_LFQ_DDA_MaxQuant_peptides.txt() |>
+    read.delim()
+nrow(dataMaxquantLFQpeptide)
+```
+
+This table is in a large format, meaning that the peptide quantitation
+values of different samples are stored in different columns. We thus
+get the indices of respective intensity columns, starting with
+`"Intensity."`.
+
+```{r mq-lfq-peptide1, message=FALSE}
+(i <- grep('Intensity.', colnames(dataMaxquantLFQpeptide), fixed = TRUE))
+colnames(dataMaxquantLFQpeptide)[i]
+```
+
+We can read this peptide-level table as a new `QFeatures` object using
+the same `readQFeatures()` as above. This time, it will contain a
+single set with as many columns as there are samples/acquisitions in
+the data.
+
+```{r mq-lfq-peptide2, message=FALSE}
+readQFeatures(dataMaxquantLFQpeptide, quantCols = i, fnames = 'Sequence')
+```
+
+If we want to add the peptide-level data to our previously created
+`QFeatures` object, we can read it as an invidual set (a
+`SummarizedExperiment` instance) and add it with `addAssay()`
+
+```{r mq-lfq-peptide3, message=FALSE}
+pepSE <- readSummarizedExperiment(dataMaxquantLFQpeptide,
+                                  quantCols = i,
+                                  fnames = 'Sequence')
+pepSE
+qfMaxquant <- addAssay(qfMaxquant,
+                      pepSE,
+                      name = 'peptides')
+qfMaxquant
+```
+
+We see that a new assay has been appended to `QFeatures` object.
+
+Finally, we will append the protein group-level in the same
+manner. Here we will use the `"LFQ.intensity"` columns:
+
+```{r mq-lfq-pg, message=FALSE}
+dataMaxquantLFQprotein <-
+    vanPuyvelde_2022_LFQ_DDA_MaxQuant_proteinGroups.txt() |>
+    read.delim()
+nrow(dataMaxquantLFQprotein)
+
+## get indices of LFQ intensity columns
+(i <- grep('LFQ.intensity.', colnames(dataMaxquantLFQprotein),
+           fixed = TRUE))
+colnames(dataMaxquantLFQprotein)[i]
+
+## load the data
+protSE <- readSummarizedExperiment(dataMaxquantLFQprotein,
+                                   quantCols = i,
+                                   fnames = 'Protein.IDs')
+protSE
+qfMaxquant <- addAssay(qfMaxquant,
+                       protSE,
+                       name = 'proteinGroups')
+qfMaxquant
+```
+
+It is important to highlight however that, while it is possible to add
+PSM-, peptide- and protein-level sets one-by-one, as illustrated
+above, we strongly recommend to compute the peptide-level data from
+the PSM-level data, and the protein-level data from the peptide-level
+data using the `QFeatures::aggregateFeatures()` function. The function
+will record the link between features, PSM to peptide and peptides to
+protein, and consistently apply filtering across these
+levels. Alternatively, these links between sets can be re-computer
+with the `addAssayLink()` function.
+
+<!-- FIXME: the Christoforou_2016_TMT_DDA_MaxQuant_evidence.txt() files -->
+<!-- does not have the 'Reporter.intensity.' column names. It has LFQ data. -->
+
+<!-- In the next section, we will demonstrate how to read data from a -->
+<!-- TMT-labeled experiment consisting of two runs:1 -->
+
+<!-- ```{r mq-tmt, message=FALSE, eval = FALSE} -->
+<!-- dataMaxquantTMTevidence <- -->
+<!--     Christoforou_2016_TMT_DDA_MaxQuant_evidence.txt() |> -->
+<!--     read.delim() -->
+
+<!-- (i <- grep('Reporter.intensity.\\d+', colnames(dataMaxquantTMTevidence))) -->
+<!-- colnames(dataMaxquantLFQprotein)[i] -->
+
+<!-- # Create a QFeatures object -->
+<!-- qfMaxquantTMT <- readQFeatures(dataMaxquantTMTevidence, -->
+<!--                                quantCols = i, -->
+<!--                                runCol = 'Raw.file', -->
+<!--                                fnames = 'Sequence') -->
+<!-- qfMaxquantTMT -->
+<!-- ``` -->
+
+<!-- Here we see that a separate experiment has been created for each run -->
+<!-- with 10 columns corresponding to the 10 TMT channels. -->
+
+<!-- ```{r mq-tmt-2, message=FALSE, eval = FALSE} -->
+<!-- head(assay(qfMaxquantTMT)) -->
+<!-- ``` -->
+
+## DIA-NN
+
+### LF
+
+DIA-NN versions 1.9.0 and below produce a main *.tsv* search result
+file, which has been replaced by a *.parquet* file from version 2.0.0
+up solely .
+
+DIA-NN *.tsv* reports can be read using the `readQFeaturesFromDIANN()`
+function:
+
+```{r diann-tsv, message = FALSE}
+qfDiannLFQ <-
+    vanPuyvelde_2022_LFQ_DIA_DIANN_report.tsv() |>
+    read.delim() |>
+    readQFeaturesFromDIANN(runCol = 'Run')
+
+qfDiannLFQ
+```
+
+In order to read a *.parquet* file in R, we need to use the `arrow`
+package, that provides an interface to the Arrow C++ library. After
+reading this file however, we can work with the resulting data.frame
+in the same manner as we are used to in case of the *.tsv* report.
+
+```{r diann-parquet, message=FALSE}
+qfDiannParquet <-
+    vanPuyvelde_2022_LFQ_DIA_DIANN_report.parquet() |>
+    arrow::read_parquet() |>
+    readQFeaturesFromDIANN(runCol = 'Run')
+
+qfDiannParquet
+```
+
+As you can see, both experiments consist of the same run names as both
+searches have been performed on the same set of raw data. The numbers
+of rows in each `SummarizedExperiment` however differ between those
+two reports, as both searches have been performed using different
+software versions, as well as different search parameters.
+
+### plexDIA
+
+To correctly parse a plexDIA experiment, it is necessary to set the
+`multiplexing` parameter to `"mTRAQ"`:
+
+```{r diann-plexdia, message=FALSE}
+qfDiannPlex <-
+    Derks_2022_plex_DIA_DIANN_report_subset.tsv() |>
+    read.delim() |>
+    readQFeaturesFromDIANN(runCol = 'Run',
+                           multiplexing = 'mTRAQ')
+
+qfDiannPlex
+```
+
+The run names in this output file are not the most informative with
+regards to the samples. We will now edit the sample metadata to
+contain more meaningful sample annotation. All runs were performed on
+the same sample, in 3 technical replicates:
+
+
+```{r}
+qfDiannPlex$sample <- 'mixed standard'
+qfDiannPlex$rep <- rep(1:3, each = 3)
+qfDiannPlex$label <- paste0('mTraq d', rep(c(0, 4, 8), times = 3))
+colData(qfDiannPlex)
+```
+
+## sage
+
+The **sage** search engine stores quantification data either in the
+*lfq.tsv* or *tmt.tsv* file based on the quantification used.
+
+As above for label-free quantification, the *lfq.tsv* file contains
+estimated quantities of identified peptidoforms and is grouped on
+modified sequence level:
+
+```{r sage-lfq, message = FALSE, warning=FALSE}
+dataSageLFQ <-
+    vanPuyvelde_2022_LFQ_DDA_sage_lfq.tsv() |>
+    read.delim()
+
+(i <- grep('.mzML', colnames(dataSageLFQ), fixed = TRUE))
+colnames(dataSageLFQ)[i]
+
+qfSageLFQ <- readQFeatures(dataSageLFQ,
+                           quantCols = i,
+                           name = 'peptides')
+
+qfSageLFQ
+```
+
+As for TMT-based quantification, the PSM-level quantification is
+included in the *tmt.tsv* file.
+
+```{r sage-tmt, message = FALSE, warning = FALSE}
+dataSageTMT <-
+    Christoforou_2016_TMT_DDA_sage_tmt.tsv() |>
+    read.delim()
+```
+
+Upon inspection, we can see that peptide identification information is
+missing in this file:
+
+```{r}
+colnames(dataSageTMT)
+```
+
+We can source this from the main results.sage.tsv file and append this
+information to the quantification data frame. We also extract the
+indices of the quantification columns before loading the data using
+the `readQFeatures()` function.
+
+```{r sage-tmt-2, message = FALSE, warning = FALSE}
+dataSageTMTident <-
+    Christoforou_2016_TMT_DDA_sage_results.sage.tsv() |>
+    read.delim()
+
+dataSageTMTfinal <- merge(dataSageTMT, dataSageTMTident, by = c('filename', 'scannr'))
+
+(i <- grep('tmt_', colnames(dataSageTMTfinal), fixed = TRUE))
+colnames(dataSageTMTfinal)[i]
+
+
+qfSageTMT <- readQFeatures(dataSageTMTfinal, quantCols = i)
+qfSageTMT
+```
+
+A more straightforward way is to use the `sager::sageQFeatures()`
+function from the BiocStyle::Githubpkg("UCLouvain-CBIO/sager") package
+to quickly load TMT quantification data from both *.tsv* output files
+into a `QFeatures` object.
+
+```{r sager, eval = FALSE}
+sager::sageQFeatures(
+           Christoforou_2016_TMT_DDA_sage_tmt.tsv(),
+           Christoforou_2016_TMT_DDA_sage_results.sage.tsv())
+```
+
+## FragPipe
+
+**FragPipe** produces several outputs. The following code block shows
+the processing of a label-free multi-set experiment.
+
+First we can load the *psm.tsv* files that are produced separately for
+each sample-biological replicate combination as specified during
+FragPipe configuration. In our case, there has been a separate file
+created for each run.
+
+We start by extracting the relevant filenames from `MsDataHub`.
+
+```{r fragpipe-lfq0, message = FALSE}
+fls <- MsDataHub() |>
+    dplyr::filter(grepl("2022_LFQ_DDA_FragPipe", Title)) |>
+    dplyr::pull(1)
+fls
+```
+
+Below, we iterate over each filename, convert it to a function call
+that we then evaluate, and then load as a `SummarizedExperiment`. The
+code below produces a list of `SummarizedExperiment` instances, that
+we then name using the initial filenames.
+
+```{r fragpipe-lfq1, message = FALSE}
+lst <- lapply(fls, function(fl) {
+    call(fl) |>
+        eval() |>
+        read.delim() |>
+        readSummarizedExperiment(quantCols = "Intensity")
+})
+
+names(lst) <- fls
+```
+
+We can now pass this list to the `QFeatures` constructor to create a
+`QFeatures` object.
+
+```{r fragpipe-lfq2, message = FALSE}
+qfFpipeLFQ <- QFeatures(lst)
+qfFpipeLFQ
+```
+
+The names of the assays are based on the (rather long) filenames, they
+were derived from. We can shorten these:
+
+```{r fragpipe-lfq-names, message=FALSE}
+names(qfFpipeLFQ) <- sub('vanPuyvelde_2022_LFQ_DDA_FragPipe_(\\w_\\d_psm)\\.tsv', '\\1', names(qfFpipeLFQ))
+qfFpipeLFQ
+```
+
+The processing of peptide and protein-level outputs is similar to
+MaxQuant processing above.
+
+### TMT
+
+In the following section, we demonstrate the processing of
+TMT-labelled multi-set experiment. It consists of two runs named
+*Fraction1* and *Fraction2*. Just like in the case of a label-free
+experiment, there is a separate *psm.tsv* file produced for each run:
+
+```{r fragpipe-tmt, message=FALSE}
+
+fls <- MsDataHub() |>
+    dplyr::filter(grepl("Christoforou_2016_TMT_DDA_FragPipe_Fraction", Title)) |>
+    dplyr::pull(1)
+
+lst <- lapply(fls,
+       function(fl) {
+           x <- eval(call(fl)) |>
+               read.delim()
+           i <- grep('Intensity\\.', colnames(x))
+           readSummarizedExperiment(x, quantCols = i)
+       })
+
+names(lst) <- fls
+QFeatures(lst)
+```
