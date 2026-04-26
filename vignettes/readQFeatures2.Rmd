@@ -285,7 +285,7 @@ If we want to add the peptide-level data to our previously created
 `QFeatures` object, we can read it as an invidual set (a
 `SummarizedExperiment` instance) and add it with `addAssay()`
 
-```{r mq-lfq-peptide2, message=FALSE}
+```{r mq-lfq-peptide3, message=FALSE}
 pepSE <- readSummarizedExperiment(dataMaxquantLFQpeptide,
                                   quantCols = i,
                                   fnames = 'Sequence')
@@ -297,8 +297,6 @@ qfMaxquant
 ```
 
 We see that a new assay has been appended to `QFeatures` object.
-
-
 
 Finally, we will append the protein group-level in the same
 manner. Here we will use the `"LFQ.intensity"` columns:
