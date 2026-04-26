@@ -1,4 +1,4 @@
-# Supported input formats for \`readQFeatures()\`
+# Supported input formats for readQFeatures()
 
 ## Methods
 
@@ -87,8 +87,8 @@ vanPuyvelde_2022_LFQ_DDA_FragPipe_A_2_psm.tsv()
 
     ## loading from cache
 
-    ##                                                  EH10423 
-    ## "/github/home/.cache/R/ExperimentHub/303078c9c75d_10490"
+    ##                                                 EH10423 
+    ## "/github/home/.cache/R/ExperimentHub/cd37d8a9d35_10490"
 
 ``` r
 
@@ -98,8 +98,8 @@ Derks_2022_plex_DIA_DIANN_report_subset.tsv()
     ## see ?MsDataHub and browseVignettes('MsDataHub') for documentation
     ## loading from cache
 
-    ##                                                  EH10421 
-    ## "/github/home/.cache/R/ExperimentHub/30305785f9fe_10488"
+    ##                                                 EH10421 
+    ## "/github/home/.cache/R/ExperimentHub/cd320e2deef_10488"
 
 and imported as a standard `data.frame` using the usual `read.*()`
 functions (see below).

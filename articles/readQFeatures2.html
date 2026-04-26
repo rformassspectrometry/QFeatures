@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Supported input formats for `readQFeatures()` • QFeatures</title>
+<title>Supported input formats for readQFeatures() • QFeatures</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -15,7 +15,7 @@
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Supported input formats for `readQFeatures()`">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Supported input formats for readQFeatures()">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -40,8 +40,8 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/Processing.html">Processing quantitative proteomics data with QFeatures</a></li>
-    <li><a class="dropdown-item" href="../articles/readQFeatures.html">Load mass spectrometry-based proteomics data using `readQFeatures()`</a></li>
-    <li><a class="dropdown-item" href="../articles/readQFeatures2.html">Supported input formats for `readQFeatures()`</a></li>
+    <li><a class="dropdown-item" href="../articles/readQFeatures.html">Load mass spectrometry-based proteomics data using readQFeatures()</a></li>
+    <li><a class="dropdown-item" href="../articles/readQFeatures2.html">Supported input formats for readQFeatures()</a></li>
     <li><a class="dropdown-item" href="../articles/Visualization.html">Data visualization from a QFeatures object</a></li>
   </ul>
 </li>
@@ -64,7 +64,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Supported input formats for `readQFeatures()`</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Supported input formats for readQFeatures()</h1>
                         <h4 data-toc-skip class="author">Karolína
 Kryštofová</h4>
                                     <h4 data-toc-skip class="author">Laurent
@@ -235,14 +235,14 @@ used in combination with the following software:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rformassspectrometry.github.io/MsDataHub/reference/miscDdaDia.html" class="external-link">vanPuyvelde_2022_LFQ_DDA_FragPipe_A_2_psm.tsv</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## see ?MsDataHub and browseVignettes('MsDataHub') for documentation</span></span></code></pre>
 <pre><code><span><span class="co">## loading from cache</span></span></code></pre>
-<pre><code><span><span class="co">##                                                  EH10423 </span></span>
-<span><span class="co">## "/github/home/.cache/R/ExperimentHub/303078c9c75d_10490"</span></span></code></pre>
+<pre><code><span><span class="co">##                                                 EH10423 </span></span>
+<span><span class="co">## "/github/home/.cache/R/ExperimentHub/cd37d8a9d35_10490"</span></span></code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rformassspectrometry.github.io/MsDataHub/reference/miscDdaDia.html" class="external-link">Derks_2022_plex_DIA_DIANN_report_subset.tsv</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## see ?MsDataHub and browseVignettes('MsDataHub') for documentation</span></span>
 <span><span class="co">## loading from cache</span></span></code></pre>
-<pre><code><span><span class="co">##                                                  EH10421 </span></span>
-<span><span class="co">## "/github/home/.cache/R/ExperimentHub/30305785f9fe_10488"</span></span></code></pre>
+<pre><code><span><span class="co">##                                                 EH10421 </span></span>
+<span><span class="co">## "/github/home/.cache/R/ExperimentHub/cd320e2deef_10488"</span></span></code></pre>
 <p>and imported as a standard <code>data.frame</code> using the usual
 <code>read.*()</code> functions (see below).</p>
 </div>

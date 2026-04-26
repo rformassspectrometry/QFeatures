@@ -1,4 +1,4 @@
-# Load mass spectrometry-based proteomics data using \`readQFeatures()\`
+# Load mass spectrometry-based proteomics data using readQFeatures()
 
 ## The `QFeatures` class
 
@@ -146,7 +146,7 @@ often identified with the name of the file it generated.
 ``` r
 
 hlpsms$FileName <- rep(
-    rep(paste0("run", 1:3, ".raw"), each = 4), 
+    rep(paste0("run", 1:3, ".raw"), each = 4),
     length.out = nrow(hlpsms)
 )
 ```
@@ -203,8 +203,8 @@ Let’s simulate such a table:
 ``` r
 
 (coldata <- DataFrame(
-    quantCols = quantCols, 
-    condition = rep(c("A", "B"), 5), 
+    quantCols = quantCols,
+    condition = rep(c("A", "B"), 5),
     batch = rep(c("batch1", "batch2"), each = 5)
 ))
 #> DataFrame with 10 rows and 3 columns
@@ -312,7 +312,7 @@ We can provide the table to
 ``` r
 
 (qfMulti <- readQFeatures(
-    hlpsms, quantCols = quantCols, colData = coldataMulti, 
+    hlpsms, quantCols = quantCols, colData = coldataMulti,
     runCol = "FileName"
 ))
 #> Checking arguments.
