@@ -1,5 +1,5 @@
 ---
-title: "Supported input formats for `readQFeatures()`"
+title: "Supported input formats for readQFeatures()"
 author:
   - name: "Karolína Kryštofová"
   - name: Laurent Gatto
