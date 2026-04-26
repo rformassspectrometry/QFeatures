@@ -7,6 +7,8 @@
 - [Quantitative features for mass spectrometry
   data](https://rformassspectrometry.github.io/QFeatures/articles/QFeatures.md):
 - [Load mass spectrometry-based proteomics data using
-  \`readQFeatures()\`](https://rformassspectrometry.github.io/QFeatures/articles/read_QFeatures.md):
+  \`readQFeatures()\`](https://rformassspectrometry.github.io/QFeatures/articles/readQFeatures.md):
+- [Supported input formats for
+  \`readQFeatures()\`](https://rformassspectrometry.github.io/QFeatures/articles/readQFeatures2.md):
 - [Data visualization from a QFeatures
   object](https://rformassspectrometry.github.io/QFeatures/articles/Visualization.md):

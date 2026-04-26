@@ -123,9 +123,6 @@ Laurent Gatto, Christophe Vanderaa
 ``` r
 
 x <- read.delim(MsDataHub::benchmarkingDIA.tsv())
-#> Registered S3 method overwritten by 'bit64':
-#>   method          from 
-#>   print.bitstring tools
 #> see ?MsDataHub and browseVignettes('MsDataHub') for documentation
 #> loading from cache
 x[["File.Name"]] <- x[["Run"]]

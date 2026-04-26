@@ -15,7 +15,7 @@ DIA-NN label-free and plexDIA report files: default runCol is
 
     <a class="navbar-brand me-2" href="../index.html">QFeatures</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.21.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.21.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,7 +28,8 @@ DIA-NN label-free and plexDIA report files: default runCol is
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Processing.html">Processing quantitative proteomics data with QFeatures</a></li>
-    <li><a class="dropdown-item" href="../articles/read_QFeatures.html">Load mass spectrometry-based proteomics data using `readQFeatures()`</a></li>
+    <li><a class="dropdown-item" href="../articles/readQFeatures.html">Load mass spectrometry-based proteomics data using `readQFeatures()`</a></li>
+    <li><a class="dropdown-item" href="../articles/readQFeatures2.html">Supported input formats for `readQFeatures()`</a></li>
     <li><a class="dropdown-item" href="../articles/Visualization.html">Data visualization from a QFeatures object</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -171,9 +172,6 @@ manipulate the resulting <code>QFeatures</code> object.</p></li>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.delim</a></span><span class="op">(</span><span class="fu">MsDataHub</span><span class="fu">::</span><span class="fu"><a href="https://rformassspectrometry.github.io/MsDataHub/reference/benchmarkingDIA.html" class="external-link">benchmarkingDIA.tsv</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Registered S3 method overwritten by 'bit64':</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   method          from </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   print.bitstring tools</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> see ?MsDataHub and browseVignettes('MsDataHub') for documentation</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> loading from cache</span>
 <span class="r-in"><span><span class="va">x</span><span class="op">[[</span><span class="st">"File.Name"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[[</span><span class="st">"Run"</span><span class="op">]</span><span class="op">]</span></span></span>
