@@ -43,7 +43,7 @@ Imports:
    reshape2
 Suggests:
    SingleCellExperiment,
-   MsDataHub (>= 1.3.3),
+   MsDataHub (>= 1.11.5),
    Matrix,
    HDF5Array,
    msdata,
