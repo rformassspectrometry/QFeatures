@@ -225,6 +225,8 @@ MaxQuant produces several output `.txt` files. In order to obtain
 information from several levels of the search, we can look at the
 `evidence.txt`, `peptides.txt` and `proteinGroups.txt` files.
 
+### Label-free
+
 Here we will process the results of a multi-set label-free
 experiment. First we will read the `evidence.txt` file storing
 information about PSM-level data:
@@ -333,38 +335,33 @@ protein, and consistently apply filtering across these
 levels. Alternatively, these links between sets can be re-computer
 with the `addAssayLink()` function.
 
-<!-- FIXME: the Christoforou_2016_TMT_DDA_MaxQuant_evidence.txt() files -->
-<!-- does not have the 'Reporter.intensity.' column names. It has LFQ data. -->
+### TMT
 
-<!-- In the next section, we will demonstrate how to read data from a -->
-<!-- TMT-labeled experiment consisting of two runs:1 -->
+Below, we will demonstrate how to read data from a TMT-labeled
+experiment consisting of two runs:
 
-<!-- ```{r mq-tmt, message=FALSE, eval = FALSE} -->
-<!-- dataMaxquantTMTevidence <- -->
-<!--     Christoforou_2016_TMT_DDA_MaxQuant_evidence.txt() |> -->
-<!--     read.delim() -->
+```{r mq-tmt, message=FALSE}
+dataMaxquantTMTevidence <-
+    Christoforou_2016_TMT_DDA_MaxQuant_evidence.txt() |>
+    read.delim()
 
-<!-- (i <- grep('Reporter.intensity.\\d+', colnames(dataMaxquantTMTevidence))) -->
-<!-- colnames(dataMaxquantLFQprotein)[i] -->
+(i <- grep('Reporter.intensity.\\d+', colnames(dataMaxquantTMTevidence)))
+colnames(dataMaxquantTMTevidence)[i]
 
-<!-- # Create a QFeatures object -->
-<!-- qfMaxquantTMT <- readQFeatures(dataMaxquantTMTevidence, -->
-<!--                                quantCols = i, -->
-<!--                                runCol = 'Raw.file', -->
-<!--                                fnames = 'Sequence') -->
-<!-- qfMaxquantTMT -->
-<!-- ``` -->
+qfMaxquantTMT <- readQFeatures(dataMaxquantTMTevidence,
+                               quantCols = i,
+                               runCol = 'Raw.file',
+                               fnames = 'Sequence')
 
-<!-- Here we see that a separate experiment has been created for each run -->
-<!-- with 10 columns corresponding to the 10 TMT channels. -->
+qfMaxquantTMT
+```
 
-<!-- ```{r mq-tmt-2, message=FALSE, eval = FALSE} -->
-<!-- head(assay(qfMaxquantTMT)) -->
-<!-- ``` -->
+We see that a separate experiment has been created for each run with
+10 columns corresponding to the 10 TMT channels.
 
 ## DIA-NN
 
-### LF
+### Label-free
 
 DIA-NN versions 1.9.0 and below produce a main *.tsv* search result
 file, which has been replaced by a *.parquet* file from version 2.0.0
