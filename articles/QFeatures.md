@@ -667,7 +667,7 @@ filterFeatures(hl, ~ qValue <= 0.001)
     ## [8] base     
     ## 
     ## other attached packages:
-    ##  [1] ggplot2_4.0.3               QFeatures_1.21.4           
+    ##  [1] ggplot2_4.0.3               QFeatures_1.21.5           
     ##  [3] MultiAssayExperiment_1.37.4 SummarizedExperiment_1.41.1
     ##  [5] Biobase_2.71.0              GenomicRanges_1.63.2       
     ##  [7] Seqinfo_1.1.0               IRanges_2.45.0             
@@ -695,7 +695,7 @@ filterFeatures(hl, ~ qValue <= 0.001)
     ## [49] scales_1.4.0            rmarkdown_2.31          XVector_0.51.0         
     ## [52] igraph_2.3.0            otel_0.2.0              ragg_1.5.2             
     ## [55] evaluate_1.0.5          knitr_1.51              rlang_1.2.0            
-    ## [58] Rcpp_1.1.1-1            glue_1.8.1              BiocManager_1.30.27    
+    ## [58] Rcpp_1.1.1-1.1          glue_1.8.1              BiocManager_1.30.27    
     ## [61] jsonlite_2.0.0          AnnotationFilter_1.35.0 R6_2.6.1               
     ## [64] plyr_1.8.9              systemfonts_1.3.2       fs_2.1.0               
     ## [67] ProtGenerics_1.43.0     MsCoreUtils_1.23.9

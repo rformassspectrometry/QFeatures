@@ -305,7 +305,7 @@ interest, which can then be visualised as a heatmap (figure
     ## 
     ## other attached packages:
     ##  [1] ComplexHeatmap_2.27.1       ggplot2_4.0.3              
-    ##  [3] QFeatures_1.21.4            MultiAssayExperiment_1.37.4
+    ##  [3] QFeatures_1.21.5            MultiAssayExperiment_1.37.4
     ##  [5] SummarizedExperiment_1.41.1 Biobase_2.71.0             
     ##  [7] GenomicRanges_1.63.2        Seqinfo_1.1.0              
     ##  [9] IRanges_2.45.0              S4Vectors_0.49.2           
@@ -338,7 +338,7 @@ interest, which can then be visualised as a heatmap (figure
     ## [64] tibble_3.3.1            pillar_1.11.1           htmltools_0.5.9        
     ## [67] circlize_0.4.18         R6_2.6.1                textshaping_1.0.5      
     ## [70] doParallel_1.0.17       evaluate_1.0.5          lattice_0.22-9         
-    ## [73] png_0.1-9               bslib_0.10.0            Rcpp_1.1.1-1           
+    ## [73] png_0.1-9               bslib_0.10.0            Rcpp_1.1.1-1.1         
     ## [76] SparseArray_1.11.13     xfun_0.57               GlobalOptions_0.1.4    
     ## [79] MsCoreUtils_1.23.9      fs_2.1.0                pkgconfig_2.0.3
 

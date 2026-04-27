@@ -2,6 +2,10 @@
 
 ## QFeatures 1.21
 
+### QFeatures 1.21.5
+
+- Add MaxQuant TMT multi-run example.
+
 ### QFeatures 1.21.4
 
 - Add new `readQFeautres` vignette.

@@ -88,7 +88,7 @@ vanPuyvelde_2022_LFQ_DDA_FragPipe_A_2_psm.tsv()
     ## loading from cache
 
     ##                                                 EH10423 
-    ## "/github/home/.cache/R/ExperimentHub/cd37d8a9d35_10490"
+    ## "/github/home/.cache/R/ExperimentHub/ce85624dc09_10490"
 
 ``` r
 
@@ -99,7 +99,7 @@ Derks_2022_plex_DIA_DIANN_report_subset.tsv()
     ## loading from cache
 
     ##                                                 EH10421 
-    ## "/github/home/.cache/R/ExperimentHub/cd320e2deef_10488"
+    ## "/github/home/.cache/R/ExperimentHub/ce81ecd4ff2_10488"
 
 and imported as a standard `data.frame` using the usual `read.*()`
 functions (see below).
@@ -158,6 +158,8 @@ library(QFeatures)
 MaxQuant produces several output `.txt` files. In order to obtain
 information from several levels of the search, we can look at the
 `evidence.txt`, `peptides.txt` and `proteinGroups.txt` files.
+
+### Label-free
 
 Here we will process the results of a multi-set label-free experiment.
 First we will read the `evidence.txt` file storing information about
@@ -382,9 +384,64 @@ with the
 [`addAssayLink()`](https://rformassspectrometry.github.io/QFeatures/reference/AssayLinks.md)
 function.
 
+### TMT
+
+Below, we will demonstrate how to read data from a TMT-labeled
+experiment consisting of two runs:
+
+``` r
+
+dataMaxquantTMTevidence <-
+    Christoforou_2016_TMT_DDA_MaxQuant_evidence.txt() |>
+    read.delim()
+
+(i <- grep('Reporter.intensity.\\d+', colnames(dataMaxquantTMTevidence)))
+```
+
+    ##  [1] 73 74 75 76 77 78 79 80 81 82
+
+``` r
+
+colnames(dataMaxquantTMTevidence)[i]
+```
+
+    ##  [1] "Reporter.intensity.1"  "Reporter.intensity.2"  "Reporter.intensity.3" 
+    ##  [4] "Reporter.intensity.4"  "Reporter.intensity.5"  "Reporter.intensity.6" 
+    ##  [7] "Reporter.intensity.7"  "Reporter.intensity.8"  "Reporter.intensity.9" 
+    ## [10] "Reporter.intensity.10"
+
+``` r
+
+qfMaxquantTMT <- readQFeatures(dataMaxquantTMTevidence,
+                               quantCols = i,
+                               runCol = 'Raw.file',
+                               fnames = 'Sequence')
+```
+
+    ##   |                                                                              |                                                                      |   0%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================================================| 100%
+
+    ## Warning in FUN(X[[i]], ...): Duplicated entries found in 'Sequence' in rowData
+    ## of assay Replicate1_fraction1; they are made unique.
+
+    ## Warning in FUN(X[[i]], ...): Duplicated entries found in 'Sequence' in rowData
+    ## of assay Replicate1_fraction2; they are made unique.
+
+``` r
+
+qfMaxquantTMT
+```
+
+    ## An instance of class QFeatures (type: bulk) with 2 sets:
+    ## 
+    ##  [1] Replicate1_fraction1: SummarizedExperiment with 47 rows and 10 columns 
+    ##  [2] Replicate1_fraction2: SummarizedExperiment with 77 rows and 10 columns
+
+We see that a separate experiment has been created for each run with 10
+columns corresponding to the 10 TMT channels.
+
 ## DIA-NN
 
-### LF
+### Label-free
 
 DIA-NN versions 1.9.0 and below produce a main *.tsv* search result
 file, which has been replaced by a *.parquet* file from version 2.0.0 up
