@@ -511,7 +511,7 @@ documentation are also warmly welcome.
     [8] base     
 
     other attached packages:
-     [1] DT_0.34.0                   QFeatures_1.21.6           
+     [1] DT_0.34.0                   QFeatures_1.23.0           
      [3] MultiAssayExperiment_1.37.4 SummarizedExperiment_1.41.1
      [5] Biobase_2.71.0              GenomicRanges_1.63.2       
      [7] Seqinfo_1.1.0               IRanges_2.45.0             

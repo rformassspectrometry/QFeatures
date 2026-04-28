@@ -1,5 +1,11 @@
 # Changelog
 
+## QFeatures 1.23
+
+### QFeatures 1.23.0
+
+- New devel version.
+
 ## QFeatures 1.21
 
 ### QFeatures 1.21.6
