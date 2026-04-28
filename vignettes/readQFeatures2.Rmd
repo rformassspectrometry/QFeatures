@@ -89,7 +89,8 @@ used in combination with the following software:
 suppressPackageStartupMessages(library(ComplexHeatmap))
 
 # All possible softwares, labels and report levels
-sws <- c('MaxQuant', 'DIA-NN', 'Spectronaut', 'Proteome Discoverer', 'sage', 'FragPipe', 'PEAKS')
+sws <- c('MaxQuant', 'DIA-NN', 'Spectronaut', 'Proteome Discoverer',
+         'sage', 'FragPipe', 'PEAKS')
 label <- c('LFQ', 'multiplex')
 
 # Create a combination dataset, by default leave value cells blank
@@ -106,10 +107,11 @@ d$dataset[which(d$label == 'LFQ' & d$dataset == '')] <- 'A_DDA_LFQ'
 d$dataset[which(d$label == 'multiplex' & d$software %in% c('DIA-NN', 'Spectronaut'))] <- 'B_DIA_plex'
 d$dataset[which(d$dataset == '')] <- 'C_DDA_TMT'
 
-d$value[which(d$software %in% c('DIA-NN', 'MaxQuant', 'sage', 'FragPipe'))] <- 'yes'
-d$value[which(d$software == 'Spectronaut' & d$label == 'LFQ')] <- 'yes'
-d$value[which(d$software == 'FragPipe')] <- 'yes'
-d$value[which(d$software == 'PEAKS' & d$label == 'LFQ')] <- 'yes'
+## d$value[which(d$software %in% c('DIA-NN', 'MaxQuant', 'sage', 'FragPipe'))] <- 'yes'
+## d$value[which(d$software == 'Spectronaut' & d$label == 'LFQ')] <- 'yes'
+## d$value[which(d$software == 'FragPipe')] <- 'yes'
+## d$value[which(d$software == 'PEAKS' & d$label == 'LFQ')] <- 'yes'
+d$value <- "yes"
 
 # Dataset to matrix for plotting
 d <- tidyr::unite(d, col, label)
@@ -133,24 +135,18 @@ m_anno <- as.matrix(m_anno)
 colnames(m_anno) <- gsub('LFQ_', '', fixed = TRUE, colnames(m_anno))
 colnames(m_anno) <- gsub('multiplex_', '', fixed = TRUE, colnames(m_anno))
 
-# Create a plot using the ComplexHeatmap package
-colors = structure(c('#8BB135', '#FAA613', 'grey95'),
-                   names = c("yes", "TBD", "no"))
+## Create a plot using the ComplexHeatmap package
+colors <- structure(rep('grey95', 2), names = c("yes", "no"))
 
-#top_ha <- HeatmapAnnotation(foo = anno_block(labels = c("LFQ", "multiplex"),
-#                                             labels_gp = gpar(fontface = 2),
-#                                             gp = gpar(col = 'white')))
-
-Heatmap(m, name = 'Processed?',
+Heatmap(m, name = "Available",
         col = colors,
         cluster_rows = FALSE, cluster_columns = FALSE,
         row_names_side = "left",
         column_names_side = "top",
         column_names_centered = TRUE,
         column_names_rot = 0,
-        #column_split = rep(1:2, each = 3), column_title = NULL,
+        show_heatmap_legend = FALSE,
         border = TRUE,
-#        top_annotation = top_ha,
         cell_fun = function(j, i, x, y, width, height, fill) {
           grid.text(m_anno[i, j], x, y, gp = gpar(fontsize = 10))
         })

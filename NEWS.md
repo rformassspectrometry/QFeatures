@@ -1,5 +1,8 @@
 # QFeatures 1.21
 
+## QFeatures 1.21.6
+- Remove colours in software/method data matrix.
+
 ## QFeatures 1.21.5
 - Add MaxQuant TMT multi-run example.
 
