@@ -5,3 +5,4 @@
 .travis.yml
 .Rbuildignore
 logo.png
+^pkgdown$
