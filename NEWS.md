@@ -1,5 +1,9 @@
 # QFeatures 1.23
 
+## QFeatures 1.23.1
+- New imputation vignette.
+- Replace `msdata` by `MsDataHub`.
+
 ## QFeatures 1.23.0
 - New devel version.
 

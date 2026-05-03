@@ -1,0 +1,350 @@
+---
+title: "Imputing quantitative proteomics data "
+author: "Laurent Gatto"
+package: MsCoreUtils
+output:
+  BiocStyle::html_document:
+    toc_float: true
+vignette: >
+  %\VignetteIndexEntry{Imputation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %%\VignetteKeywords{Mass Spectrometry, Proteomics, Metabolomics, Quantitative, imputation}
+  %\VignetteEncoding{UTF-8}
+bibiliography: references.bib
+---
+
+```{r style, echo = FALSE, results = 'asis'}
+BiocStyle::markdown()
+```
+
+# Introduction
+
+This vignette provides a technical description of the imputation
+functionality available in the *R for Mass Spectrometry* packages, in
+particular `r BiocStyle::Biocpkg("MsCoreUtils")` for the
+implementation and `r BiocStyle::Biocpkg("QFeatures")` for the high
+level application. These packages depend on other ones for the
+specific imputation implementation approaches.
+
+```{r env, message = FALSE}
+library(MsCoreUtils)
+library(QFeatures)
+```
+
+This vignette focuses on the technical aspects of imputation, without
+delving in the scientific motivations too much - see
+[@Webb-Robertson:2015; @Lazar:2016; @Bramer:2021] for the necessary
+backgroud. We will simply introduce important concepts when needed and
+refer to some relevant papers for further reading.
+
+An important concept, described among others in [@Lazar:2016], is data
+that can be missing *at random* (MAR) or missing *not at random*
+(MNAR). A MNAR feature is assumed to be missing in the data because is
+was effectively absent or below the limit of detection in the
+biological sample. MAR features, on the other hand, have not been
+detected or identified due to technological limitations such as poor
+ionisation, competition among precursors (in data dependent
+acquisition), or absence of identification or
+mis-identification. Given the different underlying causes of the
+missingness, they should be imputed using different
+approaches. Typically, MNAR features can imputed using left-censored
+method, that will impute using a *small* value, reflective of the
+absence of the feature, while MAR features should be imputed using
+*hot deck* approaches, i.e. methods that impute using *similar* or
+*matching* values.
+
+We would like to caution users on the risks of imputation, in
+particular when a high proportion of values are missing. Given the
+different types of missingness, wrongly imputing values can
+substantially distort downstream analyses and their validity. In such
+situations, it might be safer to avoid imputation altogether, and
+maintain missing values. Is can also be helpful to filter out features
+with *too many* missing values - the `filterNA()` function can be used
+to such effect.
+
+The imputation methods available in the `r BiocStyle::Biocpkg("MsCoreUtils")`
+package can be listed programmatically with the `imputeMethods()`
+function and are documented in the `?impute_matrix` [documentation
+page](https://rformassspectrometry.github.io/MsCoreUtils/reference/imputation.html).
+
+```{r imputeMethods}
+imputeMethods()
+```
+
+Note that 0s are technically impossible to be recorded by a mass
+spectrometer, and should never be observed in a dataset. If present,
+these are the result of a prior zero-imputation by the pre-processing
+software that erroneously suggest that the feature was of the MNAR
+type and effectively absent in the sample. We advise to start your
+processing by replacing these misleading 0 by a missing value. This
+could be achieved with the `zeroIsNA()` method if your data is
+formated as a `SummarizedExperiment` object [@SummarizedExperiment].
+
+
+## Example data
+
+```{r mkdata}
+m <- matrix(1:50, nrow = 10)
+diag(m) <- NA
+m[which(is.na(m)) + 5] <- NA
+dimnames(m) <- list(paste0("F", 1:10), paste0("S", 1:5))
+randna <- rep(c(TRUE, FALSE), each = 5)
+se <- SummarizedExperiment(assays = m,
+                           rowData = data.frame(randna))
+se
+```
+
+We are going to use the small `SummarizedExperiment` to illustrate the
+different imputation approaches and their parametrisation. It is
+composed of 10 features and 5 samples, and contains 5 missing values
+aligned diagonally along the top and bottom parts of the data matrix.
+
+```{r se}
+assay(se)
+```
+
+In the following sections, we will use the [`impute()`
+method](https://rformassspectrometry.github.io/QFeatures/reference/impute.html)
+(see `?QFeatures::impute`) and apply it to the `SummarizedExperiment`
+instance `se` above. The method is also applicable to `QFeatures`
+objects. The individual `impute_matrix()` and other `impute_*` from
+the `MsCoreUtils` package can be applied directly on `matrix` objects.
+
+# Simple imputation
+
+We refer to *simple* (or *single*) imputation when a single imputation
+method is used across the whole dataset. For example, if we want to
+replace all missing values by 0, we can use the `impute()` method as
+shown below.
+
+```{r simpleImputation}
+impute(se, method = "zero") |> assay()
+```
+
+Setting the `method` to `"zero"` will apply the
+`MsCoreUtils::impute_zero()` function on the object's assay.
+
+## Passing paramters to the imputation function
+
+Or, if we want to impute all missing values with a specific value such
+as 0.5, we can use the `"with"` method to apply the
+`MsCoreUtils::impute_with()` function. This function requires an
+additional argument, `val`, that defines the specific value that
+should be used to replace missing values.
+
+```{r imputeWith}
+impute(se, method = "with", val = 0.5) |> assay()
+```
+
+Each of the underlying function's details are documented in the
+`?impute_zero`, `?impute_with`, ... manual pages, that all lead to the
+main `?impute_matrix` documentation.
+
+# The MARGIN argument
+
+In the two simple examples above, there is no sense of direction when
+imputing, as every missing value is replaced by a single, pre-defined
+value. In many cases however, this is not the case. To illustrate
+this, let's use the `"MinDet"` method (see `?impute_MinDet`). *MinDet*
+performs the imputation of left-censored missing data using a
+deterministic minimal value approach. Considering a expression data
+with _n_ samples and _p_ features, for each *sample*, the missing
+entries are replaced with a minimal value observed in that sample. The
+minimal value observed is estimated as being the q-th quantile
+(default `q = 0.01`) of the observed values in that sample.
+
+Below, we are going to set `q = 0` to impute with the minimal value
+within each sample.
+
+```{r imputeMinDet}
+impute(se, method = "MinDet", q = 0) |> assay()
+```
+
+As can be seen, the missing values in sample S1, namely F1 and F6,
+have been imputed by the smallest observed value in S1, namely 2. And
+similarly for the four other samples.
+
+In the definition above, it is explicitly stated that the imputation
+is done for each sample, i.e. along the columns of the quantitative
+matrix, also called the second margin. We can repeat the same
+imputation by explicitly setting `MARGIN = 2`.
+
+```{r imputeMinDetMargin2}
+impute(se, method = "MinDet", q = 0, MARGIN = 2) |> assay()
+```
+
+And indeed, the default margin for the `"MinDet"` method is 2:
+
+```{r imputeMinDetDefaultMargin}
+getImputeMargin("impute_MinDet")
+```
+
+The imputation margin is not always 2. The *nearest neighbour*
+imputation method chooses a certain number of similar features. By
+similar features, we explicitly refer to other rows, i.e. the first
+margin:
+
+```{r imputeKnnDetDefaultMargin}
+getImputeMargin("impute_knn")
+```
+
+It is possible to change the margin from its default value. Below, we
+now use `"MinDet"` and choose the smallest value within each
+feature/row.
+
+```{r imputeMinDetMargin1}
+impute(se, method = "MinDet", q = 0, MARGIN = 1) |> assay()
+```
+
+Now, we see that the missing F1 value in S1 has been imputed by the
+smallest observed value along the first row, namely 11.
+
+We can extract all default margin values for all
+`MsCoreUtils::impute_*` functions as show below.
+
+```{r defaultMargins}
+getImputeMargin()
+```
+
+A missing margin means that, as for `"with"` or `"zero"` above, there
+is not margin along which the imputation is performed. Mixed
+imputation is a special case that has two margins, which we will
+describe in the next section.
+
+The relevance of the imputation margin can also depend on downstream
+analyses. In [@Vanderaa:2023], the authors illustrate that imputation
+along the first margin increases the correlation between features,
+while imputation along the second margin increases the correlation
+between samples. These artificially improved correlations can then in
+turn impact any analyses that rely on the identification of sample or
+protein clusters.
+
+# Mixed imputation
+
+As we have seen above, different underlying processes can lead to
+different types of missing values, namely MAR and MNAR. One view of
+this is to define these processes at the feature level ^[Nowadays, I
+believe that this feature-level representation of MAR or MNAR is not
+entirely correct. It can be useful in some simple cases though.]. In
+such cases, one might want to impute different sets of features in a
+*mixed* way: MAR features with a MAR-appropriate method, and MNAR
+features with a MNAR-appropriate method. This is possible is the
+`"mixed"` method.
+
+To be able to apply mixed imputation, we need to define features that
+are MAR, and features that are MNAR. This is done using a logical
+vector whose length is equal to the number of features.
+
+```{r randna}
+rowData(se)$randna
+```
+
+The `TRUE` values define the MAR features (F1 to F5 in our case) and
+`FALSE` defines MNAR features (F6 to F10).
+
+To use mixed imputation, we need to specify the MAR and MNAR features,
+two imputation methods, one for MAR features, and another one for MNAR
+features.
+
+```{r imputeMixedSimple}
+impute(se, method = "mixed",
+       randna = rowData(se)$randna,
+       mar = "MinDet",
+       mnar = "zero") |>
+    assay()
+```
+
+We can see that the bottom-half of the matrix corresponding to MNAR
+features have been imputed by zero, while the other have imputed by
+`"MinDet"`. We also see that the margin used for `"MinDet"` was 1
+(along the rows). Indeed, the default margins are 1 for both MAR and
+MNAR features: the first one is for MAR, and the second one for MNAR.
+
+```{r defaultMixedMargins}
+getImputeMargin("impute_mixed")
+```
+
+## Different margins
+
+It is of course possible to change the margins when performing mixed
+imputation:
+
+```{r imputeMixedWithMargins}
+impute(se, method = "mixed",
+       randna = rowData(se)$randna,
+       mar = "MinDet",
+       mnar = "zero",
+       MARGIN = c(2, NA)) |>
+    assay()
+```
+
+We set `NA` for zero-imputation (it could also have been 1, as it is
+irrelevant anyway) and 2 for MinDet-imputation. And we can confirm
+that this time, the the MAR features have been imputed using the
+smallest values have been choosen for each sample/column.
+
+## Passing paramters to the imputation functions
+
+It is possible to pass arguments to the respective MAR and MNAR
+function using the `marArgs` and `mnarArg` arguments as named
+lists. Below, we are going to use *MinDet* in both cases, with
+different parameters.
+
+```{r mixedWithArgs}
+impute(se,
+       method = "mixed",
+       randna = rowData(se)$randna,
+       mar = "MinDet",
+       mnar = "MinDet",
+       marArgs = list(q = 0),
+       mnarArgs = list(q = 1),
+       MARGIN = c(1, 1)) |>
+    assay()
+```
+
+In both cases, we impute along the rows. For the MAR features (top
+half of the matrix), we impute using the minimal value of that row
+(using `q = 0`), while for the MNAR feature (bottom half of the
+matrix), we impute using the maximal value of that row (using `q = 1`).
+As anticipated, the value of F1 in S1 gets 11, and F5 in S1 gets 46.
+
+## Using the whole matrix to compute imputated values
+
+When doing mixed imputation, the respective MAR and MNAR sub-matrices
+are split and imputed separately. It is also possible the use the
+whole data matrix to compute the MAR and MNAR imputated values. This
+is controlled by the `split` argument that, by default, is set to
+`TRUE`.
+
+Below, we are going to repeat a mixed imputation, imputing the MAR
+values (the top half of the matrix) with the highest value of the
+*whole* columns using `MARGIN = 2` and `split = TRUE`. The NMAR values
+(the bottom half of the matrix) are impute using the smallest value
+along the rows using `MARGIN = 1`, and are hence not impacted by the
+`split` value.
+
+```{r mixedNoSplit}
+impute(se,
+       method = "mixed",
+       randna = rowData(se)$randna,
+       mar = "MinDet",
+       mnar = "MinDet",
+       marArgs = list(q = 1),
+       mnarArgs = list(q = 0),
+       MARGIN = c(2, 1),
+       split = FALSE) |>
+    assay()
+```
+
+We see that the value of F1 in S1 gets 10, the highest value from F10
+in S1. If we keep the default `split = TRUE`, it would have gotten 5
+from F5, the highest value among the MAR values. The MNAR imputation
+isn't affected by the split and get the smallest values in each row.
+
+# Session information {-}
+
+```{r sessioninfo, echo=FALSE}
+sessionInfo()
+```
+
+# References {-}

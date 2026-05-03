@@ -35,12 +35,13 @@ library("dplyr")
 
 We are going to use a subset of the CPTAC study 6 containing
 conditions A and B [@Paulovich:2010]. The peptide-level data, as
-processed by MaxQuant [@Cox:2008] is available in the `msdata`
+processed by MaxQuant [@Cox:2008] is available in the `MsDataHub`
 package:
 
 
 ```{r msdata}
-basename(f <- msdata::quant(pattern = "cptac", full.names = TRUE))
+x <- MsDataHub::cptac_a_b_peptides.txt() |>
+    read.delim()
 ```
 
 From the names of the columns, we see that the quantitative columns,
@@ -48,7 +49,6 @@ starting with `"Intensity."` (note the dot!) are at positions 56 to
 61.
 
 ```{r cptac_cols}
-x <- read.delim(f)
 names(x)
 (i <- grep("Intensity\\.", names(x)))
 ```
@@ -207,7 +207,6 @@ of mechanisms resulting in missing values in LC/MSMS experiments.
   distributed in the data and are defined as *missing not at random*
   (MNAR).
 
-
 MAR and MCAR values can be reasonably well tackled by many imputation
 methods. MNAR data, however, requires some knowledge about the
 underlying mechanism that generates the missing data, to be able to
@@ -238,6 +237,12 @@ values (if any) (yellow on figure \@ref(fig:miximp)) and a
 deterministic minimum value imputation on the
 `r sum(!rowData(se_na2)$randna)` proteins that display a non-random pattern
 of missing values (brown on figure \@ref(fig:miximp)).
+
+See the dedicated [Imputation
+vignette](https://rformassspectrometry.github.io/QFeatures/articles/Imputation.html),
+(availabel from within R with `vignette("Pmputation", package =
+"QFeatures")`) for technical details on the imputation functions and
+methods.
 
 # Data transformation
 
