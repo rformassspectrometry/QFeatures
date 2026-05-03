@@ -138,9 +138,8 @@
 ##'     further details.
 ##'
 ##' @aliases aggregateFeatures aggregateFeatures,QFeatures-method
-##'     aggcounts aggcounts,SummarizedExperiment-method
-##'     adjacencyMatrix,SummarizedExperiment-method
-##'     adjacencyMatrix,QFeatures-method
+##' @aliases aggcounts aggcounts,SummarizedExperiment-method
+##' @aliases adjacencyMatrix,SummarizedExperiment-method adjacencyMatrix,QFeatures-method
 ##'
 ##' @name aggregateFeatures
 ##'
@@ -255,7 +254,10 @@
 NULL
 
 ##' @exportMethod aggregateFeatures
+##'
 ##' @rdname QFeatures-aggregate
+##'
+##' @importFrom utils txtProgressBar setTxtProgressBar
 setMethod("aggregateFeatures", "QFeatures",
           function(object, i, fcol, name = "newAssay",
                    fun = MsCoreUtils::robustSummary, ...) {
@@ -280,7 +282,7 @@ setMethod("aggregateFeatures", "QFeatures",
                   from <- i[[j]]
                   fromAssay <- el[[from]]
                   by <- fcol[[j]]
-                  set_name <- names(object)[[j]] 
+                  set_name <- names(object)[[j]]
 
                   ## Remove already discarded columns from rowData
                   rowDataColsKept <- intersect(
@@ -294,7 +296,7 @@ setMethod("aggregateFeatures", "QFeatures",
                       aggregateFeatures(fromAssay, by, fun, ...),
                       message = function(m) {
                           txt <- conditionMessage(m)
-                          msg_log[[txt]] <<- unique(c(msg_log[[txt]], set_name)) 
+                          msg_log[[txt]] <<- unique(c(msg_log[[txt]], set_name))
                           invokeRestart("muffleMessage")
                       }
                   )
@@ -304,7 +306,7 @@ setMethod("aggregateFeatures", "QFeatures",
               }
 
               close(pb)
-              
+
               ## Aggregate shared messages
               if (length(msg_log)) {
                   message("The following messages occurred during aggregation:")

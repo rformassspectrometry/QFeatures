@@ -146,6 +146,8 @@ readQFeaturesFromDIANN <- function(assayData,
 ## (Only for dimethyl multiplexing!) Internal function that identifies constant
 ## columns within precursor and puts the quantification data for different
 ## channels in separate columns (wide format).
+
+##' @importFrom dplyr everything
 .formatDimethylReportData <- function(assayData, colData, quantCols, runCol) {
   idCols <- .findPrecursorVariables(assayData,
                                     precursorId = "Precursor.Id",

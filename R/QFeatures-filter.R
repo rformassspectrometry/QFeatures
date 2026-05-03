@@ -45,9 +45,9 @@
 ##' - The `isDuplicated()` function takes a vector (or rowData variable when
 ##'   used to filter features) as input, and return a logical of the same
 ##'   length, with elements set to `TRUE` for unique occurence, and `FALSE`
-##'   otherwise. This function is different from [duplicated()], as here even
-##'   the first occurence is set to `FALSE`. See [createPrecursorId()] for an
-##'   application.
+##'   otherwise. This function is different from [base::duplicated()], as here
+##'   even the first occurence is set to `FALSE`. See [createPrecursorId()] for
+##'   an application.
 ##'
 ##' @seealso The [QFeatures] man page for subsetting and the `QFeatures`
 ##'     vignette provides an extended example.

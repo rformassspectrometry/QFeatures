@@ -113,9 +113,9 @@ arbitrary filters operate either on a character variables (as
 \item The \code{isDuplicated()} function takes a vector (or rowData variable when
 used to filter features) as input, and return a logical of the same
 length, with elements set to \code{TRUE} for unique occurence, and \code{FALSE}
-otherwise. This function is different from \code{\link[=duplicated]{duplicated()}}, as here even
-the first occurence is set to \code{FALSE}. See \code{\link[=createPrecursorId]{createPrecursorId()}} for an
-application.
+otherwise. This function is different from \code{\link[base:duplicated]{base::duplicated()}}, as here
+even the first occurence is set to \code{FALSE}. See \code{\link[=createPrecursorId]{createPrecursorId()}} for
+an application.
 }
 }
 

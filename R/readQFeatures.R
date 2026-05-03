@@ -457,6 +457,9 @@ readQFeatures <- function(assayData,
 ##'     `f` will be matched to the row and column data variable names
 ##'     (in that order). If a match is found, the respective variable
 ##'     is extracted, converted to a factor if needed.
+##'
+##' @importFrom stats setNames
+##'
 ##' @noRd
 .splitSE <- function(x, f, verbose = FALSE) {
     ## Check that f is a factor
@@ -573,14 +576,14 @@ readQFeatures <- function(assayData,
     is_ok <- sapply(names(object), function(ii){
         ifelse(fcol %in% names(rowData(object[[ii]])), TRUE, FALSE)
     })
-    if (any(!is_ok)) 
+    if (any(!is_ok))
         stop(sQuote(fcol), " not found in the following assays: ",
              paste0(names(object)[!is_ok], collapse = ", "), ".")
     expl <- lapply(names(object), function(ii) {
         x <- object[[ii]]
         rn <- rowData(x)[[fcol]]
         if (anyDuplicated(rn)) {
-            warning("Duplicated entries found in ", sQuote(fcol), 
+            warning("Duplicated entries found in ", sQuote(fcol),
                     " in rowData of assay ", ii, "; they are made unique.")
             rn <- make.unique(as.character(rn))
         }
