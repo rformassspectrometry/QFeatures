@@ -9,7 +9,7 @@ the impact of missing values on data processing. `se_na2` is an
 ## Usage
 
 ``` r
-feat1
+data(feat1)
 ```
 
 ## Format

@@ -217,4 +217,24 @@ readQFeaturesFromDIANN(x2, multiplexing = "mTRAQ")
 #>  [52] wJD1203: SummarizedExperiment with 4441 rows and 3 columns 
 #>  [53] wJD1204: SummarizedExperiment with 4416 rows and 3 columns 
 #>  [54] wJD1205: SummarizedExperiment with 4492 rows and 3 columns 
+
+#################################
+## dimethyl multi-set case
+
+x3 <- system.file("extdata", package = "QFeatures") |>
+       dir(full.names = TRUE) |>
+       read.delim()
+readQFeaturesFromDIANN(x3, multiplexing = 'dimethyl', runCol = 'Run')
+#> Pivoting dimethyl quantiative data.
+#> Checking arguments.
+#> Loading data as a 'SummarizedExperiment' object.
+#> Splitting data in runs.
+#>   |                                                                              |                                                                      |   0%  |                                                                              |=======================                                               |  33%  |                                                                              |===============================================                       |  67%  |                                                                              |======================================================================| 100%
+#> Formatting sample annotations (colData).
+#> Formatting data as a 'QFeatures' object.
+#> An instance of class QFeatures (type: bulk) with 3 sets:
+#> 
+#>  [1] A2: SummarizedExperiment with 28 rows and 3 columns 
+#>  [2] A4: SummarizedExperiment with 57 rows and 3 columns 
+#>  [3] A5: SummarizedExperiment with 18 rows and 3 columns 
 ```

@@ -56,7 +56,7 @@ isDuplicated(x)
 - filter:
 
   Either an instance of class
-  [AnnotationFilter::AnnotationFilter](https://rdrr.io/pkg/AnnotationFilter/man/AnnotationFilter.html)
+  [AnnotationFilter](https://rdrr.io/pkg/AnnotationFilter/man/AnnotationFilter.html)
   or a formula.
 
 - i:
@@ -113,7 +113,7 @@ assay is desired, you may want to use `x[i, , ]` instead (see the
 ## Variable filters
 
 The variable filters are filters as defined in the
-[AnnotationFilter::AnnotationFilter](https://rdrr.io/pkg/AnnotationFilter/man/AnnotationFilter.html)
+[AnnotationFilter](https://rdrr.io/pkg/AnnotationFilter/man/AnnotationFilter.html)
 package. In addition to the pre-defined filter, users can arbitrarily
 set a field on which to operate. These arbitrary filters operate either
 on a character variables (as `CharacterVariableFilter` objects) or
@@ -126,8 +126,8 @@ with the `VariableFilter` constructor.
   used to filter features) as input, and return a logical of the same
   length, with elements set to `TRUE` for unique occurence, and `FALSE`
   otherwise. This function is different from
-  [`BiocGenerics::duplicated()`](https://rdrr.io/pkg/BiocGenerics/man/duplicated.html),
-  as here even the first occurence is set to `FALSE`. See
+  [`base::duplicated()`](https://rdrr.io/r/base/duplicated.html), as
+  here even the first occurence is set to `FALSE`. See
   [`createPrecursorId()`](https://rformassspectrometry.github.io/QFeatures/reference/createPrecursorId.md)
   for an application.
 

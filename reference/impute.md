@@ -15,8 +15,6 @@ strategies.
 ## Usage
 
 ``` r
-impute
-
 # S4 method for class 'SummarizedExperiment'
 impute(object, method, ...)
 

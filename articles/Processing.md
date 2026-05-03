@@ -751,10 +751,10 @@ Ridge Regression Improves Estimation, Sensitivity, and Specificity in
 Data-Dependent Quantitative Label-Free Shotgun Proteomics.” *Mol Cell
 Proteomics* 15 (2): 657–68. <https://doi.org/10.1074/mcp.M115.055897>.
 
-Lazar, C, L Gatto, M Ferro, C Bruley, and T Burger. 2016. “Accounting
-for the Multiple Natures of Missing Values in Label-Free Quantitative
-Proteomics Data Sets to Compare Imputation Strategies.” *J Proteome Res*
-15 (4): 1116–25. <https://doi.org/10.1021/acs.jproteome.5b00981>.
+Lazar, Cosmin, Laurent Gatto, Myriam Ferro, Christophe Bruley, and
+Thomas Burger. 2016. “Accounting for the Multiple Natures of Missing
+Values in Label-Free Quantitative Proteomics Data Sets to Compare
+Imputation Strategies.” *J. Proteome Res.* 15 (4): 1116–25.
 
 Paulovich, Amanda G, Dean Billheimer, Amy-Joan L Ham, et al. 2010.
 “Interlaboratory Study Characterizing a Yeast Performance Standard for

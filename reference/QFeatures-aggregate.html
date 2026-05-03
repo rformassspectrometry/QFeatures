@@ -165,7 +165,7 @@ the adjacency matrix. Default is <code>"adjacencyMatrix"</code>.</p></dd>
 <dd><p>An adjacency matrix with row and column names. The
 matrix will be coerced to compressed, column-oriented sparse
 matrix (class <code>dgCMatrix</code>) as defined in the <code>Matrix</code> package,
-as generaled by the <code><a href="https://rdrr.io/pkg/Matrix/man/sparseMatrix.html" class="external-link">Matrix::sparseMatrix()</a></code> constructor.</p></dd>
+as generaled by the <code><a href="https://rdrr.io/pkg/Matrix/man/sparseMatrix.html" class="external-link">sparseMatrix()</a></code> constructor.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -248,7 +248,7 @@ that map to multiple proteins rather than as a protein group, it
 is convenient to encode this ambiguity explicitly using a
 peptide-by-proteins (sparse) adjacency matrix. This matrix is
 typically stored in the rowdata and set/retrieved with the
-<code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">ProtGenerics::adjacencyMatrix()</a></code> function. It can be created manually (as
+<code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">adjacencyMatrix()</a></code> function. It can be created manually (as
 illustrated below) or using <code>PSMatch::makeAdjacencyMatrix()</code>.</p>
     </div>
     <div class="section level2">

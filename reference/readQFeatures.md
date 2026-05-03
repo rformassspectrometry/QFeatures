@@ -3,7 +3,7 @@
 These functions convert tabular data into dedicated data objets. The
 `readSummarizedExperiment()` function takes a file name or `data.frame`
 and converts it into a
-[`SummarizedExperiment::SummarizedExperiment()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
+[`SummarizedExperiment()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
 object. The `readQFeatures()` function takes a `data.frame` and converts
 it into a `QFeatures` object (see
 [`QFeatures()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)

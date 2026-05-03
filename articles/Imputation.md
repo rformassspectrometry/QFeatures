@@ -1,5 +1,13 @@
 # Imputing quantitative proteomics data
 
+Abstract
+
+This vignette describes the multiple ways to perform imputation using
+the
+[`impute()`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)
+methods and the underlying support function from the *MsCoreUtils*
+package. This vignette is distributed under a CC BY-SA license.
+
 ## Introduction
 
 This vignette provides a technical description of the imputation
@@ -18,15 +26,15 @@ library(QFeatures)
 ```
 
 This vignette focuses on the technical aspects of imputation, without
-delving in the scientific motivations too much - see
-\[@Webb-Robertson:2015; @Lazar:2016; @Bramer:2021\] for the necessary
+delving in the scientific motivations too much - see (Webb-Robertson et
+al. 2015; Lazar et al. 2016; Bramer et al. 2021) for the necessary
 backgroud. We will simply introduce important concepts when needed and
 refer to some relevant papers for further reading.
 
-An important concept, described among others in \[@Lazar:2016\], is data
-that can be missing *at random* (MAR) or missing *not at random* (MNAR).
-A MNAR feature is assumed to be missing in the data because is was
-effectively absent or below the limit of detection in the biological
+An important concept, described among others in (Lazar et al. 2016), is
+data that can be missing *at random* (MAR) or missing *not at random*
+(MNAR). A MNAR feature is assumed to be missing in the data because is
+was effectively absent or below the limit of detection in the biological
 sample. MAR features, on the other hand, have not been detected or
 identified due to technological limitations such as poor ionisation,
 competition among precursors (in data dependent acquisition), or absence
@@ -74,7 +82,7 @@ by replacing these misleading 0 by a missing value. This could be
 achieved with the
 [`zeroIsNA()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-missing-data.md)
 method if your data is formated as a `SummarizedExperiment` object
-\[@SummarizedExperiment\].
+(Morgan et al. 2019).
 
 ### Example data
 
@@ -360,12 +368,12 @@ a special case that has two margins, which we will describe in the next
 section.
 
 The relevance of the imputation margin can also depend on downstream
-analyses. In \[@Vanderaa:2023\], the authors illustrate that imputation
-along the first margin increases the correlation between features, while
-imputation along the second margin increases the correlation between
-samples. These artificially improved correlations can then in turn
-impact any analyses that rely on the identification of sample or protein
-clusters.
+analyses. In (Vanderaa and Gatto 2023), the authors illustrate that
+imputation along the first margin increases the correlation between
+features, while imputation along the second margin increases the
+correlation between samples. These artificially improved correlations
+can then in turn impact any analyses that rely on the identification of
+sample or protein clusters.
 
 ## Mixed imputation
 
@@ -610,6 +618,28 @@ affected by the split and get the smallest values in each row.
     ## [58] rmarkdown_2.31          compiler_4.6.0
 
 ## References
+
+Bramer, Lisa M, Jan Irvahn, Paul D Piehowski, Karin D Rodland, and
+Bobbie-Jo M Webb-Robertson. 2021. “A Review of Imputation Strategies for
+Isobaric Labeling-Based Shotgun Proteomics.” *J. Proteome Res.* 20 (1):
+1–13.
+
+Lazar, Cosmin, Laurent Gatto, Myriam Ferro, Christophe Bruley, and
+Thomas Burger. 2016. “Accounting for the Multiple Natures of Missing
+Values in Label-Free Quantitative Proteomics Data Sets to Compare
+Imputation Strategies.” *J. Proteome Res.* 15 (4): 1116–25.
+
+Morgan, Martin, Valerie Obenchain, Jim Hester, and Hervé Pagès. 2019.
+*SummarizedExperiment: SummarizedExperiment Container*.
+
+Vanderaa, Christophe, and Laurent Gatto. 2023. “Revisiting the Thorny
+Issue of Missing Values in Single-Cell Proteomics.” *arXiv
+\[q-Bio.QM\]*, April.
+
+Webb-Robertson, Bobbie-Jo M, Holli K Wiberg, Melissa M Matzke, et al.
+2015. “Review, Evaluation, and Discussion of the Challenges of Missing
+Value Imputation for Mass Spectrometry-Based Label-Free Global
+Proteomics.” *J. Proteome Res.* 14 (5): 1993–2001.
 
 [^1]: Nowadays, I believe that this feature-level representation of MAR
     or MNAR is not entirely correct. It can be useful in some simple

@@ -61,7 +61,7 @@ For further details, install the `pRolocdata` package and see
 ## Usage
 
 ``` r
-hlpsms
+data(hlpsms)
 ```
 
 ## Format

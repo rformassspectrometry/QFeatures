@@ -81,8 +81,7 @@ Filtering and handling of missing values
   [`filterNA(`*`<SummarizedExperiment>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-missing-data.md)
   [`filterNA(`*`<QFeatures>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-missing-data.md)
   : Managing missing data
-- [`impute`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)
-  [`impute(`*`<SummarizedExperiment>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)
+- [`impute(`*`<SummarizedExperiment>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)
   [`impute(`*`<QFeatures>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)
   : Quantitative proteomics data imputation
 

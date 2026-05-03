@@ -22,7 +22,7 @@ present:
 ## Usage
 
 ``` r
-feat3
+data(feat3)
 ```
 
 ## Format

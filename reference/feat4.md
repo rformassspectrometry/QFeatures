@@ -8,7 +8,7 @@ merging, as shown in
 ## Usage
 
 ``` r
-feat4
+data(feat4)
 ```
 
 ## Format

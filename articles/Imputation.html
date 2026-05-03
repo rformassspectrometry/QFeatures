@@ -75,6 +75,13 @@ Gatto</h4>
     </div>
 
     
+        <div class="abstract">
+      <p class="abstract">Abstract</p>
+      <p>This vignette describes the multiple ways to perform imputation
+      using the <code><a href="../reference/impute.html">impute()</a></code> methods and the underlying support
+      function from the <em>MsCoreUtils</em> package. This vignette is
+      distributed under a CC BY-SA license.</p>
+    </div>
     
 <script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function() {
@@ -100,11 +107,11 @@ the specific imputation implementation approaches.</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/MsCoreUtils" class="external-link">MsCoreUtils</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rformassspectrometry.github.io/QFeatures">QFeatures</a></span><span class="op">)</span></span></code></pre></div>
 <p>This vignette focuses on the technical aspects of imputation, without
-delving in the scientific motivations too much - see <span class="citation">[@Webb-Robertson:2015; @Lazar:2016;
-@Bramer:2021]</span> for the necessary backgroud. We will simply
+delving in the scientific motivations too much - see <span class="citation">(Webb-Robertson et al. 2015; Lazar et al. 2016; Bramer
+et al. 2021)</span> for the necessary backgroud. We will simply
 introduce important concepts when needed and refer to some relevant
 papers for further reading.</p>
-<p>An important concept, described among others in <span class="citation">[@Lazar:2016]</span>, is data that can be missing
+<p>An important concept, described among others in <span class="citation">(Lazar et al. 2016)</span>, is data that can be missing
 <em>at random</em> (MAR) or missing <em>not at random</em> (MNAR). A
 MNAR feature is assumed to be missing in the data because is was
 effectively absent or below the limit of detection in the biological
@@ -142,7 +149,7 @@ software that erroneously suggest that the feature was of the MNAR type
 and effectively absent in the sample. We advise to start your processing
 by replacing these misleading 0 by a missing value. This could be
 achieved with the <code><a href="../reference/QFeatures-missing-data.html">zeroIsNA()</a></code> method if your data is
-formated as a <code>SummarizedExperiment</code> object <span class="citation">[@SummarizedExperiment]</span>.</p>
+formated as a <code>SummarizedExperiment</code> object <span class="citation">(Morgan et al. 2019)</span>.</p>
 <div class="section level3">
 <h3 id="example-data">Example data<a class="anchor" aria-label="anchor" href="#example-data"></a>
 </h3>
@@ -371,12 +378,12 @@ smallest observed value along the first row, namely 11.</p>
 imputation is performed. Mixed imputation is a special case that has two
 margins, which we will describe in the next section.</p>
 <p>The relevance of the imputation margin can also depend on downstream
-analyses. In <span class="citation">[@Vanderaa:2023]</span>, the authors
-illustrate that imputation along the first margin increases the
-correlation between features, while imputation along the second margin
-increases the correlation between samples. These artificially improved
-correlations can then in turn impact any analyses that rely on the
-identification of sample or protein clusters.</p>
+analyses. In <span class="citation">(Vanderaa and Gatto 2023)</span>,
+the authors illustrate that imputation along the first margin increases
+the correlation between features, while imputation along the second
+margin increases the correlation between samples. These artificially
+improved correlations can then in turn impact any analyses that rely on
+the identification of sample or protein clusters.</p>
 </div>
 <div class="section level2">
 <h2 id="mixed-imputation">Mixed imputation<a class="anchor" aria-label="anchor" href="#mixed-imputation"></a>
@@ -600,6 +607,37 @@ each row.</p>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Bramer:2021" class="csl-entry">
+Bramer, Lisa M, Jan Irvahn, Paul D Piehowski, Karin D Rodland, and
+Bobbie-Jo M Webb-Robertson. 2021. <span>“A Review of Imputation
+Strategies for Isobaric Labeling-Based Shotgun Proteomics.”</span>
+<em>J. Proteome Res.</em> 20 (1): 1–13.
+</div>
+<div id="ref-Lazar:2016" class="csl-entry">
+Lazar, Cosmin, Laurent Gatto, Myriam Ferro, Christophe Bruley, and
+Thomas Burger. 2016. <span>“Accounting for the Multiple Natures of
+Missing Values in Label-Free Quantitative Proteomics Data Sets to
+Compare Imputation Strategies.”</span> <em>J. Proteome Res.</em> 15 (4):
+1116–25.
+</div>
+<div id="ref-SE" class="csl-entry">
+Morgan, Martin, Valerie Obenchain, Jim Hester, and Hervé Pagès. 2019.
+<em><span>SummarizedExperiment</span>: <span>SummarizedExperiment</span>
+Container</em>.
+</div>
+<div id="ref-Vanderaa:2023" class="csl-entry">
+Vanderaa, Christophe, and Laurent Gatto. 2023. <span>“Revisiting the
+Thorny Issue of Missing Values in Single-Cell Proteomics.”</span>
+<em>arXiv [q-Bio.QM]</em>, April.
+</div>
+<div id="ref-Webb-Robertson:2015" class="csl-entry">
+Webb-Robertson, Bobbie-Jo M, Holli K Wiberg, Melissa M Matzke, et al.
+2015. <span>“Review, Evaluation, and Discussion of the Challenges of
+Missing Value Imputation for Mass Spectrometry-Based Label-Free Global
+Proteomics.”</span> <em>J. Proteome Res.</em> 14 (5): 1993–2001.
+</div>
+</div>
 </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
