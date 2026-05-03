@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">QFeatures</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.23.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.23.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +39,8 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/Processing.html">Processing quantitative proteomics data with QFeatures</a></li>
+<li><a class="dropdown-item" href="../articles/Imputation.html">Imputing quantitative proteomics data </a></li>
+    <li><a class="dropdown-item" href="../articles/Processing.html">Processing quantitative proteomics data with QFeatures</a></li>
     <li><a class="dropdown-item" href="../articles/readQFeatures.html">Load mass spectrometry-based proteomics data using readQFeatures()</a></li>
     <li><a class="dropdown-item" href="../articles/readQFeatures2.html">Supported input formats for readQFeatures()</a></li>
     <li><a class="dropdown-item" href="../articles/Visualization.html">Data visualization from a QFeatures object</a></li>
@@ -607,38 +608,38 @@ and that variable was dropped from the other assays.</p>
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">##  [1] ggplot2_4.0.3               QFeatures_1.23.0           </span></span>
-<span><span class="co">##  [3] MultiAssayExperiment_1.37.4 SummarizedExperiment_1.41.1</span></span>
-<span><span class="co">##  [5] Biobase_2.71.0              GenomicRanges_1.63.2       </span></span>
-<span><span class="co">##  [7] Seqinfo_1.1.0               IRanges_2.45.0             </span></span>
-<span><span class="co">##  [9] S4Vectors_0.49.3            BiocGenerics_0.57.1        </span></span>
-<span><span class="co">## [11] generics_0.1.4              MatrixGenerics_1.23.0      </span></span>
-<span><span class="co">## [13] matrixStats_1.5.0           BiocStyle_2.39.0           </span></span>
+<span><span class="co">##  [1] ggplot2_4.0.3               QFeatures_1.23.1           </span></span>
+<span><span class="co">##  [3] MultiAssayExperiment_1.38.0 SummarizedExperiment_1.42.0</span></span>
+<span><span class="co">##  [5] Biobase_2.72.0              GenomicRanges_1.64.0       </span></span>
+<span><span class="co">##  [7] Seqinfo_1.2.0               IRanges_2.46.0             </span></span>
+<span><span class="co">##  [9] S4Vectors_0.50.0            BiocGenerics_0.58.0        </span></span>
+<span><span class="co">## [11] generics_0.1.4              MatrixGenerics_1.24.0      </span></span>
+<span><span class="co">## [13] matrixStats_1.5.0           BiocStyle_2.40.0           </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] gtable_0.3.6            xfun_0.57               bslib_0.10.0           </span></span>
 <span><span class="co">##  [4] htmlwidgets_1.6.4       lattice_0.22-9          vctrs_0.7.3            </span></span>
 <span><span class="co">##  [7] tools_4.6.0             tibble_3.3.1            cluster_2.1.8.2        </span></span>
-<span><span class="co">## [10] BiocBaseUtils_1.13.0    pkgconfig_2.0.3         Matrix_1.7-5           </span></span>
+<span><span class="co">## [10] BiocBaseUtils_1.14.0    pkgconfig_2.0.3         Matrix_1.7-5           </span></span>
 <span><span class="co">## [13] RColorBrewer_1.1-3      S7_0.2.2                desc_1.4.3             </span></span>
 <span><span class="co">## [16] lifecycle_1.0.5         farver_2.1.2            compiler_4.6.0         </span></span>
 <span><span class="co">## [19] stringr_1.6.0           textshaping_1.0.5       clue_0.3-68            </span></span>
 <span><span class="co">## [22] htmltools_0.5.9         sass_0.4.10             yaml_2.3.12            </span></span>
 <span><span class="co">## [25] lazyeval_0.2.3          pkgdown_2.2.0.9000      pillar_1.11.1          </span></span>
 <span><span class="co">## [28] jquerylib_0.1.4         tidyr_1.3.2             MASS_7.3-65            </span></span>
-<span><span class="co">## [31] DelayedArray_0.37.1     cachem_1.1.0            abind_1.4-8            </span></span>
+<span><span class="co">## [31] DelayedArray_0.38.1     cachem_1.1.0            abind_1.4-8            </span></span>
 <span><span class="co">## [34] tidyselect_1.2.1        digest_0.6.39           stringi_1.8.7          </span></span>
 <span><span class="co">## [37] purrr_1.2.2             dplyr_1.2.1             reshape2_1.4.5         </span></span>
 <span><span class="co">## [40] bookdown_0.46           labeling_0.4.3          fastmap_1.2.0          </span></span>
-<span><span class="co">## [43] grid_4.6.0              cli_3.6.6               SparseArray_1.11.13    </span></span>
-<span><span class="co">## [46] magrittr_2.0.5          S4Arrays_1.11.1         withr_3.0.2            </span></span>
-<span><span class="co">## [49] scales_1.4.0            rmarkdown_2.31          XVector_0.51.0         </span></span>
+<span><span class="co">## [43] grid_4.6.0              cli_3.6.6               SparseArray_1.12.2     </span></span>
+<span><span class="co">## [46] magrittr_2.0.5          S4Arrays_1.12.0         withr_3.0.2            </span></span>
+<span><span class="co">## [49] scales_1.4.0            rmarkdown_2.31          XVector_0.52.0         </span></span>
 <span><span class="co">## [52] igraph_2.3.0            otel_0.2.0              ragg_1.5.2             </span></span>
 <span><span class="co">## [55] evaluate_1.0.5          knitr_1.51              rlang_1.2.0            </span></span>
 <span><span class="co">## [58] Rcpp_1.1.1-1.1          glue_1.8.1              BiocManager_1.30.27    </span></span>
-<span><span class="co">## [61] jsonlite_2.0.0          AnnotationFilter_1.35.0 R6_2.6.1               </span></span>
+<span><span class="co">## [61] jsonlite_2.0.0          AnnotationFilter_1.36.0 R6_2.6.1               </span></span>
 <span><span class="co">## [64] plyr_1.8.9              systemfonts_1.3.2       fs_2.1.0               </span></span>
-<span><span class="co">## [67] ProtGenerics_1.43.0     MsCoreUtils_1.23.10</span></span></code></pre>
+<span><span class="co">## [67] ProtGenerics_1.44.0     MsCoreUtils_1.25.3</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>

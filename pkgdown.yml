@@ -2,12 +2,13 @@ pandoc: 3.9.0.2
 pkgdown: 2.2.0.9000
 pkgdown_sha: a6abe43ed48e58b1de42eba5e5541a5b6c46b46f
 articles:
+  Imputation: Imputation.html
   Processing: Processing.html
   QFeatures: QFeatures.html
   readQFeatures: readQFeatures.html
   readQFeatures2: readQFeatures2.html
   Visualization: Visualization.html
-last_built: 2026-04-28T20:04Z
+last_built: 2026-05-03T13:21Z
 urls:
   reference: https://rformassspectrometry.github.io/QFeatures/reference
   article: https://rformassspectrometry.github.io/QFeatures/articles

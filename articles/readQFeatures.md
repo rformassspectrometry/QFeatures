@@ -511,13 +511,13 @@ documentation are also warmly welcome.
     [8] base     
 
     other attached packages:
-     [1] DT_0.34.0                   QFeatures_1.23.0           
-     [3] MultiAssayExperiment_1.37.4 SummarizedExperiment_1.41.1
-     [5] Biobase_2.71.0              GenomicRanges_1.63.2       
-     [7] Seqinfo_1.1.0               IRanges_2.45.0             
-     [9] S4Vectors_0.49.3            BiocGenerics_0.57.1        
-    [11] generics_0.1.4              MatrixGenerics_1.23.0      
-    [13] matrixStats_1.5.0           BiocStyle_2.39.0           
+     [1] DT_0.34.0                   QFeatures_1.23.1           
+     [3] MultiAssayExperiment_1.38.0 SummarizedExperiment_1.42.0
+     [5] Biobase_2.72.0              GenomicRanges_1.64.0       
+     [7] Seqinfo_1.2.0               IRanges_2.46.0             
+     [9] S4Vectors_0.50.0            BiocGenerics_0.58.0        
+    [11] generics_0.1.4              MatrixGenerics_1.24.0      
+    [13] matrixStats_1.5.0           BiocStyle_2.40.0           
 
     loaded via a namespace (and not attached):
      [1] xfun_0.57               bslib_0.10.0            htmlwidgets_1.6.4      
@@ -528,19 +528,19 @@ documentation are also warmly welcome.
     [16] textshaping_1.0.5       clue_0.3-68             htmltools_0.5.9        
     [19] sass_0.4.10             yaml_2.3.12             lazyeval_0.2.3         
     [22] pkgdown_2.2.0.9000      pillar_1.11.1           jquerylib_0.1.4        
-    [25] tidyr_1.3.2             MASS_7.3-65             DelayedArray_0.37.1    
+    [25] tidyr_1.3.2             MASS_7.3-65             DelayedArray_0.38.1    
     [28] cachem_1.1.0            abind_1.4-8             tidyselect_1.2.1       
     [31] digest_0.6.39           stringi_1.8.7           purrr_1.2.2            
     [34] dplyr_1.2.1             reshape2_1.4.5          bookdown_0.46          
     [37] fastmap_1.2.0           grid_4.6.0              cli_3.6.6              
-    [40] SparseArray_1.11.13     magrittr_2.0.5          S4Arrays_1.11.1        
-    [43] rmarkdown_2.31          XVector_0.51.0          igraph_2.3.0           
+    [40] SparseArray_1.12.2      magrittr_2.0.5          S4Arrays_1.12.0        
+    [43] rmarkdown_2.31          XVector_0.52.0          igraph_2.3.0           
     [46] otel_0.2.0              ragg_1.5.2              evaluate_1.0.5         
     [49] knitr_1.51              rlang_1.2.0             Rcpp_1.1.1-1.1         
     [52] glue_1.8.1              BiocManager_1.30.27     jsonlite_2.0.0         
-    [55] AnnotationFilter_1.35.0 R6_2.6.1                plyr_1.8.9             
-    [58] systemfonts_1.3.2       fs_2.1.0                ProtGenerics_1.43.0    
-    [61] MsCoreUtils_1.23.10    
+    [55] AnnotationFilter_1.36.0 R6_2.6.1                plyr_1.8.9             
+    [58] systemfonts_1.3.2       fs_2.1.0                ProtGenerics_1.44.0    
+    [61] MsCoreUtils_1.25.3     
 
 ## License
 

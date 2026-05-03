@@ -2,6 +2,9 @@
 
 ### All vignettes
 
+- [Imputing quantitative proteomics
+  data](https://rformassspectrometry.github.io/QFeatures/articles/Imputation.md)
+  :
 - [Processing quantitative proteomics data with
   QFeatures](https://rformassspectrometry.github.io/QFeatures/articles/Processing.md):
 - [Quantitative features for mass spectrometry

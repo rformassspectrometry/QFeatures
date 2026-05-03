@@ -12,21 +12,23 @@ data. This vignette is distributed under a CC BY-SA license.
 
 We are going to use a subset of the CPTAC study 6 containing conditions
 A and B (Paulovich et al. 2010). The peptide-level data, as processed by
-MaxQuant (Cox and Mann 2008) is available in the `msdata` package:
+MaxQuant (Cox and Mann 2008) is available in the `MsDataHub` package:
 
 ``` r
 
-basename(f <- msdata::quant(pattern = "cptac", full.names = TRUE))
+x <- MsDataHub::cptac_a_b_peptides.txt() |>
+    read.delim()
 ```
 
-    ## [1] "cptac_a_b_peptides.txt"
+    ## see ?MsDataHub and browseVignettes('MsDataHub') for documentation
+
+    ## loading from cache
 
 From the names of the columns, we see that the quantitative columns,
 starting with `"Intensity."` (note the dot!) are at positions 56 to 61.
 
 ``` r
 
-x <- read.delim(f)
 names(x)
 ```
 
@@ -377,6 +379,12 @@ contain randomly distributed missing values (if any) (yellow on figure
 proteins that display a non-random pattern of missing values (brown on
 figure @ref(fig:miximp)).
 
+See the dedicated [Imputation
+vignette](https://rformassspectrometry.github.io/QFeatures/articles/Imputation.html),
+(availabel from within R with
+[`vignette("Imputation", package = "QFeatures")`](https://rformassspectrometry.github.io/QFeatures/articles/Imputation.md))
+for technical details on the imputation functions and methods.
+
 ## Data transformation
 
 When analysing continuous data using parametric methods (such as t-test
@@ -682,41 +690,49 @@ Expression intensities for the protein *P02787ups\|TRFE_HUMAN_UPS*
     ## [8] base     
     ## 
     ## other attached packages:
-    ##  [1] gplots_3.3.0                dplyr_1.2.1                
-    ##  [3] ggplot2_4.0.3               QFeatures_1.23.0           
-    ##  [5] MultiAssayExperiment_1.37.4 SummarizedExperiment_1.41.1
-    ##  [7] Biobase_2.71.0              GenomicRanges_1.63.2       
-    ##  [9] Seqinfo_1.1.0               IRanges_2.45.0             
-    ## [11] S4Vectors_0.49.3            BiocGenerics_0.57.1        
-    ## [13] generics_0.1.4              MatrixGenerics_1.23.0      
-    ## [15] matrixStats_1.5.0           BiocStyle_2.39.0           
+    ##  [1] gplots_3.3.0                MsDataHub_1.12.0           
+    ##  [3] dplyr_1.2.1                 ggplot2_4.0.3              
+    ##  [5] QFeatures_1.23.1            MultiAssayExperiment_1.38.0
+    ##  [7] SummarizedExperiment_1.42.0 Biobase_2.72.0             
+    ##  [9] GenomicRanges_1.64.0        Seqinfo_1.2.0              
+    ## [11] IRanges_2.46.0              S4Vectors_0.50.0           
+    ## [13] BiocGenerics_0.58.0         generics_0.1.4             
+    ## [15] MatrixGenerics_1.24.0       matrixStats_1.5.0          
+    ## [17] BiocStyle_2.40.0           
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] tidyselect_1.2.1        farver_2.1.2            S7_0.2.2               
-    ##  [4] bitops_1.0-9            fastmap_1.2.0           lazyeval_0.2.3         
-    ##  [7] digest_0.6.39           lifecycle_1.0.5         cluster_2.1.8.2        
-    ## [10] ProtGenerics_1.43.0     statmod_1.5.1           magrittr_2.0.5         
-    ## [13] compiler_4.6.0          rlang_1.2.0             sass_0.4.10            
-    ## [16] tools_4.6.0             igraph_2.3.0            yaml_2.3.12            
-    ## [19] knitr_1.51              S4Arrays_1.11.1         labeling_0.4.3         
-    ## [22] htmlwidgets_1.6.4       DelayedArray_0.37.1     plyr_1.8.9             
-    ## [25] RColorBrewer_1.1-3      abind_1.4-8             KernSmooth_2.23-26     
-    ## [28] withr_3.0.2             purrr_1.2.2             desc_1.4.3             
-    ## [31] grid_4.6.0              caTools_1.18.3          scales_1.4.0           
-    ## [34] gtools_3.9.5            MASS_7.3-65             cli_3.6.6              
-    ## [37] rmarkdown_2.31          ragg_1.5.2              otel_0.2.0             
-    ## [40] reshape2_1.4.5          BiocBaseUtils_1.13.0    cachem_1.1.0           
-    ## [43] stringr_1.6.0           AnnotationFilter_1.35.0 BiocManager_1.30.27    
-    ## [46] XVector_0.51.0          vctrs_0.7.3             Matrix_1.7-5           
-    ## [49] jsonlite_2.0.0          bookdown_0.46           clue_0.3-68            
-    ## [52] systemfonts_1.3.2       limma_3.67.3            tidyr_1.3.2            
-    ## [55] jquerylib_0.1.4         glue_1.8.1              pkgdown_2.2.0.9000     
-    ## [58] stringi_1.8.7           gtable_0.3.6            tibble_3.3.1           
-    ## [61] pillar_1.11.1           htmltools_0.5.9         R6_2.6.1               
-    ## [64] textshaping_1.0.5       evaluate_1.0.5          lattice_0.22-9         
-    ## [67] msdata_0.51.2           bslib_0.10.0            Rcpp_1.1.1-1.1         
-    ## [70] SparseArray_1.11.13     xfun_0.57               MsCoreUtils_1.23.10    
-    ## [73] fs_2.1.0                pkgconfig_2.0.3
+    ##  [1] bitops_1.0-9            DBI_1.3.0               httr2_1.2.2            
+    ##  [4] rlang_1.2.0             magrittr_2.0.5          clue_0.3-68            
+    ##  [7] otel_0.2.0              compiler_4.6.0          RSQLite_2.4.6          
+    ## [10] png_0.1-9               systemfonts_1.3.2       vctrs_0.7.3            
+    ## [13] reshape2_1.4.5          stringr_1.6.0           ProtGenerics_1.44.0    
+    ## [16] pkgconfig_2.0.3         crayon_1.5.3            fastmap_1.2.0          
+    ## [19] dbplyr_2.5.2            XVector_0.52.0          labeling_0.4.3         
+    ## [22] caTools_1.18.3          rmarkdown_2.31          ragg_1.5.2             
+    ## [25] purrr_1.2.2             bit_4.6.0               xfun_0.57              
+    ## [28] cachem_1.1.0            jsonlite_2.0.0          blob_1.3.0             
+    ## [31] DelayedArray_0.38.1     cluster_2.1.8.2         R6_2.6.1               
+    ## [34] bslib_0.10.0            stringi_1.8.7           RColorBrewer_1.1-3     
+    ## [37] limma_3.68.0            jquerylib_0.1.4         Rcpp_1.1.1-1.1         
+    ## [40] bookdown_0.46           knitr_1.51              BiocBaseUtils_1.14.0   
+    ## [43] Matrix_1.7-5            igraph_2.3.0            tidyselect_1.2.1       
+    ## [46] abind_1.4-8             yaml_2.3.12             curl_7.1.0             
+    ## [49] lattice_0.22-9          tibble_3.3.1            plyr_1.8.9             
+    ## [52] withr_3.0.2             KEGGREST_1.52.0         S7_0.2.2               
+    ## [55] evaluate_1.0.5          desc_1.4.3              BiocFileCache_3.2.0    
+    ## [58] ExperimentHub_3.2.0     Biostrings_2.80.0       pillar_1.11.1          
+    ## [61] BiocManager_1.30.27     filelock_1.0.3          KernSmooth_2.23-26     
+    ## [64] BiocVersion_3.23.1      scales_1.4.0            gtools_3.9.5           
+    ## [67] glue_1.8.1              lazyeval_0.2.3          tools_4.6.0            
+    ## [70] AnnotationHub_4.2.0     fs_2.1.0                grid_4.6.0             
+    ## [73] tidyr_1.3.2             MsCoreUtils_1.25.3      AnnotationDbi_1.74.0   
+    ## [76] cli_3.6.6               rappdirs_0.3.4          textshaping_1.0.5      
+    ## [79] S4Arrays_1.12.0         AnnotationFilter_1.36.0 gtable_0.3.6           
+    ## [82] sass_0.4.10             digest_0.6.39           SparseArray_1.12.2     
+    ## [85] htmlwidgets_1.6.4       farver_2.1.2            memoise_2.0.1          
+    ## [88] htmltools_0.5.9         pkgdown_2.2.0.9000      lifecycle_1.0.5        
+    ## [91] httr_1.4.8              statmod_1.5.1           bit64_4.8.0            
+    ## [94] MASS_7.3-65
 
 ## License
 

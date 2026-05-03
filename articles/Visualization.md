@@ -304,32 +304,32 @@ interest, which can then be visualised as a heatmap (figure
     ## [8] methods   base     
     ## 
     ## other attached packages:
-    ##  [1] ComplexHeatmap_2.27.1       ggplot2_4.0.3              
-    ##  [3] QFeatures_1.23.0            MultiAssayExperiment_1.37.4
-    ##  [5] SummarizedExperiment_1.41.1 Biobase_2.71.0             
-    ##  [7] GenomicRanges_1.63.2        Seqinfo_1.1.0              
-    ##  [9] IRanges_2.45.0              S4Vectors_0.49.3           
-    ## [11] BiocGenerics_0.57.1         generics_0.1.4             
-    ## [13] MatrixGenerics_1.23.0       matrixStats_1.5.0          
-    ## [15] BiocStyle_2.39.0           
+    ##  [1] ComplexHeatmap_2.28.0       ggplot2_4.0.3              
+    ##  [3] QFeatures_1.23.1            MultiAssayExperiment_1.38.0
+    ##  [5] SummarizedExperiment_1.42.0 Biobase_2.72.0             
+    ##  [7] GenomicRanges_1.64.0        Seqinfo_1.2.0              
+    ##  [9] IRanges_2.46.0              S4Vectors_0.50.0           
+    ## [11] BiocGenerics_0.58.0         generics_0.1.4             
+    ## [13] MatrixGenerics_1.24.0       matrixStats_1.5.0          
+    ## [15] BiocStyle_2.40.0           
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] tidyselect_1.2.1        dplyr_1.2.1             farver_2.1.2           
     ##  [4] S7_0.2.2                fastmap_1.2.0           lazyeval_0.2.3         
     ##  [7] digest_0.6.39           lifecycle_1.0.5         cluster_2.1.8.2        
-    ## [10] ProtGenerics_1.43.0     magrittr_2.0.5          compiler_4.6.0         
+    ## [10] ProtGenerics_1.44.0     magrittr_2.0.5          compiler_4.6.0         
     ## [13] rlang_1.2.0             sass_0.4.10             tools_4.6.0            
     ## [16] igraph_2.3.0            yaml_2.3.12             knitr_1.51             
-    ## [19] S4Arrays_1.11.1         labeling_0.4.3          htmlwidgets_1.6.4      
-    ## [22] DelayedArray_0.37.1     plyr_1.8.9              RColorBrewer_1.1-3     
+    ## [19] S4Arrays_1.12.0         labeling_0.4.3          htmlwidgets_1.6.4      
+    ## [22] DelayedArray_0.38.1     plyr_1.8.9              RColorBrewer_1.1-3     
     ## [25] abind_1.4-8             withr_3.0.2             purrr_1.2.2            
     ## [28] desc_1.4.3              colorspace_2.1-2        scales_1.4.0           
     ## [31] iterators_1.0.14        MASS_7.3-65             cli_3.6.6              
     ## [34] crayon_1.5.3            rmarkdown_2.31          ragg_1.5.2             
     ## [37] otel_0.2.0              rjson_0.2.23            reshape2_1.4.5         
-    ## [40] BiocBaseUtils_1.13.0    cachem_1.1.0            stringr_1.6.0          
-    ## [43] parallel_4.6.0          AnnotationFilter_1.35.0 BiocManager_1.30.27    
-    ## [46] XVector_0.51.0          vctrs_0.7.3             Matrix_1.7-5           
+    ## [40] BiocBaseUtils_1.14.0    cachem_1.1.0            stringr_1.6.0          
+    ## [43] parallel_4.6.0          AnnotationFilter_1.36.0 BiocManager_1.30.27    
+    ## [46] XVector_0.52.0          vctrs_0.7.3             Matrix_1.7-5           
     ## [49] jsonlite_2.0.0          bookdown_0.46           GetoptLong_1.1.1       
     ## [52] clue_0.3-68             magick_2.9.1            systemfonts_1.3.2      
     ## [55] foreach_1.5.2           tidyr_1.3.2             jquerylib_0.1.4        
@@ -339,8 +339,8 @@ interest, which can then be visualised as a heatmap (figure
     ## [67] circlize_0.4.18         R6_2.6.1                textshaping_1.0.5      
     ## [70] doParallel_1.0.17       evaluate_1.0.5          lattice_0.22-9         
     ## [73] png_0.1-9               bslib_0.10.0            Rcpp_1.1.1-1.1         
-    ## [76] SparseArray_1.11.13     xfun_0.57               GlobalOptions_0.1.4    
-    ## [79] MsCoreUtils_1.23.10     fs_2.1.0                pkgconfig_2.0.3
+    ## [76] SparseArray_1.12.2      xfun_0.57               GlobalOptions_0.1.4    
+    ## [79] MsCoreUtils_1.25.3      fs_2.1.0                pkgconfig_2.0.3
 
 ## License
 
