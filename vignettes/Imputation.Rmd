@@ -2,15 +2,20 @@
 title: "Imputing quantitative proteomics data "
 author: "Laurent Gatto"
 package: MsCoreUtils
+abstract: >
+    This vignette describes the multiple ways to perform imputation
+    using the `impute()` methods and the underlying support function
+    from the *MsCoreUtils* package. This vignette is distributed under
+    a CC BY-SA license.
 output:
   BiocStyle::html_document:
     toc_float: true
+bibliography: QFeatures.bib
 vignette: >
   %\VignetteIndexEntry{Imputation}
   %\VignetteEngine{knitr::rmarkdown}
   %%\VignetteKeywords{Mass Spectrometry, Proteomics, Metabolomics, Quantitative, imputation}
   %\VignetteEncoding{UTF-8}
-bibiliography: references.bib
 ---
 
 ```{r style, echo = FALSE, results = 'asis'}
@@ -78,7 +83,7 @@ software that erroneously suggest that the feature was of the MNAR
 type and effectively absent in the sample. We advise to start your
 processing by replacing these misleading 0 by a missing value. This
 could be achieved with the `zeroIsNA()` method if your data is
-formated as a `SummarizedExperiment` object [@SummarizedExperiment].
+formated as a `SummarizedExperiment` object [@SE].
 
 
 ## Example data
