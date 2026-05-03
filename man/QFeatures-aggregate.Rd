@@ -59,7 +59,7 @@ the adjacency matrix. Default is \code{"adjacencyMatrix"}.}
 \item{value}{An adjacency matrix with row and column names. The
 matrix will be coerced to compressed, column-oriented sparse
 matrix (class \code{dgCMatrix}) as defined in the \code{Matrix} package,
-as generaled by the \code{\link[Matrix:sparseMatrix]{Matrix::sparseMatrix()}} constructor.}
+as generaled by the \code{\link[Matrix:sparseMatrix]{sparseMatrix()}} constructor.}
 }
 \value{
 A \code{QFeatures} object with an additional assay or a
@@ -97,18 +97,18 @@ decomposition) using Tukey's median polish_ procedure using
 \code{\link[stats:medpolish]{stats::medpolish()}};
 \item \code{\link[MsCoreUtils:robustSummary]{MsCoreUtils::robustSummary()}} to calculate a robust aggregation
 using \code{\link[MASS:rlm]{MASS::rlm()}} (default);
-\item \code{\link[base:colSums]{base::colMeans()}} to use the mean of each column;
+\item \code{\link[base:colMeans]{base::colMeans()}} to use the mean of each column;
 \item \code{colMeansMat(x, MAT)} to aggregate feature by the calculating
 the mean of peptide intensities via an adjacency matrix. Shared
 peptides are re-used multiple times.
-\item \code{\link[matrixStats:rowMedians]{matrixStats::colMedians()}} to use the median of each column.
+\item \code{\link[matrixStats:colMedians]{matrixStats::colMedians()}} to use the median of each column.
 \item \code{\link[base:colSums]{base::colSums()}} to use the sum of each column;
 \item \code{colSumsMat(x, MAT)} to aggregate feature by the summing the
 peptide intensities for each protein via an adjacency
 matrix. Shared peptides are re-used multiple times.
 }
 
-See \code{\link[MsCoreUtils:aggregate]{MsCoreUtils::aggregate_by_vector()}} for more aggregation functions.
+See \code{\link[MsCoreUtils:aggregate_by_vector]{MsCoreUtils::aggregate_by_vector()}} for more aggregation functions.
 }
 \section{Missing quantitative values}{
 
@@ -166,7 +166,7 @@ that map to multiple proteins rather than as a protein group, it
 is convenient to encode this ambiguity explicitly using a
 peptide-by-proteins (sparse) adjacency matrix. This matrix is
 typically stored in the rowdata and set/retrieved with the
-\code{\link[ProtGenerics:protgenerics]{ProtGenerics::adjacencyMatrix()}} function. It can be created manually (as
+\code{\link[ProtGenerics:adjacencyMatrix]{adjacencyMatrix()}} function. It can be created manually (as
 illustrated below) or using \code{PSMatch::makeAdjacencyMatrix()}.
 }
 
@@ -277,6 +277,6 @@ rowData(ft[[2]])
 The \emph{QFeatures} vignette provides an extended example and
 the \emph{Processing} vignette, for a complete quantitative
 proteomics data processing pipeline. The
-\code{\link[MsCoreUtils:aggregate]{MsCoreUtils::aggregate_by_vector()}} manual page provides
+\code{\link[MsCoreUtils:aggregate_by_vector]{MsCoreUtils::aggregate_by_vector()}} manual page provides
 further details.
 }

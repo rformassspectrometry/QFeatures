@@ -11,7 +11,7 @@ An object of class \code{data.frame} with 3010 rows and 28 columns.
 The \code{pRolocdata} package: \url{http://bioconductor.org/packages/pRolocdata/}
 }
 \usage{
-hlpsms
+data(hlpsms)
 }
 \description{
 A \code{data.frame} with PSM-level quantitation data by Christoforou \emph{et al.}

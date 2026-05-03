@@ -10,7 +10,7 @@
 An object of class \code{standardGeneric} of length 1.
 }
 \usage{
-impute
+data(impute)
 
 \S4method{impute}{SummarizedExperiment}(object, method, ...)
 
@@ -22,10 +22,10 @@ missing values to be imputed.}
 
 \item{method}{\code{character(1)} defining the imputation method. See
 \code{imputeMethods()} for available ones. See
-\code{\link[MsCoreUtils:imputation]{MsCoreUtils::impute_matrix()}} for details.}
+\code{\link[MsCoreUtils:impute_matrix]{MsCoreUtils::impute_matrix()}} for details.}
 
 \item{...}{Additional parameters passed to the inner imputation
-function. See \code{\link[MsCoreUtils:imputation]{MsCoreUtils::impute_matrix()}} for details.}
+function. See \code{\link[MsCoreUtils:impute_matrix]{MsCoreUtils::impute_matrix()}} for details.}
 
 \item{i}{A \code{logical(1)} or a \code{character(1)} that defines which
 element of the \code{QFeatures} instance to impute. It cannot be
@@ -43,7 +43,7 @@ precautions to assure that the imputation produce valid results,
 in particular with naive imputations such as replacing missing
 values with 0.
 
-See \code{\link[MsCoreUtils:imputation]{MsCoreUtils::impute_matrix()}} for details on
+See \code{\link[MsCoreUtils:impute_matrix]{MsCoreUtils::impute_matrix()}} for details on
 the different imputation methods available and strategies.
 }
 \examples{

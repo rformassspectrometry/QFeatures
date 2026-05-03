@@ -119,7 +119,7 @@ See the \emph{Processing} vignette for examples.
 The \code{method} parameter in \code{normalize} can be one of \code{"sum"},
 \code{"max"}, \code{"center.mean"}, \code{"center.median"}, \code{"div.mean"},
 \code{"div.median"}, \code{"diff.median"}, \verb{"quantiles}", \verb{"quantiles.robust}"
-or \code{"vsn"}. The \code{\link[MsCoreUtils:normalize]{MsCoreUtils::normalizeMethods()}} function returns
+or \code{"vsn"}. The \code{\link[MsCoreUtils:normalizeMethods]{MsCoreUtils::normalizeMethods()}} function returns
 a vector of available normalisation methods.
 \itemize{
 \item For \code{"sum"} and \code{"max"}, each feature's intensity is divided by
@@ -143,7 +143,7 @@ arguments.
 }
 
 For further details and examples about normalisation, see
-\code{\link[MsCoreUtils:normalize]{MsCoreUtils::normalize_matrix()}}.
+\code{\link[MsCoreUtils:normalize_matrix]{MsCoreUtils::normalize_matrix()}}.
 }
 \examples{
 

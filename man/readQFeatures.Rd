@@ -79,15 +79,15 @@ console. Default is \code{TRUE}.}
 }
 \value{
 An instance of class \code{QFeatures} or
-\code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}}. For the
+\code{\link[SummarizedExperiment:SummarizedExperiment]{SummarizedExperiment::SummarizedExperiment()}}. For the
 former, the quantitative sets of each run are stored in
-\code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}} object.
+\code{\link[SummarizedExperiment:SummarizedExperiment]{SummarizedExperiment::SummarizedExperiment()}} object.
 }
 \description{
 These functions convert tabular data into dedicated data
 objets. The \code{\link[=readSummarizedExperiment]{readSummarizedExperiment()}} function takes a file
 name or \code{data.frame} and converts it into a
-\code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}} object.  The \code{\link[=readQFeatures]{readQFeatures()}} function
+\code{\link[SummarizedExperiment:SummarizedExperiment]{SummarizedExperiment()}} object.  The \code{\link[=readQFeatures]{readQFeatures()}} function
 takes a \code{data.frame} and converts it into a \code{QFeatures} object
 (see \code{\link[=QFeatures]{QFeatures()}} for details). For the latter, two use-cases
 exist:

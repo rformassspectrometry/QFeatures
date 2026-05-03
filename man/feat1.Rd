@@ -11,7 +11,7 @@
 An object of class \code{QFeatures} of length 1.
 }
 \usage{
-feat1
+data(feat1)
 }
 \description{
 \code{feat1} is a small test \code{QFeatures} object for testing and

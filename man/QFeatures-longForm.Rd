@@ -14,7 +14,7 @@
 \S4method{longForm}{SummarizedExperiment}(object, colvars = NULL, rowvars = NULL, i = seq_along(assays(object)))
 }
 \arguments{
-\item{object}{An instance of class \link{QFeatures} or \link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment}.}
+\item{object}{An instance of class \link{QFeatures} or \link[SummarizedExperiment:SummarizedExperiment]{SummarizedExperiment}.}
 
 \item{colvars}{A \code{character()} that selects column(s) in the \code{colData}.}
 
@@ -31,8 +31,8 @@ use all assays.}
 A \code{DataFrame} instance.
 }
 \description{
-The \code{longForm()} method transform a \link{QFeatures} or \link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment}
-instance into a long \emph{tidy} \link[S4Vectors:DataFrame-class]{S4Vectors::DataFrame} that contains the assay data, where
+The \code{longForm()} method transform a \link{QFeatures} or \link[SummarizedExperiment:SummarizedExperiment]{SummarizedExperiment}
+instance into a long \emph{tidy} \link[S4Vectors:DataFrame]{DataFrame} that contains the assay data, where
 each quantitative value is reported on a separate line. \code{colData} and
 \code{rowData} varibales can also be added. This function is an extension of the
 \code{longForm()} method in the \link[MultiAssayExperiment:MultiAssayExperiment]{MultiAssayExperiment::MultiAssayExperiment}.

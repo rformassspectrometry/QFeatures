@@ -12,7 +12,7 @@ An object of class \code{QFeatures} of length 2.
 \href{https://github.com/rformassspectrometry/QFeatures/blob/master/inst/scripts/make-feat4.R}{\code{inst/scripts/make-feat4.R}}
 }
 \usage{
-feat4
+data(feat4)
 }
 \description{
 \code{feat3} is a small \code{QFeatures} object that contains 2 PSM-level assays used

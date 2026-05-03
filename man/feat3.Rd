@@ -12,7 +12,7 @@ An object of class \code{QFeatures} of length 7.
 \href{https://github.com/rformassspectrometry/QFeatures/blob/master/inst/scripts/test_data.R}{\code{inst/scripts/test_data.R}}
 }
 \usage{
-feat3
+data(feat3)
 }
 \description{
 \code{feat3} is a small \code{QFeatures} object that contains 7 assays:

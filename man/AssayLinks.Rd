@@ -58,7 +58,7 @@ assay(s) to link from in \code{object}}
 generate the current assay (used in
 \code{aggregateFeatures}). \code{NA_character_}, if not applicable.}
 
-\item{hits}{An object of class \link[S4Vectors:Hits-class]{S4Vectors::Hits} matching the
+\item{hits}{An object of class \link[S4Vectors:Hits]{S4Vectors::Hits} matching the
 features of two assays.}
 
 \item{names}{A \code{character()} of \code{AssayLink} names. If provided,
