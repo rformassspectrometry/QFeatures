@@ -39,6 +39,7 @@ Imports:
    grDevices,
    plotly,
    tidyr,
+   dplyr,
    tidyselect,
    reshape2
 Suggests:
@@ -49,7 +50,6 @@ Suggests:
    HDF5Array,
    ggplot2,
    gplots,
-   dplyr,
    limma,
    DT,
    shiny,
