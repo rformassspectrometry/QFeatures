@@ -1,8 +1,8 @@
 # Supported input formats for readQFeatures()
 
-## Methods
+### Methods
 
-### Datasets
+#### Datasets
 
 This vignette demonstrates the use of the *QFeatures* package’s
 [`readQFeatures()`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeatures.md)
@@ -87,8 +87,8 @@ vanPuyvelde_2022_LFQ_DDA_FragPipe_A_2_psm.tsv()
 
     ## loading from cache
 
-    ##                                                 EH10423 
-    ## "/github/home/.cache/R/ExperimentHub/cb11fef3168_10490"
+    ##                                                EH10423 
+    ## "/github/home/.cache/R/ExperimentHub/bef33233a7_10490"
 
 ``` r
 
@@ -99,12 +99,12 @@ Derks_2022_plex_DIA_DIANN_report_subset.tsv()
     ## loading from cache
 
     ##                                                 EH10421 
-    ## "/github/home/.cache/R/ExperimentHub/cb1480d8954_10488"
+    ## "/github/home/.cache/R/ExperimentHub/bef44eed0c7_10488"
 
 and imported as a standard `data.frame` using the usual `read.*()`
 functions (see below).
 
-### Existing search outputs
+#### Existing search outputs
 
 Example outputs for LFQ quantification using DIA-NN, Spectronaut and
 PEAKS were sourced from the ProteoBench website. IDs of these outputs on
@@ -122,7 +122,7 @@ As an example output for multiplex quantification using DIA-NN, a search
 result of the plexDIA dataset was sourced from the MassIVE repository
 (MSV000088302).
 
-### New search outputs
+#### New search outputs
 
 Following software versions were used to produce search results used in
 this vignette:
@@ -131,7 +131,7 @@ this vignette:
 - sage 0.14.7
 - FragPipe 23.1
 
-## Introduction
+### Introduction
 
 Below, we describe individual outputs and their processing using the
 [`readQFeatures()`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeatures.md)
@@ -153,13 +153,13 @@ To initiate the session, we will load the `QFeatures` package.
 library(QFeatures)
 ```
 
-## MaxQuant
+### MaxQuant
 
 MaxQuant produces several output `.txt` files. In order to obtain
 information from several levels of the search, we can look at the
 `evidence.txt`, `peptides.txt` and `proteinGroups.txt` files.
 
-### Label-free
+#### Label-free
 
 Here we will process the results of a multi-set label-free experiment.
 First we will read the `evidence.txt` file storing information about
@@ -384,7 +384,7 @@ with the
 [`addAssayLink()`](https://rformassspectrometry.github.io/QFeatures/reference/AssayLinks.md)
 function.
 
-### TMT
+#### TMT
 
 Below, we will demonstrate how to read data from a TMT-labeled
 experiment consisting of two runs:
@@ -439,9 +439,9 @@ qfMaxquantTMT
 We see that a separate experiment has been created for each run with 10
 columns corresponding to the 10 TMT channels.
 
-## DIA-NN
+### DIA-NN
 
-### Label-free
+#### Label-free
 
 DIA-NN versions 1.9.0 and below produce a main *.tsv* search result
 file, which has been replaced by a *.parquet* file from version 2.0.0 up
@@ -510,7 +510,7 @@ rows in each `SummarizedExperiment` however differ between those two
 reports, as both searches have been performed using different software
 versions, as well as different search parameters.
 
-### plexDIA
+#### plexDIA
 
 To correctly parse a plexDIA experiment, it is necessary to set the
 `multiplexing` parameter to `"mTRAQ"`:
@@ -563,7 +563,7 @@ colData(qfDiannPlex)
     ## eJD907_4 mixed stan...         3    mTraq d4
     ## eJD907_8 mixed stan...         3    mTraq d8
 
-## sage
+### sage
 
 The **sage** search engine stores quantification data either in the
 *lfq.tsv* or *tmt.tsv* file based on the quantification used.
@@ -681,7 +681,7 @@ sager::sageQFeatures(
            Christoforou_2016_TMT_DDA_sage_results.sage.tsv())
 ```
 
-## FragPipe
+### FragPipe
 
 **FragPipe** produces several outputs. The following code block shows
 the processing of a label-free multi-set experiment.
@@ -764,7 +764,7 @@ qfFpipeLFQ
 The processing of peptide and protein-level outputs is similar to
 MaxQuant processing above.
 
-### TMT
+#### TMT
 
 In the following section, we demonstrate the processing of TMT-labelled
 multi-set experiment. It consists of two runs named *Fraction1* and
@@ -793,3 +793,78 @@ QFeatures(lst)
     ## 
     ##  [1] Christoforou_2016_TMT_DDA_FragPipe_Fraction1_psm.tsv: SummarizedExperiment with 134 rows and 10 columns 
     ##  [2] Christoforou_2016_TMT_DDA_FragPipe_Fraction2_psm.tsv: SummarizedExperiment with 166 rows and 10 columns
+
+## Session information
+
+    R version 4.6.0 (2026-04-24)
+    Platform: x86_64-pc-linux-gnu
+    Running under: Ubuntu 24.04.4 LTS
+
+    Matrix products: default
+    BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+    LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+
+    locale:
+     [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+     [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+     [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+     [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+     [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+    [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+    time zone: UTC
+    tzcode source: system (glibc)
+
+    attached base packages:
+    [1] stats4    grid      stats     graphics  grDevices utils     datasets 
+    [8] methods   base     
+
+    other attached packages:
+     [1] QFeatures_1.23.1            MultiAssayExperiment_1.38.0
+     [3] SummarizedExperiment_1.42.0 Biobase_2.72.0             
+     [5] GenomicRanges_1.64.0        Seqinfo_1.2.0              
+     [7] IRanges_2.46.0              S4Vectors_0.50.0           
+     [9] BiocGenerics_0.58.0         generics_0.1.4             
+    [11] MatrixGenerics_1.24.0       matrixStats_1.5.0          
+    [13] MsDataHub_1.12.0            ComplexHeatmap_2.28.0      
+    [15] BiocStyle_2.40.0           
+
+    loaded via a namespace (and not attached):
+     [1] DBI_1.3.0               httr2_1.2.2             rlang_1.2.0            
+     [4] magrittr_2.0.5          clue_0.3-68             GetoptLong_1.1.1       
+     [7] otel_0.2.0              compiler_4.6.0          RSQLite_2.4.6          
+    [10] reshape2_1.4.5          png_0.1-9               systemfonts_1.3.2      
+    [13] vctrs_0.7.3             stringr_1.6.0           ProtGenerics_1.44.0    
+    [16] pkgconfig_2.0.3         shape_1.4.6.1           crayon_1.5.3           
+    [19] fastmap_1.2.0           dbplyr_2.5.2            magick_2.9.1           
+    [22] XVector_0.52.0          rmarkdown_2.31          ragg_1.5.2             
+    [25] purrr_1.2.2             bit_4.6.0               xfun_0.57              
+    [28] cachem_1.1.0            jsonlite_2.0.0          blob_1.3.0             
+    [31] DelayedArray_0.38.1     parallel_4.6.0          cluster_2.1.8.2        
+    [34] R6_2.6.1                stringi_1.8.7           bslib_0.10.0           
+    [37] RColorBrewer_1.1-3      jquerylib_0.1.4         assertthat_0.2.1       
+    [40] Rcpp_1.1.1-1.1          bookdown_0.46           iterators_1.0.14       
+    [43] knitr_1.51              BiocBaseUtils_1.14.0    igraph_2.3.0           
+    [46] Matrix_1.7-5            tidyselect_1.2.1        abind_1.4-8            
+    [49] yaml_2.3.12             doParallel_1.0.17       codetools_0.2-20       
+    [52] curl_7.1.0              plyr_1.8.9              lattice_0.22-9         
+    [55] tibble_3.3.1            withr_3.0.2             KEGGREST_1.52.0        
+    [58] evaluate_1.0.5          desc_1.4.3              BiocFileCache_3.2.0    
+    [61] circlize_0.4.18         ExperimentHub_3.2.0     Biostrings_2.80.0      
+    [64] pillar_1.11.1           BiocManager_1.30.27     filelock_1.0.3         
+    [67] foreach_1.5.2           BiocVersion_3.23.1      glue_1.8.1             
+    [70] lazyeval_0.2.3          tools_4.6.0             AnnotationHub_4.2.0    
+    [73] fs_2.1.0                tidyr_1.3.2             MsCoreUtils_1.25.3     
+    [76] AnnotationDbi_1.74.0    colorspace_2.1-2        cli_3.6.6              
+    [79] rappdirs_0.3.4          textshaping_1.0.5       S4Arrays_1.12.0        
+    [82] arrow_24.0.0            dplyr_1.2.1             AnnotationFilter_1.36.0
+    [85] sass_0.4.10             digest_0.6.39           SparseArray_1.12.2     
+    [88] rjson_0.2.23            htmlwidgets_1.6.4       memoise_2.0.1          
+    [91] htmltools_0.5.9         pkgdown_2.2.0.9000      lifecycle_1.0.5        
+    [94] httr_1.4.8              GlobalOptions_0.1.4     bit64_4.8.0            
+    [97] MASS_7.3-65            
+
+## License
+
+This vignette is distributed under a [CC BY-SA
+license](https://creativecommons.org/licenses/by-sa/2.0/) license.

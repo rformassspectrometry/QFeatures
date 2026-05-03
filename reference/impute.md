@@ -22,10 +22,6 @@ impute(object, method, ...)
 impute(object, method, ..., i, name = "imputedAssay")
 ```
 
-## Format
-
-An object of class `standardGeneric` of length 1.
-
 ## Arguments
 
 - object:

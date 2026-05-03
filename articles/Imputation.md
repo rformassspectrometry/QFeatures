@@ -617,6 +617,11 @@ affected by the split and get the smallest values in each row.
     ## [55] AnnotationFilter_1.36.0 igraph_2.3.0            htmltools_0.5.9        
     ## [58] rmarkdown_2.31          compiler_4.6.0
 
+## License
+
+This vignette is distributed under a [CC BY-SA
+license](https://creativecommons.org/licenses/by-sa/2.0/) license.
+
 ## References
 
 Bramer, Lisa M, Jan Irvahn, Paul D Piehowski, Karin D Rodland, and
