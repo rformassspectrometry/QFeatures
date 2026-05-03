@@ -10,8 +10,6 @@
 An object of class \code{standardGeneric} of length 1.
 }
 \usage{
-data(impute)
-
 \S4method{impute}{SummarizedExperiment}(object, method, ...)
 
 \S4method{impute}{QFeatures}(object, method, ..., i, name = "imputedAssay")
