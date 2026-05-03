@@ -34,7 +34,7 @@ Imports:
    AnnotationFilter,
    lazyeval,
    Biobase,
-   MsCoreUtils (>= 1.7.2),
+   MsCoreUtils (>= 1.25.3),
    igraph,
    grDevices,
    plotly,

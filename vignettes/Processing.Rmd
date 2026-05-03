@@ -240,7 +240,7 @@ of missing values (brown on figure \@ref(fig:miximp)).
 
 See the dedicated [Imputation
 vignette](https://rformassspectrometry.github.io/QFeatures/articles/Imputation.html),
-(availabel from within R with `vignette("Pmputation", package =
+(availabel from within R with `vignette("Imputation", package =
 "QFeatures")`) for technical details on the imputation functions and
 methods.
 
