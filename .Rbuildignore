@@ -6,3 +6,4 @@
 .Rbuildignore
 logo.png
 ^pkgdown$
+NOTES.org

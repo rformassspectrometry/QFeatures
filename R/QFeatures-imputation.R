@@ -17,6 +17,16 @@
 ##'
 ##' @aliases impute impute,SummarizedExperiment-method impute,QFeatures-method
 ##'
+##' @param object A `SummarizedExperiment` or `QFeatures` object with
+##'     missing values to be imputed.
+##' @param method `character(1)` defining the imputation method. See
+##'     `imputeMethods()` for available ones. See
+##'     [MsCoreUtils::impute_matrix()] for details.
+##' @param ... Additional parameters passed to the inner imputation
+##'     function. See [MsCoreUtils::impute_matrix()] for details.
+##'
+##' @export
+##'
 ##' @importFrom MsCoreUtils impute_matrix
 ##'
 ##' @examples
@@ -56,19 +66,6 @@
 ##' assay(x)
 ##'
 ##' assay(impute(x, "nbavg"))
-"impute"
-
-
-##' @param object A `SummarizedExperiment` or `QFeatures` object with
-##'     missing values to be imputed.
-##' @param method `character(1)` defining the imputation method. See
-##'     `imputeMethods()` for available ones. See
-##'     [MsCoreUtils::impute_matrix()] for details.
-##' @param ... Additional parameters passed to the inner imputation
-##'     function. See [MsCoreUtils::impute_matrix()] for details.
-##'
-##' @export
-##' @rdname impute
 setMethod("impute", "SummarizedExperiment",
           function(object, method, ...) {
               res <- impute_matrix(assay(object), method, ...)
@@ -77,7 +74,7 @@ setMethod("impute", "SummarizedExperiment",
           })
 
 
-##' @param i A `logical(1)` or a `character(1)` that defines which 
+##' @param i A `logical(1)` or a `character(1)` that defines which
 ##'     element of the `QFeatures` instance to impute. It cannot be
 ##'      missing and must be of length one.
 ##' @param name A `character(1)` naming the new assay name. Default
@@ -89,5 +86,5 @@ setMethod("impute", "QFeatures",
           function(object, method, ..., i, name = "imputedAssay") {
               .applyTransformation(object, i, name, impute,
                                    method = method, ...)
-              
+
           })
