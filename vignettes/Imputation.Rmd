@@ -352,4 +352,10 @@ isn't affected by the split and get the smallest values in each row.
 sessionInfo()
 ```
 
+# License {-}
+
+This vignette is distributed under a
+[CC BY-SA license](https://creativecommons.org/licenses/by-sa/2.0/)
+license.
+
 # References {-}
