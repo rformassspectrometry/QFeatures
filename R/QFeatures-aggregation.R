@@ -505,3 +505,201 @@ validAdjacencyMatrix <- function(x) {
         stop("colSums() == 0 detected: proteins must be identified by at least one peptide.")
     TRUE
 }
+
+##' @title Aggregate assays' quantitative samples
+##'
+##' @description
+##'
+##' This function aggregates the quantitative samples of one or
+##' multiple assays, applying a summarisation function (`fun`) to
+##' sets of samples defined by a `colData` variable.
+##'
+##' @param object An instance of class [QFeatures] or [SummarizedExperiment].
+##'
+##' @param i A `numeric()` or `character()` indicating the index or name
+##'     of one or multiple assays that will be aggregated.
+##'
+##' @param scol A `character()` naming the `colData` variable defining
+##'     how to group samples.
+##'
+##' @param name A `character()` naming the new assays. It must have the
+##'     same length as `i`.
+##'
+##' @param fun A function used to aggregate the samples. The function should
+##'   apply its summarization row-wise.
+##'
+##' @param moreFun A named `list()` of additional aggregation functions
+##'     used to create additional assays. The function should apply its
+##'     summarization row-wise.
+##'
+##' @param ... Additional parameters passed to `fun`.
+##'
+##' @return A `QFeatures` object with additional assays or a
+##'     `SummarizedExperiment` object.
+##'
+##' @aliases aggregateSamples aggregateSamples,QFeatures-method
+##' @aliases aggregateSamples,SummarizedExperiment-method
+##'
+##' @name aggregateSamples
+##' @rdname QFeatures-aggregateSamples
+NULL
+
+rowRobustSummary <- function(x, ...) {
+    MsCoreUtils::robustSummary(t(x), ...)
+}
+
+rowCounts <- function(x, ...) {
+    MsCoreUtils::colCounts(t(x), ...)
+}
+
+rowMedianPolish <- function(x, ...) {
+    MsCoreUtils::medianPolish(t(x), ...)
+}
+
+.aggregate_cols <- function (x, INDEX, FUN, ...) {
+    if (!(is.matrix(x) | inherits(x, "HDF5Matrix")))
+        stop("'x' must be a matrix or an object that inherits from ",
+            "'HDF5Matrix'.")
+    if (!identical(length(INDEX), ncol(x)))
+        stop("The length of 'INDEX' has to be identical to 'ncol(x).")
+    FUN <- match.fun(FUN)
+    res <- lapply(split(seq_len(ncol(x)), INDEX), FUN = function(i) FUN(x[, i
+        , drop = FALSE], ...))
+    nms <- names(res)
+    res <- do.call(cbind, res)
+
+    rownames(res) <- rownames(x)
+    colnames(res) <- nms
+    if (inherits(x, "HDF5Matrix"))
+        res <- HDF5Array::writeHDF5Array(res, filepath = HDF5Array::path(x),
+            with.dimnames = TRUE)
+    res
+}
+
+.aggregateSamplesSE <- function(object, scol, fun, moreFun, ...) {
+    if (missing(scol))
+        stop("'scol' is required.")
+    if (length(scol) > 1) {
+        colData(object)$aggregationGroup <- apply(colData(object)[, scol], 1, paste, collapse = "_")
+        scol <- "aggregationGroup"
+    }
+    m <- assay(object, 1)
+    cd <- colData(object)
+    if (!scol %in% names(cd))
+        stop("'scol' not found in the assay's colData.")
+    groupBy <- cd[[scol]]
+
+    aggregated_assay <- .aggregate_cols(m, groupBy, fun, ...)
+    moreAssays <- lapply(moreFun, FUN = function(f) .aggregate_cols(m, groupBy, f))
+
+    coldata <- QFeatures::reduceDataFrame(cd, groupBy,
+                                                    simplify = TRUE,
+                                                    drop = TRUE,
+                                                    count = FALSE)
+    assays <- c(SimpleList(assay = aggregated_assay), moreAssays)
+
+    se <- SummarizedExperiment(assays = assays,
+                               colData = coldata,
+                               rowData = rowData(object))
+    return(se)
+}
+
+.aggregateSamplesQFeatures <-  function(object, i, scol, name = "newAssay",
+                   fun, moreFun, ...) {
+              if (isEmpty(object))
+                  return(object)
+              ## Check arguments
+              if (any(present <- name %in% names(object)))
+                  stop("There's already one or more assays named: '",
+                       paste0(name[present], collapse = "', '"), "'.")
+              i <- .normIndex(object, i)
+              if (length(i) != length(name)) stop("'i' and 'name' must have same length")
+
+              if (length(scol) > 1) {
+                  colData(object)$aggregationGroup <- apply(colData(object)[, scol], 1, paste, collapse = "_")
+                  scol <- "aggregationGroup"
+              }
+
+              el <- lapply(i, function(set) getWithColData(object, set))
+              names(el) <- i
+              colDataColsKept <- colnames(colData(el[[i[1]]]))
+              msg_log <- list()
+              pb <- txtProgressBar(min = 0, max = length(i), style = 3)
+
+              ## Aggregate each assay
+              for (j in seq_along(i)) {
+                  from <- i[[j]]
+                  fromAssay <- el[[from]]
+                  set_name <- names(object)[[j]]
+
+                  ## Remove already discarded columns from colData
+                  colDataColsKept <- intersect(
+                      colDataColsKept,
+                      colnames(colData(fromAssay))
+                  )
+                  colData(fromAssay) <- colData(fromAssay)[, colDataColsKept, drop = FALSE]
+
+                  ## Create the aggregated assay
+                  el[[j]] <- withCallingHandlers(
+                      .aggregateSamplesSE(fromAssay, scol, fun, moreFun),
+                      message = function(m) {
+                          txt <- conditionMessage(m)
+                          msg_log[[txt]] <<- unique(c(msg_log[[txt]], set_name))
+                          invokeRestart("muffleMessage")
+                      }
+                  )
+                  colDataColsKept <- colnames(colData(el[[j]]))
+
+                  setTxtProgressBar(pb, j)
+              }
+
+              close(pb)
+
+              ## Aggregate shared messages
+              if (length(msg_log)) {
+                  message("The following messages occurred during aggregation:")
+
+                  for (msg in names(msg_log)) {
+                      message(
+                          "\n", msg, "\n",
+                          "Occurred during the aggregation of set(s): ",
+                          paste(msg_log[[msg]], collapse = ", ")
+                      )
+                  }
+              }
+
+              cd <- colData(object)
+              names(el) <- name
+              for (j in name) {
+                  setCdNames <- colnames(colData(el[[j]]))
+                  colDataColsKept <- intersect(colDataColsKept,
+                                               setCdNames)
+                  colData(el[[j]])[setdiff(names(cd), setCdNames)] <- NA
+                  colData(el[[j]]) <- colData(el[[j]])[, colDataColsKept, drop = FALSE]
+              }
+
+              ## Create the new QFeatures object
+              for (j in seq_along(name)) {
+                  print(j)
+                  object <- addAssay(object, el[[j]], name[j])
+                  object <- addAssayLinkOneToOne(object,
+                      from = i[[j]],
+                      to = name[j])
+              }
+              object
+          }
+
+##' @exportMethod aggregateSamples
+##' @rdname QFeatures-aggregateSamples
+setMethod("aggregateSamples", "SummarizedExperiment",
+          function(object, scol, fun = rowRobustSummary,
+                   moreFun = list(aggcounts = rowCounts), ...)
+              .aggregateSamplesSE(object, scol, fun, moreFun, ...))
+
+##' @exportMethod aggregateSamples
+##' @rdname QFeatures-aggregateSamples
+setMethod("aggregateSamples", "QFeatures",
+          function(object, i, scol, name = "newAssay",
+                   fun = rowRobustSummary,
+                   moreFun = list(aggcounts = rowCounts), ...)
+              .aggregateSamplesQFeatures(object, i, scol, name, fun, moreFun, ...))
