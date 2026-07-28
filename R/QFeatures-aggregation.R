@@ -516,14 +516,12 @@ validAdjacencyMatrix <- function(x) {
 ##'
 ##' @param object An instance of class [QFeatures] or [SummarizedExperiment].
 ##'
-##' @param i A `numeric()` or `character()` indicating the index or name
-##'     of one or multiple assays that will be aggregated.
+##' @param i A `character(1)` naming the assay that will be aggregated.
 ##'
 ##' @param scol A `character()` naming the `colData` variable defining
 ##'     how to group samples.
 ##'
-##' @param name A `character()` naming the new assays. It must have the
-##'     same length as `i`.
+##' @param name A `character(1)` naming the new assay.
 ##'
 ##' @param fun A function used to aggregate the samples. The function should
 ##'   apply its summarization row-wise.
@@ -606,86 +604,36 @@ rowMedianPolish <- function(x, ...) {
 
 .aggregateSamplesQFeatures <-  function(object, i, scol, name = "newAssay",
                    fun, moreFun, ...) {
+              ## Check arguments
+              if (missing(i) || !is.character(i) || length(i) != 1L || is.na(i))
+                  stop("'i' must be a non-missing character vector of length 1.")
+              if (!is.character(name) || length(name) != 1L || is.na(name))
+                  stop("'name' must be a non-missing character vector of length 1.")
               if (isEmpty(object))
                   return(object)
-              ## Check arguments
               if (any(present <- name %in% names(object)))
                   stop("There's already one or more assays named: '",
                        paste0(name[present], collapse = "', '"), "'.")
               i <- .normIndex(object, i)
-              if (length(i) != length(name)) stop("'i' and 'name' must have same length")
 
               if (length(scol) > 1) {
                   colData(object)$aggregationGroup <- apply(colData(object)[, scol], 1, paste, collapse = "_")
                   scol <- "aggregationGroup"
               }
 
-              el <- lapply(i, function(set) getWithColData(object, set))
-              names(el) <- i
-              colDataColsKept <- colnames(colData(el[[i[1]]]))
-              msg_log <- list()
-              pb <- txtProgressBar(min = 0, max = length(i), style = 3)
-
-              ## Aggregate each assay
-              for (j in seq_along(i)) {
-                  from <- i[[j]]
-                  fromAssay <- el[[from]]
-                  set_name <- names(object)[[j]]
-
-                  ## Remove already discarded columns from colData
-                  colDataColsKept <- intersect(
-                      colDataColsKept,
-                      colnames(colData(fromAssay))
-                  )
-                  colData(fromAssay) <- colData(fromAssay)[, colDataColsKept, drop = FALSE]
-
-                  ## Create the aggregated assay
-                  el[[j]] <- withCallingHandlers(
-                      .aggregateSamplesSE(fromAssay, scol, fun, moreFun),
-                      message = function(m) {
-                          txt <- conditionMessage(m)
-                          msg_log[[txt]] <<- unique(c(msg_log[[txt]], set_name))
-                          invokeRestart("muffleMessage")
-                      }
-                  )
-                  colDataColsKept <- colnames(colData(el[[j]]))
-
-                  setTxtProgressBar(pb, j)
-              }
-
-              close(pb)
-
-              ## Aggregate shared messages
-              if (length(msg_log)) {
-                  message("The following messages occurred during aggregation:")
-
-                  for (msg in names(msg_log)) {
-                      message(
-                          "\n", msg, "\n",
-                          "Occurred during the aggregation of set(s): ",
-                          paste(msg_log[[msg]], collapse = ", ")
-                      )
-                  }
-              }
+              fromAssay <- getWithColData(object, i)
+              el <- .aggregateSamplesSE(fromAssay, scol, fun, moreFun)
 
               cd <- colData(object)
-              names(el) <- name
-              for (j in name) {
-                  setCdNames <- colnames(colData(el[[j]]))
-                  colDataColsKept <- intersect(colDataColsKept,
-                                               setCdNames)
-                  colData(el[[j]])[setdiff(names(cd), setCdNames)] <- NA
-                  colData(el[[j]]) <- colData(el[[j]])[, colDataColsKept, drop = FALSE]
-              }
+              setCdNames <- colnames(colData(el))
+              colData(el)[setdiff(names(cd), setCdNames)] <- NA
+              colData(el) <- colData(el)[, setCdNames, drop = FALSE]
 
               ## Create the new QFeatures object
-              for (j in seq_along(name)) {
-                  print(j)
-                  object <- addAssay(object, el[[j]], name[j])
-                  object <- addAssayLinkOneToOne(object,
-                      from = i[[j]],
-                      to = name[j])
-              }
+              object <- addAssay(object, el, name)
+              object <- addAssayLinkOneToOne(object,
+                  from = i,
+                  to = name)
               object
           }
 

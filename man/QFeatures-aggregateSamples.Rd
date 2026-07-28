@@ -39,11 +39,9 @@ summarization row-wise.}
 
 \item{...}{Additional parameters passed to \code{fun}.}
 
-\item{i}{A \code{numeric()} or \code{character()} indicating the index or name
-of one or multiple assays that will be aggregated.}
+\item{i}{A \code{character(1)} naming the assay that will be aggregated.}
 
-\item{name}{A \code{character()} naming the new assays. It must have the
-same length as \code{i}.}
+\item{name}{A \code{character(1)} naming the new assay.}
 }
 \value{
 A \code{QFeatures} object with additional assays or a
