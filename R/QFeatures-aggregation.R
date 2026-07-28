@@ -510,9 +510,9 @@ validAdjacencyMatrix <- function(x) {
 ##'
 ##' @description
 ##'
-##' This function aggregates the quantitative samples of one or
-##' multiple assays, applying a summarisation function (`fun`) to
-##' sets of samples defined by a `colData` variable.
+##' This function aggregates quantitative samples, applying a
+##' summarisation function (`fun`) to sets of samples defined by a
+##' `colData` variable.
 ##'
 ##' @param object An instance of class [QFeatures] or [SummarizedExperiment].
 ##'
@@ -554,15 +554,16 @@ rowMedianPolish <- function(x, ...) {
     MsCoreUtils::medianPolish(t(x), ...)
 }
 
-.aggregate_cols <- function (x, INDEX, FUN, ...) {
+.aggregate_cols <- function(x, INDEX, FUN, ...) {
     if (!(is.matrix(x) | inherits(x, "HDF5Matrix")))
         stop("'x' must be a matrix or an object that inherits from ",
-            "'HDF5Matrix'.")
+             "'HDF5Matrix'.")
     if (!identical(length(INDEX), ncol(x)))
         stop("The length of 'INDEX' has to be identical to 'ncol(x).")
     FUN <- match.fun(FUN)
-    res <- lapply(split(seq_len(ncol(x)), INDEX), FUN = function(i) FUN(x[, i
-        , drop = FALSE], ...))
+    res <- lapply(split(seq_len(ncol(x)), INDEX), FUN = function(i) {
+        FUN(x[, i, drop = FALSE], ...)
+    })
     nms <- names(res)
     res <- do.call(cbind, res)
 
@@ -570,30 +571,36 @@ rowMedianPolish <- function(x, ...) {
     colnames(res) <- nms
     if (inherits(x, "HDF5Matrix"))
         res <- HDF5Array::writeHDF5Array(res, filepath = HDF5Array::path(x),
-            with.dimnames = TRUE)
+                                         with.dimnames = TRUE)
     res
 }
 
 .aggregateSamplesSE <- function(object, scol, fun, moreFun, ...) {
-    if (missing(scol))
+    if (missing(scol) || !length(scol))
         stop("'scol' is required.")
+    if (!is.character(scol) || anyNA(scol))
+        stop("'scol' must be a non-missing character vector.")
+    cd <- colData(object)
+    if (!all(scol %in% names(cd)))
+        stop("'scol' not found in the assay's colData.")
     if (length(scol) > 1) {
-        colData(object)$aggregationGroup <- apply(colData(object)[, scol], 1, paste, collapse = "_")
+        colData(object)$aggregationGroup <- apply(cd[, scol], 1, paste,
+                                                  collapse = "_")
         scol <- "aggregationGroup"
+        cd <- colData(object)
     }
     m <- assay(object, 1)
-    cd <- colData(object)
-    if (!scol %in% names(cd))
-        stop("'scol' not found in the assay's colData.")
     groupBy <- cd[[scol]]
 
     aggregated_assay <- .aggregate_cols(m, groupBy, fun, ...)
-    moreAssays <- lapply(moreFun, FUN = function(f) .aggregate_cols(m, groupBy, f))
+    moreAssays <- lapply(moreFun, FUN = function(f) {
+        .aggregate_cols(m, groupBy, f)
+    })
 
     coldata <- QFeatures::reduceDataFrame(cd, groupBy,
-                                                    simplify = TRUE,
-                                                    drop = TRUE,
-                                                    count = FALSE)
+                                           simplify = TRUE,
+                                           drop = TRUE,
+                                           count = FALSE)
     assays <- c(SimpleList(assay = aggregated_assay), moreAssays)
 
     se <- SummarizedExperiment(assays = assays,
@@ -602,40 +609,40 @@ rowMedianPolish <- function(x, ...) {
     return(se)
 }
 
-.aggregateSamplesQFeatures <-  function(object, i, scol, name = "newAssay",
-                   fun, moreFun, ...) {
-              ## Check arguments
-              if (missing(i) || !is.character(i) || length(i) != 1L || is.na(i))
-                  stop("'i' must be a non-missing character vector of length 1.")
-              if (!is.character(name) || length(name) != 1L || is.na(name))
-                  stop("'name' must be a non-missing character vector of length 1.")
-              if (isEmpty(object))
-                  return(object)
-              if (any(present <- name %in% names(object)))
-                  stop("There's already one or more assays named: '",
-                       paste0(name[present], collapse = "', '"), "'.")
-              i <- .normIndex(object, i)
+.aggregateSamplesQFeatures <- function(object, i, scol, name = "newAssay",
+                                       fun, moreFun, ...) {
+    ## Check arguments
+    if (missing(i) || !is.character(i) || length(i) != 1L || is.na(i))
+        stop("'i' must be a non-missing character vector of length 1.")
+    if (missing(scol))
+        stop("'scol' is required.")
+    if (!is.character(name) || length(name) != 1L || is.na(name))
+        stop("'name' must be a non-missing character vector of length 1.")
+    if (isEmpty(object))
+        return(object)
+    if (any(present <- name %in% names(object)))
+        stop("There's already one or more assays named: '",
+             paste0(name[present], collapse = "', '"), "'.")
+    i <- .normIndex(object, i)
 
-              if (length(scol) > 1) {
-                  colData(object)$aggregationGroup <- apply(colData(object)[, scol], 1, paste, collapse = "_")
-                  scol <- "aggregationGroup"
-              }
+    fromAssay <- getWithColData(object, i)
+    el <- .aggregateSamplesSE(fromAssay, scol, fun, moreFun)
 
-              fromAssay <- getWithColData(object, i)
-              el <- .aggregateSamplesSE(fromAssay, scol, fun, moreFun)
+    cd <- colData(object)
+    duplicatedCdRows <- intersect(rownames(colData(el)), rownames(cd))
+    if (length(duplicatedCdRows))
+        stop("The aggregated sample names already exist in ",
+             "'colData(object)': '",
+             paste0(duplicatedCdRows, collapse = "', '"), "'.")
+    setCdNames <- colnames(colData(el))
+    colData(el)[setdiff(names(cd), setCdNames)] <- NA
+    colData(el) <- colData(el)[, setCdNames, drop = FALSE]
 
-              cd <- colData(object)
-              setCdNames <- colnames(colData(el))
-              colData(el)[setdiff(names(cd), setCdNames)] <- NA
-              colData(el) <- colData(el)[, setCdNames, drop = FALSE]
-
-              ## Create the new QFeatures object
-              object <- addAssay(object, el, name)
-              object <- addAssayLinkOneToOne(object,
-                  from = i,
-                  to = name)
-              object
-          }
+    ## Create the new QFeatures object
+    object <- addAssay(object, el, name)
+    object <- addAssayLinkOneToOne(object, from = i, to = name)
+    object
+}
 
 ##' @exportMethod aggregateSamples
 ##' @rdname QFeatures-aggregateSamples

@@ -48,7 +48,7 @@ A \code{QFeatures} object with additional assays or a
 \code{SummarizedExperiment} object.
 }
 \description{
-This function aggregates the quantitative samples of one or
-multiple assays, applying a summarisation function (\code{fun}) to
-sets of samples defined by a \code{colData} variable.
+This function aggregates quantitative samples, applying a
+summarisation function (\code{fun}) to sets of samples defined by a
+\code{colData} variable.
 }
