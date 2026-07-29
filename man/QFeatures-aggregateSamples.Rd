@@ -28,7 +28,9 @@
 \item{object}{An instance of class \link{QFeatures} or \link[SummarizedExperiment:SummarizedExperiment]{SummarizedExperiment}.}
 
 \item{scol}{A \code{character()} naming the \code{colData} variable defining
-how to group samples.}
+how to group samples.
+When multiple variables are supplied, their values are concatenated
+with \verb{_} to build the grouping variable.}
 
 \item{fun}{A function used to aggregate the samples. The function should
 apply its summarization row-wise.}
@@ -51,4 +53,11 @@ A \code{QFeatures} object with additional assays or a
 This function aggregates quantitative samples, applying a
 summarisation function (\code{fun}) to sets of samples defined by a
 \code{colData} variable.
+
+For \code{QFeatures} objects, the aggregated assay \code{colData} is added to
+the global \code{colData} using \code{\link[=addAssay]{addAssay()}}. If an aggregated group name
+already exists as a row name in the global \code{colData}, it is reused
+only when shared \code{colData} variables do not contain conflicting
+values, otherwise an error is thrown. The aggregation of samples should
+take place after run joining.
 }

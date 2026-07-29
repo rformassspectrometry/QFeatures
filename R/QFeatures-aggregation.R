@@ -514,12 +514,21 @@ validAdjacencyMatrix <- function(x) {
 ##' summarisation function (`fun`) to sets of samples defined by a
 ##' `colData` variable.
 ##'
+##' For `QFeatures` objects, the aggregated assay `colData` is added to
+##' the global `colData` using [addAssay()]. If an aggregated group name
+##' already exists as a row name in the global `colData`, it is reused
+##' only when shared `colData` variables do not contain conflicting
+##' values, otherwise an error is thrown. The aggregation of samples should
+##' take place after run joining.
+##'
 ##' @param object An instance of class [QFeatures] or [SummarizedExperiment].
 ##'
 ##' @param i A `character(1)` naming the assay that will be aggregated.
 ##'
 ##' @param scol A `character()` naming the `colData` variable defining
 ##'     how to group samples.
+##'     When multiple variables are supplied, their values are concatenated
+##'     with `_` to build the grouping variable.
 ##'
 ##' @param name A `character(1)` naming the new assay.
 ##'
@@ -561,9 +570,10 @@ rowMedianPolish <- function(x, ...) {
     if (!identical(length(INDEX), ncol(x)))
         stop("The length of 'INDEX' has to be identical to 'ncol(x).")
     FUN <- match.fun(FUN)
-    res <- lapply(split(seq_len(ncol(x)), INDEX), FUN = function(i) {
-        FUN(x[, i, drop = FALSE], ...)
-    })
+    res <- lapply(split(seq_len(ncol(x)), INDEX, drop = TRUE),
+                  FUN = function(i) {
+                      FUN(x[, i, drop = FALSE], ...)
+                  })
     nms <- names(res)
     res <- do.call(cbind, res)
 
@@ -591,6 +601,8 @@ rowMedianPolish <- function(x, ...) {
     }
     m <- assay(object, 1)
     groupBy <- cd[[scol]]
+    if (is.factor(groupBy))
+        groupBy <- droplevels(groupBy)
 
     aggregated_assay <- .aggregate_cols(m, groupBy, fun, ...)
     moreAssays <- lapply(moreFun, FUN = function(f) {
@@ -626,14 +638,9 @@ rowMedianPolish <- function(x, ...) {
     i <- .normIndex(object, i)
 
     fromAssay <- getWithColData(object, i)
-    el <- .aggregateSamplesSE(fromAssay, scol, fun, moreFun)
+    el <- .aggregateSamplesSE(fromAssay, scol, fun, moreFun, ...)
 
     cd <- colData(object)
-    duplicatedCdRows <- intersect(rownames(colData(el)), rownames(cd))
-    if (length(duplicatedCdRows))
-        stop("The aggregated sample names already exist in ",
-             "'colData(object)': '",
-             paste0(duplicatedCdRows, collapse = "', '"), "'.")
     setCdNames <- colnames(colData(el))
     colData(el)[setdiff(names(cd), setCdNames)] <- NA
     colData(el) <- colData(el)[, setCdNames, drop = FALSE]
