@@ -623,7 +623,6 @@ rowMedianPolish <- function(x, ...) {
 
 .aggregateSamplesQFeatures <- function(object, i, scol, name = "newAssay",
                                        fun, moreFun, ...) {
-    ## Check arguments
     if (missing(i) || !is.character(i) || length(i) != 1L || is.na(i))
         stop("'i' must be a non-missing character vector of length 1.")
     if (missing(scol))
@@ -632,9 +631,8 @@ rowMedianPolish <- function(x, ...) {
         stop("'name' must be a non-missing character vector of length 1.")
     if (isEmpty(object))
         return(object)
-    if (any(present <- name %in% names(object)))
-        stop("There's already one or more assays named: '",
-             paste0(name[present], collapse = "', '"), "'.")
+    if (name %in% names(object))
+        stop("There's already an assay named: '", name, "'.")
     i <- .normIndex(object, i)
 
     fromAssay <- getWithColData(object, i)
@@ -645,7 +643,6 @@ rowMedianPolish <- function(x, ...) {
     colData(el)[setdiff(names(cd), setCdNames)] <- NA
     colData(el) <- colData(el)[, setCdNames, drop = FALSE]
 
-    ## Create the new QFeatures object
     object <- addAssay(object, el, name)
     object <- addAssayLinkOneToOne(object, from = i, to = name)
     object

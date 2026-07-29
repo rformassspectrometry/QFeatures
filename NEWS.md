@@ -1,3 +1,9 @@
+# QFeatures 1.25
+
+## QFeatures 1.25.1
+
+- add `aggregateSamples` function
+
 # QFeatures 1.23
 
 ## QFeatures 1.23.1

@@ -132,7 +132,7 @@ test_that("aggregateSamples,QFeatures: argument errors", {
                  "'name' must be a non-missing character vector of length 1.",
                  fixed = TRUE)
     expect_error(aggregateSamples(qf, "raw", "group", name = "raw"),
-                 "There's already one or more assays named: 'raw'.",
+                 "There's already an assay named: 'raw'.",
                  fixed = TRUE)
     expect_error(aggregateSamples(qf, "missing", "group", name = "grouped"),
                  "The following assay(s) is/are not found:missing",
