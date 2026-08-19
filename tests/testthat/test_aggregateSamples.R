@@ -42,7 +42,7 @@ test_that("aggregateSamples dispatches for SummarizedExperiment and QFeatures", 
     expect_identical(assay(qf2[["grouped"]]), expected)
 })
 
-test_that("aggregateSamples,SummarizedExperiment: metadata and extra assays", {
+test_that("aggregateSamples,SummarizedExperiment: metadata and extra sets", {
     se <- .sampleAggregationSE()
 
     se2 <- aggregateSamples(se, "group", fun = rowMeans)
@@ -104,11 +104,11 @@ test_that("aggregateSamples,SummarizedExperiment: errors", {
                  fixed = TRUE)
     expect_error(aggregateSamples(se, "missing", fun = rowMeans,
                                   moreFun = list()),
-                 "'scol' not found in the assay's colData.",
+                 "'scol' not found in the set's colData.",
                  fixed = TRUE)
     expect_error(aggregateSamples(se, c("group", "missing"),
                                   fun = rowMeans, moreFun = list()),
-                 "'scol' not found in the assay's colData.",
+                 "'scol' not found in the set's colData.",
                  fixed = TRUE)
 })
 
@@ -132,10 +132,10 @@ test_that("aggregateSamples,QFeatures: argument errors", {
                  "'name' must be a non-missing character vector of length 1.",
                  fixed = TRUE)
     expect_error(aggregateSamples(qf, "raw", "group", name = "raw"),
-                 "There's already an assay named: 'raw'.",
+                 "There's already a set named: 'raw'.",
                  fixed = TRUE)
     expect_error(aggregateSamples(qf, "missing", "group", name = "grouped"),
-                 "The following assay(s) is/are not found:missing",
+                 "The following set(s) is/are not found:missing",
                  fixed = TRUE)
 })
 
@@ -217,7 +217,7 @@ test_that("aggregateSamples,QFeatures: reuses compatible colData rows", {
     expect_true(validObject(qf2))
 })
 
-test_that("aggregateSamples,QFeatures: assays and links", {
+test_that("aggregateSamples,QFeatures: sets and links", {
     se <- .sampleAggregationSE()
     qf <- QFeatures(list(raw = se))
     qf2 <- aggregateSamples(qf, "raw", "group", name = "grouped",

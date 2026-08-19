@@ -37,7 +37,7 @@
 ##' @param name A `character()` naming the new sets.
 ##'     `name` must have the same length as i.
 ##'     Default is `newAssay`. Note that the function will fail if there's
-##'     already an set with `name`.
+##'     already a set with `name`.
 ##'
 ##' @param fun A function used for quantitative feature
 ##'     aggregation. See Details for examples.
@@ -106,7 +106,7 @@
 ##'
 ##' @section Missing values in the row data:
 ##'
-##' Missing values in the row data of an set will also impact the
+##' Missing values in the row data of a set will also impact the
 ##' resulting (aggregated) set row data, as illustrated in the
 ##' example below. Any feature variables (a column in the row data)
 ##' containing `NA` values will be dropped from the aggregated row
@@ -451,7 +451,7 @@ setMethod("adjacencyMatrix", "SummarizedExperiment",
 ##'
 ##' @rdname QFeatures-aggregate
 ##'
-##' @param i When adding an adjacency matrix to an set of a
+##' @param i When adding an adjacency matrix to a set of a
 ##'     `QFeatures` object, the index or name of the set the
 ##'     adjacency matrix will be added to. Ignored when `x` is an
 ##'     `SummarizedExperiment`.
@@ -632,7 +632,7 @@ rowMedianPolish <- function(x, ...) {
     if (isEmpty(object))
         return(object)
     if (name %in% names(object))
-        stop("There's already an set named: '", name, "'.")
+        stop("There's already a set named: '", name, "'.")
     i <- .normIndex(object, i)
 
     fromAssay <- getWithColData(object, i)

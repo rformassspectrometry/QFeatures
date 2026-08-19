@@ -33,7 +33,7 @@ adjacencyMatrix(object, i, adjName = "adjacencyMatrix") <- value
 \item{object}{An instance of class \code{SummarizedExperiment} or
 \code{QFeatures}.}
 
-\item{i}{When adding an adjacency matrix to an set of a
+\item{i}{When adding an adjacency matrix to a set of a
 \code{QFeatures} object, the index or name of the set the
 adjacency matrix will be added to. Ignored when \code{x} is an
 \code{SummarizedExperiment}.}
@@ -46,7 +46,7 @@ or a (possibly sparse) matrix. See below for details.}
 \item{name}{A \code{character()} naming the new sets.
 \code{name} must have the same length as i.
 Default is \code{newAssay}. Note that the function will fail if there's
-already an set with \code{name}.}
+already a set with \code{name}.}
 
 \item{fun}{A function used for quantitative feature
 aggregation. See Details for examples.}
@@ -142,7 +142,7 @@ as filtering (see \code{\link[=filterNA]{filterNA()}}) or imputation (see \code{
 \section{Missing values in the row data}{
 
 
-Missing values in the row data of an set will also impact the
+Missing values in the row data of a set will also impact the
 resulting (aggregated) set row data, as illustrated in the
 example below. Any feature variables (a column in the row data)
 containing \code{NA} values will be dropped from the aggregated row
