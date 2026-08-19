@@ -601,9 +601,20 @@ setMethod(
 ##'
 ##' @aliases coerce,MultiAssayExperiment,QFeatures-method
 ##'
+##' @param from An instance of class [MultiAssayExperiment] to coerce to
+##'     a [QFeatures] object.
+##'
+##' @param to The target class name.
+##'
+##' @param strict A `logical(1)` indicating if the returned object must be
+##'     strictly from the target class. If FALSE any simple extension of the
+##'     target class will be returned.
+##'
 ##' @exportMethod coerce
 ##'
-setAs("MultiAssayExperiment", "QFeatures", function(from) {
+setAs("MultiAssayExperiment", "QFeatures", function(from,
+        to = "QFeatures",
+        strict = TRUE) {
     QFeatures(
         experiments = experiments(from),
         colData = colData(from),
