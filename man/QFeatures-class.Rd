@@ -40,6 +40,8 @@ QFeatures(..., assayLinks = NULL)
 
 \S4method{[}{QFeatures,character,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
 
+\S4method{coerce}{MultiAssayExperiment,QFeatures}(from, to = "QFeatures", strict = TRUE)
+
 \S4method{c}{QFeatures}(x, ...)
 
 \S4method{dims}{QFeatures}(x, use.names = TRUE)

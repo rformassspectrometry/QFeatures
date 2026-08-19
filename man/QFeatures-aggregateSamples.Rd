@@ -4,7 +4,7 @@
 \alias{aggregateSamples}
 \alias{aggregateSamples,QFeatures-method}
 \alias{aggregateSamples,SummarizedExperiment-method}
-\title{Aggregate assays' quantitative samples}
+\title{Aggregate sets' quantitative samples}
 \usage{
 \S4method{aggregateSamples}{SummarizedExperiment}(
   object,
@@ -36,17 +36,17 @@ with \verb{_} to build the grouping variable.}
 apply its summarization row-wise.}
 
 \item{moreFun}{A named \code{list()} of additional aggregation functions
-used to create additional assays. The function should apply its
+used to create additional sets. The function should apply its
 summarization row-wise.}
 
 \item{...}{Additional parameters passed to \code{fun}.}
 
-\item{i}{A \code{character(1)} naming the assay that will be aggregated.}
+\item{i}{A \code{character(1)} naming the set that will be aggregated.}
 
-\item{name}{A \code{character(1)} naming the new assay.}
+\item{name}{A \code{character(1)} naming the new set.}
 }
 \value{
-A \code{QFeatures} object with additional assays or a
+A \code{QFeatures} object with additional sets or a
 \code{SummarizedExperiment} object.
 }
 \description{
@@ -54,7 +54,7 @@ This function aggregates quantitative samples, applying a
 summarisation function (\code{fun}) to sets of samples defined by a
 \code{colData} variable.
 
-For \code{QFeatures} objects, the aggregated assay \code{colData} is added to
+For \code{QFeatures} objects, the aggregated set \code{colData} is added to
 the global \code{colData} using \code{\link[=addAssay]{addAssay()}}. If an aggregated group name
 already exists as a row name in the global \code{colData}, it is reused
 only when shared \code{colData} variables do not contain conflicting
