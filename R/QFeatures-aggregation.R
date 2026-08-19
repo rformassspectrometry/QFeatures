@@ -478,7 +478,7 @@ setMethod("adjacencyMatrix", "SummarizedExperiment",
     if (is.numeric(i) && i > length(object))
         stop("Subscript is out of bounds.")
     if (is.character(i) && !(i %in% names(object)))
-        stop("Assay '", i, "' not found.")
+        stop("Set '", i, "' not found.")
     se <- object[[i]]
     adjacencyMatrix(se, adjName = adjName) <- value
     object[[i]] <- se

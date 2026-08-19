@@ -1129,7 +1129,7 @@ setReplaceMethod(
     }
     if (!allowAbsent & any(mis <- !i %in% names(object))) {
         stop(
-            "The following assay(s) is/are not found:",
+            "The following set(s) is/are not found:",
             paste(i[mis], collapse = ",")
         )
     }
