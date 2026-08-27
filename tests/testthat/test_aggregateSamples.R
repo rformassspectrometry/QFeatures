@@ -23,91 +23,111 @@ data(feat2)
     ans
 }
 
+.expectedAggSdByGroup <- function(se) {
+    m <- assay(se)
+    cbind(a = apply(m[, 1:2, drop = FALSE], 1, sd, na.rm = TRUE),
+          b = apply(m[, 3:4, drop = FALSE], 1, sd, na.rm = TRUE))
+}
+
+.expectedAggSdByGroupBatch <- function(se) {
+    matrix(NA_real_, nrow = nrow(se), ncol = ncol(se),
+           dimnames = list(rownames(se),
+                           paste(colData(se)$group, colData(se)$batch,
+                                 sep = "_")))
+}
+
+.expectedAggCountsByGroup <- function(se) {
+    m <- assay(se)
+    cbind(a = rowSums(!is.na(m[, 1:2, drop = FALSE])),
+          b = rowSums(!is.na(m[, 3:4, drop = FALSE])))
+}
+
+.expectedAggCountsByGroupBatch <- function(se) {
+    ans <- matrix(1, nrow = nrow(se), ncol = ncol(se),
+                  dimnames = list(rownames(se),
+                                  paste(colData(se)$group,
+                                        colData(se)$batch, sep = "_")))
+    storage.mode(ans) <- "integer"
+    ans
+}
+
 test_that("aggregateSamples dispatches for SummarizedExperiment and QFeatures", {
     se <- .sampleAggregationSE()
     expected <- .expectedByGroup(se)
 
-    se2 <- aggregateSamples(se, "group", fun = rowMeans, moreFun = list())
+    se2 <- aggregateSamples(se, "group", fun = rowMeans)
 
     expect_s4_class(se2, "SummarizedExperiment")
     expect_identical(assay(se2), expected)
 
     qf <- QFeatures(list(raw = se))
     qf2 <- aggregateSamples(qf, "raw", "group",
-                            name = "grouped", fun = rowMeans,
-                            moreFun = list())
+                            name = "grouped", fun = rowMeans)
 
     expect_s4_class(qf2, "QFeatures")
     expect_named(qf2, c("raw", "grouped"))
     expect_identical(assay(qf2[["grouped"]]), expected)
 })
 
-test_that("aggregateSamples,SummarizedExperiment: metadata and extra sets", {
+test_that("aggregateSamples,SummarizedExperiment: metadata and fixed assays", {
     se <- .sampleAggregationSE()
 
     se2 <- aggregateSamples(se, "group", fun = rowMeans)
 
-    expect_named(assays(se2), c("assay", "aggcounts"))
-    expect_equal(assay(se2, "aggcounts"),
-                 matrix(2, nrow = nrow(se), ncol = 2,
-                        dimnames = list(rownames(se), c("a", "b"))))
+    expect_named(assays(se2), c("assay", "aggsd", "aggcounts"))
+    expect_equal(assay(se2, "aggsd"), .expectedAggSdByGroup(se))
+    expect_equal(assay(se2, "aggcounts"), .expectedAggCountsByGroup(se))
+    expect_equal(aggcounts(se2), .expectedAggCountsByGroup(se))
     expect_identical(rowData(se2), rowData(se))
     expect_named(colData(se2), c("group", "fixed"))
     expect_identical(colData(se2)$group, c("a", "b"))
     expect_identical(colData(se2)$fixed, c("A", "B"))
     expect_true(validObject(se2))
-
-    se3 <- aggregateSamples(se, "group", fun = rowMeans,
-                            moreFun = list(aggsums = rowSums))
-
-    expect_named(assays(se3), c("assay", "aggsums"))
-    expect_equal(assay(se3, "aggsums"),
-                 cbind(a = rowSums(assay(se)[, 1:2]),
-                       b = rowSums(assay(se)[, 3:4])))
 })
 
 test_that("aggregateSamples,SummarizedExperiment: multiple scol columns", {
     se <- .sampleAggregationSE()
     se2 <- aggregateSamples(se, c("group", "batch"),
-                            fun = rowMeans, moreFun = list())
+                            fun = rowMeans)
 
     expect_s4_class(se2, "SummarizedExperiment")
+    expect_named(assays(se2), c("assay", "aggsd", "aggcounts"))
     expect_identical(assay(se2), .expectedByGroupBatch(se))
+    expect_equal(assay(se2, "aggsd"), .expectedAggSdByGroupBatch(se))
+    expect_equal(assay(se2, "aggcounts"), .expectedAggCountsByGroupBatch(se))
 })
 
 test_that("aggregateSamples,SummarizedExperiment: unused factor levels", {
     se <- .sampleAggregationSE(
         group = factor(c("a", "a", "b", "b"), levels = c("a", "b", "c"))
     )
-    se2 <- aggregateSamples(se, "group", fun = rowMeans, moreFun = list())
+    se2 <- aggregateSamples(se, "group", fun = rowMeans)
 
     expect_identical(colnames(se2), c("a", "b"))
     expect_identical(rownames(colData(se2)), c("a", "b"))
     expect_equal(assay(se2), .expectedByGroup(se))
+    expect_equal(assay(se2, "aggcounts"), .expectedAggCountsByGroup(se))
     expect_true(validObject(se2))
 })
 
 test_that("aggregateSamples,SummarizedExperiment: errors", {
     se <- .sampleAggregationSE()
 
-    expect_error(aggregateSamples(se, fun = rowMeans, moreFun = list()),
+    expect_error(aggregateSamples(se, fun = rowMeans),
                  "'scol' is required.", fixed = TRUE)
-    expect_error(aggregateSamples(se, character(), fun = rowMeans,
-                                  moreFun = list()),
+    expect_error(aggregateSamples(se, character(), fun = rowMeans),
                  "'scol' is required.", fixed = TRUE)
-    expect_error(aggregateSamples(se, 1, fun = rowMeans, moreFun = list()),
+    expect_error(aggregateSamples(se, 1, fun = rowMeans),
                  "'scol' must be a non-missing character vector.",
                  fixed = TRUE)
-    expect_error(aggregateSamples(se, NA_character_, fun = rowMeans,
-                                  moreFun = list()),
+    expect_error(aggregateSamples(se, NA_character_, fun = rowMeans),
                  "'scol' must be a non-missing character vector.",
                  fixed = TRUE)
-    expect_error(aggregateSamples(se, "missing", fun = rowMeans,
-                                  moreFun = list()),
+    expect_error(aggregateSamples(se, "missing", fun = rowMeans),
                  "'scol' not found in the set's colData.",
                  fixed = TRUE)
     expect_error(aggregateSamples(se, c("group", "missing"),
-                                  fun = rowMeans, moreFun = list()),
+                                  fun = rowMeans),
                  "'scol' not found in the set's colData.",
                  fixed = TRUE)
 })
@@ -143,11 +163,15 @@ test_that("aggregateSamples,QFeatures: multiple scol columns", {
     se <- .sampleAggregationSE()
     qf <- QFeatures(list(raw = se))
     qf2 <- aggregateSamples(qf, "raw", c("group", "batch"),
-                            name = "grouped", fun = rowMeans,
-                            moreFun = list())
+                            name = "grouped", fun = rowMeans)
 
     expect_s4_class(qf2, "QFeatures")
+    expect_named(assays(qf2[["grouped"]]), c("assay", "aggsd", "aggcounts"))
     expect_identical(assay(qf2[["grouped"]]), .expectedByGroupBatch(se))
+    expect_equal(assay(qf2[["grouped"]], "aggsd"),
+                 .expectedAggSdByGroupBatch(se))
+    expect_equal(assay(qf2[["grouped"]], "aggcounts"),
+                 .expectedAggCountsByGroupBatch(se))
     expect_true(validObject(qf2))
 })
 
@@ -157,12 +181,15 @@ test_that("aggregateSamples,QFeatures: arguments to fun", {
     qf <- QFeatures(list(raw = se))
 
     se2 <- aggregateSamples(se, "group", fun = rowMeans,
-                            moreFun = list(), na.rm = TRUE)
-    qf2 <- aggregateSamples(qf, "raw", "group", name = "grouped",
-                            fun = rowMeans, moreFun = list(),
                             na.rm = TRUE)
+    qf2 <- aggregateSamples(qf, "raw", "group", name = "grouped",
+                            fun = rowMeans, na.rm = TRUE)
 
     expect_equal(assay(qf2[["grouped"]]), assay(se2))
+    expect_equal(assay(qf2[["grouped"]], "aggsd"),
+                 .expectedAggSdByGroup(se))
+    expect_equal(assay(qf2[["grouped"]], "aggcounts"),
+                 .expectedAggCountsByGroup(se))
     expect_true(validObject(qf2))
 })
 
@@ -173,14 +200,14 @@ test_that("aggregateSamples,QFeatures: scol errors", {
     expect_error(aggregateSamples(qf, "raw"),
                  "'scol' is required.", fixed = TRUE)
     expect_error(aggregateSamples(qf, "raw", character(), name = "grouped",
-                                  fun = rowMeans, moreFun = list()),
+                                  fun = rowMeans),
                  "'scol' is required.", fixed = TRUE)
     expect_error(aggregateSamples(qf, "raw", 1, name = "grouped",
-                                  fun = rowMeans, moreFun = list()),
+                                  fun = rowMeans),
                  "'scol' must be a non-missing character vector.",
                  fixed = TRUE)
     expect_error(aggregateSamples(qf, "raw", NA_character_, name = "grouped",
-                                  fun = rowMeans, moreFun = list()),
+                                  fun = rowMeans),
                  "'scol' must be a non-missing character vector.",
                  fixed = TRUE)
 })
@@ -190,7 +217,7 @@ test_that("aggregateSamples,QFeatures: addAssay handles colData rows appending",
     qf <- QFeatures(list(raw = se))
 
     qf2 <- aggregateSamples(qf, "raw", "group", name = "grouped",
-                            fun = rowMeans, moreFun = list())
+                            fun = rowMeans)
 
     expect_named(qf2, c("raw", "grouped"))
     expect_identical(colnames(qf2[["grouped"]]), c("S1", "S2"))
@@ -204,11 +231,11 @@ test_that("aggregateSamples,QFeatures: reuses compatible colData rows", {
 
     qf2 <- suppressWarnings(
         aggregateSamples(qf, "raw1", "group", name = "grouped1",
-                         fun = rowMeans, moreFun = list())
+                         fun = rowMeans)
     )
     qf2 <- suppressWarnings(
         aggregateSamples(qf2, "raw2", "group", name = "grouped2",
-                         fun = rowMeans, moreFun = list())
+                         fun = rowMeans)
     )
 
     expect_named(qf2, c("raw1", "raw2", "grouped1", "grouped2"))
@@ -221,14 +248,13 @@ test_that("aggregateSamples,QFeatures: sets and links", {
     se <- .sampleAggregationSE()
     qf <- QFeatures(list(raw = se))
     qf2 <- aggregateSamples(qf, "raw", "group", name = "grouped",
-                            fun = rowMeans,
-                            moreFun = list(aggsums = rowSums))
+                            fun = rowMeans)
     alink <- assayLink(qf2, "grouped")
 
-    expect_named(assays(qf2[["grouped"]]), c("assay", "aggsums"))
-    expect_equal(assay(qf2[["grouped"]], "aggsums"),
-                 cbind(a = rowSums(assay(se)[, 1:2]),
-                       b = rowSums(assay(se)[, 3:4])))
+    expect_named(assays(qf2[["grouped"]]), c("assay", "aggsd", "aggcounts"))
+    expect_equal(assay(qf2[["grouped"]], "aggsd"),
+                 .expectedAggSdByGroup(se))
+    expect_equal(aggcounts(qf2[["grouped"]]), .expectedAggCountsByGroup(se))
     expect_identical(rowData(qf2[["grouped"]]), rowData(se))
     expect_identical(alink@name, "grouped")
     expect_identical(alink@from, "raw")
@@ -236,13 +262,4 @@ test_that("aggregateSamples,QFeatures: sets and links", {
     expect_identical(alink@hits@from, seq_len(nrow(se)))
     expect_identical(alink@hits@to, seq_len(nrow(se)))
     expect_true(validObject(qf2))
-
-    qf3 <- aggregateSamples(qf, "raw", "group", name = "counted",
-                            fun = rowMeans)
-
-    expect_named(assays(qf3[["counted"]]), c("assay", "aggcounts"))
-    expect_equal(assay(qf3[["counted"]], "aggcounts"),
-                 matrix(2, nrow = nrow(se), ncol = 2,
-                        dimnames = list(rownames(se), c("a", "b"))))
-    expect_true(validObject(qf3))
 })

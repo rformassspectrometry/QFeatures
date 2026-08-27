@@ -6,13 +6,7 @@
 \alias{aggregateSamples,SummarizedExperiment-method}
 \title{Aggregate sets' quantitative samples}
 \usage{
-\S4method{aggregateSamples}{SummarizedExperiment}(
-  object,
-  scol,
-  fun = rowRobustSummary,
-  moreFun = list(aggcounts = rowCounts),
-  ...
-)
+\S4method{aggregateSamples}{SummarizedExperiment}(object, scol, fun = rowRobustSummary, ...)
 
 \S4method{aggregateSamples}{QFeatures}(
   object,
@@ -20,7 +14,6 @@
   scol,
   name = "newAssay",
   fun = rowRobustSummary,
-  moreFun = list(aggcounts = rowCounts),
   ...
 )
 }
@@ -35,10 +28,6 @@ with \verb{_} to build the grouping variable.}
 \item{fun}{A function used to aggregate the samples. The function should
 apply its summarization row-wise.}
 
-\item{moreFun}{A named \code{list()} of additional aggregation functions
-used to create additional sets. The function should apply its
-summarization row-wise.}
-
 \item{...}{Additional parameters passed to \code{fun}.}
 
 \item{i}{A \code{character(1)} naming the set that will be aggregated.}
@@ -46,8 +35,13 @@ summarization row-wise.}
 \item{name}{A \code{character(1)} naming the new set.}
 }
 \value{
-A \code{QFeatures} object with additional sets or a
-\code{SummarizedExperiment} object.
+A \code{QFeatures} object with an additional set or a
+\code{SummarizedExperiment} object. The new set/\code{SummarizedExperiment}
+contains three assays the first named \code{assay} containing the result
+of the aggregation, the second named \code{aggsd} containing the standard
+deviation associated with each aggregated data point and the third
+named \code{aggcounts} containing the number of observation used for each
+aggregated data point.
 }
 \description{
 This function aggregates quantitative samples, applying a

@@ -535,14 +535,15 @@ validAdjacencyMatrix <- function(x) {
 ##' @param fun A function used to aggregate the samples. The function should
 ##'   apply its summarization row-wise.
 ##'
-##' @param moreFun A named `list()` of additional aggregation functions
-##'     used to create additional sets. The function should apply its
-##'     summarization row-wise.
-##'
 ##' @param ... Additional parameters passed to `fun`.
 ##'
-##' @return A `QFeatures` object with additional sets or a
-##'     `SummarizedExperiment` object.
+##' @return A `QFeatures` object with an additional set or a
+##'     `SummarizedExperiment` object. The new set/`SummarizedExperiment`
+##'     contains three assays the first named `assay` containing the result
+##'     of the aggregation, the second named `aggsd` containing the standard
+##'     deviation associated with each aggregated data point and the third
+##'     named `aggcounts` containing the number of observation used for each
+##'     aggregated data point.
 ##'
 ##' @aliases aggregateSamples aggregateSamples,QFeatures-method
 ##' @aliases aggregateSamples,SummarizedExperiment-method
@@ -585,7 +586,7 @@ rowMedianPolish <- function(x, ...) {
     res
 }
 
-.aggregateSamplesSE <- function(object, scol, fun, moreFun, ...) {
+.aggregateSamplesSE <- function(object, scol, fun, ...) {
     if (missing(scol) || !length(scol))
         stop("'scol' is required.")
     if (!is.character(scol) || anyNA(scol))
@@ -605,15 +606,16 @@ rowMedianPolish <- function(x, ...) {
         groupBy <- droplevels(groupBy)
 
     aggregated_assay <- .aggregate_cols(m, groupBy, fun, ...)
-    moreAssays <- lapply(moreFun, FUN = function(f) {
-        .aggregate_cols(m, groupBy, f)
-    })
+    sd_assay <- .aggregate_cols(m, groupBy, rowSds, na.rm = TRUE)
+    count_assay <- .aggregate_cols(m, groupBy, rowCounts)
 
     coldata <- QFeatures::reduceDataFrame(cd, groupBy,
                                            simplify = TRUE,
                                            drop = TRUE,
                                            count = FALSE)
-    assays <- c(SimpleList(assay = aggregated_assay), moreAssays)
+    assays <- SimpleList(assay = aggregated_assay,
+                         aggsd = sd_assay,
+                         aggcounts = count_assay)
 
     se <- SummarizedExperiment(assays = assays,
                                colData = coldata,
@@ -622,7 +624,7 @@ rowMedianPolish <- function(x, ...) {
 }
 
 .aggregateSamplesQFeatures <- function(object, i, scol, name = "newAssay",
-                                       fun, moreFun, ...) {
+                                       fun, ...) {
     if (missing(i) || !is.character(i) || length(i) != 1L || is.na(i))
         stop("'i' must be a non-missing character vector of length 1.")
     if (missing(scol))
@@ -636,7 +638,7 @@ rowMedianPolish <- function(x, ...) {
     i <- .normIndex(object, i)
 
     fromAssay <- getWithColData(object, i)
-    el <- .aggregateSamplesSE(fromAssay, scol, fun, moreFun, ...)
+    el <- .aggregateSamplesSE(fromAssay, scol, fun, ...)
 
     cd <- colData(object)
     setCdNames <- colnames(colData(el))
@@ -651,14 +653,12 @@ rowMedianPolish <- function(x, ...) {
 ##' @exportMethod aggregateSamples
 ##' @rdname QFeatures-aggregateSamples
 setMethod("aggregateSamples", "SummarizedExperiment",
-          function(object, scol, fun = rowRobustSummary,
-                   moreFun = list(aggcounts = rowCounts), ...)
-              .aggregateSamplesSE(object, scol, fun, moreFun, ...))
+          function(object, scol, fun = rowRobustSummary, ...)
+              .aggregateSamplesSE(object, scol, fun, ...))
 
 ##' @exportMethod aggregateSamples
 ##' @rdname QFeatures-aggregateSamples
 setMethod("aggregateSamples", "QFeatures",
           function(object, i, scol, name = "newAssay",
-                   fun = rowRobustSummary,
-                   moreFun = list(aggcounts = rowCounts), ...)
-              .aggregateSamplesQFeatures(object, i, scol, name, fun, moreFun, ...))
+                   fun = rowRobustSummary, ...)
+              .aggregateSamplesQFeatures(object, i, scol, name, fun, ...))
