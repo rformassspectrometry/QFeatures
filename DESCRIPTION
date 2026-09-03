@@ -14,6 +14,7 @@ Authors@R: c(person("Laurent", "Gatto",
                     role = "ctb"),
              person("Léopold", "Guyot",
                      email = "leopold.guyot@uclouvain.be",
+                     comment = c(ORCID = "0009-0005-2217-3855"),
                      role = "ctb"))
 Description: The QFeatures infrastructure enables the management and
    processing of quantitative features for high-throughput mass
