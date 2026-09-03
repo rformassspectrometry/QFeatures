@@ -29,6 +29,9 @@ setGeneric("scaleTransform",
 setGeneric("aggcounts",
            function(object, ...) standardGeneric("aggcounts"))
 
+setGeneric("aggregateSamples",
+           function(object, ...) standardGeneric("aggregateSamples"))
+
 ## base::sweep
 .sweep.useAsDefault <- function(x, MARGIN, STATS, FUN = "-",
                                 check.margin = TRUE, ...)

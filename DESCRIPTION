@@ -1,6 +1,6 @@
 Package: QFeatures
 Title: Quantitative features for mass spectrometry data
-Version: 1.23.1
+Version: 1.23.2
 Authors@R: c(person("Laurent", "Gatto",
                     email = "laurent.gatto@uclouvain.be",
                     comment = c(ORCID = "0000-0002-1520-2268"),
@@ -14,6 +14,7 @@ Authors@R: c(person("Laurent", "Gatto",
                     role = "ctb"),
              person("Léopold", "Guyot",
                      email = "leopold.guyot@uclouvain.be",
+                     comment = c(ORCID = "0009-0005-2217-3855"),
                      role = "ctb"))
 Description: The QFeatures infrastructure enables the management and
    processing of quantitative features for high-throughput mass
@@ -94,4 +95,4 @@ Collate:
     'utils.R'
     'display.R'
 Roxygen: list(markdown=TRUE)
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0

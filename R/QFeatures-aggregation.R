@@ -1,50 +1,50 @@
-##' @title Aggregate assays' quantitative features
+##' @title Aggregate sets' quantitative features
 ##'
 ##' @description
 ##'
 ##' This function aggregates the quantitative features of one or
-##' multiple assays, applying a summarisation function (`fun`) to
+##' multiple sets, applying a summarisation function (`fun`) to
 ##' sets of features.
 ##' The `fcol` variable name points to a rowData column that defines
 ##' how to group the features during aggregate. This variable can
 ##' eigher be a vector (we then refer to an *aggregation by vector*)
 ##' or an adjacency matrix (*aggregation by matrix*).
 ##'
-##' The rowData of the aggregated `SummarizedExperiment` assays
+##' The rowData of the aggregated `SummarizedExperiment` sets
 ##' contains a `.n` variable that provides the number of parent
 ##' features that were aggregated.
 ##'
 ##' When aggregating with a vector, the newly aggregated
-##' `SummarizedExperiment` assays also contains a new `aggcounts` assay
+##' `SummarizedExperiment` sets also contains a new `aggcounts` set
 ##' containing the aggregation counts matrix, i.e. the number of
 ##' features that were aggregated for each sample, which can be
 ##' accessed with the `aggcounts()` accessor.
 ##'
 ##' Only the rowData columns that are invariant within a group across
-##' all assays will be retained in the new assays' rowData.
+##' all sets will be retained in the new sets' rowData.
 ##'
 ##' @param object An instance of class [QFeatures] or [SummarizedExperiment].
 ##'
 ##' @param i A `numeric()` or `character()` indicating the index or name
-##'     of one or multiple assays that will be aggregated
-##'     to create one or multiple new assays.
+##'     of one or multiple sets that will be aggregated
+##'     to create one or multiple new sets.
 ##'
-##' @param fcol A `character(1)` naming a rowdata variable (of assay
+##' @param fcol A `character(1)` naming a rowdata variable (of set
 ##'     `i` in case of a `QFeatures`) defining how to aggregate the
-##'     features of the assays. This variable is either a `character`
+##'     features of the sets. This variable is either a `character`
 ##'     or a (possibly sparse) matrix. See below for details.
 ##'
-##' @param name A `character()` naming the new assays.
+##' @param name A `character()` naming the new sets.
 ##'     `name` must have the same length as i.
 ##'     Default is `newAssay`. Note that the function will fail if there's
-##'     already an assay with `name`.
+##'     already a set with `name`.
 ##'
 ##' @param fun A function used for quantitative feature
 ##'     aggregation. See Details for examples.
 ##'
 ##' @param ... Additional parameters passed the `fun`.
 ##'
-##' @return A `QFeatures` object with an additional assay or a
+##' @return A `QFeatures` object with an additional set or a
 ##'  `SummarizedExperiment` object (or subclass thereof).
 ##'
 ##' @details
@@ -106,8 +106,8 @@
 ##'
 ##' @section Missing values in the row data:
 ##'
-##' Missing values in the row data of an assay will also impact the
-##' resulting (aggregated) assay row data, as illustrated in the
+##' Missing values in the row data of a set will also impact the
+##' resulting (aggregated) set row data, as illustrated in the
 ##' example below. Any feature variables (a column in the row data)
 ##' containing `NA` values will be dropped from the aggregated row
 ##' data. The reasons underlying this drop are detailed in the
@@ -214,7 +214,7 @@
 ##' ## Using a peptide-by-proteins adjacency matrix
 ##' ## --------------------------------------------
 ##'
-##' ## Let's use assay peptides from object feat1 and
+##' ## Let's use set peptides from object feat1 and
 ##' ## define that peptide SYGFNAAR maps to proteins
 ##' ## Prot A and B
 ##'
@@ -265,7 +265,7 @@ setMethod("aggregateFeatures", "QFeatures",
                   return(object)
               ## Check arguments
               if (any(present <- name %in% names(object)))
-                  stop("There's already one or more assays named: '",
+                  stop("There's already one or more sets named: '",
                        paste0(name[present], collapse = "', '"), "'.")
               i <- .normIndex(object, i)
               if (length(i) != length(name)) stop("'i' and 'name' must have same length")
@@ -277,7 +277,7 @@ setMethod("aggregateFeatures", "QFeatures",
               msg_log <- list()
               pb <- txtProgressBar(min = 0, max = length(i), style = 3)
 
-              ## Aggregate each assay
+              ## Aggregate each set
               for (j in seq_along(i)) {
                   from <- i[[j]]
                   fromAssay <- el[[from]]
@@ -291,7 +291,7 @@ setMethod("aggregateFeatures", "QFeatures",
                   )
                   rowData(fromAssay) <- rowData(fromAssay)[, rowDataColsKept, drop = FALSE]
 
-                  ## Create the aggregated assay
+                  ## Create the aggregated set
                   el[[j]] <- withCallingHandlers(
                       aggregateFeatures(fromAssay, by, fun, ...),
                       message = function(m) {
@@ -362,11 +362,11 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
     m <- assay(object, 1)
     rd <- rowData(object)
     if (!fcol %in% names(rd))
-        stop("'fcol' not found in the assay's rowData.")
+        stop("'fcol' not found in the set's rowData.")
     groupBy <- rd[[fcol]]
 
-    ## Store class of assay i in case it is not a SummarizedExperiment
-    ## so that the aggregated assay can be reverted to that class
+    ## Store class of set i in case it is not a SummarizedExperiment
+    ## so that the aggregated set can be reverted to that class
     .class <- class(object)
 
     ## Message about NA values is quant/row data
@@ -414,7 +414,7 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
                                rowData = rowdata)
 
     ## If the input objects weren't SummarizedExperiments, then try to
-    ## convert the merged assay into that class. If the conversion
+    ## convert the merged set into that class. If the conversion
     ## fails, keep the SummarizedExperiment, otherwise use the
     ## converted object (see issue #78).
     if (.class != "SummarizedExperiment")
@@ -435,7 +435,7 @@ setMethod("aggregateFeatures", "SummarizedExperiment",
 ##' @param adjName `character(1)` with the variable name containing
 ##'     the adjacency matrix. Default is `"adjacencyMatrix"`.
 ##'
-##' @param i The index or name of the assays to extract the advaceny
+##' @param i The index or name of the sets to extract the advaceny
 ##'     matrix from. All must have a rowdata variable named `adjName`.
 setMethod("adjacencyMatrix", "QFeatures",
           function(object, i, adjName = "adjacencyMatrix")
@@ -451,8 +451,8 @@ setMethod("adjacencyMatrix", "SummarizedExperiment",
 ##'
 ##' @rdname QFeatures-aggregate
 ##'
-##' @param i When adding an adjacency matrix to an assay of a
-##'     `QFeatures` object, the index or name of the assay the
+##' @param i When adding an adjacency matrix to a set of a
+##'     `QFeatures` object, the index or name of the set the
 ##'     adjacency matrix will be added to. Ignored when `x` is an
 ##'     `SummarizedExperiment`.
 ##'
@@ -474,11 +474,11 @@ setMethod("adjacencyMatrix", "SummarizedExperiment",
     }
     stopifnot(inherits(object, "QFeatures"))
     if (length(i) != 1)
-        stop("'i' must be of length one. Repeat the call to add a matrix to multiple assays.")
+        stop("'i' must be of length one. Repeat the call to add a matrix to multiple sets.")
     if (is.numeric(i) && i > length(object))
         stop("Subscript is out of bounds.")
     if (is.character(i) && !(i %in% names(object)))
-        stop("Assay '", i, "' not found.")
+        stop("Set '", i, "' not found.")
     se <- object[[i]]
     adjacencyMatrix(se, adjName = adjName) <- value
     object[[i]] <- se
@@ -505,3 +505,160 @@ validAdjacencyMatrix <- function(x) {
         stop("colSums() == 0 detected: proteins must be identified by at least one peptide.")
     TRUE
 }
+
+##' @title Aggregate sets' quantitative samples
+##'
+##' @description
+##'
+##' This function aggregates quantitative samples, applying a
+##' summarisation function (`fun`) to sets of samples defined by a
+##' `colData` variable.
+##'
+##' For `QFeatures` objects, the aggregated set `colData` is added to
+##' the global `colData` using [addAssay()]. If an aggregated group name
+##' already exists as a row name in the global `colData`, it is reused
+##' only when shared `colData` variables do not contain conflicting
+##' values, otherwise an error is thrown. The aggregation of samples should
+##' take place after run joining.
+##'
+##' @param object An instance of class [QFeatures] or [SummarizedExperiment].
+##'
+##' @param i A `character(1)` naming the set that will be aggregated.
+##'
+##' @param scol A `character()` naming the `colData` variable defining
+##'     how to group samples.
+##'     When multiple variables are supplied, their values are concatenated
+##'     with `_` to build the grouping variable.
+##'
+##' @param name A `character(1)` naming the new set.
+##'
+##' @param fun A function used to aggregate the samples. The function should
+##'   apply its summarization row-wise.
+##'
+##' @param ... Additional parameters passed to `fun`.
+##'
+##' @return A `QFeatures` object with an additional set or a
+##'     `SummarizedExperiment` object. The new set/`SummarizedExperiment`
+##'     contains three assays the first named `assay` containing the result
+##'     of the aggregation, the second named `aggsd` containing the standard
+##'     deviation associated with each aggregated data point and the third
+##'     named `aggcounts` containing the number of observation used for each
+##'     aggregated data point.
+##'
+##' @aliases aggregateSamples aggregateSamples,QFeatures-method
+##' @aliases aggregateSamples,SummarizedExperiment-method
+##'
+##' @name aggregateSamples
+##' @rdname QFeatures-aggregateSamples
+NULL
+
+rowRobustSummary <- function(x, ...) {
+    MsCoreUtils::robustSummary(t(x), ...)
+}
+
+rowCounts <- function(x, ...) {
+    MsCoreUtils::colCounts(t(x), ...)
+}
+
+rowMedianPolish <- function(x, ...) {
+    MsCoreUtils::medianPolish(t(x), ...)
+}
+
+.aggregate_cols <- function(x, INDEX, FUN, ...) {
+    if (!(is.matrix(x) | inherits(x, "HDF5Matrix")))
+        stop("'x' must be a matrix or an object that inherits from ",
+             "'HDF5Matrix'.")
+    if (!identical(length(INDEX), ncol(x)))
+        stop("The length of 'INDEX' has to be identical to 'ncol(x).")
+    FUN <- match.fun(FUN)
+    res <- lapply(split(seq_len(ncol(x)), INDEX, drop = TRUE),
+                  FUN = function(i) {
+                      FUN(x[, i, drop = FALSE], ...)
+                  })
+    nms <- names(res)
+    res <- do.call(cbind, res)
+
+    rownames(res) <- rownames(x)
+    colnames(res) <- nms
+    if (inherits(x, "HDF5Matrix"))
+        res <- HDF5Array::writeHDF5Array(res, filepath = HDF5Array::path(x),
+                                         with.dimnames = TRUE)
+    res
+}
+
+.aggregateSamplesSE <- function(object, scol, fun, ...) {
+    if (missing(scol) || !length(scol))
+        stop("'scol' is required.")
+    if (!is.character(scol) || anyNA(scol))
+        stop("'scol' must be a non-missing character vector.")
+    cd <- colData(object)
+    if (!all(scol %in% names(cd)))
+        stop("'scol' not found in the set's colData.")
+    if (length(scol) > 1) {
+        colData(object)$aggregationGroup <- apply(cd[, scol], 1, paste,
+                                                  collapse = "_")
+        scol <- "aggregationGroup"
+        cd <- colData(object)
+    }
+    m <- assay(object, 1)
+    groupBy <- cd[[scol]]
+    if (is.factor(groupBy))
+        groupBy <- droplevels(groupBy)
+
+    aggregated_assay <- .aggregate_cols(m, groupBy, fun, ...)
+    sd_assay <- .aggregate_cols(m, groupBy, rowSds, na.rm = TRUE)
+    count_assay <- .aggregate_cols(m, groupBy, rowCounts)
+
+    coldata <- QFeatures::reduceDataFrame(cd, groupBy,
+                                           simplify = TRUE,
+                                           drop = TRUE,
+                                           count = FALSE)
+    assays <- SimpleList(assay = aggregated_assay,
+                         aggsd = sd_assay,
+                         aggcounts = count_assay)
+
+    se <- SummarizedExperiment(assays = assays,
+                               colData = coldata,
+                               rowData = rowData(object))
+    return(se)
+}
+
+.aggregateSamplesQFeatures <- function(object, i, scol, name = "newAssay",
+                                       fun, ...) {
+    if (missing(i) || !is.character(i) || length(i) != 1L || is.na(i))
+        stop("'i' must be a non-missing character vector of length 1.")
+    if (missing(scol))
+        stop("'scol' is required.")
+    if (!is.character(name) || length(name) != 1L || is.na(name))
+        stop("'name' must be a non-missing character vector of length 1.")
+    if (isEmpty(object))
+        return(object)
+    if (name %in% names(object))
+        stop("There's already a set named: '", name, "'.")
+    i <- .normIndex(object, i)
+
+    fromAssay <- getWithColData(object, i)
+    el <- .aggregateSamplesSE(fromAssay, scol, fun, ...)
+
+    cd <- colData(object)
+    setCdNames <- colnames(colData(el))
+    colData(el)[setdiff(names(cd), setCdNames)] <- NA
+    colData(el) <- colData(el)[, setCdNames, drop = FALSE]
+
+    object <- addAssay(object, el, name)
+    object <- addAssayLinkOneToOne(object, from = i, to = name)
+    object
+}
+
+##' @exportMethod aggregateSamples
+##' @rdname QFeatures-aggregateSamples
+setMethod("aggregateSamples", "SummarizedExperiment",
+          function(object, scol, fun = rowRobustSummary, ...)
+              .aggregateSamplesSE(object, scol, fun, ...))
+
+##' @exportMethod aggregateSamples
+##' @rdname QFeatures-aggregateSamples
+setMethod("aggregateSamples", "QFeatures",
+          function(object, i, scol, name = "newAssay",
+                   fun = rowRobustSummary, ...)
+              .aggregateSamplesQFeatures(object, i, scol, name, fun, ...))

@@ -1,8 +1,8 @@
 ## version 1.19.1
 api <- c(
     "addAssay", "addAssayLink", "addAssayLinkOneToOne", "adjacencyMatrix",
-    "adjacencyMatrix<-", "aggcounts", "aggregateFeatures", "assayLink",
-    "AssayLink", "assayLinks", "AssayLinks", "coerce",
+    "adjacencyMatrix<-", "aggcounts", "aggregateFeatures", "aggregateSamples",
+    "assayLink", "AssayLink", "assayLinks", "AssayLinks", "coerce",
     "countUniqueFeatures", "createPrecursorId", "dims", "display",
     "dropEmptyAssays", "expandDataFrame", "filterFeatures", "filterNA",
     "getQFeaturesType", "impute", "infIsNA", "isDuplicated",

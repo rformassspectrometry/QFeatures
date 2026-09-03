@@ -88,7 +88,7 @@ test_that("aggregateFeatures,SummarizedExperiment return class (issue 78)", {
 test_that("aggregateFeatures,QFeatures: empty and errors", {
     expect_identical(QFeatures(), aggregateFeatures(QFeatures()))
     expect_error(aggregateFeatures(feat1, name = "psms"),
-                 regexp = "one or more assays named: 'psms'")
+                 regexp = "one or more sets named: 'psms'")
 })
 
 test_that("aggregateFeatures,QFeatures: check links and subsetting", {
@@ -227,7 +227,7 @@ test_that("aggregate by matrix and (atomic) vector work (2)", {
     expect_equivalent(rowData(se1)["ProtA", k], rowData(se2)["ProtA", k])
 })
 
-test_that("aggregateFeatures,QFeatures: aggregate multiple assays", {
+test_that("aggregateFeatures,QFeatures: aggregate multiple sets", {
     data("feat3")
     expect_warning(feat3 <- feat3[, , 1:3],
                    regexp = "experiments' dropped; see 'drops")

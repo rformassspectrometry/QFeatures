@@ -40,6 +40,8 @@ QFeatures(..., assayLinks = NULL)
 
 \S4method{[}{QFeatures,character,ANY,ANY}(x, i, j, k, ..., drop = TRUE)
 
+\S4method{coerce}{MultiAssayExperiment,QFeatures}(from, to = "QFeatures", strict = TRUE)
+
 \S4method{c}{QFeatures}(x, ...)
 
 \S4method{dims}{QFeatures}(x, use.names = TRUE)
@@ -102,6 +104,15 @@ elements in the \code{ExperimentList}.}
 
 \item{k}{\code{character()}, \code{logical()}, or \code{numeric()} vector for
 subsetting by assays}
+
+\item{from}{An instance of class \link[MultiAssayExperiment:MultiAssayExperiment]{MultiAssayExperiment} to coerce to
+a \link{QFeatures} object.}
+
+\item{to}{The target class name.}
+
+\item{strict}{A \code{logical(1)} indicating if the returned object must be
+strictly from the target class. If FALSE any simple extension of the
+target class will be returned.}
 
 \item{use.names}{A \code{logical(1)} indicating whether the rownames of
 each assay should be propagated to the corresponding \code{rowData}.}

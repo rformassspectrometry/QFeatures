@@ -10,7 +10,7 @@
 \alias{adjacencyMatrix,QFeatures-method}
 \alias{aggregateFeatures,SummarizedExperiment-method}
 \alias{adjacencyMatrix<-}
-\title{Aggregate assays' quantitative features}
+\title{Aggregate sets' quantitative features}
 \usage{
 \S4method{aggregateFeatures}{QFeatures}(
   object,
@@ -33,20 +33,20 @@ adjacencyMatrix(object, i, adjName = "adjacencyMatrix") <- value
 \item{object}{An instance of class \code{SummarizedExperiment} or
 \code{QFeatures}.}
 
-\item{i}{When adding an adjacency matrix to an assay of a
-\code{QFeatures} object, the index or name of the assay the
+\item{i}{When adding an adjacency matrix to a set of a
+\code{QFeatures} object, the index or name of the set the
 adjacency matrix will be added to. Ignored when \code{x} is an
 \code{SummarizedExperiment}.}
 
-\item{fcol}{A \code{character(1)} naming a rowdata variable (of assay
+\item{fcol}{A \code{character(1)} naming a rowdata variable (of set
 \code{i} in case of a \code{QFeatures}) defining how to aggregate the
-features of the assays. This variable is either a \code{character}
+features of the sets. This variable is either a \code{character}
 or a (possibly sparse) matrix. See below for details.}
 
-\item{name}{A \code{character()} naming the new assays.
+\item{name}{A \code{character()} naming the new sets.
 \code{name} must have the same length as i.
 Default is \code{newAssay}. Note that the function will fail if there's
-already an assay with \code{name}.}
+already a set with \code{name}.}
 
 \item{fun}{A function used for quantitative feature
 aggregation. See Details for examples.}
@@ -62,30 +62,30 @@ matrix (class \code{dgCMatrix}) as defined in the \code{Matrix} package,
 as generaled by the \code{\link[Matrix:sparseMatrix]{sparseMatrix()}} constructor.}
 }
 \value{
-A \code{QFeatures} object with an additional assay or a
+A \code{QFeatures} object with an additional set or a
 \code{SummarizedExperiment} object (or subclass thereof).
 }
 \description{
 This function aggregates the quantitative features of one or
-multiple assays, applying a summarisation function (\code{fun}) to
+multiple sets, applying a summarisation function (\code{fun}) to
 sets of features.
 The \code{fcol} variable name points to a rowData column that defines
 how to group the features during aggregate. This variable can
 eigher be a vector (we then refer to an \emph{aggregation by vector})
 or an adjacency matrix (\emph{aggregation by matrix}).
 
-The rowData of the aggregated \code{SummarizedExperiment} assays
+The rowData of the aggregated \code{SummarizedExperiment} sets
 contains a \code{.n} variable that provides the number of parent
 features that were aggregated.
 
 When aggregating with a vector, the newly aggregated
-\code{SummarizedExperiment} assays also contains a new \code{aggcounts} assay
+\code{SummarizedExperiment} sets also contains a new \code{aggcounts} set
 containing the aggregation counts matrix, i.e. the number of
 features that were aggregated for each sample, which can be
 accessed with the \code{aggcounts()} accessor.
 
 Only the rowData columns that are invariant within a group across
-all assays will be retained in the new assays' rowData.
+all sets will be retained in the new sets' rowData.
 }
 \details{
 Aggregation is performed by a function that takes a matrix as
@@ -142,8 +142,8 @@ as filtering (see \code{\link[=filterNA]{filterNA()}}) or imputation (see \code{
 \section{Missing values in the row data}{
 
 
-Missing values in the row data of an assay will also impact the
-resulting (aggregated) assay row data, as illustrated in the
+Missing values in the row data of a set will also impact the
+resulting (aggregated) set row data, as illustrated in the
 example below. Any feature variables (a column in the row data)
 containing \code{NA} values will be dropped from the aggregated row
 data. The reasons underlying this drop are detailed in the
@@ -235,7 +235,7 @@ rowData(ft3[[2]])
 ## Using a peptide-by-proteins adjacency matrix
 ## --------------------------------------------
 
-## Let's use assay peptides from object feat1 and
+## Let's use set peptides from object feat1 and
 ## define that peptide SYGFNAAR maps to proteins
 ## Prot A and B
 

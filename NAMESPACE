@@ -45,6 +45,7 @@ exportMethods("rowData<-")
 exportMethods(adjacencyMatrix)
 exportMethods(aggcounts)
 exportMethods(aggregateFeatures)
+exportMethods(aggregateSamples)
 exportMethods(c)
 exportMethods(coerce)
 exportMethods(dims)
@@ -71,41 +72,53 @@ import(ProtGenerics)
 import(S4Vectors)
 import(SummarizedExperiment)
 importFrom(Biobase,fData)
-importFrom(BiocGenerics,dims)
-importFrom(BiocGenerics,do.call)
-importFrom(BiocGenerics,longForm)
-importFrom(BiocGenerics,ncols)
-importFrom(BiocGenerics,normalize)
-importFrom(BiocGenerics,nrows)
-importFrom(MsCoreUtils,aggregate_by_matrix)
-importFrom(MsCoreUtils,aggregate_by_vector)
-importFrom(MsCoreUtils,colCounts)
-importFrom(MsCoreUtils,impute_matrix)
-importFrom(MsCoreUtils,robustSummary)
+importFrom(BiocGenerics,
+  dims,
+  do.call,
+  longForm,
+  ncols,
+  normalize,
+  nrows
+)
+importFrom(MsCoreUtils,
+  aggregate_by_matrix,
+  aggregate_by_vector,
+  colCounts,
+  impute_matrix,
+  robustSummary
+)
 importFrom(MultiAssayExperiment,longForm)
 importFrom(ProtGenerics,adjacencyMatrix)
 importFrom(dplyr,everything)
 importFrom(grDevices,rgb)
-importFrom(igraph,V)
-importFrom(igraph,add_edges)
-importFrom(igraph,get.edgelist)
-importFrom(igraph,layout_as_tree)
-importFrom(igraph,make_graph)
-importFrom(igraph,plot.igraph)
+importFrom(igraph,
+  V,
+  add_edges,
+  get.edgelist,
+  layout_as_tree,
+  make_graph,
+  plot.igraph
+)
 importFrom(lazyeval,f_eval)
-importFrom(methods,as)
-importFrom(methods,callNextMethod)
-importFrom(methods,extends)
-importFrom(methods,is)
-importFrom(methods,new)
-importFrom(methods,slot)
-importFrom(methods,validObject)
+importFrom(methods,
+  as,
+  callNextMethod,
+  extends,
+  is,
+  new,
+  slot,
+  validObject
+)
 importFrom(reshape2,melt)
-importFrom(stats,heatmap)
-importFrom(stats,setNames)
+importFrom(stats,
+  heatmap,
+  setNames
+)
 importFrom(tidyr,pivot_wider)
 importFrom(tidyselect,all_of)
-importFrom(utils,read.csv)
-importFrom(utils,setTxtProgressBar)
-importFrom(utils,txtProgressBar)
+importFrom(utils,
+  read.csv,
+  setTxtProgressBar,
+  txtProgressBar
+)
 importMethodsFrom(ProtGenerics,filterFeatures)
