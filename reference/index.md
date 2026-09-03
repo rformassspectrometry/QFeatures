@@ -9,6 +9,7 @@ The QFeatures class
   [`plot(`*`<QFeatures>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)
   [`` `[`( ``*`<QFeatures>`*`,`*`<ANY>`*`,`*`<ANY>`*`,`*`<ANY>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)
   [`` `[`( ``*`<QFeatures>`*`,`*`<character>`*`,`*`<ANY>`*`,`*`<ANY>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)
+  [`coerce(`*`<MultiAssayExperiment>`*`,`*`<QFeatures>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)
   [`c(`*`<QFeatures>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)
   [`dims(`*`<QFeatures>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)
   [`nrows(`*`<QFeatures>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)
@@ -99,16 +100,19 @@ Quantitative data processing
   [`sweep(`*`<QFeatures>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-processing.md)
   : QFeatures processing
 
-## Feature aggregations
+## Aggregations
 
-Feature aggregations
+Feature and sample aggregations
 
+- [`aggregateSamples(`*`<SummarizedExperiment>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-aggregateSamples.md)
+  [`aggregateSamples(`*`<QFeatures>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-aggregateSamples.md)
+  : Aggregate sets' quantitative samples
 - [`aggregateFeatures(`*`<QFeatures>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-aggregate.md)
   [`aggregateFeatures(`*`<SummarizedExperiment>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-aggregate.md)
   [`adjacencyMatrix(`*`<QFeatures>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-aggregate.md)
   [`` `adjacencyMatrix<-`() ``](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-aggregate.md)
   [`aggcounts(`*`<SummarizedExperiment>`*`)`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-aggregate.md)
-  : Aggregate assays' quantitative features
+  : Aggregate sets' quantitative features
 
 ## Filtering
 

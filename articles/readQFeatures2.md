@@ -47,13 +47,7 @@ used in combination with the following software:
 
 The data files are available in the `MsDataHub` package (\>= 1.11.5).
 
-``` r
-
-library("MsDataHub")
-MsDataHub() |>
-    dplyr::filter(grepl("19137577", SourceUrl)) |>
-    dplyr::pull(Title)
-```
+[`library`](https://rdrr.io/r/base/library.html)`(`[`"MsDataHub"`](https://rformassspectrometry.github.io/MsDataHub)`)`` `[`MsDataHub`](https://rformassspectrometry.github.io/MsDataHub/reference/MsDataHub.html)`(``)`` ``|>`` `` ``dplyr``::`[`filter`](https://dplyr.tidyverse.org/reference/filter.html)`(`[`grepl`](https://rdrr.io/pkg/BiocGenerics/man/grep.html)`(``"19137577"``, ``SourceUrl``)``)`` ``|>`` `` ``dplyr``::`[`pull`](https://dplyr.tidyverse.org/reference/pull.html)`(``Title``)`
 
     ##  [1] "Christoforou_2016_TMT_DDA_FragPipe_Fraction1_psm.tsv"
     ##  [2] "Christoforou_2016_TMT_DDA_FragPipe_Fraction2_psm.tsv"
@@ -78,28 +72,22 @@ MsDataHub() |>
 
 Each file can be accessed with the function that has its name:
 
-``` r
-
-vanPuyvelde_2022_LFQ_DDA_FragPipe_A_2_psm.tsv()
-```
+[`vanPuyvelde_2022_LFQ_DDA_FragPipe_A_2_psm.tsv`](https://rformassspectrometry.github.io/MsDataHub/reference/miscDdaDia.html)`(``)`
 
     ## see ?MsDataHub and browseVignettes('MsDataHub') for documentation
 
     ## loading from cache
 
-    ##                                                EH10423 
-    ## "/github/home/.cache/R/ExperimentHub/bef33233a7_10490"
+    ##                                                 EH10423 
+    ## "/github/home/.cache/R/ExperimentHub/26aa3c6f7d3_10490"
 
-``` r
-
-Derks_2022_plex_DIA_DIANN_report_subset.tsv()
-```
+[`Derks_2022_plex_DIA_DIANN_report_subset.tsv`](https://rformassspectrometry.github.io/MsDataHub/reference/miscDdaDia.html)`(``)`
 
     ## see ?MsDataHub and browseVignettes('MsDataHub') for documentation
     ## loading from cache
 
-    ##                                                 EH10421 
-    ## "/github/home/.cache/R/ExperimentHub/bef44eed0c7_10488"
+    ##                                                  EH10421 
+    ## "/github/home/.cache/R/ExperimentHub/26aa32fbab8f_10488"
 
 and imported as a standard `data.frame` using the usual `read.*()`
 functions (see below).
@@ -148,10 +136,7 @@ manual page of this
 
 To initiate the session, we will load the `QFeatures` package.
 
-``` r
-
-library(QFeatures)
-```
+[`library`](https://rdrr.io/r/base/library.html)`(`[`QFeatures`](https://rformassspectrometry.github.io/QFeatures)`)`
 
 ### MaxQuant
 
@@ -165,14 +150,7 @@ Here we will process the results of a multi-set label-free experiment.
 First we will read the `evidence.txt` file storing information about
 PSM-level data:
 
-``` r
-
-dataMaxquantLFQevidence <-
-    vanPuyvelde_2022_LFQ_DDA_MaxQuant_evidence.txt() |>
-    read.delim()
-
-nrow(dataMaxquantLFQevidence)
-```
+`dataMaxquantLFQevidence`` ``<-`` `` `[`vanPuyvelde_2022_LFQ_DDA_MaxQuant_evidence.txt`](https://rformassspectrometry.github.io/MsDataHub/reference/miscDdaDia.html)`(``)`` ``|>`` `` `[`read.delim`](https://rdrr.io/r/utils/read.table.html)`(``)`` `` `[`nrow`](https://rdrr.io/pkg/BiocGenerics/man/nrow.html)`(``dataMaxquantLFQevidence``)`
 
     ## [1] 1219
 
@@ -182,21 +160,11 @@ values of all samples, acquired in different runs, as defined in the
 `"Experiment"` column. We also rename the set names, prefixing them with
 `"psm_"`.
 
-``` r
-
-qfMaxquant <- readQFeatures(dataMaxquantLFQevidence,
-                            quantCols = "Intensity",
-                            runCol = "Experiment")
-```
+`qfMaxquant`` ``<-`` `[`readQFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeatures.md)`(``dataMaxquantLFQevidence``,`` `` quantCols ``=`` ``"Intensity"``,`` `` runCol ``=`` ``"Experiment"``)`
 
     ##   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%
 
-``` r
-
-names(qfMaxquant) <- paste('psm', names(qfMaxquant), sep = '_')
-
-qfMaxquant
-```
+[`names`](https://rdrr.io/r/base/names.html)`(``qfMaxquant``)`` ``<-`` `[`paste`](https://rdrr.io/pkg/BiocGenerics/man/paste.html)`(``'psm'``, `[`names`](https://rdrr.io/r/base/names.html)`(``qfMaxquant``)``, sep ``=`` ``'_'``)`` `` ``qfMaxquant`
 
     ## An instance of class QFeatures (type: bulk) with 6 sets:
     ## 
@@ -210,13 +178,7 @@ qfMaxquant
 Next we will read the peptide-level results from a `peptides.txt` file
 and append this to the `QFeatures` object as a new assay:
 
-``` r
-
-dataMaxquantLFQpeptide <-
-    vanPuyvelde_2022_LFQ_DDA_MaxQuant_peptides.txt() |>
-    read.delim()
-nrow(dataMaxquantLFQpeptide)
-```
+`dataMaxquantLFQpeptide`` ``<-`` `` `[`vanPuyvelde_2022_LFQ_DDA_MaxQuant_peptides.txt`](https://rformassspectrometry.github.io/MsDataHub/reference/miscDdaDia.html)`(``)`` ``|>`` `` `[`read.delim`](https://rdrr.io/r/utils/read.table.html)`(``)`` `[`nrow`](https://rdrr.io/pkg/BiocGenerics/man/nrow.html)`(``dataMaxquantLFQpeptide``)`
 
     ## [1] 260
 
@@ -225,17 +187,11 @@ values of different samples are stored in different columns. We thus get
 the indices of respective intensity columns, starting with
 `"Intensity."`.
 
-``` r
-
-(i <- grep('Intensity.', colnames(dataMaxquantLFQpeptide), fixed = TRUE))
-```
+`(``i`` ``<-`` `[`grep`](https://rdrr.io/pkg/BiocGenerics/man/grep.html)`(``'Intensity.'``, `[`colnames`](https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html)`(``dataMaxquantLFQpeptide``)``, fixed ``=`` ``TRUE``)``)`
 
     ## [1] 53 54 55 56 57 58
 
-``` r
-
-colnames(dataMaxquantLFQpeptide)[i]
-```
+[`colnames`](https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html)`(``dataMaxquantLFQpeptide``)``[``i``]`
 
     ## [1] "Intensity.A_Sample_Alpha_01" "Intensity.A_Sample_Alpha_02"
     ## [3] "Intensity.A_Sample_Alpha_03" "Intensity.B_Sample_Alpha_01"
@@ -247,10 +203,7 @@ the same
 as above. This time, it will contain a single set with as many columns
 as there are samples/acquisitions in the data.
 
-``` r
-
-readQFeatures(dataMaxquantLFQpeptide, quantCols = i, fnames = 'Sequence')
-```
+[`readQFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeatures.md)`(``dataMaxquantLFQpeptide``, quantCols ``=`` ``i``, fnames ``=`` ``'Sequence'``)`
 
     ## An instance of class QFeatures (type: bulk) with 1 set:
     ## 
@@ -261,13 +214,7 @@ If we want to add the peptide-level data to our previously created
 `SummarizedExperiment` instance) and add it with
 [`addAssay()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)
 
-``` r
-
-pepSE <- readSummarizedExperiment(dataMaxquantLFQpeptide,
-                                  quantCols = i,
-                                  fnames = 'Sequence')
-pepSE
-```
+`pepSE`` ``<-`` `[`readSummarizedExperiment`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeatures.md)`(``dataMaxquantLFQpeptide``,`` `` quantCols ``=`` ``i``,`` `` fnames ``=`` ``'Sequence'``)`` ``pepSE`
 
     ## class: SummarizedExperiment 
     ## dim: 260 6 
@@ -281,13 +228,7 @@ pepSE
     ##   ... Intensity.B_Sample_Alpha_02 Intensity.B_Sample_Alpha_03
     ## colData names(0):
 
-``` r
-
-qfMaxquant <- addAssay(qfMaxquant,
-                      pepSE,
-                      name = 'peptides')
-qfMaxquant
-```
+`qfMaxquant`` ``<-`` `[`addAssay`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)`(``qfMaxquant``,`` `` ``pepSE``,`` `` name ``=`` ``'peptides'``)`` ``qfMaxquant`
 
     ## An instance of class QFeatures (type: bulk) with 7 sets:
     ## 
@@ -304,42 +245,21 @@ We see that a new assay has been appended to `QFeatures` object.
 Finally, we will append the protein group-level in the same manner. Here
 we will use the `"LFQ.intensity"` columns:
 
-``` r
-
-dataMaxquantLFQprotein <-
-    vanPuyvelde_2022_LFQ_DDA_MaxQuant_proteinGroups.txt() |>
-    read.delim()
-nrow(dataMaxquantLFQprotein)
-```
+`dataMaxquantLFQprotein`` ``<-`` `` `[`vanPuyvelde_2022_LFQ_DDA_MaxQuant_proteinGroups.txt`](https://rformassspectrometry.github.io/MsDataHub/reference/miscDdaDia.html)`(``)`` ``|>`` `` `[`read.delim`](https://rdrr.io/r/utils/read.table.html)`(``)`` `[`nrow`](https://rdrr.io/pkg/BiocGenerics/man/nrow.html)`(``dataMaxquantLFQprotein``)`
 
     ## [1] 40
 
-``` r
-
-## get indices of LFQ intensity columns
-(i <- grep('LFQ.intensity.', colnames(dataMaxquantLFQprotein),
-           fixed = TRUE))
-```
+`## get indices of LFQ intensity columns`` ``(``i`` ``<-`` `[`grep`](https://rdrr.io/pkg/BiocGenerics/man/grep.html)`(``'LFQ.intensity.'``, `[`colnames`](https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html)`(``dataMaxquantLFQprotein``)``,`` `` fixed ``=`` ``TRUE``)``)`
 
     ## [1] 52 53 54 55 56 57
 
-``` r
-
-colnames(dataMaxquantLFQprotein)[i]
-```
+[`colnames`](https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html)`(``dataMaxquantLFQprotein``)``[``i``]`
 
     ## [1] "LFQ.intensity.A_Sample_Alpha_01" "LFQ.intensity.A_Sample_Alpha_02"
     ## [3] "LFQ.intensity.A_Sample_Alpha_03" "LFQ.intensity.B_Sample_Alpha_01"
     ## [5] "LFQ.intensity.B_Sample_Alpha_02" "LFQ.intensity.B_Sample_Alpha_03"
 
-``` r
-
-## load the data
-protSE <- readSummarizedExperiment(dataMaxquantLFQprotein,
-                                   quantCols = i,
-                                   fnames = 'Protein.IDs')
-protSE
-```
+`## load the data`` ``protSE`` ``<-`` `[`readSummarizedExperiment`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeatures.md)`(``dataMaxquantLFQprotein``,`` `` quantCols ``=`` ``i``,`` `` fnames ``=`` ``'Protein.IDs'``)`` ``protSE`
 
     ## class: SummarizedExperiment 
     ## dim: 40 6 
@@ -353,13 +273,7 @@ protSE
     ##   LFQ.intensity.B_Sample_Alpha_03
     ## colData names(0):
 
-``` r
-
-qfMaxquant <- addAssay(qfMaxquant,
-                       protSE,
-                       name = 'proteinGroups')
-qfMaxquant
-```
+`qfMaxquant`` ``<-`` `[`addAssay`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)`(``qfMaxquant``,`` `` ``protSE``,`` `` name ``=`` ``'proteinGroups'``)`` ``qfMaxquant`
 
     ## An instance of class QFeatures (type: bulk) with 8 sets:
     ## 
@@ -389,34 +303,18 @@ function.
 Below, we will demonstrate how to read data from a TMT-labeled
 experiment consisting of two runs:
 
-``` r
-
-dataMaxquantTMTevidence <-
-    Christoforou_2016_TMT_DDA_MaxQuant_evidence.txt() |>
-    read.delim()
-
-(i <- grep('Reporter.intensity.\\d+', colnames(dataMaxquantTMTevidence)))
-```
+`dataMaxquantTMTevidence`` ``<-`` `` `[`Christoforou_2016_TMT_DDA_MaxQuant_evidence.txt`](https://rformassspectrometry.github.io/MsDataHub/reference/miscDdaDia.html)`(``)`` ``|>`` `` `[`read.delim`](https://rdrr.io/r/utils/read.table.html)`(``)`` `` ``(``i`` ``<-`` `[`grep`](https://rdrr.io/pkg/BiocGenerics/man/grep.html)`(``'Reporter.intensity.\\d+'``, `[`colnames`](https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html)`(``dataMaxquantTMTevidence``)``)``)`
 
     ##  [1] 73 74 75 76 77 78 79 80 81 82
 
-``` r
-
-colnames(dataMaxquantTMTevidence)[i]
-```
+[`colnames`](https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html)`(``dataMaxquantTMTevidence``)``[``i``]`
 
     ##  [1] "Reporter.intensity.1"  "Reporter.intensity.2"  "Reporter.intensity.3" 
     ##  [4] "Reporter.intensity.4"  "Reporter.intensity.5"  "Reporter.intensity.6" 
     ##  [7] "Reporter.intensity.7"  "Reporter.intensity.8"  "Reporter.intensity.9" 
     ## [10] "Reporter.intensity.10"
 
-``` r
-
-qfMaxquantTMT <- readQFeatures(dataMaxquantTMTevidence,
-                               quantCols = i,
-                               runCol = 'Raw.file',
-                               fnames = 'Sequence')
-```
+`qfMaxquantTMT`` ``<-`` `[`readQFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeatures.md)`(``dataMaxquantTMTevidence``,`` `` quantCols ``=`` ``i``,`` `` runCol ``=`` ``'Raw.file'``,`` `` fnames ``=`` ``'Sequence'``)`
 
     ##   |                                                                              |                                                                      |   0%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================================================| 100%
 
@@ -426,10 +324,7 @@ qfMaxquantTMT <- readQFeatures(dataMaxquantTMTevidence,
     ## Warning in FUN(X[[i]], ...): Duplicated entries found in 'Sequence' in rowData
     ## of assay Replicate1_fraction2; they are made unique.
 
-``` r
-
-qfMaxquantTMT
-```
+`qfMaxquantTMT`
 
     ## An instance of class QFeatures (type: bulk) with 2 sets:
     ## 
@@ -451,20 +346,11 @@ DIA-NN *.tsv* reports can be read using the
 [`readQFeaturesFromDIANN()`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeaturesFromDIANN.md)
 function:
 
-``` r
-
-qfDiannLFQ <-
-    vanPuyvelde_2022_LFQ_DIA_DIANN_report.tsv() |>
-    read.delim() |>
-    readQFeaturesFromDIANN(runCol = 'Run')
-```
+`qfDiannLFQ`` ``<-`` `` `[`vanPuyvelde_2022_LFQ_DIA_DIANN_report.tsv`](https://rformassspectrometry.github.io/MsDataHub/reference/miscDdaDia.html)`(``)`` ``|>`` `` `[`read.delim`](https://rdrr.io/r/utils/read.table.html)`(``)`` ``|>`` `` `[`readQFeaturesFromDIANN`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeaturesFromDIANN.md)`(``runCol ``=`` ``'Run'``)`
 
     ##   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%
 
-``` r
-
-qfDiannLFQ
-```
+`qfDiannLFQ`
 
     ## An instance of class QFeatures (type: bulk) with 6 sets:
     ## 
@@ -480,20 +366,11 @@ package, that provides an interface to the Arrow C++ library. After
 reading this file however, we can work with the resulting data.frame in
 the same manner as we are used to in case of the *.tsv* report.
 
-``` r
-
-qfDiannParquet <-
-    vanPuyvelde_2022_LFQ_DIA_DIANN_report.parquet() |>
-    arrow::read_parquet() |>
-    readQFeaturesFromDIANN(runCol = 'Run')
-```
+`qfDiannParquet`` ``<-`` `` `[`vanPuyvelde_2022_LFQ_DIA_DIANN_report.parquet`](https://rformassspectrometry.github.io/MsDataHub/reference/miscDdaDia.html)`(``)`` ``|>`` `` ``arrow``::`[`read_parquet`](https://arrow.apache.org/docs/r/reference/read_parquet.html)`(``)`` ``|>`` `` `[`readQFeaturesFromDIANN`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeaturesFromDIANN.md)`(``runCol ``=`` ``'Run'``)`
 
     ##   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%
 
-``` r
-
-qfDiannParquet
-```
+`qfDiannParquet`
 
     ## An instance of class QFeatures (type: bulk) with 6 sets:
     ## 
@@ -515,21 +392,11 @@ versions, as well as different search parameters.
 To correctly parse a plexDIA experiment, it is necessary to set the
 `multiplexing` parameter to `"mTRAQ"`:
 
-``` r
-
-qfDiannPlex <-
-    Derks_2022_plex_DIA_DIANN_report_subset.tsv() |>
-    read.delim() |>
-    readQFeaturesFromDIANN(runCol = 'Run',
-                           multiplexing = 'mTRAQ')
-```
+`qfDiannPlex`` ``<-`` `` `[`Derks_2022_plex_DIA_DIANN_report_subset.tsv`](https://rformassspectrometry.github.io/MsDataHub/reference/miscDdaDia.html)`(``)`` ``|>`` `` `[`read.delim`](https://rdrr.io/r/utils/read.table.html)`(``)`` ``|>`` `` `[`readQFeaturesFromDIANN`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeaturesFromDIANN.md)`(``runCol ``=`` ``'Run'``,`` `` multiplexing ``=`` ``'mTRAQ'``)`
 
     ##   |                                                                              |                                                                      |   0%  |                                                                              |=======================                                               |  33%  |                                                                              |===============================================                       |  67%  |                                                                              |======================================================================| 100%
 
-``` r
-
-qfDiannPlex
-```
+`qfDiannPlex`
 
     ## An instance of class QFeatures (type: bulk) with 3 sets:
     ## 
@@ -542,13 +409,7 @@ regards to the samples. We will now edit the sample metadata to contain
 more meaningful sample annotation. All runs were performed on the same
 sample, in 3 technical replicates:
 
-``` r
-
-qfDiannPlex$sample <- 'mixed standard'
-qfDiannPlex$rep <- rep(1:3, each = 3)
-qfDiannPlex$label <- paste0('mTraq d', rep(c(0, 4, 8), times = 3))
-colData(qfDiannPlex)
-```
+`qfDiannPlex``$``sample`` ``<-`` ``'mixed standard'`` ``qfDiannPlex``$``rep`` ``<-`` `[`rep`](https://rdrr.io/r/base/rep.html)`(``1``:``3``, each ``=`` ``3``)`` ``qfDiannPlex``$``label`` ``<-`` `[`paste0`](https://rdrr.io/r/base/paste.html)`(``'mTraq d'``, `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``0``, ``4``, ``8``)``, times ``=`` ``3``)``)`` ``colData``(``qfDiannPlex``)`
 
     ## DataFrame with 9 rows and 3 columns
     ##                 sample       rep       label
@@ -572,21 +433,11 @@ As above for label-free quantification, the *lfq.tsv* file contains
 estimated quantities of identified peptidoforms and is grouped on
 modified sequence level:
 
-``` r
-
-dataSageLFQ <-
-    vanPuyvelde_2022_LFQ_DDA_sage_lfq.tsv() |>
-    read.delim()
-
-(i <- grep('.mzML', colnames(dataSageLFQ), fixed = TRUE))
-```
+`dataSageLFQ`` ``<-`` `` `[`vanPuyvelde_2022_LFQ_DDA_sage_lfq.tsv`](https://rformassspectrometry.github.io/MsDataHub/reference/miscDdaDia.html)`(``)`` ``|>`` `` `[`read.delim`](https://rdrr.io/r/utils/read.table.html)`(``)`` `` ``(``i`` ``<-`` `[`grep`](https://rdrr.io/pkg/BiocGenerics/man/grep.html)`(``'.mzML'``, `[`colnames`](https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html)`(``dataSageLFQ``)``, fixed ``=`` ``TRUE``)``)`
 
     ## [1]  7  8  9 10 11 12
 
-``` r
-
-colnames(dataSageLFQ)[i]
-```
+[`colnames`](https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html)`(``dataSageLFQ``)``[``i``]`
 
     ## [1] "LFQ_Orbitrap_DDA_Condition_A_Sample_Alpha_01.mzML"
     ## [2] "LFQ_Orbitrap_DDA_Condition_A_Sample_Alpha_02.mzML"
@@ -595,14 +446,7 @@ colnames(dataSageLFQ)[i]
     ## [5] "LFQ_Orbitrap_DDA_Condition_B_Sample_Alpha_02.mzML"
     ## [6] "LFQ_Orbitrap_DDA_Condition_B_Sample_Alpha_03.mzML"
 
-``` r
-
-qfSageLFQ <- readQFeatures(dataSageLFQ,
-                           quantCols = i,
-                           name = 'peptides')
-
-qfSageLFQ
-```
+`qfSageLFQ`` ``<-`` `[`readQFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeatures.md)`(``dataSageLFQ``,`` `` quantCols ``=`` ``i``,`` `` name ``=`` ``'peptides'``)`` `` ``qfSageLFQ`
 
     ## An instance of class QFeatures (type: bulk) with 1 set:
     ## 
@@ -611,20 +455,12 @@ qfSageLFQ
 As for TMT-based quantification, the PSM-level quantification is
 included in the *tmt.tsv* file.
 
-``` r
-
-dataSageTMT <-
-    Christoforou_2016_TMT_DDA_sage_tmt.tsv() |>
-    read.delim()
-```
+`dataSageTMT`` ``<-`` `` `[`Christoforou_2016_TMT_DDA_sage_tmt.tsv`](https://rformassspectrometry.github.io/MsDataHub/reference/miscDdaDia.html)`(``)`` ``|>`` `` `[`read.delim`](https://rdrr.io/r/utils/read.table.html)`(``)`
 
 Upon inspection, we can see that peptide identification information is
 missing in this file:
 
-``` r
-
-colnames(dataSageTMT)
-```
+[`colnames`](https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html)`(``dataSageTMT``)`
 
     ##  [1] "filename"           "scannr"             "ion_injection_time"
     ##  [4] "tmt_1"              "tmt_2"              "tmt_3"             
@@ -638,32 +474,16 @@ indices of the quantification columns before loading the data using the
 [`readQFeatures()`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeatures.md)
 function.
 
-``` r
-
-dataSageTMTident <-
-    Christoforou_2016_TMT_DDA_sage_results.sage.tsv() |>
-    read.delim()
-
-dataSageTMTfinal <- merge(dataSageTMT, dataSageTMTident, by = c('filename', 'scannr'))
-
-(i <- grep('tmt_', colnames(dataSageTMTfinal), fixed = TRUE))
-```
+`dataSageTMTident`` ``<-`` `` `[`Christoforou_2016_TMT_DDA_sage_results.sage.tsv`](https://rformassspectrometry.github.io/MsDataHub/reference/miscDdaDia.html)`(``)`` ``|>`` `` `[`read.delim`](https://rdrr.io/r/utils/read.table.html)`(``)`` `` ``dataSageTMTfinal`` ``<-`` `[`merge`](https://rdrr.io/pkg/S4Vectors/man/Vector-merge.html)`(``dataSageTMT``, ``dataSageTMTident``, by ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``'filename'``, ``'scannr'``)``)`` `` ``(``i`` ``<-`` `[`grep`](https://rdrr.io/pkg/BiocGenerics/man/grep.html)`(``'tmt_'``, `[`colnames`](https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html)`(``dataSageTMTfinal``)``, fixed ``=`` ``TRUE``)``)`
 
     ##  [1]  4  5  6  7  8  9 10 11 12 13
 
-``` r
-
-colnames(dataSageTMTfinal)[i]
-```
+[`colnames`](https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html)`(``dataSageTMTfinal``)``[``i``]`
 
     ##  [1] "tmt_1"  "tmt_2"  "tmt_3"  "tmt_4"  "tmt_5"  "tmt_6"  "tmt_7"  "tmt_8" 
     ##  [9] "tmt_9"  "tmt_10"
 
-``` r
-
-qfSageTMT <- readQFeatures(dataSageTMTfinal, quantCols = i)
-qfSageTMT
-```
+`qfSageTMT`` ``<-`` `[`readQFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeatures.md)`(``dataSageTMTfinal``, quantCols ``=`` ``i``)`` ``qfSageTMT`
 
     ## An instance of class QFeatures (type: bulk) with 1 set:
     ## 
@@ -674,12 +494,7 @@ function from the BiocStyle::Githubpkg(“UCLouvain-CBIO/sager”) package
 to quickly load TMT quantification data from both *.tsv* output files
 into a `QFeatures` object.
 
-``` r
-
-sager::sageQFeatures(
-           Christoforou_2016_TMT_DDA_sage_tmt.tsv(),
-           Christoforou_2016_TMT_DDA_sage_results.sage.tsv())
-```
+`sager``::``sageQFeatures``(`` `` `[`Christoforou_2016_TMT_DDA_sage_tmt.tsv`](https://rformassspectrometry.github.io/MsDataHub/reference/miscDdaDia.html)`(``)``,`` `` `[`Christoforou_2016_TMT_DDA_sage_results.sage.tsv`](https://rformassspectrometry.github.io/MsDataHub/reference/miscDdaDia.html)`(``)``)`
 
 ### FragPipe
 
@@ -693,13 +508,7 @@ created for each run.
 
 We start by extracting the relevant filenames from `MsDataHub`.
 
-``` r
-
-fls <- MsDataHub() |>
-    dplyr::filter(grepl("2022_LFQ_DDA_FragPipe", Title)) |>
-    dplyr::pull(1)
-fls
-```
+`fls`` ``<-`` `[`MsDataHub`](https://rformassspectrometry.github.io/MsDataHub/reference/MsDataHub.html)`(``)`` ``|>`` `` ``dplyr``::`[`filter`](https://dplyr.tidyverse.org/reference/filter.html)`(`[`grepl`](https://rdrr.io/pkg/BiocGenerics/man/grep.html)`(``"2022_LFQ_DDA_FragPipe"``, ``Title``)``)`` ``|>`` `` ``dplyr``::`[`pull`](https://dplyr.tidyverse.org/reference/pull.html)`(``1``)`` ``fls`
 
     ## [1] "vanPuyvelde_2022_LFQ_DDA_FragPipe_A_1_psm.tsv"
     ## [2] "vanPuyvelde_2022_LFQ_DDA_FragPipe_A_2_psm.tsv"
@@ -713,26 +522,12 @@ we then evaluate, and then load as a `SummarizedExperiment`. The code
 below produces a list of `SummarizedExperiment` instances, that we then
 name using the initial filenames.
 
-``` r
-
-lst <- lapply(fls, function(fl) {
-    call(fl) |>
-        eval() |>
-        read.delim() |>
-        readSummarizedExperiment(quantCols = "Intensity")
-})
-
-names(lst) <- fls
-```
+`lst`` ``<-`` `[`lapply`](https://rdrr.io/pkg/BiocGenerics/man/lapply.html)`(``fls``, ``function``(``fl``)`` ``{`` `` `[`call`](https://rdrr.io/r/base/call.html)`(``fl``)`` ``|>`` `` `[`eval`](https://rdrr.io/pkg/BiocGenerics/man/eval.html)`(``)`` ``|>`` `` `[`read.delim`](https://rdrr.io/r/utils/read.table.html)`(``)`` ``|>`` `` `[`readSummarizedExperiment`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeatures.md)`(``quantCols ``=`` ``"Intensity"``)`` ``}``)`` `` `[`names`](https://rdrr.io/r/base/names.html)`(``lst``)`` ``<-`` ``fls`
 
 We can now pass this list to the `QFeatures` constructor to create a
 `QFeatures` object.
 
-``` r
-
-qfFpipeLFQ <- QFeatures(lst)
-qfFpipeLFQ
-```
+`qfFpipeLFQ`` ``<-`` `[`QFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)`(``lst``)`` ``qfFpipeLFQ`
 
     ## An instance of class QFeatures (type: bulk) with 6 sets:
     ## 
@@ -746,11 +541,7 @@ qfFpipeLFQ
 The names of the assays are based on the (rather long) filenames, they
 were derived from. We can shorten these:
 
-``` r
-
-names(qfFpipeLFQ) <- sub('vanPuyvelde_2022_LFQ_DDA_FragPipe_(\\w_\\d_psm)\\.tsv', '\\1', names(qfFpipeLFQ))
-qfFpipeLFQ
-```
+[`names`](https://rdrr.io/r/base/names.html)`(``qfFpipeLFQ``)`` ``<-`` `[`sub`](https://rdrr.io/r/base/grep.html)`(``'vanPuyvelde_2022_LFQ_DDA_FragPipe_(\\w_\\d_psm)\\.tsv'``, ``'\\1'``, `[`names`](https://rdrr.io/r/base/names.html)`(``qfFpipeLFQ``)``)`` ``qfFpipeLFQ`
 
     ## An instance of class QFeatures (type: bulk) with 6 sets:
     ## 
@@ -771,23 +562,7 @@ multi-set experiment. It consists of two runs named *Fraction1* and
 *Fraction2*. Just like in the case of a label-free experiment, there is
 a separate *psm.tsv* file produced for each run:
 
-``` r
-
-fls <- MsDataHub() |>
-    dplyr::filter(grepl("Christoforou_2016_TMT_DDA_FragPipe_Fraction", Title)) |>
-    dplyr::pull(1)
-
-lst <- lapply(fls,
-       function(fl) {
-           x <- eval(call(fl)) |>
-               read.delim()
-           i <- grep('Intensity\\.', colnames(x))
-           readSummarizedExperiment(x, quantCols = i)
-       })
-
-names(lst) <- fls
-QFeatures(lst)
-```
+`fls`` ``<-`` `[`MsDataHub`](https://rformassspectrometry.github.io/MsDataHub/reference/MsDataHub.html)`(``)`` ``|>`` `` ``dplyr``::`[`filter`](https://dplyr.tidyverse.org/reference/filter.html)`(`[`grepl`](https://rdrr.io/pkg/BiocGenerics/man/grep.html)`(``"Christoforou_2016_TMT_DDA_FragPipe_Fraction"``, ``Title``)``)`` ``|>`` `` ``dplyr``::`[`pull`](https://dplyr.tidyverse.org/reference/pull.html)`(``1``)`` `` ``lst`` ``<-`` `[`lapply`](https://rdrr.io/pkg/BiocGenerics/man/lapply.html)`(``fls``,`` `` ``function``(``fl``)`` ``{`` `` ``x`` ``<-`` `[`eval`](https://rdrr.io/pkg/BiocGenerics/man/eval.html)`(`[`call`](https://rdrr.io/r/base/call.html)`(``fl``)``)`` ``|>`` `` `[`read.delim`](https://rdrr.io/r/utils/read.table.html)`(``)`` `` ``i`` ``<-`` `[`grep`](https://rdrr.io/pkg/BiocGenerics/man/grep.html)`(``'Intensity\\.'``, `[`colnames`](https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html)`(``x``)``)`` `` `[`readSummarizedExperiment`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeatures.md)`(``x``, quantCols ``=`` ``i``)`` `` ``}``)`` `` `[`names`](https://rdrr.io/r/base/names.html)`(``lst``)`` ``<-`` ``fls`` `[`QFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)`(``lst``)`
 
     ## An instance of class QFeatures (type: bulk) with 2 sets:
     ## 
@@ -796,7 +571,7 @@ QFeatures(lst)
 
 ## Session information
 
-    R version 4.6.0 (2026-04-24)
+    R version 4.6.1 (2026-06-24)
     Platform: x86_64-pc-linux-gnu
     Running under: Ubuntu 24.04.4 LTS
 
@@ -820,49 +595,49 @@ QFeatures(lst)
     [8] methods   base     
 
     other attached packages:
-     [1] QFeatures_1.23.1            MultiAssayExperiment_1.38.0
-     [3] SummarizedExperiment_1.42.0 Biobase_2.72.0             
-     [5] GenomicRanges_1.64.0        Seqinfo_1.2.0              
-     [7] IRanges_2.46.0              S4Vectors_0.50.0           
-     [9] BiocGenerics_0.58.0         generics_0.1.4             
-    [11] MatrixGenerics_1.24.0       matrixStats_1.5.0          
-    [13] MsDataHub_1.12.0            ComplexHeatmap_2.28.0      
-    [15] BiocStyle_2.40.0           
+     [1] QFeatures_1.23.2            MultiAssayExperiment_1.39.1
+     [3] SummarizedExperiment_1.43.0 Biobase_2.73.2             
+     [5] GenomicRanges_1.65.4        Seqinfo_1.3.2              
+     [7] IRanges_2.47.5              S4Vectors_0.51.9           
+     [9] BiocGenerics_0.59.12        generics_0.1.4             
+    [11] MatrixGenerics_1.25.0       matrixStats_1.5.0          
+    [13] MsDataHub_1.13.1            ComplexHeatmap_2.29.0      
+    [15] BiocStyle_2.41.0           
 
     loaded via a namespace (and not attached):
-     [1] DBI_1.3.0               httr2_1.2.2             rlang_1.2.0            
+     [1] DBI_1.3.0               httr2_1.3.0             rlang_1.3.0            
      [4] magrittr_2.0.5          clue_0.3-68             GetoptLong_1.1.1       
-     [7] otel_0.2.0              compiler_4.6.0          RSQLite_2.4.6          
+     [7] otel_0.2.0              compiler_4.6.1          RSQLite_3.53.3         
     [10] reshape2_1.4.5          png_0.1-9               systemfonts_1.3.2      
-    [13] vctrs_0.7.3             stringr_1.6.0           ProtGenerics_1.44.0    
+    [13] vctrs_0.7.3             stringr_1.6.0           ProtGenerics_1.45.0    
     [16] pkgconfig_2.0.3         shape_1.4.6.1           crayon_1.5.3           
-    [19] fastmap_1.2.0           dbplyr_2.5.2            magick_2.9.1           
-    [22] XVector_0.52.0          rmarkdown_2.31          ragg_1.5.2             
-    [25] purrr_1.2.2             bit_4.6.0               xfun_0.57              
+    [19] fastmap_1.2.0           dbplyr_2.6.0            magick_2.9.1           
+    [22] XVector_0.53.0          rmarkdown_2.32          ragg_1.5.2             
+    [25] purrr_1.2.2             bit_4.6.0               xfun_0.60              
     [28] cachem_1.1.0            jsonlite_2.0.0          blob_1.3.0             
-    [31] DelayedArray_0.38.1     parallel_4.6.0          cluster_2.1.8.2        
-    [34] R6_2.6.1                stringi_1.8.7           bslib_0.10.0           
+    [31] DelayedArray_0.39.6     parallel_4.6.1          cluster_2.1.8.3        
+    [34] R6_2.6.1                stringi_1.8.9           bslib_0.12.0           
     [37] RColorBrewer_1.1-3      jquerylib_0.1.4         assertthat_0.2.1       
-    [40] Rcpp_1.1.1-1.1          bookdown_0.46           iterators_1.0.14       
-    [43] knitr_1.51              BiocBaseUtils_1.14.0    igraph_2.3.0           
-    [46] Matrix_1.7-5            tidyselect_1.2.1        abind_1.4-8            
+    [40] Rcpp_1.1.2              bookdown_0.48           iterators_1.0.14       
+    [43] knitr_1.51              BiocBaseUtils_1.15.1    igraph_2.3.3           
+    [46] Matrix_1.7-6            tidyselect_1.2.1        abind_1.4-8            
     [49] yaml_2.3.12             doParallel_1.0.17       codetools_0.2-20       
-    [52] curl_7.1.0              plyr_1.8.9              lattice_0.22-9         
-    [55] tibble_3.3.1            withr_3.0.2             KEGGREST_1.52.0        
-    [58] evaluate_1.0.5          desc_1.4.3              BiocFileCache_3.2.0    
-    [61] circlize_0.4.18         ExperimentHub_3.2.0     Biostrings_2.80.0      
+    [52] curl_8.0.0              plyr_1.8.9              lattice_0.23-1         
+    [55] tibble_3.3.1            withr_3.0.3             KEGGREST_1.53.6        
+    [58] evaluate_1.0.5          desc_1.4.3              BiocFileCache_3.3.0    
+    [61] circlize_0.4.18         ExperimentHub_3.3.2     Biostrings_2.81.8      
     [64] pillar_1.11.1           BiocManager_1.30.27     filelock_1.0.3         
-    [67] foreach_1.5.2           BiocVersion_3.23.1      glue_1.8.1             
-    [70] lazyeval_0.2.3          tools_4.6.0             AnnotationHub_4.2.0    
-    [73] fs_2.1.0                tidyr_1.3.2             MsCoreUtils_1.25.3     
-    [76] AnnotationDbi_1.74.0    colorspace_2.1-2        cli_3.6.6              
-    [79] rappdirs_0.3.4          textshaping_1.0.5       S4Arrays_1.12.0        
-    [82] arrow_24.0.0            dplyr_1.2.1             AnnotationFilter_1.36.0
-    [85] sass_0.4.10             digest_0.6.39           SparseArray_1.12.2     
+    [67] foreach_1.5.2           BiocVersion_3.24.0      glue_1.8.1             
+    [70] lazyeval_0.2.3          tools_4.6.1             AnnotationHub_4.3.2    
+    [73] fs_2.1.0                tidyr_1.3.2             MsCoreUtils_1.25.4     
+    [76] AnnotationDbi_1.75.2    colorspace_2.1-3        cli_3.6.6              
+    [79] rappdirs_0.3.4          textshaping_1.0.5       S4Arrays_1.13.0        
+    [82] arrow_25.0.1            dplyr_1.2.1             AnnotationFilter_1.37.0
+    [85] sass_0.4.10             digest_0.6.39           SparseArray_1.13.2     
     [88] rjson_0.2.23            htmlwidgets_1.6.4       memoise_2.0.1          
-    [91] htmltools_0.5.9         pkgdown_2.2.0.9000      lifecycle_1.0.5        
-    [94] httr_1.4.8              GlobalOptions_0.1.4     bit64_4.8.0            
-    [97] MASS_7.3-65            
+    [91] htmltools_0.5.9         pkgdown_2.2.1.9000      lifecycle_1.0.5        
+    [94] httr_1.4.9              GlobalOptions_0.1.4     MASS_7.3-66            
+    [97] bit64_4.8.6            
 
 ## License
 

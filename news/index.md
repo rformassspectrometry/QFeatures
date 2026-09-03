@@ -2,6 +2,10 @@
 
 ## QFeatures 1.23
 
+### QFeatures 1.23.2
+
+- add `aggregateSamples` function
+
 ### QFeatures 1.23.1
 
 - New imputation vignette.

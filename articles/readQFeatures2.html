@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Supported input formats for readQFeatures()">
 </head>
@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">QFeatures</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.23.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.23.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,7 +71,7 @@ Kryštofová</h4>
                                     <h4 data-toc-skip class="author">Laurent
 Gatto</h4>
                         
-            <h4 data-toc-skip class="date">3 May 2026</h4>
+            <h4 data-toc-skip class="date">3 September 2026</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rformassspectrometry/QFeatures/blob/master/vignettes/readQFeatures2.Rmd" class="external-link"><code>vignettes/readQFeatures2.Rmd</code></a></small>
       <div class="d-none name"><code>readQFeatures2.Rmd</code></div>
@@ -236,14 +236,14 @@ used in combination with the following software:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rformassspectrometry.github.io/MsDataHub/reference/miscDdaDia.html" class="external-link">vanPuyvelde_2022_LFQ_DDA_FragPipe_A_2_psm.tsv</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## see ?MsDataHub and browseVignettes('MsDataHub') for documentation</span></span></code></pre>
 <pre><code><span><span class="co">## loading from cache</span></span></code></pre>
-<pre><code><span><span class="co">##                                                EH10423 </span></span>
-<span><span class="co">## "/github/home/.cache/R/ExperimentHub/bef33233a7_10490"</span></span></code></pre>
+<pre><code><span><span class="co">##                                                 EH10423 </span></span>
+<span><span class="co">## "/github/home/.cache/R/ExperimentHub/26aa3c6f7d3_10490"</span></span></code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rformassspectrometry.github.io/MsDataHub/reference/miscDdaDia.html" class="external-link">Derks_2022_plex_DIA_DIANN_report_subset.tsv</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## see ?MsDataHub and browseVignettes('MsDataHub') for documentation</span></span>
 <span><span class="co">## loading from cache</span></span></code></pre>
-<pre><code><span><span class="co">##                                                 EH10421 </span></span>
-<span><span class="co">## "/github/home/.cache/R/ExperimentHub/bef44eed0c7_10488"</span></span></code></pre>
+<pre><code><span><span class="co">##                                                  EH10421 </span></span>
+<span><span class="co">## "/github/home/.cache/R/ExperimentHub/26aa32fbab8f_10488"</span></span></code></pre>
 <p>and imported as a standard <code>data.frame</code> using the usual
 <code>read.*()</code> functions (see below).</p>
 </div>
@@ -781,7 +781,7 @@ produced for each run:</p>
 <div class="section level2">
 <h2 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<pre><code>R version 4.6.0 (2026-04-24)
+<pre><code>R version 4.6.1 (2026-06-24)
 Platform: x86_64-pc-linux-gnu
 Running under: Ubuntu 24.04.4 LTS
 
@@ -805,49 +805,49 @@ attached base packages:
 [8] methods   base     
 
 other attached packages:
- [1] QFeatures_1.23.1            MultiAssayExperiment_1.38.0
- [3] SummarizedExperiment_1.42.0 Biobase_2.72.0             
- [5] GenomicRanges_1.64.0        Seqinfo_1.2.0              
- [7] IRanges_2.46.0              S4Vectors_0.50.0           
- [9] BiocGenerics_0.58.0         generics_0.1.4             
-[11] MatrixGenerics_1.24.0       matrixStats_1.5.0          
-[13] MsDataHub_1.12.0            ComplexHeatmap_2.28.0      
-[15] BiocStyle_2.40.0           
+ [1] QFeatures_1.23.2            MultiAssayExperiment_1.39.1
+ [3] SummarizedExperiment_1.43.0 Biobase_2.73.2             
+ [5] GenomicRanges_1.65.4        Seqinfo_1.3.2              
+ [7] IRanges_2.47.5              S4Vectors_0.51.9           
+ [9] BiocGenerics_0.59.12        generics_0.1.4             
+[11] MatrixGenerics_1.25.0       matrixStats_1.5.0          
+[13] MsDataHub_1.13.1            ComplexHeatmap_2.29.0      
+[15] BiocStyle_2.41.0           
 
 loaded via a namespace (and not attached):
- [1] DBI_1.3.0               httr2_1.2.2             rlang_1.2.0            
+ [1] DBI_1.3.0               httr2_1.3.0             rlang_1.3.0            
  [4] magrittr_2.0.5          clue_0.3-68             GetoptLong_1.1.1       
- [7] otel_0.2.0              compiler_4.6.0          RSQLite_2.4.6          
+ [7] otel_0.2.0              compiler_4.6.1          RSQLite_3.53.3         
 [10] reshape2_1.4.5          png_0.1-9               systemfonts_1.3.2      
-[13] vctrs_0.7.3             stringr_1.6.0           ProtGenerics_1.44.0    
+[13] vctrs_0.7.3             stringr_1.6.0           ProtGenerics_1.45.0    
 [16] pkgconfig_2.0.3         shape_1.4.6.1           crayon_1.5.3           
-[19] fastmap_1.2.0           dbplyr_2.5.2            magick_2.9.1           
-[22] XVector_0.52.0          rmarkdown_2.31          ragg_1.5.2             
-[25] purrr_1.2.2             bit_4.6.0               xfun_0.57              
+[19] fastmap_1.2.0           dbplyr_2.6.0            magick_2.9.1           
+[22] XVector_0.53.0          rmarkdown_2.32          ragg_1.5.2             
+[25] purrr_1.2.2             bit_4.6.0               xfun_0.60              
 [28] cachem_1.1.0            jsonlite_2.0.0          blob_1.3.0             
-[31] DelayedArray_0.38.1     parallel_4.6.0          cluster_2.1.8.2        
-[34] R6_2.6.1                stringi_1.8.7           bslib_0.10.0           
+[31] DelayedArray_0.39.6     parallel_4.6.1          cluster_2.1.8.3        
+[34] R6_2.6.1                stringi_1.8.9           bslib_0.12.0           
 [37] RColorBrewer_1.1-3      jquerylib_0.1.4         assertthat_0.2.1       
-[40] Rcpp_1.1.1-1.1          bookdown_0.46           iterators_1.0.14       
-[43] knitr_1.51              BiocBaseUtils_1.14.0    igraph_2.3.0           
-[46] Matrix_1.7-5            tidyselect_1.2.1        abind_1.4-8            
+[40] Rcpp_1.1.2              bookdown_0.48           iterators_1.0.14       
+[43] knitr_1.51              BiocBaseUtils_1.15.1    igraph_2.3.3           
+[46] Matrix_1.7-6            tidyselect_1.2.1        abind_1.4-8            
 [49] yaml_2.3.12             doParallel_1.0.17       codetools_0.2-20       
-[52] curl_7.1.0              plyr_1.8.9              lattice_0.22-9         
-[55] tibble_3.3.1            withr_3.0.2             KEGGREST_1.52.0        
-[58] evaluate_1.0.5          desc_1.4.3              BiocFileCache_3.2.0    
-[61] circlize_0.4.18         ExperimentHub_3.2.0     Biostrings_2.80.0      
+[52] curl_8.0.0              plyr_1.8.9              lattice_0.23-1         
+[55] tibble_3.3.1            withr_3.0.3             KEGGREST_1.53.6        
+[58] evaluate_1.0.5          desc_1.4.3              BiocFileCache_3.3.0    
+[61] circlize_0.4.18         ExperimentHub_3.3.2     Biostrings_2.81.8      
 [64] pillar_1.11.1           BiocManager_1.30.27     filelock_1.0.3         
-[67] foreach_1.5.2           BiocVersion_3.23.1      glue_1.8.1             
-[70] lazyeval_0.2.3          tools_4.6.0             AnnotationHub_4.2.0    
-[73] fs_2.1.0                tidyr_1.3.2             MsCoreUtils_1.25.3     
-[76] AnnotationDbi_1.74.0    colorspace_2.1-2        cli_3.6.6              
-[79] rappdirs_0.3.4          textshaping_1.0.5       S4Arrays_1.12.0        
-[82] arrow_24.0.0            dplyr_1.2.1             AnnotationFilter_1.36.0
-[85] sass_0.4.10             digest_0.6.39           SparseArray_1.12.2     
+[67] foreach_1.5.2           BiocVersion_3.24.0      glue_1.8.1             
+[70] lazyeval_0.2.3          tools_4.6.1             AnnotationHub_4.3.2    
+[73] fs_2.1.0                tidyr_1.3.2             MsCoreUtils_1.25.4     
+[76] AnnotationDbi_1.75.2    colorspace_2.1-3        cli_3.6.6              
+[79] rappdirs_0.3.4          textshaping_1.0.5       S4Arrays_1.13.0        
+[82] arrow_25.0.1            dplyr_1.2.1             AnnotationFilter_1.37.0
+[85] sass_0.4.10             digest_0.6.39           SparseArray_1.13.2     
 [88] rjson_0.2.23            htmlwidgets_1.6.4       memoise_2.0.1          
-[91] htmltools_0.5.9         pkgdown_2.2.0.9000      lifecycle_1.0.5        
-[94] httr_1.4.8              GlobalOptions_0.1.4     bit64_4.8.0            
-[97] MASS_7.3-65            </code></pre>
+[91] htmltools_0.5.9         pkgdown_2.2.1.9000      lifecycle_1.0.5        
+[94] httr_1.4.9              GlobalOptions_0.1.4     MASS_7.3-66            
+[97] bit64_4.8.6            </code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
@@ -866,7 +866,7 @@ license</a> license.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.9000.</p>
 </div>
 
     </footer>

@@ -1,24 +1,24 @@
-# Aggregate assays' quantitative features
+# Aggregate sets' quantitative features
 
 This function aggregates the quantitative features of one or multiple
-assays, applying a summarisation function (`fun`) to sets of features.
-The `fcol` variable name points to a rowData column that defines how to
+sets, applying a summarisation function (`fun`) to sets of features. The
+`fcol` variable name points to a rowData column that defines how to
 group the features during aggregate. This variable can eigher be a
 vector (we then refer to an *aggregation by vector*) or an adjacency
 matrix (*aggregation by matrix*).
 
-The rowData of the aggregated `SummarizedExperiment` assays contains a
+The rowData of the aggregated `SummarizedExperiment` sets contains a
 `.n` variable that provides the number of parent features that were
 aggregated.
 
 When aggregating with a vector, the newly aggregated
-`SummarizedExperiment` assays also contains a new `aggcounts` assay
+`SummarizedExperiment` sets also contains a new `aggcounts` set
 containing the aggregation counts matrix, i.e. the number of features
 that were aggregated for each sample, which can be accessed with the
 `aggcounts()` accessor.
 
 Only the rowData columns that are invariant within a group across all
-assays will be retained in the new assays' rowData.
+sets will be retained in the new sets' rowData.
 
 ## Usage
 
@@ -53,23 +53,23 @@ aggcounts(object, ...)
 
 - i:
 
-  When adding an adjacency matrix to an assay of a `QFeatures` object,
-  the index or name of the assay the adjacency matrix will be added to.
+  When adding an adjacency matrix to a set of a `QFeatures` object, the
+  index or name of the set the adjacency matrix will be added to.
   Ignored when `x` is an `SummarizedExperiment`.
 
 - fcol:
 
-  A `character(1)` naming a rowdata variable (of assay `i` in case of a
-  `QFeatures`) defining how to aggregate the features of the assays.
-  This variable is either a `character` or a (possibly sparse) matrix.
-  See below for details.
+  A `character(1)` naming a rowdata variable (of set `i` in case of a
+  `QFeatures`) defining how to aggregate the features of the sets. This
+  variable is either a `character` or a (possibly sparse) matrix. See
+  below for details.
 
 - name:
 
   A [`character()`](https://rdrr.io/r/base/character.html) naming the
-  new assays. `name` must have the same length as i. Default is
-  `newAssay`. Note that the function will fail if there's already an
-  assay with `name`.
+  new sets. `name` must have the same length as i. Default is
+  `newAssay`. Note that the function will fail if there's already a set
+  with `name`.
 
 - fun:
 
@@ -95,8 +95,8 @@ aggcounts(object, ...)
 
 ## Value
 
-A `QFeatures` object with an additional assay or a
-`SummarizedExperiment` object (or subclass thereof).
+A `QFeatures` object with an additional set or a `SummarizedExperiment`
+object (or subclass thereof).
 
 ## Details
 
@@ -164,11 +164,11 @@ or imputation (see
 
 ## Missing values in the row data
 
-Missing values in the row data of an assay will also impact the
-resulting (aggregated) assay row data, as illustrated in the example
-below. Any feature variables (a column in the row data) containing `NA`
-values will be dropped from the aggregated row data. The reasons
-underlying this drop are detailed in the
+Missing values in the row data of a set will also impact the resulting
+(aggregated) set row data, as illustrated in the example below. Any
+feature variables (a column in the row data) containing `NA` values will
+be dropped from the aggregated row data. The reasons underlying this
+drop are detailed in the
 [`reduceDataFrame()`](https://rformassspectrometry.github.io/QFeatures/reference/reduceDataFrame.md)
 manual page: only invariant aggregated rows, i.e. rows resulting from
 the aggregation from identical variables, are preserved during
@@ -381,7 +381,7 @@ rowData(ft3[[2]])
 ## Using a peptide-by-proteins adjacency matrix
 ## --------------------------------------------
 
-## Let's use assay peptides from object feat1 and
+## Let's use set peptides from object feat1 and
 ## define that peptide SYGFNAAR maps to proteins
 ## Prot A and B
 

@@ -12,6 +12,7 @@
   [](https://orcid.org/0009-0004-2896-2188)
 
 - **Léopold Guyot**. Contributor.
+  [](https://orcid.org/0009-0005-2217-3855)
 
 ## Citation
 
@@ -19,13 +20,10 @@ Source:
 [`DESCRIPTION`](https://github.com/rformassspectrometry/QFeatures/blob/master/DESCRIPTION)
 
 Gatto L, Vanderaa C (2026). *QFeatures: Quantitative features for mass
-spectrometry data*. R package version 1.23.1,
+spectrometry data*. R package version 1.23.2,
 <https://rformassspectrometry.github.io/QFeatures>.
 
-    @Manual{,
-      title = {QFeatures: Quantitative features for mass spectrometry data},
-      author = {Laurent Gatto and Christophe Vanderaa},
-      year = {2026},
-      note = {R package version 1.23.1},
-      url = {https://rformassspectrometry.github.io/QFeatures},
-    }
+@Manual{, title = {QFeatures: Quantitative features for mass
+spectrometry data}, author = {Laurent Gatto and Christophe Vanderaa},
+year = {2026}, note = {R package version 1.23.2}, url =
+{https://rformassspectrometry.github.io/QFeatures}, }

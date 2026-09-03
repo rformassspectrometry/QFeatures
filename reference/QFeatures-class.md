@@ -47,6 +47,9 @@ x[i, j, ..., drop = TRUE]
 # S4 method for class 'QFeatures,character,ANY,ANY'
 x[i, j, k, ..., drop = TRUE]
 
+# S4 method for class 'MultiAssayExperiment,QFeatures'
+coerce(from, to = "QFeatures", strict = TRUE)
+
 # S4 method for class 'QFeatures'
 c(x, ...)
 
@@ -145,6 +148,22 @@ dropEmptyAssays(object, dims = 1:2)
   [`logical()`](https://rdrr.io/r/base/logical.html), or
   [`numeric()`](https://rdrr.io/r/base/numeric.html) vector for
   subsetting by assays
+
+- from:
+
+  An instance of class
+  [MultiAssayExperiment](https://github.com/waldronlab/MultiAssayExperiment/reference/MultiAssayExperiment.html)
+  to coerce to a QFeatures object.
+
+- to:
+
+  The target class name.
+
+- strict:
+
+  A `logical(1)` indicating if the returned object must be strictly from
+  the target class. If FALSE any simple extension of the target class
+  will be returned.
 
 - use.names:
 

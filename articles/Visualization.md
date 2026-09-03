@@ -14,19 +14,11 @@ it as a `QFeautres` object. See the processing
 [vignette](https://rformassspectrometry.github.io/QFeatures/articles/Processing.html)
 for more details about data processing with `QFeatures`.
 
-``` r
-
-library("QFeatures")
-data(hlpsms)
-hl <- readQFeatures(hlpsms, quantCols = 1:10, name = "psms")
-```
+[`library`](https://rdrr.io/r/base/library.html)`(`[`"QFeatures"`](https://rformassspectrometry.github.io/QFeatures)`)`` `[`data`](https://rdrr.io/r/utils/data.html)`(``hlpsms``)`` ``hl`` ``<-`` `[`readQFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeatures.md)`(``hlpsms``, quantCols ``=`` ``1``:``10``, name ``=`` ``"psms"``)`
 
 We then aggregate the psms to peptides, and the peptodes to proteins.
 
-``` r
-
-hl <- aggregateFeatures(hl, "psms", "Sequence", name = "peptides", fun = colMeans)
-```
+`hl`` ``<-`` `[`aggregateFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-aggregate.md)`(``hl``, ``"psms"``, ``"Sequence"``, name ``=`` ``"peptides"``, fun ``=`` ``colMeans``)`
 
     ##   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%
 
@@ -39,10 +31,7 @@ hl <- aggregateFeatures(hl, "psms", "Sequence", name = "peptides", fun = colMean
     ## 
     ## Occurred during the aggregation of set(s): psms
 
-``` r
-
-hl <- aggregateFeatures(hl, "peptides", "ProteinGroupAccessions", name = "proteins", fun = colMeans)
-```
+`hl`` ``<-`` `[`aggregateFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-aggregate.md)`(``hl``, ``"peptides"``, ``"ProteinGroupAccessions"``, name ``=`` ``"proteins"``, fun ``=`` ``colMeans``)`
 
     ##   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%
 
@@ -50,11 +39,7 @@ We also add the TMT tags that were used to multiplex the samples. The
 data is added to the `colData` of the `QFeatures` object and will allow
 us to demonstrate how to plot data from the `colData`.
 
-``` r
-
-hl$tag <- c("126", "127N", "127C", "128N", "128C", "129N", "129C",
-            "130N", "130C", "131")
-```
+`hl``$``tag`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``"126"``, ``"127N"``, ``"127C"``, ``"128N"``, ``"128C"``, ``"129N"``, ``"129C"``,`` `` ``"130N"``, ``"130C"``, ``"131"``)`
 
 The dataset is now ready for data exploration.
 
@@ -65,10 +50,7 @@ the processing workflow. The `plot` function provides an overview of all
 the assays present in the dataset, showing also the hierarchical
 relationships between the assays as determined by the `AssayLinks`.
 
-``` r
-
-plot(hl)
-```
+[`plot`](https://rdrr.io/r/graphics/plot.default.html)`(``hl``)`
 
 ![](Visualization_files/figure-html/plot-1.png)
 
@@ -77,11 +59,7 @@ workflows may involve more steps. The `feat3` example data illustrates
 the different possible relationships: one parent to one child, multiple
 parents to one child and one parent to multiple children.
 
-``` r
-
-data("feat3")
-plot(feat3)
-```
+[`data`](https://rdrr.io/r/utils/data.html)`(``"feat3"``)`` `[`plot`](https://rdrr.io/r/graphics/plot.default.html)`(``feat3``)`
 
 ![](Visualization_files/figure-html/plot2-1.png)
 
@@ -92,10 +70,7 @@ assays through an interactive plot, supported by the `plotly` package
 (Sievert (2020)). You can use the viewer panel to zoom in and out and
 navigate across the tree(s).
 
-``` r
-
-plot(hl, interactive = TRUE)
-```
+[`plot`](https://rdrr.io/r/graphics/plot.default.html)`(``hl``, interactive ``=`` ``TRUE``)`
 
 ## Basic data exploration
 
@@ -107,10 +82,7 @@ supplied to the base R data exploration tools. Here are some examples:
 - Plot the intensities for the first protein. These data are available
   from the `proteins` assay.
 
-``` r
-
-plot(assay(hl, "proteins")[1, ])
-```
+[`plot`](https://rdrr.io/r/graphics/plot.default.html)`(``assay``(``hl``, ``"proteins"``)``[``1``, ``]``)`
 
 ![](Visualization_files/figure-html/plot_assay-1.png)
 
@@ -118,10 +90,7 @@ plot(assay(hl, "proteins")[1, ])
   per protein. These data are available in the column `.n` from the
   protein `rowData`.
 
-``` r
-
-hist(rowData(hl)[["proteins"]]$.n)
-```
+[`hist`](https://rdrr.io/r/graphics/hist.html)`(``rowData``(``hl``)``[[``"proteins"``]``]``$``.n``)`
 
 ![](Visualization_files/figure-html/hist_rowData-1.png)
 
@@ -129,10 +98,7 @@ hist(rowData(hl)[["proteins"]]$.n)
   samples. These data are available in the column `tag` from the
   `colData`.
 
-``` r
-
-table(hl$tag)
-```
+[`table`](https://rdrr.io/pkg/BiocGenerics/man/table.html)`(``hl``$``tag``)`
 
     ## 
     ##  126 127C 127N 128C 128N 129C 129N 130C 130N  131 
@@ -152,14 +118,7 @@ encoded as `matrix` (or matrix-like objects, see
 `data.frame`s or `tibble`s. See here how we reproduce the plot above
 using `ggplot2`.
 
-``` r
-
-library("ggplot2")
-df <- data.frame(rowData(hl)[["proteins"]])
-ggplot(df) +
-    aes(x = .n) +
-    geom_histogram()
-```
+[`library`](https://rdrr.io/r/base/library.html)`(`[`"ggplot2"`](https://ggplot2.tidyverse.org)`)`` ``df`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``rowData``(``hl``)``[[``"proteins"``]``]``)`` `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``df``)`` ``+`` `` `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``.n``)`` ``+`` `` `[`geom_histogram`](https://ggplot2.tidyverse.org/reference/geom_histogram.html)`(``)`
 
 ![](Visualization_files/figure-html/ggplot_rowData-1.png)
 
@@ -174,25 +133,14 @@ project (Gentleman et al. (2004)) and facilitates visualization of
 matrix objects as heatmap. See here an example where we plot the protein
 data.
 
-``` r
-
-library(ComplexHeatmap)
-Heatmap(matrix = assay(hl, "proteins"),
-        show_row_names = FALSE)
-```
+[`library`](https://rdrr.io/r/base/library.html)`(`[`ComplexHeatmap`](https://github.com/jokergoo/ComplexHeatmap)`)`` `[`Heatmap`](https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html)`(``matrix ``=`` ``assay``(``hl``, ``"proteins"``)``,`` `` show_row_names ``=`` ``FALSE``)`
 
 ![](Visualization_files/figure-html/ComplexHeatmap-1.png)
 
 `ComplexHeatmap` also allows to add row and/or column annotations. Let’s
 add the predicted protein location as row annotation.
 
-``` r
-
-ha <- rowAnnotation(markers = rowData(hl)[["proteins"]]$markers)
-Heatmap(matrix = assay(hl, "proteins"),
-        show_row_names = FALSE,
-        left_annotation = ha)
-```
+`ha`` ``<-`` `[`rowAnnotation`](https://rdrr.io/pkg/ComplexHeatmap/man/rowAnnotation.html)`(``markers ``=`` ``rowData``(``hl``)``[[``"proteins"``]``]``$``markers``)`` `[`Heatmap`](https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html)`(``matrix ``=`` ``assay``(``hl``, ``"proteins"``)``,`` `` show_row_names ``=`` ``FALSE``,`` `` left_annotation ``=`` ``ha``)`
 
 ![](Visualization_files/figure-html/ComplexHeatmap_annotations-1.png)
 
@@ -217,27 +165,14 @@ Furthermore, we link the quantitation values coming from the same
 protein using lines. This can all be plotted at once in a few lines of
 code.
 
-``` r
-
-lf <- longForm(hl[, , "proteins"],
-               rowvars = "markers",
-               colvars = "tag")
-```
+`lf`` ``<-`` `[`longForm`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-longForm.md)`(``hl``[``, , ``"proteins"``]``,`` `` rowvars ``=`` ``"markers"``,`` `` colvars ``=`` ``"tag"``)`
 
     ## Warning: 'experiments' dropped; see 'drops()'
 
     ## harmonizing input:
     ##   removing 20 sampleMap rows not in names(experiments)
 
-``` r
-
-ggplot(data.frame(lf)) +
-    aes(x = tag,
-        y = value,
-        group = rowname) +
-    geom_line() +
-    facet_wrap(~ markers, scales = "free_y", ncol = 3)
-```
+[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(`[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``lf``)``)`` ``+`` `` `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``tag``,`` `` y ``=`` ``value``,`` `` group ``=`` ``rowname``)`` ``+`` `` `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(``)`` ``+`` `` `[`facet_wrap`](https://ggplot2.tidyverse.org/reference/facet_wrap.html)`(``~`` ``markers``, scales ``=`` ``"free_y"``, ncol ``=`` ``3``)`
 
 ![](Visualization_files/figure-html/longForm-1.png)
 
@@ -252,10 +187,7 @@ quantitation.
 Finally, a simply `shiny` app allows to explore and visualise the
 respective assays of a `QFeatures` object.
 
-``` r
-
-display(hl)
-```
+[`display`](https://rformassspectrometry.github.io/QFeatures/reference/display.md)`(``hl``)`
 
 ![\`QFeatures\` interactive interface: heatmap of the peptide assay
 data.](figs/display_hmap.png)
@@ -280,7 +212,7 @@ interest, which can then be visualised as a heatmap (figure
 
 ## Session information
 
-    ## R version 4.6.0 (2026-04-24)
+    ## R version 4.6.1 (2026-06-24)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.4 LTS
     ## 
@@ -304,43 +236,43 @@ interest, which can then be visualised as a heatmap (figure
     ## [8] methods   base     
     ## 
     ## other attached packages:
-    ##  [1] ComplexHeatmap_2.28.0       ggplot2_4.0.3              
-    ##  [3] QFeatures_1.23.1            MultiAssayExperiment_1.38.0
-    ##  [5] SummarizedExperiment_1.42.0 Biobase_2.72.0             
-    ##  [7] GenomicRanges_1.64.0        Seqinfo_1.2.0              
-    ##  [9] IRanges_2.46.0              S4Vectors_0.50.0           
-    ## [11] BiocGenerics_0.58.0         generics_0.1.4             
-    ## [13] MatrixGenerics_1.24.0       matrixStats_1.5.0          
-    ## [15] BiocStyle_2.40.0           
+    ##  [1] ComplexHeatmap_2.29.0       ggplot2_4.0.3              
+    ##  [3] QFeatures_1.23.2            MultiAssayExperiment_1.39.1
+    ##  [5] SummarizedExperiment_1.43.0 Biobase_2.73.2             
+    ##  [7] GenomicRanges_1.65.4        Seqinfo_1.3.2              
+    ##  [9] IRanges_2.47.5              S4Vectors_0.51.9           
+    ## [11] BiocGenerics_0.59.12        generics_0.1.4             
+    ## [13] MatrixGenerics_1.25.0       matrixStats_1.5.0          
+    ## [15] BiocStyle_2.41.0           
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] tidyselect_1.2.1        dplyr_1.2.1             farver_2.1.2           
     ##  [4] S7_0.2.2                fastmap_1.2.0           lazyeval_0.2.3         
-    ##  [7] digest_0.6.39           lifecycle_1.0.5         cluster_2.1.8.2        
-    ## [10] ProtGenerics_1.44.0     magrittr_2.0.5          compiler_4.6.0         
-    ## [13] rlang_1.2.0             sass_0.4.10             tools_4.6.0            
-    ## [16] igraph_2.3.0            yaml_2.3.12             knitr_1.51             
-    ## [19] S4Arrays_1.12.0         labeling_0.4.3          htmlwidgets_1.6.4      
-    ## [22] DelayedArray_0.38.1     plyr_1.8.9              RColorBrewer_1.1-3     
-    ## [25] abind_1.4-8             withr_3.0.2             purrr_1.2.2            
-    ## [28] desc_1.4.3              colorspace_2.1-2        scales_1.4.0           
-    ## [31] iterators_1.0.14        MASS_7.3-65             cli_3.6.6              
-    ## [34] crayon_1.5.3            rmarkdown_2.31          ragg_1.5.2             
+    ##  [7] digest_0.6.39           lifecycle_1.0.5         cluster_2.1.8.3        
+    ## [10] ProtGenerics_1.45.0     magrittr_2.0.5          compiler_4.6.1         
+    ## [13] rlang_1.3.0             sass_0.4.10             tools_4.6.1            
+    ## [16] igraph_2.3.3            yaml_2.3.12             knitr_1.51             
+    ## [19] S4Arrays_1.13.0         labeling_0.4.3          htmlwidgets_1.6.4      
+    ## [22] DelayedArray_0.39.6     plyr_1.8.9              RColorBrewer_1.1-3     
+    ## [25] abind_1.4-8             withr_3.0.3             purrr_1.2.2            
+    ## [28] desc_1.4.3              colorspace_2.1-3        scales_1.4.0           
+    ## [31] iterators_1.0.14        MASS_7.3-66             cli_3.6.6              
+    ## [34] crayon_1.5.3            rmarkdown_2.32          ragg_1.5.2             
     ## [37] otel_0.2.0              rjson_0.2.23            reshape2_1.4.5         
-    ## [40] BiocBaseUtils_1.14.0    cachem_1.1.0            stringr_1.6.0          
-    ## [43] parallel_4.6.0          AnnotationFilter_1.36.0 BiocManager_1.30.27    
-    ## [46] XVector_0.52.0          vctrs_0.7.3             Matrix_1.7-5           
-    ## [49] jsonlite_2.0.0          bookdown_0.46           GetoptLong_1.1.1       
+    ## [40] BiocBaseUtils_1.15.1    cachem_1.1.0            stringr_1.6.0          
+    ## [43] parallel_4.6.1          AnnotationFilter_1.37.0 BiocManager_1.30.27    
+    ## [46] XVector_0.53.0          vctrs_0.7.3             Matrix_1.7-6           
+    ## [49] jsonlite_2.0.0          bookdown_0.48           GetoptLong_1.1.1       
     ## [52] clue_0.3-68             magick_2.9.1            systemfonts_1.3.2      
     ## [55] foreach_1.5.2           tidyr_1.3.2             jquerylib_0.1.4        
-    ## [58] glue_1.8.1              pkgdown_2.2.0.9000      codetools_0.2-20       
-    ## [61] shape_1.4.6.1           stringi_1.8.7           gtable_0.3.6           
+    ## [58] glue_1.8.1              pkgdown_2.2.1.9000      codetools_0.2-20       
+    ## [61] shape_1.4.6.1           stringi_1.8.9           gtable_0.3.6           
     ## [64] tibble_3.3.1            pillar_1.11.1           htmltools_0.5.9        
     ## [67] circlize_0.4.18         R6_2.6.1                textshaping_1.0.5      
-    ## [70] doParallel_1.0.17       evaluate_1.0.5          lattice_0.22-9         
-    ## [73] png_0.1-9               bslib_0.10.0            Rcpp_1.1.1-1.1         
-    ## [76] SparseArray_1.12.2      xfun_0.57               GlobalOptions_0.1.4    
-    ## [79] MsCoreUtils_1.25.3      fs_2.1.0                pkgconfig_2.0.3
+    ## [70] doParallel_1.0.17       evaluate_1.0.5          lattice_0.23-1         
+    ## [73] png_0.1-9               bslib_0.12.0            Rcpp_1.1.2             
+    ## [76] SparseArray_1.13.2      xfun_0.60               GlobalOptions_0.1.4    
+    ## [79] MsCoreUtils_1.25.4      fs_2.1.0                pkgconfig_2.0.3
 
 ## License
 

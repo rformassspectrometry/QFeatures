@@ -33,10 +33,7 @@ single-assay `QFeatures` objects starting from a spreadsheet, how to
 compute the next assays (peptides and proteins), and how these can be
 manipulated and explored.
 
-``` r
-
-library("QFeatures")
-```
+[`library`](https://rdrr.io/r/base/library.html)`(`[`"QFeatures"`](https://rformassspectrometry.github.io/QFeatures)`)`
 
 ## Creating `QFeatures` object
 
@@ -52,11 +49,7 @@ columns 1 to 10 contain quantitation data, and that the assay should be
 named `psms` in the returned `QFeatures` object, to reflect the nature
 of the data.
 
-``` r
-
-data(hlpsms)
-hl <- readQFeatures(hlpsms, quantCols = 1:10, name = "psms")
-```
+[`data`](https://rdrr.io/r/utils/data.html)`(``hlpsms``)`` ``hl`` ``<-`` `[`readQFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeatures.md)`(``hlpsms``, quantCols ``=`` ``1``:``10``, name ``=`` ``"psms"``)`
 
     ## Checking arguments.
 
@@ -66,10 +59,7 @@ hl <- readQFeatures(hlpsms, quantCols = 1:10, name = "psms")
 
     ## Formatting data as a 'QFeatures' object.
 
-``` r
-
-hl
-```
+`hl`
 
     ## An instance of class QFeatures (type: bulk) with 1 set:
     ## 
@@ -80,10 +70,7 @@ The individual assays are stored as *SummarizedExperiment* object and
 further access its quantitative data and metadata using the `assay` and
 `rowData` functions
 
-``` r
-
-hl[[1]]
-```
+`hl``[[``1``]``]`
 
     ## class: SummarizedExperiment 
     ## dim: 3010 10 
@@ -94,10 +81,7 @@ hl[[1]]
     ## colnames(10): X126 X127C ... X130N X131
     ## colData names(0):
 
-``` r
-
-hl[["psms"]]
-```
+`hl``[[``"psms"``]``]`
 
     ## class: SummarizedExperiment 
     ## dim: 3010 10 
@@ -108,10 +92,7 @@ hl[["psms"]]
     ## colnames(10): X126 X127C ... X130N X131
     ## colData names(0):
 
-``` r
-
-head(assay(hl[["psms"]]))
-```
+[`head`](https://rdrr.io/r/utils/head.html)`(``assay``(``hl``[[``"psms"``]``]``)``)`
 
     ##         X126      X127C       X127N      X128C       X128N      X129C
     ## 1 0.12283431 0.08045915 0.070804055 0.09386901 0.051815695 0.13034383
@@ -128,10 +109,7 @@ head(assay(hl[["psms"]]))
     ## 5 0.17555789 0.007088253 0.02884754 0.02307803
     ## 6 0.01726511 0.172651119 0.37007905 0.29732174
 
-``` r
-
-head(rowData(hl[["psms"]]))
-```
+[`head`](https://rdrr.io/r/utils/head.html)`(``rowData``(``hl``[[``"psms"``]``]``)``)`
 
     ## DataFrame with 6 rows and 18 columns
     ##      Sequence ProteinDescriptions NbProteins ProteinGroupAccessions
@@ -168,9 +146,9 @@ head(rowData(hl[["psms"]]))
     ## 6        -0.67     21.27 Nucleus - ...
 
 For further details on how to manipulate such objects, refer to the
-*[MultiAssayExperiment](https://bioconductor.org/packages/3.23/MultiAssayExperiment)*
+*[MultiAssayExperiment](https://bioconductor.org/packages/3.24/MultiAssayExperiment)*
 (Ramos et al. 2017) and
-*[SummarizedExperiment](https://bioconductor.org/packages/3.23/SummarizedExperiment)*
+*[SummarizedExperiment](https://bioconductor.org/packages/3.24/SummarizedExperiment)*
 (Morgan et al. 2019) packages.
 
 As illustrated in figure @ref(fig:featuresplot), an central
@@ -182,11 +160,7 @@ peptide by grouping all PSMs that were matched the same peptide
 sequence. Below, the aggregation function is set, as an example, to the
 mean. The new assay is named *peptides*.
 
-``` r
-
-hl <- aggregateFeatures(hl, "psms", "Sequence",
-                        name = "peptides", fun = colMeans)
-```
+`hl`` ``<-`` `[`aggregateFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-aggregate.md)`(``hl``, ``"psms"``, ``"Sequence"``,`` `` name ``=`` ``"peptides"``, fun ``=`` ``colMeans``)`
 
     ##   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%
 
@@ -199,20 +173,14 @@ hl <- aggregateFeatures(hl, "psms", "Sequence",
     ## 
     ## Occurred during the aggregation of set(s): psms
 
-``` r
-
-hl
-```
+`hl`
 
     ## An instance of class QFeatures (type: bulk) with 2 sets:
     ## 
     ##  [1] psms: SummarizedExperiment with 3010 rows and 10 columns 
     ##  [2] peptides: SummarizedExperiment with 2923 rows and 10 columns
 
-``` r
-
-hl[["peptides"]]
-```
+`hl``[[``"peptides"``]``]`
 
     ## class: SummarizedExperiment 
     ## dim: 2923 10 
@@ -226,18 +194,11 @@ hl[["peptides"]]
 Below, we repeat the aggregation operation by grouping peptides into
 proteins as defined by the *ProteinGroupAccessions* variable.
 
-``` r
-
-hl <- aggregateFeatures(hl, "peptides", "ProteinGroupAccessions",
-                        name = "proteins", fun = colMeans)
-```
+`hl`` ``<-`` `[`aggregateFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-aggregate.md)`(``hl``, ``"peptides"``, ``"ProteinGroupAccessions"``,`` `` name ``=`` ``"proteins"``, fun ``=`` ``colMeans``)`
 
     ##   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%
 
-``` r
-
-hl
-```
+`hl`
 
     ## An instance of class QFeatures (type: bulk) with 3 sets:
     ## 
@@ -245,10 +206,7 @@ hl
     ##  [2] peptides: SummarizedExperiment with 2923 rows and 10 columns 
     ##  [3] proteins: SummarizedExperiment with 1596 rows and 10 columns
 
-``` r
-
-hl[["proteins"]]
-```
+`hl``[[``"proteins"``]``]`
 
     ## class: SummarizedExperiment 
     ## dim: 1596 10 
@@ -265,19 +223,11 @@ metadata. These can be addedd as a new `DataFrame` with matching names
 (i.e. the `DataFrame` rownames must be identical assay’s colnames) or
 can be added one variable at at time, as shown below.
 
-``` r
-
-colData(hl)
-```
+`colData``(``hl``)`
 
     ## DataFrame with 10 rows and 0 columns
 
-``` r
-
-hl$tag <- c("126", "127N", "127C", "128N", "128C", "129N", "129C",
-            "130N", "130C", "131")
-colData(hl)
-```
+`hl``$``tag`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``"126"``, ``"127N"``, ``"127C"``, ``"128N"``, ``"128C"``, ``"129N"``, ``"129C"``,`` `` ``"130N"``, ``"130C"``, ``"131"``)`` ``colData``(``hl``)`
 
     ## DataFrame with 10 rows and 1 column
     ##               tag
@@ -304,10 +254,7 @@ object. Therefore there are as many `rowData` tables as there are
 assays. `rowDataNames` provides a list where each element contains the
 name of the `rowData` columns available in the corresponding assay.
 
-``` r
-
-rowDataNames(hl)
-```
+[`rowDataNames`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)`(``hl``)`
 
     ## CharacterList of length 3
     ## [["psms"]] Sequence ProteinDescriptions NbProteins ... RTmin markers
@@ -320,10 +267,7 @@ extract the `rowData` for all assays by calling the function on the
 returned where each element contains the `rowData` available in the
 corresponding assay.
 
-``` r
-
-rowData(hl)
-```
+`rowData``(``hl``)`
 
     ## DataFrameList of length 3
     ## names(3): psms peptides proteins
@@ -333,10 +277,7 @@ data table. This is easily performed using the `rbindRowData` function.
 The function will automatically select the columns that are common to
 all selected assays.
 
-``` r
-
-rbindRowData(hl, i = c("peptides", "proteins"))
-```
+[`rbindRowData`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)`(``hl``, i ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"peptides"``, ``"proteins"``)``)`
 
     ## DataFrame with 4519 rows and 5 columns
     ##            assay       rowname ProteinGroupAccessions       markers        .n
@@ -362,28 +303,18 @@ For instance, let’s add a `rowData` variables with the mean protein
 expression as well as the associated standard deviation. First, we need
 to create the `DataFrame` with the mean expression.
 
-``` r
-
-dF <- DataFrame(mean = rowSums(assay(hl[["proteins"]])),
-                sd = rowSds(assay(hl[["proteins"]])))
-```
+`dF`` ``<-`` `[`DataFrame`](https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html)`(``mean ``=`` `[`rowSums`](https://rdrr.io/r/base/colSums.html)`(``assay``(``hl``[[``"proteins"``]``]``)``)``,`` `` sd ``=`` ``rowSds``(``assay``(``hl``[[``"proteins"``]``]``)``)``)`
 
 Then, we create the list and name the element `proteins` so that the new
 data is added to the `rowData` of the `proteins` assay. To add the list,
 we insert it back into the `rowData`.
 
-``` r
-
-rowData(hl) <- List(proteins = dF)
-```
+`rowData``(``hl``)`` ``<-`` `[`List`](https://rdrr.io/pkg/S4Vectors/man/List-class.html)`(``proteins ``=`` ``dF``)`
 
 As shown below, the new `mean` and `sd` variables have been added to the
 `rowData` of the `proteins` assay.
 
-``` r
-
-rowData(hl)[["proteins"]]
-```
+`rowData``(``hl``)``[[``"proteins"``]``]`
 
     ## DataFrame with 1596 rows and 5 columns
     ##          ProteinGroupAccessions     markers        .n      mean        sd
@@ -418,11 +349,7 @@ feature name in the *proteins* assay. But this protein row was computed
 from 8 peptide rows in the *peptides* assay, themselves resulting from
 the aggregation of 8 rows in the *psms* assay.
 
-``` r
-
-stat3 <- hl["P42227-2", , ]
-stat3
-```
+`stat3`` ``<-`` ``hl``[``"P42227-2"``, , ``]`` ``stat3`
 
     ## An instance of class QFeatures (type: bulk) with 3 sets:
     ## 
@@ -434,19 +361,7 @@ We can easily visualise this new *QFeatures* object using `ggplot2` once
 converted into a `data.frame`. See the visualization vignette for more
 details about data exploration from a `QFeatures` object.
 
-``` r
-
-stat3_df <- data.frame(longForm(stat3))
-stat3_df$assay <- factor(stat3_df$assay,
-                        levels = c("psms", "peptides", "proteins"))
-library("ggplot2")
-ggplot(data = stat3_df,
-       aes(x = colname,
-           y = value,
-           group = rowname)) +
-    geom_line() + geom_point() +
-    facet_grid(~ assay)
-```
+`stat3_df`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`[`longForm`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-longForm.md)`(``stat3``)``)`` ``stat3_df``$``assay`` ``<-`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``stat3_df``$``assay``,`` `` levels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"psms"``, ``"peptides"``, ``"proteins"``)``)`` `[`library`](https://rdrr.io/r/base/library.html)`(`[`"ggplot2"`](https://ggplot2.tidyverse.org)`)`` `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``data ``=`` ``stat3_df``,`` `` `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``colname``,`` `` y ``=`` ``value``,`` `` group ``=`` ``rowname``)``)`` ``+`` `` `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(``)`` ``+`` `[`geom_point`](https://ggplot2.tidyverse.org/reference/geom_point.html)`(``)`` ``+`` `` `[`facet_grid`](https://ggplot2.tidyverse.org/reference/facet_grid.html)`(``~`` ``assay``)`
 
 ![](QFeatures_files/figure-html/plotstat3-1.png)
 
@@ -456,11 +371,7 @@ namely P42227-2 and P42225. We obtain a new `QFeatures` instance
 containing 2 proteins, 9 peptides and 10 PSMS. From this, we can readily
 conclude that STAT1 was identified by a single PSM/peptide.
 
-``` r
-
-stat <- hl[c("P42227-2", "P42225"), , ]
-stat
-```
+`stat`` ``<-`` ``hl``[`[`c`](https://rdrr.io/r/base/c.html)`(``"P42227-2"``, ``"P42225"``)``, , ``]`` ``stat`
 
     ## An instance of class QFeatures (type: bulk) with 3 sets:
     ## 
@@ -470,32 +381,14 @@ stat
 
 Below, we visualise the expression profiles for the two proteins.
 
-``` r
-
-stat_df <- data.frame(longForm(stat))
-stat_df$stat3 <- ifelse(stat_df$rowname %in% stat3_df$rowname,
-                        "STAT3", "STAT1")
-stat_df$assay <- factor(stat_df$assay,
-                        levels = c("psms", "peptides", "proteins"))
-
-ggplot(data = stat_df,
-       aes(x = colname,
-           y = value,
-           group = rowname)) +
-    geom_line() + geom_point() +
-    facet_grid(stat3 ~ assay)
-```
+`stat_df`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`[`longForm`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-longForm.md)`(``stat``)``)`` ``stat_df``$``stat3`` ``<-`` `[`ifelse`](https://rdrr.io/r/base/ifelse.html)`(``stat_df``$``rowname`` `[`%in%`](https://rdrr.io/pkg/BiocGenerics/man/match.html)` ``stat3_df``$``rowname``,`` `` ``"STAT3"``, ``"STAT1"``)`` ``stat_df``$``assay`` ``<-`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``stat_df``$``assay``,`` `` levels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"psms"``, ``"peptides"``, ``"proteins"``)``)`` `` `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``data ``=`` ``stat_df``,`` `` `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``colname``,`` `` y ``=`` ``value``,`` `` group ``=`` ``rowname``)``)`` ``+`` `` `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(``)`` ``+`` `[`geom_point`](https://ggplot2.tidyverse.org/reference/geom_point.html)`(``)`` ``+`` `` `[`facet_grid`](https://ggplot2.tidyverse.org/reference/facet_grid.html)`(``stat3`` ``~`` ``assay``)`
 
 ![](QFeatures_files/figure-html/plotstat-1.png)
 
 The subsetting by feature names is also available as a call to the
 `subsetByFeature` function, for use with the pipe operator.
 
-``` r
-
-hl |>
-    subsetByFeature("P42227-2")
-```
+`hl`` ``|>`` `` `[`subsetByFeature`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-subsetBy.md)`(``"P42227-2"``)`
 
     ## An instance of class QFeatures (type: bulk) with 3 sets:
     ## 
@@ -503,11 +396,7 @@ hl |>
     ##  [2] peptides: SummarizedExperiment with 8 rows and 10 columns 
     ##  [3] proteins: SummarizedExperiment with 1 rows and 10 columns
 
-``` r
-
-hl |>
-    subsetByFeature(c("P42227-2", "P42225"))
-```
+`hl`` ``|>`` `` `[`subsetByFeature`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-subsetBy.md)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"P42227-2"``, ``"P42225"``)``)`
 
     ## An instance of class QFeatures (type: bulk) with 3 sets:
     ## 
@@ -517,18 +406,7 @@ hl |>
 
 and possibly
 
-``` r
-
-hl |>
-    subsetByFeature("P42227-2") |>
-    longForm() |>
-    as.data.frame() |>
-    ggplot(aes(x = colname,
-               y = value,
-               group = rowname)) +
-    geom_line() +
-    facet_grid(~ assay)
-```
+`hl`` ``|>`` `` `[`subsetByFeature`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-subsetBy.md)`(``"P42227-2"``)`` ``|>`` `` `[`longForm`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-longForm.md)`(``)`` ``|>`` `` `[`as.data.frame`](https://rdrr.io/pkg/BiocGenerics/man/as.data.frame.html)`(``)`` ``|>`` `` `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``colname``,`` `` y ``=`` ``value``,`` `` group ``=`` ``rowname``)``)`` ``+`` `` `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(``)`` ``+`` `` `[`facet_grid`](https://ggplot2.tidyverse.org/reference/facet_grid.html)`(``~`` ``assay``)`
 
 to reproduce the line plot.
 
@@ -544,25 +422,13 @@ filters can be defined using the formula interface or using
 this package allows users to define arbitrary character or numeric
 filters using the `VariableFilter`.
 
-``` r
-
-mito_filter <- VariableFilter(field = "markers",
-                              value = "Mitochondrion",
-                              condition = "==")
-mito_filter
-```
+`mito_filter`` ``<-`` `[`VariableFilter`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-filtering.md)`(``field ``=`` ``"markers"``,`` `` value ``=`` ``"Mitochondrion"``,`` `` condition ``=`` ``"=="``)`` ``mito_filter`
 
     ## class: CharacterVariableFilter 
     ## condition: == 
     ## value: Mitochondrion
 
-``` r
-
-qval_filter <- VariableFilter(field = "qValue",
-                              value = 0.001,
-                              condition = "<=")
-qval_filter
-```
+`qval_filter`` ``<-`` `[`VariableFilter`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-filtering.md)`(``field ``=`` ``"qValue"``,`` `` value ``=`` ``0.001``,`` `` condition ``=`` ``"<="``)`` ``qval_filter`
 
     ## class: NumericVariableFilter 
     ## condition: <= 
@@ -572,10 +438,7 @@ These filter can then readily be applied to all assays’ row data slots.
 The `mito_filter` will return all PSMs, peptides and proteins that were
 annotated as localising to the mitochondrion.
 
-``` r
-
-filterFeatures(hl, mito_filter)
-```
+[`filterFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-filtering.md)`(``hl``, ``mito_filter``)`
 
     ## 'markers' found in 3 out of 3 assay(s).
 
@@ -590,10 +453,7 @@ because the `qValue` variable is only present in the `psms` assays. The
 q-values are only relevant to PSMs and that variable was dropped from
 the other assays.
 
-``` r
-
-filterFeatures(hl, qval_filter)
-```
+[`filterFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-filtering.md)`(``hl``, ``qval_filter``)`
 
     ## 'qValue' found in 1 out of 3 assay(s).
 
@@ -610,10 +470,7 @@ filterFeatures(hl, qval_filter)
 
 The same filters can be created using the forumla interface:
 
-``` r
-
-filterFeatures(hl, ~ markers == "Mitochondrion")
-```
+[`filterFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-filtering.md)`(``hl``, ``~`` ``markers`` ``==`` ``"Mitochondrion"``)`
 
     ## 'markers' found in 3 out of 3 assay(s).
 
@@ -623,10 +480,7 @@ filterFeatures(hl, ~ markers == "Mitochondrion")
     ##  [2] peptides: SummarizedExperiment with 162 rows and 10 columns 
     ##  [3] proteins: SummarizedExperiment with 113 rows and 10 columns
 
-``` r
-
-filterFeatures(hl, ~ qValue <= 0.001)
-```
+[`filterFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-filtering.md)`(``hl``, ``~`` ``qValue`` ``<=`` ``0.001``)`
 
     ## 'qValue' found in 1 out of 3 assay(s).
 
@@ -643,7 +497,7 @@ filterFeatures(hl, ~ qValue <= 0.001)
 
 ## Session information
 
-    ## R version 4.6.0 (2026-04-24)
+    ## R version 4.6.1 (2026-06-24)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.4 LTS
     ## 
@@ -667,38 +521,38 @@ filterFeatures(hl, ~ qValue <= 0.001)
     ## [8] base     
     ## 
     ## other attached packages:
-    ##  [1] ggplot2_4.0.3               QFeatures_1.23.1           
-    ##  [3] MultiAssayExperiment_1.38.0 SummarizedExperiment_1.42.0
-    ##  [5] Biobase_2.72.0              GenomicRanges_1.64.0       
-    ##  [7] Seqinfo_1.2.0               IRanges_2.46.0             
-    ##  [9] S4Vectors_0.50.0            BiocGenerics_0.58.0        
-    ## [11] generics_0.1.4              MatrixGenerics_1.24.0      
-    ## [13] matrixStats_1.5.0           BiocStyle_2.40.0           
+    ##  [1] ggplot2_4.0.3               QFeatures_1.23.2           
+    ##  [3] MultiAssayExperiment_1.39.1 SummarizedExperiment_1.43.0
+    ##  [5] Biobase_2.73.2              GenomicRanges_1.65.4       
+    ##  [7] Seqinfo_1.3.2               IRanges_2.47.5             
+    ##  [9] S4Vectors_0.51.9            BiocGenerics_0.59.12       
+    ## [11] generics_0.1.4              MatrixGenerics_1.25.0      
+    ## [13] matrixStats_1.5.0           BiocStyle_2.41.0           
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] gtable_0.3.6            xfun_0.57               bslib_0.10.0           
-    ##  [4] htmlwidgets_1.6.4       lattice_0.22-9          vctrs_0.7.3            
-    ##  [7] tools_4.6.0             tibble_3.3.1            cluster_2.1.8.2        
-    ## [10] BiocBaseUtils_1.14.0    pkgconfig_2.0.3         Matrix_1.7-5           
+    ##  [1] gtable_0.3.6            xfun_0.60               bslib_0.12.0           
+    ##  [4] htmlwidgets_1.6.4       lattice_0.23-1          vctrs_0.7.3            
+    ##  [7] tools_4.6.1             tibble_3.3.1            cluster_2.1.8.3        
+    ## [10] BiocBaseUtils_1.15.1    pkgconfig_2.0.3         Matrix_1.7-6           
     ## [13] RColorBrewer_1.1-3      S7_0.2.2                desc_1.4.3             
-    ## [16] lifecycle_1.0.5         farver_2.1.2            compiler_4.6.0         
+    ## [16] lifecycle_1.0.5         farver_2.1.2            compiler_4.6.1         
     ## [19] stringr_1.6.0           textshaping_1.0.5       clue_0.3-68            
     ## [22] htmltools_0.5.9         sass_0.4.10             yaml_2.3.12            
-    ## [25] lazyeval_0.2.3          pkgdown_2.2.0.9000      pillar_1.11.1          
-    ## [28] jquerylib_0.1.4         tidyr_1.3.2             MASS_7.3-65            
-    ## [31] DelayedArray_0.38.1     cachem_1.1.0            abind_1.4-8            
-    ## [34] tidyselect_1.2.1        digest_0.6.39           stringi_1.8.7          
+    ## [25] lazyeval_0.2.3          pkgdown_2.2.1.9000      pillar_1.11.1          
+    ## [28] jquerylib_0.1.4         tidyr_1.3.2             MASS_7.3-66            
+    ## [31] DelayedArray_0.39.6     cachem_1.1.0            abind_1.4-8            
+    ## [34] tidyselect_1.2.1        digest_0.6.39           stringi_1.8.9          
     ## [37] purrr_1.2.2             dplyr_1.2.1             reshape2_1.4.5         
-    ## [40] bookdown_0.46           labeling_0.4.3          fastmap_1.2.0          
-    ## [43] grid_4.6.0              cli_3.6.6               SparseArray_1.12.2     
-    ## [46] magrittr_2.0.5          S4Arrays_1.12.0         withr_3.0.2            
-    ## [49] scales_1.4.0            rmarkdown_2.31          XVector_0.52.0         
-    ## [52] igraph_2.3.0            otel_0.2.0              ragg_1.5.2             
-    ## [55] evaluate_1.0.5          knitr_1.51              rlang_1.2.0            
-    ## [58] Rcpp_1.1.1-1.1          glue_1.8.1              BiocManager_1.30.27    
-    ## [61] jsonlite_2.0.0          AnnotationFilter_1.36.0 R6_2.6.1               
+    ## [40] bookdown_0.48           labeling_0.4.3          fastmap_1.2.0          
+    ## [43] grid_4.6.1              cli_3.6.6               SparseArray_1.13.2     
+    ## [46] magrittr_2.0.5          S4Arrays_1.13.0         withr_3.0.3            
+    ## [49] scales_1.4.0            rmarkdown_2.32          XVector_0.53.0         
+    ## [52] igraph_2.3.3            otel_0.2.0              ragg_1.5.2             
+    ## [55] evaluate_1.0.5          knitr_1.51              rlang_1.3.0            
+    ## [58] Rcpp_1.1.2              glue_1.8.1              BiocManager_1.30.27    
+    ## [61] jsonlite_2.0.0          AnnotationFilter_1.37.0 R6_2.6.1               
     ## [64] plyr_1.8.9              systemfonts_1.3.2       fs_2.1.0               
-    ## [67] ProtGenerics_1.44.0     MsCoreUtils_1.25.3
+    ## [67] ProtGenerics_1.45.0     MsCoreUtils_1.25.4
 
 ## License
 

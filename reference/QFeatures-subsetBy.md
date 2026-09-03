@@ -232,7 +232,7 @@ example(aggregateFeatures)
 #> aggrgF> ## Using a peptide-by-proteins adjacency matrix
 #> aggrgF> ## --------------------------------------------
 #> aggrgF> 
-#> aggrgF> ## Let's use assay peptides from object feat1 and
+#> aggrgF> ## Let's use set peptides from object feat1 and
 #> aggrgF> ## define that peptide SYGFNAAR maps to proteins
 #> aggrgF> ## Prot A and B
 #> aggrgF> 
