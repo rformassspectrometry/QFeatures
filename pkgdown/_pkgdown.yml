@@ -37,9 +37,10 @@ reference:
     - scaleTransform
     - normalize
     - sweep
-  - title: "Feature aggregations"
-    desc: "Feature aggregations"
+  - title: "Aggregations"
+    desc: "Feature and sample aggregations"
     contents:
+    - aggregateSamples
     - aggregateFeatures
     - adjacencyMatrix,SummarizedExperiment-method
     - adjacencyMatrix,QFeatures-method
