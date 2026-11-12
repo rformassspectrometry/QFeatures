@@ -1,5 +1,9 @@
 # QFeatures 1.23
 
+## QFeatures 1.23.3
+
+- Use GPL-3 and CC BY-SA license.
+
 ## QFeatures 1.23.2
 
 - add `aggregateSamples` function

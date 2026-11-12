@@ -41,12 +41,11 @@ vignette.
 
 ### License
 
-The `QFeatures` code is provided under a permissive [Artistic 2.0
-license](https://opensource.org/licenses/Artistic-2.0). The
+The `QFeatures` code is provided under a
+[GPL-3](https://opensource.org/license/gpl-3.0) license.  The
 documentation, including the manual pages and the vignettes, are
 distributed under a [CC BY-SA
 license](https://creativecommons.org/licenses/by-sa/4.0/).
-
 
 ## Contributions
 
