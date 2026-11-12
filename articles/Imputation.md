@@ -19,7 +19,9 @@ the implementation and
 high level application. These packages depend on other ones for the
 specific imputation implementation approaches.
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`MsCoreUtils`](https://github.com/RforMassSpectrometry/MsCoreUtils)`)`` `[`library`](https://rdrr.io/r/base/library.html)`(`[`QFeatures`](https://rformassspectrometry.github.io/QFeatures)`)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`MsCoreUtils`](https://github.com/RforMassSpectrometry/MsCoreUtils)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`QFeatures`](https://rformassspectrometry.github.io/QFeatures)`)`
 
 This vignette focuses on the technical aspects of imputation, without
 delving in the scientific motivations too much - see (Webb-Robertson et
@@ -61,6 +63,7 @@ function and are documented in the
 [documentation
 page](https://rformassspectrometry.github.io/MsCoreUtils/reference/imputation.html).
 
+\
 [`imputeMethods`](https://rdrr.io/pkg/MsCoreUtils/man/imputation.html)`(``)`
 
     ##  [1] "bpca"    "knn"     "QRILC"   "MLE"     "MLE2"    "MinDet"  "MinProb"
@@ -79,7 +82,15 @@ method if your data is formated as a `SummarizedExperiment` object
 
 ### Example data
 
-`m`` ``<-`` `[`matrix`](https://rdrr.io/r/base/matrix.html)`(``1``:``50``, nrow ``=`` ``10``)`` `[`diag`](https://rdrr.io/r/base/diag.html)`(``m``)`` ``<-`` ``NA`` ``m``[`[`which`](https://rdrr.io/pkg/BiocGenerics/man/which.html)`(`[`is.na`](https://rdrr.io/r/base/NA.html)`(``m``)``)`` ``+`` ``5``]`` ``<-`` ``NA`` `[`dimnames`](https://rdrr.io/r/base/dimnames.html)`(``m``)`` ``<-`` `[`list`](https://rdrr.io/r/base/list.html)`(`[`paste0`](https://rdrr.io/r/base/paste.html)`(``"F"``, ``1``:``10``)``, `[`paste0`](https://rdrr.io/r/base/paste.html)`(``"S"``, ``1``:``5``)``)`` ``randna`` ``<-`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``TRUE``, ``FALSE``)``, each ``=`` ``5``)`` ``se`` ``<-`` ``SummarizedExperiment``(``assays ``=`` ``m``,`` `` rowData ``=`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``randna``)``)`` ``se`
+\
+`m`` ``<-`` `[`matrix`](https://rdrr.io/r/base/matrix.html)`(``1``:``50``, nrow ``=`` ``10``)`\
+[`diag`](https://rdrr.io/r/base/diag.html)`(``m``)`` ``<-`` ``NA`\
+`m``[`[`which`](https://rdrr.io/pkg/BiocGenerics/man/which.html)`(`[`is.na`](https://rdrr.io/r/base/NA.html)`(``m``)``)`` ``+`` ``5``]`` ``<-`` ``NA`\
+[`dimnames`](https://rdrr.io/r/base/dimnames.html)`(``m``)`` ``<-`` `[`list`](https://rdrr.io/r/base/list.html)`(`[`paste0`](https://rdrr.io/r/base/paste.html)`(``"F"``, ``1``:``10``)``, `[`paste0`](https://rdrr.io/r/base/paste.html)`(``"S"``, ``1``:``5``)``)`\
+`randna`` ``<-`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``TRUE``, ``FALSE``)``, each ``=`` ``5``)`\
+`se`` ``<-`` ``SummarizedExperiment``(``assays ``=`` ``m``,`\
+`                           rowData ``=`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``randna``)``)`\
+`se`
 
     ## class: SummarizedExperiment 
     ## dim: 10 5 
@@ -95,6 +106,7 @@ different imputation approaches and their parametrisation. It is
 composed of 10 features and 5 samples, and contains 5 missing values
 aligned diagonally along the top and bottom parts of the data matrix.
 
+\
 `assay``(``se``)`
 
     ##     S1 S2 S3 S4 S5
@@ -127,7 +139,8 @@ replace all missing values by 0, we can use the
 [`impute()`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)
 method as shown below.
 
-[`impute`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)`(``se``, method ``=`` ``"zero"``)`` ``|>`` ``assay``(``)`
+\
+[`impute`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)`(``se``, method ``=`` ``"zero"``)`` ``|>`` ``assay``(``)`
 
     ##     S1 S2 S3 S4 S5
     ## F1   0 11 21 31 41
@@ -154,7 +167,8 @@ function. This function requires an additional argument, `val`, that
 defines the specific value that should be used to replace missing
 values.
 
-[`impute`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)`(``se``, method ``=`` ``"with"``, val ``=`` ``0.5``)`` ``|>`` ``assay``(``)`
+\
+[`impute`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)`(``se``, method ``=`` ``"with"``, val ``=`` ``0.5``)`` ``|>`` ``assay``(``)`
 
     ##       S1   S2   S3   S4   S5
     ## F1   0.5 11.0 21.0 31.0 41.0
@@ -192,7 +206,8 @@ the observed values in that sample.
 Below, we are going to set `q = 0` to impute with the minimal value
 within each sample.
 
-[`impute`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)`(``se``, method ``=`` ``"MinDet"``, q ``=`` ``0``)`` ``|>`` ``assay``(``)`
+\
+[`impute`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)`(``se``, method ``=`` ``"MinDet"``, q ``=`` ``0``)`` ``|>`` ``assay``(``)`
 
     ## Imputing along margin 2 (samples/columns).
 
@@ -217,7 +232,8 @@ done for each sample, i.e. along the columns of the quantitative matrix,
 also called the second margin. We can repeat the same imputation by
 explicitly setting `MARGIN = 2`.
 
-[`impute`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)`(``se``, method ``=`` ``"MinDet"``, q ``=`` ``0``, MARGIN ``=`` ``2``)`` ``|>`` ``assay``(``)`
+\
+[`impute`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)`(``se``, method ``=`` ``"MinDet"``, q ``=`` ``0``, MARGIN ``=`` ``2``)`` ``|>`` ``assay``(``)`
 
     ## Imputing along margin 2 (samples/columns).
 
@@ -235,6 +251,7 @@ explicitly setting `MARGIN = 2`.
 
 And indeed, the default margin for the `"MinDet"` method is 2:
 
+\
 [`getImputeMargin`](https://rdrr.io/pkg/MsCoreUtils/man/imputation.html)`(``"impute_MinDet"``)`
 
     ## [1] 2
@@ -244,6 +261,7 @@ imputation method chooses a certain number of similar features. By
 similar features, we explicitly refer to other rows, i.e. the first
 margin:
 
+\
 [`getImputeMargin`](https://rdrr.io/pkg/MsCoreUtils/man/imputation.html)`(``"impute_knn"``)`
 
     ## [1] 1
@@ -252,7 +270,8 @@ It is possible to change the margin from its default value. Below, we
 now use `"MinDet"` and choose the smallest value within each
 feature/row.
 
-[`impute`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)`(``se``, method ``=`` ``"MinDet"``, q ``=`` ``0``, MARGIN ``=`` ``1``)`` ``|>`` ``assay``(``)`
+\
+[`impute`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)`(``se``, method ``=`` ``"MinDet"``, q ``=`` ``0``, MARGIN ``=`` ``1``)`` ``|>`` ``assay``(``)`
 
     ## Imputing along margin 1 (features/rows).
 
@@ -274,6 +293,7 @@ smallest observed value along the first row, namely 11.
 We can extract all default margin values for all `MsCoreUtils::impute_*`
 functions as show below.
 
+\
 [`getImputeMargin`](https://rdrr.io/pkg/MsCoreUtils/man/imputation.html)`(``)`
 
     ## $impute_bpca
@@ -344,6 +364,7 @@ To be able to apply mixed imputation, we need to define features that
 are MAR, and features that are MNAR. This is done using a logical vector
 whose length is equal to the number of features.
 
+\
 `rowData``(``se``)``$``randna`
 
     ##  [1]  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
@@ -355,7 +376,12 @@ To use mixed imputation, we need to specify the MAR and MNAR features,
 two imputation methods, one for MAR features, and another one for MNAR
 features.
 
-[`impute`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)`(``se``, method ``=`` ``"mixed"``,`` `` randna ``=`` ``rowData``(``se``)``$``randna``,`` `` mar ``=`` ``"MinDet"``,`` `` mnar ``=`` ``"zero"``)`` ``|>`` `` ``assay``(``)`
+\
+[`impute`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)`(``se``, method ``=`` ``"mixed"``,`\
+`       randna ``=`` ``rowData``(``se``)``$``randna``,`\
+`       mar ``=`` ``"MinDet"``,`\
+`       mnar ``=`` ``"zero"``)`` ``|>`\
+`    ``assay``(``)`
 
     ## Imputing along margin 1 (features/rows).
 
@@ -377,6 +403,7 @@ features have been imputed by zero, while the other have imputed by
 the rows). Indeed, the default margins are 1 for both MAR and MNAR
 features: the first one is for MAR, and the second one for MNAR.
 
+\
 [`getImputeMargin`](https://rdrr.io/pkg/MsCoreUtils/man/imputation.html)`(``"impute_mixed"``)`
 
     ## c(1L, 1L)
@@ -386,7 +413,13 @@ features: the first one is for MAR, and the second one for MNAR.
 It is of course possible to change the margins when performing mixed
 imputation:
 
-[`impute`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)`(``se``, method ``=`` ``"mixed"``,`` `` randna ``=`` ``rowData``(``se``)``$``randna``,`` `` mar ``=`` ``"MinDet"``,`` `` mnar ``=`` ``"zero"``,`` `` MARGIN ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``2``, ``NA``)``)`` ``|>`` `` ``assay``(``)`
+\
+[`impute`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)`(``se``, method ``=`` ``"mixed"``,`\
+`       randna ``=`` ``rowData``(``se``)``$``randna``,`\
+`       mar ``=`` ``"MinDet"``,`\
+`       mnar ``=`` ``"zero"``,`\
+`       MARGIN ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``2``, ``NA``)``)`` ``|>`\
+`    ``assay``(``)`
 
     ## Imputing along margin 2 (samples/columns).
 
@@ -413,7 +446,16 @@ It is possible to pass arguments to the respective MAR and MNAR function
 using the `marArgs` and `mnarArg` arguments as named lists. Below, we
 are going to use *MinDet* in both cases, with different parameters.
 
-[`impute`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)`(``se``,`` `` method ``=`` ``"mixed"``,`` `` randna ``=`` ``rowData``(``se``)``$``randna``,`` `` mar ``=`` ``"MinDet"``,`` `` mnar ``=`` ``"MinDet"``,`` `` marArgs ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``q ``=`` ``0``)``,`` `` mnarArgs ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``q ``=`` ``1``)``,`` `` MARGIN ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``1``)``)`` ``|>`` `` ``assay``(``)`
+\
+[`impute`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)`(``se``,`\
+`       method ``=`` ``"mixed"``,`\
+`       randna ``=`` ``rowData``(``se``)``$``randna``,`\
+`       mar ``=`` ``"MinDet"``,`\
+`       mnar ``=`` ``"MinDet"``,`\
+`       marArgs ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``q ``=`` ``0``)``,`\
+`       mnarArgs ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``q ``=`` ``1``)``,`\
+`       MARGIN ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``1``)``)`` ``|>`\
+`    ``assay``(``)`
 
     ## Imputing along margin 1 (features/rows).
     ## Imputing along margin 1 (features/rows).
@@ -450,7 +492,17 @@ values (the top half of the matrix) with the highest value of the
 along the rows using `MARGIN = 1`, and are hence not impacted by the
 `split` value.
 
-[`impute`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)`(``se``,`` `` method ``=`` ``"mixed"``,`` `` randna ``=`` ``rowData``(``se``)``$``randna``,`` `` mar ``=`` ``"MinDet"``,`` `` mnar ``=`` ``"MinDet"``,`` `` marArgs ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``q ``=`` ``1``)``,`` `` mnarArgs ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``q ``=`` ``0``)``,`` `` MARGIN ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``2``, ``1``)``,`` `` split ``=`` ``FALSE``)`` ``|>`` `` ``assay``(``)`
+\
+[`impute`](https://rformassspectrometry.github.io/QFeatures/reference/impute.md)`(``se``,`\
+`       method ``=`` ``"mixed"``,`\
+`       randna ``=`` ``rowData``(``se``)``$``randna``,`\
+`       mar ``=`` ``"MinDet"``,`\
+`       mnar ``=`` ``"MinDet"``,`\
+`       marArgs ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``q ``=`` ``1``)``,`\
+`       mnarArgs ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``q ``=`` ``0``)``,`\
+`       MARGIN ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``2``, ``1``)``,`\
+`       split ``=`` ``FALSE``)`` ``|>`\
+`    ``assay``(``)`
 
     ## Imputing along margin 2 (samples/columns).
 
@@ -477,7 +529,7 @@ affected by the split and get the smallest values in each row.
 
     ## R version 4.6.1 (2026-06-24)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.4 LTS
+    ## Running under: Ubuntu 24.04.5 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -499,16 +551,16 @@ affected by the split and get the smallest values in each row.
     ## [8] base     
     ## 
     ## other attached packages:
-    ##  [1] QFeatures_1.23.2            MultiAssayExperiment_1.39.1
+    ##  [1] QFeatures_1.23.3            MultiAssayExperiment_1.39.1
     ##  [3] SummarizedExperiment_1.43.0 Biobase_2.73.2             
     ##  [5] GenomicRanges_1.65.4        Seqinfo_1.3.2              
-    ##  [7] IRanges_2.47.5              S4Vectors_0.51.9           
-    ##  [9] BiocGenerics_0.59.12        generics_0.1.4             
+    ##  [7] IRanges_2.47.5              S4Vectors_0.51.10          
+    ##  [9] BiocGenerics_0.59.13        generics_0.1.4             
     ## [11] MatrixGenerics_1.25.0       matrixStats_1.5.0          
     ## [13] MsCoreUtils_1.25.4          BiocStyle_2.41.0           
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] tidyr_1.3.2             sass_0.4.10             SparseArray_1.13.2     
+    ##  [1] tidyr_1.3.2             sass_0.4.10             SparseArray_1.13.4     
     ##  [4] stringi_1.8.9           lattice_0.23-1          magrittr_2.0.5         
     ##  [7] digest_0.6.39           evaluate_1.0.5          grid_4.6.1             
     ## [10] bookdown_0.48           fastmap_1.2.0           plyr_1.8.9             
@@ -516,8 +568,8 @@ affected by the split and get the smallest values in each row.
     ## [16] BiocManager_1.30.27     purrr_1.2.2             lazyeval_0.2.3         
     ## [19] textshaping_1.0.5       jquerylib_0.1.4         abind_1.4-8            
     ## [22] cli_3.6.6               rlang_1.3.0             XVector_0.53.0         
-    ## [25] cachem_1.1.0            DelayedArray_0.39.6     yaml_2.3.12            
-    ## [28] otel_0.2.0              S4Arrays_1.13.0         tools_4.6.1            
+    ## [25] cachem_1.1.0            DelayedArray_0.39.8     yaml_2.3.12            
+    ## [28] otel_0.2.0              S4Arrays_1.13.2         tools_4.6.1            
     ## [31] reshape2_1.4.5          dplyr_1.2.1             vctrs_0.7.3            
     ## [34] R6_2.6.1                lifecycle_1.0.5         stringr_1.6.0          
     ## [37] fs_2.1.0                htmlwidgets_1.6.4       clue_0.3-68            
@@ -525,14 +577,14 @@ affected by the split and get the smallest values in each row.
     ## [43] pkgconfig_2.0.3         desc_1.4.3              pillar_1.11.1          
     ## [46] pkgdown_2.2.1.9000      bslib_0.12.0            Rcpp_1.1.2             
     ## [49] glue_1.8.1              systemfonts_1.3.2       tidyselect_1.2.1       
-    ## [52] tibble_3.3.1            xfun_0.60               knitr_1.51             
-    ## [55] AnnotationFilter_1.37.0 igraph_2.3.3            htmltools_0.5.9        
+    ## [52] tibble_3.3.1            xfun_0.62               knitr_1.52             
+    ## [55] AnnotationFilter_1.37.0 igraph_2.3.4            htmltools_0.5.9        
     ## [58] rmarkdown_2.32          compiler_4.6.1
 
 ## License
 
 This vignette is distributed under a [CC BY-SA
-license](https://creativecommons.org/licenses/by-sa/2.0/) license.
+license](https://creativecommons.org/licenses/by-sa/4.0/) license.
 
 ## References
 

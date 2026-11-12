@@ -171,9 +171,9 @@ function returns a vector of available normalisation methods.
   and
   [`preprocessCore::normalize.quantiles.robust()`](https://rdrr.io/pkg/preprocessCore/man/normalize.quantiles.robust.html).
   `"vsn"` uses the
-  [`vsn::vsn2()`](https://rdrr.io/pkg/vsn/man/vsn2.html) function. Note
-  that the latter also glog-transforms the intensities. See respective
-  manuals for more details and function arguments.
+  [`vsn::vsn2()`](https://huber-group-embl.github.io/vsn/reference/vsn2.html)
+  function. Note that the latter also glog-transforms the intensities.
+  See respective manuals for more details and function arguments.
 
 For further details and examples about normalisation, see
 [`MsCoreUtils::normalize_matrix()`](https://rdrr.io/pkg/MsCoreUtils/man/normalize.html).

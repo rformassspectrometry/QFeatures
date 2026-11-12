@@ -14,7 +14,12 @@ We are going to use a subset of the CPTAC study 6 containing conditions
 A and B (Paulovich et al. 2010). The peptide-level data, as processed by
 MaxQuant (Cox and Mann 2008) is available in the `MsDataHub` package:
 
-`x`` ``<-`` ``MsDataHub``::`[`cptac_a_b_peptides.txt`](https://rformassspectrometry.github.io/MsDataHub/reference/cptac.html)`(``)`` ``|>`` `` `[`read.delim`](https://rdrr.io/r/utils/read.table.html)`(``)`
+\
+`x`` ``<-`` ``MsDataHub``::`[`cptac_a_b_peptides.txt`](https://rformassspectrometry.github.io/MsDataHub/reference/cptac.html)`(``)`` ``|>`\
+`    `[`read.delim`](https://rdrr.io/r/utils/read.table.html)`(``)`
+
+    ## Warning: replacing previous import 'BiocGenerics::version' by
+    ## 'BiocManager::version' when loading 'AnnotationHub'
 
     ## see ?MsDataHub and browseVignettes('MsDataHub') for documentation
 
@@ -23,6 +28,7 @@ MaxQuant (Cox and Mann 2008) is available in the `MsDataHub` package:
 From the names of the columns, we see that the quantitative columns,
 starting with `"Intensity."` (note the dot!) are at positions 56 to 61.
 
+\
 [`names`](https://rdrr.io/r/base/names.html)`(``x``)`
 
     ##  [1] "Sequence"                 "N.term.cleavage.window"  
@@ -62,7 +68,8 @@ starting with `"Intensity."` (note the dot!) are at positions 56 to 61.
     ## [69] "Best.MS.MS"               "Oxidation..M..site.IDs"  
     ## [71] "MS.MS.Count"
 
-`(``i`` ``<-`` `[`grep`](https://rdrr.io/pkg/BiocGenerics/man/grep.html)`(``"Intensity\\."``, `[`names`](https://rdrr.io/r/base/names.html)`(``x``)``)``)`
+\
+`(``i`` ``<-`` `[`grep`](https://rdrr.io/pkg/BiocGenerics/man/grep.html)`(``"Intensity\\."``, `[`names`](https://rdrr.io/r/base/names.html)`(``x``)``)``)`
 
     ## [1] 56 57 58 59 60 61
 
@@ -72,7 +79,9 @@ level expression data will be imported into R as an instance of class
 the `fnames` argument to set the row-names of the `peptides` assay to
 the peptide sequences.
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`"QFeatures"`](https://rformassspectrometry.github.io/QFeatures)`)`` ``cptac`` ``<-`` `[`readQFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeatures.md)`(``x``, quantCols ``=`` ``i``, name ``=`` ``"peptides"``, fnames ``=`` ``"Sequence"``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`"QFeatures"`](https://rformassspectrometry.github.io/QFeatures)`)`\
+`cptac`` ``<-`` `[`readQFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/readQFeatures.md)`(``x``, quantCols ``=`` ``i``, name ``=`` ``"peptides"``, fnames ``=`` ``"Sequence"``)`
 
     ## Checking arguments.
 
@@ -84,6 +93,7 @@ the peptide sequences.
 
     ## Setting assay rownames.
 
+\
 `cptac`
 
     ## An instance of class QFeatures (type: bulk) with 1 set:
@@ -95,7 +105,10 @@ the peptide sequences.
 Below we update the sample (column) annotations to encode the two
 groups, 6A and 6B, and the original sample numbers.
 
-`cptac``$``group`` ``<-`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"6A"``, ``"6B"``)``, each ``=`` ``3``)`` ``cptac``$``sample`` ``<-`` `[`rep`](https://rdrr.io/r/base/rep.html)`(``7``:``9``, ``2``)`` ``colData``(``cptac``)`
+\
+`cptac``$``group`` ``<-`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"6A"``, ``"6B"``)``, each ``=`` ``3``)`\
+`cptac``$``sample`` ``<-`` `[`rep`](https://rdrr.io/r/base/rep.html)`(``7``:``9``, ``2``)`\
+`colData``(``cptac``)`
 
     ## DataFrame with 6 rows and 2 columns
     ##                      group    sample
@@ -109,7 +122,8 @@ groups, 6A and 6B, and the original sample numbers.
 
 ## Filtering out contaminants and reverse hits
 
-[`filterFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-filtering.md)`(``cptac``, ``~`` ``Reverse`` ``==`` ``""``)`
+\
+[`filterFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-filtering.md)`(``cptac``, ``~`` ``Reverse`` ``==`` ``""``)`
 
     ## 'Reverse' found in 1 out of 1 assay(s).
 
@@ -117,7 +131,8 @@ groups, 6A and 6B, and the original sample numbers.
     ## 
     ##  [1] peptides: SummarizedExperiment with 11436 rows and 6 columns
 
-[`filterFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-filtering.md)`(``cptac``, ``~`` ``Potential.contaminant`` ``==`` ``""``)`
+\
+[`filterFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-filtering.md)`(``cptac``, ``~`` ``Potential.contaminant`` ``==`` ``""``)`
 
     ## 'Potential.contaminant' found in 1 out of 1 assay(s).
 
@@ -125,7 +140,10 @@ groups, 6A and 6B, and the original sample numbers.
     ## 
     ##  [1] peptides: SummarizedExperiment with 11385 rows and 6 columns
 
-`cptac`` ``<-`` ``cptac`` ``|>`` `` `[`filterFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-filtering.md)`(``~`` ``Reverse`` ``==`` ``""``)`` ``|>`` `` `[`filterFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-filtering.md)`(``~`` ``Potential.contaminant`` ``==`` ``""``)`
+\
+`cptac`` ``<-`` ``cptac`` ``|>`\
+`    `[`filterFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-filtering.md)`(``~`` ``Reverse`` ``==`` ``""``)`` ``|>`\
+`    `[`filterFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-filtering.md)`(``~`` ``Potential.contaminant`` ``==`` ``""``)`
 
     ## 'Reverse' found in 1 out of 1 assay(s).
 
@@ -137,6 +155,7 @@ The spreadsheet that was read above contained numerous variables that
 are returned by MaxQuant, but not necessarily necessary in the frame of
 a downstream statistical analysis.
 
+\
 [`rowDataNames`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)`(``cptac``)`
 
     ## CharacterList of length 1
@@ -146,7 +165,10 @@ The only ones that we will be needing below are the peptides sequences
 and the protein identifiers. Below, we store these variables of interest
 and filter them using the `selectRowData` function.
 
-`rowvars`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``"Sequence"``, ``"Proteins"``, ``"Leading.razor.protein"``)`` ``cptac`` ``<-`` `[`selectRowData`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)`(``cptac``, ``rowvars``)`` `[`rowDataNames`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)`(``cptac``)`
+\
+`rowvars`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``"Sequence"``, ``"Proteins"``, ``"Leading.razor.protein"``)`\
+`cptac`` ``<-`` `[`selectRowData`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)`(``cptac``, ``rowvars``)`\
+[`rowDataNames`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)`(``cptac``)`
 
     ## CharacterList of length 1
     ## [["peptides"]] Sequence Proteins Leading.razor.protein
@@ -159,7 +181,9 @@ presence across samples and features. But before being able to do so, we
 need to replace 0 by `NA`, given that MaxQuant encodes missing data with
 a 0 using the `zeroIsNA` function.
 
-`cptac`` ``<-`` `[`zeroIsNA`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-missing-data.md)`(``cptac``, i ``=`` `[`seq_along`](https://rdrr.io/r/base/seq.html)`(``cptac``)``)`` `[`nNA`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-missing-data.md)`(``cptac``, i ``=`` `[`seq_along`](https://rdrr.io/r/base/seq.html)`(``cptac``)``)`
+\
+`cptac`` ``<-`` `[`zeroIsNA`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-missing-data.md)`(``cptac``, i ``=`` `[`seq_along`](https://rdrr.io/r/base/seq.html)`(``cptac``)``)`\
+[`nNA`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-missing-data.md)`(``cptac``, i ``=`` `[`seq_along`](https://rdrr.io/r/base/seq.html)`(``cptac``)``)`
 
     ## $nNA
     ## DataFrame with 1 row and 3 columns
@@ -208,7 +232,9 @@ peptides happened to be absent in groups A and B. Below, we use
 `filterNA` to remove all the peptides that contain one or more missing
 values by using `pNA = 0` (which also is the default value).
 
-`cptac`` ``<-`` `[`filterNA`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-missing-data.md)`(``cptac``, i ``=`` `[`seq_along`](https://rdrr.io/r/base/seq.html)`(``cptac``)``, pNA ``=`` ``0``)`` ``cptac`
+\
+`cptac`` ``<-`` `[`filterNA`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-missing-data.md)`(``cptac``, i ``=`` `[`seq_along`](https://rdrr.io/r/base/seq.html)`(``cptac``)``, pNA ``=`` ``0``)`\
+`cptac`
 
     ## An instance of class QFeatures (type: bulk) with 1 set:
     ## 
@@ -229,7 +255,11 @@ the number of (non-missing) peptides per sample from the `peptides`
 assay. Note that the counts are automatically stored in the `colData` of
 `cptac`, under `peptide_counts`:
 
-`cptac`` ``<-`` `[`countUniqueFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/countUniqueFeatures.md)`(``cptac``,`` `` i ``=`` ``"peptides"``,`` `` colDataName ``=`` ``"peptide_counts"``)`` ``colData``(``cptac``)`
+\
+`cptac`` ``<-`` `[`countUniqueFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/countUniqueFeatures.md)`(``cptac``,`\
+`                             i ``=`` ``"peptides"``,`\
+`                             colDataName ``=`` ``"peptide_counts"``)`\
+`colData``(``cptac``)`
 
     ## DataFrame with 6 rows and 3 columns
     ##                      group    sample peptide_counts
@@ -245,7 +275,12 @@ We can also count the number of unique proteins. We therefore need to
 tell `countUniqueFeatures` that we need to group by protein (the protein
 name is stored in the `rowData` under `Proteins`):
 
-`cptac`` ``<-`` `[`countUniqueFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/countUniqueFeatures.md)`(``cptac``,`` `` i ``=`` ``"peptides"``,`` `` groupBy ``=`` ``"Proteins"``,`` `` colDataName ``=`` ``"protein_counts"``)`` ``colData``(``cptac``)`
+\
+`cptac`` ``<-`` `[`countUniqueFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/countUniqueFeatures.md)`(``cptac``,`\
+`                             i ``=`` ``"peptides"``,`\
+`                             groupBy ``=`` ``"Proteins"``,`\
+`                             colDataName ``=`` ``"protein_counts"``)`\
+`colData``(``cptac``)`
 
     ## DataFrame with 6 rows and 4 columns
     ##                      group    sample peptide_counts protein_counts
@@ -335,7 +370,10 @@ Below, we use the `logTransform` function to log2-transform our data.
 This time, instead of overwriting the peptides assay, we are going to
 create a new one to contain the log2-transformed data.
 
-[`addAssay`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)`(``cptac``,`` `` `[`logTransform`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-processing.md)`(``cptac``[[``1``]``]``)``,`` `` name ``=`` ``"peptides_log"``)`
+\
+[`addAssay`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)`(``cptac``,`\
+`         `[`logTransform`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-processing.md)`(``cptac``[[``1``]``]``)``,`\
+`         name ``=`` ``"peptides_log"``)`
 
 The
 [`addAssay()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)
@@ -346,14 +384,21 @@ method, that directly returns an updated `QFeatures` object. Using
 [`logTransform()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-processing.md)
 also automatically adds links between assays.
 
-`cptac`` ``<-`` `[`logTransform`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-processing.md)`(``cptac``,`` `` i ``=`` ``"peptides"``,`` `` name ``=`` ``"peptides_log"``)`` ``cptac`
+\
+`cptac`` ``<-`` `[`logTransform`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-processing.md)`(``cptac``,`\
+`                      i ``=`` ``"peptides"``,`\
+`                      name ``=`` ``"peptides_log"``)`\
+`cptac`
 
     ## An instance of class QFeatures (type: bulk) with 2 sets:
     ## 
     ##  [1] peptides: SummarizedExperiment with 4051 rows and 6 columns 
     ##  [2] peptides_log: SummarizedExperiment with 4051 rows and 6 columns
 
-[`par`](https://rdrr.io/r/graphics/par.html)`(``mfrow ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``2``)``)`` ``limma``::`[`plotDensities`](https://rdrr.io/pkg/limma/man/plotDensities.html)`(``assay``(``cptac``[[``1``]``]``)``)`` ``limma``::`[`plotDensities`](https://rdrr.io/pkg/limma/man/plotDensities.html)`(``assay``(``cptac``[[``2``]``]``)``)`
+\
+[`par`](https://rdrr.io/r/graphics/par.html)`(``mfrow ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``2``)``)`\
+`limma``::`[`plotDensities`](https://rdrr.io/pkg/limma/man/plotDensities.html)`(``assay``(``cptac``[[``1``]``]``)``)`\
+`limma``::`[`plotDensities`](https://rdrr.io/pkg/limma/man/plotDensities.html)`(``assay``(``cptac``[[``2``]``]``)``)`
 
 ![Quantitative data in its original scale (left) and log2-transformed
 (right).](Processing_files/figure-html/unnamed-chunk-9-1.png)
@@ -372,7 +417,12 @@ The
 [`normalize()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-processing.md)
 function can also be directly applied to the `QFeatures` object.
 
-`cptac`` ``<-`` `[`normalize`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-processing.md)`(``cptac``,`` `` i ``=`` ``"peptides_log"``,`` `` name ``=`` ``"peptides_norm"``,`` `` method ``=`` ``"diff.median"``)`` ``cptac`
+\
+`cptac`` ``<-`` `[`normalize`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-processing.md)`(``cptac``,`\
+`                   i ``=`` ``"peptides_log"``,`\
+`                   name ``=`` ``"peptides_norm"``,`\
+`                   method ``=`` ``"diff.median"``)`\
+`cptac`
 
     ## An instance of class QFeatures (type: bulk) with 3 sets:
     ## 
@@ -384,9 +434,16 @@ It is also possible to extract and normalise the `peptides_log`
 `SummarizedExperiment` and add it back to the `QFeatures` object with
 [`addAssay()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md).
 
-[`addAssay`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)`(``cptac``,`` `` `[`normalize`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-processing.md)`(``cptac``[[``"peptides_log"``]``]``,`` `` method ``=`` ``"center.median"``)``,`` `` name ``=`` ``"peptides_norm"``)`
+\
+[`addAssay`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.md)`(``cptac``,`\
+`         `[`normalize`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-processing.md)`(``cptac``[[``"peptides_log"``]``]``,`\
+`                   method ``=`` ``"center.median"``)``,`\
+`         name ``=`` ``"peptides_norm"``)`
 
-[`par`](https://rdrr.io/r/graphics/par.html)`(``mfrow ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``2``)``)`` ``limma``::`[`plotDensities`](https://rdrr.io/pkg/limma/man/plotDensities.html)`(``assay``(``cptac``[[``"peptides_log"``]``]``)``)`` ``limma``::`[`plotDensities`](https://rdrr.io/pkg/limma/man/plotDensities.html)`(``assay``(``cptac``[[``"peptides_norm"``]``]``)``)`
+\
+[`par`](https://rdrr.io/r/graphics/par.html)`(``mfrow ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``2``)``)`\
+`limma``::`[`plotDensities`](https://rdrr.io/pkg/limma/man/plotDensities.html)`(``assay``(``cptac``[[``"peptides_log"``]``]``)``)`\
+`limma``::`[`plotDensities`](https://rdrr.io/pkg/limma/man/plotDensities.html)`(``assay``(``cptac``[[``"peptides_norm"``]``]``)``)`
 
 ![Distribution of log2 peptide intensities before (left) and after
 (right) median
@@ -418,12 +475,17 @@ that takes the following inputs:
   aggregation - we will be using the default value, namely
   `robustSummary` (Sticker et al. 2019).
 
-`cptac`` ``<-`` `[`aggregateFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-aggregate.md)`(``cptac``,`` `` i ``=`` ``"peptides_norm"``,`` `` fcol ``=`` ``"Proteins"``,`` `` name ``=`` ``"proteins"``)`
+\
+`cptac`` ``<-`` `[`aggregateFeatures`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-aggregate.md)`(``cptac``,`\
+`                           i ``=`` ``"peptides_norm"``,`\
+`                           fcol ``=`` ``"Proteins"``,`\
+`                           name ``=`` ``"proteins"``)`
 
     ##   |                                                                              |                                                                      |   0%
 
     ##   |                                                                              |======================================================================| 100%
 
+\
 `cptac`
 
     ## An instance of class QFeatures (type: bulk) with 4 sets:
@@ -438,6 +500,7 @@ Below, we display the quantitation data for the first 6 proteins and
 their respective variables. The latter shown that number of peptides
 that were using during the aggregation step (`.n` column).
 
+\
 [`head`](https://rdrr.io/r/utils/head.html)`(``assay``(``cptac``[[``"proteins"``]``]``)``)`
 
     ##                                      Intensity.6A_7 Intensity.6A_8
@@ -462,6 +525,7 @@ that were using during the aggregation step (`.n` column).
     ## P02753ups|RETBP_HUMAN_UPS                  17.73507       18.15238
     ## P02787ups|TRFE_HUMAN_UPS                   18.51059       18.15718
 
+\
 `rowData``(``cptac``[[``"proteins"``]``]``)`
 
     ## DataFrame with 1125 rows and 3 columns
@@ -497,6 +561,7 @@ below, that shows us that we have 405 proteins that are based on a
 single peptides, 230 that are based on two, 119 that are based on three,
 … and a single protein that is the results of aggregating 44 peptides.
 
+\
 [`table`](https://rdrr.io/pkg/BiocGenerics/man/table.html)`(``rowData``(``cptac``[[``"proteins"``]``]``)``$``.n``)`
 
     ## 
@@ -510,7 +575,19 @@ pattern in the 2 groups at the protein and (log-tranformed and
 normalised) peptide level. We drop the first peptide-level assay as it
 is on a different scale (i.e. not log-transformed).
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`"ggplot2"`](https://ggplot2.tidyverse.org)`)`` `[`library`](https://rdrr.io/r/base/library.html)`(`[`"dplyr"`](https://dplyr.tidyverse.org)`)`` `[`longForm`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-longForm.md)`(``cptac``[``"P02787ups|TRFE_HUMAN_UPS"``, , ``-``1``]``)`` ``|>`` `` `[`as.data.frame`](https://rdrr.io/pkg/BiocGenerics/man/as.data.frame.html)`(``)`` ``|>`` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``group ``=`` `[`ifelse`](https://rdrr.io/r/base/ifelse.html)`(`[`grepl`](https://rdrr.io/pkg/BiocGenerics/man/grep.html)`(``"A"``, ``colname``)``, ``"A"``, ``"B"``)``)`` ``|>`` `` `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``sample ``=`` `[`sub`](https://rdrr.io/r/base/grep.html)`(``"Intensity\\."``, ``""``, ``colname``)``)`` ``|>`` `` `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``sample``, y ``=`` ``value``,`` `` colour ``=`` ``rowname``,`` `` shape ``=`` ``group``)``)`` ``+`` `` `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``group ``=`` ``rowname``)``)`` ``+`` `` `[`geom_point`](https://ggplot2.tidyverse.org/reference/geom_point.html)`(``size ``=`` ``3``)`` ``+`` `` `[`facet_grid`](https://ggplot2.tidyverse.org/reference/facet_grid.html)`(``~`` ``assay``)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`"ggplot2"`](https://ggplot2.tidyverse.org)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`"dplyr"`](https://dplyr.tidyverse.org)`)`\
+[`longForm`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-longForm.md)`(``cptac``[``"P02787ups|TRFE_HUMAN_UPS"``, , ``-``1``]``)`` ``|>`\
+`    `[`as.data.frame`](https://rdrr.io/pkg/BiocGenerics/man/as.data.frame.html)`(``)`` ``|>`\
+`    `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``group ``=`` `[`ifelse`](https://rdrr.io/r/base/ifelse.html)`(`[`grepl`](https://rdrr.io/pkg/BiocGenerics/man/grep.html)`(``"A"``, ``colname``)``, ``"A"``, ``"B"``)``)`` ``|>`\
+`    `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``sample ``=`` `[`sub`](https://rdrr.io/r/base/grep.html)`(``"Intensity\\."``, ``""``, ``colname``)``)`` ``|>`\
+`    `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``sample``, y ``=`` ``value``,`\
+`               colour ``=`` ``rowname``,`\
+`               shape ``=`` ``group``)``)`` ``+`\
+`    `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``group ``=`` ``rowname``)``)`` ``+`\
+`    `[`geom_point`](https://ggplot2.tidyverse.org/reference/geom_point.html)`(``size ``=`` ``3``)`` ``+`\
+`    `[`facet_grid`](https://ggplot2.tidyverse.org/reference/facet_grid.html)`(``~`` ``assay``)`
 
     ## Warning: 'experiments' dropped; see 'drops()'
 
@@ -540,7 +617,7 @@ Expression intensities for the protein *P02787ups\|TRFE_HUMAN_UPS*
 
     ## R version 4.6.1 (2026-06-24)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.4 LTS
+    ## Running under: Ubuntu 24.04.5 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -562,13 +639,13 @@ Expression intensities for the protein *P02787ups\|TRFE_HUMAN_UPS*
     ## [8] base     
     ## 
     ## other attached packages:
-    ##  [1] gplots_3.3.0                MsDataHub_1.13.1           
+    ##  [1] gplots_3.3.0                MsDataHub_1.13.3           
     ##  [3] dplyr_1.2.1                 ggplot2_4.0.3              
-    ##  [5] QFeatures_1.23.2            MultiAssayExperiment_1.39.1
+    ##  [5] QFeatures_1.23.3            MultiAssayExperiment_1.39.1
     ##  [7] SummarizedExperiment_1.43.0 Biobase_2.73.2             
     ##  [9] GenomicRanges_1.65.4        Seqinfo_1.3.2              
-    ## [11] IRanges_2.47.5              S4Vectors_0.51.9           
-    ## [13] BiocGenerics_0.59.12        generics_0.1.4             
+    ## [11] IRanges_2.47.5              S4Vectors_0.51.10          
+    ## [13] BiocGenerics_0.59.13        generics_0.1.4             
     ## [15] MatrixGenerics_1.25.0       matrixStats_1.5.0          
     ## [17] BiocStyle_2.41.0           
     ## 
@@ -581,26 +658,26 @@ Expression intensities for the protein *P02787ups\|TRFE_HUMAN_UPS*
     ## [16] pkgconfig_2.0.3         crayon_1.5.3            fastmap_1.2.0          
     ## [19] dbplyr_2.6.0            XVector_0.53.0          labeling_0.4.3         
     ## [22] caTools_1.18.4          rmarkdown_2.32          ragg_1.5.2             
-    ## [25] purrr_1.2.2             bit_4.6.0               xfun_0.60              
+    ## [25] purrr_1.2.2             bit_4.6.0               xfun_0.62              
     ## [28] cachem_1.1.0            jsonlite_2.0.0          blob_1.3.0             
-    ## [31] DelayedArray_0.39.6     cluster_2.1.8.3         R6_2.6.1               
+    ## [31] DelayedArray_0.39.8     cluster_2.1.8.3         R6_2.6.1               
     ## [34] bslib_0.12.0            stringi_1.8.9           RColorBrewer_1.1-3     
-    ## [37] limma_3.99.0            jquerylib_0.1.4         Rcpp_1.1.2             
-    ## [40] bookdown_0.48           knitr_1.51              BiocBaseUtils_1.15.1   
-    ## [43] Matrix_1.7-6            igraph_2.3.3            tidyselect_1.2.1       
-    ## [46] abind_1.4-8             yaml_2.3.12             curl_8.0.0             
+    ## [37] limma_3.99.4            jquerylib_0.1.4         Rcpp_1.1.2             
+    ## [40] bookdown_0.48           knitr_1.52              BiocBaseUtils_1.15.1   
+    ## [43] Matrix_1.7-6            igraph_2.3.4            tidyselect_1.2.1       
+    ## [46] abind_1.4-8             yaml_2.3.12             curl_8.1.0             
     ## [49] lattice_0.23-1          tibble_3.3.1            plyr_1.8.9             
     ## [52] withr_3.0.3             KEGGREST_1.53.6         S7_0.2.2               
-    ## [55] evaluate_1.0.5          desc_1.4.3              BiocFileCache_3.3.0    
-    ## [58] ExperimentHub_3.3.2     Biostrings_2.81.8       pillar_1.11.1          
+    ## [55] evaluate_1.0.5          desc_1.4.3              BiocFileCache_3.3.3    
+    ## [58] ExperimentHub_3.3.2     Biostrings_2.81.9       pillar_1.11.1          
     ## [61] BiocManager_1.30.27     filelock_1.0.3          KernSmooth_2.23-27     
     ## [64] BiocVersion_3.24.0      scales_1.4.0            gtools_3.9.5           
     ## [67] glue_1.8.1              lazyeval_0.2.3          tools_4.6.1            
-    ## [70] AnnotationHub_4.3.2     fs_2.1.0                grid_4.6.1             
+    ## [70] AnnotationHub_4.3.3     fs_2.1.0                grid_4.6.1             
     ## [73] tidyr_1.3.2             MsCoreUtils_1.25.4      AnnotationDbi_1.75.2   
     ## [76] cli_3.6.6               rappdirs_0.3.4          textshaping_1.0.5      
-    ## [79] S4Arrays_1.13.0         AnnotationFilter_1.37.0 gtable_0.3.6           
-    ## [82] sass_0.4.10             digest_0.6.39           SparseArray_1.13.2     
+    ## [79] S4Arrays_1.13.2         AnnotationFilter_1.37.0 gtable_0.3.6           
+    ## [82] sass_0.4.10             digest_0.6.39           SparseArray_1.13.4     
     ## [85] htmlwidgets_1.6.4       farver_2.1.2            memoise_2.0.1          
     ## [88] htmltools_0.5.9         pkgdown_2.2.1.9000      lifecycle_1.0.5        
     ## [91] httr_1.4.9              statmod_1.5.2           bit64_4.8.6            
@@ -609,7 +686,7 @@ Expression intensities for the protein *P02787ups\|TRFE_HUMAN_UPS*
 ## License
 
 This vignette is distributed under a [CC BY-SA
-license](https://creativecommons.org/licenses/by-sa/2.0/) license.
+license](https://creativecommons.org/licenses/by-sa/4.0/) license.
 
 ## References
 

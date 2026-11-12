@@ -37,7 +37,7 @@ input table contains data from multiple runs/batches.
 
     <a class="navbar-brand me-2" href="../index.html">QFeatures</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.23.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.23.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -201,7 +201,7 @@ former, the quantitative sets of each run are stored in
 The single-set case can be represented schematically as shown
 below.</p>
 <p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="sc">|------+----------------+-----------</span><span class="er">|</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="er">|</span> cols <span class="sc">|</span> quantCols <span class="dv">1</span>..N <span class="sc">|</span> more cols <span class="sc">|</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="er">|</span> cols <span class="sc">|</span> quantCols <span class="fl">1.</span>.N <span class="sc">|</span> more cols <span class="sc">|</span></span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="er">|</span> .    <span class="sc">|</span> ...            <span class="sc">|</span> ...       <span class="sc">|</span></span>
 <span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="er">|</span> .    <span class="sc">|</span> ...            <span class="sc">|</span> ...       <span class="sc">|</span></span>
 <span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="er">|</span> .    <span class="sc">|</span> ...            <span class="sc">|</span> ...       <span class="sc">|</span></span>
@@ -228,7 +228,7 @@ multiplexing label.</p></li>
 data. The multi-set case can be represented schematically as shown
 below.</p>
 <p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="sc">|--------+------+----------------+-----------</span><span class="er">|</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="er">|</span> runCol <span class="sc">|</span> cols <span class="sc">|</span> quantCols <span class="dv">1</span>..N <span class="sc">|</span> more cols <span class="sc">|</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="er">|</span> runCol <span class="sc">|</span> cols <span class="sc">|</span> quantCols <span class="fl">1.</span>.N <span class="sc">|</span> more cols <span class="sc">|</span></span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="er">|</span>   <span class="dv">1</span>    <span class="sc">|</span> .    <span class="sc">|</span> ...            <span class="sc">|</span> ...       <span class="sc">|</span></span>
 <span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="er">|</span>   <span class="dv">1</span>    <span class="sc">|</span> .    <span class="sc">|</span> ...            <span class="sc">|</span> ...       <span class="sc">|</span></span>
 <span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="er">|</span><span class="sc">--------+------+----------------+-----------</span><span class="er">|</span></span>
