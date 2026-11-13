@@ -938,8 +938,31 @@ test_that("replaceColnames", {
         colnames(out)[["psmsall"]],
         c("sample_1", "sample_2", "sample_3", "sample_4")
     )
-    expect_identical(rownames(colData(out)), rownames(colData(qf)))
+    expect_identical(rownames(colData(out)), colData(qf)$sample_id)
     expect_identical(colData(out)$sample_id, colData(qf)$sample_id)
+    expect_identical(sampleMap(out)$primary, sampleMap(out)$colname)
+    expect_identical(nrow(sampleMap(out)), nrow(sampleMap(qf)))
+    expect_true(validObject(out))
+
+    for (i in seq_along(out)) {
+        expect_warning(
+            extracted <- getWithColData(out, i),
+            regexp = "'experiments' dropped"
+        )
+        expect_identical(colnames(extracted), colnames(out[[i]]))
+    }
+
+    expect_warning(added <- addAssay(out, out[[1]], "newSet"), NA)
+    expect_identical(colData(added), colData(out))
+    expect_identical(experiments(added)[names(out)], experiments(out))
+    expect_identical(
+        sampleMap(added),
+        rbind(sampleMap(out),
+              DataFrame(assay = rep("newSet", ncol(out[[1]])),
+                        primary = colnames(out[[1]]),
+                        colname = colnames(out[[1]])))
+    )
+    expect_true(validObject(added))
 
     qf_dup <- qf
     qf_dup$sample_id_dup <- rep("sample", nrow(colData(qf_dup)))

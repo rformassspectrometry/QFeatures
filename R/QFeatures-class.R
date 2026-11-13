@@ -756,6 +756,8 @@ setMethod(
 ##'     as replacement sample names across all assays. Values in that
 ##'     column must be unique.
 ##'
+##' @importFrom MultiAssayExperiment renamePrimary
+##'
 ##' @rdname QFeatures-class
 ##' @export
 replaceColnames <- function(object, scol) {
@@ -776,6 +778,8 @@ replaceColnames <- function(object, scol) {
         unname(newColnames[setColnames])
     })
     colnames(object) <- as(newColnamesList, "CharacterList")
+    object <- renamePrimary(object, unname(newColnames))
+
     object
 }
 

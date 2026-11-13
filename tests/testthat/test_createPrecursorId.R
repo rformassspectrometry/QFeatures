@@ -1,7 +1,10 @@
 data(feat3)
-qf <- feat3[, , 1:3]
 
 test_that("createPrecursorId work", {
+    expect_warning(
+        qf <- feat3[, , 1:3],
+        regexp = "'experiments' dropped"
+    )
     expect_error(createPrecursorId(feat3, name = "Sequence"),
                  "'Sequence' already exists.")
     expect_error(createPrecursorId(feat3,
