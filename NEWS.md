@@ -3,6 +3,7 @@
 ## QFeatures 1.23.3
 
 - Use GPL-3 and CC BY-SA license.
+- Fix colnames replacement inconsistencies (#266).
 
 ## QFeatures 1.23.2
 
