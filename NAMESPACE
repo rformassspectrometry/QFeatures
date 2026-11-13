@@ -87,7 +87,10 @@ importFrom(MsCoreUtils,
   impute_matrix,
   robustSummary
 )
-importFrom(MultiAssayExperiment,longForm)
+importFrom(MultiAssayExperiment,
+  longForm,
+  renamePrimary
+)
 importFrom(ProtGenerics,adjacencyMatrix)
 importFrom(dplyr,everything)
 importFrom(grDevices,rgb)
