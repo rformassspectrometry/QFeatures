@@ -94,16 +94,18 @@ readQFeaturesFromDIANN <- function(assayData,
                                    extractedData = NULL,
                                    ecol = NULL,
                                    verbose = TRUE,
+                                   zeroIsNA = FALSE,
+                                   logTransform = FALSE,
                                    ...) {
     multiplexing <- match.arg(multiplexing, several.ok = FALSE)
     if (multiplexing == "mTRAQ") {
-        if (verbose) message("Pivoting mTRAQ quantiative data.")
+        if (verbose) message("Pivoting mTRAQ quantitative data.")
         assayData <- .formatMtraqReportData(assayData, colData,
                                             quantCols, runCol)
         quantCols <- assayData[[2]]
         assayData <- assayData[[1]]
     } else if (multiplexing == "dimethyl") {
-      if (verbose) message("Pivoting dimethyl quantiative data.")
+      if (verbose) message("Pivoting dimethyl quantitative data.")
       assayData <- .formatDimethylReportData(assayData, colData,
                                              quantCols, runCol)
       quantCols <- assayData[[2]]
@@ -113,6 +115,8 @@ readQFeaturesFromDIANN <- function(assayData,
                          quantCols = quantCols,
                          runCol = runCol,
                          ecol = ecol,
+                         zeroIsNA = zeroIsNA,
+                         logTransform = logTransform
                          ...)
     if (!is.null(extractedData)) {
         ans <- .addDiannExtractedData(ans, extractedData)

@@ -436,6 +436,49 @@ test_that("readSummarizedExperiment", {
     expect_true(inherits(ft1, "SummarizedExperiment"))
 })
 
+test_that("read functions transformation arguments are checked", {
+    invalid <- list(NULL, logical(), NA, c(TRUE, FALSE), 1, "TRUE")
+    for (read in list(readSummarizedExperiment, readQFeatures)) {
+        for (arg in c("zeroIsNA", "logTransform")) {
+            for (value in invalid) {
+                args <- list(assayData = x, quantCols = 1:10)
+                args[arg] <- list(value)
+                expect_error(
+                    do.call(read, args),
+                    paste0("'", arg, "' must be TRUE or FALSE."),
+                    fixed = TRUE
+                )
+            }
+        }
+    }
+})
+
+test_that("read functions convert zeros to NA when zeroIsNA is TRUE", {
+    dat <- data.frame(intensity = c(0, 1, 2, 4, NA),
+                      feature = letters[1:5])
+    for (read in list(readSummarizedExperiment, readQFeatures)) {
+        original <- read(dat, quantCols = 1)
+        converted <- read(dat, quantCols = 1, zeroIsNA = TRUE)
+        expect_identical(unname(assay(original)[, 1]), dat$intensity)
+        expect_identical(unname(assay(converted)[, 1]),
+                         c(NA, 1, 2, 4, NA))
+    }
+})
+
+test_that("read functions apply log2 when logTransform is TRUE", {
+    dat <- data.frame(intensity = c(0, 1, 2, 4, NA),
+                      feature = letters[1:5])
+    for (read in list(readSummarizedExperiment, readQFeatures)) {
+        logged <- read(dat, quantCols = 1, logTransform = TRUE)
+        converted <- read(dat, quantCols = 1,
+                          zeroIsNA = TRUE, logTransform = TRUE)
+        expect_identical(unname(assay(logged)[, 1]),
+                         c(-Inf, 0, 1, 2, NA))
+        expect_identical(unname(assay(converted)[, 1]),
+                         c(NA, 0, 1, 2, NA))
+    }
+})
+
 test_that(".splitSE", {
     m <- matrix(1:100, ncol = 10,
                 dimnames = list(paste0("row", 1:10),
